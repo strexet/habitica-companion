@@ -1,7 +1,7 @@
 @using Habitica.Application.Workspace
 @using Habitica.Domain.Workspace
 @inject TodoWorkspacePresentation Todo
-<section class="card-surface todo-task-panel" aria-label="Habitica task link" data-testid="todo-link-editor">
+<section class="card-surface todo-task-panel todo-link-editor" aria-label="Habitica task link" data-testid="todo-link-editor">
     <h2 tabindex="-1" @ref="_heading">Habitica link: @Task?.Text</h2>
     @if (Task is { } task)
     {

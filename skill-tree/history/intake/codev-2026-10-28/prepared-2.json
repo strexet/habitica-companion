@@ -1,0 +1,34 @@
+{
+  "request": {
+    "operation": "completeTask",
+    "taskId": "339ca108-d559-44b2-815a-8afd9fa3617a",
+    "expectedRevision": 161,
+    "requestId": "3b178b66-8325-4adb-b16b-08439a1ab1f8"
+  },
+  "preview": {
+    "preparedCommandId": "b10316fb-c4d5-46ce-871e-c1a5a0487507",
+    "correlationId": "4b312aa7-13e2-4982-993d-6c5e493424b6",
+    "expiresAtUtc": "2026-10-28T10:16:30.910Z",
+    "expired": false,
+    "command": {
+      "id": "b10316fb-c4d5-46ce-871e-c1a5a0487507",
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+      "expectedRevision": 161,
+      "operation": "completeTask",
+      "taskId": "339ca108-d559-44b2-815a-8afd9fa3617a",
+      "patch": null,
+      "direction": null,
+      "count": 1,
+      "occurrenceDate": null,
+      "projectToHabitica": true
+    },
+    "tagProjection": {
+      "separateConsentRequired": true,
+      "scopeAllowed": true,
+      "consentEnabled": true,
+      "groups": []
+    },
+    "mayAffectHabitica": true,
+    "savedInCompanion": false
+  }
+}

@@ -13,7 +13,7 @@ public sealed record TodoTaskProvenance(Guid WorkspaceId, long WorkspaceRevision
 public sealed record TodoHabiticaCacheContext(string Source, SnapshotFreshnessState Freshness, DateTimeOffset? RetrievedAtUtc);
 
 /// <summary>Scoped selection and reads; WorkspaceTaskController retains all task command ownership.</summary>
-public sealed class TodoWorkspacePresentation : IDisposable
+public sealed partial class TodoWorkspacePresentation : IDisposable
 {
     private readonly IAppSessionController _session;
     private readonly IWorkspaceCloudClient _cloud;
@@ -41,7 +41,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public bool? BrowserSourcesAvailable { get; private set; }
     public bool IsBusy { get; private set; }
     public string? Message { get; private set; }
-    public bool CanSwitchSource => !IsBusy && !_commands.HasPendingIntent && _commands.LinkPreview is null && _organization?.HasPendingIntent != true && _organization?.IsBusy != true;
+    public bool CanSwitchSource => !HasLinkedRecoveryIntent && !IsBusy && !_commands.HasPendingIntent && _commands.LinkPreview is null && _organization?.HasPendingIntent != true && _organization?.IsBusy != true;
     public WorkspaceTaskController Commands => _commands;
     private string? Account => _session.State.IsAuthenticated && Guid.TryParse(_session.State.UserId, out var id) ? id.ToString("D") : null;
     public TodoWorkspaceAvailability Availability => Account is null ? TodoWorkspaceAvailability.SignedOut
@@ -80,7 +80,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
         : Selection is { } source && _organization?.LastReceipt is { SavedInCompanion: true } receipt
             && receipt.WorkspaceId == source.WorkspaceId && _organization.IsCloud == (source.Source == TodoWorkspaceSource.Cloud)
             && Revision < receipt.Entry.Snapshot.Revision ? "Organization changes were saved. Reload the selected workspace before editing tasks." : null;
-    public bool IsReadOnly => Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
+    public bool IsReadOnly => HasLinkedRecoveryIntent || Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
     public string IntegrationReadiness => Selection?.Source != TodoWorkspaceSource.Cloud
         ? "Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor."
         : !_cloud.ConnectionStatusVerified ? "Cloud connection status is unverified. Check Todo Sync before relying on game effects."
@@ -136,11 +136,12 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken token = default)
     {
         _ = RequireSnapshot();
+        RequireRecoveryResolved();
         if (OrganizationBlockReason is { } reason) throw new InvalidOperationException(reason);
         return RunAsync(() => _commands.PrepareAsync(input, token), token);
     }
     public Task PreviewLinkAsync(Guid taskId, Guid remoteId, CancellationToken token = default)
-    { _ = RequireSnapshot(); return RunAsync(() => _commands.PreviewLinkAsync(taskId, remoteId, token), token); }
+    { _ = RequireSnapshot(); RequireRecoveryResolved(); return RunAsync(() => _commands.PreviewLinkAsync(taskId, remoteId, token), token); }
     public Task AdoptLinkAsync(CancellationToken token = default) => RunAsync(() => _commands.AdoptLinkAsync(token), token);
     public void CancelLinkPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelLinkPreview(); Changed?.Invoke(); }
     public Task ConfirmAsync(CancellationToken token = default) => RunAsync(() => _commands.ConfirmAsync(token), token);
@@ -174,6 +175,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     }
     private Task RunOrganizationAsync(Func<WorkspaceOrganizationController, Task> action, CancellationToken token, bool refresh = false)
     {
+        RequireRecoveryResolved();
         var organization = _organization ?? throw new InvalidOperationException("Organization management is unavailable.");
         if (_commands.HasPendingIntent) throw new InvalidOperationException("Resolve the original task command before changing organization.");
         var scope = Account; var generation = _generation; var selected = Selection;
@@ -244,6 +246,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     {
         if (Account != _account)
         {
+            ClearLinkedRecovery();
             _account = Account; _generation++; _commands.Forget(); Selection = null; Sources = []; BrowserSourcesAvailable = null;
             _validated = null; _coverageDocument = null; _coverage = null;
             _unavailable = false; _loading = false; IsBusy = false; Message = null;

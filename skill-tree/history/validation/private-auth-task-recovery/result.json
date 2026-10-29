@@ -1,0 +1,129 @@
+{
+  "taskId": "T-0c8220b8-32cb-4146-a686-311ec22100d5",
+  "rootTaskId": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+  "status": "accepted-private-primitive",
+  "checks": {
+    "authSuite": 199,
+    "focusedRecoveryFinal": 24,
+    "matchingWorkerDryRunBuilds": 3,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "implementation": [
+    "Distinct private inspectRecovery/recoverTask preserves ordinary score rules and default gates.",
+    "Fresh owner/completed task/checklist/value/history-state and current account day/readiness bind the opaque canonical source-context hash. Recovery-only90second tokens, current grant checks, atomic account lease/profile/unknown-work reservation and existing quotas guard one down dispatch.",
+    "Only original HTTP200 successful nonpositive delta gives an applied private receipt. Any dispatched non200/transport/malformed/persistence uncertainty remains unknown; original lookup/reconcile cannot infer an outcome from task state. Resource fields remain unknown."
+  ],
+  "controls": [
+    {
+      "name": "auth-build",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 2.58,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "auth-build2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.25,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-auth-final-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.34,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-mcp-final-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.36,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "companion-workspace-final-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.38,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "first",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 11.24,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "auth-suite",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 40.81,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "focused-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 14.04,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "focused-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 13.85,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "docs",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.15,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "limitations": [
+    "Canonical source completion and confirmed original projection receipt must be verified by the selected Workspace parent; Auth binds the source-context hash but does not establish the canonical event.",
+    "Private service primitive only. No public linked-uncheck workflow or native post-success recovery history is claimed complete.",
+    "All requests use synthetic fixtures. No real account, score/Cron call, deployment, device test or flag activation.",
+    "Habitica has no conditional score endpoint across independent clients; a final external race remains possible.",
+    "Existing30day operational attempt retention and lifecycle cleanup remain unchanged; original expired/missing receipts never authorize replay. The canonical parent must retain unresolved source fences across reconnect.",
+    "Active controller time was not instrumented; per-control tool wall time and deadlines are retained."
+  ],
+  "sourceFingerprints": {
+    "workers/chatgpt-auth/src/projection.ts": "e66c55305a649e45147a536a0da0e154e936ec7c45a31d180e0bcd1ef033c1f6",
+    "workers/chatgpt-auth/src/task-recovery-observation.ts": "ea4af8661526b0d55db68fe9022e5d69d2fef8786dc09ab33bd5656a48b9a87e",
+    "workers/shared/linked-task-recovery.ts": "80d2d5578fb6d1669fea648c4af3e859023725d8d625458f286786e4d644dfc1",
+    "workers/shared/build-identity.generated.ts": "5cb79c251995777efcf0ad1f2b55e154efa93561bd372f5a063924a26ddf1121",
+    "workers/chatgpt-auth/test/task-recovery-gateway.test.mjs": "2faf53df5c94b7aa29831b831ecbe22a28184930f67432f51f98bffa42a2d819",
+    "skill-tree/documents/habitica-api.md": "c5eda880e3c83d02927680914cb21533ab3133e11127451268861ac60ab9424a",
+    "skill-tree/documents/technical.md": "f7bf8fe290a0adf43c235004028f4f38e88e7e5ddb86b09f53bedb0458332699",
+    "skill-tree/documents/features.md": "05ae9ca9198675e5a1fc53616d3e3e963fb112fabaf0e3a33d6cfd2dfe5494c6",
+    "skill-tree/documents/testing.md": "147aaedd4f9bfca241aefcfe9db59361989fce6c06ff941d6ef0eac3618e2686"
+  },
+  "officialSourcesReviewed": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/index.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js"
+  ],
+  "reviewedAtUtcDate": "2026-10-27",
+  "repairs": [
+    "TypeScript closure narrowing repaired before compilation succeeded.",
+    "An optional fixture edit initially used a duplicated relative path from the worker cwd; the source edit was reapplied from the repository root and24focused controls passed on the final test source."
+  ]
+}

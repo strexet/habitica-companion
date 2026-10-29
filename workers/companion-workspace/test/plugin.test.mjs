@@ -27,6 +27,34 @@ async function client(t,f,p,scope){
  const c=new Client({name:'packaged-workflow-fixture',version:'0.1.0'});t.after(()=>c.close());await c.connect(transport);return {c,token};
 }
 
+test('discovery expectations match advertised schemas and preserve permission boundaries without executing prompts',async t=>{
+ const corpus=await json('tests/fixtures/plugin/discovery-prompts-v1.json');
+ assert.deepEqual(corpus.chatVariants,['new','existing']);
+ assert.equal(new Set(corpus.cases.map(row=>row.id)).size,corpus.cases.length);
+ for(const category of ['direct','indirect','negative','followup'])assert.ok(corpus.cases.some(row=>row.category===category));
+ let upstream=0;
+ const f=await fixture(t,{workspace:true,habitica:async request=>{
+  upstream++;assert.equal(request.method,'GET');
+  return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture A'}}});
+ }});
+ const p=await enrolled(f);const before=upstream;
+ const {c}=await client(t,f,p,'profile:read account:read tasks:read habitica.tasks.write');
+ const advertised=(await c.listTools()).tools;const tools=new Map(advertised.map(tool=>[tool.name,tool]));
+ const ajv=new Ajv2020({strict:false,validateFormats:false});
+ for(const row of corpus.cases){
+  assert.ok(row.prompt&&row.context&&row.confirmation);
+  if(row.tool===null){assert.equal(row.expectedAction,'no-companion-call');assert.equal(row.arguments,null);assert.equal(row.scope,null);continue;}
+  const tool=tools.get(row.tool);assert.ok(tool,row.id);
+  assert.equal(ajv.compile(tool.inputSchema)(row.arguments),true,row.id);
+  assert.ok(tool._meta.securitySchemes.some(s=>s.scopes.includes(row.scope)),row.id);
+  assert.equal(tool.annotations.readOnlyHint,row.expectedAction==='read',row.id);
+  assert.equal(tool.annotations.openWorldHint,false,row.id);
+ }
+ const list=tools.get('list_companion_tasks');assert.match(list.description,/^Use this when/);assert.match(list.description,/read-only/i);assert.match(list.description,/get_completed_history/);
+ for(const name of ['create_todo','update_task','complete_task','score_habit','delete_task'])assert.equal(tools.get(name).annotations.readOnlyHint,false);
+ assert.equal(upstream,before);assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,0);
+});
+
 test('packaged workflow tool names route through actual SDK with two isolated OAuth profiles',async t=>{
  let writes=0;
  const f=await fixture(t,{workspace:true,habitica:async request=>{

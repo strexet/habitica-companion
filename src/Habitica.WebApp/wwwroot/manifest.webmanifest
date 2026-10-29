@@ -1,8 +1,9 @@
 {
-  "name": "Habitica.WebApp",
-  "short_name": "Habitica.WebApp",
+  "name": "Habitica Companion",
+  "short_name": "Companion",
   "id": "./",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",

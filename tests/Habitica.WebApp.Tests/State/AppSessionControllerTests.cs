@@ -153,10 +153,12 @@ public sealed partial class AppSessionControllerTests
                 new Dictionary<string, string>())
         });
 
-        var controller = CreateController(logStore);
+        var reminders = new Workspace.ReminderBrowserFixture();
+        var controller = CreateController(logStore, foregroundReminders: reminders);
         await controller.InitializeAsync();
 
         await controller.ClearLocalDataAsync();
+        Assert.Equal(1, reminders.Clears);
 
         Assert.Empty(controller.State.DiagnosticsLogEntries!);
         Assert.False(controller.State.HasDiagnosticsHistory);
@@ -2366,10 +2368,12 @@ public sealed partial class AppSessionControllerTests
         TimeProvider? timeProvider = null,
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
         Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
-        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
+        ICredentialStore? credentialStore = null,
+        Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts, notesCloud);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts, notesCloud, credentialStore, foregroundReminders);
     }
 
     private static AppSessionController CreateController(
@@ -2385,9 +2389,11 @@ public sealed partial class AppSessionControllerTests
         TimeProvider? timeProvider = null,
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
         Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
-        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
+        ICredentialStore? credentialStore = null,
+        Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null)
     {
-        var credentialStore = new FakeCredentialStore();
+        credentialStore ??= new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
         var taskSnapshotStore = new TaskSnapshotStore(storage);
         var userSnapshotStore = new UserSnapshotStore(storage);
@@ -2427,7 +2433,8 @@ public sealed partial class AppSessionControllerTests
             colorSchemeService: colorSchemeService,
             spellGearRecoveryStore: spellGearRecoveryStore,
             notesDrafts: notesDrafts,
-            notesCloud: notesCloud);
+            notesCloud: notesCloud,
+            foregroundReminders: foregroundReminders);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)

@@ -1,0 +1,47 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {writeFile} from 'node:fs/promises';
+import {linkedFixture,call} from './fixtures/linked-recovery.mjs';
+import {journal} from '../src/journal.ts';import {executeProfile} from '../src/executor.ts';
+import {Client} from '../../chatgpt-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js';
+import {StreamableHTTPClientTransport} from '../../chatgpt-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js';
+import {authorization,exchange,resource,enrolled,accounts} from '../../chatgpt-auth/test/fixtures/oauth.mjs';
+for(const kind of ['todo','daily'])test('linked '+kind+' exact review confirms one original down and causal retained native history',async t=>{
+ const x=await linkedFixture(t,kind),eligibility=await x.api('get_linked_task_recovery',{taskId:x.taskId,completionId:x.completion.id});assert.equal(eligibility.body.available,true,JSON.stringify(eligibility));
+ const review=await x.prepare();assert.equal(review.state,'ready');assert.equal((await x.prepare()).commandId,review.commandId);assert.equal(review.checkToken,undefined);assert.ok(Object.values(review.review.resourceChanges).every(v=>v==='unknown'));assert.equal(x.state.down,0);
+ const result=await x.accept(review);assert.equal(result.status,200,JSON.stringify(result));assert.equal(result.body.state,'confirmed');assert.equal(result.body.savedInCompanion,true);assert.equal(result.body.outcomeUnknown,false);assert.equal(result.body.receipt.recoveryAttemptId,review.commandId);assert.equal(result.body.receipt.sourceAttemptId,review.sourceAttemptId);
+ assert.equal(x.state.down,1);assert.equal((await x.accept(review)).body.state,'confirmed');assert.equal((await x.recover(review.commandId)).body.state,'confirmed');assert.equal(x.state.down,1);
+ const after=await x.exported();await journal(after);assert.deepEqual(after.commands,x.before.commands);assert.deepEqual(after.events,x.before.events);assert.deepEqual(after.document.completions,x.before.document.completions);assert.equal(after.document.linkedTaskRecoveries.length,1);assert.equal(after.document.tasks[0].state,'active');assert.equal(after.document.projections[0].state,'linked');
+ assert.equal((await x.f.workspaceDb.prepare('SELECT linked_recovery_fence FROM workspaces').first()).linked_recovery_fence,null);
+ if(kind==='daily'){assert.equal(after.document.occurrences.length,1);assert.equal(after.document.occurrences[0].state,'pending');assert.deepEqual(after.document.occurrenceCorrections[0].previousOccurrence,x.before.document.occurrences[0]);}else assert.equal(after.document.restorations[0].completionId,x.completion.id);
+ assert.equal((await x.api('get_linked_task_recovery',{taskId:x.taskId,completionId:x.completion.id})).body.available,false);
+ if(process.env.HABITICA_UPDATE_LINKED_FIXTURES==='1')await writeFile(new URL('../../../tests/fixtures/workspace/linked-recovery-'+kind+'-journal-v1.json',import.meta.url),JSON.stringify(after,null,2)+'\n');
+});
+for(const mode of ['lost-auth','lost','failure'])test('linked '+mode+' original receipt recovery never resends and preserves unknown fence',async t=>{
+ const x=await linkedFixture(t),review=await x.prepare();if(mode==='lost-auth')x.state.lose=true;else x.state.mode=mode;
+ const result=await x.accept(review);assert.equal(result.status,200);assert.equal(result.body.state,'unknownOutcome');assert.equal(x.state.down,1);
+ const rediscovered=await x.api('get_linked_task_recovery',{taskId:x.taskId,completionId:x.completion.id});assert.equal(rediscovered.body.available,false);assert.equal(rediscovered.body.reason,'original_recovery_pending');assert.equal(rediscovered.body.originalCommand.commandId,review.commandId);assert.equal(rediscovered.body.originalCommand.checkToken,undefined);assert.equal(x.state.down,1);
+ assert.equal(await executeProfile(x.env,x.p.profileId,{wait:x.wait}),'linked_recovery_pending');
+ const write=await call(x.f,x.w,'/commands',{id:crypto.randomUUID(),workspaceId:x.w.workspaceId,expectedRevision:x.before.document.revision,taskId:crypto.randomUUID(),operation:'createDaily',patch:{text:'Blocked'}});assert.equal(write.status,409);
+ const row=await x.f.workspaceDb.prepare('SELECT * FROM workspaces').first();await assert.rejects(x.f.workspaceDb.prepare('UPDATE workspaces SET document_json=?,commit_tag=? WHERE profile_id=?').bind(JSON.stringify({...JSON.parse(row.document_json),revision:99}),crypto.randomUUID(),x.p.profileId).run(),/linked_recovery_pending/);
+ x.state.task.completed=false;
+ const recovered=await x.recover(review.commandId);assert.equal(recovered.status,200,JSON.stringify(recovered));assert.equal(recovered.body.state,mode==='lost-auth'?'confirmed':'unknownOutcome');
+ assert.equal((await x.accept(review)).body.state,mode==='lost-auth'?'confirmed':'unknownOutcome');assert.equal(x.state.down,1);
+ const after=await x.exported();await journal(after);if(mode!=='lost-auth'){assert.deepEqual(after.document,x.before.document);await x.f.db.prepare('DELETE FROM integration_projection_attempts').run();assert.equal((await x.recover(review.commandId)).body.state,'unknownOutcome');assert.equal(x.state.down,1);}
+});
+test('linked stale native/canonical review, missing source proof and consent refusal cannot dispatch',async t=>{
+ const x=await linkedFixture(t),review=await x.prepare();x.state.task.text='External edit';const refused=await x.accept(review);assert.equal(refused.body.state,'refused',JSON.stringify(refused));assert.equal(x.state.down,0);assert.deepEqual((await x.exported()).document,x.before.document);
+ x.state.task.text='Synthetic linked recovery';await x.f.db.prepare('DELETE FROM integration_projection_attempts').run();assert.equal((await x.api('get_linked_task_recovery',{taskId:x.taskId,completionId:x.completion.id})).body.reason,'original_score_proof_unavailable');
+});
+test('linked native save rollback retains original known receipt and retry only finalizes once',async t=>{
+ const x=await linkedFixture(t,'daily'),review=await x.prepare();await x.f.workspaceDb.prepare("CREATE TRIGGER fixture_linked_save_fail BEFORE UPDATE OF document_json ON workspaces WHEN NEW.document_json<>OLD.document_json BEGIN SELECT RAISE(ABORT,'synthetic native save failure'); END").run();
+ assert.equal((await x.accept(review)).status,503);assert.equal(x.state.down,1);assert.deepEqual((await x.exported()).document,x.before.document);assert.equal((await x.f.workspaceDb.prepare('SELECT state FROM workspace_linked_recoveries').first()).state,'nativeConfirmed');
+ await x.f.workspaceDb.prepare('DROP TRIGGER fixture_linked_save_fail').run();assert.equal((await x.recover(review.commandId)).body.state,'confirmed');assert.equal(x.state.down,1);const final=await x.exported();await journal(final);assert.equal(final.document.occurrenceCorrections.length,1);
+});
+test('linked MCP tools require scope, exact reviewed hashes and profile ownership',async t=>{
+ const x=await linkedFixture(t),tokenResponse=await exchange(x.f,await authorization(x.f,x.p,'profile:read tasks:read habitica.tasks.write'));assert.equal(tokenResponse.status,200);const token=(await tokenResponse.json()).access_token,c=new Client({name:'linked-recovery-fixture',version:'1.0.0'});t.after(()=>c.close());await c.connect(new StreamableHTTPClientTransport(new URL(resource),{requestInit:{headers:{authorization:'Bearer '+token}},fetch:(url,init)=>x.f.mcp.fetch(String(url),init)}));
+ const tools=(await c.listTools()).tools;for(const name of ['get_linked_task_recovery','prepare_linked_task_recovery','accept_linked_task_recovery','get_linked_task_recovery_command'])assert.ok(tools.some(row=>row.name===name));
+ const invoke=async(name,args)=>{const r=await c.callTool({name,arguments:args});assert.notEqual(r.isError,true,JSON.stringify(r));return r.structuredContent;};
+ const review=await invoke('prepare_linked_task_recovery',x.request);const bad=await c.callTool({name:'accept_linked_task_recovery',arguments:{commandId:review.commandId,contextHash:'b'.repeat(64),reviewHash:review.review.reviewHash}});assert.equal(bad.isError,true);assert.equal(x.state.down,0);
+ assert.equal((await invoke('accept_linked_task_recovery',{commandId:review.commandId,contextHash:review.contextHash,reviewHash:review.review.reviewHash})).state,'confirmed');assert.equal(x.state.down,1);
+ const other=await enrolled(x.f,accounts[1]),otherConnect=await x.f.workspace.fetch('http://localhost:8789/connect',{method:'POST',headers:{authorization:'Bearer '+other.managementToken,'content-type':'application/json'},body:JSON.stringify({consentVersion:'workspace-v1'})});assert.equal(otherConnect.status,201);const otherW=await otherConnect.json();assert.equal((await call(x.f,otherW,'/linked-recovery-api',{tool:'get_linked_task_recovery_command',arguments:{commandId:review.commandId}})).status,404);
+ const readonly=await exchange(x.f,await authorization(x.f,x.p,'profile:read tasks:read'));const rc=new Client({name:'readonly-fixture',version:'1.0.0'});t.after(()=>rc.close());await rc.connect(new StreamableHTTPClientTransport(new URL(resource),{requestInit:{headers:{authorization:'Bearer '+(await readonly.json()).access_token}},fetch:(url,init)=>x.f.mcp.fetch(String(url),init)}));const denied=await rc.callTool({name:'accept_linked_task_recovery',arguments:{commandId:review.commandId,contextHash:review.contextHash,reviewHash:review.review.reviewHash}});assert.equal(denied.isError,true);assert.equal(denied.structuredContent.error,'insufficient_scope');assert.equal(x.state.down,1);
+});

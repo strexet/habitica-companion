@@ -1,0 +1,319 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "26ad927d-ba26-4b8b-8e24-da0868c1a455",
+    "revision": 5,
+    "categories": [],
+    "projects": [],
+    "sections": [],
+    "labels": [],
+    "goals": [],
+    "tasks": [
+      {
+        "id": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "revision": 5,
+        "isArchived": false,
+        "habiticaDetails": null,
+        "text": "Synthetic linked recovery",
+        "kind": "daily",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:51.552Z",
+        "updatedAtUtc": "2026-10-27T17:36:51.971Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "daily",
+          "interval": 1,
+          "startDate": "2026-10-27",
+          "timeZoneId": "UTC",
+          "weekdays": [],
+          "daysOfMonth": []
+        }
+      }
+    ],
+    "occurrences": [
+      {
+        "id": "a0cf3ffa-3908-4553-82ea-62315310bfed",
+        "revision": 5,
+        "isArchived": false,
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "date": "2026-10-27",
+        "state": "pending"
+      }
+    ],
+    "completions": [
+      {
+        "id": "f834bec4-4f57-4010-8980-709e7e1b73cb",
+        "revision": 3,
+        "isArchived": false,
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+        "completedAtUtc": "2026-10-27T17:36:51.580Z",
+        "occurrenceId": "a0cf3ffa-3908-4553-82ea-62315310bfed"
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "id": "07652871-db1f-4e62-9d6b-1eec6b6a6bdf",
+        "revision": 4,
+        "isArchived": false,
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "state": "linked",
+        "habiticaTaskId": "8428705f-35dc-4d8c-8d34-1fe0ca866f81",
+        "fingerprint": "7b62c63b8544a4f076c9b20022c0e3420e1f57c9ede3bb3d469eeb9c6e931d08",
+        "correlationAlias": null
+      }
+    ],
+    "occurrenceCorrections": [
+      {
+        "id": "38032d37-d441-5e08-88ff-20d6bae12cd9",
+        "revision": 5,
+        "isArchived": false,
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "commandId": "11eae138-b78f-49ad-8df7-ec4fe5df7c2c",
+        "targetCommandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+        "previousOccurrence": {
+          "id": "a0cf3ffa-3908-4553-82ea-62315310bfed",
+          "revision": 3,
+          "isArchived": false,
+          "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+          "date": "2026-10-27",
+          "state": "completed",
+          "terminalCommandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db"
+        },
+        "correctedAtUtc": "2026-10-27T17:36:51.971Z"
+      }
+    ],
+    "linkedTaskRecoveries": [
+      {
+        "id": "11eae138-b78f-49ad-8df7-ec4fe5df7c2c",
+        "revision": 5,
+        "isArchived": false,
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "completionId": "f834bec4-4f57-4010-8980-709e7e1b73cb",
+        "sourceAttemptId": "3ab6779e-48bc-45ed-aa59-2b1d5443f295",
+        "recoveryAttemptId": "11eae138-b78f-49ad-8df7-ec4fe5df7c2c",
+        "habiticaTaskId": "8428705f-35dc-4d8c-8d34-1fe0ca866f81",
+        "accountId": "00000000-0000-4000-8000-000000000011",
+        "reviewedRevision": 4,
+        "taskRevision": 3,
+        "mappingId": "07652871-db1f-4e62-9d6b-1eec6b6a6bdf",
+        "mappingRevision": 4,
+        "mappingFingerprint": "7b62c63b8544a4f076c9b20022c0e3420e1f57c9ede3bb3d469eeb9c6e931d08",
+        "contextHash": "29d299f0c1bda7eec79c494b345a2da6e076977c0d472be1db476a765d7f0ea5",
+        "upstreamReviewHash": "2a21bdfdb0c92ef383f41e84eefc4c71022c700d2f69af22db5e96f72a225b16",
+        "sourceContext": {
+          "contract": "companion-completion-score-v1",
+          "workspaceId": "26ad927d-ba26-4b8b-8e24-da0868c1a455",
+          "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+          "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+          "commandPayloadHash": "9ac8eb189f3f6889d022a1229a7ad28423cd4b8c6e6be3d899975b9f4e411d55",
+          "completionId": "f834bec4-4f57-4010-8980-709e7e1b73cb",
+          "effectIndex": 0,
+          "taskKind": "daily",
+          "occurrenceDate": "2026-10-27"
+        },
+        "recoveredAtUtc": "2026-10-27T17:36:51.971Z"
+      }
+    ]
+  },
+  "storeVersion": 9,
+  "authority": {
+    "mode": "cloud",
+    "transferId": null,
+    "cloudWorkspaceId": "26ad927d-ba26-4b8b-8e24-da0868c1a455"
+  },
+  "commands": [
+    {
+      "command": {
+        "id": "dfd7b442-2dd2-42cc-9d56-10c00f700f2c",
+        "workspaceId": "26ad927d-ba26-4b8b-8e24-da0868c1a455",
+        "expectedRevision": 1,
+        "operation": "createDaily",
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "patch": {
+          "text": "Synthetic linked recovery",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "recurrence": {
+            "frequency": "daily",
+            "interval": 1,
+            "startDate": "2026-10-27",
+            "timeZoneId": "UTC",
+            "weekdays": [],
+            "daysOfMonth": []
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "b112cec13721505c5e71174cbe153de5db760c78c1999060aa57f00de0ce938c",
+      "acceptedAtUtc": "2026-10-27T17:36:51.552Z",
+      "projectionState": "notRequested",
+      "effects": [],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "id": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "revision": 2,
+        "isArchived": false,
+        "text": "Synthetic linked recovery",
+        "kind": "daily",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:51.552Z",
+        "updatedAtUtc": "2026-10-27T17:36:51.552Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "daily",
+          "interval": 1,
+          "startDate": "2026-10-27",
+          "timeZoneId": "UTC",
+          "weekdays": [],
+          "daysOfMonth": []
+        },
+        "habiticaDetails": null
+      }
+    },
+    {
+      "command": {
+        "id": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+        "workspaceId": "26ad927d-ba26-4b8b-8e24-da0868c1a455",
+        "expectedRevision": 2,
+        "operation": "completeTask",
+        "taskId": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "patch": null,
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": "2026-10-27",
+        "projectToHabitica": true
+      },
+      "payloadHash": "9ac8eb189f3f6889d022a1229a7ad28423cd4b8c6e6be3d899975b9f4e411d55",
+      "acceptedAtUtc": "2026-10-27T17:36:51.580Z",
+      "projectionState": "confirmed",
+      "effects": [
+        "scoreUp"
+      ],
+      "confirmedEffects": 1,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 1,
+      "taskSnapshot": {
+        "id": "dc74bb82-107b-44d1-b5d3-84cce8ab10b4",
+        "revision": 3,
+        "isArchived": false,
+        "habiticaDetails": null,
+        "text": "Synthetic linked recovery",
+        "kind": "daily",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:51.552Z",
+        "updatedAtUtc": "2026-10-27T17:36:51.580Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "daily",
+          "interval": 1,
+          "startDate": "2026-10-27",
+          "timeZoneId": "UTC",
+          "weekdays": [],
+          "daysOfMonth": []
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "d5a40a24-860e-4ac0-9c28-3b620337afa2",
+      "commandId": "dfd7b442-2dd2-42cc-9d56-10c00f700f2c",
+      "kind": "accepted",
+      "atUtc": "2026-10-27T17:36:51.552Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "2f3e2480-007b-4d15-8065-5b1e591b0cf6",
+      "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+      "kind": "accepted",
+      "atUtc": "2026-10-27T17:36:51.580Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "c9cee91d-a856-4e87-8e45-d76906612240",
+      "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+      "kind": "leaseAcquired",
+      "atUtc": "2026-10-27T17:36:51.659Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": "3ab6779e-48bc-45ed-aa59-2b1d5443f295",
+      "evidenceReference": null
+    },
+    {
+      "id": "46b8f7e3-551d-4c70-9424-be2683fccb5d",
+      "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+      "kind": "dispatched",
+      "atUtc": "2026-10-27T17:36:51.801Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": "3ab6779e-48bc-45ed-aa59-2b1d5443f295",
+      "evidenceReference": null
+    },
+    {
+      "id": "2508520f-9832-442f-9ce0-9852202507a0",
+      "commandId": "ed08675e-dd50-4375-9c7b-1b8c7bede1db",
+      "kind": "resultKnown",
+      "atUtc": "2026-10-27T17:36:51.865Z",
+      "confirmedEffects": 1,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    }
+  ]
+}

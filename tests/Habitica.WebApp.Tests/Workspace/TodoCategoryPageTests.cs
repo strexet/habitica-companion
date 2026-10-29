@@ -33,6 +33,8 @@ public sealed class TodoCategoryPageTests : BunitContext
         Services.AddSingleton(TimeProvider.System);
         var todo = new TodoWorkspacePresentation(fixture.Session, fixture.Client, fixture.Database, fixture.Controller);
         Services.AddSingleton(todo);
+        Services.AddSingleton<Habitica.Application.Notifications.IForegroundReminderBrowser>(new ReminderBrowserFixture());
+        Services.AddSingleton<ForegroundReminderController>();
         await todo.RefreshSourcesAsync();
         await todo.SelectAsync(new(TodoWorkspaceSource.Cloud, document.Id));
         return fixture;

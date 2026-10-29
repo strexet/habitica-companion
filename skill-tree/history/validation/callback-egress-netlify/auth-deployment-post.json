@@ -1,0 +1,16 @@
+{
+  "id": "def67bf9-5f1a-42fc-8b10-e884fe0d01d9",
+  "source": "wrangler",
+  "strategy": "percentage",
+  "annotations": {
+    "workers/message": "Scoped callback claim setup; dispatch disabled",
+    "workers/triggered_by": "deployment"
+  },
+  "versions": [
+    {
+      "version_id": "96a4d62f-9c14-4f68-924d-b46dd03e09f2",
+      "percentage": 100
+    }
+  ],
+  "created_on": "2026-10-29T12:58:17.196051Z"
+}

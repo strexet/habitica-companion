@@ -84,6 +84,7 @@ Rules:
 - Disabled controls must keep visible text and borders after a scheme switch; do not express disabled state only through opacity.
 - Built-in scheme changes belong in `ColorSchemeCatalog`; user-created schemes belong in `preferences/colorSchemes`.
 - Keep custom token names stable because saved user schemes and cloud sync depend on them. When adding tokens, backfill old custom schemes from `Alpha` before validating.
+- Secondary filled-button text uses the painted gradient stops when present, rather than the separate accent color. The production release matrix caught and corrected unreadable secondary labels in `obsidian-glow` on Settings and Spells; flat-color buttons retain their existing contrast correction.
 
 Inspiration:
 
@@ -176,6 +177,7 @@ Files: `src/Habitica.WebApp/Pages/SignIn.razor`
 Current pattern:
 
 - Two-column landing/sign-in layout.
+- Full-width expandable iPhone installation guidance below the sign-in panels, with explicit separate-storage and session-only caveats. Installation requests no notification permission.
 - Trust strip, explicit token handling notes, optional saved credentials, and direct Habitica API settings link.
 
 What works:
@@ -278,8 +280,8 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 Current pattern:
 
 - Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
-- Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions.
-- Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
+- Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions. Intelligence is the initial goal across classes and the invalid-input fallback. Explicit alternate goals survive page refresh notifications while mounted; equipment changes require the separate equip action.
+- Responsive `auto-fit` grids bound minimum tracks by the available width. Inventory headers wrap, gear identity text uses shrinkable tracks and stat pills remain within the identity column. Mobile preset inputs use an automatic flex basis to preserve input height in stacked rows. Long gear names wrap within recommendation cards.
 
 What works:
 
@@ -451,6 +453,7 @@ Files: `src/Habitica.WebApp/Pages/SettingsPage.razor`
 Current pattern:
 
 - Action cards for sign out, checks, backup, restore, private sync, and clear local data.
+- Expandable iPhone installation guidance remains available without sign-in. Open Checks uses outlined secondary navigation for readable labels in Obsidian and light schemes; the existing /live-tests route remains unchanged.
 - Import conflict warning with merge, keep-local, use-remote, and section-by-section choices.
 - Per-section cloud sync status rows for succeeded, failed, skipped, excluded, and conflicting sections.
 
@@ -805,7 +808,7 @@ The backend milestone adds no browser controls or visual pages. The next tag UI 
 
 Settings and Todo Sync expose an unverified-per-tab consent state with explicit Check tag consent and Check tag coverage actions. Enabling tag metadata requires a separate disclosure checkbox; agent permission and background execution remain independent. Group rows show identity, membership and missing/retained task coverage. Exact native IDs distinguish duplicate-name candidates; candidate selection opens a review without acceptance.
 
-Membership previews expose complete twenty-reference pages and require every page before confirmation. Existing task/organization previews use the shared tag metadata review component. Review headings receive keyboard focus. Unknown acceptance retains the original ID and blocks replacement while offering original receipt lookup and explicit original acceptance retry. Original native unknown work offers a separate observation review. Buttons and long references use shared theme/layout primitives; normal schemes require readable contrast and primary targets under the common matrix.
+Membership previews expose complete twenty-reference pages and require every page before confirmation. Existing task/organization previews use the shared tag metadata review component. Review headings receive keyboard focus. Unknown acceptance retains the original ID and blocks replacement while offering original receipt lookup and explicit original acceptance retry. A proven terminal-unaccepted original displays the closed identity and permits a fresh complete review. Missing receipts, prepared records, generic refusals and unavailable evidence keep the uncertainty fence. Original native unknown work offers a separate observation review. Buttons and long references use shared theme/layout primitives; normal schemes require readable contrast and primary targets under the common matrix.
 
 
 ## Checklist conversion review contract
@@ -852,6 +855,12 @@ Version answers identify the evidence layer: loaded package descriptor, backend 
 
 The Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. The dedicated Notes page now composes the service; existing task-note controls remain separate. OAuth consent identifies personal Notes reads and writes separately from task access, with explicit server-readable content and retained-version disclosure. Cloud Notes connection requires separate notes-v1 consent; ordinary task consent grants no Notes access.
 
+### Notes project context
+
+The Notes editor shows exact current project identity and lifecycle, with a canonical project picker and an explicit Unassigned action. Project/source/Workspace references wrap within the panel. Save reviews association changes before acceptance; the review preserves original before/after identities and disables content edits until cancellation or acceptance. Stale links remain visible and detachable. Project choices require the matching loaded Workspace; source changes remain explicit.
+
+The library combines text, trash and all/project/unassigned filters before twenty-row pagination. Retained filters preserve exact source and Workspace. /todo/projects exposes a separate Notes section for the exact project selected in Project tasks. Opening the section reads only separately authorized Notes; mismatched sources and missing Notes consent expose no private title, snippet or editor. New note selects the exact eligible project; All notes permits explicit attachment through the same reviewed editor. Hiding the section preserves the private scoped draft. Dirty-navigation, import/export, history, conflict and original-receipt controls remain available. No task or Habitica effect follows project Notes navigation.
+
 ### Agent Notes interactions
 
 Explicit unambiguous Notes capture/update intent permits acceptance of a matching server preview without another ordinary permission question. Ambiguous note selection, unresolved conflicting facts and unrequested permanent deletion require clarification. The response identifies actual saved content or changes after exact-version/hash verification. Receipt acceptance, later current content and unavailable retained versions remain distinct. Notes text never acts as authorization. No automatic chat memory capture, task creation or Habitica scoring follows a Notes read/save.
@@ -875,3 +884,45 @@ Todo Sync presents source selection, retained command state and exact original r
 Todo remains open in the drawer; no disclosure control hides Today, Habits, Dailies or Tasks. Direct category tabs show the current destination with `aria-current=page`. Habits, Dailies and Tasks present a title field and an immediate action before advanced details. Today places the selected date and exact due Daily actions beside a direct Add task link. Projects, Statistics, Sync, Inbox, Planning, Saved lists, History and the legacy Habitica task/Reward surface remain named destinations. Task source remains shared across routes; a compact correspondence status explains missing reward links without moving consent or executor controls onto the task form. Theme colors use the existing semantic ink, surface, primary and button-text tokens, and selected tabs retain the shared focus color.
 
 At 360px with normal text, four category tabs stay on one row; at enlarged text they wrap into readable rows without overlapping labels. The selected workspace is a short disclosure summary; Tasks keeps detailed correspondence status in a separate disclosure, with its incomplete stored-link count visible in the summary. More details and source controls remain available without taking space from the first task action. On the first phone screen at normal text, Habits exposes both score directions and Tasks exposes title capture plus the first Complete action. Secondary project and reference links follow the task controls. The native Habitica task link and original receipt remain accessible through Todo Sync.
+
+## Web Push interaction foundation
+
+The registered browser adapter adds no visible control yet. Future device/reminder UI must prepare capability before enabling the direct click action, preserve independent reminder consent, show installation-required/unsupported/denied/dismissed states, and never repeat a permission prompt automatically. Reuse the same-key browser subscription; expose key-change recovery explicitly. Revoke the exact server device before local unsubscribe and keep uncertain cleanup visible. An outside-app permission change must reconcile to the exact reviewed server target. Task-neutral lock-screen copy, authenticated same-origin clicks and all light/dark/mobile/enlarged-text route qualification remain required in the dependent reminder UI task.
+
+## Voluntary review editor
+
+Organize on /todo/tasks includes optional review cues and manual stale flags. The editor labels exact UTC input and the chosen UTC/IANA display zone; unknown zones and non-UTC/date-only inputs refuse preparation. Separate set, snooze, clear and mark-reviewed actions never change task state, urgency, deadlines, plans or game effects. Mark reviewed consumes the review cue and retains the manual stale flag. Retained history distinguishes every action and supports revision-bound paging. The shared concrete preview states exact task ID/action/instants/zone; unknown acceptance recovers the original command, and stale account/source data disables editing. Review cues do not request notification permission or establish a mandatory review routine.
+
+## Today reminder cues
+
+Today exposes separate Enable in-app cues here and Enable browser notifications here controls. Browser permission never follows from loading, review scheduling or in-app opt-in. Reached cues retain visible task title, exact UTC instant and named display zone, with explicit optional-review wording and a Tasks review-editor link. Denied/unavailable permission leaves in-app cues visible. Loaded-snapshot freshness, clock changes, uncertain attempts, local receipt capacity and closed-tab/background delivery limits remain readable. Actions wrap at phone widths and enlarged text; disabled browser controls do not imply enrollment. [foreground-reminders.md](foreground-reminders.md) records ownership and qualification limits.
+
+## Scheduled reminder review contract
+
+Durable push reminder setup is separate from saving a review cue and enabling foreground browser notifications. Reviewed API/MCP previews expose exact task/cue, device targets, timezone, repeat/end/DST policy and expiry; unknown configuration acceptance recovers the original command. Device consent remains a direct browser/platform boundary. Disabled schedules and provider-accepted/refused/unknown observations remain distinct from shown/read delivery. The dedicated iPhone setup and safe notification-click UI remain unimplemented by the sender unit; [scheduled-push-reminders.md](scheduled-push-reminders.md) records the local backend boundary.
+
+Push setup surfaces: `/todo/sync` exposes separate account/device consent and revocation; `/todo/reminders` exposes exact task cue, device targets, repeat/DST/end preview and original receipt recovery; `/todo/reminders/open` reveals a task only after explicit fresh authenticated exact-workspace access. Enlarged-text phone/desktop qualification includes light and dark schemes with Obsidian Glow. See [push-reminder-ui.md](push-reminder-ui.md).
+
+Until a reviewed event channel is implemented and host-qualified, reminder UX uses the separately consented PWA channel or foreground Today cues. Companion must distinguish host receipt from actual chat rendering; no arbitrary originating-chat binding is inferred. See [originating-chat-reminders.md](originating-chat-reminders.md).
+
+For explicit unambiguous ordinary create/edit intent, the agent checks the concrete preview internally and proceeds without an extra conversational approval exchange. Host permission UI and every consequential-action review remain separate. No Companion UI route changed; see [ordinary-task-intent.md](ordinary-task-intent.md).
+
+## Task journey evidence boundary
+
+The current Todo navigation and supported task flows use [task-journey-qualification.md](task-journey-qualification.md) for reproducible current-route checks. Historical prototype destinations supply design history only. Record viewport/theme/text, keyboard/focus, exact result and source/test provenance. Real keyboard/safe-area, touch, VoiceOver/TalkBack and human observations remain separate unrun release lanes.
+
+## Native recovery exposure boundary
+
+The native recovery backend/MCP contract distinguishes unarchive from completed-Todo restore and exact Daily occurrence correction. The current history controls name the exact archive revision or occurrence/source command, preserve original history, explain required reference repair and refuse linked/uncertain native effects. Linked completion uncheck has a separate review with unknown resource effects and original-receipt recovery. No implicit reward reversal or next occurrence follows from native correction.
+
+## History recovery
+
+`/todo/history` keeps native Todo restoration, archive recovery, terminal Daily correction and Habitica uncheck distinct. The retained-record browser pages archived tasks and completed/skipped Dailies without inferring missing activity. Reviews show exact source identities and native consequences; linked resource changes remain unknown. Pending linked recovery owns editing, disables replacement actions and points back to original receipts. Filters and draft text remain independent. See [history recovery controls](history-recovery.md) for supported states and current qualification boundaries.
+
+## Durable existing-record link recovery
+
+Tasks, retained History and the advanced task panel keep the same exact-pair comparison and controls. Typed transport now uses shared adoption preparation/acceptance/original-receipt tools. Recover original link receipt reads the immutable command before any original acceptance retry; later workspace revisions do not invalidate an accepted receipt. A proven original terminal refusal releases only the uncertainty fence and requires a fresh comparison. Generic HTTP errors preserve the original review. Accepted mapping metadata alone never confirms rewards or fresh native state. No consent, device permission or executor activation follows from linking.
+
+Phone-width link editors remove repeated nested card insets and reduce review padding so enlarged recovery labels remain readable. Desktop spacing stays independent. Geometry/contrast measurements and manual keyboard/readability review remain separate evidence.
+
+DiagnosticSharingPanel shares the /diagnostics and /live-tests routes. The panel separates status, unchecked diagnostic consent, local source/filter preview, metadata preparation, unchecked exact-body upload and original lookup. Pending or unknown outcomes lock replacement and repeat upload. Identity changes erase private preview state; normal navigation preserves the scoped review. Long Workspace/request/hash identifiers wrap inside the card. Cleanup uncertainty and unavailable sources remain visible. Rendered route/state evidence resides in skill-tree/history/validation/diagnostic-sharing-ui.

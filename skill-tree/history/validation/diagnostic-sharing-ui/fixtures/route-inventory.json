@@ -1,0 +1,170 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [
+        "diagnostics-sharing-cleanup",
+        "diagnostics-sharing-unavailable",
+        "diagnostics-sharing-expired",
+        "diagnostics-sharing-initial",
+        "diagnostics-sharing-consent",
+        "diagnostics-sharing-preview",
+        "diagnostics-sharing-prepared",
+        "diagnostics-sharing-receipt",
+        "diagnostics-sharing-unknown",
+        "diagnostics-sharing-ready",
+        "diagnostics-sharing-inflight"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [
+        "diagnostics-sharing-cleanup-alias",
+        "diagnostics-sharing-unavailable-alias",
+        "diagnostics-sharing-expired-alias",
+        "diagnostics-sharing-initial-alias",
+        "diagnostics-sharing-consent-alias",
+        "diagnostics-sharing-preview-alias",
+        "diagnostics-sharing-prepared-alias",
+        "diagnostics-sharing-receipt-alias",
+        "diagnostics-sharing-unknown-alias",
+        "diagnostics-sharing-ready-alias",
+        "diagnostics-sharing-inflight-alias"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/notes": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/dailies": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/habits": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/reminders": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/reminders/open": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/statistics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [],
+    "navigation": [],
+    "confirmation": [],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [],
+    "error": [],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

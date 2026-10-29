@@ -13,6 +13,7 @@
         </div>
     </section>
     <TodoTaskPanel @ref="_editor" ShowTaskList="false" ShowCapture="false" ReviewClosed="FocusDayAsync" />
+    <TodoReminderPanel />
     <section class="card-surface todo-today-groups" aria-label="Tasks for the selected day">
         @if (_error is not null) { <p role="alert" data-testid="today-error">@_error</p> }
         @if (_view is { } view)

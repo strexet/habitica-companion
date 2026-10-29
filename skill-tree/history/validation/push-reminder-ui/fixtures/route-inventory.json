@@ -1,0 +1,347 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/notes": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [
+        "integration-management",
+        "push-settings-clear-review",
+        "workspace-renewal",
+        "pwa-settings-collapsed",
+        "pwa-settings-expanded",
+        "connection-fresh-tab",
+        "settings-actions",
+        "settings-actions-long"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/sign-in": {
+      "fixtures": [
+        "pwa-sign-in-expanded",
+        "sign-in-empty",
+        "sign-in-loading",
+        "sign-in-error"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/dailies": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/habits": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/reminders": {
+      "fixtures": [
+        "push-schedule-empty",
+        "push-schedule-preview",
+        "push-schedule-unknown",
+        "push-schedule-receipt",
+        "push-schedule-weekly",
+        "push-schedule-paused",
+        "push-reminders-route",
+        "push-reminders-cue-confirm"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/reminders/open": {
+      "fixtures": [
+        "push-open-unchecked",
+        "push-open-offline",
+        "push-open-verified",
+        "push-open-signin"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/statistics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [
+        "push-device-available-denied",
+        "push-device-installation-required-default",
+        "push-device-unsupported-unsupported",
+        "push-device-ready",
+        "push-device-enrolled",
+        "push-device-pending",
+        "todo-sync-original-receipt",
+        "todo-sync-overview"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/tasks": {
+      "fixtures": [
+        "todo-review-stale",
+        "todo-review-empty",
+        "todo-review-confirm",
+        "todo-review-unknown",
+        "todo-review-history",
+        "todo-review-invalid"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "connection-fresh-tab",
+      "integration-management",
+      "push-device-available-denied",
+      "push-device-enrolled",
+      "push-device-installation-required-default",
+      "push-device-pending",
+      "push-device-ready",
+      "push-device-unsupported-unsupported",
+      "push-open-offline",
+      "push-open-signin",
+      "push-open-unchecked",
+      "push-open-verified",
+      "push-reminders-cue-confirm",
+      "push-reminders-route",
+      "push-schedule-empty",
+      "push-schedule-paused",
+      "push-schedule-preview",
+      "push-schedule-receipt",
+      "push-schedule-unknown",
+      "push-schedule-weekly",
+      "push-settings-clear-review",
+      "pwa-settings-collapsed",
+      "pwa-settings-expanded",
+      "pwa-sign-in-expanded",
+      "settings-actions",
+      "settings-actions-long",
+      "sign-in-empty",
+      "sign-in-error",
+      "sign-in-loading",
+      "todo-review-confirm",
+      "todo-review-empty",
+      "todo-review-history",
+      "todo-review-invalid",
+      "todo-review-stale",
+      "todo-review-unknown",
+      "todo-sync-original-receipt",
+      "todo-sync-overview",
+      "workspace-renewal"
+    ],
+    "navigation": [
+      "push-device-available-denied",
+      "push-device-enrolled",
+      "push-device-installation-required-default",
+      "push-device-pending",
+      "push-device-ready",
+      "push-device-unsupported-unsupported",
+      "push-open-offline",
+      "push-open-signin",
+      "push-open-unchecked",
+      "push-open-verified",
+      "push-reminders-cue-confirm",
+      "push-reminders-route",
+      "push-schedule-empty",
+      "push-schedule-paused",
+      "push-schedule-preview",
+      "push-schedule-receipt",
+      "push-schedule-unknown",
+      "push-schedule-weekly",
+      "push-settings-clear-review",
+      "pwa-settings-collapsed",
+      "pwa-settings-expanded",
+      "pwa-sign-in-expanded",
+      "sign-in-empty",
+      "todo-review-confirm",
+      "todo-review-empty",
+      "todo-review-history",
+      "todo-review-invalid",
+      "todo-review-stale",
+      "todo-review-unknown",
+      "todo-sync-original-receipt",
+      "todo-sync-overview"
+    ],
+    "confirmation": [
+      "push-device-available-denied",
+      "push-device-enrolled",
+      "push-device-installation-required-default",
+      "push-device-pending",
+      "push-device-ready",
+      "push-device-unsupported-unsupported",
+      "push-open-offline",
+      "push-open-signin",
+      "push-open-unchecked",
+      "push-open-verified",
+      "push-reminders-cue-confirm",
+      "push-reminders-route",
+      "push-schedule-empty",
+      "push-schedule-paused",
+      "push-schedule-preview",
+      "push-schedule-receipt",
+      "push-schedule-unknown",
+      "push-schedule-weekly",
+      "push-settings-clear-review",
+      "todo-review-confirm",
+      "todo-review-empty",
+      "todo-review-history",
+      "todo-review-invalid",
+      "todo-review-stale",
+      "todo-review-unknown"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "connection-fresh-tab",
+      "push-device-available-denied",
+      "push-device-enrolled",
+      "push-device-installation-required-default",
+      "push-device-pending",
+      "push-device-ready",
+      "push-device-unsupported-unsupported",
+      "push-open-offline",
+      "push-open-signin",
+      "push-open-unchecked",
+      "push-open-verified",
+      "push-reminders-cue-confirm",
+      "push-reminders-route",
+      "push-schedule-empty",
+      "push-schedule-paused",
+      "push-schedule-preview",
+      "push-schedule-receipt",
+      "push-schedule-unknown",
+      "push-schedule-weekly",
+      "pwa-settings-collapsed",
+      "pwa-settings-expanded",
+      "pwa-sign-in-expanded",
+      "sign-in-empty",
+      "sign-in-loading",
+      "todo-review-confirm",
+      "todo-review-empty",
+      "todo-review-history",
+      "todo-review-invalid",
+      "todo-review-stale",
+      "todo-review-unknown",
+      "todo-sync-overview"
+    ],
+    "error": [
+      "push-device-available-denied",
+      "push-device-enrolled",
+      "push-device-installation-required-default",
+      "push-device-pending",
+      "push-device-ready",
+      "push-device-unsupported-unsupported",
+      "push-open-offline",
+      "push-open-signin",
+      "push-open-unchecked",
+      "push-open-verified",
+      "push-reminders-cue-confirm",
+      "push-reminders-route",
+      "push-schedule-empty",
+      "push-schedule-paused",
+      "push-schedule-preview",
+      "push-schedule-receipt",
+      "push-schedule-unknown",
+      "push-schedule-weekly",
+      "sign-in-error",
+      "todo-review-confirm",
+      "todo-review-empty",
+      "todo-review-history",
+      "todo-review-invalid",
+      "todo-review-stale",
+      "todo-review-unknown"
+    ],
+    "loading": [
+      "sign-in-loading"
+    ]
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

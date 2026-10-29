@@ -7,11 +7,12 @@ namespace Habitica.WebApp.State;
 
 public enum NotesSource {Browser,Cloud}
 public sealed record NotesLifecycleReview(Guid NoteId,long NotebookRevision,long NoteRevision,NoteOperation Operation,string Title,int Versions);
-public sealed class NotesController:IAsyncDisposable
+public sealed partial class NotesController:IAsyncDisposable
 {
     private readonly IAppSessionController _session;
     private readonly INotesStoreFactory _database;
     private readonly INotesCloudClient _cloud;
+    private readonly IndexedDbWorkspaceDatabase? _projectDatabase;
     private readonly DiagnosticsLogWriter? _diagnostics;
     public NotesDraftSession Draft {get;}
     private string? _account,_originalTitle,_originalMarkdown;
@@ -21,8 +22,8 @@ public sealed class NotesController:IAsyncDisposable
     private Guid? _pendingNotebook;
     private readonly SemaphoreSlim _gate=new(1,1);
     public event Action? Changed;
-    public NotesController(IAppSessionController session,INotesStoreFactory database,INotesCloudClient cloud,NotesDraftSession draft,DiagnosticsLogWriter? diagnostics=null)
-    {_session=session;_database=database;_cloud=cloud;_diagnostics=diagnostics;Draft=draft;session.Changed+=SessionChanged;EnsureAccount();}
+    public NotesController(IAppSessionController session,INotesStoreFactory database,INotesCloudClient cloud,NotesDraftSession draft,DiagnosticsLogWriter? diagnostics=null,IndexedDbWorkspaceDatabase? projectDatabase=null,TodoWorkspacePresentation? projects=null)
+    {_session=session;_database=database;_cloud=cloud;_projectDatabase=projectDatabase;_projects=projects;if(projects is not null)projects.Changed+=ProjectsChanged;_diagnostics=diagnostics;Draft=draft;session.Changed+=SessionChanged;EnsureAccount();}
     public NotesSource Source {get;private set;}
     public NotesNotebook? Book {get;private set;}
     public Guid? SelectedId {get;private set;}
@@ -37,7 +38,7 @@ public sealed class NotesController:IAsyncDisposable
     public bool IsError {get;private set;}
     public NoteReceipt? LastReceipt {get;private set;}
     public PersonalNote? Selected=>Book?.Notes.FirstOrDefault(note=>note.Id==SelectedId);
-    public bool Dirty=>Draft.Title!=_originalTitle||Draft.Markdown!=_originalMarkdown;
+    public bool Dirty=>Draft.Title!=_originalTitle||Draft.Markdown!=_originalMarkdown||Draft.Project!=_originalProject;
     public bool HasConflict=>SelectedId is not null&&(Selected is null||Selected.Current.Revision!=_editorNoteRevision);
     public bool CanWrite=>_account is not null&&Book is not null&&(!Busy&&!HasPending)&&(Source==NotesSource.Browser||CloudConnected);
     private string LocalScope=>NotesModel.Scope(_account??throw new InvalidOperationException("Sign in first."));
@@ -47,14 +48,14 @@ public sealed class NotesController:IAsyncDisposable
     {
         var account=_session.State.IsAuthenticated&&Guid.TryParse(_session.State.UserId,out var id)?id.ToString("D"):null;
         if(account==_account){if(account is not null&&Draft.OwnerScope!=DraftScope){_generation++;Book=null;SelectedId=null;Review=null;_pending=null;LastReceipt=null;Draft.Bind(DraftScope);ResetDraft(null);}return;}
-        _generation++;_account=account;Source=NotesSource.Browser;Book=null;SelectedId=null;Review=null;_pending=null;_pendingNotebook=null;LastReceipt=null;Message=null;Draft.Clear();
+        _generation++;_account=account;Source=NotesSource.Browser;Book=null;SelectedId=null;Review=null;_pending=null;_pendingNotebook=null;LastReceipt=null;Message=null;ProjectReview=null;_originalProject=null;Draft.Clear();
         _originalTitle=_originalMarkdown=null;
         if(account is not null){Draft.Bind(DraftScope);ResetDraft(null);}
     }
     private bool Current(int generation)=>generation==_generation&&_account is not null&&_session.State.IsAuthenticated;
     private void Say(string message,bool error=false){Message=message;IsError=error;Changed?.Invoke();}
     private void ResetDraft(PersonalNote? note)
-    {SelectedId=note?.Id;_editorNoteRevision=note?.Current.Revision??0;Draft.Title=_originalTitle=note?.Current.Title??"";Draft.Markdown=_originalMarkdown=note?.Current.Markdown??"";Review=null;}
+    {SelectedId=note?.Id;_editorNoteRevision=note?.Current.Revision??0;Draft.Title=_originalTitle=note?.Current.Title??"";Draft.Markdown=_originalMarkdown=note?.Current.Markdown??"";_originalProject=Draft.Project=note?.Current.Project;Review=null;ProjectReview=null;}
     public bool NewNote(bool discard=false)
     {EnsureAccount();if(HasPending){Say("Check the original save before starting another note.",true);return false;}if(Dirty&&!discard)return false;ResetDraft(null);Message=null;Changed?.Invoke();return true;}
     public bool Open(Guid id,bool discard=false)
@@ -82,7 +83,7 @@ public sealed class NotesController:IAsyncDisposable
         {
             NotesNotebook? book;
             if(Source==NotesSource.Browser)book=await _database.ForScope(LocalScope).LoadAsync(token)??NotesModel.Empty(LocalScope);
-            else {if(!CloudConnected){Book=null;Say("Connect cloud Notes separately to read or save server notes.");return;}var loaded=await _cloud.LoadAsync(token);if(!loaded.Succeeded||loaded.Value is null){Say("Cloud Notes could not be loaded. Existing drafts were preserved.",true);return;}book=loaded.Value;}
+            else {if(!CloudConnected){Book=null;Say("Connect cloud Notes separately to read or save server notes.");return;}var loaded=await _cloud.LoadAsync(token);if(!Current(generation))return;if(!loaded.Succeeded||loaded.Value is null){Book=null;Say("Cloud Notes could not be loaded. Existing drafts were preserved.",true);return;}book=loaded.Value;}
             if(!Current(generation))return;NotesModel.Validate(book);Book=book;
             if(!Dirty&&SelectedId is {} id&&book.Notes.FirstOrDefault(note=>note.Id==id) is {} selected)ResetDraft(selected);
             Changed?.Invoke();
@@ -100,13 +101,19 @@ public sealed class NotesController:IAsyncDisposable
     public Task SaveAsync(CancellationToken token=default)=>Observe("notes-save",()=>SaveCoreAsync(token));
     private async Task SaveCoreAsync(CancellationToken token)
     {
-        EnsureAccount();if(!CanWrite)return;
+        EnsureAccount();if(!CanWrite||ProjectReview is not null)return;
         if(HasConflict){Say("The stored note changed. Copy or export this draft, then explicitly reload the stored note before saving.",true);return;}
         if(!NotesModel.TextValid(Draft.Title,Draft.Markdown)){Say("Add a title of up to 256 characters. Markdown must be valid UTF-8 and at most 128 KiB.",true);return;}
         if(Selected?.Current.IsTrashed==true){Say("Restore the note before editing.",true);return;}
         if(SelectedId is not null&&!Dirty){Say("No changes to save.");return;}
         var selected=Selected;var command=new NoteCommand(Guid.NewGuid(),selected?.Id??Guid.NewGuid(),Book!.Revision,selected?.Current.Revision??0,selected is null?NoteOperation.Create:NoteOperation.Update,
-            selected is null||Draft.Title!=_originalTitle?Draft.Title:null,selected is null||Draft.Markdown!=_originalMarkdown?Draft.Markdown:null);
+            selected is null||Draft.Title!=_originalTitle?Draft.Title:null,selected is null||Draft.Markdown!=_originalMarkdown?Draft.Markdown:null,
+            Draft.Project!=_originalProject?Draft.Project:null,selected is not null&&Draft.Project is null&&_originalProject is not null?true:null);
+        if(Draft.Project!=_originalProject)
+        {
+            if(Draft.Project is not null&&!EligibleProject(Draft.Project)){Say("Choose an active project in the matching Notes source. The draft was preserved.",true);return;}
+            ProjectReview=new(command,_originalProject,Draft.Project,ProjectLabel(_originalProject),ProjectLabel(Draft.Project));Changed?.Invoke();return;
+        }
         await SubmitAsync(command,token);
     }
     public bool PrepareLifecycle(NoteOperation operation)
@@ -115,7 +122,7 @@ public sealed class NotesController:IAsyncDisposable
         if(note.Current.IsTrashed?operation==NoteOperation.Trash:operation!=NoteOperation.Trash)return false;
         Review=new(note.Id,Book!.Revision,note.Current.Revision,operation,note.Current.Title,note.History.Count+1);Changed?.Invoke();return true;
     }
-    public void CancelReview(){Review=null;Changed?.Invoke();}
+    public void CancelReview(){Review=null;ProjectReview=null;Changed?.Invoke();}
     public Task AcceptLifecycleAsync(CancellationToken token=default)=>Observe("notes-lifecycle",()=>AcceptLifecycleCoreAsync(token));
     private async Task AcceptLifecycleCoreAsync(CancellationToken token)
     {
@@ -130,7 +137,7 @@ public sealed class NotesController:IAsyncDisposable
         {
             if(!CanWrite)return;Busy=true;_pending=command;_pendingNotebook=Source==NotesSource.Cloud?_cloud.NotebookId:null;Changed?.Invoke();
             bool accepted;string code;NoteReceipt? receipt;
-            if(Source==NotesSource.Browser){var result=await new NotesService(_database.ForScope(LocalScope)).SubmitAsync(command,token);accepted=result.Accepted;code=result.Code;receipt=result.Receipt;}
+            if(Source==NotesSource.Browser){var result=await new NotesService(_database.ForScope(LocalScope),projects:ResolveLocalProject).SubmitAsync(command,token);accepted=result.Accepted;code=result.Code;receipt=result.Receipt;}
             else {var result=await _cloud.SubmitAsync(command,token);accepted=result.Succeeded;code=result.Code;receipt=result.Value;if(!accepted&&!result.OutcomeUnknown)_pending=null;}
             if(!Current(generation))return;
             if(!accepted){if(code!="acceptance_unknown"&&Source==NotesSource.Browser)_pending=null;Say(_pending is null?"The save was refused or the revision changed. Your draft is preserved; refresh before reviewing another save.":"Save outcome is unknown. Check the original save; do not create a replacement.",true);return;}
@@ -140,12 +147,19 @@ public sealed class NotesController:IAsyncDisposable
         catch{if(Current(generation))Say("Save outcome is unknown. Check the original save before trying another write.",true);}
         finally{Busy=false;_gate.Release();Changed?.Invoke();}
     }
+    private async Task<NotesProjectProof?> ResolveLocalProject(Habitica.Domain.Notes.NoteProjectLink link,CancellationToken token)
+    {
+        if(_projectDatabase is null||_account is null||Source!=NotesSource.Browser||link.Source!="browser"||link.OwnerScope!=LocalScope)return null;
+        var account=_account;var snapshot=await _projectDatabase.ForScope(account).LoadAsync(link.WorkspaceId,token);
+        if(account!=_account||snapshot is null||snapshot.Authority?.Mode is Habitica.Domain.Workspace.WorkspaceAuthorityMode.Frozen or Habitica.Domain.Workspace.WorkspaceAuthorityMode.Cloud)return null;
+        return new(new(LocalScope,"browser",snapshot.Document),account,snapshot.StoreVersion);
+    }
     private async Task ConfirmAsync(NoteCommand command,NoteReceipt receipt,int generation,CancellationToken token)
     {
         if(!Current(generation))return;_pending=null;LastReceipt=receipt;Review=null;
         // Accepted receipt stays confirmed even when the following read fails.
         if(command.Operation==NoteOperation.Purge)ResetDraft(null);else SelectedId=command.NoteId;
-        _originalTitle=Draft.Title;_originalMarkdown=Draft.Markdown;Book=null;
+        _originalTitle=Draft.Title;_originalMarkdown=Draft.Markdown;_originalProject=Draft.Project;ProjectReview=null;Book=null;
         await LoadAsync(token);if(!Current(generation))return;
         var note=Book?.Notes.FirstOrDefault(note=>note.Id==command.NoteId);if(note is not null)ResetDraft(note);
         Say(command.Operation==NoteOperation.Purge?"Note and retained versions permanently deleted.":Book is null?"Saved. Original receipt confirmed; refreshing the note is unavailable.":note?.Current.Revision>receipt.NoteRevision?"Saved. Original receipt confirmed; the current note contains a later revision.":"Saved. Original command receipt confirmed.");
@@ -175,7 +189,7 @@ public sealed class NotesController:IAsyncDisposable
     {
         EnsureAccount();if(HasPending||Dirty&&!discard||Selected is not {} note)return false;
         var version=note.History.Append(note.Current).FirstOrDefault(version=>version.Revision==revision);if(version is null)return false;
-        ResetDraft(note);Draft.Title=version.Title;Draft.Markdown=version.Markdown;Say("Stored revision loaded into a draft. Saving creates a new revision and retains current history.");return true;
+        ResetDraft(note);Draft.Title=version.Title;Draft.Markdown=version.Markdown;Draft.Project=version.Project;Say("Stored revision loaded into a draft. Saving creates a new revision and retains current history.");return true;
     }
     public Task DisconnectCloudAsync(bool delete,CancellationToken token=default)=>Observe("notes-cloud-cleanup",()=>DisconnectCloudCoreAsync(delete,token));
     private async Task DisconnectCloudCoreAsync(bool delete,CancellationToken token)
@@ -185,5 +199,5 @@ public sealed class NotesController:IAsyncDisposable
         if(!result.Succeeded){_cloud.ForgetSession();Book=null;ResetDraft(null);Review=null;Say("Cloud cleanup could not be confirmed. This tab was disconnected. Reconnect to inspect the original notebook before another action.",true);return;}
         _generation++;Book=null;SelectedId=null;Review=null;ResetDraft(null);LastReceipt=null;Say(delete?"Cloud Notes notebook deleted. Browser notes and downloaded files remain separate.":"Cloud Notes disconnected. Server notes remain until explicit deletion.");
     }
-    public async ValueTask DisposeAsync(){_session.Changed-=SessionChanged;await _gate.WaitAsync();_gate.Release();_gate.Dispose();}
+    public async ValueTask DisposeAsync(){_session.Changed-=SessionChanged;if(_projects is not null)_projects.Changed-=ProjectsChanged;await _gate.WaitAsync();_gate.Release();_gate.Dispose();}
 }

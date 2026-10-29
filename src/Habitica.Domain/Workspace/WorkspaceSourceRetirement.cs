@@ -18,7 +18,7 @@ public static class WorkspaceSourceRetirements
         var sources=new HashSet<Guid>();var conversions=new HashSet<Guid>();
         var commands=new HashSet<Guid>((document.OrganizationHistory??[]).Select(row=>row.Command.Id)
             .Concat((document.ChecklistConversions??[]).SelectMany(row=>row.Receipts.Select(receipt=>receipt.Command.Id)))
-            .Concat(document.Completions.Select(row=>row.CommandId)).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)));
+            .Concat(document.Completions.Select(row=>row.CommandId)).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)).Concat((document.Unarchives??[]).Select(row=>row.CommandId)).Concat((document.OccurrenceCorrections??[]).Select(row=>row.CommandId)));
         foreach(var row in document.SourceRetirements)
         {
             if(row is null||row.Id==Guid.Empty||!commands.Add(row.Id)||row.IsArchived||!sources.Add(row.SourceTaskId)||!conversions.Add(row.ConversionId)

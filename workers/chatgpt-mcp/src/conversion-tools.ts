@@ -1,4 +1,4 @@
-import type {Tool} from '@modelcontextprotocol/sdk/types.js';
+import type {Tool} from '@modelcontextprotocol/server';
 import {conversionToolScopes,type ConversionTool} from '../../shared/conversion-tools.ts';
 const id={type:'string',format:'uuid'},object=(properties:Record<string,unknown>,required=Object.keys(properties))=>({type:'object',properties,required,additionalProperties:false});
 const item=object({sourceItemId:id,mode:{type:'string',enum:['create','reuse','defer']},targetTaskId:id,desiredState:{type:'string',enum:['active','completedArchived']},notes:{type:'string',maxLength:10000},gameDetails:object({difficulty:{type:'number',enum:[0.1,1,1.5,2]},attribute:{type:'string',enum:['str','int','per','con']}})},['sourceItemId','mode','desiredState']);

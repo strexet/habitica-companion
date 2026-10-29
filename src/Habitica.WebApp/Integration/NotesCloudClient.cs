@@ -57,11 +57,16 @@ public sealed class NotesCloudClient(HttpClient http,ChatGptIntegrationClient va
             return new(false,null,"invalid_notes_receipt",true);
         return new(true,receipt,value.Disposition??"recovered");
     }
-    public async Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,CancellationToken token)
+    public Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,CancellationToken token)=>SearchAsync(query,trash,offset,expectedRevision,new NotesProjectFilter(),token);
+    public async Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,NotesProjectFilter filter,CancellationToken token)
     {
-        var result=await Call(HttpMethod.Post,"notes/search",new{query,trash,offset,expectedRevision},64*1024,text=>JsonSerializer.Deserialize<NotesSearchPage>(text,Json)??throw new JsonException(),token);
+        if(!filter.Valid||filter.ProjectId is not null&&filter.Source!="cloud")return new(false,null,"invalid_project_filter");
+        var input=new Dictionary<string,object?>{{"query",query},{"trash",trash},{"offset",offset},{"expectedRevision",expectedRevision}};
+        if(filter.ProjectId is {} id){input["projectId"]=id;input["projectWorkspaceId"]=filter.WorkspaceId;}
+        if(filter.Unassigned)input["unassigned"]=true;
+        var result=await Call(HttpMethod.Post,"notes/search",input,64*1024,text=>JsonSerializer.Deserialize<NotesSearchPage>(text,Json)??throw new JsonException(),token);
         if(result.Succeeded&&result.Value is {} page&&(page.NotebookId!=NotebookId||page.OwnerScope!=OwnerScope||page.Revision<0||page.Revision>NotesModel.MaxRevision||page.FullContentIncluded||page.Results is null||page.Results.Count>20||page.Total<page.Results.Count||page.Total>NotesModel.MaxNotes
-            ||page.NextOffset is {} next&&(next!=offset+page.Results.Count||next>=page.Total)||page.Results.Any(item=>item.Id==Guid.Empty||item.IsTrashed!=trash||item.NoteRevision<1||item.NoteRevision>NotesModel.MaxRevision||!NotesModel.TextValid(item.Title,item.Snippet))||page.Results.Select(item=>item.Id).Distinct().Count()!=page.Results.Count
+            ||page.NextOffset is {} next&&(next!=offset+page.Results.Count||next>=page.Total)||page.Results.Any(item=>item.Id==Guid.Empty||item.IsTrashed!=trash||item.NoteRevision<1||item.NoteRevision>NotesModel.MaxRevision||!NotesModel.TextValid(item.Title,item.Snippet)||!NotesModel.ValidProject(item.Project,page.OwnerScope)||!filter.Matches(item.Project))||page.Results.Select(item=>item.Id).Distinct().Count()!=page.Results.Count
             ||offset>0&&page.Revision!=expectedRevision))return new(false,null,"invalid_notes_search");
         return result;
     }
@@ -69,17 +74,17 @@ public sealed class NotesCloudClient(HttpClient http,ChatGptIntegrationClient va
     {
         var result=await Call(HttpMethod.Post,"notes/get",new{noteId},NotesModel.NotebookBytes,text=>JsonSerializer.Deserialize<CloudNote>(text,NoteJson)??throw new JsonException(),token);
         if(result.Succeeded&&result.Value is {} value&&(value.NotebookId!=NotebookId||value.OwnerScope!=OwnerScope||value.Revision<1||value.Revision>NotesModel.MaxRevision||value.Note is null||value.Note.Id!=noteId||value.Note.Current is null
-            ||!ValidNote(value.Note)||value.Revision<value.Note.Current.Revision||value.HistoryLimit!=NotesModel.HistoryLimit||value.HistoryTruncated!=(value.Note.Current.Revision>NotesModel.HistoryLimit+1)
+            ||!ValidNote(value.Note,value.OwnerScope)||value.Revision<value.Note.Current.Revision||value.HistoryLimit!=NotesModel.HistoryLimit||value.HistoryTruncated!=(value.Note.Current.Revision>NotesModel.HistoryLimit+1)
             ||value.ContentHash!=Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value.Note.Current.Markdown))).ToLowerInvariant()))return new(false,null,"invalid_note");
         return result;
     }
-    private static bool ValidNote(PersonalNote note)
+    private static bool ValidNote(PersonalNote note,string ownerScope)
     {
         if(note.Current is null||note.Current.Revision<1||note.Current.Revision>NotesModel.MaxRevision||note.History is null||note.History.Count!=Math.Min(note.Current.Revision-1,NotesModel.HistoryLimit)||note.CreatedAtUtc==default||note.CreatedAtUtc.Offset!=TimeSpan.Zero)return false;
         var revision=note.Current.Revision-note.History.Count;var previous=note.CreatedAtUtc;
         foreach(var item in note.History.Append(note.Current))
         {
-            if(item is null||item.Revision!=revision++||item.AtUtc==default||item.AtUtc.Offset!=TimeSpan.Zero||item.AtUtc<previous||!NotesModel.TextValid(item.Title,item.Markdown))return false;
+            if(item is null||item.Revision!=revision++||item.AtUtc==default||item.AtUtc.Offset!=TimeSpan.Zero||item.AtUtc<previous||!NotesModel.TextValid(item.Title,item.Markdown)||!NotesModel.ValidProject(item.Project,ownerScope))return false;
             previous=item.AtUtc;
         }
         return true;

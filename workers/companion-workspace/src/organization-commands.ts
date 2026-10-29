@@ -13,7 +13,7 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  try{command=organizationCommand(input);if(command.workspaceId!==state.document.id||utcTicks(now)===utcTicks('0001-01-01T00:00:00Z'))throw new Error();}catch{return result('invalid',state,null,'invalid_command');}
  const document=state.document,payloadHash=await organizationCommandHash(command),existing=document.organizationHistory?.find(entry=>entry.command.id===command.id);
  if(existing)return existing.payloadHash===payloadHash?result('duplicate',state,existing):result('idempotencyConflict',state,null,'command_id_reused');
- if(state.commands.some(entry=>entry.command.id===command.id)||[...document.completions,...document.habitScores,...(document.restorations??[])].some(row=>row.commandId===command.id))return result('idempotencyConflict',state,null,'command_id_reused');
+ if(state.commands.some(entry=>entry.command.id===command.id)||[...document.completions,...document.habitScores,...(document.reviewEvents??[]),...(document.restorations??[])].some(row=>row.commandId===command.id))return result('idempotencyConflict',state,null,'command_id_reused');
  if(owner==='cloud'?state.authority?.mode!=='cloud'||state.authority.cloudWorkspaceId!==document.id:state.authority?.mode==='frozen'||state.authority?.mode==='cloud')return result('invalid',state,null,'workspace_owned_elsewhere');
  if(command.expectedRevision!==document.revision)return result('revisionConflict',state,null,'stale_revision');
  if(document.revision>=Number.MAX_SAFE_INTEGER||state.storeVersion>=Number.MAX_SAFE_INTEGER)return result('invalid',state,null,'revision_exhausted');

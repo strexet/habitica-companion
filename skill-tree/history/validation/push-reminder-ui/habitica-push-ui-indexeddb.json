@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "checks": [
+    "new context has no previous receipt",
+    "two IndexedDB connections admit one original request",
+    "independent module reads durable original identity",
+    "stale revision cannot overwrite original",
+    "profile context does not share original receipt",
+    "endpoint material cannot enter local state",
+    "exact next revision resolves original receipt",
+    "browser clear removes push original-command namespace"
+  ],
+  "browserPermissionPrompts": 0,
+  "realProviderTraffic": 0,
+  "limitations": [
+    "Real IndexedDB with synthetic identities only; operating-system delivery, browser credential permissions and physical iPhone behavior remain unqualified."
+  ]
+}

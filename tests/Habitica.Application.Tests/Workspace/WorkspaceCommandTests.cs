@@ -39,7 +39,8 @@ public sealed class WorkspaceCommandTests
         Assert.Equal("Later edit", state.Commands[1].TaskSnapshot!.Text);
         Assert.True(WorkspaceJournalValidation.IsValid(state));
         Assert.False(WorkspaceJournalValidation.IsValid(state with { Commands = state.Commands.Select(entry => entry with { TaskSnapshot = entry.TaskSnapshot! with { Id = Guid.NewGuid() } }).ToArray() }));
-        Assert.True(WorkspaceJournalValidation.IsValid(state with { Commands = state.Commands.Select(entry => entry with { TaskSnapshot = null }).ToArray() }));
+        Assert.False(WorkspaceJournalValidation.IsValid(state with { Commands = state.Commands.Select(entry => entry with { TaskSnapshot = null }).ToArray() }));
+        Assert.True(WorkspaceJournalValidation.IsValid(state with { Document = state.Document with { ActivityCoverage = null }, Commands = state.Commands.Select(entry => entry with { TaskSnapshot = null }).ToArray() }));
     }
 
     [Fact]
@@ -303,11 +304,11 @@ public sealed class WorkspaceCommandTests
         Assert.Equal("unexpected_patch", WorkspaceCommandEngine.Accept(state, Repair(state) with { Patch = new(Text: "Fake") }, Now).ErrorCode);
         var completed = Accept(state, new(Guid.NewGuid(), state.Document.Id, state.Document.Revision, WorkspaceOperation.CompleteTask, create.TaskId));
         Assert.Equal("historical_projection_requires_review", WorkspaceCommandEngine.Accept(completed, Repair(completed), Now).ErrorCode);
-        var archived = completed with { Document = completed.Document with { Tasks = [completed.Document.Tasks.Single() with { IsArchived = true }] } };
+        var archived = completed with { Document = completed.Document with { ActivityCoverage = null, Tasks = [completed.Document.Tasks.Single() with { IsArchived = true }] } };
         Assert.Equal("task_unavailable", WorkspaceCommandEngine.Accept(archived, Repair(archived), Now).ErrorCode);
         foreach (var kind in new[] { CompanionTaskKind.Daily })
         {
-            var recurring = state with { Document = state.Document with { Tasks = [state.Document.Tasks.Single() with { Kind = kind }] } };
+            var recurring = state with { Document = state.Document with { ActivityCoverage = null, Tasks = [state.Document.Tasks.Single() with { Kind = kind }] } };
             Assert.Equal("adoption_required", WorkspaceCommandEngine.Accept(recurring, Repair(recurring), Now).ErrorCode);
         }
         var linked = state with { Document = state.Document with { Projections = [new(Guid.NewGuid(), 1, create.TaskId, ProjectionState.Linked, Guid.NewGuid().ToString("D"), Fingerprint: new string('a', 64))] } };

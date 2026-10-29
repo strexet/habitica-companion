@@ -13,7 +13,7 @@ public sealed partial class WorkspaceCloudClientTests
     {
         var vault=Vault(out var vaultHttp);using var owned=vaultHttp;var requestId=Guid.NewGuid();var group=Guid.NewGuid();var commandId=Guid.NewGuid();var calls=0;
         var review=new WorkspaceTagReview(commandId,requestId,_id,"reconcile",1,DateTimeOffset.UtcNow.AddMinutes(-1),true,0,
-            new(group,WorkspaceOrganizationKind.Project,"Same name",null,[],"No scoring. Exact metadata only."),Expired:true);
+            new(group,WorkspaceOrganizationKind.Project,"Same name",null,[],"No scoring. Exact metadata only."),Expired:true,ReviewOutcome:"prepared");
         using var http=new HttpClient(new Handler(async(request,token)=>
         {
             if(request.RequestUri!.AbsolutePath=="/connect")return Connection();Assert.Equal("/tag-api",request.RequestUri.AbsolutePath);Assert.Equal(Session,request.Headers.Authorization!.Parameter);
@@ -28,6 +28,20 @@ public sealed partial class WorkspaceCloudClientTests
         var unknown=await client.AcceptTagReviewAsync(prepared.Value!,default);Assert.False(unknown.Succeeded);Assert.True(unknown.OutcomeUnknown);Assert.DoesNotContain("secret",unknown.Message);
         // Original acceptance may already have succeeded before expiry; server owns receipt-first recovery.
         var recovered=await client.AcceptTagReviewAsync(prepared.Value!,default);Assert.True(recovered.Succeeded);Assert.Equal(commandId,recovered.Value!.CommandId);Assert.Equal(0,recovered.Value.GameEffects);Assert.Equal(3,calls);
+    }
+    [Fact]
+    public async Task Tag_terminal_receipts_require_exact_identity_and_explicit_durable_proof()
+    {
+        var vault=Vault(out var vaultHttp);using var owned=vaultHttp;var command=Guid.NewGuid();var request=Guid.NewGuid();
+        var receipt=new WorkspaceTagReceipt(command,request,_id,"reconcile",false,0,false,[],ReviewOutcome:"terminal-unaccepted",Reason:"tag_preview_changed",ClosedAtUtc:DateTimeOffset.UtcNow);
+        using var http=new HttpClient(new Handler((r,_)=>Task.FromResult(r.RequestUri!.AbsolutePath=="/connect"?Connection():Json(receipt))));
+        var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        Assert.True((await client.ReadTagReviewAsync(command,default)).Succeeded);
+        var original=receipt;
+        foreach(var invalid in new[]{original with {ClosedAtUtc=null},original with {ReviewOutcome=null},original with {OutcomeUnknown=true},original with {WorkIds=[Guid.NewGuid()]},original with {WorkspaceId=Guid.NewGuid()},original with {CommandId=Guid.NewGuid()},original with {SavedInCompanion=true}})
+        {receipt=invalid;var result=await client.ReadTagReviewAsync(command,default);Assert.False(result.Succeeded);Assert.True(result.OutcomeUnknown);}
+        receipt=original with {SavedInCompanion=null,OutcomeUnknown=true,ReviewOutcome="prepared",Prepared=true,Reason=null,ClosedAtUtc=null};
+        var prepared=await client.ReadTagReviewAsync(command,default);Assert.True(prepared.Succeeded);Assert.Null(prepared.Value!.SavedInCompanion);Assert.True(prepared.Value.OutcomeUnknown);
     }
     [Fact]
     public async Task Tag_status_rejects_wrong_account_inconsistent_counts_and_late_session_response()

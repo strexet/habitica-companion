@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><title>Isolated Notes project transaction checks</title><h1>Isolated Notes project transaction checks</h1><p>Synthetic random owner keys on this localhost origin. No account enrollment or external service calls.</p><button id="run">Run isolated project transaction checks</button><pre id="result">ready</pre>
+<script type="module">
+import * as storage from '/src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js';
+import Dexie from '/src/Habitica.WebApp/wwwroot/vendor/dexie.mjs';
+const out=document.querySelector('#result');document.querySelector('#run').onclick=async()=>{
+ const rows=[],account=crypto.randomUUID(),other=crypto.randomUUID(),workspaceId=crypto.randomUUID(),projectId=crypto.randomUUID(),noteId=crypto.randomUUID();let db,scope;
+ const assert=(ok,label)=>{if(!ok)throw Error(label);rows.push({label,pass:true});};
+ try{
+  scope=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(account))),b=>b.toString(16).padStart(2,'0')).join('');
+  const doc=archived=>({schemaVersion:1,id:workspaceId,revision:1,projects:[{id:projectId,revision:1,name:'Duplicate project name',isArchived:archived}]}),snapshot=(version,archived=false)=>JSON.stringify({document:doc(archived),storeVersion:version,commands:[],events:[],authority:{mode:'local'}});
+  assert(await storage.commitWorkspace(account,0,snapshot(1)),'seed exact owner workspace');
+  const at='2026-10-29T00:00:00.000Z',link={projectId,workspaceId,source:'browser',ownerScope:scope},book={schemaVersion:1,ownerScope:scope,revision:1,notes:[{id:noteId,current:{revision:1,title:'Synthetic Note',markdown:'Exact\r\n🧥',isTrashed:false,atUtc:at,project:link},createdAtUtc:at,history:[]}],receipts:[{commandId:crypto.randomUUID(),payloadHash:'a'.repeat(64),noteId,noteRevision:1,notebookRevision:1}],purged:[]},guard={accountScope:account,workspaceId,projectId,noteId,workspaceStoreVersion:1};
+  let refused=false;try{await storage.commitNotes(scope,0,JSON.stringify(book),{...guard,accountScope:other});}catch{refused=true;}assert(refused,'foreign owner cannot satisfy identical IDs');
+  assert(await storage.commitWorkspace(account,1,snapshot(2,true)),'archive changes workspace revision');assert(!await storage.commitNotes(scope,0,JSON.stringify(book),guard),'stale workspace proof rolls back note acceptance');assert(await storage.getNotes(scope)===null,'failed guard leaves no note');
+  assert(!await storage.commitNotes(scope,0,JSON.stringify(book),{...guard,workspaceStoreVersion:2}),'archived project refuses new link at current revision');assert(await storage.commitWorkspace(account,2,snapshot(3)),'reactivate explicit exact project');assert(await storage.commitNotes(scope,0,JSON.stringify(book),{...guard,workspaceStoreVersion:3}),'current exact source/project and note commit succeed atomically');
+  const retained=JSON.parse(await storage.getNotes(scope));assert(retained.notes[0].current.project.projectId===projectId&&retained.notes[0].current.markdown==='Exact\r\n🧥','stored metadata preserves source bytes');
+  assert(!await storage.commitNotes(scope,0,JSON.stringify(book),{...guard,workspaceStoreVersion:3}),'original note CAS prevents duplicate acceptance');
+  assert(await storage.commitWorkspace(account,3,snapshot(4,true)),'archive retains existing linked note');const clear=structuredClone(book);clear.revision=2;clear.notes[0].history=[clear.notes[0].current];clear.notes[0].current={...clear.notes[0].current,revision:2};delete clear.notes[0].current.project;clear.receipts.push({commandId:crypto.randomUUID(),payloadHash:'b'.repeat(64),noteId,noteRevision:2,notebookRevision:2});assert(await storage.commitNotes(scope,1,JSON.stringify(clear)),'explicit detach works after project archive');const detached=JSON.parse(await storage.getNotes(scope));assert(!detached.notes[0].current.project&&detached.notes[0].history[0].project.projectId===projectId,'detach preserves retained association history');
+  out.textContent=JSON.stringify({complete:true,rows,providerCalls:0,scope:'random synthetic owner keys; transaction boundary only'});
+ }catch(e){out.textContent=JSON.stringify({complete:false,rows,error:String(e.message)});}
+ finally{if(scope){db=new Dexie('habitica-tool');await db.open();await db.table('notes').delete(scope);await db.table('workspaces').delete([account,workspaceId]);const cleaned=!await db.table('notes').get(scope)&&!await db.table('workspaces').get([account,workspaceId]);db.close();out.textContent=JSON.stringify({...JSON.parse(out.textContent),cleanup:cleaned?'complete':'failed'});}}
+};
+</script>

@@ -1,0 +1,31 @@
+# Foreground Review Reminders
+
+## Scope and intent
+
+Locally implemented on /todo/today. WorkspaceReminderCues reads the canonical task query and retained review actions from the currently loaded, validated workspace. A cue uses the exact saved ReviewAfterUtc; dates, deadlines, recurrence and inactivity never invent reminder times. Completed, cancelled and archived tasks are excluded. Waiting tasks can retain optional review cues. Legacy cues have schedule revision zero and display zone UTC; no historical review is fabricated. An independent manual stale flag does not create another reminder identity.
+
+Enable in-app cues here is an explicit account/source/workspace opt-in in the current browser. In-app opt-in does not request browser permission. Enable browser notifications here is a separate direct user action after in-app opt-in. The module and storage prerequisite are prepared before the enabled button; requestPermission is invoked before the click handler's first await. Existing granted permission still requires this separate channel opt-in. Denied, dismissed, unsupported and unavailable states remain visible. The saved task review workflow and the existing review MCP tools remain the way to set/snooze/clear exact review intent. Browser/device permission is a user gesture boundary and cannot be enrolled by an agent.
+
+The app host keeps the selected workspace binding while navigating. The host checks only loaded data, never periodically reloads Workspace or polls Habitica. Reopen and reload the selected workspace to include remote changes. In-app reached cues remain visible independently of browser delivery receipts until the saved review cue or task state is explicitly changed. The first twenty reached cues render, with the full count and link to Tasks. Future saved cues remain counted. No task, priority, state, game effect or review event changes automatically.
+
+## Scheduling, ownership and receipts
+
+foregroundReminders.js uses one best-effort local timer capped at thirty seconds, with an earlier wake for the next exact cue and visibility/pageshow/focus catch-up. Delivery is attempted only while the document is visible. Clock changes over five seconds relative to the monotonic clock are disclosed and cue times reevaluated. Browser throttling, sleep, suspended pages and closed tabs can prevent timely delivery. Background push is unavailable in the foreground contract; no endpoint, subscription or push consent is created.
+
+Schedule identity contains exact account, browser/cloud source, workspace, task, canonical seven-digit UTC cue and the last explicit cue-changing review-event revision. Unrelated task edits and independent stale flags do not renew identity. A separately accepted set/snooze is a new schedule. A new binding version immediately clears private displayed state and invalidates old callbacks. Account/source/sign-out changes cancel old scheduling; permission and worker responses cannot cross bindings. Disposal removes listeners and timers.
+
+IndexedDB's existing kv table owns foreground-reminders-v1 preferences and SHA-256 receipt identities. Atomic read/claim transactions serialize competing tabs. A durable attempted receipt precedes showNotification; lost acknowledgement or failed dispatch consumes the same identity without replay. A shown receipt establishes API resolution only, not that a person received or read a notification. At most one new attempt occurs per wake, avoiding a burst after reopening. The local receipt cap is2048 per account/source/workspace; records are not silently expired or evicted. At capacity, browser delivery stops explicitly while in-app cues remain available. The scheduler refuses documents with more than10000 tasks.
+
+Notifications use generic Companion review wording with no task title, account identity or private text. Only an existing active same-origin, covering service-worker registration is used, with a three-second API wait bound. The registration is not created by reminders. No network request, PushManager operation or notification-click task mutation is introduced. Operating-system notification centers can retain a notification already shown before sign-out; the generic notification content contains no task or account data.
+
+Turning off in-app cues also disables the foreground browser channel and retains receipts. Browser permission is controlled by the browser/system. App Clear browser data disarms scheduling and removes the reminder namespace with other local data. Device-local preferences/receipts are not cloud-synced or included in Workspace exports. Clearing site storage loses dedupe history and requires a new opt-in. Storage failure is disclosed and browser delivery fails closed; storage failure does not become an empty canonical task list.
+
+## Qualification
+
+Fake-clock production-module controls cover separate consent/permission, due/future/clock/snooze/removal, cross-tab/reopen dedupe, account/source changes, stale permission/worker replies, denied/dismissed/unsupported/revoked permission, missing registration, uncertain dispatch/claim acknowledgements, receipt capacity, corruption and cleanup. A disposable local fixture uses real IndexedDB transactions with fake notification APIs. Component checks preserve exact cue visibility, disabled actions and original task journals. Theme/phone/desktop/enlarged-text and focus evidence is retained in history/validation/foreground-reminders/result.json.
+
+Physical devices, actual operating-system permission/delivery, assistive technology, hosted accounts, remote deployment, real closed-tab/background operation and notification-click behavior remain unqualified. No production resource, migration, secret or new OAuth grant is needed for the foreground-only unit.
+
+## Platform references
+
+The implementation follows [permission user-gesture guidance](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission_static), [service-worker notification behavior](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification) and [timer scheduling limits](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout). The platform APIs do not establish a delivery guarantee.

@@ -55,7 +55,9 @@ test('accepted native request bindings survive expiry purge and grant epochs wit
 });
 test('organization permission has a separate disclosure and can be omitted from the approved grant',async t=>{
  const f=await fixture(t,{workspace:true}),p=await enrolled(f),code=await ticket(f,p),scope='profile:read tasks:read workspace.organization.write',page=await authPage(f,scope);
- let html=await page.response.text();assert.match(html,/existing task-write access does not grant organization writes/);let response=await form(f,page,{handle:handle(html),decision:'identify',code:code.code,scope});assert.equal(response.status,200);html=await response.text();assert.match(html,/Create, edit and archive native categories/);assert.match(html,/value="workspace.organization.write"/);
+ let html=await page.response.text();assert.match(html,/Can organize projects, categories and views after review; does not score tasks/);
+ let response=await form(f,page,{handle:handle(html),decision:'identify',code:code.code,scope});assert.equal(response.status,200);html=await response.text();
+ assert.match(html,/existing task-write access does not grant organization writes/);assert.match(html,/Organization access can create, edit and archive Companion categories/);assert.match(html,/value="workspace.organization.write"/);
  response=await form(f,page,{handle:handle(html),decision:'approve',scope:'profile:read tasks:read'});assert.equal(response.status,302);const location=new URL(response.headers.get('location')),tokens=await exchange(f,{code:location.searchParams.get('code'),verifier:page.verifier});assert.equal(tokens.status,200);assert.equal((await tokens.json()).scope.includes('workspace.organization.write'),false);
 });
 test('native transport storage failure, capacity and task-role confusion cannot partially save',async t=>{

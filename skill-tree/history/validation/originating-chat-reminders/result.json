@@ -1,0 +1,28 @@
+{
+  "taskId": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "status": "accepted",
+  "checkedAt": "2026-10-27",
+  "outcome": "Sourced capability matrix and offline fake-host prototype distinguish documented Work host events, opaque subscribed-chat binding and actual rendered replies. Current installed SDK cannot advertise the required Events protocol.",
+  "checks": {
+    "offlinePrototype": 10,
+    "installedSdkInMemoryControl": true,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "sources": "sources.json",
+  "followupPendingId": "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192",
+  "control": {
+    "kind": "executed_control",
+    "exitCode": 0,
+    "toolWallSeconds": 0.29,
+    "deadlineSeconds": 60,
+    "cleanupReserveSeconds": 5
+  },
+  "limitations": [
+    "No actual callback, OAuth account, host subscription, app-server process/control socket, thread access or rendered reply was exercised.",
+    "The finite fake address set is not a production address classifier or proof of real DNS/TLS connection pinning. Injected authorization and map storage are synthetic.",
+    "Signing interoperability with an official host/external library, production storage/rotation, protocol pagination/replay, concurrency and live client qualification remain unrun.",
+    "Current Worker capability schemas, SDK pins and production routes remain unchanged. A separate callback-secret and protocol-compatibility design is required before production implementation.",
+    "PWA/in-app reminder alternatives remain separate from originating-chat delivery."
+  ]
+}

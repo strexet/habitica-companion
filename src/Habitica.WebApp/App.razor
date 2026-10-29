@@ -111,7 +111,7 @@ else
         {
             if (relativePath is "" or "sign-in" or "signin")
             {
-                NavigationManager.NavigateTo("/dashboard", replace: true);
+                NavigationManager.NavigateTo(Habitica.Application.Notifications.NotificationRoute.SignInDestination(NavigationManager.Uri), replace: true);
             }
 
             return;

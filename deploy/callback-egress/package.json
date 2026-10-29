@@ -1,0 +1,8 @@
+{
+  "name": "companion-callback-egress",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {"node": "22.x"},
+  "scripts": {"test": "node --experimental-strip-types --test --test-timeout=15000 test/*.test.mjs"}
+}

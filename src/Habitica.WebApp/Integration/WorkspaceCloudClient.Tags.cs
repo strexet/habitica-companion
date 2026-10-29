@@ -67,6 +67,8 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
             if(intent.RequestId==Guid.Empty||intent.Operation is not ("reconcile" or "adopt" or "recover"))return new WorkspaceTaskResponse<WorkspaceTagReview>(false,null,"The tag review request is invalid.");
             var result=await CallTagAsync<WorkspaceTagReview>("prepare_group_tag_command",args,cancellationToken);
             if(result.Value is not {} review)return result;
+            if(review.Receipt is { SavedInCompanion:false } terminal&&ValidTagReceipt(terminal,review.CommandId??Guid.Empty)
+                &&terminal.RequestId==intent.RequestId&&terminal.Operation==intent.Operation&&review.RequestId==intent.RequestId&&review.WorkspaceId==WorkspaceId&&!review.CanAccept)return result;
             if(!ValidTagReview(review)||review.RequestId!=intent.RequestId||review.Operation!=intent.Operation
                 ||(intent.Operation=="recover"?review.Details?.OriginalWorkId!=intent.WorkId:review.Details?.EntityId!=intent.EntityId||review.Details?.Kind!=intent.Kind)
                 ||intent.HabiticaTagId is {} tag&&review.Details?.HabiticaTagId!=tag.ToString("D"))return new(false,null,"The tag preview did not match the original request. Preserve the request ID.",true);
@@ -82,7 +84,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
     public Task<WorkspaceTaskResponse<WorkspaceTagReceipt>> ReadTagReviewAsync(Guid commandId,CancellationToken cancellationToken)=>ObserveResponseAsync("workspace-tag-recover",async()=>
     {
         var result=await CallTagAsync<WorkspaceTagReceipt>("get_group_tag_command",new { commandId },cancellationToken);
-        return result.Value is {} receipt&&(!ValidTagReceipt(receipt,commandId)||receipt.SavedInCompanion!=true)?new(false,null,"No confirmed original tag acceptance is available. Keep the original review.",true):result;
+        return result.Value is {} receipt&&!ValidTagReceipt(receipt,commandId)?new(false,null,"No confirmed original tag acceptance is available. Keep the original review.",true):result;
     },commandId);
     public Task<WorkspaceTaskResponse<WorkspaceTagOriginal>> RecoverTagReceiptAsync(Guid workId,CancellationToken cancellationToken)=>ObserveResponseAsync("workspace-tag-original-receipt",async()=>
     {
@@ -97,10 +99,17 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
         &&details.TaskChanges.Select(row=>row.TaskId).Distinct().Count()==details.TaskChanges.Count
         &&(review.Operation!="recover"||details.OriginalWorkId is {} work&&work!=Guid.Empty&&details.OriginalAttemptId is {} attempt&&attempt!=Guid.Empty)
         &&(review.Operation!="adopt"||details.ObservedTag is {} tag&&tag.Id!=Guid.Empty&&tag.Id.ToString("D")==details.HabiticaTagId&&Name(tag.Name));
-    private bool ValidTagReceipt(WorkspaceTagReceipt receipt,Guid commandId)=>receipt.CommandId==commandId&&commandId!=Guid.Empty&&receipt.SavedInCompanion==true
+    private bool ValidTagReceipt(WorkspaceTagReceipt receipt,Guid commandId)=>receipt.CommandId==commandId&&commandId!=Guid.Empty
         &&receipt.WorkspaceId==WorkspaceId&&receipt.RequestId is {} request&&request!=Guid.Empty&&receipt.Operation is "reconcile" or "adopt" or "recover"&&receipt.GameEffects==0
         &&receipt.WorkIds is not null&&receipt.WorkIds.All(id=>id!=Guid.Empty)&&receipt.WorkIds.Distinct().Count()==receipt.WorkIds.Count
-        &&(receipt.Original is null||ValidOriginal(receipt.Original));
+        &&(receipt.Original is null||ValidOriginal(receipt.Original))
+        &&(receipt.SavedInCompanion==true
+            ?receipt.ReviewOutcome is null||(receipt.ReviewOutcome=="accepted-unknown")==receipt.OutcomeUnknown&&receipt.ReviewOutcome is "accepted" or "accepted-unknown"
+            :receipt.SavedInCompanion==false
+                ?receipt.ReviewOutcome=="terminal-unaccepted"&&!receipt.OutcomeUnknown&&receipt.WorkIds.Count==0&&receipt.Original is null
+                    &&receipt.Reason is "tag_preview_expired" or "tag_preview_changed" or "tag_connection_changed" or "tag_authority_changed"
+                    &&receipt.ClosedAtUtc is {} closed&&closed!=default&&closed.Offset==TimeSpan.Zero
+                :receipt.ReviewOutcome=="prepared"&&receipt.Prepared==true&&receipt.OutcomeUnknown&&receipt.WorkIds.Count==0&&receipt.Original is null);
     private static bool ValidOriginal(WorkspaceTagOriginal original)=>original.WorkId!=Guid.Empty&&original.CommandId!=Guid.Empty&&original.SourceRevision>=1
         &&original.EntityId!=Guid.Empty&&Enum.IsDefined(original.Kind)&&(MemberStates.Contains(original.State)||original.State=="executing")&&original.Operation is "ensureTag" or "setMembership";
     private static readonly string[] CoverageStates=["missing","pending","linked","retained","needsReview"];

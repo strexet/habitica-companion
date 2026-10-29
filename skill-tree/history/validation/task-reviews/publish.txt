@@ -1,0 +1,12 @@
+MSBuild version 17.8.49+7806cbf7b for .NET
+  Habitica.Domain -> /Users/petr/Projects/habitica-tool/src/Habitica.Domain/bin/Release/net8.0/Habitica.Domain.dll
+  Habitica.Api -> /Users/petr/Projects/habitica-tool/src/Habitica.Api/bin/Release/net8.0/Habitica.Api.dll
+  Habitica.Rules -> /Users/petr/Projects/habitica-tool/src/Habitica.Rules/bin/Release/net8.0/Habitica.Rules.dll
+  Habitica.Storage -> /Users/petr/Projects/habitica-tool/src/Habitica.Storage/bin/Release/net8.0/Habitica.Storage.dll
+  Habitica.Application -> /Users/petr/Projects/habitica-tool/src/Habitica.Application/bin/Release/net8.0/Habitica.Application.dll
+  Habitica.WebApp -> /Users/petr/Projects/habitica-tool/src/Habitica.WebApp/bin/Release/net8.0/Habitica.WebApp.dll
+  Habitica.WebApp (Blazor output) -> /Users/petr/Projects/habitica-tool/src/Habitica.WebApp/bin/Release/net8.0/wwwroot
+  Optimizing assemblies for size may change the behavior of the app. Be sure to test after publishing. See: https://aka.ms/dotnet-illink
+  Optimizing assemblies for size. This process might take a while.
+  Publishing without optimizations. Although it's optional for Blazor, we strongly recommend using `wasm-tools` workload! You can install it by running `dotnet workload install wasm-tools` from the command line.
+  Habitica.WebApp -> /tmp/habitica-review-publish-accepted/

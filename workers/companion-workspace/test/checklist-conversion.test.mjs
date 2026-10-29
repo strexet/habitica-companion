@@ -3,11 +3,11 @@ import {conversionCommand,conversionHash,conversionDerivedId} from '../../shared
 import {workspaceDocument} from '../../shared/workspace-domain.ts';
 import {journal} from '../src/journal.ts';import {acceptConversion,acceptCloudConversion} from '../src/checklist-conversion.ts';
 const fixture=async name=>JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/checklist-conversion-'+name+'.json',import.meta.url),'utf8'));
-function documentShape(document){const result=structuredClone(workspaceDocument(document));for(const projection of result.projections)projection.id='projection:'+projection.taskId;return result;}
+function documentShape(document){const result=structuredClone(workspaceDocument(document));delete result.activityCoverage;for(const projection of result.projections)projection.id='projection:'+projection.taskId;return result;}
 for(const name of ['reuse','create'])test('portable '+name+' conversion matches C# identity, exact task bindings, complete source content and historical uncertainty',async()=>{
  const x=await fixture(name),state=await journal(x.initial),command=conversionCommand(x.command),now=x.acceptedDocument.checklistConversions[0].receipts[0].acceptedAtUtc;
  assert.equal(await conversionHash(command),x.hash);assert.equal(await conversionDerivedId(command.id,'project'),x.derivedId);
- const result=await acceptConversion(state,command,now);assert.equal(result.disposition,'accepted',result.errorCode);assert.deepEqual(documentShape(result.snapshot.document),documentShape(x.acceptedDocument));assert.equal(result.snapshot.storeVersion,x.acceptedStoreVersion);
+ const result=await acceptConversion(state,command,now);assert.equal(result.disposition,'accepted',result.errorCode);assert.deepEqual(documentShape(result.snapshot.document),documentShape(x.acceptedDocument));assert.equal(result.snapshot.storeVersion,x.acceptedStoreVersion);await journal(result.snapshot);if(name==='create')assert.equal(result.snapshot.document.activityCoverage.length,8);
  assert.deepEqual(result.snapshot.document.tasks.find(task=>task.id===command.sourceTaskId),state.document.tasks.find(task=>task.id===command.sourceTaskId));assert.deepEqual(result.snapshot.document.completions,state.document.completions);
  const duplicate=await acceptConversion(result.snapshot,command,now);assert.equal(duplicate.disposition,'duplicate');assert.equal(duplicate.snapshot.document.revision,result.snapshot.document.revision);
  const resume={...command,id:crypto.randomUUID(),expectedRevision:result.snapshot.document.revision,items:command.items.map(item=>item.targetTaskId?{...item,mode:'reuse',notes:null,gameDetails:null}:item)},resumed=await acceptConversion(result.snapshot,resume,now);

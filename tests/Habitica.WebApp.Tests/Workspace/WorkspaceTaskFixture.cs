@@ -80,6 +80,7 @@ internal sealed class WorkspaceTaskFixture
         public bool RejectPreparation { get; set; }
         public bool ExpirePreparation { get; set; }
         public bool LoseLinkAcceptance { get; set; }
+        public Func<WorkspaceProjectionPreview, WorkspaceActionResult>? LinkAction { get; set; }
         public WorkspaceExternalTask? LinkExternal { get; set; }
         public List<WorkspaceProjectionPreview> AdoptionRequests { get; } = [];
         public List<Guid> LinkPreviewRequests { get; } = [];
@@ -142,6 +143,7 @@ internal sealed class WorkspaceTaskFixture
         public Task<WorkspaceActionResult> AdoptLinkAsync(WorkspaceProjectionPreview preview, CancellationToken token)
         {
             AdoptionRequests.Add(preview);
+            if (LinkAction is not null) return Task.FromResult(LinkAction(preview));
             if(!State.Document.Projections.Any(p=>p.TaskId==preview.Task.Id&&p.HabiticaTaskId==preview.External.Id.ToString("D")))
             {
                 var revision=State.Document.Revision+1;

@@ -10,6 +10,7 @@
 <PageTitle>Settings</PageTitle>
 
 <div class="settings-shell">
+    <PwaInstallPanel />
     <section class="card-surface settings-card">
         <p class="section-label">Session controls</p>
         <h1>Local data and sign-in behavior</h1>
@@ -31,7 +32,7 @@
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Check app connections</h2>
                 <p>Open safe connection checks and the optional reversible gear check.</p>
-                <MudButton data-testid="settings-open-checks" Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Checks</MudButton>
+                <MudButton data-testid="settings-open-checks" data-layout-primary="true" Color="Color.Secondary" Href="/live-tests" Variant="Variant.Outlined">Open Checks</MudButton>
             </MudPaper>
 
         </div>
@@ -205,7 +206,7 @@
                                data-testid="download-cloud-sync"
                                Disabled="@(!SessionController.State.IsAuthenticated || IsCloudSyncBusy)"
                                OnClick="HandleCloudDownloadAsync"
-                               Variant="Variant.Filled">
+                               Variant="Variant.Outlined">
                         Download
                     </MudButton>
                 </div>
@@ -213,7 +214,7 @@
 
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
                 <h2>Clear this browser</h2>
-                <p>Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first.</p>
+                <p>Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first. Push device bindings and original pending-command references are also removed. Revoke push devices in Todo Sync first; local removal does not revoke cloud push consent or browser permission.</p>
                 <MudButton Color="Color.Error"
                            data-testid="clear-local-data"
                            OnClick="@(() => _clearLocalReview = true)"
@@ -225,7 +226,7 @@
         @if (_clearLocalReview)
         {
             <div class="card-surface danger-card" role="group" aria-label="Review browser data removal" data-testid="clear-local-review">
-                <p>Clear this browser now? All browser Notes, including deleted versions, local workspaces, saved credentials and other local app data will be removed. The general app backup does not include Notes or workspace journals. Cloud Notes, cloud workspaces and Habitica records have separate controls.</p>
+                <p>Clear this browser now? All browser Notes, including deleted versions, local workspaces, saved credentials and other local app data will be removed. The general app backup does not include Notes or workspace journals. Push bindings and pending-command references will also be removed. Cloud push consent, device registrations and browser notification permission remain separate; revoke devices in Todo Sync first. Cloud Notes, cloud workspaces and Habitica records have separate controls.</p>
                 <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" data-testid="clear-local-confirm" Variant="Variant.Filled">Confirm browser removal</MudButton>
                 <MudButton OnClick="@(() => _clearLocalReview = false)" data-testid="clear-local-cancel" Variant="Variant.Outlined">Cancel</MudButton>
             </div>

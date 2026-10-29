@@ -1410,3 +1410,31 @@ prepare_task_command continues to accept patch.deadline as an exact ISO civil da
 ### Connector compatibility read boundary
 
 get_connector_compatibility requires existing authenticated profile:read access and accepts only optional packageVersion, packageHash and toolSchemaVersion fields. The compatibility tool calls private build-identity endpoints and performs no Habitica read, credential lookup, Workspace consent activation or command submission. The MCP initialization version follows the explicit backend release. This value describes the backend rather than installed host skills.
+
+## Native task recovery boundary
+
+unarchiveTask and correctOccurrence operate on native canonical state only. Both reject retained Habitica identities and uncertain/pending task effects, produce zero projection effects and schedule no tag reconciliation. No Habitica DELETE, negative score, completed:false, schedule rewrite or reward reversal is sent. Reviewed own-task upstream unchecking remains a separate implementation contract.
+
+## Private linked-task recovery gateway
+
+The private ProjectionService supports inspectRecovery and recoverTask under the existing Workspace/projection gates. Ordinary score still rejects non-Habit down scoring. inspectRecovery requires an exact owned Todo/Daily ID, explicit kind, Daily civil date and a source-context SHA-256 supplied by the canonical caller. Auth binds the context to a fresh completed task/checklist fingerprint, task value/completion metadata and verified current account day/readiness. Shared/challenge copies, unknown readiness, Cron-needed state, timezone transitions and prior-day Dailies refuse. Auth does not prove the canonical completion itself; the selected Workspace orchestration must verify the original confirmed source before creating the context hash.
+
+The ninety-second token is single-use and recovery-only. recoverTask repeats account/task observation, verifies the original review hash and current authority, reserves a durable attempt under the account lease, then sends at most one POST tasks/{id}/score/down. Reservation atomically rechecks token expiry, lease, profile/connection/grant and unresolved cross-tool attempts. Upstream reads/writes retain existing budgets and ten-second network deadlines. Resources remain unknown in the reviewed context and receipt; no exact refund is claimed.
+
+Only the original HTTP200 successful numeric nonpositive score response establishes an applied private recovery receipt. Any dispatched non200, transport loss, malformed success or receipt-persistence failure remains unknown. Original attempt/arguments/timestamp recover the stored outcome before token freshness is considered. Lookup/reconcile cannot infer a score outcome from current task state and never redispatch. Native recovery/history is not recorded by this private primitive; canonical acceptance, source receipts and public MCP exposure remain the selected parent task boundary. Default gates remain off and no real score/Cron qualification is claimed.
+
+Official server source reviewed on2026-10-27: [task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) returns score results; [task scoring service](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/index.js) rejects inconsistent completed state and can invoke shared/challenge processing; [score operation](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js) changes resources and can remove Daily history/streak state during unchecking. [Daily due calculation](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js) derives isDue from the requested date and account preferences. Native canonical history must remain retained independently of upstream changes. Habitica supplies no conditional score transaction across independent clients, so a final external race remains possible.
+
+## Original completion score provenance
+
+New server-executed Todo/Daily completeTask score-up attempts include optional sourceContext with companion-completion-score-v1, workspace/task/command/completion identities, canonical command payload hash, effect index, kind and exact Daily date. Auth validates the shape and scoring compatibility, then retains the binding only in an applied original score receipt. Ordinary Habit scores and unused legacy arguments remain unchanged. The server caller owns canonical event validation; the source binding cannot be supplied through public ordinary task fields.
+
+Private scoreReceipt reads an exact retained Auth attempt for the current profile/connection and checks the expected upstream task/fingerprint plus the complete canonical binding. The reader returns verified source metadata only for an applied non-Habit score receipt. Missing, unknown, legacy, wrong-context and wrong-account records remain unavailable. The reader issues no upstream request and returns no credential, old check token or private task text. Dispatched Workspace journal events retain the original attempt token, so verification remains possible after executor prepared_request_json is cleared. Existing thirty-day operational retention and lifecycle cleanup limit availability; later task state never reconstructs an absent original receipt.
+
+## Reviewed linked recovery composition
+
+Workspace requires the complete original score-source proof before preparing a private Auth recovery. A durable original attempt and canonical document fence precede down dispatch; only the original successful receipt permits native restoration/correction. No current-state inference, replay, exact refund or party management is permitted. See [linked task recovery](linked-task-recovery.md).
+
+## Retained recovery read boundary
+
+`list_task_recovery_records` reads only the owned canonical journal through the reviewed Workspace MCP boundary. The query performs no Habitica request, scoring, consent or mutation and makes no fresh upstream ownership/day/refund claim. See [retained recovery discovery](retained-recovery-discovery.md).

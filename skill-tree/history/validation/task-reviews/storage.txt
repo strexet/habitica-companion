@@ -1,0 +1,11 @@
+  Habitica.Domain -> /Users/petr/Projects/habitica-tool/src/Habitica.Domain/bin/Debug/net8.0/Habitica.Domain.dll
+  Habitica.Storage -> /Users/petr/Projects/habitica-tool/src/Habitica.Storage/bin/Debug/net8.0/Habitica.Storage.dll
+  Habitica.Storage.Tests -> /Users/petr/Projects/habitica-tool/tests/Habitica.Storage.Tests/bin/Debug/net8.0/Habitica.Storage.Tests.dll
+Test run for /Users/petr/Projects/habitica-tool/tests/Habitica.Storage.Tests/bin/Debug/net8.0/Habitica.Storage.Tests.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.8.0 (arm64)
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    25, Skipped:     0, Total:    25, Duration: 185 ms - Habitica.Storage.Tests.dll (net8.0)

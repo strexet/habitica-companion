@@ -34,6 +34,17 @@ public sealed class DiagnosticsBundleTests
         Assert.Throws<ArgumentException>(() => DiagnosticsBundleExport.Create(entries, new(Mode: (DiagnosticsMode)123), now));
     }
 
+    [Fact]
+    public void Exact_tag_operations_survive_repeated_sanitization_and_shared_export_without_private_fields()
+    {
+        string[] operations=["workspace-tag-consent-read","workspace-tag-consent-set","workspace-tag-status","workspace-tag-candidates","workspace-tag-prepare","workspace-tag-accept","workspace-tag-recover","workspace-tag-original-receipt"];
+        var rows=operations.Select((operation,index)=>DiagnosticsLogSanitizer.Sanitize(Entry(index,DateTimeOffset.UtcNow) with {Operation=operation,Message="private-tag-name credential-canary",Metadata=new Dictionary<string,string>{{"apiToken","credential-canary"},{"taskName","private-tag-name"},{"requestCount","2"}}})).ToArray();
+        Assert.Equal(operations.Order(),rows.Select(row=>row.Operation).Order());
+        var exported=DiagnosticsLogSanitizer.SanitizeJson(JsonSerializer.Serialize(rows));var retained=JsonSerializer.Deserialize<DiagnosticsLogEntry[]>(exported,new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
+        var bundle=DiagnosticsBundleExport.Create(retained,new(),DateTimeOffset.UtcNow);var json=DiagnosticsBundleExport.Serialize(bundle);var imported=JsonSerializer.Deserialize<DiagnosticsBundle>(json,DiagnosticsBundleExport.JsonOptions)!;
+        Assert.Equal(operations.Order(),imported.Entries.Select(row=>row.Operation).Order());Assert.DoesNotContain("credential-canary",json);Assert.DoesNotContain("private-tag-name",json);Assert.All(imported.Entries,row=>Assert.Equal("2",Assert.Single(row.Metadata).Value));
+        Assert.Equal("app-operation",DiagnosticsLogSanitizer.Sanitize(rows[0] with {Operation="workspace-tag-private-tag-name"}).Operation);
+    }
     private static DiagnosticsLogEntry Entry(int i, DateTimeOffset now) => new("secret-canary-" + i,
         now.AddMinutes(-i), i % 2 == 0 ? DiagnosticsFeatureArea.Workspace : DiagnosticsFeatureArea.Inventory,
         "workspace-task-accept", DiagnosticsSeverity.Warning, DiagnosticsMode.Local,

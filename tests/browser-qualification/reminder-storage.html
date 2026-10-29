@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Synthetic reminder storage control</title></head><body><h1>Disposable reminder storage control</h1><p>Local fixture origin only. Production IndexedDB helpers and reminder scheduler with fake notification/platform APIs. No browser permission or network call is made.</p><button id="run">Run real IndexedDB controls</button><pre id="result" role="status">Ready</pre><script type="module">
+import * as store from './js/storage/indexedDbStorage.js';
+import {createForegroundReminders} from './js/foregroundReminders.js';
+const result=document.querySelector('#result');
+document.querySelector('#run').onclick=async()=>{
+ const checks=[];const assert=(condition,label)=>{if(!condition)throw Error(label);checks.push(label);};
+ const account=crypto.randomUUID(),workspace=crypto.randomUUID(),task=crypto.randomUUID(),key=account+':cloud:'+workspace;
+ try {
+  await store.configureReminderState(key,'inApp',true);await store.configureReminderState(key,'browser',true);
+  const concurrent=await Promise.all([store.claimReminder(key,'a'.repeat(64),Date.now()),store.claimReminder(key,'a'.repeat(64),Date.now())]);assert(concurrent.filter(x=>x==='claimed').length===1&&concurrent.includes('duplicate'),'atomic concurrent claim once');
+  await store.finishReminder(key,'a'.repeat(64),'shown');await store.configureReminderState(key,'inApp',false);const off=await store.readReminderState(key);assert(!off.inApp&&!off.browser&&off.receipts.length===1,'disable retains original receipt');
+  await store.configureReminderState(key,'inApp',true);await store.configureReminderState(key,'browser',true);
+  const calls=[],timers=new Map();let wall=Date.parse('2026-10-26T10:00:00Z'),serial=0;
+  const host={Date:{now:()=>wall},performance:{now:()=>performance.now()},setTimeout:(fn,ms)=>{timers.set(++serial,{fn,ms});return serial;},clearTimeout:id=>timers.delete(id),isSecureContext:true,crypto,location:{origin:'https://fixture.invalid',href:'https://fixture.invalid/todo/today'},document:{visibilityState:'visible',addEventListener(){},removeEventListener(){}},addEventListener(){},removeEventListener(){},navigator:{userActivation:{isActive:true},serviceWorker:{async getRegistration(){return{active:true,scope:'https://fixture.invalid/',async showNotification(title,options){calls.push({title,options});}};}}},Notification:{permission:'granted',requestPermission(){throw Error('Unexpected permission prompt');}}};
+  const owner={accountId:account,workspaceId:workspace,source:'cloud'},cue={taskId:task,reviewAfterUtc:'2026-10-26T09:00:00.0000000Z',scheduleRevision:2};
+  const a=createForegroundReminders(host,store),b=createForegroundReminders(host,store);await Promise.all([a.bind(owner,[cue],1),b.bind(owner,[cue],1)]);assert(calls.length===1,'two schedulers share durable delivery claim');a.stop();b.stop();
+  const reopened=createForegroundReminders(host,store);await reopened.bind(owner,[cue],1);assert(calls.length===1,'reopen suppresses original delivery');assert(reopened.snapshot().inApp,'reopen restores separate in-app opt-in');
+  await reopened.bind({...owner,accountId:crypto.randomUUID()},[cue],2);assert(!reopened.snapshot().inApp&&calls.length===1,'account switch never transfers opt-in');reopened.stop();assert(timers.size===0,'all fixture timers cleaned');
+  await store.clearReminderStates();assert(!(await store.readReminderState(key)).inApp,'browser clear removes opt-in and receipt namespace');
+  result.textContent=JSON.stringify({status:'pass',checks,notificationAttempts:calls.length,browserPermissionPrompts:0,realProviderTraffic:0,limitations:['Synthetic platform APIs; real IndexedDB transaction behavior only. No operating-system delivery or closed-tab guarantee.']},null,2);
+ } catch(error){result.textContent=JSON.stringify({status:'fail',checks,error:error.message});}
+};
+</script></body></html>

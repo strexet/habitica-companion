@@ -1,0 +1,203 @@
+[
+  {
+    "caseId": "1261-1b17be91-9744-45e8-87dc-7d8b18a68ea6",
+    "clientWidth": 375,
+    "controllerDiagnostics": {
+      "caseLimitMs": 5000,
+      "ignoredMessages": 0,
+      "matrixElapsedMs": 42.39999985694885,
+      "measurementLimitMs": 5000,
+      "phases": [
+        {
+          "frameElapsedMs": 0,
+          "matrixElapsedMs": 26.899999856948853,
+          "phase": "theme",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 8.899999856948853,
+          "matrixElapsedMs": 30.199999809265137,
+          "phase": "theme",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 8.899999856948853,
+          "matrixElapsedMs": 30.199999809265137,
+          "phase": "fonts",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 9.099999904632568,
+          "matrixElapsedMs": 30.299999952316284,
+          "phase": "fonts",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 9.099999904632568,
+          "matrixElapsedMs": 30.299999952316284,
+          "phase": "frame",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 10.599999904632568,
+          "matrixElapsedMs": 42.09999990463257,
+          "phase": "frame",
+          "status": "complete"
+        },
+        {
+          "details": [],
+          "frameElapsedMs": 10.699999809265137,
+          "matrixElapsedMs": 42.29999995231629,
+          "phase": "animations",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 10.799999952316284,
+          "matrixElapsedMs": 42.39999985694885,
+          "phase": "animations",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 10.799999952316284,
+          "matrixElapsedMs": 42.39999985694885,
+          "phase": "measurement",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 20.299999952316284,
+          "matrixElapsedMs": 42.39999985694885,
+          "phase": "measurement",
+          "status": "complete"
+        }
+      ],
+      "startupLimitMs": 5000
+    },
+    "controls": 25,
+    "disabledSkipped": 4,
+    "errors": [
+      {
+        "kind": "overflow",
+        "scrollWidth": 2000,
+        "width": 375
+      },
+      {
+        "ids": [
+          "BUTTON-23",
+          "BUTTON-24"
+        ],
+        "kind": "overlap"
+      }
+    ],
+    "fixture": "/todo-history-completions.html",
+    "minimumMeasuredContrast": 6.234847702178141,
+    "operationClass": "executed_control",
+    "primaryControls": 10,
+    "qualification": "measured",
+    "scrollWidth": 2000,
+    "scrollableControls": [],
+    "seed": "geometry",
+    "textPercent": 100,
+    "textSamples": 47,
+    "theme": "gryphy-light",
+    "unqualifiedSurfaces": [],
+    "width": 390
+  },
+  {
+    "caseId": "1262-6b2fe6bc-e486-4622-96b3-1d1b6f7fef05",
+    "clientWidth": 375,
+    "controllerDiagnostics": {
+      "caseLimitMs": 5000,
+      "ignoredMessages": 0,
+      "matrixElapsedMs": 33.09999990463257,
+      "measurementLimitMs": 5000,
+      "phases": [
+        {
+          "frameElapsedMs": 0.20000004768371585,
+          "matrixElapsedMs": 16.699999809265137,
+          "phase": "theme",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 7.5,
+          "matrixElapsedMs": 18.799999952316284,
+          "phase": "theme",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 7.5,
+          "matrixElapsedMs": 18.899999856948853,
+          "phase": "fonts",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 7.5,
+          "matrixElapsedMs": 18.899999856948853,
+          "phase": "fonts",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 7.6000001430511475,
+          "matrixElapsedMs": 19,
+          "phase": "frame",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 11.300000190734863,
+          "matrixElapsedMs": 32.799999952316284,
+          "phase": "frame",
+          "status": "complete"
+        },
+        {
+          "details": [],
+          "frameElapsedMs": 11.400000095367432,
+          "matrixElapsedMs": 33,
+          "phase": "animations",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 11.400000095367432,
+          "matrixElapsedMs": 33.09999990463257,
+          "phase": "animations",
+          "status": "complete"
+        },
+        {
+          "frameElapsedMs": 11.5,
+          "matrixElapsedMs": 33.09999990463257,
+          "phase": "measurement",
+          "status": "waiting"
+        },
+        {
+          "frameElapsedMs": 20.800000190734863,
+          "matrixElapsedMs": 33.09999990463257,
+          "phase": "measurement",
+          "status": "complete"
+        }
+      ],
+      "startupLimitMs": 5000
+    },
+    "controls": 23,
+    "disabledSkipped": 4,
+    "errors": [
+      {
+        "id": "contrast-canary",
+        "kind": "contrast",
+        "minimum": 4.5,
+        "ratio": 1,
+        "text": "Seeded unreadable contrast canary"
+      }
+    ],
+    "fixture": "/todo-history-completions.html",
+    "minimumMeasuredContrast": 1,
+    "operationClass": "executed_control",
+    "primaryControls": 10,
+    "qualification": "measured",
+    "scrollWidth": 375,
+    "scrollableControls": [],
+    "seed": "contrast",
+    "textPercent": 100,
+    "textSamples": 46,
+    "theme": "gryphy-light",
+    "unqualifiedSurfaces": [],
+    "width": 390
+  }
+]

@@ -1,0 +1,626 @@
+{
+  "task_id": "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+  "source_fingerprints": {
+    "src/Habitica.Application/Notes/NotesService.cs": "434f048622dd935cb9f3c15a46a17d0c46194e6f4a6049a3f7554c02bc0d1928",
+    "src/Habitica.WebApp/State/NotesController.cs": "f5e89b0f6a25e91a7ca0beed1b94dcd73f69ed0c8bad132cd4ad225a64a4a784",
+    "src/Habitica.WebApp/State/NotesController.Projects.cs": "7d8a66f3320a91299fa41c50e5432e518cf0a43f466b0feef51ef56ac934842e",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "6c560f7212fda4d842e374159ba41af5cac02c4c5c14c29e804b703fdcb17005",
+    "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "facb3322546923d2430bdc1837ef9b758076cd94c6c083cea1537583c96bb837",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "33b9fc6c2b5ccb69e2f5491827bb25ad920b3f355ff05d107b58c4a14033770d",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "7824695ee17e6d4ee9628eba9492ec45aa7939244765eb0a32cdd6a3b8bfc074",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "30e618aa37ab2a06179c2255fb80e326ae7627d2891b6789b2a7d7f6e2750deb",
+    "skill-tree/documents/notes-project-links.md": "eb12dbd39d962265bd3b640f2f5db24e7744941d736bb67d7bc4d345ae8ff678",
+    "skill-tree/documents/technical.md": "46d95f33c116f87c2370e65ee6d865d86a960ebe7225c93f3bbe4b19bbbb4929",
+    "skill-tree/documents/features.md": "67be72c1ec05bbd0421b20e7fa57b35c0f99f7b18c6b18856709e51fd9e5fbe1",
+    "skill-tree/documents/testing.md": "6894e93a543939bd29b18eca24753b24f3e89c07a22a170c34c10e7731306c83",
+    "skill-tree/documents/ux-ui-manifest.md": "ff378ea4e54b1056c3f181a610da7d315417c2bad73c301b90f0ad11a3d176ea"
+  },
+  "checks": {
+    "solution": {
+      "passed": 1441,
+      "failed": 0,
+      "path": "skill-tree/artifacts/notes-project-ui/solution-final.log"
+    },
+    "focused": {
+      "passed": 74,
+      "failed": 0
+    },
+    "release_publish": "pass; local output only; wasm-tools optimization workload is unavailable",
+    "rendered": {
+      "fixtures": 33,
+      "cases": 1188,
+      "widths": [
+        360,
+        390,
+        430,
+        768,
+        1024,
+        1200
+      ],
+      "themes": [
+        "gryphy-light",
+        "gryphy-dark",
+        "obsidian-glow"
+      ],
+      "text_percent": [
+        100,
+        200
+      ],
+      "errors": 0,
+      "harness_errors": 0,
+      "unqualified_surfaces": 0,
+      "minimum_measured_enabled_text_contrast": 5.121275922945691
+    },
+    "negative_controls": {
+      "cases": 2,
+      "detected_error_kinds": [
+        "overflow",
+        "overlap",
+        "contrast"
+      ]
+    },
+    "keyboard": {
+      "method": "native Tab after title field at390px and200-percent text in Obsidian Glow",
+      "focused_control": "Markdown editor-mode button",
+      "outline_style": "solid",
+      "outline_width": "3px",
+      "outline_color": "rgb(159,192,255)"
+    },
+    "review": "Exact identities, original receipts, read-only Workspace context, independent Notes ownership, content/draft preservation, complete-set filters, stale-link handling, project permission boundary and final diff reviewed.",
+    "diff_check": "pass"
+  },
+  "fixtures": {
+    "notes-consent": {
+      "file": "notes-consent.html",
+      "route": "/notes",
+      "state": "separate-consent",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Separate_consent_and_unavailable_cloud_are_clear_without_uploading_browser_content",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-alias-editor": {
+      "file": "project-alias-editor.html",
+      "route": "/todo/projects",
+      "state": "long-name-and-maximum-alias-separate-editor",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Alias_repair_recovers_original_preparation_and_unknown_acceptance_without_name_edits",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-project-create-review": {
+      "file": "notes-project-create-review.html",
+      "route": "/notes",
+      "state": "new-exact-project-review",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Create_attach_move_and_detach_review_exact_ids_and_keep_text_history",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-alias-unknown": {
+      "file": "project-alias-unknown.html",
+      "route": "/todo/projects",
+      "state": "original-unknown-alias-command",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Alias_repair_recovers_original_preparation_and_unknown_acceptance_without_name_edits",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-long": {
+      "file": "notes-long.html",
+      "route": "/notes",
+      "state": "long-code-table-title",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Long_editor_and_document_content_are_captured_for_theme_and_enlargement_checks",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-alias-create-review": {
+      "file": "project-alias-create-review.html",
+      "route": "/todo/projects",
+      "state": "normalized-alias-with-exact-escaped-name",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Create_alias_and_explicit_rename_clear_keep_separate_original_receipts",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-conflict": {
+      "file": "notes-conflict.html",
+      "route": "/notes",
+      "state": "retained-draft-conflict",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Conflict_and_unknown_acceptance_remain_visible_without_an_extra_write",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-unknown": {
+      "file": "notes-unknown.html",
+      "route": "/notes",
+      "state": "uncertain-original-save",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Conflict_and_unknown_acceptance_remain_visible_without_an_extra_write",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-project-filter": {
+      "file": "notes-project-filter.html",
+      "route": "/notes",
+      "state": "combined-unassigned-text-trash",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Combined_project_text_trash_and_unassigned_filters_page_beyond_twenty_without_losing_drafts",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-unavailable": {
+      "file": "notes-unavailable.html",
+      "route": "/notes",
+      "state": "cloud-unavailable-browser-independent",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Unavailable_cloud_and_whole_notebook_cleanup_have_explicit_separate_states",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-notes-no-consent": {
+      "file": "project-notes-no-consent.html",
+      "route": "/todo/projects",
+      "state": "separate-cloud-consent-no-content",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Project_only_cloud_access_never_renders_private_browser_notes_or_connects_notes",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-project-unknown": {
+      "file": "notes-project-unknown.html",
+      "route": "/notes",
+      "state": "unknown-original-association",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Original_link_receipt_survives_acknowledgement_loss_and_later_project_changes",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-empty": {
+      "file": "notes-empty.html",
+      "route": "/notes",
+      "state": "account-changed-empty",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Dirty_navigation_cancel_and_account_switch_do_not_transfer_private_drafts",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-notes-review": {
+      "file": "project-notes-review.html",
+      "route": "/todo/projects",
+      "state": "exact-project-create-review",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Project_route_opens_and_creates_in_exact_context_and_preserves_draft_on_hiding",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-purge": {
+      "file": "notes-purge.html",
+      "route": "/notes",
+      "state": "irreversible-review",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Trash_purge_and_history_actions_have_concrete_cancelable_reviews",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-notes-draft": {
+      "file": "project-notes-draft.html",
+      "route": "/todo/projects",
+      "state": "project-private-draft",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Project_route_opens_and_creates_in_exact_context_and_preserves_draft_on_hiding",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-alias-retained-picker": {
+      "file": "project-alias-retained-picker.html",
+      "route": "/todo/projects",
+      "state": "retained-archived-alias-and-duplicate-name-ids",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Pickers_show_aliases_and_preserve_exact_off_page_and_archived_selection",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-document": {
+      "file": "notes-document.html",
+      "route": "/notes",
+      "state": "saved-safe-preview",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "tables",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Create_search_edit_preview_and_export_preserve_full_markdown_and_safe_rendering",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-tree-project": {
+      "file": "todo-tree-project.html",
+      "route": "/todo/projects",
+      "state": "cross-project-descendant-context",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Project_lists_keep_other_project_branch_context_and_bounded_parent_choices",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "notes-project-stale": {
+      "file": "notes-project-stale.html",
+      "route": "/notes",
+      "state": "missing-link-detach-review",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Stale_project_states_preserve_content_and_allow_reviewed_detach_without_project_authority",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-saved-project-recovery": {
+      "file": "todo-saved-project-recovery.html",
+      "route": "/todo/projects",
+      "state": "complete-saved-query-review-from-Projects",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Saved_page_and_cross_page_native_recovery_show_complete_query_and_one_heading",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "conversion-project-entry": {
+      "file": "conversion-project-entry.html",
+      "route": "/todo/projects",
+      "state": "conversion-project-entry",
+      "surfaces": [
+        "form",
+        "confirmation",
+        "disabled-controls",
+        "navigation",
+        "error"
+      ],
+      "interactionTest": "WorkspaceChecklistConversionPanelTests",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-review": {
+      "file": "todo-organization-review.html",
+      "route": "/todo/projects",
+      "state": "long-native-project-review-and-task-fence",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Rename_preserves_omitted_archived_references_and_recovers_original_preparation_and_acceptance",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-unknown": {
+      "file": "todo-organization-unknown.html",
+      "route": "/todo/projects",
+      "state": "unknown-native-original-receipt",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Rename_preserves_omitted_archived_references_and_recovers_original_preparation_and_acceptance",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-removal": {
+      "file": "todo-organization-removal.html",
+      "route": "/todo/projects",
+      "state": "reviewed-complete-paged-project-removal",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Logical_project_removal_requires_every_reference_page_and_preserves_all_tasks_and_links",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-section": {
+      "file": "todo-organization-section.html",
+      "route": "/todo/projects",
+      "state": "immutable-project-section-order-editor",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Optional_native_records_and_Todo_goal_progress_use_reviewed_commands_without_game_effects",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-goal": {
+      "file": "todo-organization-goal.html",
+      "route": "/todo/projects",
+      "state": "goal-membership-and-cancelled-progress",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Optional_native_records_and_Todo_goal_progress_use_reviewed_commands_without_game_effects",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "tags-command-membership": {
+      "file": "tags-command-membership.html",
+      "route": "/todo/projects",
+      "state": "tags-command-membership",
+      "surfaces": [
+        "form",
+        "confirmation",
+        "disabled-controls",
+        "navigation"
+      ],
+      "interactionTest": "WorkspaceTagPanelTests",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "todo-organization-page": {
+      "file": "todo-organization-page.html",
+      "route": "/todo/projects",
+      "state": "composed-project-management-and-branch-page",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error",
+        "navigation"
+      ],
+      "interactionTest": "Projects_page_composes_optional_management_and_independent_branch_selection",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "recovery-shared-projects-unarchive": {
+      "file": "recovery-shared-projects-unarchive.html",
+      "route": "/todo/projects",
+      "state": "shared-unarchive-identity-and-disabled-state",
+      "surfaces": [
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "focus"
+      ],
+      "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "recovery-shared-projects-correction": {
+      "file": "recovery-shared-projects-correction.html",
+      "route": "/todo/projects",
+      "state": "shared-correction-identity-and-disabled-state",
+      "surfaces": [
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "focus"
+      ],
+      "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "recovery-shared-projects-linked-unknown": {
+      "file": "recovery-shared-projects-linked-unknown.html",
+      "route": "/todo/projects",
+      "state": "shared-linked-unknown-identity-and-disabled-state",
+      "surfaces": [
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "focus"
+      ],
+      "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "project-notes-archived": {
+      "file": "project-notes-archived.html",
+      "route": "/todo/projects",
+      "state": "archived-context-disabled-create-retained-note",
+      "surfaces": [
+        "form",
+        "actions",
+        "confirmation",
+        "disabled-controls",
+        "error"
+      ],
+      "interactionTest": "Archived_project_context_disables_new_links_and_retains_exact_existing_notes",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    }
+  },
+  "artifact_fingerprints": {
+    "recovery-shared-projects-unarchive.html": "29184fd9adddeb00e007b5e5951db70420318a45c9547d3dc8e21da1a2f4c911",
+    "todo-organization-page.html": "11616d915879ec07aa5a4c7bbf7324e3e575124ee9cee8aa53566dbe753b90d7",
+    "notes-empty.html": "1013891a99737be303b434728e9d31299ab0f7064dd145723e7c129675b70b2a",
+    "todo-organization-review.html": "7b9f76a2c613b66399b5b212d9ec5888e55f344c52457637b53ef55c152e2aa1",
+    "recovery-shared-projects-linked-unknown.html": "663d12d94bfcf579c8d57caa61b46bca7e35c5707021bf56a596b8330ffe9d4d",
+    "qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "todo-organization-unknown.html": "c787e1386cc52aed0021f8aed56bd4d0851c610213222bc999d1ff7310d6303e",
+    "project-notes-review.html": "99553a9771568b94cce9a564e4da04b71dd297b0f70c950c92e7118e9f7c6ae0",
+    "mud.css": "e14e158cddb262e4afd212568dfacfb3d89216c6795b46225d1e004271642c64",
+    "notes-project-filter.html": "06a570cf276edd7de969191eef0fc0e2564594b6c340c766ddc99415c94f8679",
+    "project-alias-retained-picker.html": "9e512d1f667b39aa5110df178ed0c4ffb7d1dc6513ce5c8c4641dadb5fd88aaf",
+    "project-notes-draft.html": "d971f18786e58a75b1a36cad8a3ff309bdfa71eda424bf92ab8573608cb5500c",
+    "notes-long.html": "8b3ee01340ffae7e7a7cb0ecf82d702146c51437adcf61fb8cd1805b19c80bf3",
+    "notes-unavailable.html": "5a0d1f5336ad9870517ff1c1bbe308708decc29fd00f4eba86a73b362322eee8",
+    "project-notes-no-consent.html": "e762bbb86dfdd34aa15655db1ba84258245b7434b9bd95c9b2c1e4eb87976804",
+    "project-alias-editor.html": "fff4bf42d2fa440953f5e349fb4bce3e5d6b4a8d818d29d9775d767f60d5b201",
+    "matrix.html": "b6ca6cd29e493de07d84a2d09dfff07ba9acac3674a273be7a8cad485977d54b",
+    "notes-consent.html": "3fb313fa5f11c00a65fcc49ab8e23d8cebebe636ec94b145fa0ca9effb910fed",
+    "route-inventory.json": "cb4a74b60d9af96cb071bec15f0b0febd710e2bdddd7c08c26ebf4d6cd3f3d09",
+    "notes-project-unknown.html": "d7e6217c5613ef392bcf5df58e6a97b3c8a8fb05bd0c833721f856a83ba53121",
+    "notes-unknown.html": "2e678dafbd9c5733c1ad5b40f8169dd1008c01f5f816281455a89171319b8087",
+    "app.css": "33b9fc6c2b5ccb69e2f5491827bb25ad920b3f355ff05d107b58c4a14033770d",
+    "conversion-project-entry.html": "dfcf0a15d07ad457294e70d71b79b46e4763b32a1756c0199445ce746d85bf5a",
+    "notes-project-create-review.html": "41fee884929ff6871f237f1096b3d75f33287ef15e561e859a2e6aee41e58d44",
+    "notes-project-stale.html": "1670504090e7f5a6b15556c26a0e8bc96ff273cd808e04553f27d92ff257dbf8",
+    "tags-command-membership.html": "e63c0a7f02e9905d3f99716fcd365b5ce9cf616a1945120c6c0883efcaa33874",
+    "schemes.json": "0e1c1d63032d211cb5c46ef447cd7ce41addfd16c97b99ea26cbb2d8d9e254aa",
+    "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "project-alias-unknown.html": "10e0d0b7aa3b766d8baf916d8e631055de5a69f8bbe574bf497d3b8a4d4cfa3c",
+    "notes-purge.html": "0e3408cc70b435741ace29e3ad45e2216fe16e2ffd81bc1fd9abb481a27fc104",
+    "qualification-session.mjs": "a3787f07a47d9a95532afef7b8514898455c87226aeafe2df53c03f2065bb39e",
+    "coverage.json": "98f06b01338a36f17f6fe0275e1c07c4edd186c6900b1535062e40ffdcff1270",
+    "todo-organization-removal.html": "40737542bf5c92fe1d39e7909d0781b7f1642585c134614526d3a75b613eeebf",
+    "todo-organization-section.html": "c89aafeb1bce203856a5571a7d28694be3f263f00d2f4bf96aca0df5122c50a4",
+    "todo-organization-goal.html": "98f2663bd9b5621463db8a01fd4bf2b10c8764d8f88e07913446bf0e07d15d29",
+    "notes-conflict.html": "b95e81fa1298dfe18dc4ea17e69bca5c1ccdda5fd38cdb3ab2c97fbf9edcd576",
+    "recovery-shared-projects-correction.html": "c38ab6ee202389745e981e3f2396cd15af3881ef644cc3a572b3cb1795dd2c0e",
+    "todo-saved-project-recovery.html": "32c0f225105322b4e191554db9d38bd814ae73d39e0ccef5c76f29f7abef6b52",
+    "project-notes-archived.html": "4e047fd717ffa706658e0077bbd419f2e716067f3271512c550108cad4b9949a",
+    "notes-document.html": "6e4c3f08cba3c419316ba8ef95f1a9e9c21bc07b241dcb46177fab3b7b86032c",
+    "todo-tree-project.html": "205001a739d0a1482a28d5220473f57011d532679b77b8b96c7e938a024fa8d2",
+    "project-alias-create-review.html": "909245953fba491ee85905083d9af446ed1fa7ba12061916398238bc1d75cd53",
+    "qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53"
+  },
+  "repairs": [
+    {
+      "observation": "Long library note button exceeded a12rem phone scroll region and intersected pagination rectangles.",
+      "control": {
+        "cases": 1152,
+        "errors": 42,
+        "affected_cases": 21,
+        "fixture": "project-notes-draft"
+      },
+      "repair": "Use natural paginated library height while keeping the retained-version scroll region.",
+      "final": "All1188 final matrix cases pass."
+    }
+  ],
+  "operations": {
+    "dotnet_deadline_seconds": 240,
+    "browser_case_deadline_ms": 5000,
+    "browser_matrix_deadline_ms": 300000,
+    "cleanup_reserve_seconds": 15,
+    "final_solution_wall_seconds": 46.85,
+    "prerequisite_wait_seconds": 0,
+    "active_controller_seconds": null,
+    "classification": "Executed local controls; no external account, provider or host operations."
+  },
+  "limitations": [
+    "Local synthetic model, component and desktop browser qualification only. Hosted private Notes, actual OAuth/enrollment, real devices, assistive technology and installed host behavior remain unqualified.",
+    "No schema change, remote migration, task/game effect, deployment, scheduling, publication or commit occurred.",
+    "The Notes picker uses the explicitly loaded matching canonical Workspace. Source changes and Notes consent remain separate user actions."
+  ]
+}

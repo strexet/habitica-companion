@@ -13,6 +13,7 @@
 </section>
 }
 else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1> }
+@if (ProjectMode) { <TodoProjectNotesPanel ProjectId="_project" /> }
 <TodoTaskPanel @ref="_review" Kind="CompanionTaskKind.Todo" ShowTaskList="false" ShowCapture="@(!ProjectMode || _editing)" CompactStatus="@(!ProjectMode)" ReviewClosed="ReviewClosedAsync" />
 @if (_error is not null) { <p role="alert" class="card-surface">@_error</p> }
 @if (_readError is not null) { <p role="alert" class="card-surface">@_readError</p> }

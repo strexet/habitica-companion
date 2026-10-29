@@ -1,4 +1,4 @@
-import type {Tool} from '@modelcontextprotocol/sdk/types.js';
+import type {Tool} from '@modelcontextprotocol/server';
 import {retirementToolScopes,type RetirementTool} from '../../shared/retirement-tools.ts';
 const id={type:'string',format:'uuid'},object=(properties:Record<string,unknown>)=>({type:'object',properties,required:Object.keys(properties),additionalProperties:false});
 const schemas={prepare_source_retirement:object({requestId:id,conversionId:id,expectedRevision:{type:'integer',minimum:1}}),verify_source_retirement:object({commandId:id}),accept_source_retirement:object({commandId:id,contextHash:{type:'string',pattern:'^[a-f0-9]{64}$'},irreversibleApproved:{const:true}}),get_source_retirement_command:object({commandId:id}),reconcile_source_retirement:object({commandId:id})};

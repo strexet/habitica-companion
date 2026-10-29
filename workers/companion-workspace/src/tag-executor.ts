@@ -37,11 +37,11 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
  async function paced(){
   const runtime=await control.runtime(),delay=Math.max(0,Date.parse(runtime?.next_network_at_utc??'')-Date.now());
   if(Number.isFinite(delay)&&delay>0){if(Date.now()+delay+15000>=control.deadline)throw new Error('activation_deadline');await control.wait(delay);}
-  if(!await control.permitted())throw new Error('executor_paused');
+  if(!await control.permitted()||(await control.row())?.linked_recovery_fence)throw new Error('executor_paused');
   const result=await env.WORKSPACE_DB.prepare('UPDATE workspace_runtime SET next_network_at_utc=? WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?').bind(new Date(Date.now()+30000).toISOString(),profileId,control.epoch,control.token,new Date().toISOString()).run();if(!result.meta.changes)throw new Error('executor_paused');
  }
  async function gateway(operation:string,args:Record<string,unknown>,prepared?:Prepared,lookup=false):Promise<Outcome>{
-  if(!lookup)await paced();else if(!await control.permitted())throw new Error('executor_paused');
+  if(!lookup)await paced();else if(!await control.permitted()||(await control.row())?.linked_recovery_fence)throw new Error('executor_paused');
   const payload=prepared?{...prepared}:{profileId,connectionId:stored!.connection_id,context:work.context,operation,arguments:args,automated:true,expectedConsentEpoch:work.consentEpoch,...(work.origin.source==='mcp'?{requiredGrantEpoch:work.origin.grantEpoch}: {})};delete (payload as Partial<Prepared>).memberTaskId;
   const response=await env.AUTH_PROJECTION.fetch('https://projection.internal/tags',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});
   const outcome=await response.json<Outcome>();if(lookup&&!response.ok)return {kind:'unknown',code:'tag_receipt_unavailable'};return !response.ok&&!outcome.kind?{kind:lookup?'unknown':'refused',code:'tag_gateway_unavailable'}:outcome;

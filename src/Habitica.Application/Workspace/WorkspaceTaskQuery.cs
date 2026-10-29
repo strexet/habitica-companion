@@ -57,5 +57,5 @@ public static class WorkspaceTaskQuery
 
     private static bool ValidRange(DateOnly? from, DateOnly? to) => from != DateOnly.MinValue && to != DateOnly.MinValue && (from is null || to is null || from <= to);
     private static bool Within(DateOnly? value, DateOnly? from, DateOnly? to) => from is null && to is null || value is not null && (from is null || value >= from) && (to is null || value <= to);
-    internal static string Fold(string value) => WorkspaceSearchNormalization.Normalize(value).Replace("\u0130", "i\u0307", StringComparison.Ordinal).ToLowerInvariant().Replace('\u03c2', '\u03c3');
+    public static string Fold(string value) => WorkspaceSearchNormalization.Normalize(value).Replace("\u0130", "i\u0307", StringComparison.Ordinal).ToLowerInvariant().Replace('\u03c2', '\u03c3');
 }

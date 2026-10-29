@@ -1,0 +1,683 @@
+{
+  "todo-history-completions": {
+    "file": "todo-history-completions.html",
+    "route": "/todo/history",
+    "state": "snapshot-archive-and-civil-labels",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-expanded": {
+    "file": "todo-history-expanded.html",
+    "route": "/todo/history",
+    "state": "expanded-retained-notes-and-identities",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-expired": {
+    "file": "history-linked-expired.html",
+    "route": "/todo/history",
+    "state": "explicit-linked-expired-refusal",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Unsupported_or_changed_linked_recovery_gives_reason_without_replacing_intent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-review": {
+    "file": "todo-history-review.html",
+    "route": "/todo/history",
+    "state": "exact-restoration-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Exact_native_restore_recovers_original_receipt_retains_cycles_and_never_reverses_game_rewards",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-unverified": {
+    "file": "history-linked-unverified.html",
+    "route": "/todo/history",
+    "state": "explicit-linked-unverified-refusal",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Unsupported_or_changed_linked_recovery_gives_reason_without_replacing_intent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-unknown": {
+    "file": "todo-history-unknown.html",
+    "route": "/todo/history",
+    "state": "original-restoration-uncertain",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Exact_native_restore_recovers_original_receipt_retains_cycles_and_never_reverses_game_rewards",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-stale": {
+    "file": "history-linked-stale.html",
+    "route": "/todo/history",
+    "state": "explicit-linked-stale-refusal",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Unsupported_or_changed_linked_recovery_gives_reason_without_replacing_intent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-native-unarchive-review": {
+    "file": "history-native-unarchive-review.html",
+    "route": "/todo/history",
+    "state": "exact-unarchive-review",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Archived_tasks_review_exact_unarchive_and_recover_original_zero_effect_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-empty": {
+    "file": "todo-history-empty.html",
+    "route": "/todo/history",
+    "state": "empty-filtered-history",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Stable_paging_resets_on_filters_and_revision_and_empty_is_distinct_from_unavailable",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-recovery-options": {
+    "file": "history-recovery-options.html",
+    "route": "/todo/history",
+    "state": "separate-native-and-linked-actions",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Linked_uncheck_lost_acknowledgement_retains_request_filters_draft_and_original_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-review": {
+    "file": "history-linked-review.html",
+    "route": "/todo/history",
+    "state": "fresh-exact-native-and-resource-review",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Linked_uncheck_lost_acknowledgement_retains_request_filters_draft_and_original_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-unknown": {
+    "file": "history-linked-unknown.html",
+    "route": "/todo/history",
+    "state": "uncertain-original-recovery",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Linked_uncheck_lost_acknowledgement_retains_request_filters_draft_and_original_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-habit": {
+    "file": "todo-history-habit.html",
+    "route": "/todo/history",
+    "state": "long-habit-expanded-UTC-and-direction-filters",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Habit_direction_search_and_inclusive_UTC_days_filter_retained_events_without_undo_or_inferred_streaks",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-linked-confirmed": {
+    "file": "history-linked-confirmed.html",
+    "route": "/todo/history",
+    "state": "original-receipt-and-preserved-history",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Linked_uncheck_lost_acknowledgement_retains_request_filters_draft_and_original_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-error": {
+    "file": "todo-history-error.html",
+    "route": "/todo/history",
+    "state": "invalid-UTC-range",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Habit_direction_search_and_inclusive_UTC_days_filter_retained_events_without_undo_or_inferred_streaks",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-occurrence-skip": {
+    "file": "history-occurrence-skip.html",
+    "route": "/todo/history",
+    "state": "retained-skip-and-native-recovery",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Terminal_Daily_completion_and_skip_have_separate_exact_native_correction",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-native-correction-review": {
+    "file": "history-native-correction-review.html",
+    "route": "/todo/history",
+    "state": "exact-terminal-correction-review",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Terminal_Daily_completion_and_skip_have_separate_exact_native_correction",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "history-archived-repair": {
+    "file": "history-archived-repair.html",
+    "route": "/todo/history",
+    "state": "archived-reference-repair-required",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus",
+      "error"
+    ],
+    "interactionTest": "Archived_repair_and_retained_game_identity_explain_refusal_without_unlinking_or_erasing_history",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-dailies-correction": {
+    "file": "recovery-shared-dailies-correction.html",
+    "route": "/todo/dailies",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-dailies-linked-unknown": {
+    "file": "recovery-shared-dailies-linked-unknown.html",
+    "route": "/todo/dailies",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-dailies-unarchive": {
+    "file": "recovery-shared-dailies-unarchive.html",
+    "route": "/todo/dailies",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-habits-correction": {
+    "file": "recovery-shared-habits-correction.html",
+    "route": "/todo/habits",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-habits-linked-unknown": {
+    "file": "recovery-shared-habits-linked-unknown.html",
+    "route": "/todo/habits",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-habits-unarchive": {
+    "file": "recovery-shared-habits-unarchive.html",
+    "route": "/todo/habits",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-inbox-correction": {
+    "file": "recovery-shared-inbox-correction.html",
+    "route": "/todo/inbox",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-inbox-linked-unknown": {
+    "file": "recovery-shared-inbox-linked-unknown.html",
+    "route": "/todo/inbox",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-inbox-unarchive": {
+    "file": "recovery-shared-inbox-unarchive.html",
+    "route": "/todo/inbox",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-lists-correction": {
+    "file": "recovery-shared-lists-correction.html",
+    "route": "/todo/lists",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-lists-linked-unknown": {
+    "file": "recovery-shared-lists-linked-unknown.html",
+    "route": "/todo/lists",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-lists-unarchive": {
+    "file": "recovery-shared-lists-unarchive.html",
+    "route": "/todo/lists",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-plan-correction": {
+    "file": "recovery-shared-plan-correction.html",
+    "route": "/todo/plan",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-plan-linked-unknown": {
+    "file": "recovery-shared-plan-linked-unknown.html",
+    "route": "/todo/plan",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-plan-unarchive": {
+    "file": "recovery-shared-plan-unarchive.html",
+    "route": "/todo/plan",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-projects-correction": {
+    "file": "recovery-shared-projects-correction.html",
+    "route": "/todo/projects",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-projects-linked-unknown": {
+    "file": "recovery-shared-projects-linked-unknown.html",
+    "route": "/todo/projects",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-projects-unarchive": {
+    "file": "recovery-shared-projects-unarchive.html",
+    "route": "/todo/projects",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-reminders-correction": {
+    "file": "recovery-shared-reminders-correction.html",
+    "route": "/todo/reminders",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-reminders-linked-unknown": {
+    "file": "recovery-shared-reminders-linked-unknown.html",
+    "route": "/todo/reminders",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-reminders-unarchive": {
+    "file": "recovery-shared-reminders-unarchive.html",
+    "route": "/todo/reminders",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-sync-correction": {
+    "file": "recovery-shared-sync-correction.html",
+    "route": "/todo/sync",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-sync-linked-unknown": {
+    "file": "recovery-shared-sync-linked-unknown.html",
+    "route": "/todo/sync",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-sync-unarchive": {
+    "file": "recovery-shared-sync-unarchive.html",
+    "route": "/todo/sync",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-task-tree-correction": {
+    "file": "recovery-shared-task-tree-correction.html",
+    "route": "/todo/tasks",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-task-tree-linked-unknown": {
+    "file": "recovery-shared-task-tree-linked-unknown.html",
+    "route": "/todo/tasks",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-task-tree-unarchive": {
+    "file": "recovery-shared-task-tree-unarchive.html",
+    "route": "/todo/tasks",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-tasks-correction": {
+    "file": "recovery-shared-tasks-correction.html",
+    "route": "/tasks",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-tasks-linked-unknown": {
+    "file": "recovery-shared-tasks-linked-unknown.html",
+    "route": "/tasks",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-tasks-unarchive": {
+    "file": "recovery-shared-tasks-unarchive.html",
+    "route": "/tasks",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-today-correction": {
+    "file": "recovery-shared-today-correction.html",
+    "route": "/todo/today",
+    "state": "shared-correction-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-today-linked-unknown": {
+    "file": "recovery-shared-today-linked-unknown.html",
+    "route": "/todo/today",
+    "state": "shared-linked-unknown-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "recovery-shared-today-unarchive": {
+    "file": "recovery-shared-today-unarchive.html",
+    "route": "/todo/today",
+    "state": "shared-unarchive-identity-and-disabled-state",
+    "surfaces": [
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "focus"
+    ],
+    "interactionTest": "Shared_task_review_and_pending_recovery_preserve_identity_on_every_host_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

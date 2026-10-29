@@ -1,0 +1,108 @@
+{
+  "task_id": "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+  "source_fingerprints": {
+    "workers/chatgpt-mcp/src/adoption-tools.ts": "4681f5572bf71a55a901896d6aa947e011f721b62580093d11da861d10336db9",
+    "workers/chatgpt-mcp/src/party-tools.ts": "732cbd2192d0d13a587226d4e578567b77d69debdd9c6c11e351b35cea97c9a0",
+    "workers/chatgpt-mcp/src/task-tools.ts": "93506f923510b2bedc15562ac9a48f61c0dd4cd2f0b32bfde80447474f1f6706",
+    "workers/chatgpt-mcp/src/reminder-tools.ts": "8985e205dc961e131206768c26aceff0a182e9bb3cfbe2e8ec425a9883a01362",
+    "workers/chatgpt-mcp/src/retirement-tools.ts": "7de943633a44ef385a06cc5d0b32e31be664fac67211bc98134ef4aee3a1038d",
+    "workers/chatgpt-mcp/src/note-tools.ts": "2e73820fc982f0f63c48f17c80be4ad33c5f38b981c13cd6a7481a5a0f455616",
+    "workers/chatgpt-mcp/src/diagnostic-tools.ts": "15676a10ab9d2a8276291984e1ba8fe8825668510cd5d8ff8de606eed02d3eda",
+    "workers/chatgpt-mcp/src/spell-tools.ts": "15c6f38d7b253ef0498424ce465d773e2fab3d6972b7cc0009b923a1aacf6778",
+    "workers/chatgpt-mcp/src/linked-recovery-tools.ts": "5c5306913a6cc15aee2ba7a64fea94b145ad346bee03b531e351ece2581cc9fc",
+    "workers/chatgpt-mcp/src/group-tag-tools.ts": "089de8a53e19ffbbdeb5c7433f9b4a0fbbf6522b8a653ae4247e7e181f49e0b9",
+    "workers/chatgpt-mcp/src/tools.ts": "3faa6b489728507dab962553f623eb8d10679bc06fa6827109cbacd004545d19",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "552e657b5dadd8b4935635f26578b8583191624ab860f2425e7960c5094a665d",
+    "workers/chatgpt-mcp/src/cron-tools.ts": "67d9392eaaac1afe6c42072d0d41cdffb38535e5a00dd279cf1cd6190566e9e5",
+    "workers/chatgpt-mcp/src/conversion-tools.ts": "cb03c51797ba7bd94927afa7c3f0934bcf54de378b467d863b7b44a24e2696c9",
+    "workers/chatgpt-mcp/package.json": "87aa23dd438efcfef334b03bdd8197b6b2b77d873f9e75dfbcd9685c97fc2bab",
+    "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
+    "workers/shared/build-identity.generated.ts": "cf377ccfdd4bbdf38859bd4e30509fba396e59bbe133a4a0818510aabbec8598",
+    "workers/chatgpt-auth/test/mcp2.test.mjs": "e523f8ba622b0b5f1c2c2288f2374cba6fb59ee2a54b969d926f29e4eb2b7734",
+    "tests/Functions/mcp-events-prototype.test.mjs": "73591c15ee80ade2ea16a9b19016812a7de52616e4c7548263fbe2183f8c280e",
+    "skill-tree/documents/mcp-protocol-compatibility.md": "0f441c1a2aa6eb3082609833750c1d4b80564e18ce9dc0faa32692b4fbc28ed9",
+    "skill-tree/documents/originating-chat-reminders.md": "bc6c3ad21a510aa1cd1f6121b0ac72d0b19b25ee5cf9d79b66a0d8ee4f94be36",
+    "skill-tree/documents/technical.md": "276d4592e7186c26d97693074472aabe71ae20661819b38ea5d3fb08e806d123",
+    "skill-tree/documents/features.md": "c070716b6dbbe3d701addc22588d1ef1f5840eaac0b46962c5923abc278f8417",
+    "skill-tree/documents/testing.md": "6b0153dcf6d44eed6ed5ccb1040f0f85d6bc8596a64e54e8eb74010c1df1b0c7"
+  },
+  "profile": "skill-tree/history/validation/mcp2-migration/profile.json",
+  "checks": {
+    "auth": {
+      "passed": 209,
+      "failed": 0,
+      "wall_seconds": 80.89
+    },
+    "workspace": {
+      "passed": 713,
+      "failed": 0,
+      "wall_seconds": 94.4
+    },
+    "legacy_events_prototype": {
+      "passed": 10,
+      "failed": 0,
+      "wall_seconds": 0.24
+    },
+    "dry_builds": {
+      "chatgpt-mcp": "pass",
+      "chatgpt-auth": "pass",
+      "companion-workspace": "pass"
+    },
+    "sdk_protocol": {
+      "server": "2.4.0",
+      "core": "2.4.0",
+      "modern_client": "2.4.0",
+      "legacy_client": "1.32.1",
+      "modern_protocol": "2026-07-28",
+      "legacy_protocols": [
+        "2025-11-25",
+        "2025-06-18",
+        "2025-03-26",
+        "2024-11-05",
+        "2024-10-07"
+      ],
+      "pre_existing_package_version_changes": 0
+    },
+    "modern_legacy_controls": [
+      "Real pinned clients against local OAuth/MCP/Auth/Workspace bundles; full tool/schema equality.",
+      "Interpreter-backed Worker JSON schema validator compiles all advertised inputs/outputs and rejects undeclared selector data.",
+      "Automatic/pinned modern discovery; unsupported pin refuses fallback; genuine v1 initialize/tools remains functional.",
+      "Exact Unicode/CRLF Notes command preview, lost acceptance acknowledgement and original cross-era receipt recovery retain one database receipt.",
+      "Malformed/unsupported envelopes and standard header mismatch refuse without legacy fallback.",
+      "Origin, wrong audience, denied scopes, invalid token and bounded body checks retain existing pre-dispatch gates.",
+      "Concurrent owners and changed grant epoch cannot transfer private Notes receipt access.",
+      "Compatibility metadata identifies the modern protocol separately from SDK legacy-only constants."
+    ],
+    "unsafe_eval": "No unsafe-eval binding or dynamic-code permission; emitted MCP bundle contains no eval or new Function call.",
+    "review": "Migration-owned diff compared with the selected dirty baseline; current authorization and original command paths are preserved.",
+    "diff_check": "pass"
+  },
+  "repairs": [
+    "Four existing schema property declarations used object rather than JSON-compatible types; declarations were narrowed without changing advertised bytes.",
+    "Synthetic OAuth fixture labels must match the existing Fixture A/B helper contract.",
+    "Modern raw controls require the actual mandatory protocol/method/name headers; replacement grants invalidate earlier tokens.",
+    "SDK SUPPORTED_PROTOCOL_VERSIONS contains legacy revisions only; compatibility discovery explicitly includes the qualified modern revision."
+  ],
+  "operations": {
+    "registry_deadline_seconds": 45,
+    "install_deadline_seconds": 120,
+    "build_deadline_seconds": 180,
+    "suite_deadline_seconds": 300,
+    "test_deadline_seconds": 30,
+    "cleanup_reserve_seconds": 15,
+    "prerequisite_wait_seconds": 0,
+    "active_controller_seconds": null
+  },
+  "limitations": [
+    "Qualification uses local synthetic Miniflare/D1 and genuine pinned SDK clients. Actual ChatGPT/Codex installation, discovery, deployed configuration and devices remain unqualified.",
+    "No Events capability, subscription, callback secret, application event delivery, external account operation, publication or commit is included.",
+    "The next callback lifecycle unit requires a separately qualified protected HTTPS egress adapter; the transport migration does not establish callback destination safety.",
+    "Repository validation retains an existing stale historical audit warning."
+  ],
+  "sources": [
+    "https://ts.sdk.modelcontextprotocol.io/v2/migration/upgrade-to-v2",
+    "https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28",
+    "https://ts.sdk.modelcontextprotocol.io/v2/serving/web-standard.html",
+    "https://developers.openai.com/plugins/build/mcp-events"
+  ]
+}

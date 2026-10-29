@@ -1,0 +1,61 @@
+{
+  "task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+  "pending_id": "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4",
+  "status": "needs-owner-architecture-decision",
+  "processing_run_id": "PR-db357572-5d65-4449-ae55-3148c9da6b6c",
+  "produced_prioritized_ids": [],
+  "dependency_edges": [],
+  "reason": "The required protected callback transport has no qualified implementation in the selected deployment. The concrete Node22 gateway proposal adds a backend trust boundary requiring owner approval; intake remains Pending.",
+  "source_fingerprints": {
+    ".agents/skills/skill-tree-implement-next-future-task/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-repo-documentation/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-work-through-next/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-add-pending-task/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    ".agents/skills/skill-tree-process-future-pending/scripts/workflow-state.py": "42951db9d00a506816d0090d6bb8125e3dc3502d8975fbfa6d2b069f9c526279",
+    "tests/skill-tree-checkpoint-tests.py": "c391dbc2350a05f568d038ec9749a1a967f556d1fd0a53575b64d10c505b666b",
+    "skill-tree/history/validation/callback-egress/proposal.md": "70bf92b631d764036f331576f836dea82d5aea1593a247dc9793511c247f7aa1",
+    "tests/protocol-prototypes/mcp-events.mjs": "2ad32283e0896c1099f3470115562f51d4ba9343c5334852bfda7382a2ce6265"
+  },
+  "checks": {
+    "static_repository": "No production callback transport, event subscription or callback-vault implementation exists. The prototype uses explicit fake transport assertions.",
+    "pinned_runtime": {
+      "workerd": "1.20261012.1",
+      "miniflare": "5.20261012.0-beta",
+      "compatibility_date": "2026-10-12",
+      "upstream_source_sha256": "0c1f04a0ebcf47a6c2e511db2be5e100697771bd97c7658c4682f35481b96991",
+      "source_lines": "862-871,908-925",
+      "result": "The source declares expectedServerHostname unsupported and potentially rejects the option. Later forwarding and installed types do not prove supported production certificate identity."
+    },
+    "platform_contracts": [
+      "Global fetch strictly public controls zone routing rather than exposing an approved-address pin.",
+      "resolveOverride requires a proxied hostname in the incoming zone.",
+      "Socket documentation rejects Cloudflare IP destinations.",
+      "The open upstream edge report is supporting evidence, not an independently executed production result."
+    ],
+    "helper_repair": {
+      "reason": "Required finding intake rejected a completed historical root while the direct follow-up parent remained prioritized.",
+      "change": "Allow a required blocker/subtask under the exact completed root outcome; preserve root/direct-parent IDs, writer transaction guards and default required priority. Unknown, cancelled, superseded or mismatched roots still refuse. Nonblocking followups still require an open root for default-priority derivation.",
+      "copies": 7,
+      "tests_passed": 5,
+      "tests_failed": 0,
+      "test_command": "python3 tests/skill-tree-checkpoint-tests.py"
+    }
+  },
+  "evidence": [
+    "skill-tree/history/validation/callback-egress/proposal.md"
+  ],
+  "limitations": [
+    "Source inspection and local helper tests only; no actual callback, TLS edge probe, DNS-control service, gateway deployment or production security result is claimed.",
+    "Auth-vault/subscription implementation remains blocked. No new backend, callback secret, consent, live subscription or application event was created."
+  ],
+  "sources": [
+    "https://github.com/cloudflare/workerd/blob/v1.20261012.1/src/workerd/api/sockets.c%2B%2B#L862-L871",
+    "https://github.com/cloudflare/workerd/issues/6903",
+    "https://developers.cloudflare.com/workers/runtime-apis/tcp-sockets/",
+    "https://developers.cloudflare.com/workers/configuration/compatibility-flags/#global-fetch-strictly-public",
+    "https://developers.cloudflare.com/workers/runtime-apis/request/#requestinitcfproperties"
+  ],
+  "installed_types_sha256": "c939798427a9ca2fcfa281ad2f675eb8446499785785978c20a00d5a22f96d2d"
+}

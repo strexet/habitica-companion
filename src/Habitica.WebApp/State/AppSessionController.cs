@@ -32,6 +32,8 @@ public sealed partial class AppSessionController : IAppSessionController
     private readonly IndexedDbNotesDatabase? _notesDatabase;
     private readonly Habitica.Application.Notes.NotesDraftSession? _notesDrafts;
     private readonly Habitica.Application.Notes.INotesCloudClient? _notesCloud;
+    private readonly Habitica.Application.Notifications.IForegroundReminderBrowser? _foregroundReminders;
+    private readonly Habitica.Application.Notifications.INotificationLocalStore? _notificationStore;
     private readonly IChatGptIntegrationClient? _integrationClient;
     private readonly IWorkspaceCloudClient? _workspaceClient;
     private readonly IndexedDbWorkspaceDatabase? _workspaceDatabase;
@@ -95,8 +97,12 @@ public sealed partial class AppSessionController : IAppSessionController
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
         IndexedDbNotesDatabase? notesDatabase = null,
         Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
-        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
+        Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null,
+        Habitica.Application.Notifications.INotificationLocalStore? notificationStore = null)
     {
+        _foregroundReminders=foregroundReminders;
+        _notificationStore=notificationStore;
         _notesCloud=notesCloud;
         _notesDatabase = notesDatabase;
         _notesDrafts = notesDrafts;
@@ -218,9 +224,17 @@ public sealed partial class AppSessionController : IAppSessionController
         }
 
         _initialized = true;
-        await LoadCachedStateAsync(cancellationToken);
-
-        var persistedCredentials = await _credentialStore.GetPersistentCredentialsAsync(cancellationToken);
+        HabiticaCredentials? persistedCredentials;
+        try
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            persistedCredentials = await _credentialStore.GetPersistentCredentialsAsync(cancellationToken);
+        }
+        catch (Exception exception) when (exception is Microsoft.JSInterop.JSException or JsonException or InvalidOperationException)
+        {
+            SetState(State with { ErrorMessage = "Saved sign-in is unavailable in this browser. Sign in again; credentials have not been restored." });
+            return;
+        }
 
         if (persistedCredentials is not null)
         {
@@ -2767,6 +2781,8 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public async Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
+        if(_notificationStore is not null)await _notificationStore.ClearAsync(cancellationToken);
+        if(_foregroundReminders is not null)await _foregroundReminders.ClearAsync(cancellationToken);
         _notesCloud?.ForgetSession();
         _notesDrafts?.Clear();
         if(_notesDatabase is not null) await _notesDatabase.ClearAsync(cancellationToken);

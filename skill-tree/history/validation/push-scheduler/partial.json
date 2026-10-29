@@ -1,0 +1,27 @@
+{
+  "taskId": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+  "status": "full Workspace serial regression pending; no acceptance",
+  "checks": {
+    "focusedWorkspaceApiAndSdk": 10,
+    "calendar": 3,
+    "authDispatch": 5,
+    "deployment": 11,
+    "authFull": 174,
+    "firstWorkspaceFull": {
+      "passed": 589,
+      "failed": 1,
+      "classification": "Miniflare D1 bridge transport uncertainty"
+    }
+  },
+  "sourceFingerprints": {
+    "workers/shared/reminder-calendar.ts": "02d0580bf464e68b65248dce7d95cfdf10a6aec1b6ddb3a57931547a10623c84",
+    "workers/shared/reminder-tools.ts": "4b05f735004f12f90b5be4c52137a129206f2032a836f81fda33133b7159843d",
+    "workers/companion-workspace/src/reminder-api.ts": "19cb9789ec2d1f84372e05db279e5cfd9f65e437a70e0c28850074dce979f3ae",
+    "workers/companion-workspace/src/reminder-scheduler.ts": "c04ecf437008afd5bc1b47b07d64163365c8971b84775d3f8cb9dc0ed5095dfb",
+    "workers/chatgpt-auth/src/push-message.ts": "3fb0a08b15bc6c8bbb4bf09a95be96edc6a189ac10a9ccf5f9253efd47afe7b2",
+    "workers/chatgpt-auth/src/push-dispatch.ts": "469647d4712cd25a261fe88bbf9357509d7bb2442e31d628ae64933195c5a101"
+  },
+  "limitations": [
+    "No live provider, provisioning, remote deployment, iPhone/OS delivery or notification-click qualification."
+  ]
+}

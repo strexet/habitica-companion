@@ -1,6 +1,7 @@
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
+import {clearPushContext} from './push-subscriptions';
 
 export const consentVersion = "integration-v1";
 const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
@@ -121,6 +122,7 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     .bind(profileId, connectionId, profileId, hash));
   const results = await env.HABITICA_INTEGRATION_DB.batch(writes);
   if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
+  if(previous&&previous.connection_id!==connectionId)await clearPushContext(env,profileId,previous.connection_id,false);
   return Response.json({ profileId, managementToken }, { status: 201, headers });
 }
 export async function managedProfile(request: Request, env: AuthEnv, profileId: string, applyBudget = true): Promise<IntegrationProfile> {

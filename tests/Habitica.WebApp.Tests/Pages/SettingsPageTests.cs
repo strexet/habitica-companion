@@ -13,6 +13,28 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class SettingsPageTests : BunitContext
 {
+    [Fact]
+    public void Pwa_installation_steps_expand_without_signin_or_notification_requests()
+    {
+        var (session, cut) = ConnectionPage();
+        session.SetState(SessionViewModel.Empty);
+        var toggle = cut.Find("[data-testid='pwa-install-toggle']");
+        Assert.Equal("false", toggle.GetAttribute("aria-expanded"));
+        Assert.Empty(cut.FindAll("[data-testid='pwa-install-steps']"));
+        Qualification.PageLayoutEvidence.Save("pwa-settings-collapsed", cut.Markup, "/settings", "install-collapsed", ["form", "navigation", "disabled-controls"], nameof(Pwa_installation_steps_expand_without_signin_or_notification_requests));
+        toggle.Click();
+        Assert.Equal("true", cut.Find("[data-testid='pwa-install-toggle']").GetAttribute("aria-expanded"));
+        var steps = cut.Find("[data-testid='pwa-install-steps']");
+        Assert.Contains("Add to Home Screen", steps.TextContent);
+        Assert.Contains("Installation does not save credentials or enable notifications.", steps.TextContent);
+        Assert.Contains("separate storage", steps.TextContent);
+        Assert.Equal("https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios", steps.QuerySelector("a")!.GetAttribute("href"));
+        Assert.DoesNotContain(JSInterop.Invocations, call => call.Identifier.Contains("permission", StringComparison.OrdinalIgnoreCase));
+        Qualification.PageLayoutEvidence.Save("pwa-settings-expanded", cut.Markup, "/settings", "install-expanded", ["form", "navigation", "disabled-controls"], nameof(Pwa_installation_steps_expand_without_signin_or_notification_requests));
+        cut.Find("[data-testid='pwa-install-toggle']").Click();
+        Assert.Empty(cut.FindAll("[data-testid='pwa-install-steps']"));
+    }
+
     public SettingsPageTests()
     {
         Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), null), null));
@@ -38,6 +60,7 @@ public sealed class SettingsPageTests : BunitContext
         Assert.Equal("BUTTON", logout.TagName);
         Assert.False(logout.HasAttribute("disabled"));
         Assert.Equal("/live-tests", cut.Find("[data-testid='settings-open-checks']").GetAttribute("href"));
+        Assert.Contains("mud-button-outlined-secondary", cut.Find("[data-testid='settings-open-checks']").ClassList);
         Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("settings-actions", cut.Find("[data-testid='settings-session-actions']").OuterHtml);
         var paragraphs = cut.FindAll(".settings-session-actions p");
         paragraphs[0].TextContent += " Long translated description with additional browser-session details, retained private data and sign-in information. This text must wrap without a fixed height.";
@@ -169,6 +192,8 @@ public sealed class SettingsPageTests : BunitContext
         cut.Find("[data-testid='clear-local-data']").Click();
         Assert.Equal(0, session.ClearLocalDataCalls);
         Assert.Contains("general app backup does not include Notes", cut.Find("[data-testid='clear-local-review']").TextContent);
+        Assert.Contains("pending-command references",cut.Markup);
+        Qualification.PageLayoutEvidence.Save("push-settings-clear-review",cut.Markup,"/settings","explicit-browser-clear-push-reference-disclosure",["confirmation","form","navigation"],nameof(Clearing_browser_data_requires_a_cancelable_review_that_names_separate_Notes_and_workspace_backups));
         cut.Find("[data-testid='clear-local-cancel']").Click();
         Assert.Equal(0, session.ClearLocalDataCalls);
         Assert.Empty(cut.FindAll("[data-testid='clear-local-review']"));

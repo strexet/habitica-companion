@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-27",
+  "sources": [
+    {
+      "url": "https://developers.openai.com/plugins/build/mcp-events",
+      "observedSections": [
+        "Before you start",
+        "Create a subscription",
+        "Verify the callback",
+        "Sign the request",
+        "Handle delivery responses",
+        "Manage subscriptions"
+      ],
+      "availability": "Work web, desktop Work Cloud, dots; protocol2026-07-28",
+      "binding": "host callback for subscribed chat; no raw chat ID in documented request",
+      "acknowledgement": "host receipt only; asynchronous processing"
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/app-server",
+      "observedSections": [
+        "Protocol",
+        "Lifecycle overview",
+        "Start or resume a thread",
+        "Events",
+        "Auth endpoints"
+      ],
+      "boundary": "Connected-server thread ID and authenticated transport do not establish existing desktop-thread access; WebSocket is experimental and unsupported for production."
+    }
+  ],
+  "repository": {
+    "sdkVersion": "1.32.1",
+    "latestProtocol": "2025-11-25",
+    "capabilities": "tools only",
+    "implementedEventRoutes": false
+  },
+  "sourcePublishedDates": "Pages expose no explicit publication timestamp in the inspected sections; checked date is not a publication date."
+}

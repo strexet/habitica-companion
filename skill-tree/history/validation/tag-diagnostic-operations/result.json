@@ -1,0 +1,30 @@
+{
+  "task_id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+  "source_fingerprints": {
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "04e932933c54a6f547437d579c241edac9438b9fcc32b64a81491f371424a0d1",
+    "tests/Habitica.Application.Tests/Diagnostics/DiagnosticsBundleTests.cs": "06dfaec385ff90efbea1bb4587922d16431c3d0ef017cb651a798d6bac4c3edb",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagDiagnosticsTests.cs": "0db45528ee599fe5bd8c3633400bd116e0ae91682b6952d660d4195bc4d0be20"
+  },
+  "checks": {
+    "solution": {
+      "passed": 1413,
+      "failed": 0
+    },
+    "tag_observer": "Eight actual typed tag operations retain exact names, modes and original command/correlation identities through real DiagnosticsLogStore.",
+    "export": "Repeated sanitization and manual shared-bundle parsing retain only the fixed allowlist and bounded metadata.",
+    "private_canaries": "Credential, private tag text, management/session tokens and unsupported operation names remain excluded.",
+    "diff_check": "pass"
+  },
+  "operation": {
+    "operation_class": "executed_control",
+    "tool_wall_seconds": 53.21699924999848,
+    "prerequisite_wait_seconds": 0,
+    "deadline_seconds": 240,
+    "cleanup_reserve_seconds": 15
+  },
+  "active_controller_seconds": null,
+  "limitations": [
+    "No UI layout change, live account call, automatic upload or access grant is included."
+  ],
+  "repair_evidence": "The initial Application test referenced a Web-test-only helper; the corrected Application test exercises sanitizer/export directly while the Web observer test exercises retained storage."
+}

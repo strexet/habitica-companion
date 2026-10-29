@@ -1,0 +1,24 @@
+{
+  "inventory-intelligence-stale": {
+    "file": "inventory-intelligence-stale.html",
+    "route": "/inventory",
+    "state": "stale-disabled",
+    "surfaces": [
+      "form",
+      "disabled-controls"
+    ],
+    "interactionTest": "Optimizer_exports_long_labels_and_disabled_actions",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "inventory-intelligence-fresh": {
+    "file": "inventory-intelligence-fresh.html",
+    "route": "/inventory",
+    "state": "fresh-long-labels",
+    "surfaces": [
+      "form",
+      "disabled-controls"
+    ],
+    "interactionTest": "Optimizer_exports_long_labels_and_disabled_actions",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

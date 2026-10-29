@@ -1,0 +1,17 @@
+{
+  "operation": "completeTask",
+  "taskId": "fe2403b8-ab96-489f-b6ac-5e72f9dee4a9",
+  "commandId": "42b586a7-52e6-4360-95c8-97f6930a5543",
+  "correlationId": "deec6f4e-562e-4deb-bfe1-6eb880ebbebe",
+  "taskText": "P0 · BUG: массовый каст заклинаний — HTTP 429 и восстановление экипировки",
+  "savedInCompanion": true,
+  "habiticaProjectionStatus": "pending",
+  "acceptedEventCount": 1,
+  "confirmedProjectionCount": 0,
+  "totalProjectionCount": 1,
+  "failurePosition": null,
+  "failure": "none",
+  "retryAtUtc": null,
+  "refreshSucceeded": true,
+  "outcomeUnknown": false
+}

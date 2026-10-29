@@ -24,6 +24,8 @@ public sealed class TodoTodayPanelTests : BunitContext
         Services.AddSingleton(f.Database); Services.AddSingleton(f.Controller);
         var todo = new TodoWorkspacePresentation(f.Session, f.Client, f.Database, f.Controller);
         Services.AddSingleton(todo); Services.AddSingleton<TodoTaskDraftStore>(); Services.AddSingleton(clock ?? TimeProvider.System);
+        Services.AddSingleton<Habitica.Application.Notifications.IForegroundReminderBrowser>(new ReminderBrowserFixture());
+        Services.AddSingleton<ForegroundReminderController>();
         return (f, todo);
     }
     private static WorkspaceDocument Document(params CompanionTask[] tasks) => new() { Id = Guid.NewGuid(), Revision = 10, Tasks = tasks };

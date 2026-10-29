@@ -1,0 +1,22 @@
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Resource location: remote 
+
+Migrations to be applied:
+┌──────────────────────────┐
+│ name                     │
+├──────────────────────────┤
+│ 0012-callback-egress.sql │
+└──────────────────────────┘
+? About to apply 1 migration(s)
+Your database may not be available to serve requests during the migration, continue?
+🤖 Using fallback value in non-interactive context: yes
+🌀 Executing on remote database habitica-companion-auth (ada5184c-865d-4c6a-864a-88618f19c06f):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 3 commands in 0.93ms
+┌──────────────────────────┬────────┐
+│ name                     │ status │
+├──────────────────────────┼────────┤
+│ 0012-callback-egress.sql │ ✅     │
+└──────────────────────────┴────────┘

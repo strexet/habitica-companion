@@ -6,32 +6,48 @@ import {workspaceTokenHash,WorkspaceError} from '../../shared/workspace-http.ts'
 import type {WorkspaceRow} from './executor.ts';
 import {planTags,type TagWorkPlan} from './tag-planner.ts';
 import {tagStatements,tagWorkBytes} from './tag-reconciliation.ts';
-import type {TagOrigin,TagAuthority} from './tag-authority.ts';
+import {tagAuthority,type TagOrigin,type TagAuthority} from './tag-authority.ts';
+import {closeTagReview,type TagReview as Review,tagReviewOutcome} from './group-tag-outcomes.ts';
 import {groupTagReadApi,currentTagRow,requiredTagAuthority,groupTagGateway,tagReviewLease,recoverGroupTagReceipt,publicTagWork,type TagStoredWork} from './group-tag-api.ts';
 import {executeTagWork} from './tag-executor.ts';
-interface Review {command_id:string;request_id:string;input_hash:string;connection_id:string;access_epoch:string;authority_json:string;expected_revision:number;ledger_hash:string;operation:string;payload_json:string;preview_json:string;receipt_json:string|null;expires_at_utc:string}
 interface Payload {ledger?:TagLedger;work?:TagWorkPlan[];workId?:string;gateway?:{context:unknown;operation:string;arguments:Record<string,unknown>;attemptId?:string;attemptAtUtc?:string}}
 const bytes=(value:string)=>new TextEncoder().encode(value).length,now=()=>new Date().toISOString();
 const stable=(value:unknown):unknown=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([key,item])=>[key,stable(item)])):value;
 const ledgerHash=(document:WorkspaceDocument)=>workspaceTokenHash(JSON.stringify(document.tagLedger??null));
-function display(review:Review){return {...JSON.parse(review.preview_json),expired:review.receipt_json===null&&review.expires_at_utc<=now(),savedInCompanion:review.receipt_json!==null,...(review.receipt_json?{receipt:JSON.parse(review.receipt_json)}:{})};}
+function display(review:Review){const receipt=review.receipt_json?JSON.parse(review.receipt_json):null;return {...JSON.parse(review.preview_json),expired:!receipt&&review.expires_at_utc<=now(),savedInCompanion:receipt?.savedInCompanion===true,reviewOutcome:receipt?tagReviewOutcome(receipt):'prepared',...(receipt?{receipt}:{})};}
 const loadReview=(env:WorkspaceEnv,row:WorkspaceRow,column:'command_id'|'request_id',id:string)=>env.WORKSPACE_DB.prepare('SELECT * FROM workspace_tag_reviews WHERE profile_id=? AND '+column+'=?').bind(row.profile_id,id).first<Review>();
 async function workRow(env:WorkspaceEnv,row:WorkspaceRow,id:string){const work=await env.WORKSPACE_DB.prepare('SELECT * FROM workspace_tag_work WHERE profile_id=? AND work_id=?').bind(row.profile_id,id).first<TagStoredWork>();if(!work)throw new WorkspaceError('tag_work_unavailable',404);return work;}
+async function staleReason(env:WorkspaceEnv,row:WorkspaceRow,review:Review):Promise<string|null>{
+ if(review.connection_id!==row.connection_id||review.access_epoch!==row.access_epoch)return 'tag_connection_changed';
+ if(review.expires_at_utc<=now())return 'tag_preview_expired';
+ const document=workspaceDocument(JSON.parse(row.document_json));
+ if(review.expected_revision!==document.revision||review.ledger_hash!==await ledgerHash(document))return 'tag_preview_changed';
+ const saved=JSON.parse(review.authority_json) as TagAuthority;
+ const current=await tagAuthority(env,row,{source:saved.source,tagWriteAllowed:saved.scopeAllowed,...(saved.grantEpoch?{grantEpoch:saved.grantEpoch}:{})});
+ return JSON.stringify(saved)!==JSON.stringify(current)?'tag_authority_changed':null;
+}
 async function original(env:WorkspaceEnv,row:WorkspaceRow,review:Review){
- await currentTagRow(env,row);if(!review.receipt_json)return {commandId:review.command_id,savedInCompanion:null,outcomeUnknown:true,prepared:true};
+ row=await currentTagRow(env,row);
+ if(!review.receipt_json){
+  let reason:string|null=null;try{reason=await staleReason(env,row,review);}catch{/* Unavailable authority cannot prove non-acceptance. */}
+  if(reason)review=await closeTagReview(env,row,review,reason);
+  else review=await loadReview(env,row,'command_id',review.command_id)??review;
+ }
+ if(!review.receipt_json)return {commandId:review.command_id,requestId:review.request_id,workspaceId:review.workspace_id,operation:review.operation,gameEffects:0,savedInCompanion:null,outcomeUnknown:true,prepared:true,reviewOutcome:'prepared',workIds:[]};
  const receipt=JSON.parse(review.receipt_json),payload=JSON.parse(review.payload_json) as Payload;
- if(payload.workId){const original=await recoverGroupTagReceipt(env,row,payload.workId);return {...receipt,original,outcomeUnknown:original.outcomeUnknown};}
- return receipt;
+ if(receipt.savedInCompanion!==true)return receipt;
+ if(payload.workId){const original=await recoverGroupTagReceipt(env,row,payload.workId),outcomeUnknown=original.outcomeUnknown;return {...receipt,original,outcomeUnknown,reviewOutcome:outcomeUnknown?'accepted-unknown':'accepted'};}
+ return {...receipt,reviewOutcome:tagReviewOutcome(receipt)};
 }
 export async function groupTagApi(env:WorkspaceEnv,initial:WorkspaceRow,name:GroupTagTool,args:unknown,origin:TagOrigin):Promise<Record<string,unknown>>{
  const input=groupTagInput(name,args),read=await groupTagReadApi(env,initial,name,input,origin);if(read)return read;
  let row=await currentTagRow(env,initial);
  if(name==='get_group_tag_command'){
-  const review=await loadReview(env,row,'command_id',String(input.commandId));return review?original(env,row,review):{commandId:input.commandId,savedInCompanion:null,outcomeUnknown:true};
+  const review=await loadReview(env,row,'command_id',String(input.commandId));return review?original(env,row,review):{commandId:input.commandId,savedInCompanion:null,outcomeUnknown:true,reviewOutcome:'accepted-unknown'};
  }
  if(name==='prepare_group_tag_command'){
   const hash=await workspaceTokenHash(JSON.stringify(stable(input))),existing=await loadReview(env,row,'request_id',String(input.requestId));
-  if(existing){if(existing.input_hash!==hash)throw new WorkspaceError('request_id_reused',409);return display(existing);}
+  if(existing){if(existing.input_hash!==hash)throw new WorkspaceError('request_id_reused',409);await original(env,row,existing);return display((await loadReview(env,row,'request_id',String(input.requestId)))!);}
   const authority=await requiredTagAuthority(env,row,origin),document=workspaceDocument(JSON.parse(row.document_json)),commandId=crypto.randomUUID();
   if(document.tagLedger&&document.tagLedger.accountId!==authority.accountId)throw new WorkspaceError('tag_account_mismatch',409);
   const payload:Payload={},operation=String(input.operation);let details:Record<string,unknown>,expires=new Date(Date.now()+600000).toISOString();
@@ -77,24 +93,24 @@ export async function groupTagApi(env:WorkspaceEnv,initial:WorkspaceRow,name:Gro
  }
  const review=await loadReview(env,row,'command_id',String(input.commandId));if(!review)throw new WorkspaceError('tag_review_required',409);
  if(review.receipt_json)return original(env,row,review);
- if(review.connection_id!==row.connection_id||review.access_epoch!==row.access_epoch||review.expires_at_utc<=now())throw new WorkspaceError('tag_preview_expired_or_changed',409);
- const authority=await requiredTagAuthority(env,row,origin),document=workspaceDocument(JSON.parse(row.document_json));
- if(review.authority_json!==JSON.stringify(authority)||review.expected_revision!==document.revision||review.ledger_hash!==await ledgerHash(document))throw new WorkspaceError('tag_preview_changed',409);
- const payload=JSON.parse(review.payload_json) as Payload,receipt={commandId:review.command_id,requestId:review.request_id,workspaceId:row.workspace_id,operation:review.operation,savedInCompanion:true,gameEffects:0,outcomeUnknown:review.operation!=='reconcile',workIds:payload.work?.map(work=>work.id)??(payload.workId?[payload.workId]:[])};
+ const stale=await staleReason(env,row,review);if(stale)return original(env,row,await closeTagReview(env,row,review,stale));
+ const authority=await requiredTagAuthority(env,row,origin);
+ if(review.authority_json!==JSON.stringify(authority))throw new WorkspaceError('tag_preview_changed',409);
+ const payload=JSON.parse(review.payload_json) as Payload,receipt={commandId:review.command_id,requestId:review.request_id,workspaceId:row.workspace_id,operation:review.operation,savedInCompanion:true,gameEffects:0,outcomeUnknown:review.operation!=='reconcile',reviewOutcome:review.operation==='reconcile'?'accepted':'accepted-unknown',workIds:payload.work?.map(work=>work.id)??(payload.workId?[payload.workId]:[])};
  return tagReviewLease(env,row,async control=>{
   const originalReview=await loadReview(env,row,'command_id',review.command_id);
-  if(originalReview?.receipt_json)return JSON.parse(originalReview.receipt_json);
-  if(!originalReview||originalReview.expires_at_utc<=now())throw new WorkspaceError('tag_preview_expired_or_changed',409);
-  row=await currentTagRow(env,row);const current=workspaceDocument(JSON.parse(row.document_json));if(row.store_version>=Number.MAX_SAFE_INTEGER||current.revision!==review.expected_revision||await ledgerHash(current)!==review.ledger_hash)throw new WorkspaceError('tag_preview_changed',409);
+  if(originalReview?.receipt_json){const saved=JSON.parse(originalReview.receipt_json);return {...saved,reviewOutcome:tagReviewOutcome(saved)};}
+  if(!originalReview)throw new WorkspaceError('tag_preview_expired_or_changed',409);
+  row=await currentTagRow(env,row);const changed=await staleReason(env,row,originalReview);if(changed)return original(env,row,await closeTagReview(env,row,originalReview,changed));const current=workspaceDocument(JSON.parse(row.document_json));if(row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('tag_preview_changed',409);
   const next=review.operation==='recover'?current:workspaceDocument({...current,revision:current.revision+1,tagLedger:payload.ledger}),serialized=JSON.stringify(next),commit=crypto.randomUUID();
   let prepared:Record<string,unknown>|null=null;
   if(review.operation==='adopt')prepared={profileId:row.profile_id,connectionId:row.connection_id,...payload.gateway,automated:false,attemptId:crypto.randomUUID(),attemptAtUtc:now(),expectedConsentEpoch:authority.consentEpoch,...(authority.source==='mcp'?{requiredGrantEpoch:authority.grantEpoch}:{})};
   const plan={document:next,work:payload.work??[],gap:null},size=row.archive_bytes-bytes(row.document_json)+bytes(serialized)+tagWorkBytes(plan)+bytes(prepared?JSON.stringify(prepared):'')+bytes(JSON.stringify(receipt));if(size>8*1024*1024||bytes(serialized)>1024*1024)throw new WorkspaceError('workspace_capacity',413);
-  const statements=[env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,archive_bytes=?,store_version=store_version+1,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=? AND active=1 AND EXISTS(SELECT 1 FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?)`).bind(serialized,size,commit,now(),row.profile_id,row.access_epoch,row.store_version,row.profile_id,row.access_epoch,control.token,now()),
+  const statements=[env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,archive_bytes=?,store_version=store_version+1,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=? AND active=1 AND EXISTS(SELECT 1 FROM workspace_tag_reviews WHERE profile_id=workspaces.profile_id AND command_id=? AND receipt_json IS NULL AND expires_at_utc>?) AND NOT EXISTS(SELECT 1 FROM workspace_tag_work w WHERE w.profile_id=workspaces.profile_id AND w.command_id=?) AND EXISTS(SELECT 1 FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?)`).bind(serialized,size,commit,now(),row.profile_id,row.access_epoch,row.store_version,review.command_id,now(),review.command_id,row.profile_id,row.access_epoch,control.token,now()),
    ...tagStatements(env,row,plan,commit),
    env.WORKSPACE_DB.prepare('UPDATE workspace_tag_reviews SET receipt_json=? WHERE profile_id=? AND command_id=? AND receipt_json IS NULL AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(JSON.stringify(receipt),row.profile_id,review.command_id,row.profile_id,commit)];
   if(prepared)statements.push(env.WORKSPACE_DB.prepare("UPDATE workspace_tag_work SET state='executing',prepared_request_json=? WHERE profile_id=? AND work_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)").bind(JSON.stringify(prepared),row.profile_id,payload.workId,row.profile_id,commit));
-  const committed=await env.WORKSPACE_DB.batch(statements);if(!committed[0].meta.changes)throw new WorkspaceError('tag_preview_changed',409);
+  const committed=await env.WORKSPACE_DB.batch(statements);if(!committed[0].meta.changes){const latest=await loadReview(env,row,'command_id',review.command_id);if(latest?.receipt_json)return original(env,row,latest);throw new WorkspaceError('tag_preview_changed',409);}
   if(review.operation==='reconcile')return receipt;
   try{
    const gateway=payload.gateway!;
@@ -105,6 +121,6 @@ export async function groupTagApi(env:WorkspaceEnv,initial:WorkspaceRow,name:Gro
     await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('UPDATE workspaces SET document_json=?,archive_bytes=archive_bytes+?,store_version=store_version+1,commit_tag=? WHERE profile_id=? AND access_epoch=? AND store_version=? AND active=1').bind(encoded,bytes(encoded)-bytes(fresh.document_json),t,row.profile_id,row.access_epoch,fresh.store_version),env.WORKSPACE_DB.prepare("UPDATE workspace_tag_work SET state='needsReview',error_code=? WHERE profile_id=? AND work_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)").bind(outcome.code??'tag_adoption_refused',row.profile_id,work.id,row.profile_id,t)]);
    }else await executeTagWork(env,row.profile_id,control,true,payload.workId);
   }catch{/* Original persisted request remains uncertain; a duplicate acceptance never resends. */}
-  const work=await workRow(env,row,payload.workId!);return {...receipt,original:publicTagWork(work),outcomeUnknown:['executing','unknownOutcome'].includes(work.state)};
+  const work=await workRow(env,row,payload.workId!);const outcomeUnknown=['executing','unknownOutcome'].includes(work.state);return {...receipt,original:publicTagWork(work),outcomeUnknown,reviewOutcome:outcomeUnknown?'accepted-unknown':'accepted'};
  });
 }

@@ -76,6 +76,15 @@ public sealed class TodoTaskLinkTests : BunitContext
         Assert.Equal(remote.ToString("D"),Assert.Single(todo.Snapshot!.Document.Projections).HabiticaTaskId);Assert.Equal(task,todo.Snapshot.Document.Tasks.Single());Assert.Equal(completed?1:0,todo.Snapshot.Document.Completions.Count);Assert.Empty(todo.Snapshot.Document.HabitScores);Assert.Empty(f.Client.AcceptedIds);
     }
     [Fact]
+    public async Task Original_terminal_nonacceptance_clears_only_the_adoption_uncertainty_fence()
+    {
+        var(f,todo,task)=await Setup(true);await todo.PreviewLinkAsync(task.Id,Guid.NewGuid());var original=f.Controller.LinkPreview;
+        f.Client.LinkAction=_=>new(false,"Synthetic lost response",OutcomeUnknown:true);await todo.AdoptLinkAsync();Assert.True(f.Controller.LinkAcceptanceUnknown);
+        f.Client.LinkAction=_=>new(false,"Original review refused",KnownNotAccepted:true);await todo.AdoptLinkAsync();
+        var cut=Render<TodoTaskLinkEditor>(p=>p.Add(x=>x.TaskId,task.Id));Save("todo-link-original-refused",cut.Markup,"original-terminal-nonacceptance-fresh-review",nameof(Original_terminal_nonacceptance_clears_only_the_adoption_uncertainty_fence));Assert.True(cut.Find("[data-testid='todo-link-cancel']").HasAttribute("disabled")==false);Assert.False(f.Controller.LinkAcceptanceUnknown);Assert.Same(original,f.Controller.LinkPreview);
+        todo.CancelLinkPreview();Assert.Null(f.Controller.LinkPreview);Assert.True(todo.CanSwitchSource);Assert.Empty(f.Client.State.Document.Projections);
+    }
+    [Fact]
     public async Task A_later_definitive_error_cannot_discard_an_earlier_uncertain_preparation()
     {
         var(f,todo,task)=await Setup(true);f.Client.LosePreparation=true;

@@ -7,7 +7,7 @@ using Habitica.Storage;
 namespace Habitica.WebApp.State;
 
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
-    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null, RecurrenceRule? Recurrence = null, bool ClearRecurrence = false);
+    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null, RecurrenceRule? Recurrence = null, bool ClearRecurrence = false, WorkspaceTaskReview? Review = null, WorkspaceTaskUnarchive? Unarchive = null, WorkspaceOccurrenceCorrection? CorrectOccurrence = null);
 
 public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null)
 {
@@ -143,9 +143,12 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 && (input.Details.Checklist is null || input.Details.Checklist.SequenceEqual(current.HabiticaDetails?.Checklist ?? []))))
         { input = input with { Operation = WorkspaceOperation.EnsureProjection }; patch = null; }
         if (input.Operation == WorkspaceOperation.PlanTask) patch = new(Planning: input.Planning);
+        if (input.Operation == WorkspaceOperation.ReviewTask) patch = new(Review:input.Review);
         if (input.Operation == WorkspaceOperation.SetTodoStage) patch = new(TodoStage:input.TodoStage);
         if (input.Operation == WorkspaceOperation.SetTodoState) patch = new(TodoState: input.TodoState);
         if (input.Operation == WorkspaceOperation.RelateTodo) patch = new(Relationships: input.Relationships);
+        if (input.Operation == WorkspaceOperation.UnarchiveTask) patch = new(Unarchive: input.Unarchive);
+        if (input.Operation == WorkspaceOperation.CorrectOccurrence) patch = new(CorrectOccurrence: input.CorrectOccurrence);
         if (input.Operation == WorkspaceOperation.RestoreTodo) patch = new(RestoreTodo: input.RestoreTodo);
         return WorkspaceTodoProjectionPolicy.Prepare(snapshot.Document, new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
@@ -192,7 +195,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 ? $"Counterpart creation is unavailable ({result.ErrorCode}). Recover an original pending create, or review an existing Habitica record for adoption; historical tasks must not be scored or reopened."
                 : "The preview is invalid or stale. Check the task, field bounds and current revision."; _intent = null; return; }
             Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false);
-            Message = _intent.Operation == WorkspaceOperation.SetTodoStage ? "Review the active Todo stage preference. Current state, dates, dependencies, history and accepted game commands remain unchanged." : _intent.Operation == WorkspaceOperation.SetTodoState ? "Review the native Todo planning state. Completion history, dependencies and accepted game commands remain unchanged; no new game effect occurs." : _intent.Operation == WorkspaceOperation.RelateTodo ? "Review the exact Todo parent and full dependency replacement. This command changes native relationships only." : _intent.Operation == WorkspaceOperation.RestoreTodo ? "Review the exact Todo completion to restore. Earlier completion history remains; no Habitica effect or reward reversal occurs." : _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
+            Message = _intent.Operation == WorkspaceOperation.ReviewTask ? "Review the voluntary cue action and timezone. Only explicit review metadata and retained history change; no completion or game effect occurs." : _intent.Operation == WorkspaceOperation.SetTodoStage ? "Review the active Todo stage preference. Current state, dates, dependencies, history and accepted game commands remain unchanged." : _intent.Operation == WorkspaceOperation.SetTodoState ? "Review the native Todo planning state. Completion history, dependencies and accepted game commands remain unchanged; no new game effect occurs." : _intent.Operation == WorkspaceOperation.RelateTodo ? "Review the exact Todo parent and full dependency replacement. This command changes native relationships only." : _intent.Operation == WorkspaceOperation.RestoreTodo ? "Review the exact Todo completion to restore. Earlier completion history remains; no Habitica effect or reward reversal occurs." : _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
         }
     }
     public void CancelPreview()
@@ -271,7 +274,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         var wasUnknown = LinkAcceptanceUnknown; LinkAcceptanceUnknown = true;
         var result = await cloud.AdoptLinkAsync(preview, cancellationToken);
         if (!StillCurrent(scope, generation)) return;
-        LinkAcceptanceUnknown = wasUnknown || result.OutcomeUnknown;
+        LinkAcceptanceUnknown = !result.KnownNotAccepted && (wasUnknown || result.OutcomeUnknown);
         if (result.Succeeded)
         {
             LinkAcceptanceUnknown = false; LinkPreview = null; RequiresReload = true;
@@ -290,6 +293,6 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     public static WorkspaceMutationReceipt Receipt(WorkspaceCommandEntry entry, Guid correlationId) => new(
         System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.Command.Operation.ToString()), entry.Command.TaskId, entry.Command.Id, correlationId, entry.TaskSnapshot?.Text ?? "", true,
         entry.ProjectionState == ProjectionCommandState.UnknownOutcome ? "UnknownOutcome" : entry.ProjectionState is ProjectionCommandState.Leased or ProjectionCommandState.Executing ? "pending" : System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.ProjectionState.ToString()),
-        entry.Command.Operation == WorkspaceOperation.ScoreHabit ? entry.Command.Count : entry.Command.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence or WorkspaceOperation.RestoreTodo ? 1 : 0,
+        entry.Command.Operation == WorkspaceOperation.ScoreHabit ? entry.Command.Count : entry.Command.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence or WorkspaceOperation.RestoreTodo or WorkspaceOperation.ReviewTask or WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence ? 1 : 0,
         entry.ConfirmedEffects, entry.Effects.Count, entry.Failure == ProjectionFailure.None ? null : entry.ConfirmedEffects + 1, entry.Failure.ToString(), entry.RetryAtUtc, true, entry.ProjectionState == ProjectionCommandState.UnknownOutcome);
 }

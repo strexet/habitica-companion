@@ -1,3 +1,4 @@
+import {diagnosticReadScope} from '../../shared/diagnostics';
 import {tagWriteScope} from '../../shared/tag-gateway';
 import {notesReadScope,notesWriteScope} from '../../shared/notes';
 import { OAuthAuthorizationServer, OAuthError, AuthorizationError, CimdFetchError, type OAuthHelpers } from "@cloudflare/workers-oauth-provider";
@@ -7,7 +8,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope,diagnosticReadScope];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT, env);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -73,6 +74,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
     "party.planning.write":"Plan party quests",
     "habitica.spells.execute":"Cast spells",
     "habitica.cron.execute":"Start New Day",
+    [diagnosticReadScope]:"Read explicitly shared diagnostics",
     [notesReadScope]:"Read personal Notes",
     [notesWriteScope]:"Change personal Notes",
   };
@@ -93,6 +95,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
     "party.planning.write":"Can queue owned quests and cast a personal vote; cannot leave the party.",
     "habitica.spells.execute":"Can spend mana and affect the party after a separate spell preview.",
     "habitica.cron.execute":"Can start a new day with irreversible task, buff and quest effects after a separate preview.",
+    [diagnosticReadScope]:"Can read explicitly shared sanitized browser diagnostics and reduced own server receipts after separate diagnostic consent. Shared content expires within seven days; no hidden browser access or game effects.",
     [notesReadScope]:"Can search and read sensitive Markdown, revisions and trash after separate Notes cloud consent.",
     [notesWriteScope]:"Can save, edit, trash or permanently purge Notes after explicit requests and separate Notes cloud consent.",
   };
@@ -101,6 +104,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
     { title: "Account and tasks", items: ["profile:read","account:read","tasks:read","habitica.tasks.write","workspace.organization.write",tagWriteScope] },
     { title: "Party and gameplay", items: ["party:read","party.planning.write","habitica.spells.execute","habitica.cron.execute"] },
     { title: "Personal notes", items: [notesReadScope,notesWriteScope] },
+    { title: "Shared diagnostics", items: [diagnosticReadScope] },
   ];
   const scopeInputs = groups.map(group => `<fieldset class="scope-group"><legend>${escape(group.title)}</legend><div class="scope-list">${group.items.map(scope => {
     const requested=details.scope.includes(scope), required=scope==="profile:read";

@@ -1,491 +1,288 @@
 {
   "active_run": {
     "completed_ids": [
-      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
-      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
-      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
-      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
-      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
-      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
-      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
-      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
-      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
-      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
-      "T-1f306466-4618-4f88-b14b-589b295acbd2",
-      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
-      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
-      "T-fed75824-e410-4bca-8664-5039742424da",
-      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
-      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
-      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
-      "T-6706aad6-b870-484b-80c3-e56c29431556",
-      "T-6b956777-ed98-4783-a353-5e490de79444",
-      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
-      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
-      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
-      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
-      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
-      "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
-      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
-      "T-94f00380-c668-4b87-8b6d-4a50f947d593",
-      "T-3b645995-38ad-44e6-b98a-df63e8174dac"
+      "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+      "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+      "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+      "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
     ],
     "completion_refs": {
-      "T-07d27408-3019-423f-a5de-4cda1f9e2818": "O-4203a794-8216-43bc-84a8-eaddd14f1479",
-      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30": "O-b78adb21-abc3-4f00-a2f4-fd8bbc95c71e",
-      "T-16e42ae4-a6b0-49fa-a482-2a260601a288": "O-f44a409d-2b38-42d9-8b11-1d21f792856c",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113": "O-ac3eddd3-7e3a-4a05-9ad6-fd163b59aab3",
-      "T-1f306466-4618-4f88-b14b-589b295acbd2": "O-4a011e0d-d1f9-48bf-9b2b-c4c0fd2c6a61",
-      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd": "O-ca43959c-314e-43a7-b6bf-310a8a5344f9",
-      "T-3b645995-38ad-44e6-b98a-df63e8174dac": "O-a3d8dfde-4d38-4c64-b123-ba1bb62a0950",
-      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b": "O-d9a8756b-7fa6-4565-90b5-1987238c28e7",
-      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3": "O-3a3f3f3f-2c04-441b-adf1-95619add2a28",
-      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11": "O-83304995-b6b0-4377-a795-408b134ddaa9",
-      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54": "O-2fe87b8c-6c97-4095-ad3a-0ae6d8dcc7e5",
-      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c": "O-fbeec3fd-f9d0-4d22-9c51-49dff413c43f",
-      "T-6706aad6-b870-484b-80c3-e56c29431556": "O-32b7080a-d0be-4194-850d-84998b6ecf0e",
-      "T-6b956777-ed98-4783-a353-5e490de79444": "O-a96172c6-ebc5-4e74-bbf8-47d664ca96f4",
-      "T-7bb19b25-83e8-470d-9e94-94a91d744440": "O-f27cf34d-bbd4-45d1-ade2-7efbe92ff8f2",
-      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2": "O-ceb5e365-b76c-4dc8-930b-a7ed8b91411b",
-      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774": "O-85b9f430-72c7-4869-bad8-2b5d54cff66a",
-      "T-94f00380-c668-4b87-8b6d-4a50f947d593": "O-5c8edad6-c3fe-4dcf-8d3e-b18d58093c20",
-      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94": "O-43c64132-e988-4884-8679-00bc9633f9f5",
-      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81": "O-c523ec9f-1bff-419d-896a-406c7cffce45",
-      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02": "O-9302773e-f7de-4ab8-a81f-760fa4efa0ad",
-      "T-bf9aa399-2724-4f21-868e-dc6e4028004c": "O-3d5c9e56-f1b1-4e13-a992-98c281f2e32c",
-      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c": "O-8e330b90-5477-4ee2-b755-88983737b0d4",
-      "T-c43d3aff-9bfa-4684-a248-a83af2193492": "O-2795bdf1-6d13-4c4f-8857-c0125f4745b8",
-      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9": "O-2c32a1ae-82c9-4d49-8a76-0f17f543e629",
-      "T-d46e457f-7139-416e-875a-840f9ff6ca89": "O-208fa976-8b93-4e61-b6e9-b210078811ff",
-      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0": "O-ec892911-b04b-4887-a678-5171b70fafa7",
-      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d": "O-cb5f20f3-a2fd-4f53-bc19-f1097010a7b9",
-      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0": "O-e35cf500-42f9-48ff-957c-aa28fce5927f",
-      "T-fed75824-e410-4bca-8664-5039742424da": "O-108c3a14-4734-461f-bc55-7a110332ef67"
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9": "O-64dce565-a7ad-4cea-9e0a-b15e60ca878e",
+      "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4": "O-65887ecd-b10e-4c94-b385-ad3fb28e6bfc",
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459": "O-131595a2-986a-4048-b6e0-0d50b49278be",
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373": "O-063e216a-5b1c-4a83-8992-d93dfebc8228",
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d": "O-bb4caa60-f7ca-4ec6-80e5-f66be56506f8",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599": "O-859df127-6a08-4eae-a897-53fb3af5d317",
+      "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9": "O-070c0755-7a03-4de0-a438-dc7e5cdf850f",
+      "T-de7b04d1-82c9-4734-a089-aaded9d2dd20": "O-9150e8b1-999e-4ea3-aca4-a569ebb539b7",
+      "T-ee09583d-26dc-4291-880a-0b7a4801842e": "O-f1e7b0be-49f7-44da-8e2b-94924f1fe8a1"
     },
-    "current_task_id": null,
-    "cycle_signature": "00884828da61cbfe59d6c702bf50183dfd290c90cfecf1487d5cb7ed11f6d4c0",
-    "deferred_ids": [
-      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
-      "T-94f00380-c668-4b87-8b6d-4a50f947d593",
-      "T-3b645995-38ad-44e6-b98a-df63e8174dac"
-    ],
+    "current_task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "cycle_signature": "19f6293067ed185679bee33c48934f7764501ce42dbd9d69c412afe01c99892b",
+    "deferred_ids": [],
     "history_refs": [
-      "skill-tree/history/validation/conversion-retirement/result.json",
-      "skill-tree/history/validation/bulk-spell-outcomes/result.json",
-      "skill-tree/history/validation/spell-enlarged-controls/result.json",
-      "skill-tree/history/validation/cloud-notes/result.json",
-      "skill-tree/history/validation/agent-notes/result.json"
+      "skill-tree/history/validation/tag-review-outcomes/result.json",
+      "skill-tree/history/validation/scoped-tag-correspondence/result.json",
+      "skill-tree/history/validation/tag-diagnostic-operations/result.json",
+      "skill-tree/history/validation/shared-diagnostics/result.json",
+      "skill-tree/history/validation/diagnostic-sharing-ui/result.json",
+      "skill-tree/history/validation/note-project-links/result.json",
+      "skill-tree/history/validation/notes-project-ui/result.json",
+      "skill-tree/history/validation/mcp2-migration/result.json",
+      "skill-tree/history/validation/callback-egress/result.json",
+      "skill-tree/history/validation/callback-egress/proposal.md",
+      "skill-tree/history/validation/callback-egress/owner-decision.md",
+      "skill-tree/history/validation/callback-egress-netlify/result.json",
+      "skill-tree/history/validation/callback-egress-netlify/completion-receipt.json",
+      "skill-tree/history/validation/callback-egress-netlify/hosted-preflight.json",
+      "skill-tree/history/validation/callback-egress-netlify/auth-setup-scope.json",
+      "skill-tree/history/validation/callback-egress-netlify/auth-setup-result.json",
+      "skill-tree/history/releases/2026-10-29/README.md",
+      "skill-tree/history/releases/2026-10-29/deployment.json"
     ],
-    "id": "WR-db3533db-230a-4c61-a88b-0db609cb6ff5",
-    "limits": {
-      "repair_used": 69,
-      "retry_used": 89
-    },
+    "id": "WR-5663ac54-9d1e-4145-8792-17c83b2b8bd3",
+    "limits": {},
     "mode": "all",
-    "next_action": "Select required task or finish root",
+    "next_action": "Continue the recorded hosted profile after selecting the exact owned fixtures and confirming Netlify runtime/configuration, quota/logging and rollback scope. Retain the deployed Auth version, base rollback identity, original service keys and empty claim fence table; no replacement request or implicit Events activation.",
     "partial_work": [
-      "Root13 T-b89fac23-3ac2-4c64-8560-be7a5d796a81 completed and committedad27feb.13/50 initial roots complete. Required blocker T-1f306466-4618-4f88-b14b-589b295acbd2 completed with CSS/evidence commit68ec32c. Proofs skill-tree/history/validation/bulk-spell-outcomes/result.json and skill-tree/history/validation/spell-enlarged-controls/result.json.1082 .NET tests,432 final rendered cases and2seeded controls pass; Release0warnings/errors and matching local publication.",
-      "Root12 source retirement completed and committed204897c. Proof skill-tree/history/validation/conversion-retirement/result.json. Its unchanged Worker sources retain537Workspace/154Auth passing checks. No push/deploy/remote migration/live account or party operations.",
-      "Root13 preserves acknowledged counts, first failed stage, cast/equipment uncertainty, cleanup/refresh status and cooldown. Existing pacer/gate retained; known gear changes restored once with bounded followups; no cast or failed restoration replay. Current outcome is session-memory only; durable account-bound original-gear recovery remains the next queued task.",
-      "Continue automatically within frozen snapshot. Nonblocking tag diagnostic operation whitelist task T-56a7a511-0ebf-41f8-8e1f-65ae87399459 remains deferred. All temporary browser tabs and qualification servers from completed tasks are closed.",
-      "Root14 partial foundation: SpellGearRecoveryStore.cs plus transactional IndexedDB get/commitGearRecovery functions, immutable original/temporary per-slot identities, revision CAS, unresolved-operation replacement fence and terminal-state guards. Not registered or integrated with casting/UI; task acceptance remains OPEN. Tests: 24 Storage .NET tests and4 production-JS transition controls pass. Real IndexedDB scheduling is not qualified. Logs /tmp/habitica-gear-recovery-storage-final.log; tests/Functions/gear-recovery-storage.test.mjs. Changes remain uncommitted until coherent root acceptance. Selected task current-behavior paragraph refreshed; generated metadata refreshed without resetting active run.",
-      "Root14 journal integrated into production DI and spell auto-equipment. Fresh original gear captured before saving; asynchronous per-slot before/after callbacks persist in-flight identity and verify current gear. Same-origin Web Locks serialize recovery and refuse unsupported locking. Manual Spells recovery verifies account, binds actions to reviewed operation ID, preserves later selections, supports explicit supersession, never casts. Sign-in/logout cancel active casting; cast CTS disposal owns exact instance. Source edits remain uncommitted; acceptance OPEN pending rendered/real browser persistence and remaining negative controls.",
-      "Checks: 668 Web tests passed before final two integration cases; separate2 integration cases passed for successful automatic restoration and lost equip response followed by manual recovery without cast replay. Final combined Web rerun log /tmp/habitica-gear-recovery-final-web.log. Four production-JS transition controls pass; storage24tests previously pass. No browser qualification, publication, live account or party operations this turn. Fixed stale synthetic snapshot in new cast test after inspecting its failure.",
-      "Final combined Web suite passed670/670, zero failures: /tmp/habitica-gear-recovery-final-web.log. Changed-line prose and git diff --check pass. Root14 remains open; no task completion or commit recorded.",
-      "Root15 alias implementation in progress: optional canonical project Alias; typed alias/clearAlias patches and v4 command hash extension preserve legacy hashes; own-workspace resolve_project read with exact UUID, normalized alias, exact-name ambiguity refusal. Archived/removed records reserve aliases; exact reviewed clear-only patch releases without reopening. Portable 9-step lifecycle/hash fixture and focused Worker checks pass; focused Application 21 tests pass after local VSTest socket permission retry. Validation OPEN for authenticated API integration, full impacted regression and final review. No commits/publication/live services. Controls: initial VSTest run host-policy rejection (socket bind), scoped retry executed/pass; pure Node import failure repaired explicit .ts module references; no unchanged executed-failure pair. Per-operation deadlines 20-180 seconds with5seconds cleanup; no selected-task total budget.",
-      "Root15 completed with543Workspace checks and1116.NET tests across final per-suite evidence. Bounded Workspace tool result reports94.59seconds; result.json contains an imprecise94.66manual timing entry, retained as recorded evidence. Root16 in progress: separate project alias create/edit/clear controls, normalized exact-ID review, escaped alias/name picker presentation with off-page/archived preservation, planning/organization skill guidance. Component qualification running; rendered checks remain OPEN. No live account names/aliases were changed; all new UI operations use fixture services.",
-      "Root16 completed:576rendered cases pass, visible keyboard focus, seeded overflow/overlap/contrast controls detected; local server/browser tabs cleaned. Root17 deadline guidance and27golden cases implemented with no second parser. Seventeen resolved inputs use existing civil calendar context and exact updateTask arguments; ten clarify expectations remain explicit host decisions. MCP descriptions retain ISO-only input. Initial new OAuth fixture label repaired; added negative calls exposed synthetic request quota, so redundant per-case receipt lookup was removed while preserving original receipt recovery and all date assertions. Actual host recognition/live updates remain unqualified.",
-      "Roots15-17 committed f8d9975; root18 build identity committed8f3ae3b; root19 deterministic plugin package identity committed1499653; root20 account-scoped local Notes committede6fd51b. Root20 proof skill-tree/history/validation/local-notes/result.json records local qualification.20/50 snapshot roots accepted plus required layout blocker. No production deployment performed for this accumulated batch.",
-      "Owner release steering: finish Notes end to end (T-385399c5-981c-4710-ae5e-4e0f4860dbdd cloud consent/commands, T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d agent tools/skill, T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3 Notes UI), then publish accumulated changes to existing production target without a -dev suffix. Do not expand pre-release scope to unrelated snapshot roots. No new gameplay live tests selected by this release request. Latest owner status question answered from current source/index; no task acceptance changed.",
-      "Current-source status audit: Projects/Today/History/Sync routes already exist; Tasks navigation remains uncomposed, dedicated Statistics and Notes pages absent, optimizer default remains Balanced. Notes local persistence does not yet expose cloud or agent access. Status report distinguishes unfinished scenarios from locally accepted but unpublished work; no real-host/mobile qualification inferred.",
-      "Root21 T-385399c5-981c-4710-ae5e-4e0f4860dbdd completed and committedae9a610. Separate cloud Notes consent, dedicated D1 storage/atomic receipts, exact notebook guard, narrow read/write scopes, browser adapters and private profile cleanup pass564Workspace/154Auth/248Application/9client checks. Release0warnings/errors;12rendered consent cases pass. Proof skill-tree/history/validation/cloud-notes/result.json. No production migration/deployment or live account action. Temporary consent browser tab and exact owned server17941 closed.",
-      "Latest owner sequence: finish Notes cloud/agent/UI, publish accumulated changes to existing production, then complete Todo Statistics T-b92d23ba-8586-4869-a6b8-f8eb180f1b02, Todo Sync T-c0bf3f10-141f-464c-bc1e-53040d67e61c and Todo navigation T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b with required dependencies. Do not automatically select unrelated frozen roots around this narrowed delivery sequence.",
-      "Root21 initial focused fixture errors corrected initial per-note revision and replaced OAuth grant assumptions. One final full retry reached30-second file/180-second aggregate deadlines during simultaneous unrelated Android compilation. Exact process metadata confirmed external build load; unrelated processes retained. Repeat60-second file/420-second aggregate passed564 controls in221.62seconds. Temporary bounded runner now terminates its process group on timeout with5-second cleanup reserve. No selected-task total budget applies.",
-      "Root22 T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d completed and committed854f3ee. Five Notes MCP tools and sixth packaged skill qualify explicit intent, exact revisions/hashes, full Markdown, ambiguity/conflict/malicious data, original recovery and body lifecycle. Baseline571Workspace/154Auth; final29focused checks include bounded128-row expiry and matching builds;7Python package controls and skill validation pass. Release0warnings/errors. Proof skill-tree/history/validation/agent-notes/result.json. No publication, real host invocation or live account action.",
-      "Notes UI integration must clear the NotesCloudClient tab credential on sign-out/account replacement/browser clearing, in addition to existing Notes draft clearing and late-response fences. Keep local/cloud source and draft ownership explicit; no silent local upload. After Notes UI completion publish before selecting any unrelated initial root; post-release scope is Todo Statistics, Sync and navigation only plus required dependencies.",
-      "Notes UI accepted with1168 solution tests,35 final Notes controls and720 rendered cases. Owner sequence overrides default remaining snapshot selection: publish accumulated ready code, then T-b92d23ba-8586-4869-a6b8-f8eb180f1b02, T-c0bf3f10-141f-464c-bc1e-53040d67e61c and T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b only. Unrelated original snapshot roots remain deferred by owner scope.",
-      "Notes0.2.0 published from ba5a96d to Pages3699265e-b656-4f16-9836-35a8c2fbd942 and matching Auth/MCP/Workspace. All six migrations applied; no remainder. Owner explicitly selects statistics T-b92d23ba-8586-4869-a6b8-f8eb180f1b02 next. Helper advance cannot accept an exact override, so leaf selection is recorded explicitly without advancing into unrelated frozen roots.",
-      "Todo statistics T-b92d23ba-8586-4869-a6b8-f8eb180f1b02 accepted with8 Application,21 Web and504 rendered controls. Owner-selected exact leaf T-c0bf3f10-141f-464c-bc1e-53040d67e61c is next; no unrelated frozen root is launched.",
-      "Owner-narrowed Notes, Statistics, Sync and Todo navigation sequence is complete. Todo navigation and required Obsidian blocker passed 756 rendered states and full local suites; commits 67c9d2a, 1eeb0d4, b4b56b4, 6fa3ff5. A helper advance selected Inventory as the next global frozen root before this owner boundary was applied; no Inventory implementation occurred. Do not automatically implement unrelated roots without a new owner choice. Earlier owner-requested live checklist-to-project migration remains separate and requires exact reviewed source actions."
+      "Eight of the seventeen original frozen snapshot units remain complete. The new required local gateway dependency T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9 is completed with terminal outcome O-070c0755-7a03-4de0-a438-dc7e5cdf850f; no initial snapshot identity was added or replaced.",
+      "Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 was processed into local gateway T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9 and required hosted qualification T-ec421773-5864-4bc5-b17f-ce04e0d818c2. The subscription parent retains both required dependency edges.",
+      "The default-off Node22 gateway pins approved public addresses and original-host TLS, bounds time/bytes and forwards exact signed webhook bytes. Auth migration0012 and the narrow one-use claim route enforce durable replay refusal with independent service keys, without callback material in D1.",
+      "Final local qualification passes17 gateway controls,17 matching source-bundle controls,215 full Auth tests,12 development-profile controls and all three Worker type/dry builds. Exact ZIP allowlist and source hashes, canonical document/queue validation and git diff --check pass; the historical audit freshness warning remains.",
+      "The owner has published the Netlify gateway, supplied successful production build evidence and explicitly requested agent execution of the matching Auth backend setup. The selected live Auth base predates unrelated local Push/recovery features; a byte-preserved scoped candidate avoids publishing those features or their migrations.",
+      "The owner selected and published Netlify gateway kaleidoscopic-rolypoly-416a42.netlify.app, configured the environment file and supplied a successful production redeploy log. Public gateway health responds with callback-egress-v1/unqualified. No hosted dispatch qualification follows from the build log.",
+      "The latest owner request authorized agent execution of the matching Auth setup. Auth version96a4d62f-9c14-4f68-924d-b46dd03e09f2 is deployed at100 percent with two service secrets and CALLBACK_EGRESS_ENABLED=false. Migration0012 is applied on the exact existing integration database; the claim table remains empty.",
+      "The publication preserves the byte-identical Auth application module from base versionab627780-0af5-4fa4-b96f-727b05ef7573 and adds only a scoped entry plus the reviewed claim module. Original bindings, authority flags, named handlers, compatibility, cron and complete logging/tracing settings are verified retained. No unrelated local Push/recovery feature or migration was published.",
+      "The scoped candidate passes7 synthetic callback/security/base-parity controls and a no-bundle dry run. Cloudflare version metadata, exact re-downloaded module bytes and remote schema/ledger reads verify the published disabled artifact. Normal browser GETs confirm Auth health, OAuth discovery, disabled claim refusal and MCP-to-Auth reachability. Direct terminal public GETs encounter Cloudflare1010; no protection was bypassed.",
+      "The bounded Auth setup request is complete. Required hosted task T-ec421773-5864-4bc5-b17f-ce04e0d818c2 remains incomplete pending owned DNS/TLS/receiver fixtures and actual Netlify runtime/configuration/quota/logging evidence. No signed hosted challenge, callback/event dispatch, subscription, chat message, account/game operation, new resource, Git commit or scheduler change occurred. The eight completed initial roots and the separate completed local gateway dependency remain preserved.",
+      "Owner-authorized 2026-10-29 production release published recent repository PWA/Auth/Workspace/MCP implementations and additive migrations, with consent-gated Web Push enabled and callback delivery disabled. Release evidence: skill-tree/history/releases/2026-10-29/README.md. This publication does not complete hosted callback qualification or resume other future tasks."
     ],
     "pending_ids": [
-      "P-129cb3e4-32db-4017-8afd-38df70a8f595",
-      "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3",
-      "P-b86975e7-8188-44e9-b50f-3e8179b0037d",
-      "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
-      "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
-      "P-52452102-f6d7-41ac-9355-1310f5095a67",
-      "P-bd2aa668-3032-42ae-be85-54aac29c92f5"
+      "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
     ],
-    "phase": "resume-parent",
+    "phase": "awaiting-hosted-qualification",
     "processing_results": [
       {
-        "created_ids": [
-          "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
-        ],
+        "created_ids": [],
         "dispositions": {
-          "P-129cb3e4-32db-4017-8afd-38df70a8f595": {
-            "reason": "Source inspection confirms eight fixed tag observer operation identifiers omitted from the sanitizer whitelist; existing synthetic diagnostic/export boundaries support a separate bounded repair.",
-            "status": "promoted"
+          "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4": {
+            "reason": "The callback adapter is researched against current repository code, pinned workerd1.20261012.1 source, installed types and official Cloudflare contracts. No supported connection-address and original-host TLS binding is qualified. The concrete local Node22 protected gateway proposal adds a backend trust boundary and requires the owner decision under repository rules section14. No Ready contract or dependency identity is produced before the decision; callback subscriptions remain blocked and inactive.",
+            "status": "retained"
           }
         },
-        "id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
+        "id": "PR-db357572-5d65-4449-ae55-3148c9da6b6c",
         "reused_ids": [],
         "selected_ids": [
-          "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+          "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
         ],
-        "task_keys": {
-          "tag-diagnostic-operation-names": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
-        }
+        "task_keys": {}
       },
       {
         "created_ids": [
-          "T-1f306466-4618-4f88-b14b-589b295acbd2"
+          "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+          "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
         ],
         "dispositions": {
-          "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3": {
-            "reason": "Rendered current-source Spells fixtures reproduce clipped controls at360px/200-percent text across schemes. Existing mobile tracks and min-content sizing require a narrow CSS correction before root acceptance; generic geometry diagnostics remain unchanged.",
+          "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4": {
+            "reason": "The owner-selected Netlify Functions Free boundary is researched against current Netlify runtime/credit limits, Node22 HTTPS/TLS and IANA special-address registries. Split local deployable gateway/Auth one-use reservation from mandatory hosted qualification; local implementation does not grant publication or qualify the hosted runtime.",
             "status": "promoted"
           }
         },
-        "id": "PR-91fdaf67-b4c5-42c7-b93d-71090492b4dd",
+        "id": "PR-0397ff3e-5942-44c8-8fbf-32966ad290af",
         "reused_ids": [],
         "selected_ids": [
-          "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3"
+          "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
         ],
         "task_keys": {
-          "spell-enlarged-controls": "T-1f306466-4618-4f88-b14b-589b295acbd2"
-        }
-      },
-      {
-        "created_ids": [
-          "T-16e42ae4-a6b0-49fa-a482-2a260601a288"
-        ],
-        "dispositions": {
-          "P-b86975e7-8188-44e9-b50f-3e8179b0037d": {
-            "reason": "The built-in obsidian-glow ID exists; the owner supplied the full replacement palette and required dark plus light UI checks for the active Todo root.",
-            "status": "promoted"
-          }
-        },
-        "id": "PR-173b8406-444b-4f43-9d27-e616064cb107",
-        "reused_ids": [],
-        "selected_ids": [
-          "P-b86975e7-8188-44e9-b50f-3e8179b0037d"
-        ],
-        "task_keys": {
-          "obsidian-todo-theme": "T-16e42ae4-a6b0-49fa-a482-2a260601a288"
-        }
-      },
-      {
-        "created_ids": [
-          "T-94f00380-c668-4b87-8b6d-4a50f947d593"
-        ],
-        "dispositions": {
-          "P-52452102-f6d7-41ac-9355-1310f5095a67": {
-            "reason": "Current Worker consent HTML lists only requested scopes and returns raw JSON on authorization failures; Settings presents a long code guide. The installed OAuth provider permits a reviewed grant containing any supported scope, including optional scopes outside the incoming request. Current security bindings and tests provide a direct implementation path.",
-            "status": "promoted"
-          }
-        },
-        "id": "PR-899c7c23-529f-4553-8bb2-f8b9afb34922",
-        "reused_ids": [],
-        "selected_ids": [
-          "P-52452102-f6d7-41ac-9355-1310f5095a67"
-        ],
-        "task_keys": {
-          "plugin-auth-journey": "T-94f00380-c668-4b87-8b6d-4a50f947d593"
-        }
-      },
-      {
-        "created_ids": [
-          "T-3b645995-38ad-44e6-b98a-df63e8174dac"
-        ],
-        "dispositions": {
-          "P-bd2aa668-3032-42ae-be85-54aac29c92f5": {
-            "reason": "Browser fixture and source inspection confirm the code button is below twelve permission rows and requested rows stay highlighted after unchecking. The OAuth code and grant contract remain unchanged.",
-            "status": "promoted"
-          }
-        },
-        "id": "PR-3ed00e11-dfce-43c6-b729-1feb926a6847",
-        "reused_ids": [],
-        "selected_ids": [
-          "P-bd2aa668-3032-42ae-be85-54aac29c92f5"
-        ],
-        "task_keys": {
-          "plugin-auth-review-ux": "T-3b645995-38ad-44e6-b98a-df63e8174dac"
+          "hosted-gateway": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+          "local-gateway": "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
         }
       }
     ],
     "required_ids": [
-      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
-      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
-      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
-      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
-      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
-      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
-      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
-      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
-      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
-      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
-      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
-      "T-1f306466-4618-4f88-b14b-589b295acbd2",
-      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
-      "T-fed75824-e410-4bca-8664-5039742424da",
-      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
-      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
-      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
-      "T-6706aad6-b870-484b-80c3-e56c29431556",
-      "T-6b956777-ed98-4783-a353-5e490de79444",
-      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
-      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
-      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
-      "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
-      "T-f362faf0-4d48-4ed3-b586-843c47345510"
+      "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+      "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+      "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
     ],
-    "root_task_id": "T-f362faf0-4d48-4ed3-b586-843c47345510",
+    "root_task_id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
     "snapshot": [
-      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
-      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
-      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
-      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
-      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
-      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
-      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
-      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
-      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
-      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
-      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
-      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
-      "T-fed75824-e410-4bca-8664-5039742424da",
-      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
-      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
-      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
-      "T-6706aad6-b870-484b-80c3-e56c29431556",
-      "T-6b956777-ed98-4783-a353-5e490de79444",
-      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
-      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
-      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
-      "T-f362faf0-4d48-4ed3-b586-843c47345510",
-      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
-      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
-      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
-      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
-      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "T-51ce8719-0131-46d3-882a-4219d1bef929",
-      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
-      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
-      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
-      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
-      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
-      "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
-      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+      "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
       "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
       "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
       "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
       "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
-    "started_at": "2026-10-21T11:45:48.821286+00:00",
-    "stop_reason": null
+    "started_at": "2026-10-28T13:05:17.256755+00:00",
+    "stop_reason": "The bounded owner-requested Auth setup is complete with dispatch disabled. Required hosted qualification still needs concrete owner-controlled DNS/TLS/receiver fixtures and Netlify runtime, quota and logging evidence before any callback activation or acceptance claim."
   },
   "format": "skill-tree-future",
-  "source_hash": "b0e85f1937f96ac25e87f85d9beebc6ca8fc33e172136f76a1cee8e77b7f403c",
+  "source_hash": "8b94cfe4ed0d5ed924edb85a81f86ba19f89f8a82a9c6bca7c4a1946d560d020",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+      "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
       "line": 75,
       "parent_pending_ids": [],
-      "priority": 104,
+      "priority": 106,
       "processing_run_id": null,
       "queue": "Pending Queue",
       "related_task_id": null,
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "Recover stale group-tag reviews after workspace revision changes"
-    },
-    {
-      "depends_on": [],
-      "id": "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
-      "line": 104,
-      "parent_pending_ids": [],
-      "priority": 103,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "Resolve archived checklist-task counterparts before source retirement"
-    },
-    {
-      "depends_on": [],
-      "id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
-      "line": 137,
-      "parent_pending_ids": [
-        "P-129cb3e4-32db-4017-8afd-38df70a8f595"
-      ],
-      "priority": 102,
-      "processing_run_id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "relation": "followup",
-      "root_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "status": "Ready",
-      "title": "Preserve group tag names through diagnostic sanitization"
-    },
-    {
-      "depends_on": [],
-      "id": "T-f362faf0-4d48-4ed3-b586-843c47345510",
-      "line": 176,
-      "parent_pending_ids": [
-        "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-f362faf0-4d48-4ed3-b586-843c47345510",
-      "status": "Ready",
-      "title": "Default inventory equipment recommendations to Intelligence"
-    },
-    {
-      "depends_on": [],
-      "id": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
-      "line": 215,
-      "parent_pending_ids": [
-        "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
-      "status": "Ready",
-      "title": "Qualify automatic Companion discovery and invocation"
+      "title": "Resolve mass spell rate limits and explicit gear recovery"
     },
     {
       "depends_on": [
-        "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
-        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+        "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
       ],
-      "id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
-      "line": 255,
+      "id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "line": 111,
       "parent_pending_ids": [
-        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
       ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "priority": 101,
+      "processing_run_id": "PR-0397ff3e-5942-44c8-8fbf-32966ad290af",
       "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
-      "status": "Ready",
-      "title": "Expose iPhone PWA reminder setup and recovery"
-    },
-    {
-      "depends_on": [
-        "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
-        "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"
-      ],
-      "id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
-      "line": 295,
-      "parent_pending_ids": [
-        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
-      "status": "Ready",
-      "title": "Dispatch durable scheduled Web Push reminders"
-    },
-    {
-      "depends_on": [
-        "T-51ce8719-0131-46d3-882a-4219d1bef929"
-      ],
-      "id": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
-      "line": 335,
-      "parent_pending_ids": [
-        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
-      "status": "Ready",
-      "title": "Persist explicit account-bound Web Push subscriptions"
-    },
-    {
-      "depends_on": [],
-      "id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "line": 375,
-      "parent_pending_ids": [
-        "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
+      "related_task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "relation": "blocker",
       "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
       "status": "Ready",
-      "title": "Determine supported originating-chat reminder delivery"
+      "title": "Qualify the selected Netlify callback gateway deployment"
     },
     {
       "depends_on": [
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+        "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+        "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
       ],
-      "id": "T-51ce8719-0131-46d3-882a-4219d1bef929",
-      "line": 415,
+      "id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "line": 162,
       "parent_pending_ids": [
-        "P-02b78b3e-3fe9-4871-b019-c6baebafe810"
+        "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
       "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "processing_run_id": "PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20",
       "queue": "Prioritized Next Changes",
       "related_task_id": null,
       "relation": "main",
-      "root_task_id": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "root_task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
       "status": "Ready",
-      "title": "Complete iPhone PWA installation and relaunch support"
+      "title": "Browse and manage standalone and project Notes folders"
+    },
+    {
+      "depends_on": [
+        "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
+      ],
+      "id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "line": 218,
+      "parent_pending_ids": [
+        "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "status": "Ready",
+      "title": "Expose reviewed Notes folder workflows through MCP"
+    },
+    {
+      "depends_on": [
+        "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
+      ],
+      "id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "line": 273,
+      "parent_pending_ids": [
+        "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "status": "Ready",
+      "title": "Persist Notes folders through the cloud owner API"
     },
     {
       "depends_on": [],
-      "id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
-      "line": 455,
+      "id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "line": 329,
       "parent_pending_ids": [
-        "P-203bd87e-c49c-447b-913d-b322d6bdf0b2"
+        "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
       "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "processing_run_id": "PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20",
       "queue": "Prioritized Next Changes",
       "related_task_id": null,
       "relation": "main",
-      "root_task_id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "root_task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
       "status": "Ready",
-      "title": "Execute explicitly requested task edits without redundant agent approval"
+      "title": "Add versioned Notes folders and local persistence"
+    },
+    {
+      "depends_on": [
+        "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
+      ],
+      "id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "line": 387,
+      "parent_pending_ids": [
+        "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+      ],
+      "priority": 99,
+      "processing_run_id": "PR-9722057b-0549-4478-8c12-6ee286276060",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "relation": "followup",
+      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "status": "Ready",
+      "title": "Deliver due task reminder events with durable original receipts"
+    },
+    {
+      "depends_on": [
+        "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+        "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+        "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
+      ],
+      "id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "line": 443,
+      "parent_pending_ids": [
+        "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+      ],
+      "priority": 99,
+      "processing_run_id": "PR-9722057b-0549-4478-8c12-6ee286276060",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "relation": "followup",
+      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "status": "Ready",
+      "title": "Implement Auth-owned callback secrets and reviewed event subscriptions"
     },
     {
       "depends_on": [
@@ -502,11 +299,11 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 495,
+      "line": 501,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
-      "priority": 100,
+      "priority": 24,
       "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
       "queue": "Prioritized Next Changes",
       "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
@@ -516,135 +313,12 @@
       "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates"
     },
     {
-      "depends_on": [],
-      "id": "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
-      "line": 538,
-      "parent_pending_ids": [
-        "P-b38ebae7-6756-4941-a3af-dad37e3c7666"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-6faedfa1-fb43-418b-a355-7cc03d2af9f9",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
-      "relation": "followup",
-      "root_task_id": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
-      "status": "Ready",
-      "title": "Diagnose browser qualification startup timing"
-    },
-    {
-      "depends_on": [],
-      "id": "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
-      "line": 578,
-      "parent_pending_ids": [
-        "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-aa6ec1c6-4a91-4619-8193-5ef4f8d8a54a",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
-      "relation": "followup",
-      "root_task_id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
-      "status": "Ready",
-      "title": "Serialize scoped diagnostic append and clear operations"
-    },
-    {
-      "depends_on": [
-        "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
-      ],
-      "id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "line": 618,
-      "parent_pending_ids": [
-        "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "status": "Ready",
-      "title": "Prepare reproducible task UX and device qualification evidence"
-    },
-    {
-      "depends_on": [],
-      "id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "line": 659,
-      "parent_pending_ids": [
-        "P-64d1995c-f862-498c-9437-e867117f2129"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "status": "Ready",
-      "title": "Restore archived tasks and correct native Daily occurrences"
-    },
-    {
-      "depends_on": [
-        "T-2355607b-ba77-46c0-9495-aae61e16a8f0"
-      ],
-      "id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "line": 700,
-      "parent_pending_ids": [
-        "P-64d1995c-f862-498c-9437-e867117f2129"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "status": "Ready",
-      "title": "Add reviewed own-task Habitica unchecking and reconciliation"
-    },
-    {
-      "depends_on": [
-        "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-        "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-        "T-54623cea-9c8f-4819-b33f-b6552c82df55",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
-      ],
-      "id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "line": 741,
-      "parent_pending_ids": [
-        "P-64d1995c-f862-498c-9437-e867117f2129",
-        "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "status": "Ready",
-      "title": "Expose extended recovery actions in task history"
-    },
-    {
-      "depends_on": [],
-      "id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
-      "line": 782,
-      "parent_pending_ids": [
-        "P-438c79fe-385d-4657-be24-85fad9a49c31"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
-      "status": "Ready",
-      "title": "Retain trustworthy task activity and schedule coverage"
-    },
-    {
       "depends_on": [
         "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 823,
+      "line": 544,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -664,7 +338,7 @@
         "T-07d27408-3019-423f-a5de-4cda1f9e2818"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 864,
+      "line": 585,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31",
         "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
@@ -684,7 +358,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 905,
+      "line": 626,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -699,29 +373,10 @@
     },
     {
       "depends_on": [
-        "T-9f465413-725a-440e-a464-cb5c555cb87d",
-        "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
-      ],
-      "id": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-      "line": 946,
-      "parent_pending_ids": [
-        "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-      "status": "Ready",
-      "title": "Add voluntary review scheduling and retained review history"
-    },
-    {
-      "depends_on": [
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 987,
+      "line": 667,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -736,26 +391,6 @@
     },
     {
       "depends_on": [
-        "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-        "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
-        "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"
-      ],
-      "id": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "line": 1028,
-      "parent_pending_ids": [
-        "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "status": "Ready",
-      "title": "Deliver explicit in-app and foreground browser reminder cues"
-    },
-    {
-      "depends_on": [
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
         "T-5737120b-52a5-4a57-9072-fce514adaf33",
         "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
@@ -765,11 +400,11 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1069,
+      "line": 708,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
-      "priority": 97,
+      "priority": 24,
       "processing_run_id": null,
       "queue": "Prioritized Next Changes",
       "related_task_id": null,
@@ -781,7 +416,7 @@
     {
       "depends_on": [],
       "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
-      "line": 1220,
+      "line": 859,
       "parent_pending_ids": [
         "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
       ],
@@ -797,7 +432,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1263,
+      "line": 902,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -811,7 +446,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1300,
+      "line": 939,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -825,7 +460,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1337,
+      "line": 976,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -839,7 +474,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1470,
+      "line": 1109,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -853,7 +488,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1508,
+      "line": 1147,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -867,7 +502,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1542,
+      "line": 1181,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -881,7 +516,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1577,
+      "line": 1216,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -895,7 +530,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1611,
+      "line": 1250,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -909,7 +544,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1649,
+      "line": 1288,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -923,7 +558,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1676,
+      "line": 1315,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -937,7 +572,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1698,
+      "line": 1337,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -951,7 +586,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1725,
+      "line": 1364,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

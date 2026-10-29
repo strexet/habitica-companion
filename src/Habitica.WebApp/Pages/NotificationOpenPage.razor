@@ -1,0 +1,59 @@
+@page "/todo/reminders/open"
+@using Habitica.Application.Notifications
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject IAppSessionController Session
+@inject IWorkspaceCloudClient Cloud
+@inject ITaskReminderClient ReminderClient
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>Open review reminder</PageTitle>
+<div class="settings-shell"><section class="card-surface settings-card" data-testid="notification-open">
+    <h1>Open review reminder</h1>
+    <p>This notification is a generic review cue. Opening it never completes work, marks reviewed or changes Habitica. Access is checked against the current authenticated cloud workspace before task content appears.</p>
+    @if(Target is not {} target){<p role="alert">Notification route is invalid. Open <a href="/todo/today">Today</a> to choose a task.</p>}
+    else if(!Session.State.IsAuthenticated){<p>Sign in to check access to the original task.</p><a class="app-link-button" href="@SignIn(target)">Sign in and return to this reminder</a>}
+    else
+    {
+        <p>Offline or disconnected access cannot verify this notification. Connect in <a href="/todo/sync">Todo Sync</a>, return here and check again.</p>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="Check" Variant="Variant.Filled" Color="Color.Primary" data-testid="notification-check">Check access to exact cloud task</MudButton>
+        @if(_message is {} message){<p role="status">@message</p>}
+        @if(_task is {} task)
+        {
+            <h2>@task.Text</h2><p>Task @task.Id · verified workspace @target.WorkspaceId · revision @_revision. The notification may refer to an older or cancelled occurrence; review remains optional.</p>
+            <a class="app-link-button" href="@($"/todo/reminders?taskId={task.Id:D}")">Choose this task in push reminders</a>
+            <p>Select the same cloud workspace before editing. Other sources remain independent.</p>
+        }
+    }
+</section></div>
+@code {
+    private NotificationTarget? Target {get{var uri=new Uri(Navigation.Uri);return NotificationRoute.TryParse(uri.PathAndQuery,out var target)?target:null;}}
+    private CompanionTask? _task;
+    private long? _revision;
+    private string? _message;
+    private bool _busy;
+    private long _generation;
+    protected override void OnInitialized()=>Session.Changed+=Changed;
+    protected override void OnParametersSet(){_generation++;_task=null;_revision=null;_message=null;_busy=false;}
+    private static string SignIn(NotificationTarget target)=>"/sign-in?returnTo="+Uri.EscapeDataString(NotificationRoute.Build(target));
+    private async Task Check()
+    {
+        if(_busy||Target is not {} target||!Session.State.IsAuthenticated)return;
+        var generation=_generation;var account=Session.State.UserId;var version=ReminderClient.ContextVersion;
+        _busy=true;_task=null;_revision=null;_message=null;
+        try
+        {
+            if(Cloud.WorkspaceId!=target.WorkspaceId){_message="Connect the original cloud workspace in Todo Sync. No source was switched.";return;}
+            var snapshot=await Cloud.LoadWorkspaceAsync(default);
+            if(generation!=_generation||!Session.State.IsAuthenticated||Session.State.UserId!=account||ReminderClient.ContextVersion!=version||Target!=target)return;
+            if(snapshot?.Document.Id!=target.WorkspaceId||Cloud.WorkspaceId!=target.WorkspaceId||WorkspaceRules.Validate(snapshot.Document).Count!=0){_message="Fresh authenticated access is unavailable. No cached task content is shown.";return;}
+            _task=snapshot.Document.Tasks.SingleOrDefault(task=>task.Id==target.TaskId&&!task.IsArchived);
+            _revision=_task is null?null:snapshot.Document.Revision;_message=_task is null?"The exact task is unavailable, archived or no longer in this workspace.":"Fresh access verified. No task action was performed.";
+        }
+        catch{if(generation==_generation)_message="Access could not be verified. Reconnect or retry when online.";}
+        finally{if(generation==_generation)_busy=false;}
+    }
+    private void Changed(){_generation++;_task=null;_revision=null;_message=null;_busy=false;_=InvokeAsync(StateHasChanged);}
+    public void Dispose()=>Session.Changed-=Changed;
+}

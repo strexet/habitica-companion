@@ -24,6 +24,8 @@
                 <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReviewDependenciesAsync" Variant="Variant.Outlined" data-testid="workflow-review-dependencies">Review full dependency replacement</MudButton>
             </details>
         </fieldset>
+        <p><a href="@($"/todo/reminders?taskId={TaskId:D}")">Review push delivery for this exact task</a></p>
+    <TodoReviewEditor TaskId="TaskId" Reviewed="Reviewed" />
     }
     <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Reload" Variant="Variant.Text" data-testid="workflow-reload">Reload current task</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="() => Closed.InvokeAsync()" Variant="Variant.Text">Close workflow editor</MudButton></div>
 </section>

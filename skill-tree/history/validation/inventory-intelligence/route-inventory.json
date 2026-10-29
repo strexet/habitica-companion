@@ -1,0 +1,147 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [
+        "inventory-intelligence-stale",
+        "inventory-intelligence-fresh"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/notes": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/dailies": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/habits": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/statistics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "inventory-intelligence-fresh",
+      "inventory-intelligence-stale"
+    ],
+    "navigation": [],
+    "confirmation": [],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "inventory-intelligence-fresh",
+      "inventory-intelligence-stale"
+    ],
+    "error": [],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

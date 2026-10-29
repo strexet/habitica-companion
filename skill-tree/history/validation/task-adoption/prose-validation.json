@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "checks": {
+    "companion-workspace-contract.md": [],
+    "features.md": [],
+    "testing.md": [],
+    "ux-ui-manifest.md": [],
+    "task-adoption.md": [],
+    "correspondence-guidance": []
+  }
+}

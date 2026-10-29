@@ -54,7 +54,7 @@ test('normal app source defaults never inherit agent test restrictions',()=>{con
 test('explicit development profile enables implemented availability while retaining identities and consent boundaries',()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'companion-development-'));try{
   const selected={...input(),featureProfile:'development'},result=writeDev(selected,path.join(dir,'generated'));
-  for(const config of Object.values(result.configs))for(const [flag,value] of Object.entries(config.vars))if(flag.endsWith('_ENABLED'))assert.equal(value,true,flag);
+  for(const config of Object.values(result.configs))for(const [flag,value] of Object.entries(config.vars))if(flag.endsWith('_ENABLED'))assert.equal(value,!['CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED'].includes(flag),flag);
   assert.equal(result.settings.CompanionWorkspace.PartyPlanningEnabled,true);assert.equal(result.settings.Features.OwnerIsolatedTestingEnabled,false);assert.equal(result.settings.Features.PartySyncEnabled,true);
   assert.equal(result.configs['chatgpt-auth'].vars.CREDENTIAL_CURRENT_KEY_VERSION,'1');assert.equal(result.configs['chatgpt-auth'].d1_databases[0].database_id,input().authDatabaseId);
   const plan=JSON.parse(fs.readFileSync(path.join(dir,'generated/deployment-plan.json')));assert.equal(plan.featureProfile,'development');assert.equal(plan.cloudGameEffectsEnabled,true);assert.equal(plan.liveCronEnabled,true);assert.equal(plan.perAccountExecutorConsentRequired,true);
@@ -66,4 +66,15 @@ test('new capability flags require explicit mapping and never gain accidental de
  assert.throws(()=>deploymentFlags({OAUTH_ENABLED:false},'unknown'));
  assert.deepEqual(deploymentFlags({OAUTH_ENABLED:false,EXECUTOR_ENABLED:true},'pilot'),{OAUTH_ENABLED:true,EXECUTOR_ENABLED:false});
  assert.deepEqual(deploymentFlags({OAUTH_ENABLED:false,EXECUTOR_ENABLED:false},'development'),{OAUTH_ENABLED:true,EXECUTOR_ENABLED:true});
+});
+
+test('ordinary capability profiles keep separately provisioned Web Push disabled',()=>{
+ for(const profile of ['pilot','development']){
+  const flags=deploymentFlags({PUSH_ENABLED:true,PUSH_DISPATCH_ENABLED:true,PUSH_REMINDERS_ENABLED:true,OAUTH_ENABLED:false},profile);
+  for(const key of ['PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED'])assert.equal(flags[key],false);assert.equal(flags.OAUTH_ENABLED,true);
+ }
+});
+
+test('callback egress requires separate operator provisioning in every ordinary profile',()=>{
+ for(const profile of ['pilot','development'])assert.equal(deploymentFlags({CALLBACK_EGRESS_ENABLED:true},profile).CALLBACK_EGRESS_ENABLED,false);
 });

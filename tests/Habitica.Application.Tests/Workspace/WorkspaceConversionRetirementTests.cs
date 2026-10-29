@@ -46,6 +46,17 @@ public sealed class WorkspaceConversionRetirementTests
         var target=conversion.Items[0].TargetTaskId;changed=state with {Document=state.Document with {Tasks=state.Document.Tasks.Select(task=>task.Id==target?task with {ProjectId=null}:task).ToArray()}};Assert.Contains("conversion_target_placement_changed",WorkspaceConversionRetirementPolicy.Inspect(changed,conversion.Id,Account).Blockers);
     }
     [Fact]
+    public void Unrelated_revisions_and_task_metadata_keep_exact_stored_membership()
+    {
+        var state=Fixture();var conversion=state.Document.ChecklistConversions!.Single();var target=conversion.Items[0].TargetTaskId!.Value;var revision=state.Document.Revision+1;
+        var document=state.Document with {Revision=revision,Tasks=state.Document.Tasks.Select(row=>row.Id==target?row with {Revision=revision,Text="Independent metadata",Priority=CompanionPriority.Urgent,Deadline=new DateOnly(2030,12,31)}:row).ToArray(),Projections=state.Document.Projections.Select(row=>row.TaskId==target?row with {Revision=revision}:row).ToArray()};
+        var changed=state with {Document=document,StoreVersion=state.StoreVersion+1};var result=WorkspaceConversionRetirementPolicy.Inspect(changed,conversion.Id,Account);Assert.True(result.CanPrepareNativeReview,string.Join(',',result.Blockers));Assert.True(result.RequiresFreshNativeVerification);Assert.False(result.CanDelete);
+        var coverage=WorkspaceHabiticaCoveragePolicy.Audit(document,Account);Assert.Equal(1,coverage.ConfirmedRecordedMemberships);
+        var completed=document with {Tasks=document.Tasks.Select(row=>row.Id==target?row with {State=CompanionTaskState.Completed}:row).ToArray(),Completions=[..document.Completions,new CompletionEvent(Guid.NewGuid(),revision,target,Guid.NewGuid(),Now.AddDays(1))]};
+        Assert.Equal(1,WorkspaceHabiticaCoveragePolicy.Audit(completed,Account).ConfirmedRecordedMemberships);Assert.False(WorkspaceConversionRetirementPolicy.Inspect(changed with {Document=completed},conversion.Id,Account).CanPrepareNativeReview);
+        var renamed=document with {Projects=document.Projects.Select(row=>row with {Name="Renamed"}).ToArray()};Assert.False(WorkspaceConversionRetirementPolicy.Inspect(changed with {Document=renamed},conversion.Id,Account).CanPrepareNativeReview);Assert.Equal(0,WorkspaceHabiticaCoveragePolicy.Audit(renamed,Account).ConfirmedRecordedMemberships);
+    }
+    [Fact]
     public void Pending_projection_blocks_even_when_all_stored_task_identities_exist()
     {
         var state=Fixture();var result=WorkspaceCommandEngine.Accept(state,new(Guid.NewGuid(),state.Document.Id,state.Document.Revision,WorkspaceOperation.CreateTodo,Guid.NewGuid(),new(Text:"Independent pending work"),ProjectToHabitica:true),Now);Assert.Equal(SubmissionDisposition.Accepted,result.Disposition);

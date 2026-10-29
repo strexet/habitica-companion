@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "identity": "companion-command-v11",
+  "cases": [
+    {
+      "name": "unarchive",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "workspaceId": "00000000-0000-4000-8000-000000000002",
+        "expectedRevision": 10,
+        "operation": "unarchiveTask",
+        "taskId": "00000000-0000-4000-8000-000000000003",
+        "patch": {
+          "unarchive": {
+            "archivedRevision": 9
+          }
+        }
+      },
+      "payloadHash": "b1d7921c015318f49e3e81d5b0483997e37d722f74702a79c68cd93037df1e73"
+    },
+    {
+      "name": "repair-archived-project",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "workspaceId": "00000000-0000-4000-8000-000000000002",
+        "expectedRevision": 10,
+        "operation": "unarchiveTask",
+        "taskId": "00000000-0000-4000-8000-000000000003",
+        "patch": {
+          "unarchive": {
+            "archivedRevision": 9,
+            "planning": {
+              "clearProject": true
+            }
+          }
+        }
+      },
+      "payloadHash": "bee2c2d00d7975576e3204cb3532bde97a536a3a5780cbdb1e177a81281ebaba"
+    },
+    {
+      "name": "correct-completion",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "workspaceId": "00000000-0000-4000-8000-000000000002",
+        "expectedRevision": 10,
+        "operation": "correctOccurrence",
+        "taskId": "00000000-0000-4000-8000-000000000003",
+        "patch": {
+          "correctOccurrence": {
+            "occurrenceId": "00000000-0000-4000-8000-000000000004",
+            "occurrenceRevision": 9,
+            "targetCommandId": "00000000-0000-4000-8000-000000000005"
+          }
+        }
+      },
+      "payloadHash": "95bf8e0c5c7e70f75ef9455fd8b01955c8fac24567320ce632f1da6526ed72bd"
+    }
+  ]
+}

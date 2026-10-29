@@ -1,0 +1,50 @@
+{
+  "cases": 4284,
+  "uniqueCases": 4284,
+  "fixtures": 51,
+  "routes": [
+    "/tasks",
+    "/todo/dailies",
+    "/todo/habits",
+    "/todo/history",
+    "/todo/inbox",
+    "/todo/lists",
+    "/todo/plan",
+    "/todo/projects",
+    "/todo/reminders",
+    "/todo/sync",
+    "/todo/tasks",
+    "/todo/today"
+  ],
+  "schemes": [
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate",
+    "gryphy-dark",
+    "gryphy-light",
+    "obsidian-glow",
+    "toxic-swamp"
+  ],
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "errors": 0,
+  "harnessErrors": 0,
+  "unqualifiedSurfaces": 0,
+  "seededDetectors": [
+    "overflow",
+    "overlap",
+    "contrast"
+  ],
+  "baselineCasesRetainedSeparately": 1260,
+  "scope": "Synthetic Razor and production assets; component dispatch and native HTML keyboard are separate; physical devices/AT/live accounts unqualified"
+}

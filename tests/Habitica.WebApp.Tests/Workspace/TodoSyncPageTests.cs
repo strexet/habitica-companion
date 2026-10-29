@@ -22,6 +22,7 @@ public sealed class TodoSyncPageTests : BunitContext
         Services.AddSingleton<TodoTaskDraftStore>();
         var todo = new TodoWorkspacePresentation(fixture.Session, fixture.Client, fixture.Database, fixture.Controller);
         Services.AddSingleton(todo);
+        Services.AddSingleton(new PushDeviceController(fixture.Session,new PushReminderFixture.Client(),new PushReminderFixture.Browser(),new PushReminderFixture.Store()));
         await fixture.Controller.LoadAsync(true);
         return (fixture, todo);
     }

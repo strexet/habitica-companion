@@ -58,26 +58,13 @@ public sealed class WorkspaceTaskClientTests
         var result = await client.ReadCommandAsync(command.Id, default); Assert.False(result.Succeeded); Assert.True(result.OutcomeUnknown); Assert.Null(result.Value);
     }
     [Fact]
-    public async Task ReviewedLinkCarriesExactWorkspaceEpochAndFingerprintWithoutUpstreamMutation()
+    public async Task Legacy_link_previews_cannot_be_accepted_without_a_durable_command()
     {
-        var id = Guid.NewGuid(); var epoch = Guid.NewGuid(); var taskId = Guid.NewGuid(); var externalId = Guid.NewGuid(); var now = DateTimeOffset.UtcNow;
-        var task = new CompanionTask(taskId, 1, "Canonical title", CompanionTaskKind.Todo, CompanionTaskState.Active, CompanionPriority.Normal, now, now);
-        var external = new WorkspaceExternalTask(externalId, "todo", "External title", "External notes", null, 1, "str", null, [], false, false, false, null, new string('a', 64));
-        var preview = new WorkspaceProjectionPreview(id, epoch, task, external, 1, 0); var requests = 0;
-        using var vaultHttp = VaultHttp(); using var http = new HttpClient(new Handler(async request =>
-        {
-            if (request.RequestUri!.AbsolutePath == "/connect") return Connection(id);
-            requests++; Assert.Equal(Session, request.Headers.Authorization!.Parameter);
-            if (request.RequestUri.AbsolutePath == "/projection/preview") return Json(preview);
-            Assert.Equal("/projection/adopt", request.RequestUri.AbsolutePath); using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync());
-            Assert.Equal(id, body.RootElement.GetProperty("expectedWorkspaceId").GetGuid()); Assert.Equal(epoch, body.RootElement.GetProperty("expectedAccessEpoch").GetGuid());
-            Assert.Equal(external.Fingerprint, body.RootElement.GetProperty("expectedFingerprint").GetString());
-            return Json(new { adopted = true, taskId, habiticaTaskId = externalId, revision = 2 });
-        }));
+        var now = DateTimeOffset.UtcNow; var id = Guid.NewGuid(); var taskId = Guid.NewGuid(); var remote = Guid.NewGuid();
+        using var vaultHttp = VaultHttp(); using var http = new HttpClient(new Handler(request => Task.FromResult(Connection(id))));
         var client = new WorkspaceCloudClient(http, new ChatGptIntegrationClient(vaultHttp, "https://auth.invalid/", false), "https://workspace.invalid/"); await client.ConnectAsync(Credentials, default);
-        var reviewed = await client.PreviewLinkAsync(taskId, externalId, default); Assert.True(reviewed.Succeeded); Assert.Equal("Canonical title", reviewed.Value!.Task.Text); Assert.Equal("External title", reviewed.Value.External.Text);
-        Assert.True((await client.AdoptLinkAsync(reviewed.Value, default)).Succeeded); Assert.Equal(2, requests);
-        Assert.False((await client.AdoptLinkAsync(reviewed.Value with { PendingCommandCount = 1 }, default)).Succeeded); Assert.Equal(2, requests);
+        var preview = new WorkspaceProjectionPreview(id, Guid.NewGuid(), new(taskId, 1, "Canonical", CompanionTaskKind.Todo, CompanionTaskState.Active, CompanionPriority.Normal, now, now), new(remote, "todo", "Native", "", null, 1, "str", null, [], false, false, false, null, new string('a', 64)), 1, 0);
+        Assert.False((await client.AdoptLinkAsync(preview, default)).Succeeded);
     }
     [Theory]
     [InlineData(WorkspaceOperation.SkipOccurrence, "skip_occurrence", "skipOccurrence", 1)]

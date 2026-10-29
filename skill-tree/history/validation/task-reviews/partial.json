@@ -1,0 +1,34 @@
+{
+  "taskId": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+  "status": "implementation and positive qualification complete; required harness startup investigation open",
+  "counts": {
+    "domain": 36,
+    "application": 262,
+    "storage": 25,
+    "web": 777,
+    "workspace": 577,
+    "model": 6,
+    "component": 8,
+    "sdk": 4,
+    "rendered": 504
+  },
+  "requiredTaskId": "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+  "findings": [
+    "Two distinct geometry-seed controls timed out before a result while contrast controls completed. Failed evidence is retained and supplies no acceptance.",
+    "Positive final matrix has 504 rows with zero geometry/contrast/harness errors. Light and Obsidian enlarged-text focus screenshots are retained.",
+    "An initial server deadline interrupted a revised matrix; after prerequisite renewal the complete revised matrix passed. A later server expiry after a user pause interrupted a seeded control. Local prerequisite expiry is separate from executed geometry-seed timeouts on a live server."
+  ],
+  "repairs": [
+    "Corrected a test file output path before execution.",
+    "Normalized seeded projection null fields to match the existing canonical validator.",
+    "Added wrapped action/draft text after visual inspection of clipped native selector labels at 200 percent."
+  ],
+  "limitations": [
+    "Physical devices, assistive technology, live ChatGPT/Codex calls, publication and push delivery remain unrun."
+  ],
+  "sourceFingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceTaskReview.cs": "1f1571af0014439e3ddb000f84d0fd967e4bfed160685c08a83d71456d276d79",
+    "workers/shared/task-review.ts": "c0df7e7bc24a6fa391ec7432c7456e7aafc63d952b9107826f91d907d11ef298",
+    "src/Habitica.WebApp/Components/TodoReviewEditor.razor": "65c829c4f7252ef980ea51876ad52b974849ca9051bb66c479e7dd7ca6d9562f"
+  }
+}

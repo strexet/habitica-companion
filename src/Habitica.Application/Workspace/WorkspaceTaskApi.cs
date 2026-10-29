@@ -16,7 +16,10 @@ public sealed record WorkspaceExternalDailySchedule(string Frequency, int EveryX
         && DaysOfMonth is not null && DaysOfMonth.All(day => day is >= 1 and <= 31) && DaysOfMonth.Distinct().Count() == DaysOfMonth.Count
         && WeeksOfMonth is not null && WeeksOfMonth.All(week => week is >= 1 and <= 5) && WeeksOfMonth.Distinct().Count() == WeeksOfMonth.Count;
 }
-public sealed record WorkspaceProjectionPreview(Guid WorkspaceId, Guid AccessEpoch, CompanionTask Task, WorkspaceExternalTask External, long ExpectedRevision, int PendingCommandCount);
+public sealed record WorkspaceProjectionPreview(Guid WorkspaceId, Guid AccessEpoch, CompanionTask Task, WorkspaceExternalTask External, long ExpectedRevision, int PendingCommandCount,
+    Guid PreparedCommandId = default, Guid RequestId = default, string? ReviewHash = null, DateTimeOffset ExpiresAtUtc = default, Guid ConnectionId = default,
+    HabiticaProjection? MappingBefore = null, HabiticaProjection? MappingAfter = null, string? Disclosure = null,
+    Guid CommandId = default, string? State = null, bool SavedInCompanion = false, bool OutcomeUnknown = false, int GameEffects = 0, int NativeWrites = 0, string? Error = null);
 
 public static class WorkspaceTaskApiJson
 {

@@ -1,3 +1,7 @@
+import {recoveryRecords} from './recovery-records.ts';
+import {taskRecoveryQuery} from '../../shared/task-recovery-query.ts';
+import {recoveryCommands,taskRecoveryCommands} from './task-recovery-store.ts';
+import {queryTaskReviews} from '../../shared/task-review.ts';
 import {previewTagAuthority,tagPreview,browserTagOrigin} from './tag-reconciliation.ts';
 import type {TagOrigin} from './tag-authority.ts';
 import {queryTodoHierarchy} from '../../shared/todo-hierarchy.ts';
@@ -21,20 +25,23 @@ const bytes=(value:string)=>new TextEncoder().encode(value).length;
 function stable(value:unknown):string {if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(stable).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stable((value as Record<string,unknown>)[k])).join(',')+'}';}
 export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;text:string}[]},correlationId:string,refreshSucceeded=true){
  const state=entry.projectionState;const unknown=state==='unknownOutcome';
- return {operation:entry.command.operation,taskId:entry.command.taskId,commandId:entry.command.id,correlationId,taskText:entry.taskSnapshot?.text??document.tasks.find(t=>t.id===entry.command.taskId)?.text??'',savedInCompanion:true,habiticaProjectionStatus:unknown?'UnknownOutcome':['notRequested','confirmed','blocked','cancelled'].includes(state)?state:'pending',acceptedEventCount:entry.command.operation==='scoreHabit'?entry.command.count:['completeTask','skipOccurrence','restoreTodo'].includes(entry.command.operation)?1:0,confirmedProjectionCount:entry.confirmedEffects,totalProjectionCount:entry.effects.length,failurePosition:entry.failure==='none'?null:entry.confirmedEffects+1,failure:entry.failure,retryAtUtc:entry.retryAtUtc,refreshSucceeded,outcomeUnknown:unknown};
+ return {operation:entry.command.operation,taskId:entry.command.taskId,commandId:entry.command.id,correlationId,taskText:entry.taskSnapshot?.text??document.tasks.find(t=>t.id===entry.command.taskId)?.text??'',savedInCompanion:true,habiticaProjectionStatus:unknown?'UnknownOutcome':['notRequested','confirmed','blocked','cancelled'].includes(state)?state:'pending',acceptedEventCount:entry.command.operation==='scoreHabit'?entry.command.count:['completeTask','skipOccurrence','restoreTodo','reviewTask','unarchiveTask','correctOccurrence'].includes(entry.command.operation)?1:0,confirmedProjectionCount:entry.confirmedEffects,totalProjectionCount:entry.effects.length,failurePosition:entry.failure==='none'?null:entry.confirmedEffects+1,failure:entry.failure,retryAtUtc:entry.retryAtUtc,refreshSucceeded,outcomeUnknown:unknown};
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>,tagOrigin:TagOrigin=browserTagOrigin):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);
+ if(name==='list_task_recovery_records')return recoveryRecords(env,row,input);
  if(name==='list_saved_task_views'||name==='query_saved_task_view')return savedTaskReads(env,row,name,input);
  if(name==='get_unblocked_todos')return unblockedTodos(env,row,input);
  if(name==='get_habit_history')return habitHistory(env,row,input);
  if(name==='get_completed_history')return completionHistory(env,row,input);
  if(name==='get_task_sync_status')return taskSyncStatus(env,row);
  const document=JSON.parse(row.document_json);
+ if(name==='get_task_reviews')return queryTaskReviews(document,input);
  if(name==='get_todo_hierarchy')return queryTodoHierarchy(document,input);
  if(name==='list_companion_tasks')return queryTasks(document,input);
  if(name==='list_companion_agenda')return queryAgenda(document,input);
  if(organizationNames.includes(name as OrganizationTool))return queryOrganization(document,name as OrganizationTool,input);
+ if(name==='get_task_recovery')return taskRecoveryQuery(document,await taskRecoveryCommands(env,row.profile_id,uuid(input.taskId)),input);
  if(name==='get_companion_task'){const task=document.tasks.find((t:{id:string;isArchived:boolean})=>t.id===input.taskId&&!t.isArchived);return {provenance:'companion-canonical',workspaceId:row.workspace_id,revision:document.revision,task:task??null};}
  async function receipt(commandId:string){
   const found=await env.WORKSPACE_DB.prepare('SELECT c.entry_json,p.correlation_id FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id LEFT JOIN workspace_preparations p ON p.profile_id=c.profile_id AND p.command_id=c.command_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1').bind(row.profile_id,commandId,row.access_epoch).first<{entry_json:string;correlation_id:string|null}>();
@@ -55,7 +62,7 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
     const entries=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
     if(entries.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===command.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
    }
-   await accept(document,command,new Date().toISOString()); // Validate exact canonical state without accepting a command.
+   await accept(document,command,new Date().toISOString(),await recoveryCommands(env,row.profile_id,command)); // Validate exact canonical state without accepting a command.
    const tagAuthorityJson=await previewTagAuthority(env,row,tagOrigin);
    const now=new Date().toISOString();const serialized=JSON.stringify(command);const size=row.archive_bytes+bytes(serialized)+512;
    if(size>8*1024*1024-32768||row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('workspace_capacity',413);
@@ -70,9 +77,9 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
   const found=await receipt(prepared.command_id);if(!found&&(prepared.access_epoch!==row.access_epoch||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')))throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
   let policyExpired=false;
   if(!found){try{requireTodoProjection(document,command);}catch(error){if(!(error instanceof WorkspaceError))throw error;policyExpired=true;}}
-  const tagProjection=found||policyExpired||command.expectedRevision!==document.revision?null:tagPreview(document,(await accept(document,command,new Date().toISOString())).document,prepared.tag_authority_json);
+  const tagProjection=['unarchiveTask','correctOccurrence'].includes(command.operation)||found||policyExpired||command.expectedRevision!==document.revision?null:tagPreview(document,(await accept(document,command,new Date().toISOString(),await recoveryCommands(env,row.profile_id,command))).document,prepared.tag_authority_json);
   const tagEffects=Boolean(tagProjection?.scopeAllowed&&tagProjection.consentEnabled&&tagProjection.groups.some(group=>!group.retainMembership));
-  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:!found&&(policyExpired||prepared.expires_at_utc<=new Date().toISOString()),command,tagProjection,mayAffectHabitica:tagEffects|| (found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked'))),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
+  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:!found&&(policyExpired||prepared.expires_at_utc<=new Date().toISOString()),command,tagProjection,mayAffectHabitica:tagEffects|| (found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage','reviewTask','unarchiveTask','correctOccurrence'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked'))),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
  }
  const commandId=uuid(input.commandId);const found=await receipt(commandId);const operation=operationForTool[name as keyof typeof operationForTool];
  if(found){if(found.entry.command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);return mutationResult(found.entry,document,found.correlationId);}

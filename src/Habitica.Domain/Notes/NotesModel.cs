@@ -6,14 +6,18 @@ using System.Text.Json.Serialization;
 namespace Habitica.Domain.Notes;
 
 public enum NoteOperation { Create, Update, Append, Trash, Restore, Purge }
-public sealed record NoteVersion(long Revision, string Title, string Markdown, bool IsTrashed, DateTimeOffset AtUtc);
+public sealed record NoteProjectLink(Guid ProjectId,Guid WorkspaceId,string Source,string OwnerScope);
+public sealed record NoteVersion(long Revision, string Title, string Markdown, bool IsTrashed, DateTimeOffset AtUtc,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null);
 public sealed record PersonalNote(Guid Id, NoteVersion Current, DateTimeOffset CreatedAtUtc, IReadOnlyList<NoteVersion> History);
 public sealed record NoteReceipt(Guid CommandId, string PayloadHash, Guid NoteId, long NoteRevision, long NotebookRevision);
 public sealed record PurgedNote(Guid Id, long Revision);
 public sealed record NotesNotebook(int SchemaVersion, string OwnerScope, long Revision, IReadOnlyList<PersonalNote> Notes,
     IReadOnlyList<NoteReceipt> Receipts, IReadOnlyList<PurgedNote> Purged);
 public sealed record NoteCommand(Guid Id, Guid NoteId, long ExpectedNotebookRevision, long ExpectedNoteRevision,
-    NoteOperation Operation, string? Title = null, string? Markdown = null);
+    NoteOperation Operation, string? Title = null, string? Markdown = null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] bool? ClearProject=null);
 
 public static class NotesModel
 {
@@ -22,6 +26,7 @@ public static class NotesModel
     public static string Scope(string userId) => string.IsNullOrWhiteSpace(userId) ? throw new ArgumentException("Account identity required.")
         : Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(userId))).ToLowerInvariant();
     public static bool ValidScope(string? scope) => scope is {Length:64} && scope.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');
+    public static bool ValidProject(NoteProjectLink? link,string scope)=>link is null||link.ProjectId!=Guid.Empty&&link.WorkspaceId!=Guid.Empty&&link.Source is "browser" or "cloud"&&link.OwnerScope==scope&&ValidScope(link.OwnerScope);
     public static NotesNotebook Empty(string scope) { if(!ValidScope(scope))throw new ArgumentException("Invalid notes scope.");return new(1,scope,0,[],[],[]); }
     public static bool TextValid(string? title,string? body)
     {
@@ -31,7 +36,7 @@ public static class NotesModel
     public static void Validate(NotesNotebook book)
     {
         bool At(DateTimeOffset at) => at!=default && at.Offset==TimeSpan.Zero;
-        bool Version(NoteVersion? v) => v is not null && v.Revision is >0 and <=MaxRevision && TextValid(v.Title,v.Markdown) && At(v.AtUtc);
+        bool Version(NoteVersion? v) => v is not null && v.Revision is >0 and <=MaxRevision && TextValid(v.Title,v.Markdown) && At(v.AtUtc) && ValidProject(v.Project,book.OwnerScope);
         if(book.SchemaVersion!=1||!ValidScope(book.OwnerScope)||book.Revision is <0 or >MaxRevision||book.Notes is null||book.Receipts is null||book.Purged is null
             ||book.Notes.Count>MaxNotes||book.Receipts.Count>MaxReceipts+2*MaxNotes||book.Purged.Count>MaxReceipts)throw new JsonException("Invalid notes notebook.");
         var ids=new HashSet<Guid>();

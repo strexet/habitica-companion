@@ -19,9 +19,16 @@ public sealed class NotesStorageTests
         runtime.ReadOverride=NotesJson.Serialize(Book(NotesModel.Scope("other")));await Assert.ThrowsAsync<InvalidOperationException>(()=>store.LoadAsync(default));runtime.ReadOverride=null;
         await database.ClearAsync(default);Assert.Null(await store.LoadAsync(default));
     }
+    [Fact]
+    public async Task Linked_commit_passes_exact_source_owner_and_workspace_revision_without_exporting_the_volatile_account_key()
+    {
+        var runtime=new Runtime();await using var database=new IndexedDbNotesDatabase(runtime);var account="synthetic-owner-project-key";var scope=NotesModel.Scope(account);var book=Book(scope);var note=book.Notes[0];var link=new NoteProjectLink(Guid.NewGuid(),Guid.NewGuid(),"browser",scope);book=book with {Notes=[note with {Current=note.Current with {Project=link}}]};
+        Assert.True(await ((INotesProjectStore)database.ForScope(scope)).TryCommitProjectAsync(0,book,note.Id,account,42,default));Assert.Equal(4,runtime.LastCommit!.Length);Assert.DoesNotContain(account,(string)runtime.LastCommit[2]!);var guard=System.Text.Json.JsonSerializer.Serialize(runtime.LastCommit[3]);Assert.Contains(link.WorkspaceId.ToString("D"),guard);Assert.Contains("42",guard);
+        await Assert.ThrowsAsync<ArgumentException>(()=>((INotesProjectStore)database.ForScope(scope)).TryCommitProjectAsync(0,book,note.Id,"foreign-owner",42,default));
+    }
     private sealed class Runtime:IJSRuntime,IJSObjectReference
     {
-        private readonly Dictionary<string,string> _rows=[];public string? ReadOverride{get;set;}
+        private readonly Dictionary<string,string> _rows=[];public string? ReadOverride{get;set;}public object?[]? LastCommit;
         public ValueTask<T> InvokeAsync<T>(string name,object?[]? args)=>InvokeAsync<T>(name,default,args);
         public ValueTask<T> InvokeAsync<T>(string name,CancellationToken token,object?[]? args)
         {
@@ -31,7 +38,7 @@ public sealed class NotesStorageTests
             else if(name=="clearNotes")_rows.Clear();
             else if(name=="commitNotes")
             {
-                var scope=(string)args![0]!;var expected=(long)args[1]!;var old=_rows.GetValueOrDefault(scope);result=(old is null?0:NotesJson.Deserialize(old).Revision)==expected;
+                LastCommit=args;var scope=(string)args![0]!;var expected=(long)args[1]!;var old=_rows.GetValueOrDefault(scope);result=(old is null?0:NotesJson.Deserialize(old).Revision)==expected;
                 if((bool)result)_rows[scope]=(string)args[2]!;
             }
             return ValueTask.FromResult(result is null?default!:(T)result);

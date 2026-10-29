@@ -15,7 +15,7 @@ public sealed class WorkspaceTagPanelTests : BunitContext
 {
     private sealed class Client : WorkspaceTaskFixture.Cloud,IWorkspaceCloudClient,IWorkspaceTagApi
     {
-        public Guid EntityId=Guid.NewGuid(),NativeId=Guid.NewGuid(),WorkId=Guid.NewGuid();public int ConsentReads,TagStatusReads,NativeReads,RecoveryReads;public bool Consent,Unknown,FailAccept;
+        public Guid EntityId=Guid.NewGuid(),NativeId=Guid.NewGuid(),WorkId=Guid.NewGuid();public int ConsentReads,TagStatusReads,NativeReads,RecoveryReads;public bool Consent,Unknown,FailAccept,Terminal,Prepared,KnownRefusal;
         public List<bool> ConsentChanges=[];public List<WorkspaceTagRequest> Requests=[];public List<Guid> Accepts=[];public int TaskCount=1;
         public Func<Task<IntegrationTagConsentResult>>? DelayedConsent {get;set;}
         public Task<IntegrationTagConsentResult> ReadTagConsentAsync(CancellationToken token){ConsentReads++;return DelayedConsent?.Invoke()??Task.FromResult(new IntegrationTagConsentResult(true,"Checked",Consent));}
@@ -32,8 +32,8 @@ public sealed class WorkspaceTagPanelTests : BunitContext
             return Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagReview>(true,OriginalReview,"Prepared"));
         }
         public Task<WorkspaceTaskResponse<WorkspaceTagReceipt>> AcceptTagReviewAsync(WorkspaceTagReview review,CancellationToken token)
-        {Accepts.Add(review.CommandId!.Value);return Task.FromResult(FailAccept?new WorkspaceTaskResponse<WorkspaceTagReceipt>(false,null,"Lost acknowledgement",true):new(true,Receipt(review),"Saved"));}
-        public WorkspaceTagReceipt Receipt(WorkspaceTagReview review)=>new(review.CommandId!.Value,review.RequestId,WorkspaceId,review.Operation,true,0,false,[WorkId]);
+        {Accepts.Add(review.CommandId!.Value);return Task.FromResult(FailAccept?new WorkspaceTaskResponse<WorkspaceTagReceipt>(false,null,"Lost acknowledgement",!KnownRefusal):new(true,Receipt(review),"Saved"));}
+        public WorkspaceTagReceipt Receipt(WorkspaceTagReview review)=>Terminal?new(review.CommandId!.Value,review.RequestId,WorkspaceId,review.Operation,false,0,false,[],ReviewOutcome:"terminal-unaccepted",Reason:"tag_preview_changed",ClosedAtUtc:DateTimeOffset.UtcNow):Prepared?new(review.CommandId!.Value,review.RequestId,WorkspaceId,review.Operation,null,0,true,[],Prepared:true,ReviewOutcome:"prepared"):new(review.CommandId!.Value,review.RequestId,WorkspaceId,review.Operation,true,0,false,[WorkId]);
         public WorkspaceTagReview? OriginalReview {get;set;}
         public Task<WorkspaceTaskResponse<WorkspaceTagReceipt>> ReadTagReviewAsync(Guid id,CancellationToken token)=>Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagReceipt>(true,Receipt(OriginalReview!),"Original receipt checked"));
         public Task<WorkspaceTaskResponse<WorkspaceTagOriginal>> RecoverTagReceiptAsync(Guid id,CancellationToken token)
@@ -42,7 +42,7 @@ public sealed class WorkspaceTagPanelTests : BunitContext
     private Client Setup()
     {
         var f=new WorkspaceTaskFixture();var client=new Client {Connected=true};Services.AddMudServices();Services.AddSingleton<IJSRuntime>(f.Js);Services.AddSingleton<IAppSessionController>(f.Session);Services.AddSingleton<IWorkspaceCloudClient>(client);Services.AddSingleton(f.Database);Services.AddSingleton(new WorkspaceDataController(f.Session,client,f.Database));
-        Services.AddSingleton(new WorkspaceTaskController(f.Session,client,f.Database));Services.AddSingleton<TodoTaskDraftStore>();Services.AddSingleton<TodoWorkspacePresentation>();JSInterop.Mode=JSRuntimeMode.Loose;return client;
+        Services.AddSingleton(new WorkspaceTaskController(f.Session,client,f.Database));Services.AddSingleton(new PushDeviceController(f.Session,new PushReminderFixture.Client(),new PushReminderFixture.Browser(),new PushReminderFixture.Store()));Services.AddSingleton<TodoTaskDraftStore>();Services.AddSingleton<TodoWorkspacePresentation>();JSInterop.Mode=JSRuntimeMode.Loose;return client;
     }
     private static void Save(string name,string markup,string route="/todo/sync")=>PageLayoutEvidence.Save(name,markup,route,name,["form","confirmation","disabled-controls","navigation"],nameof(WorkspaceTagPanelTests));
     [Fact]
@@ -71,6 +71,22 @@ public sealed class WorkspaceTagPanelTests : BunitContext
         var client=Setup();client.Consent=true;client.FailAccept=true;client.TaskCount=0;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid='tag-coverage-check']").Click();cut.Find($"[data-testid='tag-reconcile-{client.EntityId:D}']").Click();
         cut.Find("[data-testid='tag-confirm']").Click();Assert.Single(client.Accepts);Assert.False(cut.Find("[data-testid='tag-confirm']").HasAttribute("disabled"));Assert.Contains("Retry original tag acceptance",cut.Markup);Assert.Contains("Acceptance is uncertain",cut.Markup);Save("tags-acceptance-unknown",cut.Markup);Assert.Single(client.Requests);
         cut.Find("[data-testid='tag-review-recover']").Click();Assert.Single(client.Accepts);Assert.Single(client.Requests);Assert.Contains("Game effects: 0",cut.Markup);
+    }
+    [Fact]
+    public void Generic_first_refusal_cannot_release_original_acceptance_fence()
+    {
+        var client=Setup();client.Consent=true;client.FailAccept=true;client.KnownRefusal=true;client.TaskCount=0;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid='tag-coverage-check']").Click();cut.Find($"[data-testid='tag-reconcile-{client.EntityId:D}']").Click();cut.Find("[data-testid='tag-confirm']").Click();
+        Assert.Contains("Acceptance is uncertain",cut.Markup);Assert.True(cut.FindAll("button").Single(button=>button.TextContent=="Cancel tag review").HasAttribute("disabled"));Assert.Single(client.Requests);
+    }
+    [Fact]
+    public void Sticky_unknown_requires_terminal_original_proof_before_fresh_review()
+    {
+        var client=Setup();client.Consent=true;client.FailAccept=true;client.TaskCount=0;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid='tag-coverage-check']").Click();cut.Find($"[data-testid='tag-reconcile-{client.EntityId:D}']").Click();
+        cut.Find("[data-testid='tag-confirm']").Click();client.KnownRefusal=true;cut.Find("[data-testid='tag-confirm']").Click();Assert.Contains("Acceptance is uncertain",cut.Markup);
+        client.Prepared=true;cut.Find("[data-testid='tag-review-recover']").Click();Assert.Contains("Acceptance is uncertain",cut.Markup);Assert.Single(client.Requests);
+        client.Terminal=true;cut.Find("[data-testid='tag-review-recover']").Click();Assert.Empty(cut.FindAll("[data-testid='tag-review']"));Assert.Contains("was not accepted and is closed",cut.Markup);Save("tags-terminal-unaccepted",cut.Markup);
+        Assert.False(cut.Find($"[data-testid='tag-reconcile-{client.EntityId:D}']").HasAttribute("disabled"));cut.Find($"[data-testid='tag-reconcile-{client.EntityId:D}']").Click();Assert.Equal(2,client.Requests.Count);Assert.NotEqual(client.Requests[0].RequestId,client.Requests[1].RequestId);Assert.Equal(2,client.Accepts.Count);
+        Save("tags-fresh-replacement-review",cut.Markup);
     }
     [Fact]
     public void Original_unknown_receipt_offers_separate_observation_review_without_an_automatic_mutation()

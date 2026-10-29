@@ -6,7 +6,7 @@ import {groupTagStatus} from '../../shared/group-tag-status.ts';
 import {inspectRetirement,type RetirementPlan} from './retirement-policy.ts';
 import {journal,type Journal} from './journal.ts';
 import {cloudAuthority,type WorkspaceRow} from './executor.ts';
-import {currentTagRow,requiredTagAuthority,groupTagGateway,tagReviewLease} from './group-tag-api.ts';
+import {scopedTagStatusAuthority,currentTagRow,requiredTagAuthority,groupTagGateway,tagReviewLease} from './group-tag-api.ts';
 import {browserTagOrigin} from './tag-reconciliation.ts';
 import type {TagOrigin,TagAuthority} from './tag-authority.ts';
 import type {SourceRetirement} from '../../shared/source-retirements.ts';
@@ -27,12 +27,14 @@ async function gateway(env:WorkspaceEnv,row:WorkspaceRow,operation:string,args:u
 }
 function view(stored:Stored){const plan=JSON.parse(stored.plan_json) as RetirementPlan,v=JSON.parse(stored.verification_json) as Verification;return {commandId:stored.command_id,requestId:stored.request_id,workspaceId:plan.workspaceId,conversionId:plan.conversionId,contextHash:plan.contextHash,revision:plan.revision,source:plan.source,sourceMapping:plan.sourceMapping,habiticaProjectTagId:plan.habiticaProjectTagId,habiticaTaskId:plan.sourceMapping.habiticaTaskId,project:plan.project,targets:plan.targets,verifiedTargets:Math.min(Math.max(0,v.cursor-1),plan.targets.length),verificationSteps:plan.targets.length+2,completedSteps:v.cursor,state:stored.state,sourceAlreadyAbsent:v.sourceAbsent,verifiedAtUtc:v.verifiedAt,expiresAtUtc:stored.expires_at_utc,expired:stored.expires_at_utc<=now()||Boolean(v.firstAt&&Date.parse(v.firstAt)+300000<Date.now()),outcomeUnknown:['executing','unknownOutcome'].includes(stored.state),savedInCompanion:stored.receipt_json?true:null,receipt:stored.receipt_json?JSON.parse(stored.receipt_json):null,error:stored.error_code,gameScores:0,disclosure};}
 async function prerequisites(env:WorkspaceEnv,row:WorkspaceRow,state:Journal,conversionId:string,origin:TagOrigin){
+ if(row.linked_recovery_fence)throw new WorkspaceError('linked_recovery_pending',409);
  if(state.authority?.mode!=='cloud'||state.authority.cloudWorkspaceId!==row.workspace_id)throw new WorkspaceError('workspace_owned_elsewhere',409);
  const authority=await requiredTagAuthority(env,row,origin),readiness=await inspectRetirement(state,conversionId,authority.accountId);if(!readiness.plan)throw new WorkspaceError(readiness.blockers[0]??'retirement_not_ready',409);
  const pending=await env.WORKSPACE_DB.prepare("SELECT work_id FROM workspace_tag_work WHERE profile_id=? AND state IN ('pending','executing','unknownOutcome') LIMIT 1").bind(row.profile_id).first();if(pending)throw new WorkspaceError('unresolved_tag_effects',409);
  const plan=readiness.plan,targetIds=new Set(plan.targets.map(x=>x.task.id)),groups=desiredTagMembership(state.document).groups.filter(group=>group.taskIds.some(id=>targetIds.has(id)));
  // Full desired groups are checked, independently of the public status page's pagination.
- for(const group of groups){const status=groupTagStatus(state.document,authority,{kind:group.kind,entityId:group.entityId}).groups[0];if(!status||!['confirmed','retained'].includes(status.membershipState)||!status.habiticaTagId)throw new WorkspaceError('required_tag_membership_requires_review',409);}
+ const statusAuthority=await scopedTagStatusAuthority(env,row,authority);
+ for(const group of groups){const status=groupTagStatus(state.document,statusAuthority,{kind:group.kind,entityId:group.entityId}).groups[0];if(!status||!['confirmed','retained'].includes(status.membershipState)||!status.habiticaTagId)throw new WorkspaceError('required_tag_membership_requires_review',409);}
  return {plan,authority,groups};
 }
 function matches(remote:RemoteTask,task:RetirementPlan['source'],fingerprint:string){return remote.kind==='todo'&&remote.fingerprint===fingerprint&&remote.completed===(task.state==='completed')&&remotePatchMatches(remote,{text:task.text,notes:task.notes??'',date:task.deadline??null,priority:task.habiticaDetails?.difficulty??1,attribute:task.habiticaDetails?.attribute??'str',checklist:task.habiticaDetails?.checklist??[]});}

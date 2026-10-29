@@ -1,0 +1,263 @@
+{
+  "controls": [
+    {
+      "name": "habitica-push-ui-contract-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 8.91,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-device-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 10.84,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-editor-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 8.55,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-routes-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 9.73,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-controller-tests",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 10.49,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-focused-tests",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 11.91,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-node",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 0.18,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-node-repaired",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.23,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-notification-storage-tests",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.18,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-reminder-wire-node",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.23,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-web-full",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 58.22,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-web-repaired",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 49.27,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-web-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 45.84,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-web-complete",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 45.03,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-auth-full",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 52.11,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-auth-current",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 40.66,
+      "deadlineSeconds": 300,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-workspace-current",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 259.87,
+      "deadlineSeconds": 300,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-application-full",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.26,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-chatgpt-auth-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.82,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-chatgpt-mcp-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.45,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-companion-workspace-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.66,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-node-complete",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.4,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-settings-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 8.47,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-capture-label",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 13.31,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-capture-complete",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 10.34,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-publish-contrast",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 16.68,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-web-boundaries-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 44.32,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-final-boundaries",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 15.78,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-boundaries-repaired",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 7.0,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-push-ui-publish-boundaries",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 16.46,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "activeControllerSeconds": null,
+  "activeControllerAccounting": "Not instrumented; recorded tool wall time and browser case timing are retained separately.",
+  "prerequisiteWaits": [
+    {
+      "kind": "prerequisite_wait",
+      "evidence": "habitica-push-ui-matrix-server-expiry.json",
+      "reason": "Disposable fixture server completed the original600-second lifetime; affectedstartup cases remain unavailable, not pass.",
+      "observedUnavailableCases": 26,
+      "observedCaseWaitingSeconds": 130.037,
+      "accounting": "Only retained unavailable case timing; server elapsed lifetime is separate. No executed-failure counter increment."
+    }
+  ],
+  "hostPolicyRejections": [
+    {
+      "kind": "host_policy_rejection",
+      "action": "Reload expired fixture tab27",
+      "reason": "Browser URL policy refused the data error document produced after the disposable server ended. No further interaction with that error tab; current cue states qualified separately on a new bounded local fixture session."
+    }
+  ]
+}

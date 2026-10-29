@@ -62,7 +62,9 @@ public sealed class WorkspaceRecurrenceCommandsTests
         var state = Empty(); var created = Apply(state, WorkspaceOperation.CreateDaily, Guid.NewGuid(), new(Text: "Canonical only", Recurrence: Schedule)).Snapshot!;
         var entry = created.Commands[0];
         var command = entry.Command with { ProjectToHabitica = true };
-        Assert.True(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { Command = command, PayloadHash = WorkspaceCommandIdentity.Hash(command), Effects = [ProjectionEffectKind.Create], ProjectionState = ProjectionCommandState.Pending }] }));
+        var projected = created with { Commands = [entry with { Command = command, PayloadHash = WorkspaceCommandIdentity.Hash(command), Effects = [ProjectionEffectKind.Create], ProjectionState = ProjectionCommandState.Pending }] };
+        Assert.False(WorkspaceJournalValidation.IsValid(projected)); // Existing coverage binds the original command hash.
+        Assert.True(WorkspaceJournalValidation.IsValid(projected with { Document = projected.Document with { ActivityCoverage = null } }));
         var malformed = entry.Command with { Patch = entry.Command.Patch! with { Recurrence = Schedule with { Weekdays = null! } } };
         Assert.False(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { Command = malformed }] }));
         Assert.False(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { TaskSnapshot = null }] }));

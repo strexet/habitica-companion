@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Synthetic push original-command storage</title></head><body><h1>Disposable push storage controls</h1><p>Production IndexedDB helper, two independent module instances and synthetic IDs on a disposable localhost origin. No permission prompt, provider traffic or account access.</p><button id="run">Run real IndexedDB controls</button><pre id="result" role="status">Ready</pre><script type="module">
+import * as first from './js/storage/indexedDbStorage.js';
+import * as second from './js/storage/indexedDbStorage.js?second';
+const result=document.querySelector('#result');
+document.querySelector('#run').onclick=async()=>{
+ const checks=[];const assert=(condition,label)=>{if(!condition)throw Error(label);checks.push(label);};
+ const key='notification-state-v1:'+crypto.randomUUID()+':prf_'+'a'.repeat(43)+':'+crypto.randomUUID()+':device';
+ const state={revision:1,binding:null,pending:{requestId:crypto.randomUUID(),operation:'consent',expectedConsentEpoch:null,enabled:true}};
+ try{
+  assert(await first.getNotificationState(key)===null,'new context has no previous receipt');
+  const writes=await Promise.all([first.commitNotificationState(key,0,JSON.stringify(state)),second.commitNotificationState(key,0,JSON.stringify(state))]);assert(writes.filter(Boolean).length===1,'two IndexedDB connections admit one original request');
+  assert(JSON.parse(await second.getNotificationState(key)).pending.requestId===state.pending.requestId,'independent module reads durable original identity');
+  assert(!await first.commitNotificationState(key,0,JSON.stringify(state)),'stale revision cannot overwrite original');
+  assert(await second.getNotificationState(key.replace('prf_a','prf_b'))===null,'profile context does not share original receipt');
+  let refused=false;try{await first.commitNotificationState(key,1,JSON.stringify({revision:2,pending:{endpoint:'https://private.invalid'}}));}catch{refused=true;}assert(refused,'endpoint material cannot enter local state');
+  const next={...state,revision:2,pending:null};assert(await second.commitNotificationState(key,1,JSON.stringify(next)),'exact next revision resolves original receipt');
+  await first.clearNotificationStates();assert(await second.getNotificationState(key)===null,'browser clear removes push original-command namespace');
+  result.textContent=JSON.stringify({status:'pass',checks,browserPermissionPrompts:0,realProviderTraffic:0,limitations:['Real IndexedDB with synthetic identities only; operating-system delivery, browser credential permissions and physical iPhone behavior remain unqualified.']},null,2);
+ }catch(error){result.textContent=JSON.stringify({status:'fail',checks,error:error.message});}
+};
+</script></body></html>

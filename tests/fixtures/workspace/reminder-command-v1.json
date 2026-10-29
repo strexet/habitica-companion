@@ -1,0 +1,77 @@
+{
+  "cases": [
+    {
+      "expectedWorkspaceRevision": 10,
+      "intent": {
+        "operation": "set",
+        "scheduleId": null,
+        "expectedRevision": 0,
+        "taskId": "00000000-0000-4000-8000-000000000011",
+        "reviewAfterUtc": "2026-10-26T09:00:00.1234567Z",
+        "timeZoneId": "UTC",
+        "repeat": null,
+        "targets": [
+          {
+            "deviceId": "00000000-0000-4000-8000-000000000012",
+            "revision": 1,
+            "subscriptionId": "00000000-0000-4000-8000-000000000013"
+          }
+        ],
+        "consentVersion": "scheduled-reminders-v1"
+      },
+      "hash": "0dd4b2ef6cd1104fb50b3bf6abee6f928b34f80e87a695be4ae91165fbd3b6fc"
+    },
+    {
+      "expectedWorkspaceRevision": 10,
+      "intent": {
+        "operation": "set",
+        "scheduleId": null,
+        "expectedRevision": 0,
+        "taskId": "00000000-0000-4000-8000-000000000011",
+        "reviewAfterUtc": "2026-10-26T09:00:00.0000000Z",
+        "timeZoneId": "Etc/GMT+5",
+        "repeat": {
+          "rule": {
+            "frequency": "weekly",
+            "interval": 2,
+            "startDate": "2026-10-26",
+            "timeZoneId": "Etc/GMT+5",
+            "weekdays": [
+              "monday",
+              "friday"
+            ],
+            "daysOfMonth": []
+          },
+          "time": "04:00",
+          "through": "2026-12-31",
+          "gap": "skip",
+          "overlap": "later"
+        },
+        "targets": [
+          {
+            "deviceId": "00000000-0000-4000-8000-000000000012",
+            "revision": 1,
+            "subscriptionId": "00000000-0000-4000-8000-000000000013"
+          }
+        ],
+        "consentVersion": "scheduled-reminders-v1"
+      },
+      "hash": "c7f88d01dffc7130605d3a05f5f6d45a3a4f3a3cd12a9fd692c660bcb2329d25"
+    },
+    {
+      "expectedWorkspaceRevision": 10,
+      "intent": {
+        "operation": "cancel",
+        "scheduleId": "00000000-0000-4000-8000-000000000099",
+        "expectedRevision": 3,
+        "taskId": "00000000-0000-4000-8000-000000000011",
+        "reviewAfterUtc": null,
+        "timeZoneId": "UTC",
+        "repeat": null,
+        "targets": [],
+        "consentVersion": "scheduled-reminders-v1"
+      },
+      "hash": "83ccb2a5bcbb2fbb2c68c026651b2a28f5f19cfffc7ed2791d6cf4948fd4f8c3"
+    }
+  ]
+}

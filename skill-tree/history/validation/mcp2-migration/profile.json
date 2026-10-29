@@ -1,0 +1,60 @@
+{
+  "task_id": "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+  "authorization": "Explicit owner Implement All invocation on2026-10-29 selects the existing frozen task and required dependency closure. Scope is the selected local SDK/transport migration; no Process Pending or remote operation grants scope.",
+  "checkout": "/Users/petr/Projects/habitica-tool",
+  "node": "22.12.0",
+  "packages": {
+    "server": "@modelcontextprotocol/server@2.4.0",
+    "core": "@modelcontextprotocol/core@2.4.0",
+    "modern_test_client": "@modelcontextprotocol/client@2.4.0",
+    "retained_legacy_test_client": "@modelcontextprotocol/sdk@1.32.1",
+    "oauth_provider": "@cloudflare/workers-oauth-provider@1.2.3"
+  },
+  "scope": [
+    "Exact local MCP package/lock additions; preserve unrelated installed package pins.",
+    "Request-local modern HTTP handler and type imports; preserve authentication, Origins, quotas, scopes and original receipts.",
+    "Synthetic legacy/modern SDK and D1/Worker checks; all three local dry builds.",
+    "Current documentation, generated identity and compact evidence."
+  ],
+  "excluded": [
+    "Deployment, remote installation or data operations.",
+    "Events handlers, subscriptions, secrets, callbacks and capability advertisement.",
+    "Codex/ChatGPT activation, actual Notes or tasks, gameplay and commit."
+  ],
+  "deadlines_seconds": {
+    "registry_read": 45,
+    "local_package_install": 120,
+    "build": 180,
+    "suite": 300,
+    "control": 30,
+    "cleanup_reserve": 15
+  },
+  "circuit_breaker": "Two consecutive executed controls with the same unresolved failure and no new evidence stop execution. Prerequisite waits and transport uncertainty remain separate.",
+  "rollback": "The ignored baseline preserves the selected dirty MCP files and lock before the migration. Restore only migration-owned changes if qualification requires rollback; preserve all unrelated dirty work. Node dependencies can be rebuilt from the retained exact baseline lock. No remote state exists.",
+  "baseline_fingerprints": {
+    "workers/chatgpt-mcp/src/adoption-tools.ts": "183ccb15717a50dac4d9f8ce2c76a13c6942839de0dcdae0aa5e4c76e397b224",
+    "workers/chatgpt-mcp/src/party-tools.ts": "d6f594d94ae54b4932b091dd7c0352637860ae2628c0c0549fa88db24105c9fc",
+    "workers/chatgpt-mcp/src/task-tools.ts": "bdbcfd8667c3726c38ab0181dfd06b6edb3eb343b0b21899786c8e62b2851a69",
+    "workers/chatgpt-mcp/src/reminder-tools.ts": "e6cca177c250fa6941d59820ef097ab5b47199ab7bccd98b98e81135f1ab131a",
+    "workers/chatgpt-mcp/src/retirement-tools.ts": "c48371fa7860dc1a7c6441b554119b755d4a4de69f114eb74e27df8d3e265858",
+    "workers/chatgpt-mcp/src/note-tools.ts": "eb49cc1a1e62ad2dd71fbcd5d6f1513b3840e58da43f1e7a1f3a17c6d3bc2f5a",
+    "workers/chatgpt-mcp/src/diagnostic-tools.ts": "5c7de6a5f02c22985549669d9f7a8c185f2cefb293c6de9b993342ea61de1332",
+    "workers/chatgpt-mcp/src/spell-tools.ts": "33ef49a78168af58e37ac49bf88633eb569772be058a302e3ac885b123874f9e",
+    "workers/chatgpt-mcp/src/linked-recovery-tools.ts": "203931d17c88e1052b69dcb35c3e7d4a7f578d42544891c5c0929c34d2fd8aa3",
+    "workers/chatgpt-mcp/src/group-tag-tools.ts": "50fb33b89ae94c7a73cf6a7618eb32e63a96673507eb1ec2a099d6d7930fcc68",
+    "workers/chatgpt-mcp/src/tools.ts": "c412d27a47cefe017eb2e4aa44c353e03ff5d06bbea003f27a551883958d2bdd",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "47efff6d89710f596e3096311cf4528511311fbfc6e14b596e1073dcea64979c",
+    "workers/chatgpt-mcp/src/index.ts": "62622d1a5b49b329d0491c84002f920abf20c27d99dc3b260d4bcfbed0c6c2c2",
+    "workers/chatgpt-mcp/src/cron-tools.ts": "e9fe7b57bb5d9e8c41a2af97f97b02096f2c3910a656353b7ea87f6c640e82bb",
+    "workers/chatgpt-mcp/src/conversion-tools.ts": "6919a73a26cab581f6578556c5daa107a349e7047e4730a26495ccbf996fd4a5",
+    "workers/chatgpt-mcp/package.json": "7f0da1db1c11b54eafeb16c3eca3d18751ccb47b001af9bdf5a40afeea5f889e",
+    "workers/chatgpt-mcp/package-lock.json": "81543e608f161c41926310688b30b89672b2d584f4174cd404d94e34cd4dfd34",
+    "workers/shared/build-identity.generated.ts": "0e27b9ee71a40e04c5256b16f56dae841ede33ad92f92dba6674243c46c77f35"
+  },
+  "sources": [
+    "https://developers.openai.com/plugins/build/mcp-events",
+    "https://ts.sdk.modelcontextprotocol.io/v2/migration/upgrade-to-v2",
+    "https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28",
+    "https://ts.sdk.modelcontextprotocol.io/v2/serving/web-standard.html"
+  ]
+}

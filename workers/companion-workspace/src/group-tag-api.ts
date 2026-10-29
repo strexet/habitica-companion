@@ -1,5 +1,5 @@
 import {workspaceDocument} from '../../shared/workspace-domain.ts';
-import {groupTagStatus} from '../../shared/group-tag-status.ts';
+import {groupTagStatus,type TagStatusAuthority} from '../../shared/group-tag-status.ts';
 import {groupTagInput,type GroupTagTool} from '../../shared/group-tag-tools.ts';
 import {workspaceTokenHash,WorkspaceError} from '../../shared/workspace-http.ts';
 import {tagAuthority,tagAuthorityGap,type TagOrigin,type TagAuthority} from './tag-authority.ts';
@@ -36,11 +36,15 @@ export async function recoverGroupTagReceipt(env:WorkspaceEnv,row:WorkspaceRow,w
  }
  await currentTagRow(env,row);return {provenance:'original-tag-work',...publicTagWork(stored!),outcomeUnknown:stored!.state==='executing'||stored!.state==='unknownOutcome',gameEffects:0};
 }
+export async function scopedTagStatusAuthority(env:WorkspaceEnv,row:WorkspaceRow,authority:TagAuthority):Promise<TagStatusAuthority>{
+ const works=await env.WORKSPACE_DB.prepare("SELECT intent_id FROM workspace_tag_work WHERE profile_id=? AND connection_id=? AND access_epoch=? AND state='confirmed'").bind(row.profile_id,row.connection_id,row.access_epoch).all<{intent_id:string}>();
+ return {...authority,trustedIntentIds:new Set(works.results.map(work=>work.intent_id))};
+}
 export async function groupTagReadApi(env:WorkspaceEnv,initial:WorkspaceRow,name:GroupTagTool,args:unknown,origin:TagOrigin):Promise<Record<string,unknown>|null>{
  const input=groupTagInput(name,args),row=await currentTagRow(env,initial);
  if(name==='get_group_tag_status'){
   let authority:TagAuthority|null=null;try{authority=await tagAuthority(env,row,origin);}catch{/* Stored audit remains explicitly account-unverified. */}
-  const result=groupTagStatus(JSON.parse(row.document_json),authority,input);
+  const result=groupTagStatus(JSON.parse(row.document_json),authority?await scopedTagStatusAuthority(env,row,authority):null,input);
   const uncertain=await env.WORKSPACE_DB.prepare("SELECT work_id,work_json FROM workspace_tag_work WHERE profile_id=? AND state IN ('executing','unknownOutcome')").bind(row.profile_id).all<{work_id:string;work_json:string}>();
   await currentTagRow(env,row);return {...result,groups:result.groups.map(group=>({...group,unknownWorkIds:uncertain.results.filter(work=>JSON.parse(work.work_json).context.entityId===group.entityId).map(work=>work.work_id)}))};
  }

@@ -187,8 +187,13 @@
     // button token as the preferred hint (readableTextFor still auto-corrects for contrast).
     const primaryButtonText = readToken(tokens, "primaryButtonText");
     const secondaryButtonText = readToken(tokens, "secondaryButtonText") || primaryButtonText;
+    const secondaryGradient = readToken(tokens, "secondaryButtonGradient");
+    const secondaryStops = secondaryGradient
+      ? ["start", "end"].map(key => parseColor(readToken(secondaryGradient, key))).filter(Boolean) : [];
     root.style.setProperty("--button-text", readableTextFor(readToken(tokens, "primary"), primaryButtonText));
-    root.style.setProperty("--button-text-accent", readableTextFor(readToken(tokens, "accent"), secondaryButtonText));
+    root.style.setProperty("--button-text-accent", secondaryStops.length === 2
+      ? readableSurfaceText(secondaryButtonText, secondaryButtonText, secondaryStops)
+      : readableTextFor(readToken(tokens, "accent"), secondaryButtonText));
     root.style.setProperty("--button-text-danger", readableTextFor(readToken(tokens, "danger"), primaryButtonText));
     root.style.setProperty("--button-text-success", readableTextFor(readToken(tokens, "success"), primaryButtonText));
     root.style.setProperty("--appbar-text", readableTextFor(readToken(tokens, "appBarBackground"), readToken(tokens, "appBarText")));

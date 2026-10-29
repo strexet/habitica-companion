@@ -66,7 +66,8 @@ public sealed record CompanionTask(
     HabiticaTaskDetails? HabiticaDetails = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
-public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
+public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] Guid? TerminalCommandId = null) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record CompletionEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset CompletedAtUtc, Guid? OccurrenceId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record TaskRestoration(Guid Id, long Revision, Guid TaskId, Guid CompletionId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record HabitScoreEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset RecordedAtUtc, HabitScoreDirection Direction, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
@@ -74,6 +75,8 @@ public sealed record HabiticaProjection(Guid Id, long Revision, Guid TaskId, Pro
 
 public sealed record WorkspaceDocument
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskActivityWitness>? ActivityCoverage { get; init; }
     public const int CurrentSchemaVersion = 1;
     public const long MaxRevision = 9007199254740991;
     public int SchemaVersion { get; init; } = CurrentSchemaVersion;
@@ -92,7 +95,15 @@ public sealed record WorkspaceDocument
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<TaskRestoration>? Restorations { get; init; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<LinkedTaskRecovery>? LinkedTaskRecoveries { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskUnarchive>? Unarchives { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<OccurrenceCorrection>? OccurrenceCorrections { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<WorkspaceOrganizationEntry>? OrganizationHistory { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskReviewEvent>? ReviewEvents { get; init; }
     public IReadOnlyList<HabitScoreEvent> HabitScores { get; init; } = Array.Empty<HabitScoreEvent>();
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

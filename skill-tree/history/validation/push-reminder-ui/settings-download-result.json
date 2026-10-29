@@ -1,0 +1,19 @@
+{
+  "taskId": "T-4b332426-b30d-4e73-a465-3d1f80eb0746",
+  "status": "accepted",
+  "implementation": "Only Download changes from filled-secondary to outlined-secondary. The label, callback, disabled conditions, data consent and sync transport remain unchanged.",
+  "settingsCases": 84,
+  "minimumMeasuredPageContrast": 4.534424408715922,
+  "settingsComponentTests": 14,
+  "fullWebTests": 812,
+  "evidence": [
+    "matrix-summary.json",
+    "matrix-base.jsonl.gz",
+    "habitica-push-ui-settings-final.log",
+    "habitica-push-ui-web-accepted.log",
+    "habitica-push-ui-matrix-contrast-failures.json"
+  ],
+  "limitations": [
+    "Synthetic rendered output and local component assertions only. No private sync request, live download, publication or permission change."
+  ]
+}

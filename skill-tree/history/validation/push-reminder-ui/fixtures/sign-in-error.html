@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic sign-in-error</title><link rel="stylesheet" href="/mud.css"><link rel="stylesheet" href="/app.css"></head><body><main style="padding:16px;max-width:1100px;margin:auto"><p>Synthetic Razor output. Component interactions are qualified separately.</p><div class="landing-shell"><section class="hero-panel card-surface"><p class="section-label">Habitica companion</p>
+            <h1>Plan Habitica with clearer data.</h1>
+            <a id="sign-in-jump-button" class="sign-in-jump-button sign-in-jump-button--hidden" href="#sign-in-form-card" data-testid="sign-in-jump">
+                Sign in
+                <span aria-hidden="true">↓</span></a>
+            <p class="hero-copy">
+                Review account health, party timing, quest options, gear choices, spells, and tasks from one focused app.
+            </p>
+
+            <div class="feature-grid feature-card-grid compact-feature-grid"><div class="feature-chip">Account health and stat points</div>
+                <div class="feature-chip">Party quest queue and CRON timing</div>
+                <div class="feature-chip">Gear comparison and presets</div>
+                <div class="feature-chip">Spell and task-value helpers</div></div>
+
+            <div class="sign-in-theme-strip"><div class="color-scheme-panel color-scheme-panel--compact color-scheme-panel--presets-only"><div class="color-scheme-bar"><label class="field-row compact color-scheme-select-row"><span>Color scheme</span>
+            <select class="app-input" data-testid="color-scheme-select" value="gryphy-light" blazor:onchange="1"><optgroup label="Default"><option value="gryphy-light" selected="">Gryphy (Light)</option><option value="gryphy-dark">Gryphy (Dark)</option></optgroup>
+                <optgroup label="Built-in Light"><option value="forest-legacy">Forest Legacy</option><option value="frosted-cake">Frosted Cake</option><option value="blessed-skyhaven">Blessed Skyhaven</option><option value="frost-healer">Frost Healer</option><option value="sunlit-stable">Sunlit Stable</option><option value="mosswood-quest">Mosswood Quest</option><option value="potion-shop">Potion Shop</option><option value="quiet-ledger">Quiet Ledger</option><option value="treasure-vault">Treasure Vault</option><option value="mana-spring">Mana Spring</option><option value="stonewatch-sanctuary">Stonewatch Sanctuary</option></optgroup>
+                <optgroup label="Built-in Dark"><option value="arcane-wraith">Arcane Wraith</option><option value="phantom-fair">Phantom Fair</option><option value="toxic-swamp">Toxic Swamp</option><option value="green-menace">Green Menace</option><option value="abyssal-blackwater">Abyssal Blackwater</option><option value="obsidian-glow">Obsidian Glow</option><option value="infernal-covenant">Infernal Covenant</option><option value="midnight-tavern">Midnight Tavern</option><option value="dragonfire-keep">Dragonfire Keep</option><option value="boss-battle">Boss Battle</option><option value="celestial-inn">Celestial Inn</option></optgroup></select></label>
+        <div class="color-scheme-preview" aria-hidden="true"><span style="background: #f7f1ff;"></span><span style="background: rgba(255, 252, 255, 0.94);"></span><span style="background: #7334bd;"></span><span style="background: #d99416;"></span><span style="background: #c84a67;"></span><span style="background: #2a9277;"></span></div></div></div></div></section>
+
+        <div id="sign-in-form-card" class="mud-paper mud-elevation-0 card-surface sign-in-card" style=""><p class="section-label">Connect this browser</p>
+            <h2>Sign in with Habitica</h2>
+            <p class="panel-copy">
+                Use the User ID and API Token from Habitica settings. Your token works like a password, so it stays private and is used only to talk to Habitica.
+            </p>
+
+            <div class="trust-strip"><span>Session-only by default</span>
+                <span>No export includes credentials</span>
+                <span>Saved credentials are optional</span></div>
+
+            <form blazor:onsubmit="2"><div class="field-grid sign-in-field-grid"><label class="field-row"><span>Habitica User ID</span>
+                        <input class="app-input" name="user-id" autocomplete="username" aria-invalid="true" value="" blazor:onchange="3" blazor:oninput="4">
+                        <span class="field-hint">Shown on Habitica Settings -&gt; API.</span></label>
+
+                    <label class="field-row"><span>Habitica API Token</span>
+                        <input class="app-input" name="api-token" type="password" autocomplete="current-password" aria-invalid="true" value="" blazor:onchange="5" blazor:oninput="6">
+                        <span class="field-hint">Treat this like a password. It is sent only to Habitica for sign-in.</span></label></div><div class="mud-alert mud-alert-outlined-error mud-dense mud-elevation-0 inline-banner" blazor:onclick="26"><div class="mud-alert-position justify-start"><div class="mud-alert-icon mud-alert-icon-left"><svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="img"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg></div><div class="mud-alert-message">
+                        Enter both Habitica User ID and API Token before signing in.
+                    </div></div></div><label class="checkbox-row sign-in-remember-row"><input name="persist-locally" type="checkbox" blazor:onchange="24">
+                    <span>Remember credentials on this device. Leave unchecked for this tab only.</span></label>
+
+                <div class="action-row"><button blazor:onclick="27" type="submit" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple action-button" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Sign In</span></button></div></form>
+
+            <div class="sign-in-help-grid"><section class="sign-in-help-card"><span class="dashboard-stat-label">Where to find them</span>
+                    <ol><li>Website: User icon menu -&gt; Settings -&gt; API.</li>
+                        <li>Android: Settings -&gt; API.</li>
+                        <li>iOS: Settings -&gt; Account Details.</li>
+                        <li>Copy User ID and API Token into this form.</li></ol>
+                    <a class="inline-link" href="https://habitica.com/user/settings/api" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href, '_blank', 'noopener,noreferrer'); return false;">Open Habitica API settings</a></section>
+
+                <section class="sign-in-help-card safe-card"><span class="dashboard-stat-label">Safety model</span>
+                    <ul><li>Your API Token is a password. Keep it private.</li>
+                        <li>Sign in sends credentials only to Habitica for account data.</li>
+                        <li>Sign in and refresh read data; Habitica-changing actions are explicit.</li>
+                        <li>Session-only sign-in is the default.</li>
+                        <li>Remembering credentials is optional and stored only in this browser.</li>
+                        <li>Credentials are never saved in exports, app messages, or device sync.</li></ul></section></div>
+
+            <p class="panel-copy compact-copy">
+                Sign out ends the current tab session. Clear local data removes saved credentials and saved app data.
+                <a href="/privacy">Privacy and data handling</a></p></div>
+        <section id="install" class="card-surface settings-card" data-testid="pwa-install-panel"><p class="section-label">Use Companion as an app</p>
+    <h2>Install on iPhone</h2>
+    <p>Open Habitica Companion from your Home Screen in its own window.</p>
+    <button aria-expanded="false" aria-controls="pwa-install-steps" data-testid="pwa-install-toggle" data-layout-primary="true" blazor:onclick="13" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple pwa-install-toggle" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Show installation steps</span></button></section></div></main><script src="/colorSchemes.js"></script><script type="module" src="/qualification-frame.mjs"></script></body></html>

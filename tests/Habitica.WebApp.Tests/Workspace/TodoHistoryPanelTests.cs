@@ -38,7 +38,8 @@ public sealed class TodoHistoryPanelTests : BunitContext
     {
         var state = CompletedTodo(out var todoId); state = Apply(state, WorkspaceOperation.UpdateTask, todoId, new(Text: "Renamed current task", Notes: "Current notes"));
         var daily = Guid.NewGuid(); state = Apply(state, WorkspaceOperation.CreateDaily, daily, new(Text: "Daily completion")); state = Apply(state, WorkspaceOperation.CompleteTask, daily, date: Day);
-        state = state with { Document = state.Document with { Tasks = state.Document.Tasks.Select(task => task.Id == daily ? task with { IsArchived = true } : task).ToArray(), Completions = state.Document.Completions.Select(row => row.TaskId == daily ? row with { IsArchived = true } : row).ToArray() } };
+        state = Apply(state, WorkspaceOperation.DeleteTask, daily);
+        state = state with { Document = state.Document with { Completions = state.Document.Completions.Select(row => row.TaskId == daily ? row with { IsArchived = true } : row).ToArray() } };
         var (f, todo) = await Setup(state); var before = WorkspaceJournalJson.Serialize(f.Client.State); var cut = Render<TodoHistoryPanel>();
         Assert.Equal(2, cut.FindAll("[data-testid^='history-row-']").Count); Assert.Contains("Original completion title", cut.Markup); Assert.DoesNotContain("Renamed current task", cut.Markup);
         Assert.Contains("Historical details saved", cut.Markup); Assert.Contains("Recorded UTC: 2026-10-01", cut.Markup); Assert.Contains("Daily civil occurrence date: 2026-10-01", cut.Markup); Assert.Contains("Task archived: Yes", cut.Markup); Assert.Contains("Event archived: Yes", cut.Markup);
@@ -46,7 +47,7 @@ public sealed class TodoHistoryPanelTests : BunitContext
         Save("todo-history-expanded", cut.Markup.Replace("<details><summary>Retained notes", "<details open><summary>Retained notes", StringComparison.Ordinal).Replace("<details><summary>Event references", "<details open><summary>Event references", StringComparison.Ordinal), "expanded-retained-notes-and-identities", nameof(Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes));
         cut.Find("[data-testid='history-query']").Change("Original notes"); Assert.Single(cut.FindAll("[data-testid^='history-row-']"));
         Assert.Empty(f.Client.PreparationIds); Assert.Equal(before, WorkspaceJournalJson.Serialize(f.Client.State));
-        f.Client.State = state with { Commands = [] }; await cut.InvokeAsync(() => todo.LoadSelectedAsync()); cut.Find("[data-testid='history-query']").Change("Renamed");
+        f.Client.State = state with { Document = state.Document with { ActivityCoverage = null }, Commands = [] }; await cut.InvokeAsync(() => todo.LoadSelectedAsync()); cut.Find("[data-testid='history-query']").Change("Renamed");
         Assert.Contains("Current task details (historical snapshot unavailable)", cut.Markup); Assert.Contains("Current notes", cut.Markup);
     }
 

@@ -49,7 +49,7 @@ public static class WorkspaceHabiticaCoveragePolicy
         var tags = new List<WorkspaceHabiticaTagRequirement>();
         var tagLedgerValid=WorkspaceTagProjection.IsValid(document);
         var tagMappings=(tagLedgerValid?document.TagLedger?.Mappings:null)?.ToLookup(row=>row.EntityId);
-        var tagIntents=(tagLedgerValid?document.TagLedger?.Intents:null)?.ToLookup(row=>row.MappingId);
+        var desired=WorkspaceTagCorrespondence.Desired(document).ToDictionary(row=>(row.Kind,row.Entity.Id));
         void Add(IEnumerable<WorkspaceEntity> entities, WorkspaceOrganizationKind kind)
         {
             foreach (var entity in entities)
@@ -65,19 +65,12 @@ public static class WorkspaceHabiticaCoveragePolicy
                     else state=mapping.State switch { WorkspaceTagState.Pending=>HabiticaCoverageState.Pending,
                         WorkspaceTagState.Confirmed=>entity.IsArchived?HabiticaCoverageState.Retained:HabiticaCoverageState.Linked,
                         _=>HabiticaCoverageState.NeedsReview };
-                    var intents=tagIntents![mapping.Id].Where(row=>row.Operation==WorkspaceTagOperation.SetMembership).OrderByDescending(row=>row.DesiredRevision).ThenByDescending(row=>row.Revision).ToArray();
-                    var intent=intents.FirstOrDefault();
-                    if(intent is not null)
-                    {
-                        if(intents.Count(row=>row.DesiredRevision==intent.DesiredRevision&&row.Revision==intent.Revision)>1
-                            ||state is HabiticaCoverageState.Missing or HabiticaCoverageState.NeedsReview||intent.IsArchived&&!entity.IsArchived
-                            ||intent.DesiredRevision!=document.Revision||intent.HabiticaTagId!=mapping.HabiticaTagId)
-                            membership=HabiticaCoverageState.NeedsReview;
-                        else membership=intent.State switch { WorkspaceTagState.Pending=>HabiticaCoverageState.Pending,
-                            WorkspaceTagState.Confirmed when state is HabiticaCoverageState.Linked or HabiticaCoverageState.Retained && intent.Members!.All(member=>mappings[member.TaskId].Any(projection=>projection.HabiticaTaskId==member.HabiticaTaskId))
-                                =>entity.IsArchived?HabiticaCoverageState.Retained:HabiticaCoverageState.Linked,
-                            _=>HabiticaCoverageState.NeedsReview };
-                    }
+                    var proof=WorkspaceTagCorrespondence.Inspect(document,desired[(kind,entity.Id)],mapping);
+                    if(proof.Intent is {} intent)
+                        membership=!proof.Exact||state is HabiticaCoverageState.Missing or HabiticaCoverageState.NeedsReview?HabiticaCoverageState.NeedsReview:
+                            proof.Confirmed?entity.IsArchived?HabiticaCoverageState.Retained:HabiticaCoverageState.Linked:
+                            intent.State==WorkspaceTagState.Pending?HabiticaCoverageState.Pending:HabiticaCoverageState.NeedsReview;
+
                 }
                 tags.Add(new(entity.Id,kind,entity.IsArchived,state,state is HabiticaCoverageState.Linked or HabiticaCoverageState.Retained?mapping?.HabiticaTagId:null,membership));
             }

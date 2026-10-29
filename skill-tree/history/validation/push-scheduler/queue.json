@@ -1,0 +1,569 @@
+{
+  "ok": true,
+  "errors": [],
+  "tasks": [
+    {
+      "title": "Expose exact-record task adoption and migration controls through MCP",
+      "queue": "Pending Queue",
+      "id": "P-45cdf111-910f-455d-bbb5-89bc00de4bbe",
+      "priority": 105,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 75
+    },
+    {
+      "title": "Keep confirmed project tag status through unrelated workspace revisions",
+      "queue": "Pending Queue",
+      "id": "P-8e196ade-395e-4737-a1eb-2172488bddc4",
+      "priority": 104,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 104
+    },
+    {
+      "title": "Recover stale group-tag reviews after workspace revision changes",
+      "queue": "Pending Queue",
+      "id": "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+      "priority": 104,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 133
+    },
+    {
+      "title": "Resolve archived checklist-task counterparts before source retirement",
+      "queue": "Pending Queue",
+      "id": "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+      "priority": 103,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 162
+    },
+    {
+      "title": "Preserve group tag names through diagnostic sanitization",
+      "queue": "Prioritized Next Changes",
+      "id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "priority": 102,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+      ],
+      "processing_run_id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
+      "root_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "related_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "relation": "followup",
+      "depends_on": [],
+      "line": 195
+    },
+    {
+      "title": "Expose iPhone PWA reminder setup and recovery",
+      "queue": "Prioritized Next Changes",
+      "id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "priority": 100,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+      ],
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "root_task_id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "line": 234
+    },
+    {
+      "title": "Dispatch durable scheduled Web Push reminders",
+      "queue": "Prioritized Next Changes",
+      "id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "priority": 100,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+      ],
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "root_task_id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+        "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"
+      ],
+      "line": 274
+    },
+    {
+      "title": "Determine supported originating-chat reminder delivery",
+      "queue": "Prioritized Next Changes",
+      "id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "priority": 100,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"
+      ],
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 314
+    },
+    {
+      "title": "Execute explicitly requested task edits without redundant agent approval",
+      "queue": "Prioritized Next Changes",
+      "id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "priority": 100,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-203bd87e-c49c-447b-913d-b322d6bdf0b2"
+      ],
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "root_task_id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 354
+    },
+    {
+      "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates",
+      "queue": "Prioritized Next Changes",
+      "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "priority": 100,
+      "status": "Blocked pending answers",
+      "parent_pending_ids": [
+        "P-29925105-1015-5ced-8844-d56fa47e33c9"
+      ],
+      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "relation": "subtask",
+      "depends_on": [
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+        "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+        "T-34491faa-090e-4d97-b496-1fe947770688",
+        "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+        "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+        "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+        "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+        "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+        "T-70901e97-738c-42c2-ae50-68dd71417a32",
+        "T-65810da7-9524-45ce-b280-668d04c86441"
+      ],
+      "line": 394
+    },
+    {
+      "title": "Serialize scoped diagnostic append and clear operations",
+      "queue": "Prioritized Next Changes",
+      "id": "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
+      ],
+      "processing_run_id": "PR-aa6ec1c6-4a91-4619-8193-5ef4f8d8a54a",
+      "root_task_id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "related_task_id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "relation": "followup",
+      "depends_on": [],
+      "line": 437
+    },
+    {
+      "title": "Prepare reproducible task UX and device qualification evidence",
+      "queue": "Prioritized Next Changes",
+      "id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "line": 477
+    },
+    {
+      "title": "Restore archived tasks and correct native Daily occurrences",
+      "queue": "Prioritized Next Changes",
+      "id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-64d1995c-f862-498c-9437-e867117f2129"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 518
+    },
+    {
+      "title": "Add reviewed own-task Habitica unchecking and reconciliation",
+      "queue": "Prioritized Next Changes",
+      "id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-64d1995c-f862-498c-9437-e867117f2129"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-2355607b-ba77-46c0-9495-aae61e16a8f0"
+      ],
+      "line": 559
+    },
+    {
+      "title": "Expose extended recovery actions in task history",
+      "queue": "Prioritized Next Changes",
+      "id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-64d1995c-f862-498c-9437-e867117f2129",
+        "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+      ],
+      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
+      "root_task_id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+        "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+        "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "line": 600
+    },
+    {
+      "title": "Retain trustworthy task activity and schedule coverage",
+      "queue": "Prioritized Next Changes",
+      "id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-438c79fe-385d-4657-be24-85fad9a49c31"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 641
+    },
+    {
+      "title": "Show coverage-aware Daily and Habit activity streaks",
+      "queue": "Prioritized Next Changes",
+      "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-438c79fe-385d-4657-be24-85fad9a49c31"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+        "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
+      ],
+      "line": 682
+    },
+    {
+      "title": "Edit supported linked Daily schedules with explicit reconciliation",
+      "queue": "Prioritized Next Changes",
+      "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-438c79fe-385d-4657-be24-85fad9a49c31",
+        "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
+      ],
+      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
+      "root_task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+        "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+        "T-07d27408-3019-423f-a5de-4cda1f9e2818"
+      ],
+      "line": 723
+    },
+    {
+      "title": "Convert task types through reviewed linked copies",
+      "queue": "Prioritized Next Changes",
+      "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-438c79fe-385d-4657-be24-85fad9a49c31"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+        "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
+      ],
+      "line": 764
+    },
+    {
+      "title": "Evaluate saved lists with explicit relative-date predicates",
+      "queue": "Prioritized Next Changes",
+      "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "priority": 99,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
+      ],
+      "processing_run_id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+      "root_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
+      ],
+      "line": 805
+    },
+    {
+      "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout",
+      "queue": "Prioritized Next Changes",
+      "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "priority": 97,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-0ea957c0-5210-5931-b545-82b9f13197db"
+      ],
+      "processing_run_id": null,
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [
+        "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+        "T-5737120b-52a5-4a57-9072-fce514adaf33",
+        "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+        "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+      ],
+      "line": 846
+    },
+    {
+      "title": "Add project-filtered retained task history navigation",
+      "queue": "Prioritized Next Changes",
+      "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "priority": 25,
+      "status": "Ready",
+      "parent_pending_ids": [
+        "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+      ],
+      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
+      "root_task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 997
+    },
+    {
+      "title": "Party Quest Workspace Modes",
+      "queue": "Backlog",
+      "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1040
+    },
+    {
+      "title": "Party Quest History Analytics",
+      "queue": "Backlog",
+      "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1077
+    },
+    {
+      "title": "Skill Macro Collection MVP",
+      "queue": "Backlog",
+      "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1114
+    },
+    {
+      "title": "Task Mutation Dry-Run Summaries",
+      "queue": "Backlog",
+      "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1247
+    },
+    {
+      "title": "Settings Danger Zone Confirmation",
+      "queue": "Backlog",
+      "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1285
+    },
+    {
+      "title": "Returning User Copy Compression",
+      "queue": "Backlog",
+      "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1319
+    },
+    {
+      "title": "Mobile Stat Table Context",
+      "queue": "Backlog",
+      "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1354
+    },
+    {
+      "title": "Compact Spell Card Density Pass",
+      "queue": "Backlog",
+      "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1388
+    },
+    {
+      "title": "Public Plugin Directory Submission",
+      "queue": "Backlog",
+      "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1426
+    },
+    {
+      "title": "MCP Custom UI",
+      "queue": "Backlog",
+      "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1453
+    },
+    {
+      "title": "Background Automation",
+      "queue": "Backlog",
+      "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1475
+    },
+    {
+      "title": "Align inherited documentation prose with current document rules",
+      "queue": "Backlog",
+      "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
+      "priority": 25,
+      "status": "Backlog",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "line": 1502
+    }
+  ]
+}

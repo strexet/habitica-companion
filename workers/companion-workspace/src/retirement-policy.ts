@@ -1,6 +1,8 @@
 import {workspaceTokenHash} from '../../shared/workspace-http.ts';
 import type {CompanionTask,Projection,Project} from '../../shared/workspace-domain.ts';
 import type {ConversionState} from '../../shared/checklist-conversion.ts';
+import {desiredTagMembership} from '../../shared/tag-membership.ts';
+import {scopedTagCorrespondence} from '../../shared/tag-correspondence.ts';
 import {journal,type Journal} from './journal.ts';
 export interface RetirementTarget {sourceItemId:string;desiredState:ConversionState;task:CompanionTask;mapping:Projection}
 export interface RetirementPlan {workspaceId:string;revision:number;conversionId:string;source:CompanionTask;sourceMapping:Projection;project:Project;habiticaProjectTagId:string;targets:RetirementTarget[];contextHash:string}
@@ -32,11 +34,10 @@ export async function inspectRetirement(initial:Journal,conversionId:string,expe
  const ledger=document.tagLedger;let nativeTag:string|null=null;
  if(ledger?.accountId!==expectedAccountId)blockers.push('retirement_tag_account_unverified');
  else{
-  const mapping=ledger.mappings.find(row=>row.entityId===project.id&&row.kind==='project'),latest=ledger.intents.filter(row=>row.mappingId===mapping?.id&&row.operation==='setMembership').sort((a,b)=>b.desiredRevision-a.desiredRevision||b.revision-a.revision),intent=latest[0],desired=new Set(document.tasks.filter(row=>row.projectId===project.id).map(row=>row.id)),present=intent?.members?.filter(member=>member.present)??[];
-  if(!mapping||mapping.state!=='confirmed'||mapping.isArchived||!mapping.evidence||mapping.desiredName!==project.name||mapping.desiredRevision<project.revision||!mapping.habiticaTagId
-   ||!intent||intent.state!=='confirmed'||intent.isArchived||intent.desiredRevision!==document.revision||intent.habiticaTagId!==mapping.habiticaTagId||latest.filter(row=>row.desiredRevision===intent.desiredRevision&&row.revision===intent.revision).length!==1||present.length!==desired.size
-   ||present.some(member=>!desired.has(member.taskId)||member.state!=='confirmed'||!member.evidence||!document.projections.some(row=>row.taskId===member.taskId&&row.habiticaTaskId===member.habiticaTaskId&&linked(row))))blockers.push('project_tag_membership_requires_review');
-  else nativeTag=mapping.habiticaTagId;
+  const mapping=ledger.mappings.find(row=>row.entityId===project.id&&row.kind==='project'),group=desiredTagMembership(document).groups.find(row=>row.entityId===project.id&&row.kind==='project');
+  if(!group||!scopedTagCorrespondence(document,group,mapping).confirmed)blockers.push('project_tag_membership_requires_review');
+  else nativeTag=mapping!.habiticaTagId;
+
  }
  if(blockers.length)return result(null,blockers);
  const plan:RetirementPlan={workspaceId:document.id,revision:document.revision,conversionId:conversion.id,source,sourceMapping:sourceMapping!,project,habiticaProjectTagId:nativeTag!,targets,contextHash:''};plan.contextHash=await retirementContextHash(plan);return result(plan,[]);

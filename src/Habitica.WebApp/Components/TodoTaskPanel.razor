@@ -12,7 +12,7 @@
         <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo && !CompactStatus) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> <a href="/todo/lists" data-layout-primary="true">Saved lists</a> }</div>
         @if (ShowKindSelector)
         {
-            <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@(Busy || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null)" data-testid="todo-kind">
+            <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@(Busy || Todo.HasLinkedRecoveryIntent || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null)" data-testid="todo-kind">
                 <option value="Todo">Tasks</option><option value="Daily">Dailies</option><option value="Habit">Habits</option>
             </select></label>
         }
@@ -79,6 +79,8 @@
                         @if (planning.LabelIds is { } labels) { <p>Replace labels (@labels.Count): @(labels.Count == 0 ? "Clear all labels" : string.Join("; ", labels.Select(id => PlacementName("Label", id))))</p> }
                         <p>Deadline and recurrence unchanged. No Habitica schedule or reward changes.</p>
                     }
+                    @if (patch.Unarchive is { } unarchive) { <p>Return exact task from archive: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row=>row.Id==preview.Command.TaskId)?.Text · @preview.Command.TaskId · archived revision @unarchive.ArchivedRevision</p><p>Preserve task state, dates, order and history. No completion, Habitica change or reward reversal occurs.</p> }
+                    @if (patch.CorrectOccurrence is { } correction) { <p>Correct exact Daily occurrence: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row=>row.Id==preview.Command.TaskId)?.Text · @preview.Command.TaskId</p><p>Occurrence: @correction.OccurrenceId · revision @correction.OccurrenceRevision · original command @correction.TargetCommandId</p><p>Return only this terminal occurrence to Pending. Retain the original completion/skip and prior terminal snapshot. No Habitica score, schedule change or next occurrence is created.</p> }
                     @if (patch.RestoreTodo is { } restore)
                     {
                         <p>Restore current Todo: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == preview.Command.TaskId)?.Text · @preview.Command.TaskId</p>
@@ -92,6 +94,7 @@
                         else { <p>Dependency edges remain unchanged.</p> }
                         <p>Project membership, independent task status, dates and checklist remain unchanged. No descendant is moved or completed.</p>
                     }
+                    @if (patch.Review is {} review) { <p>Exact task: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==preview.Command.TaskId)?.Text · @preview.Command.TaskId</p><p>Voluntary review action: @review.Action · timezone: @review.TimeZoneId · review instant: @WorkspaceTaskReview.CanonicalUtc(review.ReviewAfterUtc) · manual stale-since: @WorkspaceTaskReview.CanonicalUtc(review.StaleSinceUtc). Only Mark reviewed records a review; no task completion or game effect.</p> }
                     @if (patch.TodoState is { } todoState) { <p>Set current Todo state: @todoState.State. Completion history and saved stage remain unchanged; inactive state takes precedence.</p> }
                     @if (patch.TodoStage is { } todoStage) { <p>Set active Todo stage: @(todoStage.ClearStage ? "Default Inbox" : todoStage.Stage==TodoExecutionStage.InProgress ? "In progress" : todoStage.Stage?.ToString()). Independent task state and completion history remain unchanged.</p> }
                     @if (patch.HabiticaDetails is { } details) { <p>Game difficulty: @(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "unchanged"); attribute: @(details.Attribute?.ToString() ?? "unchanged")</p>@if (details.Up is not null || details.Down is not null) { <p>Positive (+): @(details.Up is null ? "unchanged" : details.Up.Value ? "Enabled" : "Disabled"); Negative (−): @(details.Down is null ? "unchanged" : details.Down.Value ? "Enabled" : "Disabled")</p> } @if (details.Checklist is not null) { <p>Replace checklist (@details.Checklist.Count items)</p><ul>@foreach (var item in details.Checklist) { <li>@item.Text @(item.Completed ? "(completed)" : "")</li> }</ul> } }
@@ -116,7 +119,7 @@
         { <p role="status">The selected task is unavailable or archived. The retained draft has not been saved.</p><MudButton HtmlTag="button" data-layout-primary="true" OnClick="NewTask" Variant="Variant.Outlined">Start a new task</MudButton> }
         @if (Todo.Snapshot is { } snapshot && Draft is { } draft)
         {
-            @if (Todo.IsReadOnly) { <p role="status">This workspace copy is read only. Use the cloud owner or reload current data before editing.</p> }
+            @if (Todo.IsReadOnly) { <p role="status">@(Todo.HasLinkedRecoveryIntent ? "The original linked recovery owns editing. Finish or cancel its unsubmitted review in Task history; an attempted action requires its original receipt." : "This workspace copy is read only. Use the cloud owner or reload current data before editing.")</p> }
             @if (ShowCapture)
             {
             <form class="todo-capture" @onsubmit="PrepareBasicAsync" @onsubmit:preventDefault>
@@ -322,9 +325,9 @@
         if (ActionsDisabled || review.Source != Todo.Selection || review.Revision != Todo.Revision || review.Input.TaskId is not { } taskId || review.Input.ProjectToHabitica)
             throw new InvalidOperationException("Reload the exact task workflow context before reviewing.");
         if (review.Input.Operation == WorkspaceOperation.RelateTodo) { await ReviewRelationshipsAsync(taskId, review.Revision, review.Input.Relationships ?? throw new InvalidOperationException("Choose exact dependencies.")); return; }
-        if (review.Input.Operation is not (WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage)) throw new InvalidOperationException("Choose a supported task workflow action.");
+        if (review.Input.Operation is not (WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage or WorkspaceOperation.ReviewTask)) throw new InvalidOperationException("Choose a supported task workflow action.");
         var snapshot = Todo.Snapshot!;
-        var patch = review.Input.Operation == WorkspaceOperation.SetTodoState ? new WorkspaceTaskPatch(TodoState: review.Input.TodoState) : new WorkspaceTaskPatch(TodoStage: review.Input.TodoStage);
+        var patch = review.Input.Operation == WorkspaceOperation.ReviewTask ? new WorkspaceTaskPatch(Review:review.Input.Review) : review.Input.Operation == WorkspaceOperation.SetTodoState ? new WorkspaceTaskPatch(TodoState: review.Input.TodoState) : new WorkspaceTaskPatch(TodoStage: review.Input.TodoStage);
         var simulated = WorkspaceCommandEngine.Accept(snapshot with { Authority = null }, new(Guid.NewGuid(), snapshot.Document.Id, review.Revision, review.Input.Operation, taskId, patch), DateTimeOffset.UtcNow);
         if (simulated.Disposition != SubmissionDisposition.Accepted) throw new InvalidOperationException("The selected task state or active stage is unavailable. Reload the current task.");
         await RunAsync(async () => { await Todo.PrepareAsync(review.Input); _focusReview = Todo.Commands.Preview is not null; }); await InvokeAsync(StateHasChanged);
@@ -366,6 +369,13 @@
         await RunAsync(async () => { await Todo.PrepareAsync(ActionInput(task, WorkspaceOperation.RestoreTodo) with { RestoreTodo = new(completionId) }); _focusReview = Todo.Commands.Preview is not null; });
         await InvokeAsync(StateHasChanged);
     }
+    public async Task ReviewExtendedRecoveryAsync(WorkspaceTaskInput input,long revision)
+    {
+        if(ActionsDisabled||Todo.Revision!=revision||input.Operation is not (WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence)||input.ProjectToHabitica)
+            throw new InvalidOperationException("Recovery context changed. Reload the exact retained task before reviewing.");
+        await RunAsync(async()=>{await Todo.PrepareAsync(input);_focusReview=Todo.Commands.Preview is not null;});
+        await InvokeAsync(StateHasChanged);
+    }
     private string PlacementName(string kind, Guid? id)
     {
         var doc = Todo.Snapshot?.Document;
@@ -405,7 +415,7 @@
     {
         WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.CreateDaily => "Create Daily", WorkspaceOperation.CreateHabit => "Create Habit",
         WorkspaceOperation.EnsureProjection => "Ensure Habitica counterpart", WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
-        WorkspaceOperation.SkipOccurrence => "Skip exact Daily occurrence", WorkspaceOperation.PauseTask => "Pause Companion task", WorkspaceOperation.ResumeTask => "Resume Companion task", WorkspaceOperation.SetTodoState => "Change Todo state", WorkspaceOperation.SetTodoStage => "Change active Todo stage", WorkspaceOperation.RelateTodo => "Change exact Todo relationships", WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
+        WorkspaceOperation.UnarchiveTask => "Return exact task from archive", WorkspaceOperation.CorrectOccurrence => "Correct native Daily occurrence", WorkspaceOperation.ReviewTask => "Change voluntary review cue", WorkspaceOperation.SkipOccurrence => "Skip exact Daily occurrence", WorkspaceOperation.PauseTask => "Pause Companion task", WorkspaceOperation.ResumeTask => "Resume Companion task", WorkspaceOperation.SetTodoState => "Change Todo state", WorkspaceOperation.SetTodoStage => "Change active Todo stage", WorkspaceOperation.RelateTodo => "Change exact Todo relationships", WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
     };
     private static string SourceValue(TodoWorkspaceSelection? source) => source is null ? "" : $"{source.Source}|{source.WorkspaceId:D}";
     private static string SourceLabel(TodoWorkspaceSelection source) => $"{(source.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} · {source.WorkspaceId:D}";

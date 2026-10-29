@@ -22,13 +22,14 @@ public static class WorkspaceRules
         }
         var all = document.Categories.Cast<WorkspaceEntity>().Concat(document.Projects).Concat(document.Sections)
             .Concat(document.Labels).Concat(document.Goals).Concat(document.Tasks).Concat(document.Occurrences)
-            .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
+            .Concat(document.LinkedTaskRecoveries ?? Array.Empty<LinkedTaskRecovery>()).Concat(document.Unarchives ?? Array.Empty<TaskUnarchive>()).Concat(document.OccurrenceCorrections ?? Array.Empty<OccurrenceCorrection>()).Concat(document.Completions).Concat(document.ReviewEvents ?? Array.Empty<TaskReviewEvent>()).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
             .Concat(document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>())
             .Concat(document.ChecklistConversions ?? Array.Empty<WorkspaceChecklistConversion>())
             .Concat(document.SourceRetirements ?? Array.Empty<WorkspaceSourceRetirement>())
             .Concat(document.TagLedger?.Mappings ?? Array.Empty<WorkspaceTagMapping>()).Concat(document.TagLedger?.Intents ?? Array.Empty<WorkspaceTagIntent>()).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
         if (all.Length + (document.OrganizationHistory?.Count ?? 0) + (document.ChecklistConversions?.Sum(row=>row?.Receipts?.Count??0)??0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
+        if (!WorkspaceActivityCoverage.ValidDocument(document)) errors.Add(new("invalid_activity_coverage"));
         var identities = new HashSet<Guid> { document.Id };
         foreach (var entity in all)
         {
@@ -113,15 +114,39 @@ public static class WorkspaceRules
         foreach (var occurrence in document.Occurrences)
         {
             if (!tasks.TryGetValue(occurrence.TaskId, out var task) || task.Kind != CompanionTaskKind.Daily || !Enum.IsDefined(occurrence.State)
+                || occurrence.TerminalCommandId == Guid.Empty || occurrence.State == OccurrenceState.Pending && occurrence.TerminalCommandId is not null
                 || occurrence.Date == default || !occurrenceKeys.Add((occurrence.TaskId, occurrence.Date))) errors.Add(new("invalid_occurrence", occurrence.Id));
         }
+        var activityCommands = document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)).ToHashSet();
+        var activityRevisions = document.Completions.Select(row=>row.Revision).Concat(document.HabitScores.Select(row=>row.Revision)).Concat((document.Restorations??[]).Select(row=>row.Revision)).ToHashSet();
+        var reviewCommands = new HashSet<Guid>();
+        var reviewRevisions = new HashSet<long>();
+        foreach (var review in document.ReviewEvents ?? [])
+        {
+            if (!tasks.ContainsKey(review.TaskId) || review.CommandId == Guid.Empty || !reviewCommands.Add(review.CommandId) || activityCommands.Contains(review.CommandId) || !reviewRevisions.Add(review.Revision) || activityRevisions.Contains(review.Revision) || !Enum.IsDefined(review.Action)
+                || review.RecordedAtUtc == default || review.RecordedAtUtc.Offset != TimeSpan.Zero || !WorkspaceTaskReview.ValidZone(review.TimeZoneId)
+                || review.ReviewAfterUtc is {} reviewTime && (reviewTime == default || reviewTime.Offset != TimeSpan.Zero)
+                || review.StaleSinceUtc is {} staleTime && (staleTime == default || staleTime.Offset != TimeSpan.Zero)
+                || review.Action is TaskReviewAction.Clear or TaskReviewAction.MarkReviewed && review.ReviewAfterUtc is not null
+                || review.Action == TaskReviewAction.ClearStale && review.StaleSinceUtc is not null
+                || review.Action is TaskReviewAction.Set or TaskReviewAction.Snooze && review.ReviewAfterUtc is null
+                || review.Action == TaskReviewAction.SetStale && (review.StaleSinceUtc is null || review.StaleSinceUtc > review.RecordedAtUtc)) errors.Add(new("invalid_review_event",review.Id));
+        }
+        foreach (var group in (document.ReviewEvents ?? []).GroupBy(value => value.TaskId))
+        {
+            var latest = group.OrderByDescending(value => value.Revision).First();
+            if (group.Select(value => value.Revision).Distinct().Count() != group.Count() || tasks.TryGetValue(group.Key,out var reviewedTask)
+                && (reviewedTask.Revision < latest.Revision || reviewedTask.ReviewAfterUtc != latest.ReviewAfterUtc || reviewedTask.StaleSinceUtc != latest.StaleSinceUtc)) errors.Add(new("invalid_review_state",group.Key));
+        }
+        if (!WorkspaceLinkedRecovery.ValidHistory(document)) errors.Add(new("invalid_linked_recovery"));
+        if (!WorkspaceTaskRecovery.ValidHistory(document)) errors.Add(new("invalid_recovery_history"));
         var completionKeys = new HashSet<(Guid, Guid?)>();
         foreach (var completion in document.Completions)
         {
             if (!tasks.TryGetValue(completion.TaskId, out var task) || task.Kind == CompanionTaskKind.Habit || completion.CommandId == Guid.Empty
                 || completion.CompletedAtUtc == default || completion.CompletedAtUtc.Offset != TimeSpan.Zero
-                || task.Kind == CompanionTaskKind.Daily && (completion.OccurrenceId is not { } occurrenceId || !occurrences.TryGetValue(occurrenceId, out var occurrence) || occurrence.TaskId != task.Id || occurrence.State != OccurrenceState.Completed)
-                || task.Kind == CompanionTaskKind.Daily && !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
+                || task.Kind == CompanionTaskKind.Daily && (completion.OccurrenceId is not { } occurrenceId || !occurrences.TryGetValue(occurrenceId, out var occurrence) || occurrence.TaskId != task.Id || !WorkspaceTaskRecovery.IsCorrected(document, completion) && (occurrence.State != OccurrenceState.Completed || (document.OccurrenceCorrections?.Any(row => row.PreviousOccurrence.Id == occurrence.Id) == true && occurrence.Revision != completion.Revision)))
+                || task.Kind == CompanionTaskKind.Daily && !WorkspaceTaskRecovery.IsCorrected(document, completion) && !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
                 || task.Kind == CompanionTaskKind.Todo && completion.OccurrenceId is not null) errors.Add(new("invalid_completion", completion.Id));
         }
         var completionMap = document.Completions.GroupBy(value => value.Id).ToDictionary(group => group.Key, group => group.First());
@@ -146,7 +171,7 @@ public static class WorkspaceRules
                 errors.Add(new("invalid_completion",group.Key));
         }
         var completedTodos = document.Completions.Where(completion => completion.OccurrenceId is null && !restoredIds.Contains(completion.Id)).Select(completion => completion.TaskId).ToHashSet();
-        var completedOccurrences = document.Completions.Where(completion => completion.OccurrenceId is not null).Select(completion => completion.OccurrenceId!.Value).ToHashSet();
+        var completedOccurrences = document.Completions.Where(completion => completion.OccurrenceId is not null && !WorkspaceTaskRecovery.IsCorrected(document, completion)).Select(completion => completion.OccurrenceId!.Value).ToHashSet();
         foreach (var task in document.Tasks.Where(task => task.Kind == CompanionTaskKind.Todo && task.State == CompanionTaskState.Completed))
             if (!completedTodos.Contains(task.Id)) errors.Add(new("missing_completion_event", task.Id));
         foreach (var occurrence in document.Occurrences.Where(occurrence => occurrence.State == OccurrenceState.Completed))

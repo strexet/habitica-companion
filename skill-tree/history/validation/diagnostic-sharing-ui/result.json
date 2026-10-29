@@ -1,0 +1,94 @@
+{
+  "task_id": "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/State/DiagnosticSharingController.cs": "6c921ddb632e880b2e9ab99aa24b5a993f2bd590aa95bbf546b4d4e61d745c2a",
+    "src/Habitica.WebApp/Components/DiagnosticSharingPanel.razor": "815f10017b39853d0eebede82f044b2f7349decec9c40397b425133e7f617e2f",
+    "src/Habitica.WebApp/Pages/LiveTestsPage.razor": "d2cc3da7eb464762882a70a3d3b993195c2bfab39af3473a9adf460a013d4d44",
+    "src/Habitica.WebApp/Program.cs": "06cc0541f9b3f0ebea8d295cb6bee2efc2bb2a457fc635930f90ee3fe8301e67",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "c2f20e6071c271a883f6c971c3e0f58caf493c44fd22262c2f27264da2e6bec3",
+    "src/Habitica.Application/Diagnostics/DiagnosticSharing.cs": "2e9c1dd89aec065469edfa32e958476efa3e25409e2f88b948f21f4647810b69",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.DiagnosticsSharing.cs": "c6b26f094542a1dc8bb76c9fdf9d5294f7f72c5f2cb820d8bc05c88441a2c9de",
+    "tests/Habitica.WebApp.Tests/Pages/DiagnosticSharingPanelTests.cs": "090d7df925ce8d3a2aa292590b151dde74801444caf814f457e783c8e2458cd0",
+    "tests/Habitica.WebApp.Tests/Pages/LiveTestsPageTests.cs": "f4a36ce0e2cb46a64eb596a26807fa71607e25a92178b154402c86694e0b176a",
+    "tests/Habitica.WebApp.Tests/DiagnosticSharingFake.cs": "04a7a89a8028077ea1a233ebd2d1873e55e9b5382f3f2fa4b87614061e6f9fa2",
+    "plugin/skills/habitica-diagnostics/SKILL.md": "927a89573cc6e29cc3cd7d3b7fa66579a507ab0bb158af298b41c5793db40c39",
+    "skill-tree/documents/shared-diagnostics.md": "5bb9b02ec14a2f469ac48a82cdaf48409621ffa0e9d67a9faeb6a2c5f8e72681",
+    "skill-tree/documents/technical.md": "8b38fe25ad4bb44079192c692921c3fbf62d89c8dd9df9fbd8380bb6df88bbb0",
+    "skill-tree/documents/features.md": "29d78debfd441c3c0e711969fa83dea0b8b288f928830069fdf7fbfdf10673a5",
+    "skill-tree/documents/testing.md": "5afab025272675ca3d85469bf5b879679e53b3a0550b785e16cb6a29428be89b",
+    "skill-tree/documents/ux-ui-manifest.md": "26db1b7dbe25adc777c10eb07d274bbdd68dcccdae6d2394f04a9597be4aedc4"
+  },
+  "checks": {
+    "solution": {
+      "pass": 1423,
+      "failed": 0,
+      "scope": "before final added in-flight component control"
+    },
+    "final_component_controls": {
+      "pass": 14,
+      "failed": 0
+    },
+    "local_release_publish": "pass; no remote publication",
+    "rendered": {
+      "cases": 1848,
+      "errors": 0,
+      "harnessErrors": 0,
+      "prerequisiteUnavailable": 0,
+      "measurementUnavailable": 0,
+      "unqualifiedSurfaces": 0,
+      "errorKinds": []
+    },
+    "routes": [
+      "/diagnostics",
+      "/live-tests"
+    ],
+    "states": 11,
+    "schemes": [
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate",
+      "gryphy-dark",
+      "gryphy-light",
+      "obsidian-glow",
+      "toxic-swamp"
+    ],
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "minimum_contrast": 5.017781071771262,
+    "negative_controls": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "native_focus": "visible 2px outline under obsidian-glow at200-percent text; screenshot retained",
+    "privacy": "No automatic consent/read/upload on navigation. Exact frozen sanitized snapshot, explicit consent/preparation/acknowledged upload, same-request lookup, no duplicate upload, identity/late reply fence, quota/expiry and cleanup uncertainty controls pass.",
+    "source_review": "DI registration, component/controller lifetime, identity tokens, immutable preview/receipt, manual fallback and canonical documentation reviewed.",
+    "diff_check": "pass"
+  },
+  "operations": {
+    "case_deadline_seconds": 5,
+    "matrix_deadline_seconds": 300,
+    "measured_case_seconds": 87.71109999465942,
+    "test_deadline_seconds": 240,
+    "local_publish_deadline_seconds": 240,
+    "cleanup_reserve_seconds": 15,
+    "prerequisite_wait_seconds": 0,
+    "active_controller_seconds": null
+  },
+  "limitations": [
+    "Synthetic component and captured actual Razor/production CSS qualification only. Real hosted accounts, sensitive uploads, physical devices, screen readers and installed host skill activation remain unqualified.",
+    "Frozen private cloud previews and original request IDs survive ordinary navigation in the same scoped tab. Reload/tab closure does not persist private review state.",
+    "Physical deletion latency and provider recovery history remain separate from immediate logical revocation.",
+    "Repository structure/future validators and new-prose lint pass. Full historical document prose lint reports existing violations outside changed paragraphs; no unrelated prose rewrite is included."
+  ]
+}

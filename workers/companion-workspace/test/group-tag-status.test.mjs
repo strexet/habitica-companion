@@ -11,7 +11,7 @@ test('group correspondence reports stored evidence and old/new permission indepe
  const x=await linked();let result=groupTagStatus(x.document,x.owner);assert.equal(result.provenance,'stored-canonical-evidence');assert.equal(result.integrationComplete,true);assert.equal(result.groupCoverage.confirmed,1);assert.equal(result.groups[0].habiticaTagId,x.tagId);
  result=groupTagStatus(x.document,{...x.owner,scopeAllowed:false});assert.equal(result.integrationComplete,false);assert.equal(result.tagScopeAllowed,false);assert.equal(result.groups[0].membershipState,'confirmed');
  result=groupTagStatus(x.document,{...x.owner,accountId:crypto.randomUUID()});assert.equal(result.accountVerified,false);assert.equal(result.groups[0].habiticaTagId,null);assert.equal(result.groups[0].membershipState,'needsReview');
- result=groupTagStatus({...x.document,revision:2},x.owner);assert.equal(result.groups[0].membershipState,'needsReview');assert.throws(()=>groupTagStatus(x.document,x.owner,{expectedRevision:2}));
+ result=groupTagStatus({...x.document,revision:2},x.owner);assert.equal(result.groups[0].membershipState,'confirmed');assert.throws(()=>groupTagStatus(x.document,x.owner,{expectedRevision:2}));
 });
 test('coverage includes retained archived/completed task mappings, unknown members and every organization page',()=>{
  const rows=Array.from({length:47},()=>entity('Same name')),taskId=crypto.randomUUID(),doc=workspaceDocument({...emptyWorkspace(),projects:rows,tasks:[{id:taskId,revision:1,isArchived:true,text:'Retained history',kind:'todo',state:'active',priority:'normal',createdAtUtc:new Date().toISOString(),updatedAtUtc:new Date().toISOString()}],projections:[{id:crypto.randomUUID(),revision:1,taskId,habiticaTaskId:crypto.randomUUID(),state:'linked'}]});

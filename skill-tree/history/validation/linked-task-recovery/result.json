@@ -1,0 +1,207 @@
+{
+  "taskId": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+  "status": "accepted-local-reviewed-recovery",
+  "checks": {
+    "workspaceSuite": 634,
+    "authSuite": 202,
+    "dotnetSuites": {
+      "api": 94,
+      "application": 285,
+      "domain": 36,
+      "rules": 43,
+      "storage": 39,
+      "webApp": 825
+    },
+    "dotnetTotal": 1322,
+    "focusedCloudClient": 68,
+    "neutralLinkedCSharp": 4,
+    "focusedComposition": 19,
+    "matchingWorkerDryRunBuilds": 3,
+    "documentationCurrentAdditions": true,
+    "repositoryDocumentConsistency": true,
+    "diffCheck": true
+  },
+  "delivered": [
+    "Exact source-bound expiring own-task recovery previews and reviewed MCP/browser adapters preserve scopes, profile/account/grant authority, executor consent and current-day restrictions.",
+    "Original Auth down arguments and attempt are persisted before dispatch behind a profile lease and canonical document fence. Unknown results permit original receipt lookup only.",
+    "An original applied task_recovered receipt atomically appends the paired native restoration/correction and canonical linked receipt. Original commands, events and completions are retained without another projection effect.",
+    "C# and TypeScript validate source command hashes, original score dispatch and paired causal history; missing linked receipts cannot validate a recovered game-effect source."
+  ],
+  "coverage": [
+    "Todo and current-day Daily success; original request and command recovery; MCP scopes/profile isolation; concrete review hashes and resource unknowns.",
+    "Lost Auth acknowledgement, unknown provider responses, missing expired receipts, canonical-save rollback, concurrent accepts/executor fencing and document-trigger refusal.",
+    "Stale canonical/native state, expired review, disabled consent, changed grant, unknown original proof, foreign/group/challenge tasks, Cron/day uncertainty and typed-response tampering."
+  ],
+  "repairs": [
+    "TypeScript D1 result rows received explicit types after compiler diagnostics.",
+    "Synthetic MCP profile-name and protocol-error expectations were corrected; typed C# test responses now use the production enum serializer.",
+    "The final stricter archive validator rejects a damaged journal before command-specific recovery; the native test now checks that earlier refusal and still checks command-specific missing-source behavior on a fresh archive.",
+    "The first combined Worker run had one Miniflare fetch transport failure and one aggregate file timeout under parallel suites. Linked tests were split into flow and guard files without raising the thirty-second timeout; the separate full Workspace run passed634/634."
+  ],
+  "limitations": [
+    "Synthetic local providers and local D1 migrations only; no real Habitica score, Cron, account, host, device, publication or commit.",
+    "Habitica cannot conditionally score across clients; the final external-edit race remains explicit, and exact HP/MP/GP/XP/streak reversal is unknown.",
+    "Legacy, expired or unavailable original score proof cannot authorize recovery; unknown old connection outcomes remain fenced when receipts cannot be recovered.",
+    "The history UI is the next separate initial-snapshot task. Global documentation prose lint includes pre-existing violations; the new document and extracted changed sections pass without errors or warnings."
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "instrumentation": "Controller sampling time is not instrumented. Executed tool wall times and hard deadlines are recorded per control.",
+    "prerequisiteWaitingSeconds": 0,
+    "selectedTaskTotalBudget": null
+  },
+  "controls": [
+    {
+      "name": "api-check",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 4.58,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-auth-review-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.84,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-mcp-review-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 4.79,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "companion-workspace-review-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.83,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "model-application",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.85,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "model-neutral",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.42,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "client-tests",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 13.89,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "client-tests2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.01,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "composition1",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 8.44,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "composition2",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 20.59,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "composition3",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 19.22,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "dotnet-suite",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 56.9,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "dotnet-final",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 64.99,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "application-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.06,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "auth-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 60.26,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-final",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 95.93,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-final2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 82.27,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "prose",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 0.25,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "prose-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.13,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    }
+  ]
+}

@@ -6,8 +6,8 @@ public static class WorkspaceOrganizationHistory
     {
         if(document.OrganizationHistory is null)return true;
         var ids=new HashSet<Guid>();var latest=new Dictionary<Guid,WorkspaceOrganizationSnapshot>();long previousRevision=0;
-        var taskCommands=document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.CommandId)).ToHashSet();
-        var activityRevisions=document.Completions.Select(row=>row.Revision).Concat(document.HabitScores.Select(row=>row.Revision)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.Revision)).ToHashSet();
+        var taskCommands=document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.ReviewEvents??[]).Select(row=>row.CommandId)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.CommandId)).Concat((document.Unarchives??[]).Select(row=>row.CommandId)).Concat((document.OccurrenceCorrections??[]).Select(row=>row.CommandId)).ToHashSet();
+        var activityRevisions=document.Completions.Select(row=>row.Revision).Concat(document.HabitScores.Select(row=>row.Revision)).Concat((document.ReviewEvents??[]).Select(row=>row.Revision)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.Revision)).Concat((document.Unarchives??[]).Select(row=>row.Revision)).Concat((document.OccurrenceCorrections??[]).Select(row=>row.Revision)).ToHashSet();
         var categories=document.Categories.Select(row=>row.Id).ToHashSet();var projects=document.Projects.Select(row=>row.Id).ToHashSet();var tasks=document.Tasks.Select(row=>row.Id).ToHashSet();var labels=document.Labels.Select(row=>row.Id).ToHashSet();
         var sectionReferences=document.Sections.Select(row=>(row.Id,row.ProjectId)).ToHashSet();
         foreach(var entry in document.OrganizationHistory)

@@ -1,0 +1,69 @@
+{
+  "taskIds": [
+    "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+    "T-c981605b-e7e9-460c-9ef6-deab60d421e9"
+  ],
+  "sdkTests": 5,
+  "packageTests": 7,
+  "workspaceTests": 573,
+  "cronIsolatedTests": 18,
+  "consentFocusedTests": 2,
+  "goldenPrompts": 13,
+  "hostTrials": 0,
+  "hostTemplateCells": 52,
+  "metadataChange": "list_companion_tasks.description only; names, schemas, grants and annotations unchanged.",
+  "builds": {
+    "mcp": {
+      "exitCode": 0,
+      "toolWallSeconds": 7.74,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    "auth": {
+      "exitCode": 0,
+      "toolWallSeconds": 3.59,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    "workspace": {
+      "exitCode": 0,
+      "toolWallSeconds": 3.47,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  },
+  "sourceFingerprints": {
+    "workers/chatgpt-mcp/src/task-tools.ts": "1cd4e01ac2f9bcf412c1d98459ee79b7cbe1a8bd587c82de55eac8691350e085",
+    "workers/shared/build-identity.generated.ts": "25054381cc9e0aed1b59f331c8b33bf2a90221c933337c5f8879ed6286a44c22",
+    "workers/companion-workspace/test/plugin.test.mjs": "7335a7523ac8cd29dc76ae10a46cce73ddd7fdb52a23a1b558b3f336fa659829",
+    "workers/companion-workspace/test/notes.test.mjs": "9463b6b8000dd5d4b0f1e5c03026b6422e2071789562d2b9c176d9e78ae302fa",
+    "workers/companion-workspace/test/organization-api.test.mjs": "7f838efa4e4708574142cc0ca0a664db5b4b67ac9fb52718d278fd47fc5ea247",
+    "workers/chatgpt-auth/src/oauth.ts": "3d1b83f7cc4097dba90eb606d8f44dd590d3adbb5ad9e4ec9473f57e090c1765",
+    "tests/fixtures/plugin/discovery-prompts-v1.json": "73b9a680fd5598a1d06a358f5583870c38a449187c0f464c5d2721e732cc6401",
+    "plugin/README.md": "10d8d505303ac63efccd82bd35cec5c700468392f51b0c7170c118a0daaeff1b",
+    "skill-tree/documents/companion-discovery.md": "31282bb42c911a2877c9fed92791b2fe0533975242f7b3d69559c400e5a9cbf7"
+  },
+  "execution": {
+    "classifications": [
+      "Executed controls: local builds, SDK/package fixtures and Workspace tests.",
+      "Source fetch failure: transport uncertainty; corrected official documentation URL."
+    ],
+    "deadlines": "Builds 120 seconds, fixture runs 60-300 seconds, thirty seconds per Worker test file; five-second cleanup reserve.",
+    "controllerElapsedSeconds": 677.15,
+    "activeControllerSeconds": null,
+    "timingLimitation": "Controller elapsed time includes reasoning and tools; active controller time was not independently instrumented. Individual tool wall times are recorded in timing files.",
+    "prerequisiteWaitSeconds": 0,
+    "failureProgress": [
+      "SDK metadata shape assertion repaired to inspect preserved _meta.securitySchemes.",
+      "Initial unbounded-concurrency suite: Cron thirty-second file timeout and obsolete Notes initial-page notice assertion.",
+      "Cron passes eighteen isolated tests; Notes privacy assertions moved to verified review while retaining sensitive initial scope descriptions.",
+      "Four-concurrent-file suite exposed the same obsolete notice placement in the organization fixture; same blocker extended without a per-attempt task.",
+      "Final four-concurrent-file suite passes 573 tests."
+    ],
+    "unchangedExecutedFailurePair": false
+  },
+  "limitations": [
+    "Live ChatGPT/Codex selection, imported skill activation, publication, device behavior and independent-user qualification remain unrun.",
+    "The golden prompts are expected routing labels, not model-selection measurements."
+  ]
+}

@@ -4,6 +4,8 @@ The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamabl
 
 The habitica-notes skill supports personal fact retrieval, explicit remember/save requests and exact Markdown document updates through five narrow Notes tools. Notes require separate cloud consent and notes.read/notes.write authorization; existing task permissions grant no Notes access. Explicit unambiguous save intent avoids repeated ordinary approval. Whole source and verified before/after changes remain distinct from summaries and uncertain acceptance. Packaged instructions and tool descriptions treat stored text as untrusted data and never capture chat memory automatically. Local synthetic SDK coverage does not prove real host skill activation.
 
+Explicit unambiguous ordinary task create/edit intent covers the exact matching acceptance after internal server-preview checks under existing consent. The agent adds no redundant approval exchange; host permission UI, missing/ambiguous input, unexpected effects and consequential-action reviews remain separate. Original request/command recovery and independent saved/projection receipts remain mandatory.
+
 The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; the owner reports initial ChatGPT custom-MCP authentication and Codex authentication; complete client qualification remains open. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
 ## Private setup
@@ -65,6 +67,7 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
 | Private plugin installation and all six bundled skills, explicit and natural invocation | Unrun | Unrun |
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
+| E01 current task journeys, physical devices, assistive technology and authenticated competitor study | Unrun; owner/session/device inputs required | Unrun; local synthetic pack does not qualify host/device research |
 
 The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.
 
@@ -72,9 +75,13 @@ ChatGPT observations are owner-reported. [Codex native pilot evidence](../skill-
 
 Record app/client version, transport, selected permissions, actual callback mode, deployed commit and sanitized evidence per cell. Codex callback checks cover the actual loopback host/path/port and issuer response rather than reusing a ChatGPT redirect. Origin/CORS checks use observed client requests; no blanket origin exception is required by the test plan. Token values, one-time codes and credential-bearing request data remain excluded from evidence. Use [official OpenAI MCP guidance](https://learn.chatgpt.com/docs/extend/mcp?surface=app) and [plugin packaging guidance](https://developers.openai.com/plugins/build/plugins) for client setup.
 
+[Current task journey pack and observation form](../skill-tree/documents/task-journey-qualification.md) records local preparation and the explicit unrun iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader, human and authenticated competitor lanes under T-d76d2a9a-1318-4e63-9bb4-73f620b108cc.
+
 All workflow scenarios below apply independently to both clients. Selected real effects require explicit review and test scope; the initial owner pilot keeps projection, spells and background execution disabled, with live Cron off. Missing hosted endpoints, host access or per-user consent remain unrun gates.
 
 ## Workflow qualification scenarios
+
+Automatic selection depends on host availability, installed package content, authorization, advertised tools and request context. The plugin supplies no all-chat invocation guarantee. Select Habitica Companion explicitly when a supported request does not select the plugin automatically; repair absent connections or missing permissions through the normal authorization flow. A custom-MCP tool refresh and an imported skill-package update are separate operations. [Official host testing guidance](https://developers.openai.com/plugins/deploy/connect-chatgpt) describes manual selection, metadata refresh and new-conversation testing. Local SDK checks establish schema and permission behavior only; live model selection requires a separately selected host trial.
 
 | Request | Expected workflow | Required observation |
 | --- | --- | --- |

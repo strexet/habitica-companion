@@ -1,4 +1,4 @@
-import type {Tool} from '@modelcontextprotocol/sdk/types.js';
+import type {Tool} from '@modelcontextprotocol/server';
 import {organizationToolScopes,type OrganizationWriteTool} from '../../shared/organization-tools';
 const id={type:'string',format:'uuid'},object=(properties:Record<string,unknown>,required:string[]=Object.keys(properties))=>({type:'object',properties,required,additionalProperties:false});
 const savedFilter=object({query:{type:'string',maxLength:256},kind:{type:'string',enum:['todo','daily','habit']},state:{type:'string',enum:['active','completed','waiting','someday','paused','cancelled']},priority:{type:'string',enum:['low','normal','high','urgent']},projectId:id,categoryId:id,labelId:id,plannedFrom:{type:'string',format:'date'},plannedTo:{type:'string',format:'date'},deadlineFrom:{type:'string',format:'date'},deadlineTo:{type:'string',format:'date'},projectionState:{type:'string',enum:['unlinked','pending','linked','externalConflict','unknownOutcome']},executionStage:{type:'string',enum:['inbox','next','inProgress']}},[]);

@@ -1,0 +1,178 @@
+{
+  "cases": [
+    {
+      "command": {
+        "id": "c0355c89-57fc-4419-bfc6-eb26a1c37b2b",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "set",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": "2026-10-27T09:00:00.1234567Z",
+            "staleSinceUtc": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "d35f7fad8bb4c75db7a8e98e31538e04a2891a4e59bc07b706cab5544c6533a5"
+    },
+    {
+      "command": {
+        "id": "a99dc99d-21dd-41fb-a69a-493ef94af38f",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "snooze",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": "2026-10-28T09:00:00.0000000Z",
+            "staleSinceUtc": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "3fb5c88334af32da98636002b75feacfe751c793ea97e2dbd31c748c1da9a0a2"
+    },
+    {
+      "command": {
+        "id": "bed4d1f1-0047-4943-a03e-64b01f389245",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "clear",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "13d63c48be3fc4d3abc23a968e286c48651fe68f85faeb2f396f801d52685ed6"
+    },
+    {
+      "command": {
+        "id": "195816f3-95ea-4d13-8612-03b7ac549dd1",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "markReviewed",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "e23a1533a7d864658f3d7877d8da1d550e5feba9ec05d694be86c581765d1033"
+    },
+    {
+      "command": {
+        "id": "44c873eb-ed5a-4efb-a26d-f14de59776d8",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "setStale",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": "2026-10-23T09:00:00.0000000Z"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "5a55b567733ea3c1f66e65a8e3bd8fb47692352083c0db33118571f36c3fcfc9"
+    },
+    {
+      "command": {
+        "id": "8e653e2a-fd8b-49cf-9999-79a74c694a1f",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 30,
+        "operation": "reviewTask",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null,
+          "review": {
+            "action": "clearStale",
+            "timeZoneId": "Asia/Novosibirsk",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "8a432bcfdff2960645fd27299c30b23b2aad294d2b3fdf7dc4805798ba2d4dff"
+    }
+  ]
+}

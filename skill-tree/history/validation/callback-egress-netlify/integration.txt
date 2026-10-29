@@ -1,0 +1,136 @@
+(node:10461) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:10462) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public overrides retain unrelated settings and reject credential or URL leakage
+ok 1 - public overrides retain unrelated settings and reject credential or URL leakage
+  ---
+  duration_ms: 1.478625
+  ...
+# Subtest: dev artifacts isolate resource identities and keep all game-effect flags off
+ok 2 - dev artifacts isolate resource identities and keep all game-effect flags off
+  ---
+  duration_ms: 139.905709
+  ...
+# Subtest: unsafe or incomplete dev input is rejected before output is written
+ok 3 - unsafe or incomplete dev input is rejected before output is written
+  ---
+  duration_ms: 1.211625
+  ...
+# Subtest: explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+ok 4 - explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+  ---
+  duration_ms: 104.929
+  ...
+# Subtest: runtime origins reject partial bindings and stay consistent for all environments
+ok 5 - runtime origins reject partial bindings and stay consistent for all environments
+  ---
+  duration_ms: 33.063375
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on success
+ok 6 - actual Pages build preserves full settings and restores source on success
+  ---
+  duration_ms: 941.116833
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on publish failure
+ok 7 - actual Pages build preserves full settings and restores source on publish failure
+  ---
+  duration_ms: 748.520375
+  ...
+# Subtest: normal app source defaults never inherit agent test restrictions
+ok 8 - normal app source defaults never inherit agent test restrictions
+  ---
+  duration_ms: 0.224833
+  ...
+# Subtest: explicit development profile enables implemented availability while retaining identities and consent boundaries
+ok 9 - explicit development profile enables implemented availability while retaining identities and consent boundaries
+  ---
+  duration_ms: 110.647708
+  ...
+# Subtest: new capability flags require explicit mapping and never gain accidental development activation
+ok 10 - new capability flags require explicit mapping and never gain accidental development activation
+  ---
+  duration_ms: 0.490542
+  ...
+# Subtest: ordinary capability profiles keep separately provisioned Web Push disabled
+ok 11 - ordinary capability profiles keep separately provisioned Web Push disabled
+  ---
+  duration_ms: 0.1575
+  ...
+# Subtest: callback egress requires separate operator provisioning in every ordinary profile
+ok 12 - callback egress requires separate operator provisioning in every ordinary profile
+  ---
+  duration_ms: 0.058791
+  ...
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual D1 atomic claim allows exactly one concurrent winner and stores no callback material
+ok 13 - actual D1 atomic claim allows exactly one concurrent winner and stores no callback material
+  ---
+  duration_ms: 457.357875
+  ...
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: invalid MAC, proof, scope, lifetime, shape and browser requests refuse before reservation
+not ok 14 - invalid MAC, proof, scope, lifetime, shape and browser requests refuse before reservation
+  ---
+  duration_ms: 222.101833
+  location: '/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/test/callback-egress.test.mjs:42:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    403 !== 503
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 503
+  actual: 403
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/workers/chatgpt-auth/test/callback-egress.test.mjs:48:100)
+    process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    async Test.run (node:internal/test_runner/test:935:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:633:7)
+  ...
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: off gate, missing keys, key reuse and storage refusal remain unavailable
+ok 15 - off gate, missing keys, key reuse and storage refusal remain unavailable
+  ---
+  duration_ms: 1390.551042
+  ...
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: capacity, expired cleanup and original acknowledgement loss preserve single use
+ok 16 - capacity, expired cleanup and original acknowledgement loss preserve single use
+  ---
+  duration_ms: 324.063208
+  ...
+# (node:10573) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: production Node gateway composes actual Worker/D1 redemption; response loss never redelivers
+ok 17 - production Node gateway composes actual Worker/D1 redemption; response loss never redelivers
+  ---
+  duration_ms: 245.1085
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 16
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5239.997042

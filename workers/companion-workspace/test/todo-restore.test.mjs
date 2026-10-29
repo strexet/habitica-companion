@@ -7,7 +7,7 @@ const hashes=JSON.parse(await readFile(new URL('../../../tests/fixtures/workspac
 const now='2026-10-18T12:00:00Z',origin='http://localhost:8789';
 const command=(d,operation,extra={})=>workspaceCommand({id:crypto.randomUUID(),workspaceId:d.id,expectedRevision:d.revision,operation,taskId:d.tasks[0]?.id??crypto.randomUUID(),...extra});
 const restore=(d,extra={})=>command(d,'restoreTodo',{patch:{restoreTodo:{completionId:d.completions.at(-1).id}},...extra});
-async function seed(){let d=emptyWorkspace();d=(await accept(d,command(d,'createTodo',{patch:{text:'Retained work',notes:'Original notes',deadline:'2026-10-21'}}),now)).document;return (await accept(d,command(d,'completeTask'),now)).document;}
+async function seed(){let d=emptyWorkspace();d=(await accept(d,command(d,'createTodo',{patch:{text:'Retained work',notes:'Original notes',deadline:'2026-10-21'}}),now)).document;const legacy=(await accept(d,command(d,'completeTask'),now)).document;delete legacy.activityCoverage;return legacy;}
 for(const value of hashes.cases)test('portable restore v5 identity: '+value.name,async()=>assert.equal(await commandHash(workspaceCommand(value.command)),value.payloadHash));
 test('repeated native restore/complete cycles preserve history order and portable causal receipts',async()=>{
  let d=await seed();const original=structuredClone(d.tasks[0]),entries=[],events=[];

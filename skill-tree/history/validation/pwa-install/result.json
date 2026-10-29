@@ -1,0 +1,77 @@
+{
+  "taskIds": [
+    "T-51ce8719-0131-46d3-882a-4219d1bef929",
+    "T-aba3cf27-e492-4d20-89ba-5161b7521bc4"
+  ],
+  "nodeTests": 4,
+  "focusedWebTests": 7,
+  "webTests": 758,
+  "renderedCases": 672,
+  "renderedErrors": 0,
+  "routes": [
+    "/sign-in",
+    "/settings"
+  ],
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "themes": [
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate",
+    "gryphy-dark",
+    "gryphy-light",
+    "obsidian-glow",
+    "toxic-swamp"
+  ],
+  "minimumMeasuredContrast": 4.279234284916437,
+  "negativeControls": 2,
+  "actualBrowserSmoke": "Clean local published app loads signed out; installation steps expand without credential or notification actions. Keyboard focus reaches the installation toggle and Apple link. The toggle measured height 44px, focus-visible=true and a 2px outline at normal text.",
+  "focus": "Open Checks keyboard focus inspected at 390px and 1200px with 200-percent text in gryphy-light and obsidian-glow. Actual app installation toggle inspected in both schemes.",
+  "sourceFingerprints": {
+    "src/Habitica.WebApp/Components/PwaInstallPanel.razor": "48467e90ef6f72aab8473ee296327de5bdf56adf63143b88d4c8bf4676eb839d",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "39f13133fd7117afcb8adf7bd0330ddf7b95a15fdc620f91e7121c9d44709373",
+    "src/Habitica.WebApp/Pages/SignIn.razor": "937358733427c513cb82c4e2a30c28ace3e6391e12139f5e7dd9362b5a35df33",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "dfb1a962cda5fb9748bffa079f5769bb781840d757c73cf506563cefa68ae6ca",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "03fb08756771b028382f905107bd2500576d6ef7e04d2aecd94f2359a3c75b5e",
+    "src/Habitica.WebApp/wwwroot/js/pwa.js": "3bf614d0170d92eb85b8be88dd731cf4ba85b793b39b13a669e02418d97d132f",
+    "src/Habitica.WebApp/wwwroot/manifest.webmanifest": "06da3f74673a80bf4127f295d40329b2a0d94c3461dd791b6bf69a8b472cac52",
+    "src/Habitica.WebApp/wwwroot/index.html": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "bad18dd45c2673243953099b4f419ae03900922fbba01b4e0ff5f8610512dbd5",
+    "src/Habitica.WebApp/wwwroot/icon-192.png": "1cd4e5f4863ba0da3e872ed4d14354f76003e55b908df52b2d59b6b04438212d",
+    "src/Habitica.WebApp/wwwroot/icon-512.png": "9f13682a72a624138d86694177e4c6eec8a05496ea1b399106f9145cc1121cd8",
+    "tests/Functions/pwa.test.mjs": "928d031038ff3f435e7a1e7d4facd7e92eb76841d68861efb90a07a00977b63a",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.PwaTests.cs": "03663fd7fde45dbc56189e9a178329fa9eed484505e06e43f66c264790d2af71",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "677bb9f08b55cde82ac7034b4f9e356b06c723bd093f14cc0a4f1bafe85fd057",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "e1792ee360a4b6198b2a2ff0da77725793009c52b5226ccb2c4ecb2798b5aae2",
+    "tests/Habitica.WebApp.Tests/Pages/SignInPageTests.cs": "d5603834fd79580f21d2a2a3d31910dfe4da114269a1634bdecbb72e76eef6dc",
+    "skill-tree/documents/pwa-installation.md": "054c671e0fc23763e4c9f2d04fe55bef084a03fa7074e46307a78a07cb0e2dc0"
+  },
+  "operations": {
+    "classifications": [
+      "Executed controls: builds, synthetic session/cache/packaging tests, rendered matrix and local app smoke.",
+      "Transport uncertainty: the initial full browser export was truncated at 200000 characters. The repeated passing matrix was exported in eighty-row chunks; all 672 records are retained.",
+      "Cleanup: an interrupted temporary smoke wrapper left an owned child server. Exact port/process metadata identified the child; the child was stopped. A later smoke server reached the explicit deadline and was confirmed absent."
+    ],
+    "deadlines": "Node 60 seconds; Web/build 180 seconds; browser matrix 300 seconds with five-second cases; fixture servers 600-900 seconds; smoke servers 300-600 seconds. Five-second shell cleanup reserve.",
+    "packagingPhaseElapsedSeconds": 1415.3,
+    "activeControllerSeconds": null,
+    "timingLimitation": "Active controller time was not independently instrumented; shell wall times are recorded separately.",
+    "prerequisiteWaitSeconds": 0,
+    "unchangedExecutedFailurePair": false,
+    "cleanup": "All temporary tabs closed; fixture/smoke servers stopped or expired. No unrelated process was touched."
+  },
+  "limitations": [
+    "Physical iPhone installation, standalone session/storage transfer, safe-area/onscreen keyboard, actual offline relaunch, assistive technology, Web Push delivery, hosted clients and production publication remain unrun.",
+    "The documented physical-device release gate remains open."
+  ]
+}

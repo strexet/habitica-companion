@@ -1,0 +1,43 @@
+{
+  "completed_ids": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e"
+  ],
+  "completion_refs": {
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e": "O-96e2510c-8cb8-4ae7-b2cb-78cc9f1340ca"
+  },
+  "current_task_id": null,
+  "cycle_signature": "44194dd930c0a5458381b8d0ae4af3e1cb8ec9e7921f0bad5910e37b53b5fe67",
+  "deferred_ids": [],
+  "finished_at": "2026-10-28T12:55:28.790562+00:00",
+  "history_refs": [
+    "skill-tree/history/checkpoints/implement-all-WR-db3533db-230a-4c61-a88b-0db609cb6ff5.json",
+    "skill-tree/history/validation/task-adoption/result.json"
+  ],
+  "id": "WR-618e703c-5ba7-4196-ab7c-3b4f30ce299d",
+  "limits": {},
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [
+    "Owner-selected adoption root uses new WR-618e703c-5ba7-4196-ab7c-3b4f30ce299d. Frozen Implement All remains unfinished in saved checkpoint, not implicitly resumed.",
+    "Added shared adoption tool whitelist, durable D1 reviews/receipts, leased metadata-only acceptance, Auth exact inspectAdoption with unknown-attempt/grant checks and browser typed transport.",
+    "Three dry-run bundles passed. Initial adoption D1/HTTP: 21/22 passed; SDK fixture display name mismatch identified and repaired. Initial C# legacy transport expectations replaced with durable command/recovery assertions. Required checks still pending.",
+    "Shared exact adoption implementation and finite migration parity inventory complete; no required descendants or additional Pending findings.",
+    "Validation: 892 WebApp, 13 post-reflow link controls, 8 static asset, 60 distinct Workspace SDK/HTTP/D1 regression controls as documented broad-plus-isolated union, 19 Auth projection, 5 plugin SDK, 7 package and 10 browser harness controls. Three matching dry-run bundles and local publish pass.",
+    "Rendered final matrix 672 measured cases, seven themes including Gryphy Light/Obsidian Glow, six phone/desktop widths and 100/200-percent text; seeded failures detected. Manual phone light/dark recovery and desktop confirmation keyboard focus verified.",
+    "Final source/diff review found no unresolved selected-scope issue. Narrow link inset repair addresses manual readability finding. No commits, remote migrations, deployment or live adoption.",
+    "Final source review hardened stored review-hash verification before adoption and typed mapping ID/state/fingerprint validation. Added corruption and malformed mapping controls. Matching bundles and final combined integration/WebApp checks in progress; UI source/styles unchanged after the passing matrix.",
+    "Final matching source checks passed: 895/895 WebApp and 85/85 combined Workers/SDK/HTTP/D1 controls, including 27 adoption cases. No unresolved required descendant."
+  ],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e"
+  ],
+  "root_task_id": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+  "snapshot": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e"
+  ],
+  "started_at": "2026-10-28T12:18:50.949077+00:00",
+  "stop_reason": null
+}

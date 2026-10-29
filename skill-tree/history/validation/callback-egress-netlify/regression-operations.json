@@ -1,0 +1,16 @@
+[
+  {
+    "operation": "auth-regression",
+    "classification": "executed-control",
+    "deadline_seconds": 180,
+    "wall_seconds": 83.404,
+    "exit_code": 0
+  },
+  {
+    "operation": "development-regression",
+    "classification": "executed-control",
+    "deadline_seconds": 60,
+    "wall_seconds": 3.134,
+    "exit_code": 0
+  }
+]

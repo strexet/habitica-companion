@@ -1,0 +1,83 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic diagnostics-sharing-unavailable</title><link rel="stylesheet" href="/mud.css"><link rel="stylesheet" href="/app.css"></head><body><main style="padding:16px;max-width:1100px;margin:auto"><p>Synthetic Razor output. Component interactions are qualified separately.</p><div class="diagnostics-shell"><section class="card-surface dashboard-hero"><div><p class="section-label">Diagnostics</p>
+            <h1>Diagnostics</h1>
+            <p class="panel-copy">
+                Use this page for safe refresh checks, optional gear verification, quick Habitica account reads, and recent app messages.
+            </p></div></section>
+
+    <section class="diagnostics-grid"><div class="diagnostics-main"><article class="card-surface diagnostics-panel"><p class="section-label">Overview</p>
+                <h2>Current saved data</h2>
+                <div class="diagnostics-overview-grid"><span class="ui-pill">Sign-in Ready</span>
+                    <span class="ui-pill">Warnings 1</span>
+                    <span class="ui-pill">User Missing</span>
+                    <span class="ui-pill">Tasks Missing</span>
+                    <span class="ui-pill">Party Missing</span>
+                    <span class="ui-pill">Synced Never</span></div></article>
+
+            <article class="card-surface diagnostics-panel"><p class="section-label">Safe checks</p>
+                <h2>Safe refresh checks</h2>
+                <p class="panel-copy">
+                    Refreshes supported Habitica data one step at a time using a small number of requests.
+                </p>
+                <button blazor:onclick="51" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Run safe live tests
+                </span></button></article>
+
+            <article class="card-surface diagnostics-panel warning-card"><p class="section-label">Guarded tests</p>
+                <h2>Optional gear check</h2>
+                <p class="panel-copy">
+                    This reversible check temporarily changes equipped battle gear, verifies the change, and restores the original loadout.
+                </p>
+                <label class="checkbox-row"><input name="acknowledge-gear-test" type="checkbox" blazor:onchange="46">
+                    <span>I understand this temporarily changes equipped battle gear during the check.</span></label>
+                <button blazor:onclick="52" type="button" disabled="" class="mud-button-root mud-button mud-button-filled mud-button-filled-secondary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Run reversible gear test
+                </span></button></article>
+
+            <article class="card-surface diagnostics-panel"><p class="section-label">Quick account reads</p>
+                <h2>Choose what to inspect</h2>
+                <div class="action-row"><button data-testid="preset-user-account" blazor:onclick="53" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-default mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check account
+                    </span></button>
+                    <button blazor:onclick="54" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check inventory
+                    </span></button>
+                    <button blazor:onclick="55" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check tasks
+                    </span></button>
+                    <button blazor:onclick="56" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check party
+                    </span></button></div></article></div>
+
+        <aside class="card-surface diagnostics-console"><div class="task-group-header"><div><p class="section-label">App messages</p>
+                    <h2>Recent app messages</h2></div>
+                <div class="action-row"><button data-layout-primary="true" data-testid="copy-diagnostics-jsonl" blazor:onclick="57" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Copy all messages</span></button>
+                    <button data-layout-primary="true" data-testid="download-diagnostics-jsonl" blazor:onclick="58" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Download messages</span></button>
+                    <button blazor:onclick="59" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Clear messages</span></button></div></div><div class="diagnostics-filter-row"><label class="field-row compact"><span>Feature</span>
+                    <select class="app-input" value="" blazor:onchange="47"><option value="">All features</option><option value="Workspace">Workspace</option></select></label>
+
+                <label class="field-row compact"><span>Severity</span>
+                    <select class="app-input" value="" blazor:onchange="48"><option value="">All severities</option><option value="Warning">Warning</option></select></label>
+
+                <label class="field-row compact"><span>Mode</span>
+                    <select class="app-input" value="" blazor:onchange="49"><option value="">All modes</option><option value="LiveMutation">LiveMutation</option></select></label></div>
+
+            <details class="diagnostics-bundle"><summary>Share diagnostics with Codex or ChatGPT</summary>
+                <div class="diagnostics-bundle-content"><p class="panel-copy">Preview up to 100 filtered messages, then copy or download the reviewed bundle. Attach it to Codex or ChatGPT only when needed. Nothing is uploaded automatically; logs from other devices and server receipts are separate.</p>
+                <button data-layout-primary="true" data-testid="preview-diagnostics-bundle" blazor:onclick="60" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Preview diagnostic bundle</span></button></div></details>
+
+            <section class="diagnostic-sharing diagnostics-bundle-content" aria-label="Shared diagnostics"><h3>Agent access to shared diagnostics</h3>
+    <p class="panel-copy">Source: this exporting browser profile only. No device identifier is collected. Server operators and agents granted diagnostics.read can read an explicitly uploaded sanitized copy after separate consent. Other devices, raw provider logs and unshared history remain unavailable.</p>
+    <p class="panel-copy">Up to 100 entries per bundle; 2000 event rows and 1 MiB charged storage per profile. Metadata and indexed copies count toward the quota. Shared records expire within seven days of preparation. Revocation blocks reads immediately; scheduled physical cleanup and provider recovery history are separate.</p><p class="diagnostic-identity">Workspace 7813bac6-9350-4320-8624-41122c2d2e00</p>
+        <div class="action-row"><button data-testid="diagnostic-share-status" blazor:onclick="44" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Check sharing status</span></button></div><div class="diagnostics-filter-row"><label class="field-row compact"><span>Cloud preview feature</span><select class="app-input" blazor:onchange="6"><option value="">All features</option><option value="Auth">Auth</option><option value="Sync">Sync</option><option value="Tasks">Tasks</option><option value="Inventory">Inventory</option><option value="Party">Party</option><option value="Diagnostics">Diagnostics</option><option value="Equipment">Equipment</option><option value="Skills">Skills</option><option value="Workspace">Workspace</option></select></label>
+            <label class="field-row compact"><span>Cloud preview severity</span><select class="app-input" blazor:onchange="7"><option value="">All severities</option><option value="Info">Info</option><option value="Success">Success</option><option value="Warning">Warning</option><option value="Error">Error</option></select></label>
+            <label class="field-row compact"><span>Cloud preview mode</span><select class="app-input" blazor:onchange="8"><option value="">All modes</option><option value="Local">Local</option><option value="LiveRead">LiveRead</option><option value="LiveMutation">LiveMutation</option><option value="ReversibleTest">ReversibleTest</option></select></label></div>
+        <button data-layout-primary="true" data-testid="diagnostic-share-preview" blazor:onclick="45" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Preview local cloud bundle</span></button><p role="status" aria-live="polite">Remote operation is unavailable. Check sharing status before continuing.</p></section>
+
+            <p class="diagnostics-copy-hint">Click or tap a message to copy it. Open Details to inspect.</p><div class="diagnostics-log-list" aria-label="Recent app messages"><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="50"><span class="diagnostics-log-heading"><time datetime="2026-10-28T17:34:57.0736470+00:00">10/29/2026 12:34 AM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>workspace-tag-accept</strong></span>
+                                <span>workspace tag accept: Warning.</span>
+                                <span class="diagnostics-log-context">Workspace · LiveMutation</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">{}</code>
+                                <pre>{"id":"log-23352a67ac7ffc4b5d98023dc1a54ee507d4bf95dc1c4154045c5e2bbde73317","occurredAtUtc":"2026-10-28T17:34:57.073647+00:00","featureArea":8,"operation":"workspace-tag-accept","severity":2,"mode":2,"message":"workspace tag accept: Warning.","metadata":{},"context":null}</pre></details></div></div></aside></section></div></main><script src="/colorSchemes.js"></script><script type="module" src="/qualification-frame.mjs"></script></body></html>

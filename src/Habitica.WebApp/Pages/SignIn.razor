@@ -145,6 +145,7 @@
                 </MudAlert>
             }
         </MudPaper>
+        <PwaInstallPanel />
     </div>
 }
 
@@ -204,11 +205,12 @@
             UserId = _request.UserId
         };
 
+        var destination = Habitica.Application.Notifications.NotificationRoute.SignInDestination(NavigationManager.Uri);
         await SessionController.SignInAsync(request);
 
         if (SessionController.State.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/dashboard");
+            NavigationManager.NavigateTo(destination);
         }
     }
 
@@ -240,7 +242,7 @@
     {
         if (SessionController.State.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/dashboard", replace: true);
+            NavigationManager.NavigateTo(Habitica.Application.Notifications.NotificationRoute.SignInDestination(NavigationManager.Uri), replace: true);
         }
     }
 

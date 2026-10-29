@@ -1,0 +1,107 @@
+
+> companion-callback-egress@0.1.0 test
+> node --experimental-strip-types --test --test-timeout=15000 test/*.test.mjs
+
+(node:17087) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:17088) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: all IPv4 special ranges and alternate literal forms fail closed
+ok 1 - all IPv4 special ranges and alternate literal forms fail closed
+  ---
+  duration_ms: 5.488583
+  ...
+# Subtest: IPv6 global unicast only; mapped, NAT64, tunnel, documentation and zone IDs refuse
+ok 2 - IPv6 global unicast only; mapped, NAT64, tunnel, documentation and zone IDs refuse
+  ---
+  duration_ms: 0.384917
+  ...
+# Subtest: URLs refuse non-HTTPS, IP literals, credentials, noncanonical spelling and local names
+ok 3 - URLs refuse non-HTTPS, IP literals, credentials, noncanonical spelling and local names
+  ---
+  duration_ms: 0.537708
+  ...
+# Subtest: mixed/private/empty/oversized DNS answers refuse before TLS and rebinding cannot trigger a second lookup
+ok 4 - mixed/private/empty/oversized DNS answers refuse before TLS and rebinding cannot trigger a second lookup
+  ---
+  duration_ms: 0.515708
+  ...
+# Subtest: exact signed bytes and challenge response survive; concurrent/restarted replay never sends twice
+ok 5 - exact signed bytes and challenge response survive; concurrent/restarted replay never sends twice
+  ---
+  duration_ms: 18.892583
+  ...
+# Subtest: tampered payload/destination/signature/operation/audience/expiry never reaches claim
+ok 6 - tampered payload/destination/signature/operation/audience/expiry never reaches claim
+  ---
+  duration_ms: 1.597625
+  ...
+# Subtest: disabled, missing/reused keys, CA overrides, Origin, wrong route and content type refuse
+ok 7 - disabled, missing/reused keys, CA overrides, Origin, wrong route and content type refuse
+  ---
+  duration_ms: 1.030709
+  ...
+# Subtest: lost claim acknowledgement and transport failures preserve one-use uncertainty without secret leakage
+ok 8 - lost claim acknowledgement and transport failures preserve one-use uncertainty without secret leakage
+  ---
+  duration_ms: 1.477875
+  ...
+# Subtest: forged/replayed claim acknowledgement and expired handoff cannot send payload
+ok 9 - forged/replayed claim acknowledgement and expired handoff cannot send payload
+  ---
+  duration_ms: 1.660542
+  ...
+# Subtest: redirect status is terminal without following Location; event response bodies are suppressed
+ok 10 - redirect status is terminal without following Location; event response bodies are suppressed
+  ---
+  duration_ms: 1.889417
+  ...
+# Subtest: bounded envelope, decoded payload, header allowlist and slow ingress fail closed
+ok 11 - bounded envelope, decoded payload, header allowlist and slow ingress fail closed
+  ---
+  duration_ms: 53.419459
+  ...
+# (node:17089) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Netlify package pins Node22, has no dependency/key provisioning and retains bounded entry
+ok 12 - Netlify package pins Node22, has no dependency/key provisioning and retains bounded entry
+  ---
+  duration_ms: 0.979291
+  ...
+# Subtest: source archive contains only allowlisted bytes and refuses stale archive reuse
+ok 13 - source archive contains only allowlisted bytes and refuses stale archive reuse
+  ---
+  duration_ms: 213.762375
+  ...
+# (node:17090) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual local TLS verifies chain/original hostname, exact body, Host and SNI before HTTP
+ok 14 - actual local TLS verifies chain/original hostname, exact body, Host and SNI before HTTP
+  ---
+  duration_ms: 103.306417
+  ...
+# Subtest: connected remote-address mismatch refuses before writing any HTTP data
+ok 15 - connected remote-address mismatch refuses before writing any HTTP data
+  ---
+  duration_ms: 161.542208
+  ...
+# Subtest: actual TLS slow body and oversized response hit bounded deadline/bytes and close sockets
+ok 16 - actual TLS slow body and oversized response hit bounded deadline/bytes and close sockets
+  ---
+  duration_ms: 242.122209
+  ...
+# Subtest: TLS handshake without acknowledgement is cancelled before HTTP or body writes
+ok 17 - TLS handshake without acknowledgement is cancelled before HTTP or body writes
+  ---
+  duration_ms: 101.956625
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 704.539875

@@ -1,0 +1,125 @@
+{
+  "task_id": "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+  "scope": "Local synthetic tag-review outcomes only",
+  "browser": {
+    "cases": 1260,
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "themes": 7,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "seeded_detected": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "keyboard_focus": {
+      "control": "Check tag consent",
+      "focus_visible": true,
+      "outline": "rgb(67, 143, 208) solid 2px"
+    }
+  },
+  "limitations": [
+    "Real hosts, devices, assistive technology and production recovery remain unrun.",
+    "The recorded production command was neither replayed nor changed."
+  ],
+  "official_context": [
+    "https://developers.cloudflare.com/d1/worker-api/d1-database/#batch"
+  ],
+  "checks": {
+    "workspace": {
+      "passed": 692,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 202,
+      "failed": 0
+    },
+    "focused_dotnet_final": {
+      "passed": 15,
+      "failed": 0
+    },
+    "solution_dotnet_before_final_first_refusal_assertion": {
+      "passed": 1408,
+      "failed": 0
+    },
+    "builds": [
+      "Auth dry build",
+      "Workspace dry build",
+      "MCP dry build",
+      "Release solution build",
+      "Release local publication"
+    ],
+    "diff_check": "pass"
+  },
+  "operations": [
+    {
+      "operation": "companion-workspace regression",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 158.74516129214317,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "chatgpt-auth regression",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 65.39153758320026,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "final focused .NET",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 12.24202433298342,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    }
+  ],
+  "timing_limits": {
+    "active_controller_seconds": null,
+    "note": "Active controller time was not independently instrumented; measured tool wall time and zero prerequisite waiting are reported separately. No selected-task total budget applies.",
+    "test_file_deadline_seconds": 30,
+    "worker_suite_deadline_seconds": 300,
+    "build_deadline_seconds": 180,
+    "cleanup_reserve_seconds": 15
+  },
+  "retained_failed_control": {
+    "operation_class": "executed_control",
+    "result": "691/692 Workspace controls passed; synthetic browser authority mutation did not model an MCP grant change.",
+    "repair": "Replaced malformed scenario with a real Auth grant_epoch change on an MCP review; final Workspace suite passed.",
+    "consecutive_unchanged_failures": 0
+  },
+  "source_fingerprints": {
+    "workers/companion-workspace/src/group-tag-outcomes.ts": "a2b9adbdc865f0eb0345d86e2a6e6509f86082acb6edb50759a56ba15b8fbb28",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "ee4ac2f22989d6db96fec84347181f92785881af0e4f15c3e033584edd1648e5",
+    "workers/companion-workspace/src/group-tag-retention.ts": "ad115a2aba244086aae23a8b3a7fc7a57998a9c76119ee576c8699aaf11706c8",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "36889a3a93ddb8813b8c587628518b964a09d25c4047ed77e51f7e8e24b1caff",
+    "workers/chatgpt-mcp/src/group-tag-tools.ts": "50fb33b89ae94c7a73cf6a7618eb32e63a96673507eb1ec2a099d6d7930fcc68",
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "92c5085ee563db9d9601904811f1d2e903c83d7f22e7cc6c719b3051c6bc20f4",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "7ded6e708d75363615cd67bc826e0fba35c7368106ded24831ebf485a0bf4002",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "b0da0b29e083f8156ddbfc9b626fe45947ed8e83b36cfedc48976fc35cfb785a",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "83520bd18fc4a8d835292650021fffe5b9a5f90d51a241048ad941a3a9da7795",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "f9bf84c2be6958cc24edc94e39fb1199fc580a7f2ebd2bcf361d7854ea0e104f"
+  },
+  "artifacts": {
+    "terminal-focus.png": "47f4940a896c04daad9e192db1cd67827faa849a0389195f64e67d224e748326",
+    "solution-dotnet.log": "5eec6e01ff9ba94e053a9fdb8cb68576fcf6c34471ffdef746ca53971937a0d9",
+    "terminal-outcome.png": "3335345ce99595402d7993ce26084d9ee027af656cc4301452576c376ff20f5f",
+    "browser-negative.json": "6dde07e152a68ef843c4bbd533be8f5d34567256423f9f7e8eea9261be06dffb",
+    "focused-dotnet.log": "46451fd8f8c91548c00596a48c3b2ef6b2baf933996976f7a41d7e35d572c9f5",
+    "auth-tests.log": "87f9f72596bf9d8c5980cb8f59ca972843e46a5eaa45ee2c9e0f7f3a620e3498",
+    "browser.json": "405f6eea4be328c594ccae4186aa25b41835057345968c92514295ba67bf2335",
+    "workspace-tests.log": "10b313f1b480db98ff7064c2a708107266a8fd6b0f9b139a149dc81117c12cfb"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "task_id": "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+  "source_fingerprints": {
+    "src/Habitica.Domain/Notes/NotesModel.cs": "f6a2cb8d082fe1a9251c6bd94be6f63fdfbe7949eece4f0ae31cc4fa40b159df",
+    "src/Habitica.Application/Notes/NotesEngine.cs": "84b4a68a36a92a1b94ad1976a6768c82f1071d991302eef78dbc58d679693c08",
+    "src/Habitica.Application/Notes/NotesProjects.cs": "4291d06379ee09542e0b65f8df6c6331ccb20059b7cf5800fcaafe19dbfc933f",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "8dd8d44455e999fcb1a48544fdfa11e6bf49a1628b76b95026c9c4f60b2de25b",
+    "src/Habitica.Application/Notes/NotesService.cs": "7d5a6d844e6eff60ee0a90f60b05ebbb2718f302ba159f0c089f5a0ecbf76a76",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "40a56f8c1df02d76d6ddda7dbd2367720752f41a0d930ca535396e7ee325de12",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "79f56066d2e7743cf5959496554ddf325aa8b21d69f11280df2910660daded24",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "f5306dcfce7da31942aaa6822a6c24b0ce864b78432191011fb2ef1c5b072917",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "6dcd2a50d5f0987c2db58844298bfc61946bc71d8c6f73e67f3516a43649faf7",
+    "src/Habitica.WebApp/State/NotesController.cs": "6af92be8bdb13165235e763a6ac2d823893a3f54025e50738ddf2725f99c826e",
+    "workers/shared/notes.ts": "ae34049c32d2fe66c0f6c8036e37ae4d9f9fd97c3b7506dd8f46cb384d22c2c2",
+    "workers/shared/note-tools.ts": "4aff1206f98d75d083f3372bef4e09cb8fbed6ebda6eab72234e50ff499dc009",
+    "workers/chatgpt-mcp/src/note-tools.ts": "eb49cc1a1e62ad2dd71fbcd5d6f1513b3840e58da43f1e7a1f3a17c6d3bc2f5a",
+    "workers/companion-workspace/src/notes-api.ts": "7a2ae89ca7d154d3110b72821d8090dd33a199a427e1568e2308da200763ab21",
+    "workers/companion-workspace/src/note-tools-api.ts": "1da58249244ab0fa3873c3cf6e4902aba0bbc67fea80456a7689cd641fe92eaa",
+    "workers/companion-workspace/migrations/0017-note-project-links.sql": "fdaa39f9bf4e06d4f2cf897a023aaac8038b0d5966fecd03d118a3b41bc647d2",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "d2ba16b8eb9031e45e858080be1dd39c80da33c581236512192bb9f1091ccf9d",
+    "tests/fixtures/notes/notes-wire-v1.json": "6ef86cfdf69989f3794c57b2a49439a7ba3d4e2fa9ae629f280e1af04490c0d4",
+    "tests/fixtures/notes/notes-project-wire-v2.json": "1d6a4141335dba9d47792e1bbea854e6c4dc17789fd404078772446644569cb0",
+    "tests/Habitica.Application.Tests/Notes/NoteProjectTests.cs": "4264e2ef9c3f2c50919ca71879be4e44d53a84343c055249faec60132b988e79",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "0a7768f763cd12994e1813e701d46f3377d79dd8ec70828a415d6ad3e4cccdfe",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "1a192ed8f8be01a43f9997ba4a8a951cd018d8301350328fb7fc7ba67b549164",
+    "workers/companion-workspace/test/note-projects.test.mjs": "a9f87a00d06a8f99a1cfb6ebb40ec461760549b0a67937c8d3634027149c616d",
+    "tests/browser-qualification/note-project-storage.html": "0500cc2c616646466f48d3a0554a16c01819b6e3e5f9f44dd5e14a30cf5bf990",
+    "plugin/skills/habitica-notes/SKILL.md": "da1c939d3dbe3e72fa59f89339658574ec901de78495e644fe21b573eec3f45b",
+    "skill-tree/documents/notes-project-links.md": "332bf50b0508ae227d51bb4d3bfa816a71c5cf5a8e39b33b6d05ec937de6f487"
+  },
+  "checks": {
+    "solution": {
+      "passed": 1431,
+      "failed": 0
+    },
+    "workspace_full": {
+      "passed": 711,
+      "failed_transport": 2,
+      "total": 713
+    },
+    "isolated_affected_files": {
+      "passed": 17,
+      "failed": 0
+    },
+    "notes_focused": {
+      "passed": 27,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 203,
+      "failed": 0
+    },
+    "worker_dry_builds": "all three pass after source regeneration",
+    "indexeddb": {
+      "assertions": 13,
+      "passed": 13,
+      "cleanup": "complete",
+      "scope": "fresh random synthetic account keys; existing Notes/workspaces transaction; no provider operations"
+    },
+    "protocol": "Legacy notes-wire-v1 remains unchanged; extended C#/Worker fixture binds exact new metadata hashes, Unicode/CRLF Markdown and retained association versions.",
+    "ownership": "Exact owner, source, Workspace, active lifecycle and revisions; duplicate names and actual foreign project with matching project ID cannot satisfy a link. Independent Notes scopes; project-only reads refuse private Notes; names require canonical tasks:read.",
+    "receipt": "Association-only edits, omission/explicit clearing, stale links, rollback, concurrent revisions, original recovery after lost commit and old exact-version metadata pass.",
+    "paging": "Complete-set text/trash/project/unassigned filters precede twenty-row pages;25 matches, exact Workspace/source and stale page controls pass.",
+    "review": "Final source, migration/lifecycle, legacy UI preservation, minimization, code/docs and task acceptance reviewed.",
+    "diff_check": "pass"
+  },
+  "operations": {
+    "test_deadline_seconds": 300,
+    "dotnet_deadline_seconds": 240,
+    "build_deadline_seconds": 180,
+    "browser_operation_deadline_seconds": 30,
+    "cleanup_reserve_seconds": 15,
+    "workspace_full_wall_seconds": 90.817,
+    "affected_file_recheck_wall_seconds": 16.765,
+    "auth_wall_seconds": 39.616,
+    "prerequisite_wait_seconds": 0,
+    "active_controller_seconds": null
+  },
+  "limitations": [
+    "Local synthetic model/service/storage/HTTP/D1/SDK qualification only. No real private Notes, remote migration, account mutation, publication, device or installed host skill activation is included.",
+    "The dependent project-picker/project-view UI unit remains unimplemented. Existing Notes editing preserves unseen association metadata.",
+    "The full713-control Workspace run passed711 and encountered two local fetch transport failures in unrelated linked-recovery/retirement controls. Isolated sequential rechecks passed all17 controls across both affected files. No failing assertion remains unexplained.",
+    "The direct-source D1 race harness stubs only the unused WorkerEntrypoint base for Node import; actual Worker/SDK HTTP behavior is qualified separately.",
+    "Whole historical document prose lint retains pre-existing violations outside changed prose. New canonical/changed prose and repository/future validators pass, with an existing stale historical audit warning."
+  ]
+}

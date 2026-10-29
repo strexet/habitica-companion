@@ -117,8 +117,10 @@ test('a command reviewed for a deleted notebook cannot reach a replacement noteb
 });
 test('OAuth consent names Notes permissions and independent readable storage explicitly',async t=>{
  const f=await fixture(t,{workspace:true}),p=await enrolled(f),code=await ticket(f,p),scope='profile:read notes.read notes.write',page=await authPage(f,scope),first=await page.response.text();
- assert.match(first,/Personal Notes can contain sensitive personal facts/);
+ assert.match(first,/Can search and read sensitive Markdown, revisions and trash after separate Notes cloud consent/);
  const response=await form(f,page,{handle:handle(first),decision:'identify',code:code.code,scope});assert.equal(response.status,200);const html=await response.text();
+ assert.match(html,/Personal Notes can contain sensitive personal facts/);
+ assert.match(html,/The server can read stored titles, Markdown and retained revisions until permanent deletion/);
  assert.match(html,/name="scope" value="notes.read"/);assert.match(html,/name="scope" value="notes.write"/);assert.match(html,/Existing task access does not grant Notes access/);
  if(process.env.HABITICA_NOTES_CONSENT_HTML)await writeFile(process.env.HABITICA_NOTES_CONSENT_HTML,html.replace(/name="handle" value="[^"]+"/g,'name="handle" value="synthetic-unusable-handle"'));
 });

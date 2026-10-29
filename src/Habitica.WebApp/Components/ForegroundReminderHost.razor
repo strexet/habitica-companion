@@ -1,0 +1,4 @@
+@inject ForegroundReminderController Reminders
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if(firstRender)await Reminders.InitializeAsync(); }
+}

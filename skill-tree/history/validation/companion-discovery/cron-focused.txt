@@ -1,0 +1,158 @@
+(node:11100) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reviewed Cron preview rotates token, dispatches once and exports an explicit secret-free receipt
+ok 1 - reviewed Cron preview rotates token, dispatches once and exports an explicit secret-free receipt
+  ---
+  duration_ms: 952.377625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fresh Daily/checklist/quest/account changes refuse stale previews without rebuilding or replay
+ok 2 - fresh Daily/checklist/quest/account changes refuse stale previews without rebuilding or replay
+  ---
+  duration_ms: 1032.588583
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: success followed by refresh failure remains confirmed and is never resent
+ok 3 - success followed by refresh failure remains confirmed and is never resent
+  ---
+  duration_ms: 739.804208
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: lost acknowledgement recovers only the original receipt and reports unperformed refresh
+ok 4 - lost acknowledgement recovers only the original receipt and reports unperformed refresh
+  ---
+  duration_ms: 743.172709
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unknown effects stay fenced after day progression and Auth receipt retention
+ok 5 - unknown effects stay fenced after day progression and Auth receipt retention
+  ---
+  duration_ms: 957.582042
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: shared task lease and uncertainty prevent Cron acceptance while preserving saved task attempts
+ok 6 - shared task lease and uncertainty prevent Cron acceptance while preserving saved task attempts
+  ---
+  duration_ms: 803.330583
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: concurrent identical and different Cron actions share one owner and one dispatch
+ok 7 - concurrent identical and different Cron actions share one owner and one dispatch
+  ---
+  duration_ms: 873.881209
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Workspace epoch invalidates previews and independent grants and field whitelists protect execution
+ok 8 - Workspace epoch invalidates previews and independent grants and field whitelists protect execution
+  ---
+  duration_ms: 866.632625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: own-account Cron works without shared planning consent or a party
+ok 9 - own-account Cron works without shared planning consent or a party
+  ---
+  duration_ms: 794.787666
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disabled Cron and fabricated action IDs cannot cause effects
+ok 10 - disabled Cron and fabricated action IDs cannot cause effects
+  ---
+  duration_ms: 653.860209
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed durable dispatch reservation stops before Cron; failed acknowledgement persistence recovers by lookup only
+ok 11 - failed durable dispatch reservation stops before Cron; failed acknowledgement persistence recovers by lookup only
+  ---
+  duration_ms: 769.630167
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: accepted actions without a saved dispatch are stopped on recovery rather than sent later
+ok 12 - accepted actions without a saved dispatch are stopped on recovery rather than sent later
+  ---
+  duration_ms: 663.288458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: renewed grants cannot execute old unaccepted task, spell or Cron previews, while unknown effects remain fenced
+ok 13 - renewed grants cannot execute old unaccepted task, spell or Cron previews, while unknown effects remain fenced
+  ---
+  duration_ms: 950.436208
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an old in-flight preview cannot regain authority after a newer grant epoch is observed
+ok 14 - an old in-flight preview cannot regain authority after a newer grant epoch is observed
+  ---
+  duration_ms: 756.487916
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: re-enrollment after grant revocation restores retained Workspace access without old preview authority
+ok 15 - re-enrollment after grant revocation restores retained Workspace access without old preview authority
+  ---
+  duration_ms: 863.64675
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: credential re-enrollment cannot turn an inaccessible original Cron receipt into known failure
+ok 16 - credential re-enrollment cannot turn an inaccessible original Cron receipt into known failure
+  ---
+  duration_ms: 895.569625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: successful original-refusal receipt lookup still resolves an uncertain Cron acknowledgement without dispatch
+ok 17 - successful original-refusal receipt lookup still resolves an uncertain Cron acknowledgement without dispatch
+  ---
+  duration_ms: 689.263042
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:11101) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: durable unknown tag metadata fences Cron and spells before any gameplay dispatch
+ok 18 - durable unknown tag metadata fences Cron and spells before any gameplay dispatch
+  ---
+  duration_ms: 715.505333
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15225.16275

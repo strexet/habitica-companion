@@ -1,4 +1,14 @@
+import {diagnosticOwnerApi,diagnosticAgentApi,cleanupDiagnostics} from './diagnostic-api';
+import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
+import {adoptionApi} from './adoption-api.ts';
+import {adoptionScopes,type AdoptionTool} from '../../shared/adoption-tools.ts';
+import {linkedRecoveryApi} from './linked-recovery-api';
+import {linkedRecoveryScopes,type LinkedRecoveryTool} from '../../shared/linked-recovery-tools';
+import {recoveryCommands} from './task-recovery-store.ts';
 import {identityEnvelope} from '../../shared/build-identity';
+import {reminderApi} from './reminder-api';
+import {scheduledReminders} from './reminder-scheduler';
+import {reminderToolScopes,type ReminderTool} from '../../shared/reminder-tools';
 import {notesRoute,agentNotes} from './notes-api';
 import {noteToolsApi,purgeExpiredNotesPreviews} from './note-tools-api';
 import {noteToolScopes,type NoteTool} from '../../shared/note-tools';
@@ -100,9 +110,9 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
   const pending=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
   if(pending.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===input.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
  }
- const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());
+ const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString(),await recoveryCommands(env,row.profile_id,input));
  const approval=prepared?await env.WORKSPACE_DB.prepare('SELECT tag_authority_json FROM workspace_preparations WHERE profile_id=? AND command_id=?').bind(row.profile_id,input.id).first<{tag_authority_json:string|null}>():undefined;
- const tags=await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
+ const tags=['unarchiveTask','correctOccurrence'].includes(input.operation)?{document:accepted.document,work:[],gap:null}:await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
  accepted.document=tags.document;
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
@@ -143,6 +153,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  const path = new URL(request.url).pathname;
  const ingress=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",headers:{"cf-connecting-ip":request.headers.get("cf-connecting-ip")??""},body:JSON.stringify({lane:"workspace"}),signal:AbortSignal.timeout(5000)});
  if(!ingress.ok)return ingress;
+ if(path.startsWith('/diagnostics/'))return diagnosticOwnerApi(request,env);
  if(path==='/notes'||path.startsWith('/notes/'))return notesRoute(request,env);
  if (path === "/connect" && request.method === "POST") return connect(request, env);
  if(path==='/cron/history'&&request.method==='GET'){
@@ -164,9 +175,16 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   return json(await ownContributions(env,who.profileId,request.method==='POST'));
  }
  const row = await session(request, env);
+ if(row.linked_recovery_fence&&request.method!=="GET"&&!["/linked-recovery-api","/disconnect","/executor"].includes(path))throw new WorkspaceError("linked_recovery_pending",409);
  if(row.retirement_fence&&request.method!=="GET"&&!["/retirement-api","/disconnect","/executor"].includes(path))throw new WorkspaceError("source_retirement_pending",409);
  const quota=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",body:JSON.stringify({lane:"workspace",profileId:row.profile_id,connectionId:row.connection_id,recovery:request.method==="GET"&&(path==="/operations"||path.startsWith("/commands/"))}),signal:AbortSignal.timeout(5000)});
  if(!quota.ok)return quota;
+ if(path==='/reminders'&&request.method==='GET')return json(await reminderApi(env,row,'get_task_reminders',{taskId:new URL(request.url).searchParams.get('taskId'),offset:Number(new URL(request.url).searchParams.get('offset')??0)}));
+ if(path==='/reminder-api'&&request.method==='POST'){
+  const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);
+  if(typeof body.tool!=='string'||!Object.hasOwn(reminderToolScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
+  return json(await reminderApi(env,row,body.tool as ReminderTool,body.arguments));
+ }
  if(path==='/tag-projection'&&request.method==='GET')return json(await tagStatus(env,row));
  if(path==="/operations"&&request.method==="GET")return json(await operationalStatus(env,row));
  if(path.startsWith('/party/')||path==='/party-api'){
@@ -190,6 +208,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  }
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if(path==='/linked-recovery-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);return json(await linkedRecoveryApi(env,row,body.tool as LinkedRecoveryTool,body.arguments));}
  if(path==='/retirement-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);return json(await sourceRetirementApi(env,row,body.tool as RetirementTool,body.arguments));}
  if(path==='/conversion-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,65536),['tool','arguments']);return json(await conversionApi(env,row,body.tool as ConversionTool,body.arguments));}
  if(path==='/tag-api'&&request.method==='POST'){
@@ -213,33 +232,16 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   return json({executorEnabled:body.enabled,executorAvailable:Boolean(env.EXECUTOR_ENABLED)});
  }
  if (path === "/commands" && request.method === "POST") return command(request, env, row);
- if (["/projection/preview","/projection/adopt"].includes(path) && request.method === "POST") {
-  const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedWorkspaceId","expectedAccessEpoch","expectedRevision","expectedFingerprint"]);
-  const taskId=uuid(body.taskId); const externalId=uuid(body.habiticaTaskId); const document=JSON.parse(row.document_json);
-  const task=document.tasks.find((task: {id:string})=>task.id===taskId); if (!task) throw new WorkspaceError("task_unavailable",422);
-  if(path.endsWith('adopt')){
-   if(body.expectedWorkspaceId!==row.workspace_id||body.expectedAccessEpoch!==row.access_epoch||!Number.isSafeInteger(body.expectedRevision)||Number(body.expectedRevision)<1||typeof body.expectedFingerprint!=='string'||!/^[a-f0-9]{64}$/.test(body.expectedFingerprint))throw new WorkspaceError('adoption_conflict',409);
-   const original=document.projections.find((mapping:{taskId:string;habiticaTaskId:string;fingerprint:string;revision:number;state:string;isArchived:boolean})=>mapping.taskId===taskId&&mapping.habiticaTaskId===externalId&&mapping.fingerprint===body.expectedFingerprint&&mapping.revision===Number(body.expectedRevision)+1&&mapping.state==='linked'&&!mapping.isArchived);
-   if(original)return json({adopted:true,taskId,habiticaTaskId:externalId,revision:original.revision});
-  }
-  const response=await env.AUTH_PROJECTION.fetch("https://projection.internal/operation",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id,operation:"inspect",arguments:{selector:externalId},automated:false})});
-  if (!response.ok) throw new WorkspaceError("projection_preview_unavailable",response.status===401?401:503);
-  const observed=await response.json<{task: import("../../shared/projection").RemoteTask|null}>();
-  if (!observed.task) throw new WorkspaceError("external_deleted",409);
-  const pending=await env.WORKSPACE_DB.prepare("SELECT entry_json FROM workspace_commands WHERE profile_id=?").bind(row.profile_id).all<{entry_json:string}>();
-  const unresolved=pending.results.map(row=>JSON.parse(row.entry_json)).filter(entry=>entry.command.taskId===taskId && !["notRequested","confirmed","cancelled"].includes(entry.projectionState));
-  if (path.endsWith("preview")) return json({workspaceId:row.workspace_id,accessEpoch:row.access_epoch,task,external:observed.task,expectedRevision:document.revision,pendingCommandCount:unresolved.length});
-  if (unresolved.length || body.expectedWorkspaceId!==row.workspace_id || body.expectedAccessEpoch!==row.access_epoch || body.expectedRevision!==document.revision || typeof body.expectedFingerprint!=="string") throw new WorkspaceError("adoption_conflict",409);
-  const adopted=adoptProjection(document,taskId,observed.task,body.expectedFingerprint); const serialized=JSON.stringify(adopted);
-  const archiveBytes=row.archive_bytes-bytes(row.document_json)+bytes(serialized);
-  if (bytes(serialized)>1024*1024 || archiveBytes>8*1024*1024 || row.store_version===Number.MAX_SAFE_INTEGER) throw new WorkspaceError("workspace_capacity",413);
-  const updated=await env.WORKSPACE_DB.prepare("UPDATE workspaces SET document_json=?,archive_bytes=?,store_version=store_version+1,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=? AND active=1")
-   .bind(serialized,archiveBytes,crypto.randomUUID(),new Date().toISOString(),row.profile_id,row.access_epoch,row.store_version).run();
-  if (!updated.meta.changes) throw new WorkspaceError("stale_revision",409);
-  return json({adopted:true,taskId,habiticaTaskId:observed.task.id,revision:adopted.revision});
- }
+ if(path==='/adoption-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);return json(await adoptionApi(env,row,body.tool as AdoptionTool,body.arguments));}
+ // Old mutable-revision adoption is intentionally refused; callers must obtain a durable reviewed command.
+ if(['/projection/preview','/projection/adopt'].includes(path))throw new WorkspaceError('adoption_review_required',409);
  if (path === "/disconnect" && request.method === "POST") {
-  const stopped = await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare("UPDATE workspaces SET active=0,executor_enabled=0 WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),env.WORKSPACE_DB.prepare("DELETE FROM workspace_sessions WHERE profile_id=? AND access_epoch=?").bind(row.profile_id,row.access_epoch)]);
+  const stopped = await env.WORKSPACE_DB.batch([
+   env.WORKSPACE_DB.prepare("UPDATE workspaces SET active=0,executor_enabled=0 WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),
+   env.WORKSPACE_DB.prepare("DELETE FROM workspace_sessions WHERE profile_id=? AND access_epoch=?").bind(row.profile_id,row.access_epoch),
+   env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_schedules SET state='paused',reason='workspace_disconnected',next_at_utc=NULL,next_civil_date=NULL WHERE profile_id=? AND connection_id=? AND access_epoch=?").bind(row.profile_id,row.connection_id,row.access_epoch),
+   env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_deliveries SET state=CASE WHEN state='dispatched' THEN 'unknown' ELSE 'cancelled' END,code='workspace_disconnected' WHERE profile_id=? AND state IN ('scheduled','retryable','dispatched') AND EXISTS(SELECT 1 FROM workspace_reminder_schedules s WHERE s.profile_id=workspace_reminder_deliveries.profile_id AND s.schedule_id=workspace_reminder_deliveries.schedule_id AND s.connection_id=? AND s.access_epoch=?)").bind(row.profile_id,row.connection_id,row.access_epoch),
+  ]);
   if (!stopped[0].meta.changes) throw new WorkspaceError("unauthorized", 401);
   return json({ disconnected: true, retained: true });
  }
@@ -257,6 +259,10 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   if(new URL(request.url).pathname === "/build-identity" && request.method === "GET") return json(identityEnvelope("workspace"));
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
+   if(new URL(request.url).pathname==='/diagnostic-tools'){
+    const body=workspaceObject(await workspaceJson(request),['tool','arguments']);if(typeof body.tool!=='string'||!(diagnosticToolNames as readonly string[]).includes(body.tool))throw new WorkspaceError('invalid_tool',422);
+    return json(await diagnosticAgentApi(request,this.env,body.tool as DiagnosticTool,body.arguments));
+   }
    if(new URL(request.url).pathname==='/note-tools'){
     const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(noteToolScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
     return json(await noteToolsApi(request,this.env,body.tool as NoteTool,body.arguments));
@@ -267,18 +273,22 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
     return await agentNotes(request,this.env,input.operation,input.arguments);
    }
    const body=workspaceObject(await workspaceJson(request,1024*1024),["tool","arguments"]);
-   if(typeof body.tool!=="string"||!Object.hasOwn(retirementToolScopes,body.tool)&&!Object.hasOwn(conversionToolScopes,body.tool)&&!Object.hasOwn(groupTagScopes,body.tool)&&!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   if(typeof body.tool!=="string"||!Object.hasOwn(adoptionScopes,body.tool)&&!Object.hasOwn(linkedRecoveryScopes,body.tool)&&!Object.hasOwn(reminderToolScopes,body.tool)&&!Object.hasOwn(retirementToolScopes,body.tool)&&!Object.hasOwn(conversionToolScopes,body.tool)&&!Object.hasOwn(groupTagScopes,body.tool)&&!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
    const requiredScope=Object.hasOwn(groupTagScopes,body.tool)?groupTagScopes[body.tool as GroupTagTool]:Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
-   const required=Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
+   const required=Object.hasOwn(adoptionScopes,body.tool)?adoptionScopes[body.tool as AdoptionTool]:Object.hasOwn(linkedRecoveryScopes,body.tool)?linkedRecoveryScopes[body.tool as LinkedRecoveryTool]:Object.hasOwn(reminderToolScopes,body.tool)?reminderToolScopes[body.tool as ReminderTool]:Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
    row=await mcpEpoch(this.env,row,who.grantEpoch);
-   if(row.retirement_fence&&!Object.hasOwn(retirementToolScopes,body.tool)&&!body.tool.startsWith('get_'))throw new WorkspaceError('source_retirement_pending',409);
+   if(row.linked_recovery_fence&&body.tool!=='list_task_recovery_records'&&!Object.hasOwn(linkedRecoveryScopes,body.tool)&&!body.tool.startsWith('get_'))throw new WorkspaceError('linked_recovery_pending',409);
+   if(row.retirement_fence&&body.tool!=='list_task_recovery_records'&&!Object.hasOwn(retirementToolScopes,body.tool)&&!body.tool.startsWith('get_'))throw new WorkspaceError('source_retirement_pending',409);
    const tagOrigin:TagOrigin={source:'mcp',tagWriteAllowed:who.tagWriteAllowed===true,grantEpoch:who.grantEpoch};
+   if(Object.hasOwn(adoptionScopes,body.tool))return json(await adoptionApi(this.env,row,body.tool as AdoptionTool,body.arguments,{source:'mcp',grantEpoch:who.grantEpoch}));
+   if(Object.hasOwn(linkedRecoveryScopes,body.tool))return json(await linkedRecoveryApi(this.env,row,body.tool as LinkedRecoveryTool,body.arguments));
+   if(Object.hasOwn(reminderToolScopes,body.tool))return json(await reminderApi(this.env,row,body.tool as ReminderTool,body.arguments));
    if(Object.hasOwn(retirementToolScopes,body.tool))return json(await sourceRetirementApi(this.env,row,body.tool as RetirementTool,body.arguments,tagOrigin));
    if(Object.hasOwn(conversionToolScopes,body.tool))return json(await conversionApi(this.env,row,body.tool as ConversionTool,body.arguments,tagOrigin));
    if(Object.hasOwn(groupTagScopes,body.tool))return json(await groupTagApi(this.env,row,body.tool as GroupTagTool,body.arguments,tagOrigin));
@@ -301,5 +311,5 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { try{await cleanupDiagnostics(env);}catch{/* Diagnostic reads enforce logical expiry; a cleanup outage cannot dispatch or stop task work. */} await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await scheduledReminders(env); await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;

@@ -79,7 +79,7 @@ const equivalent=(left:OrganizationSnapshot,right:OrganizationSnapshot|null)=>ri
 export function organizationHistory(input:unknown,document:WorkspaceDocument,utc:(value:unknown)=>string):OrganizationEntry[]{
  if(!Array.isArray(input)||input.length>100000)return invalid();
  const entries:OrganizationEntry[]=[],ids=new Set<string>(),latest=new Map<string,OrganizationSnapshot>();let previousRevision=0;
- const activities=[...document.completions,...document.habitScores,...(document.restorations??[])],taskCommands=new Set(activities.map(row=>row.commandId)),activityRevisions=new Set(activities.map(row=>row.revision));
+ const activities=[...document.completions,...document.habitScores,...(document.reviewEvents??[]),...(document.unarchives??[]),...(document.occurrenceCorrections??[]),...(document.restorations??[])],taskCommands=new Set(activities.map(row=>row.commandId)),activityRevisions=new Set(activities.map(row=>row.revision));
  const categories=new Set(document.categories.map(row=>row.id)),projects=new Set(document.projects.map(row=>row.id)),tasks=new Set(document.tasks.map(row=>row.id)),labels=new Set(document.labels.map(row=>row.id)),sectionOwners=new Map(document.sections.map(row=>[row.id,row.projectId]));
  for(const item of input){
   const row=workspaceObject(item,['command','payloadHash','acceptedAtUtc','snapshot']),command=organizationCommand(row.command),snapshot=organizationSnapshot(row.snapshot),patch=command.patch;

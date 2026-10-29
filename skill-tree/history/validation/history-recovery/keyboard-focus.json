@@ -1,0 +1,17 @@
+{
+  "confirmDisabled": true,
+  "disabled": false,
+  "fixture": "/history-linked-unknown.html",
+  "focusVisible": true,
+  "outline": "rgb(159, 192, 255) solid 2px",
+  "rect": {
+    "height": 88,
+    "width": 467.28125
+  },
+  "text": "Read original recovery receipt",
+  "textPercent": 200,
+  "theme": "obsidian-glow",
+  "disclosureEnterExpanded": true,
+  "disclosureSpaceCollapsed": true,
+  "scope": "Native HTML keyboard only; Blazor dispatch remains component-test evidence"
+}

@@ -19,6 +19,8 @@
         <MudButton HtmlTag="button" OnClick="ClearFilters" Variant="Variant.Text">Clear filters</MudButton>
     </section>
     <TodoTaskPanel @ref="_review" ShowCapture="false" ShowTaskList="false" ReviewClosed="FocusSearchAsync" />
+    @if (_recovery is not null || Todo.HasLinkedRecoveryIntent || Todo.LinkedRecovery is not null)
+    { <TodoExtendedRecoveryPanel Selected="_recovery" ReviewNative="ReviewExtendedNativeAsync" Closed="CloseRecoveryAsync" /> }
     @if (_linkTaskId is { } linkId) { <TodoTaskLinkEditor TaskId="linkId" Reviewed="FocusLinkReviewAsync" Closed="() => _linkTaskId=null" /> }
     <section class="card-surface todo-history-results" aria-label="Retained task activity">
         @if (_error is not null) { <p role="alert" data-testid="history-error">@_error</p> }
@@ -37,9 +39,12 @@
                         @if (row.Restoration is { } restoration) { <span>Restored UTC: @restoration.RestoredAtUtc.ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture) · Restoration archived: @(restoration.IsArchived ? "Yes" : "No")</span> }
                         @if (!string.IsNullOrEmpty(row.Notes)) { <details><summary>Retained notes</summary><p class="todo-preserved-text">@row.Notes</p></details> }
                         <details><summary>Event references</summary><p>Event: @row.EventId · Task: @row.TaskId · Original command: @row.CommandId</p></details>
-                        @if (row.RestoreReason is { } reason) { <span class="panel-copy">@reason</span> }
+                        @if(row.Correction is {} correction) { <span data-testid="history-correction-receipt">Corrected UTC: @correction.CorrectedAtUtc.ToString("u") · original correction command: @correction.CommandId. Original completion retained.</span> }
+                        @if (row.RestoreReason is { } reason && row.Kind!=CompanionTaskKind.Daily) { <span class="panel-copy">@reason</span> }
                     </div>
                     <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanRestore)" OnClick="() => _linkTaskId=row.TaskId" Variant="Variant.Text" data-testid="@($"history-link-{row.EventId:D}")">Habitica link</MudButton>
+                    @if(row.Kind is CompanionTaskKind.Todo or CompanionTaskKind.Daily)
+                    { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanRestore)" OnClick="() => OpenRecovery(new(row.TaskId,row.EventId))" Variant="Variant.Text" data-testid="@($"history-recovery-{row.EventId:D}")">Recovery options</MudButton> }
                     @if (row.RestoreReason is null)
                     { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanRestore)" OnClick="() => RestoreAsync(row)" Variant="Variant.Outlined" data-testid="@($"history-restore-{row.EventId:D}")">Restore Todo</MudButton> }</div>
                 </article>
@@ -50,8 +55,9 @@
             </div>
         }
         else if (_error is null) { <p role="status">Choose and load an available workspace. Unavailable history is not an empty activity list.</p> }
-        <p class="panel-copy">Canonical events record Companion acceptance. A completion or Habit event alone does not confirm a Habitica effect. Native Todo restoration retains history and creates no negative reward. Linked-task, archived-task and recurring undo require separate workflows.</p>
+        <p class="panel-copy">Canonical events record Companion acceptance. A completion or Habit event alone does not confirm a Habitica effect. Native Todo restoration retains history and creates no negative reward. Use Recovery options for a separate reviewed linked uncheck or native occurrence correction; archived tasks and terminal Daily occurrences are listed below.</p>
     </section>
+    <TodoRecoveryBrowser Selected="OpenRecovery" />
 </div>
 
 @code {
@@ -64,12 +70,13 @@
     private List<Row> _rows = [];
     private TodoTaskPanel? _review;
     private Guid? _linkTaskId;
+    private HistoryRecoverySelection? _recovery;
     private ElementReference _searchInput;
     private bool CanRestore => !Todo.IsBusy && !Todo.IsReadOnly && !Todo.Commands.HasPendingIntent && Todo.Commands.LinkPreview is null;
     protected override void OnInitialized() { Todo.Changed += Changed; Rebuild(); }
     private void Changed()
     {
-        if (_source != Todo.Selection) { _linkTaskId=null; _activity = "Completions"; _query = _from = _through = _direction = ""; }
+        if (_source != Todo.Selection) { _linkTaskId=null; _recovery=null; _activity = "Completions"; _query = _from = _through = _direction = ""; }
         if (_source != Todo.Selection || _revision != Todo.Revision) _offset = 0;
         Rebuild(); _ = InvokeAsync(StateHasChanged);
     }
@@ -91,7 +98,7 @@
             {
                 var kind = _activity == "Todo" ? CompanionTaskKind.Todo : _activity == "Daily" ? CompanionTaskKind.Daily : (CompanionTaskKind?)null;
                 var page = Todo.History(new(_query, Kind: kind, CompletedFromUtc: from, CompletedThroughUtc: through, Limit: 20, Offset: _offset, ExpectedRevision: Todo.Revision));
-                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, item.Kind, item.TaskText, item.Notes, item.DetailSource, item.CompletedAtUtc, item.OccurrenceDate, item.TaskArchived, item.EventArchived, item.Restoration, null, TodoHistoryRestoration.UnavailableReason(snapshot.Document, item.TaskId, item.EventId))).ToList();
+                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, item.Kind, item.TaskText, item.Notes, item.DetailSource, item.CompletedAtUtc, item.OccurrenceDate, item.TaskArchived, item.EventArchived, item.Restoration, null, TodoHistoryRestoration.UnavailableReason(snapshot.Document, item.TaskId, item.EventId),item.OccurrenceCorrection)).ToList();
                 _total = page.MatchedCount; _next = page.NextOffset;
             }
             _revision = snapshot.Document.Revision;
@@ -125,9 +132,16 @@
         try { await _review.ReviewRestoreAsync(row.TaskId, row.EventId, _revision!.Value); }
         catch (InvalidOperationException error) { _error = error.Message; }
     }
+    private void OpenRecovery(HistoryRecoverySelection selection){if(!CanRestore)return;_recovery=selection;_linkTaskId=null;}
+    private async Task ReviewExtendedNativeAsync(WorkspaceTaskInput input)
+    {
+        if(_review is null||_revision!=Todo.Revision)throw new InvalidOperationException("History changed. Reload the exact recovery source.");
+        await _review.ReviewExtendedRecoveryAsync(input,_revision!.Value);
+    }
+    private async Task CloseRecoveryAsync(){_recovery=null;await FocusSearchAsync();}
     private Task FocusLinkReviewAsync() => _review?.FocusTaskReviewAsync() ?? Task.CompletedTask;
     private async Task FocusSearchAsync() { try { await _searchInput.FocusAsync(); } catch (JSException) { } }
     public void Dispose() => Todo.Changed -= Changed;
     private sealed record Row(Guid EventId, Guid TaskId, Guid CommandId, CompanionTaskKind Kind, string Text, string? Notes, string DetailSource,
-        DateTimeOffset Recorded, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived, WorkspaceRestorationDetail? Restoration, HabitScoreDirection? Direction, string? RestoreReason);
+        DateTimeOffset Recorded, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived, WorkspaceRestorationDetail? Restoration, HabitScoreDirection? Direction, string? RestoreReason, WorkspaceOccurrenceCorrectionDetail? Correction=null);
 }

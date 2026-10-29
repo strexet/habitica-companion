@@ -63,6 +63,8 @@ skill-tree/documents/deploy-cloudflare-pages.md  deployment and Cloudflare opera
 
 Use Blazor WebAssembly PWA as the primary client application.
 
+The [PWA installation contract](pwa-installation.md) defines secure-page service-worker registration, public build-asset caching and the explicit application-navigation allowlist. Sensitive, unknown and foreign requests remain network-only. Standalone relaunch uses existing explicit credential persistence; installation grants no persistence, notification or integration consent.
+
 Rationale:
 
 - C# is the team's strongest language.
@@ -766,7 +768,7 @@ The MCP Worker validates bearer authorization through the named Auth service bef
 
 ## MCP read execution
 
-The MCP Worker creates a fresh SDK server and Web Standards Streamable HTTP transport per request, with no session store or background poll. The endpoint accepts bounded POST requests and exact allowed Origins; OAuth validation precedes transport handling. The four bootstrap read tools declare strict input/output schemas, read-only annotations and OAuth scope metadata. Canonical task tools declare strict input schemas and accurate mutation annotations; all bootstrap and canonical scope declarations include the resource base scope and required tool scope. The locked SDK negotiates protocol versions through 2025-11-25; newer client compatibility requires rollout verification.
+The MCP Worker creates a fresh SDK server and Web Standards Streamable HTTP transport per request, with no session store or background poll. The endpoint accepts bounded POST requests and exact allowed Origins; OAuth validation precedes transport handling. The four bootstrap read tools declare strict input/output schemas, read-only annotations and OAuth scope metadata. Canonical task tools declare strict input schemas and accurate mutation annotations; all bootstrap and canonical scope declarations include the resource base scope and required tool scope. The locked server/core SDK2.4.0 supports the2026-07-28 per-request entry alongside the unchanged legacy initialize/tools path. A genuine SDK1.32.1 client remains pinned for regression checks. Actual host activation remains a separate rollout gate.
 
 The Auth `AuthService` entrypoint owns a narrow `/read` operation. The request contains the bearer token, semantic tool name and validated arguments; Auth independently derives the profile and connection epoch from authorization. Only Auth decrypts Habitica credentials. Whitelisted GET routes retrieve full account stats or bounded task collections; transformed results exclude unrelated account fields. Shared read contracts prevent tool and Auth input drift. Integration read-state D1 rows persist per-connection cooldown and credential-repair markers; disconnect cleanup removes current connection state. Existing browser sync storage remains independent.
 
@@ -1123,6 +1125,8 @@ The WebApp bUnit suite owns PageLayoutEvidence captures and route/state metadata
 
 DiagnosticsLogSanitizer belongs to the Domain diagnostic model and contains the shared finite operation/metadata policy plus legacy serialization guard. Application DiagnosticsLogWriter owns nonfatal bounded writes and operation observation. WebApp controllers and validated organization/saved-view adapters provide typed outcomes rather than raw response text. Optional constructor injection preserves isolated test setup; production registrations supply the existing scoped writer. No package, database or remote telemetry service is added.
 
+DiagnosticsLogStore serializes append read/modify/write and clear within one scoped instance through an asynchronously awaited semaphore, released in finally. Successful mutations retain newest-first history with the existing configurable capacity (250 by default). Cancellation while waiting does not enter storage or release another operation's ownership; cancellation or failure inside storage releases the gate. Concurrent reads may observe the last committed value. Separate scopes and browser tabs have independent gates; IndexedDB calls remain individual transactions, without cross-tab atomicity. Diagnostic writes remain best effort and never authorize command replay.
+
 DiagnosticsContext carries only result, bounded duration and optional non-secret command/correlation identities and counts. Sanitization changes diagnostic row IDs without changing canonical command identity. LocalUserDataPortabilityService sanitizes diagnostic sections on export, serialization and import/merge; normalized row identities prevent raw/sanitized duplicates. Credential and workspace storage boundaries remain independent. Log delivery success never establishes command acceptance or remote game effects.
 
 Official security reference: [OWASP logging guidance](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) describes excluding secrets and user content from diagnostic output and preserving application behavior when logging fails. The local implementation uses existing dependencies and an explicit field allowlist.
@@ -1130,7 +1134,7 @@ Official security reference: [OWASP logging guidance](https://cheatsheetseries.o
 
 ## User-mediated diagnostic sharing boundary
 
-DiagnosticsBundleExport owns the version-1 browser diagnostic attachment format in the application layer. The sanitized snapshot is created only after an explicit preview action and retained in page memory until filters/session state change or the component closes. Copy/download exports the reviewed snapshot without automatic network transport or log persistence changes. Context describes browser-local storage without a device/session identifier; entries may span sessions. Backend command journals and browser logs remain separate evidence sources. The plugin diagnostic skill documents existing scoped status/original-receipt tools; no diagnostic MCP endpoint or OAuth permission is introduced.
+DiagnosticsBundleExport owns the version-1 browser diagnostic attachment format in the application layer. The sanitized snapshot is created only after an explicit preview action and retained in page memory until filters/session state change or the component closes. Copy/download exports the reviewed snapshot without automatic network transport or log persistence changes. Context describes browser-local storage without a device/session identifier; entries may span sessions. Backend command journals and browser logs remain separate evidence sources. The manual attachment path requires no diagnostic OAuth grant. The separate DiagnosticSharingPanel and read-only diagnostic MCP tools follow the independent consent and retention contract in [shared-diagnostics.md](shared-diagnostics.md).
 
 
 ## Shared Todo workspace presentation boundary
@@ -1293,7 +1297,10 @@ No pending intent from an imported archive is executable without a trusted serve
 
 Workspace migration 0009 adds workspace_tag_reviews for request hashes, exact authority/revision/ledger preconditions, complete preview/payload, expiry and durable original acceptance. Reconcile persists trusted work atomically without fabricated task or organization edits. Explicit adoption persists the original prepared attempt before exact-ID association. Observation recovery keeps the original attempt and never replays a native mutation. Lease acquisition rereads accepted receipts and expiry; storage failure rolls back canonical intent and queue rows.
 
-Unaccepted expired reviews without work are purged in bounded profile batches with archive-byte refunds. Accepted receipts and associated uncertain work remain retained. Browser and MCP use the same group-tag API, independent account consent and validated agent scopes. C# clients validate workspace identity, pagination/counts, membership references and zero game effects; account-generation guards discard late responses. Missing receipts remain uncertain even when only a prepared review exists. Existing editor snapshots must reload after explicit tag intent increments the canonical revision.
+Unaccepted stale or expired reviews without work close atomically through the original receipt field. Acceptance guards the same empty receipt in the canonical D1 batch. Bounded retention compacts expired preparations into terminal records instead of deleting original identity; payload refunds retain compact receipt bytes under the existing archive quota. Accepted receipts and associated uncertain work remain retained. Browser and MCP use the same group-tag API, independent account consent and validated agent scopes. C# clients validate workspace identity, pagination/counts, membership references and zero game effects; account-generation guards discard late responses. The shared reviewOutcome contract distinguishes prepared, terminal-unaccepted, accepted and accepted-unknown. Only an identity-bound terminal receipt with known non-acceptance releases replacement; missing, purged, unavailable or partially committed evidence remains uncertain. Existing editor snapshots must reload after explicit tag intent increments the canonical revision.
+
+
+Scoped tag correspondence compares the exact group name/lifecycle, group revision evidence, native tag identity and complete canonical/native member set. Every confirmed member, including managed removals, requires a confirmed receipt and matching linked projection. Mapping/intent desired revisions remain coherent with each other; unrelated workspace/task/projection revisions do not invalidate matching evidence. Ambiguous latest intents and unknown group intents refuse reuse. Legacy group changes without sufficient scope proof remain reviewable. Cloud status and retirement additionally require the confirmed membership work to match the current connection/access epoch; portable C# prerequisites carry no live connection assertion. Current workspace revision remains the paging guard. No stored result replaces fresh native verification.
 
 
 ## Checklist conversion identity and atomic acceptance
@@ -1381,9 +1388,9 @@ MCP note-tools-api stores temporary reviewed intents in notes_preparations, sepa
 
 ### Notes presentation ownership
 
-NotesController coordinates INotesStoreFactory, INotesCloudClient and volatile NotesDraftSession independently of task/workspace controllers. Scoped stores bind normalized account hashes; the cloud adapter retains the separately verified integration-profile scope. Generation guards reject late account/source responses. Editor revision is independent of refreshed notebook revision, preventing stale draft replacement. Original command receipts, not successful refreshes, establish save acceptance. AppSessionController physically forgets Notes tab credentials on account changes, sign-out, browser clear and integration disconnect.
+NotesController coordinates INotesStoreFactory, INotesCloudClient and volatile NotesDraftSession. Optional read-only TodoWorkspacePresentation context supplies exact canonical project choices; Workspace controllers never execute Notes commands. Scoped stores bind normalized account hashes; the cloud adapter retains the separately verified integration-profile scope. Generation guards reject late account/source responses. Editor revision is independent of refreshed notebook revision, preventing stale draft replacement. Original command receipts, not successful refreshes, establish save acceptance. AppSessionController physically forgets Notes tab credentials on account changes, sign-out, browser clear and integration disconnect.
 
-NotesPanel composes /notes and exposes only explicit source selection, consent, import, save and lifecycle actions. A dedicated NotesMarkdownRenderer handles safe previews without changing existing task-note rendering. Imported UTF-8 Markdown is bounded at128 KiB and remains an unsaved draft; download interop receives the exact source. UI continuation closures and whole-notebook reviews are account/notebook bound. Notes diagnostics reuse the existing sanitized Workspace feature lane with named Notes operations and content-free original command references.
+NotesPanel composes /notes and the explicitly opened exact-project Notes section on /todo/projects. Source, consent, import, save, project association and lifecycle actions remain explicit. Association drafts share existing account/source ownership; reviewed commands retain exact revisions and original receipt recovery. A dedicated NotesMarkdownRenderer handles safe previews without changing existing task-note rendering. Imported UTF-8 Markdown is bounded at128 KiB and remains an unsaved draft; download interop receives the exact source. UI continuation closures and whole-notebook reviews are account/notebook bound. Notes diagnostics reuse the existing sanitized Workspace feature lane with named Notes operations and content-free original command references.
 
 ### Retained task statistics reads
 
@@ -1397,3 +1404,53 @@ Habitica aggregates consume the separate cached TaskCollectionSnapshot. First-to
 ### Todo route composition
 
 `AppNavMenu` renders a fixed Todo section without a collapse control. The category routes reuse one scoped `TodoWorkspacePresentation`, `TodoTaskDraftStore` and `TodoTaskPanel`; `TodoCategoryTabs` marks the selected route without changing source or commands. `TodoHierarchyPanel` exposes capture on `/todo/tasks` and retains project-mode editing on `/todo/projects`. `TodoTodayPanel` keeps the compact command-review host and selected-day projection, with a direct create link to Tasks. The legacy `/tasks` route continues to own cached Habitica task and Reward controls, while Statistics and Sync use dedicated routes. Navigation has no command preparation or acceptance side effect.
+
+## Auth-owned Web Push subscription foundation
+
+The owner-approved [push subscription contract](push-subscriptions.md) extends Auth-only secret custody to dedicated Web Push encryption and VAPID keys. Auth migration0010 stores separate consent epochs, encrypted device envelopes and original lifecycle receipts. Workspace has only the restricted AUTH_PUSH status binding and receives no endpoint or auth secret. IPushSubscriptionClient uses current tab management access; IPushBrowser requires preparation followed by an explicit gesture. The feature remains disabled, without a sender, schedule editor or permission prompt on startup. See the contract for lifetime limits, original receipt recovery, provider allowlist, cleanup fences and unrun device gates.
+
+## Voluntary review extension
+
+Optional reviewEvents and patch.review add native task-review history without a schema-version change or D1 migration. WorkspaceTaskReview and the Worker task-review module enforce explicit UTC/zone inputs, causal event and revision invariants, independent snooze/manual flags and zero game effects. Identity v10 wraps prior command identity only when review metadata is used; strict older clients need coordinated compatible publication. Existing management/session/OAuth authority, original receipts and document capacity remain mandatory. See [task-reviews.md](task-reviews.md).
+
+## Foreground reminder ownership
+
+WorkspaceReminderCues is a pure Application read of canonical task/review intent. ForegroundReminderController binds only the validated selected Todo snapshot to an account/source/workspace and rejects stale browser callbacks. ForegroundReminderBrowser prepares the JS/storage prerequisite before explicit permission actions. The JS scheduler reads no upstream source; existing IndexedDB kv transactions own separate browser preferences and irreversible-attempt delivery claims, without task-journal or cloud schema changes. MainLayout mounts the lifetime host; Today owns opt-in controls and reached-cue presentation. [foreground-reminders.md](foreground-reminders.md) specifies exact identity and failure behavior.
+
+## Scheduled reminder persistence and gateway
+
+Workspace migration0013 adds independent reminder configuration previews/receipts, schedule revisions, per-device occurrences/attempt histories and a bounded fair profile lease. Shared reminder-calendar.ts reuses the canonical recurrence and review UTC semantics with explicit civil-time DST policy. The scheduled hook performs no task/game mutation or Habitica polling. Auth migration0011 retains original dispatch identities and reduced provider outcomes. The existing private PushService alone decrypts subscription material and sends RFC8291/RFC8292 messages; the private lifecycle callback pauses/purges owned reminder rows. Browser and MCP share the reviewed API. [scheduled-push-reminders.md](scheduled-push-reminders.md) records quotas, uncertainty and coordinated migration requirements.
+
+The push UI uses strict C#/Worker command hashes, memory-only acceptance tokens, opaque IndexedDB CAS receipts and account/source generation fences. The service worker validates expiry-bound generic packets and opens only a guarded same-origin notification route. See [push-reminder-ui.md](push-reminder-ui.md).
+
+Companion remains a tools-only MCP endpoint with the local SDK2.4.0 modern/legacy transport described in [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md). The Events protocol requires2026-07-28, but no subscription callback, chat mapping or live dispatcher exists. See [originating-chat-reminders.md](originating-chat-reminders.md).
+
+The shared ordinary-task operation category affects MCP guidance only. Four create/edit operations retain the existing prepared-command API, schemas, write hints and security schemes. No skip-confirmation field or authorization bypass exists; see [ordinary-task-intent.md](ordinary-task-intent.md).
+
+## Native task recovery persistence
+
+WorkspaceTaskRecovery owns typed archival repair, occurrence correction and retained causal validation. WorkspaceCommandIdentity adds companion-command-v11 only for recovery patches; existing enum ordinals and unused command encodings remain unchanged. Optional Unarchives/OccurrenceCorrections records and terminal occurrence command identity remain in the existing canonical document and journal transactions. The Worker reuses the same optimistic D1 commit and receipt-first deduplication. No migration, new storage service, grant or executor lane is introduced. Browser-local acceptance uses the same engine and IndexedDB journal path. Strict older readers require coordinated publication before reading documents containing the optional extension.
+
+## Private Auth recovery observation and receipts
+
+observeTaskRecovery owns completed-task/current-day normalization and context hashing for the private recovery lane. The gateway reuses integration_projection_checks.account_json for the bounded recovery review and integration_projection_attempts for original outcome recovery. Recovery reservations recheck account/grant, unresolved work and the owned unexpired lease in the same D1 insert. Recovery observations and dispatch share a forty-five-second lease with bounded ten-second fetches. No migration, new service binding or public route is introduced. Shared RecoveryReview/RecoveryIntent types retain exact selectors, context/fingerprint hashes, current account day and unknown resource fields. Canonical source verification and public orchestration remain the selected linked-recovery parent task.
+
+## Completion score source identity
+
+CompletionScoreSource provides the typed companion-completion-score-v1 binding between a canonical completion and the original private score attempt. The Workspace executor derives the binding from the accepted command, retained completion, effect position and occurrence date; the Auth receipt stores the exact normalized binding. Original attempt IDs remain in dispatched journal events after runtime request cleanup. Private scoreReceipt verifies only a matching applied Auth record, without network observation or dispatch. No database migration, public tool or legacy command-hash change is introduced. Linked recovery must refuse legacy or expired source proof rather than infer confirmation.
+
+## Linked recovery action journal
+
+`workers/companion-workspace/migrations/0014-linked-task-recovery.sql` adds durable profile-scoped review/attempt/receipt storage and a canonical document fence. Shared/C# optional `LinkedTaskRecoveries` records pair with retained native restoration/correction and bind original score provenance. Public MCP and typed browser adapters share the server policy. The private Auth identity service supplies recovery account/grant authority without tag consent. See [linked task recovery](linked-task-recovery.md); no remote migration or default gate change is included.
+
+
+## Explicit shared diagnostic namespace
+
+Workspace migration0016 owns independent consent epochs, metadata-only upload preparations, immutable accepted receipts and indexed sanitized event copies. Current Auth management identity and private diagnostic authority bind owner calls; MCP requires diagnostics.read in both resource and Workspace boundaries. The restricted content lifecycle binding closes and purges diagnostic ownership with profile disconnect/delete. Scheduled cleanup preserves logical expiry and cleanupPending without blocking task execution. [Explicit diagnostic sharing](shared-diagnostics.md) owns quotas, canonical bytes, current-connection guards, seven-day retention and provider recovery-history limits. No actual log upload or remote migration occurs during source qualification.
+
+NotesModel/NotesEngine and shared notes.ts preserve legacy encodings while optional scoped project metadata enters retained versions and reviewed commands. Browser Notes acceptance validates the exact Workspace and note revision in the existing cross-table IndexedDB transaction; Workspace migration0017 retains current metadata in personal_notes.project_json and guards cloud acceptance with the observed Workspace identity/version. The complete contract resides in [notes-project-links.md](notes-project-links.md).
+
+
+## Protected callback egress candidate
+
+The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace remains the later subscription/outbox/receipt owner. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.

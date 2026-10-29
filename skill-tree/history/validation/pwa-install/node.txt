@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: PWA identity, actual PNG dimensions and startup registration agree
+ok 1 - PWA identity, actual PNG dimensions and startup registration agree
+  ---
+  duration_ms: 5.091792
+  ...
+# Subtest: registration runs on secure load only and refused offline setup preserves online use
+ok 2 - registration runs on secure load only and refused offline setup preserves online use
+  ---
+  duration_ms: 2.432334
+  ...
+# Subtest: every current app route restores cached shell while sensitive, unknown and foreign routes stay network-only
+ok 3 - every current app route restores cached shell while sensitive, unknown and foreign routes stay network-only
+  ---
+  duration_ms: 26.802417
+  ...
+# Subtest: installation caches only same-origin public build assets and includes the manifest
+ok 4 - installation caches only same-origin public build assets and includes the manifest
+  ---
+  duration_ms: 2.168291
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.101667

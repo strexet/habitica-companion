@@ -15,3 +15,18 @@ test('missing mappings, changed content or placement and incomplete tag membersh
  changed=structuredClone(x.state);changed.document.tasks.find(row=>row.id===target).dependsOn=[changed.document.checklistConversions[0].sourceTaskId];assert.ok((await inspectRetirement(changed,x.conversionId,x.accountId)).blockers.includes('source_relationships_require_review'));
  assert.ok((await inspectRetirement(x.state,x.conversionId,null)).blockers.includes('retirement_account_unverified'));
 });
+test('scoped receipt evidence survives unrelated revisions and stays conservative for every member',async()=>{
+ const {groupTagStatus}=await import('../../shared/group-tag-status.ts');const x=await fixture(),base=x.state.document,target=base.checklistConversions[0].items[0].targetTaskId;
+ const changed=structuredClone(x.state);changed.document.revision++;changed.storeVersion++;const task=changed.document.tasks.find(row=>row.id===target);task.text='Independent metadata';task.priority='urgent';task.deadline='2030-12-31';task.revision=changed.document.revision;
+ changed.document.projections.find(row=>row.taskId===target).revision=changed.document.revision;
+ let result=await inspectRetirement(changed,x.conversionId,x.accountId);assert.equal(result.canPrepareNativeReview,true,JSON.stringify(result.blockers));assert.equal(result.requiresFreshNativeVerification,true);assert.equal(result.canDelete,false);
+ assert.equal(groupTagStatus(changed.document,{accountId:x.accountId,consentEnabled:true,scopeAllowed:true}).groups[0].membershipState,'confirmed');
+ const completed=structuredClone(changed);completed.document.tasks.find(row=>row.id===target).state='completed';completed.document.completions.push({id:crypto.randomUUID(),revision:completed.document.revision,taskId:target,commandId:crypto.randomUUID(),completedAtUtc:new Date().toISOString(),occurrenceId:null,isArchived:false});
+ assert.equal(groupTagStatus(completed.document,{accountId:x.accountId,consentEnabled:true,scopeAllowed:true}).groups[0].membershipState,'confirmed');
+ assert.equal((await inspectRetirement(completed,x.conversionId,x.accountId)).canPrepareNativeReview,false); // Replacement lifecycle still blocks deletion.
+ const before=JSON.stringify(changed);
+ for(const mutate of [d=>d.projects[0].name+=' changed',d=>{d.projects[0].isArchived=true;d.projects[0].revision=d.revision;},d=>{d.projects[0].isRemoved=true;d.projects[0].revision=d.revision;},d=>d.tasks.find(t=>t.id===target).projectId=null,d=>d.projections.find(p=>p.taskId===target).habiticaTaskId=crypto.randomUUID(),d=>d.tagLedger.intents[0].members.shift(),d=>{const intent=structuredClone(d.tagLedger.intents[0]);intent.id=crypto.randomUUID();intent.commandId=crypto.randomUUID();d.tagLedger.intents.push(intent);},d=>{const i=d.tagLedger.intents[0];i.state='unknownOutcome';i.members[0].state='unknownOutcome';},d=>d.tagLedger.accountId=crypto.randomUUID()]){
+  const bad=structuredClone(changed);mutate(bad.document);assert.equal((await inspectRetirement(bad,x.conversionId,x.accountId)).canPrepareNativeReview,false);try{const status=groupTagStatus(bad.document,{accountId:x.accountId,consentEnabled:true,scopeAllowed:true});assert.ok(status.groups.every(g=>g.membershipState!=='confirmed'&&g.membershipState!=='retained'));}catch(error){assert.ok(['invalid_workspace','invalid_tag_ledger'].includes(error.code));}
+ }
+ assert.equal(JSON.stringify(changed),before);
+});

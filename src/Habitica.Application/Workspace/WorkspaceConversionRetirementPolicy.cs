@@ -50,13 +50,9 @@ public static class WorkspaceConversionRetirementPolicy
         else
         {
             var mapping=ledger.Mappings.SingleOrDefault(row=>row.EntityId==project.Id&&row.Kind==WorkspaceOrganizationKind.Project);
-            var latest=ledger.Intents.Where(row=>row.MappingId==mapping?.Id&&row.Operation==WorkspaceTagOperation.SetMembership).OrderByDescending(row=>row.DesiredRevision).ThenByDescending(row=>row.Revision).ToArray();
-            var intent=latest.FirstOrDefault();var desired=document.Tasks.Where(task=>task.ProjectId==project.Id).Select(task=>task.Id).ToHashSet();
-            var present=intent?.Members?.Where(member=>member.Present).ToArray()??[];
-            if(mapping is not {State:WorkspaceTagState.Confirmed,IsArchived:false,Evidence:not null}||mapping.DesiredName!=project.Name||mapping.DesiredRevision<project.Revision||!Guid.TryParseExact(mapping.HabiticaTagId,"D",out nativeTag)
-                ||intent is not {State:WorkspaceTagState.Confirmed,IsArchived:false}||intent.DesiredRevision!=document.Revision||intent.HabiticaTagId!=mapping.HabiticaTagId
-                ||latest.Count(row=>row.DesiredRevision==intent.DesiredRevision&&row.Revision==intent.Revision)!=1||present.Length!=desired.Count
-                ||present.Any(member=>!desired.Contains(member.TaskId)||member.State!=WorkspaceTagState.Confirmed||member.Evidence is null||!document.Projections.Any(row=>row.TaskId==member.TaskId&&row.HabiticaTaskId==member.HabiticaTaskId&&Linked(row))))blockers.Add("project_tag_membership_requires_review");
+            var group=WorkspaceTagCorrespondence.Desired(document).Single(row=>row.Kind==WorkspaceOrganizationKind.Project&&row.Entity.Id==project.Id);
+            if(!WorkspaceTagCorrespondence.Inspect(document,group,mapping).Confirmed||!Guid.TryParseExact(mapping?.HabiticaTagId,"D",out nativeTag))blockers.Add("project_tag_membership_requires_review");
+
         }
         if(blockers.Count>0)return new(null,blockers.Distinct().ToArray());
         var plan=new ConversionRetirementPlan(document.Id,document.Revision,conversion.Id,source,sourceMapping!,project,nativeTag,targets,"");

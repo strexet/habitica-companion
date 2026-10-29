@@ -44,6 +44,77 @@ export async function remove(key) {
   await kv.delete(key);
 }
 
+const notificationPrefix='notification-state-v1:';
+function notificationKey(key) {
+  if(typeof key!=='string'||!/^notification-state-v1:[0-9a-f-]{36}:prf_[A-Za-z0-9_-]{43}:[0-9a-f-]{36}:(device|[0-9a-f-]{36})$/.test(key))throw new Error('Invalid notification state context.');
+}
+export async function getNotificationState(key) {
+  notificationKey(key);const row=await kv.get(key);return row?.jsonText??null;
+}
+export async function commitNotificationState(key,expectedRevision,json) {
+  notificationKey(key);
+  if(!Number.isSafeInteger(expectedRevision)||expectedRevision<0||typeof json!=='string'||json.length>16384)throw new Error('Invalid notification state.');
+  const value=JSON.parse(json);
+  if(value?.revision!==expectedRevision+1||Object.keys(value).some(k=>!['revision','binding','pending'].includes(k)))throw new Error('Invalid notification state.');
+  // Persistent typed records carry opaque binding/original-request metadata only.
+  const forbidden=new Set(['endpoint','keys','p256dh','auth','acceptToken','managementToken','apiToken','subscription']);
+  const stack=[value];while(stack.length){const item=stack.pop();if(item&&typeof item==='object')for(const [name,child] of Object.entries(item)){if(forbidden.has(name))throw new Error('Secret material cannot be persisted.');if(child&&typeof child==='object')stack.push(child);}}
+  return database.transaction('rw',kv,async()=>{
+    const old=await kv.get(key),revision=old?JSON.parse(old.jsonText).revision:0;
+    if(revision!==expectedRevision)return false;
+    await kv.put({key,jsonText:json,updatedAtUtc:new Date().toISOString()});return true;
+  });
+}
+export async function clearNotificationStates(){await kv.where('key').startsWith(notificationPrefix).delete();}
+
+const reminderPrefix = 'foreground-reminders-v1:';
+function reminderKey(context) {
+  if (typeof context !== 'string' || !/^[0-9a-f-]{36}:(browser|cloud):[0-9a-f-]{36}$/.test(context)) throw new Error('Invalid reminder context.');
+  return reminderPrefix + context;
+}
+function reminderState(row) {
+  if (!row) return {version:1,inApp:false,browser:false,receipts:[]};
+  const value = JSON.parse(row.jsonText);
+  if (value?.version !== 1 || typeof value.inApp !== 'boolean' || typeof value.browser !== 'boolean' || !Array.isArray(value.receipts) || value.receipts.length > 2048
+      || value.receipts.some(r => !/^[a-f0-9]{64}$/.test(r.id) || !['attempted','shown','unknown'].includes(r.state) || !Number.isSafeInteger(r.atMs))
+      || new Set(value.receipts.map(r => r.id)).size !== value.receipts.length) throw new Error('Reminder state unavailable.');
+  return value;
+}
+export async function readReminderState(context) { return reminderState(await kv.get(reminderKey(context))); }
+export async function configureReminderState(context, kind, enabled) {
+  if (!['inApp','browser'].includes(kind) || typeof enabled !== 'boolean') throw new Error('Invalid reminder preference.');
+  const key = reminderKey(context);
+  return database.transaction('rw',kv,async () => {
+    const value = reminderState(await kv.get(key));
+    if (kind === 'browser' && enabled && !value.inApp) throw new Error('Enable in-app cues first.');
+    value[kind] = enabled; if (!value.inApp) value.browser = false;
+    await kv.put({key,jsonText:JSON.stringify(value),updatedAtUtc:new Date().toISOString()});return value;
+  });
+}
+// A durable claim precedes dispatch. Lost acknowledgement is never a second notification.
+export async function claimReminder(context, id, atMs) {
+  if (!/^[a-f0-9]{64}$/.test(id) || !Number.isSafeInteger(atMs)) throw new Error('Invalid reminder identity.');
+  const key = reminderKey(context);
+  return database.transaction('rw',kv,async () => {
+    const value = reminderState(await kv.get(key));
+    if (!value.inApp || !value.browser) return 'disabled';
+    if (value.receipts.some(r => r.id === id)) return 'duplicate';
+    if (value.receipts.length >= 2048) return 'receipt-capacity';
+    value.receipts.push({id,state:'attempted',atMs});
+    await kv.put({key,jsonText:JSON.stringify(value),updatedAtUtc:new Date().toISOString()});return 'claimed';
+  });
+}
+export async function finishReminder(context, id, state) {
+  if (!['shown','unknown'].includes(state)) throw new Error('Invalid reminder result.');
+  const key = reminderKey(context);
+  return database.transaction('rw',kv,async () => {
+    const value = reminderState(await kv.get(key)), row = value.receipts.find(r => r.id === id);
+    if (!row || row.state !== 'attempted') return;
+    row.state = state;await kv.put({key,jsonText:JSON.stringify(value),updatedAtUtc:new Date().toISOString()});
+  });
+}
+export async function clearReminderStates() { await kv.where('key').startsWith(reminderPrefix).delete(); }
+
 
 function workspaceScope(scope) {
   if (typeof scope !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(scope)) throw new Error("Invalid local account scope.");
@@ -203,13 +274,26 @@ function noteScope(scope) {
   if (typeof scope !== "string" || !/^[a-f0-9]{64}$/.test(scope)) throw new Error("Invalid notes account scope.");
 }
 export async function getNotes(scope) { noteScope(scope); return (await notes.get(scope))?.json ?? null; }
-export async function commitNotes(scope, expectedRevision, json) {
+export async function commitNotes(scope, expectedRevision, json, projectGuard = null) {
   noteScope(scope);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || typeof json !== "string" || new TextEncoder().encode(json).length > 16*1024*1024) throw new Error("Invalid notes commit.");
   const next=JSON.parse(json);
   if(next.schemaVersion!==1 || next.ownerScope!==scope || !Number.isSafeInteger(next.revision) || next.revision<=expectedRevision
     || expectedRevision>0&&next.revision!==expectedRevision+1 || !Array.isArray(next.receipts) || next.receipts.length!==next.revision || !Array.isArray(next.purged)) throw new Error("Invalid notes revision.");
-  return database.transaction("rw",notes,async()=>{
+  if(projectGuard){
+    workspaceScope(projectGuard.accountScope);workspaceId(projectGuard.workspaceId);workspaceId(projectGuard.projectId);workspaceId(projectGuard.noteId);
+    const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(projectGuard.accountScope));
+    if(Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')!==scope||!Number.isSafeInteger(projectGuard.workspaceStoreVersion)||projectGuard.workspaceStoreVersion<1)throw new Error("Project owner mismatch.");
+    const link=next.notes?.find(n=>n.id===projectGuard.noteId)?.current?.project;
+    if(link?.ownerScope!==scope||link.source!=='browser'||link.workspaceId!==projectGuard.workspaceId||link.projectId!==projectGuard.projectId)throw new Error("Project source mismatch.");
+  }
+  return database.transaction("rw",notes,workspaces,async()=>{
+    if(projectGuard){
+      const workspace=await workspaces.get([projectGuard.accountScope,projectGuard.workspaceId]);
+      if(!workspace||workspace.storeVersion!==projectGuard.workspaceStoreVersion)return false;
+      const document=JSON.parse(workspace.documentJson),authority=JSON.parse(workspace.authorityJson??'null');
+      if(document.id!==projectGuard.workspaceId||authority&&['frozen','cloud'].includes(authority.mode)||!document.projects?.some(p=>p.id===projectGuard.projectId&&p.isArchived===false&&(p.isRemoved===undefined||p.isRemoved===false)))return false;
+    }
     const row=await notes.get(scope);
     if((row?.revision??0)!==expectedRevision)return false;
     if(row){

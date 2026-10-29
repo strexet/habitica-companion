@@ -61,7 +61,7 @@ public static class WorkspaceChecklistConversions
         if(document.ChecklistConversions.Count>1000)return false;
         var targetOwners=new HashSet<Guid>();
         var sources=new HashSet<Guid>();var commands=new HashSet<Guid>(document.OrganizationHistory?.Select(row=>row.Command.Id)??[]);
-        foreach(var taskCommand in document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)))commands.Add(taskCommand);
+        foreach(var taskCommand in document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)).Concat((document.Unarchives??[]).Select(row=>row.CommandId)).Concat((document.OccurrenceCorrections??[]).Select(row=>row.CommandId)))commands.Add(taskCommand);
         foreach(var conversion in document.ChecklistConversions)
         {
             if(conversion is null||!sources.Add(conversion.SourceTaskId)||conversion.SourceRevision<1||conversion.SourceRevision>conversion.Revision

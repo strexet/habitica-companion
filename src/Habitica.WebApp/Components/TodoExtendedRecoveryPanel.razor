@@ -1,0 +1,87 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@implements IDisposable
+
+<section class="card-surface todo-recovery-panel" aria-label="Review exact recovery" data-testid="extended-recovery">
+    <h2 tabindex="-1" @ref="_heading">Recovery keeps original history</h2>
+    @if (_error is not null) { <p role="alert">@_error</p> }
+    @if (Todo.RecoveryMessage is not null) { <p role="status" data-testid="linked-recovery-message">@Todo.RecoveryMessage</p> }
+    @if (Selected is {} selected && Todo.Snapshot is {} snapshot && snapshot.Document.Tasks.FirstOrDefault(row=>row.Id==selected.TaskId) is {} task)
+    {
+        <p><strong>@task.Text</strong> · @task.Kind · @task.Id</p>
+        @if (selected.CompletionId is {} completionId && snapshot.Document.Completions.FirstOrDefault(row=>row.Id==completionId) is {} completion) { <p>Original completion: @completion.Id · recorded @completion.CompletedAtUtc.ToString("u") · command @completion.CommandId</p> }
+        @if (TaskHistoryRecovery.Occurrence(snapshot,selected) is {} occurrence) { <p>Exact Daily date: @occurrence.Date.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) · @occurrence.State · @occurrence.Id</p> }
+        @if (TaskHistoryRecovery.NativeReason(snapshot,selected) is {} reason) { <p class="panel-copy" data-testid="native-recovery-reason">@reason</p> }
+        else
+        {
+            <p>@(task.IsArchived?"Unarchive preserves the current task state, dates, order and history. It creates no completion or Habitica effect.":"Native correction returns this exact terminal Daily occurrence to Pending and retains its original completion/skip. No Habitica score or schedule change occurs.")</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Disabled" OnClick="ReviewNativeAsync" Variant="Variant.Outlined" data-testid="extended-native-review">@(task.IsArchived?"Review return from archive":"Review native occurrence correction")</MudButton>
+        }
+        @if (TaskHistoryRecovery.LinkedCandidate(snapshot.Document,selected))
+        {
+            <p>Habitica uncheck requires a separate fresh review. HP, MP, GP, XP and streak changes are unknown; an exact refund is never promised.</p>
+            @if (Todo.Selection?.Source==TodoWorkspaceSource.Cloud)
+            { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Disabled" OnClick="ReviewLinkedAsync" Variant="Variant.Outlined" data-testid="extended-linked-review">Review Habitica uncheck</MudButton> }
+            else { <p role="status">Habitica uncheck is unavailable from a browser workspace. Select the exact cloud-owned source; no copy or automatic transfer is created.</p> }
+        }
+        @if(snapshot.Document.LinkedTaskRecoveries?.LastOrDefault(row=>row.CompletionId==selected.CompletionId) is {} saved)
+        { <p role="status" data-testid="extended-saved-receipt">Original recovery receipt: @saved.Id · source score attempt @saved.SourceAttemptId · recovered UTC @saved.RecoveredAtUtc.ToString("u"). Original completion retained.</p> }
+    }
+    @if (Todo.LinkedRecovery is {} review)
+    {
+        <section class="todo-command-review" data-testid="linked-recovery-review" aria-label="Habitica uncheck review">
+            <h3 tabindex="-1" @ref="_reviewHeading">@review.Task.Text · Habitica uncheck</h3>
+            <p>Original completion: @review.Completion.Id · command @review.SourceContext.CommandId · source score attempt @review.SourceAttemptId</p>
+            <p>Native task: @review.Mapping.HabiticaTaskId · @review.Task.Kind · verified account @review.AccountId</p>
+            <p>Account day: @review.Review.AccountDay.ToString("yyyy-MM-dd") · Daily date: @(review.Review.OccurrenceDate?.ToString("yyyy-MM-dd")??"Not applicable")</p>
+            @if(review.Task.HabiticaDetails?.Checklist is {Count:>0} checklist) { <details><summary>Reviewed checklist (@checklist.Count)</summary><ul>@foreach(var item in checklist){<li>@item.Text · @(item.Completed?"Checked":"Unchecked")</li>}</ul></details> }
+            <p>HP: unknown · MP: unknown · GP: unknown · XP: unknown · streak: unknown. No exact reward refund.</p>
+            <p>@review.Disclosure</p>
+            <p>State: @(Todo.RecoveryAcceptanceAttempted&&review.State=="ready"?"Acceptance response unconfirmed; original review shown":review.State) · original recovery command: @review.CommandId · expires UTC @review.ExpiresAtUtc.ToString("u")</p>
+            @if(review.Revision!=Todo.Revision) { <p role="status">Workspace revision changed or is unavailable. This review cannot be accepted. An attempted action still requires its original receipt.</p> }
+            @if(review.Expired||review.ExpiresAtUtc<=DateTimeOffset.UtcNow) { <p role="status">Review expired. No new acceptance is permitted. An attempted action still requires the original receipt.</p> }
+            @if(review.Receipt is {} receipt) { <p role="status" data-testid="linked-recovery-receipt">Original receipt confirmed: @receipt.Id · saved Companion revision @receipt.Revision · source @receipt.SourceAttemptId · recovery @receipt.RecoveryAttemptId. Completion retained; causal native recovery saved.</p> }
+            @if(Todo.HasLinkedRecoveryIntent)
+            {
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Todo.CanAcceptLinkedRecovery)" OnClick="AcceptLinkedAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="linked-recovery-confirm">Confirm exact Habitica uncheck</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="ReadLinkedAsync" Variant="Variant.Outlined" data-testid="linked-recovery-receipt-read">Read original recovery receipt</MudButton></div>
+            }
+        </section>
+    }
+    @if(Todo.HasLinkedRecoveryIntent)
+    {
+        <p>Original request: @Todo.RecoveryRequestId. Keep this identity after uncertainty.</p>
+        @if(!Todo.RecoveryAcceptanceAttempted)
+        { <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="RetryLinkedAsync" Variant="Variant.Text" data-testid="linked-recovery-retry-preview">Read original preview</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="DiscardAsync" Variant="Variant.Text" data-testid="linked-recovery-cancel">Cancel unsubmitted review</MudButton></div> }
+    }
+    <details><summary>Recover an original command after reopening history</summary><label class="field-row">Original recovery command ID<input class="app-input" maxlength="36" @bind="_originalId" disabled="@Todo.IsBusy" /></label><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||!Guid.TryParse(_originalId,out var original)||original==Guid.Empty)" OnClick="ReadIdAsync" Variant="Variant.Outlined">Read exact original receipt</MudButton><p>Opening the same retained completion also finds a still-active original recovery. Neither route sends another score.</p></details>
+    @if(!Todo.HasLinkedRecoveryIntent) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="() => Closed.InvokeAsync()" Variant="Variant.Text" data-testid="extended-recovery-close">Close recovery</MudButton> }
+</section>
+
+@code {
+    [Parameter] public HistoryRecoverySelection? Selected {get;set;}
+    [Parameter] public EventCallback<WorkspaceTaskInput> ReviewNative {get;set;}
+    [Parameter] public EventCallback Closed {get;set;}
+    private string? _error;private string _originalId="";private ElementReference _heading,_reviewHeading;private bool _focusReview=true;private WorkspaceLinkedRecoveryView? _seenReview;private HistoryRecoverySelection? _seenSelection;
+    private bool Disabled=>Todo.IsBusy||Todo.IsReadOnly||Todo.Commands.HasPendingIntent||Todo.Commands.LinkPreview is not null;
+    protected override void OnInitialized()=>Todo.Changed+=Changed;
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focusReview){_focusReview=false;try{await(Todo.LinkedRecovery is null?_heading:_reviewHeading).FocusAsync();}catch(JSException){}}}
+    protected override void OnParametersSet(){if(_seenSelection!=Selected){_seenSelection=Selected;_focusReview=true;}}
+    private void Changed(){if(!ReferenceEquals(_seenReview,Todo.LinkedRecovery)){_seenReview=Todo.LinkedRecovery;_focusReview=true;}_ = InvokeAsync(StateHasChanged);}
+    private async Task Run(Func<Task> action,bool focus=true){_error=null;try{await action();}catch(InvalidOperationException error){_error=error.Message;}_focusReview=focus;}
+    private Task ReviewNativeAsync()=>Run(async()=>{
+        if(Disabled||Selected is not {} selected||Todo.Snapshot is not {} snapshot||TaskHistoryRecovery.NativeReason(snapshot,selected) is {} reason)throw new InvalidOperationException("Native recovery is unavailable. Reload the exact task and original source.");
+        var task=snapshot.Document.Tasks.Single(row=>row.Id==selected.TaskId);var input=new WorkspaceTaskInput(task.IsArchived?WorkspaceOperation.UnarchiveTask:WorkspaceOperation.CorrectOccurrence,task.Id,task.Text,task.Notes??"",task.Priority,task.Deadline,null,false,HabitScoreDirection.Up,1,null,
+            Unarchive:task.IsArchived?new(task.Revision):null,CorrectOccurrence:task.IsArchived?null:new(TaskHistoryRecovery.Occurrence(snapshot,selected)!.Id,TaskHistoryRecovery.Occurrence(snapshot,selected)!.Revision,TaskHistoryRecovery.Source(snapshot,TaskHistoryRecovery.Occurrence(snapshot,selected)!)!.Command.Id));
+        await ReviewNative.InvokeAsync(input);
+    },false);
+    private Task ReviewLinkedAsync()=>Run(()=>Todo.StartLinkedRecoveryAsync(Selected!.TaskId,Selected.CompletionId!.Value));
+    private Task AcceptLinkedAsync()=>Run(()=>Todo.AcceptLinkedRecoveryAsync());
+    private Task ReadLinkedAsync()=>Run(()=>Todo.ReadLinkedRecoveryReceiptAsync());
+    private Task RetryLinkedAsync()=>Run(()=>Todo.RetryLinkedRecoveryPreviewAsync());
+    private Task ReadIdAsync()=>Run(()=>Todo.ReadLinkedRecoveryByIdAsync(Guid.Parse(_originalId)));
+    private Task DiscardAsync()=>Run(async()=>{Todo.CancelUnsubmittedLinkedRecovery();await Closed.InvokeAsync();});
+    public void Dispose()=>Todo.Changed-=Changed;
+}

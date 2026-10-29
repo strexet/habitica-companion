@@ -467,6 +467,16 @@ input[type="radio"] {
     align-items: start;
 }
 
+.landing-shell > #install {
+    grid-column: 1 / -1;
+    min-width: 0;
+}
+
+.pwa-install-toggle,
+.settings-session-actions .mud-button-root {
+    min-height: var(--control-height);
+}
+
 .hero-panel,
 .dashboard-hero,
 .sign-in-card,
@@ -887,7 +897,7 @@ input[type="radio"] {
 }
 
 .inventory-summary-grid {
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
 }
 
 .spells-summary-grid {
@@ -930,7 +940,7 @@ input[type="radio"] {
 }
 
 .inventory-management-grid {
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
 }
 
 .inventory-planning-grid {
@@ -940,6 +950,29 @@ input[type="radio"] {
 .optimizer-stat-grid,
 .task-stat-grid {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.inventory-shell .optimizer-stat-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+}
+
+.inventory-shell .task-group-header {
+    flex-wrap: wrap;
+}
+
+.inventory-shell .field-row.compact {
+    min-width: min(100%, 13rem);
+}
+
+.inventory-shell .habitica-item-identity > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow-wrap: anywhere;
+}
+
+.inventory-shell .stat-pill-group {
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .task-chart-grid {
@@ -2791,6 +2824,11 @@ input[type="radio"] {
         flex-direction: column;
     }
 
+    .inventory-shell .preset-save-row > .app-input,
+    .inventory-shell .preset-save-row > .field-row {
+        flex-basis: auto;
+    }
+
     .preset-save-row > .mud-button-root,
     .preset-save-row > .action-row {
         width: 100%;
@@ -4585,6 +4623,11 @@ code {
 .todo-task-panel [role="alert"] { color: var(--text-danger, var(--ink)); }
 @media (min-width: 900px) { .todo-source-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); } .todo-editor-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 650px) { .todo-capture-primary, .todo-direct-row { grid-template-columns: minmax(0, 1fr); } .todo-row-actions { max-width: 100%; } }
+@media (max-width: 650px) {
+    .todo-task-panel .todo-link-editor { padding: 0; border: 0; background: transparent !important; box-shadow: none; }
+    .todo-link-editor .todo-command-review { padding: 0.4rem; }
+}
+
 
 .dashboard-shell,
 .diagnostics-shell,
@@ -4624,6 +4667,12 @@ code {
 .todo-today [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
 .todo-today [role="alert"] { color: var(--text-danger, var(--ink)); }
 .todo-today .todo-direct-row { min-width: 0; }
+.todo-reminder-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: .65rem; padding: 1rem; min-width: 0; overflow-wrap: anywhere; }
+.todo-reminder-panel :is(p,h2) { margin: 0; }
+.todo-reminder-panel .todo-direct-row { grid-template-columns: minmax(0, 1fr); }
+.todo-reminder-panel :is(.todo-row-content,strong,span) { min-width: 0; overflow-wrap: anywhere; }
+.todo-reminder-panel [data-layout-primary] { min-height: var(--control-height); max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.todo-reminder-panel :is(button,a):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .todo-day-title { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
 .todo-day-title h1 { margin: 0; }
@@ -4723,7 +4772,7 @@ code {
 .notes-markdown table { border-collapse: collapse; min-width: 100%; }
 .notes-markdown :is(th,td) { text-align: start; border: 1px solid var(--card-border); padding: .5rem; }
 .notes-markdown blockquote { border-inline-start: 3px solid var(--primary); padding-inline-start: .75rem; }
-@media (max-width: 800px) { .notes-workbench { grid-template-columns: minmax(0,1fr); } .notes-list { max-height: 12rem; overflow-y: auto; } .notes-body { min-height: 18rem; } }
+@media (max-width: 800px) { .notes-workbench { grid-template-columns: minmax(0,1fr); } .notes-editor .notes-list { max-height: 12rem; overflow-y: auto; } .notes-body { min-height: 18rem; } }
 
 .todo-statistics { display:grid; gap:1rem; min-width:0; }
 .todo-stat-section { padding:1.25rem; display:grid; gap:1rem; min-width:0; }
@@ -4753,3 +4802,20 @@ code {
 .todo-command-row > div:last-child { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; justify-content:flex-end; }
 .todo-command-row :is(small,time) { color:var(--muted-text,var(--ink)); }
 @media (max-width: 600px) { .todo-command-row { grid-template-columns:minmax(0,1fr); } .todo-command-row > div:last-child { justify-content:flex-start; } }
+
+/* Push setup and exact schedule reviews remain readable with enlarged text. */
+[data-testid="push-schedule"] fieldset { min-width: 0; display: grid; gap: .75rem; margin: 0; padding: 0; border: 0; }
+.app-link-button { display: inline-flex; align-items: center; min-height: 44px; padding: .6rem .8rem; border: 1px solid currentColor; border-radius: .5rem; overflow-wrap: anywhere; }
+[data-testid="push-schedule"] [data-layout-primary],
+[data-testid="push-devices"] [data-layout-primary] { min-height: 44px; }
+[data-testid="task-review-editor"] [data-layout-primary] { min-height: 44px; }
+
+.todo-recovery-panel { padding: 1rem; min-width: 0; overflow-wrap: anywhere; display: grid; gap: .75rem; }
+.todo-recovery-panel h2, .todo-recovery-panel h3 { margin: 0; }
+.todo-recovery-panel [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
+.todo-recovery-panel summary { cursor: pointer; min-height: var(--control-height); padding-block: .65rem; }
+
+.diagnostic-sharing { overflow-wrap: anywhere; min-width: 0; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--card-border); }
+.diagnostic-sharing .action-row { flex-wrap: wrap; }
+.diagnostic-sharing button { max-width: 100%; min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
+.diagnostic-identity { overflow-wrap: anywhere; min-width: 0; }

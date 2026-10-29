@@ -1,0 +1,110 @@
+{
+  "taskId": "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0",
+  "rootTaskId": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+  "status": "accepted-read-only-discovery",
+  "checks": {
+    "pureQueries": 5,
+    "focusedQuerySdkAndNativeMcp": 7,
+    "packageIntegrity": 7,
+    "matchingWorkerDryRunBuilds": 3,
+    "workspaceUniqueCoveredCases": 640,
+    "fullParallelPasses": 638,
+    "fullParallelTransportErrors": 2,
+    "isolatedLifecyclePassed": 24,
+    "documentationConsistency": true,
+    "diffCheck": true
+  },
+  "delivered": [
+    "Profile-scoped coherent canonical journal reads expose bounded archived-task and terminal-Daily records, exact source/receipt identities, stable revision paging and concrete native reasons.",
+    "Reviewed read-only MCP metadata and shared browser read routing preserve existing scopes and original preview/accept/receipt contracts. Canonical fences permit the new providerless MCP read while reporting effectsFenced and blocking native review.",
+    "Malformed, stale, foreign, missing source and unsupported game contexts remain explicit; discovery performs no provider call, domain command or inferred game outcome."
+  ],
+  "controlInterpretation": [
+    "The broad current Workspace run passed638of640 cases. Two existing reconnect/lifecycle cases failed in the Miniflare proxy fetch transport before assertions completed. The exact affected files passed24of24 sequential cases with unchanged code, pins and thirty-second test timeout. No product assertion remains unresolved.",
+    "The read-only mutation assertion starts after existing MCP grant synchronization, which is a security prerequisite. Discovery leaves canonical document, store version, archive bytes and event count unchanged and adds no provider request."
+  ],
+  "limitations": [
+    "Local synthetic providers and local databases only; no live account, device, deployment, migration, publication or commit.",
+    "Discovery is canonical/current-detail evidence. Fresh upstream ownership, account day, Cron readiness and original Auth source proof remain separate linked-recovery requirements.",
+    "The general parallel Miniflare proxy transport remains intermittently unreliable; isolated exact lifecycle coverage is retained separately from the broad run."
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": 0,
+    "selectedTaskTotalBudget": null
+  },
+  "controls": [
+    {
+      "name": "first-check",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 2.01,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "query",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.26,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "composition",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.52,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "package",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.3,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-suite",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 100.54,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "lifecycle-isolated",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 20.09,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-auth-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.75,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-mcp-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.88,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "companion-workspace-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.81,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  ]
+}

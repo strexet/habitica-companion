@@ -1,0 +1,34 @@
+{
+  "taskId": "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+  "status": "accepted",
+  "checks": {
+    "storage": 39,
+    "newDeterministicInterleavingCases": 14,
+    "application": 266,
+    "documentationValidation": true
+  },
+  "controls": [
+    {
+      "name": "storage",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.3,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "application",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.37,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "implementation": "One async semaphore serializes Append read/modify/write and Clear per store instance; finally releases after cancellation/failure. GetRecent remains observational. Existing newest-first/default250 retention and canonical command behavior retained.",
+  "limitations": [
+    "Same scoped instance only; no cross-tab atomicity or coordination of independent scopes.",
+    "Synthetic gated storage and application regressions; no actual IndexedDB cancellation or physical device assertion. A storage cancellation cannot prove whether a JS transaction already committed.",
+    "No deployment, commit, live account or command mutation. Active controller time not instrumented."
+  ]
+}

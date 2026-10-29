@@ -197,6 +197,13 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
         request.Content=JsonContent.Create(new{consentVersion="notes-v1"});return request;
     }
 
+    internal HttpRequestMessage DiagnosticOwnerRequest(Uri uri,HttpMethod method,object? body)
+    {
+        if(!HasConnection||!uri.AbsolutePath.StartsWith("/diagnostics/",StringComparison.Ordinal)||method!=HttpMethod.Get&&method!=HttpMethod.Post)throw new InvalidOperationException("Diagnostic owner access is unavailable.");
+        var request=new HttpRequestMessage(method,uri);request.Headers.Authorization=new AuthenticationHeaderValue("Bearer",_managementToken);
+        if(body is not null)request.Content=new StringContent(System.Text.Json.JsonSerializer.Serialize(body,Habitica.Application.Diagnostics.DiagnosticSharing.Json),System.Text.Encoding.UTF8,"application/json");return request;
+    }
+
     private HttpRequestMessage ManagementRequest(HttpMethod method, string suffix)
     {
         var path = "profiles/" + Uri.EscapeDataString(_profileId!) + (suffix.Length > 0 ? "/" + suffix : "");

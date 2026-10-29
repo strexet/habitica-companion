@@ -1,0 +1,112 @@
+{
+  "taskId": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+  "recordedAtUtc": "2026-10-28T03:33:45.770040+00:00",
+  "verdict": "accepted-local-causal-coverage",
+  "delivered": [
+    "Optional task-command witnesses retain exact original command hash, accepted event, previous task revision and historical schedule/state.",
+    "Full journal validators verify actual scores/completions/terminal sources, schedule intent and current same-revision consistency.",
+    "Pure UTC half-open interval reads retain unknown legacy prefixes, missing links, unsupported special transitions and unwitnessed tails; backwards clocks remain unknown.",
+    "Schema-v1 compatibility and neutral C#/Worker archive fixture round-trip without score/provider creation."
+  ],
+  "checks": {
+    "dotnet": {
+      "uniquePassed": 1386,
+      "suites": {
+        "Domain": 36,
+        "Storage": 39,
+        "Rules": 43,
+        "Api": 94,
+        "Application": 299,
+        "WebApp": 875
+      },
+      "evidence": [
+        "activity-dotnet-acceptance.log",
+        "activity-web-final.log"
+      ],
+      "qualification": "Final five non-Web suites passed together; repaired history fixture and complete final Web suite pass. Earlier legacy fixture contradictions and transient gear-test refusals retained in preceding logs."
+    },
+    "workspace": {
+      "uniquePassedAcrossFinalEvidence": 657,
+      "broadPass": 654,
+      "broadFixtureFailures": 3,
+      "isolatedExecutorPassed": 10,
+      "evidence": [
+        "activity-workspace-acceptance.log",
+        "activity-executor-isolated.log"
+      ],
+      "qualification": "Three synthetic executor fixtures required matching command/witness hashes, empty-target cleanup and internally consistent Daily creation. Entire affected file passes after repairs; other sources/files unchanged. No monolithic 657-pass claim."
+    },
+    "auth": {
+      "uniquePassedAcrossFinalEvidence": 202,
+      "broadPass": 201,
+      "transportFailures": 1,
+      "isolatedPushPassed": 14,
+      "evidence": [
+        "activity-auth-acceptance.log",
+        "activity-auth-push-isolated.log"
+      ],
+      "qualification": "Miniflare proxy fetch failed in one push lifecycle case. Entire push file passes sequentially on unchanged pins and production sources, same 30-second test timeout."
+    },
+    "workerBuilds": {
+      "matchingDryRunsPassed": 3,
+      "evidence": [
+        "activity-workspace-build-acceptance.log",
+        "activity-auth-build-acceptance.log",
+        "activity-mcp-build-acceptance.log"
+      ]
+    },
+    "focusedCoverage": {
+      "dotnetCasesIncludedInApplication": 14,
+      "workerCasesIncludedInWorkspace": 17,
+      "neutralFixture": "tests/fixtures/workspace/activity-coverage-v1.json"
+    },
+    "staticReview": {
+      "gitDiffCheck": "pass",
+      "buildIdentityCheck": "pass",
+      "newDocumentAndChangedSectionsProse": "pass",
+      "newUiRoutes": 0
+    }
+  },
+  "execution": {
+    "classification": "local executed controls and separately identified transport uncertainty",
+    "activeControllerTimeSeconds": null,
+    "activeControllerTimeReason": "Not independently instrumented; bounded operation wall times retained in companion meta files.",
+    "cumulativeTaskTimeBudget": null,
+    "unchangedFailureCircuit": "clear; observed failures repaired or qualified by distinct isolated passing controls"
+  },
+  "limits": [
+    "No live accounts, provider history, devices, permission changes, migrations, publication or commits.",
+    "Only retained Companion task-command intervals are covered. Special non-command writers remain unproven transitions; future reads cannot extend coverage with query time.",
+    "Structural causal checks do not provide external cryptographic authentication of a user-edited archive.",
+    "No UI route, layout, CSS or interaction behavior changes; final Web components qualify regressions."
+  ],
+  "sourceFingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "74ce597f2b027356541b1c848226cc28eb55213d2ba1acd06690db08f833dadf",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "1c3a04bebe72703fda1d4bb06367dbc8616bd1304ceac5b82a294b1c78103cea",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "6325bc27ad99cf90f24ba063678df722cfd84654a86bac511d1a825a7432522c",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "643bd216728cecd5cff1c78d546fd196af03fe0c7610b748fdfec84ddd399568",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "fbf9fe41067cbf4470523a28f715e4b6931fa17a6d24e8c5b611d757a1c2c8d2",
+    "workers/shared/activity-coverage.ts": "cde1885996b905ea0548bef66800b1a3ef10435d596a71c8c482e2bc74dbbb98",
+    "workers/shared/workspace-domain.ts": "263da09e00b9714a77e2cceb9431751e2b9ea9bf3a76c1a35009b6bfe8872616",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "38152eff1ce56bf47a26c9d038430eace6724ac6f65781cc979fb158b46e2c6f",
+    "workers/companion-workspace/src/commands.ts": "150470c9eb13301d6a89a38564cf5273f66b926de0535484119492437e05e626",
+    "workers/companion-workspace/src/journal.ts": "62d306aac8c09b616097764ee4d6b06e1ee4435072c628dc114c4a5d28f4e18b",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCommandTests.cs": "219b30b1e0b04d7c43be13a53f8be415fd5798b792a965a6b258956b8098f105",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceRecurrenceCommandsTests.cs": "570a37b2789b9910db81f61510598910e011eadafe6089c859bfb0a8f596e99b",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTodoRestoreTests.cs": "325c7e2c458f29178f28465630d0540d97656bffb0bd6ee1865412f61455cbbc",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTaskRecoveryTests.cs": "76c8bce955dd4fba798a30e2e6033177984fff967d2ec29b6be3f99e20076097",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "c7d3df0b16e1c04e777829717d542192aeec9345e243fed1382de688b2ee8448",
+    "workers/companion-workspace/test/activity-coverage.test.mjs": "38e12dc963433062a20621b10f22530327f4bb9cc685256755bd72d370e219c7",
+    "workers/companion-workspace/test/fixtures/legacy-todo.mjs": "6860ed7223561ac6446d428135b6f14a0cf1a8ad290f81901a3eeccd898bda54",
+    "workers/companion-workspace/test/checklist-conversion.test.mjs": "3c95f8258791e2febc81b7fc13ded28d6735aa0a62fc3d522d5da6a020f50ab5",
+    "workers/companion-workspace/test/executor.test.mjs": "43815ce9b23c060c9c9ff29cb8dc04c19b46066a3ad4cc86a9bddadbde3e9021",
+    "workers/companion-workspace/test/recurrence-commands.test.mjs": "fd28e5cc5a174e7c3dc5ca7a9846797bfbcfeb16bef3de8e1a12b9625e30d845",
+    "workers/companion-workspace/test/todo-restore.test.mjs": "4ca389080f5dddd440d122746e28ed995111ca4780f49be99a7407aa62ca7f11",
+    "tests/fixtures/workspace/activity-coverage-v1.json": "3305227b590e1969da2dfb5130cea76fd7e20147a37e500e0be752e9f87281f2",
+    "skill-tree/documents/task-activity-coverage.md": "620ab3b7c523e370011dd56532c042d6d3fa634c467f66a2eaa314839ccf7bc1",
+    "skill-tree/documents/features.md": "4188a218852351294c0881eeac379a12af8a894243074b2cb083eafa2cb26105",
+    "skill-tree/documents/testing.md": "b26b8a9f0f5b4231b979e362fefd37d20922183be9b862aad672c2f360e08eef",
+    "skill-tree/documents/companion-workspace-contract.md": "2c57c275b9309e77bd5b31d0b70eda18a6054d898b100cc433da37ef6e7c8346"
+  }
+}

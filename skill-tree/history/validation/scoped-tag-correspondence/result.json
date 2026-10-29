@@ -1,0 +1,85 @@
+{
+  "task_id": "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+  "source_fingerprints": {
+    "workers/shared/tag-correspondence.ts": "cafdf3967d18dc5804d8d7e2eae591027221e4c0b37151e01cbc613414ea47c7",
+    "workers/shared/group-tag-status.ts": "e5043aceca6aaeed6befc02469110dc9233c426a18d00af347481a41c9aa0ed8",
+    "workers/companion-workspace/src/group-tag-api.ts": "e4ac1d27534bd8f226f990ddf683fc93011225252886427893b71f5a0516eadf",
+    "workers/companion-workspace/src/source-retirement-api.ts": "033ed290060e63985c3651f30a4059c7e85f5f9d0a87e8dc6864e1a1e8a8a743",
+    "workers/companion-workspace/src/retirement-policy.ts": "1be599a03494ed244dc61d1d9a20482ba0a4bef77d1a73f92b97000329664e79",
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "4a0a4a79cb07cd250d5c29c74e2c435b87179c4de8f8c6625c9ef635b4a27325",
+    "src/Habitica.Application/Workspace/WorkspaceConversionRetirementPolicy.cs": "e8976c6088edf303c1897c5261b11d8b6f0c55bb2b3bd0786a09bc018e702f03",
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "fb92d6b8c4251cb5795eb0ffea8c8c89d40009614745b0e11b121e0e1cae9e48",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/group-tag-status.test.mjs": "414e4d3d6f9dda51524b74a1a293dd8c4eb54f9bb2f382c4ab7f1e60f02936ab",
+    "workers/companion-workspace/test/retirement-policy.test.mjs": "debb10156676966010d21eb46031b5b29876426b15f6e3c3da38a137162c67b9",
+    "workers/companion-workspace/test/source-retirement-api.test.mjs": "41044f56f6624ba1e57ae36aa15fbf2375bfc4fdfe74298dac5ca63ce1e4d3b3",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTagCoverageTests.cs": "fd56994ff1d55879b51fd18aadc7a783f4af0b309cc1b4e7898d2ab4290a9c5c"
+  },
+  "checks": {
+    "workspace": {
+      "passed": 694,
+      "failed": 0
+    },
+    "solution": {
+      "passed": 1411,
+      "failed": 0
+    },
+    "builds": [
+      "Auth",
+      "Workspace",
+      "MCP"
+    ],
+    "neutral_fixture": "tests/fixtures/workspace/conversion-retirement-prerequisites.json",
+    "final_completed_member_control": "Worker three-control retirement policy suite passed; the final solution includes matching C# completion/lifecycle assertion."
+  },
+  "operations": [
+    {
+      "operation": "chatgpt-auth dry build",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 3.5105400420725346,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "companion-workspace dry build",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 6.918132166843861,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "chatgpt-mcp dry build",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 3.166845165891573,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "Workspace regression",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 156.7967702501919,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    },
+    {
+      "operation": "final solution regression",
+      "operation_class": "executed_control",
+      "tool_wall_seconds": 55.44847583305091,
+      "prerequisite_wait_seconds": 0,
+      "exit_code": 0
+    }
+  ],
+  "active_controller_seconds": null,
+  "timing_note": "Active controller time was not independently instrumented. Per-operation deadlines remain separate from measured tool wall time; no selected-task total budget applies.",
+  "retained_controls": [
+    "Initial focused fixture omitted storeVersion advancement and was invalid; corrected snapshot established scoped acceptance.",
+    "Lifecycle mutations without required canonical removal history remain invalid/unavailable rather than confirmed.",
+    "Four original coverage expectations counted recorded members absent from canonical placement; targeted expectations now distinguish identity from complete membership, with a separate positive six-scope placement control."
+  ],
+  "limitations": [
+    "Stored proof does not establish a fresh provider observation.",
+    "Portable C# readiness supplies no live connection or deletion authority; cloud status and retirement bind confirmed work to current connection/access epochs.",
+    "No new UI markup, real account operations, remote migrations, publication or device qualification occurred."
+  ]
+}

@@ -405,3 +405,33 @@ Preflight targets the existing habitica-companion Pages production branch main a
 Notes UI qualification uses1168 solution tests,35 final Notes controls and720 matching rendered cases. The candidate runs matching Worker builds, package/identity controls and synthetic backend regressions before remote migration/publication. Production smoke checks read public health, OAuth discovery and release assets only; publication is not a new live gameplay test round. Hosted Notes consent, model behavior and physical devices retain separate qualification.
 
 The0.2.0 candidate is now published from ba5a96d to the existing production slot. Exact Pages/Worker versions, preceding deployments, D1 bookmarks and the verified package receipt reside in skill-tree/history/validation/notes-production-publication.json. Auth154, Workspace572 and package/identity controls pass against matching builds. Remote migrations have no remainder. Ordinary browser inspection confirms the production settings, OAuth Notes scopes, MCP-to-Auth health and rendered WebAssembly Notes route. Terminal403/DNS restrictions and blocked direct manifest navigation remain explicit inspection limits. The ready package is output/habitica-companion-plugin-0.2.0.zip; importing the package and separately granting Notes access remain user actions. No actual hosted Notes enrollment or gameplay test is claimed.
+
+## Web Push subscription release prerequisites
+
+Apply Auth0010-push-subscriptions.sql before the matching Auth Worker, including when PUSH_ENABLED is false: profile cleanup and bounded scheduled expiry reference push tables. Publish Auth PushService before Workspace binds AUTH_PUSH. Deploy matching clients with the restricted status contract. Pilot and development preparation both retain PUSH_ENABLED=false; no ordinary feature profile provisions or enables Web Push.
+
+A separately reviewed activation must provision dedicated Auth-only PUSH_VAULT_KEY_V1 (base64url AES256), optional retained PUSH_VAULT_KEY_V2, PUSH_VAULT_CURRENT_KEY_VERSION, a distinct PUSH_VAPID_PRIVATE_JWK P-256 signing secret and the matching public PUSH_VAPID_PUBLIC_KEY. Never put private keys in source, public deployment JSON, build logs or Workspace bindings. The optional push secrets are required only for the enabled capability; existing mandatory credential-secret requirements remain intact. Verify key separation and complete sender/UI/device release gates before enabling. No actual key was provisioned, remote migration applied, provider contacted or feature deployed by local qualification. Rollback must retain compatible push cleanup/migration support and previous decryption keys until separately qualified erasure/rotation.
+
+## Voluntary review compatibility
+
+Publish matching browser/Auth/Workspace/MCP code before exposing patch.review, reviewEvents, review_task and get_task_reviews. The optional extension needs no migration, secret or executor activation. Older strict readers can reject used review metadata; unused records preserve prior JSON and command hashes. Existing tasks:read and habitica.tasks.write grants remain narrow and unchanged. Local synthetic qualification grants no publication or live user testing.
+
+## Foreground reminders
+
+The Today foreground reminder unit requires no new Worker secret, resource, migration or OAuth scope. Foreground assets deploy through the ordinary PWA package; per-browser opt-in and local receipts stay in IndexedDB. The foreground unit neither enables PUSH_ENABLED nor enrolls a subscription. Closed-app/background delivery and physical-device qualification remain separate gates; see [foreground-reminders.md](foreground-reminders.md).
+
+## Scheduled push migration and activation
+
+Auth migration0011-push-dispatches.sql and Workspace migration0013-scheduled-reminders.sql must precede the coordinated Auth/Workspace/MCP code, including private lifecycle cleanup. All ordinary deployment profiles keep PUSH_ENABLED, PUSH_DISPATCH_ENABLED and PUSH_REMINDERS_ENABLED false. Explicit later activation requires dedicated push vault/VAPID secrets, matching public key, valid PUSH_VAPID_SUBJECT contact and separate release/device qualification. The existing Workspace cron remains a hook behind the disabled capability; local implementation does not change live triggers. Operator guidance and uncertainty/retention rules reside in [scheduled-push-reminders.md](scheduled-push-reminders.md).
+
+## Linked recovery migration
+
+The next Workspace migration after scheduled reminders is `0014-linked-task-recovery.sql`. Apply migration0014 only in a separately authorized deployment using the existing rollout/backup process before serving a build that references linked recovery. The local implementation adds no deployment, account, executor or live Habitica authorization. Existing default gates remain disabled. See [linked task recovery](linked-task-recovery.md).
+
+
+## Separate callback egress candidate
+
+The owner-selected Netlify Functions Free callback gateway has separate source/configuration under deploy/callback-egress. Ordinary pilot/development preparation keeps CALLBACK_EGRESS_ENABLED=false. Apply Auth0012-callback-egress.sql on the exact selected integration database before enabling the narrow claim endpoint; no existing credential, Push or subscription permission grants this lane. The [callback egress contract](callback-egress.md) owns account selection, runtime/service-key setup, Free-plan hard-limit behavior, hosted negative controls and rollback. Source packaging and local dry builds grant no Netlify/Cloudflare publication, remote migration or real callback scope.
+
+
+The selected Auth callback setup is provisioned with dispatch disabled. Exact initial deployment/base-module identities, the applied `0012` migration and pending hosted qualification are recorded in [callback-egress.md](callback-egress.md#published-auth-setup). The subsequent [2026-10-29 coordinated release](../history/releases/2026-10-29/README.md) publishes full repository Auth/Workspace/MCP source after the remaining migrations and lifecycle bindings. Web Push availability is enabled with dedicated keys and separate device/account consent; callback delivery remains disabled.

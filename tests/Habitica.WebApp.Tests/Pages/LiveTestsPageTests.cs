@@ -11,6 +11,10 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class LiveTestsPageTests : BunitContext
 {
+    public LiveTestsPageTests()
+    {
+        Services.AddScoped(sp=>new Habitica.WebApp.State.DiagnosticSharingController(sp.GetRequiredService<IAppSessionController>(),new DiagnosticSharingFake{DiagnosticSharingAvailable=false},TimeProvider.System));
+    }
     protected override void Dispose(bool disposing)
     {
         if (disposing) { DisposeAsync().AsTask().GetAwaiter().GetResult(); return; }

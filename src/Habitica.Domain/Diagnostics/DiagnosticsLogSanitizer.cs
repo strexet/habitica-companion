@@ -37,6 +37,8 @@ public static class DiagnosticsLogSanitizer
         "party-quest-accept", "party-quest-reject", "refresh-userprofile", "refresh-gearcatalog", "refresh-cloudsync", "refresh-partysync",
         "refresh-user", "refresh-tasks", "refresh-party", "refresh-inventory", "refresh-content",
         "workspace-load", "workspace-create-local", "workspace-task-prepare", "workspace-task-accept", "workspace-task-recover",
+        "workspace-tag-consent-read", "workspace-tag-consent-set", "workspace-tag-status", "workspace-tag-candidates",
+        "workspace-tag-prepare", "workspace-tag-accept", "workspace-tag-recover", "workspace-tag-original-receipt",
         "workspace-link-preview", "workspace-link-adopt", "workspace-connect", "workspace-status", "workspace-operations",
         "workspace-executor", "workspace-export-cloud", "workspace-disconnect", "workspace-delete", "workspace-transfer",
         "workspace-export-local", "workspace-restore-local", "workspace-organization-prepare", "workspace-organization-accept",

@@ -1,0 +1,49 @@
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Attaching additional modules:
+┌────────────────────┬──────┬────────────┐
+│ Name               │ Type │ Size       │
+├────────────────────┼──────┼────────────┤
+│ callback-claim.mjs │ esm  │ 8.04 KiB   │
+├────────────────────┼──────┼────────────┤
+│ src/index.js       │ esm  │ 453.95 KiB │
+├────────────────────┼──────┼────────────┤
+│ Total (2 modules)  │      │ 461.99 KiB │
+└────────────────────┴──────┴────────────┘
+Total Upload: 462.44 KiB / gzip: 98.15 KiB
+Worker Startup Time: 6 ms
+Your Worker has access to the following bindings:
+Binding                                                                              Resource                  
+env.OAUTH_KV (cd15636d00ac4be584ef7854a9a98fba)                                      KV Namespace              
+env.HABITICA_INTEGRATION_DB (habitica-companion-auth)                                D1 Database               
+env.ADAPTIVE_PACING_ENABLED (true)                                                   Environment Variable      
+env.AUTH_ISSUER ("https://habitica-companion-auth.strex...")                         Environment Variable      
+env.CREDENTIAL_CURRENT_KEY_VERSION ("1")                                             Environment Variable      
+env.CRON_ENABLED (true)                                                              Environment Variable      
+env.ENROLLMENT_ENABLED (true)                                                        Environment Variable      
+env.ENVIRONMENT ("production")                                                       Environment Variable      
+env.HABITICA_X_CLIENT_HEADER ("ff304279-d0c6-43e5-bd2d-caa41c7e017a-...")            Environment Variable      
+env.KEY_OPERATIONS_ENABLED (true)                                                    Environment Variable      
+env.MCP_RESOURCE ("https://habitica-companion-mcp.strexe...")                        Environment Variable      
+env.OAUTH_ENABLED (true)                                                             Environment Variable      
+env.PARTY_ENABLED (true)                                                             Environment Variable      
+env.PROJECTION_ENABLED (true)                                                        Environment Variable      
+env.PWA_ORIGIN ("https://habitica-companion.pages.dev")                              Environment Variable      
+env.SPELLS_ENABLED (true)                                                            Environment Variable      
+env.WORKSPACE_ENABLED (true)                                                         Environment Variable      
+env.WORKSPACE_ORIGIN ("https://habitica-companion-workspace....")                    Environment Variable      
+env.CALLBACK_EGRESS_ENABLED (false)                                                  Environment Variable      
+env.CALLBACK_EGRESS_AUDIENCE ("https://kaleidoscopic-rolypoly-416a42...")            Environment Variable      
+env.CALLBACK_EGRESS_GRANT_KEY ("(hidden)")                                           Environment Variable      
+env.CALLBACK_EGRESS_CLAIM_KEY ("(hidden)")                                           Environment Variable      
+
+Uploaded habitica-companion-auth (3.68 sec)
+Worker Version ID: 96a4d62f-9c14-4f68-924d-b46dd03e09f2
+
+To deploy this version to production traffic use the command wrangler versions deploy
+
+Changes to non-versioned settings (config properties 'logpush' or 'tail_consumers') take effect after your next deployment using the command wrangler versions deploy
+
+Changes to triggers (routes, custom domains, cron schedules, etc) must be applied with the command wrangler triggers deploy
+

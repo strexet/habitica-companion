@@ -1,0 +1,70 @@
+
+> habitica-chatgpt-mcp@0.1.0 prebuild
+> python3 ../scripts/generate-build-identity.py --check
+
+
+> habitica-chatgpt-mcp@0.1.0 build
+> npm run check && wrangler deploy --dry-run --env "" --outdir dist
+
+
+> habitica-chatgpt-mcp@0.1.0 check
+> npm run types && tsc --noEmit
+
+
+> habitica-chatgpt-mcp@0.1.0 types
+> wrangler types --include-runtime false --env-interface McpEnv
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Generating project types...
+
+interface __BaseEnv_McpEnv {
+	ENVIRONMENT: "preview" | "production" | "local";
+	OAUTH_ENABLED: false;
+	AUTH_SERVER: Service /* entrypoint AuthService from habitica-chatgpt-auth-preview */ | Service /* entrypoint AuthService from habitica-chatgpt-auth-production */ | Service /* entrypoint AuthService from habitica-chatgpt-auth-local */;
+	WORKSPACE_SERVER: Service /* entrypoint WorkspaceCommandService from habitica-companion-workspace-preview */ | Service /* entrypoint WorkspaceCommandService from habitica-companion-workspace-production */ | Service /* entrypoint WorkspaceCommandService from habitica-companion-workspace-local */;
+}
+declare namespace Cloudflare {
+	interface GlobalProps {
+		mainModule: typeof import("./src/index");
+	}
+	interface PreviewEnv {
+		ENVIRONMENT: "preview";
+		OAUTH_ENABLED: false;
+		AUTH_SERVER: Service /* entrypoint AuthService from habitica-chatgpt-auth-preview */;
+		WORKSPACE_SERVER: Service /* entrypoint WorkspaceCommandService from habitica-companion-workspace-preview */;
+	}
+	interface ProductionEnv {
+		ENVIRONMENT: "production";
+		OAUTH_ENABLED: false;
+		AUTH_SERVER: Service /* entrypoint AuthService from habitica-chatgpt-auth-production */;
+		WORKSPACE_SERVER: Service /* entrypoint WorkspaceCommandService from habitica-companion-workspace-production */;
+	}
+	interface Env extends __BaseEnv_McpEnv {}
+}
+interface McpEnv extends __BaseEnv_McpEnv {}
+type StringifyValues<EnvType extends Record<string, unknown>> = {
+	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
+};
+declare namespace NodeJS {
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "ENVIRONMENT" | "OAUTH_ENABLED">> {}
+}
+
+
+✨ Types written to worker-configuration.d.ts
+
+📣 Remember to rerun 'wrangler types' after you change your wrangler.jsonc file.
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Total Upload: 873.75 KiB / gzip: 181.59 KiB
+Your Worker has access to the following bindings:
+Binding                                                                                Resource                  
+env.AUTH_SERVER (habitica-chatgpt-auth-local#AuthService)                              Worker                    
+env.WORKSPACE_SERVER (habitica-companion-workspace-local#WorkspaceCommandService)      Worker                    
+env.ENVIRONMENT ("local")                                                              Environment Variable      
+env.OAUTH_ENABLED (false)                                                              Environment Variable      
+
+--dry-run: exiting now.

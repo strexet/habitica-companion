@@ -1,0 +1,32 @@
+{
+  "created_ids": [
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+  ],
+  "dispositions": {
+    "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec": {
+      "reason": "Owner selected Workspace D1, separate diagnostic consent, preview-only uploads, seven-day deletion and strict quotas. Promote a bounded storage/read contract and dependent browser sharing UI without enabling consent or uploading actual logs.",
+      "status": "promoted"
+    },
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192": {
+      "reason": "Owner selected Auth-only encrypted callback URL/signing-secret ownership, Workspace opaque subscription/receipt state and separate consent/revocation cleanup. Official SDK v2 supplies an explicit2026-07-28 migration path. Split required protocol compatibility, protected vault/subscription lifecycle and dependent reminder delivery; live host response remains separately unqualified.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-9722057b-0549-4478-8c12-6ee286276060",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+  ],
+  "task_keys": {
+    "diagnostics-share-ui": "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "diagnostics-store-read": "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "event-subscriptions-vault": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "mcp2-compatibility": "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "reminder-event-delivery": "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+  }
+}

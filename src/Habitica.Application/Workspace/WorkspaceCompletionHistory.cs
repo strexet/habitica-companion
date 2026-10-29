@@ -7,10 +7,12 @@ public sealed record WorkspaceHistoryFilter(string? Query = null, Guid? TaskId =
     DateTimeOffset? CompletedFromUtc = null, DateTimeOffset? CompletedThroughUtc = null,
     int Limit = 50, int Offset = 0, long? ExpectedRevision = null);
 public sealed record WorkspaceRestorationDetail(Guid EventId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived);
+public sealed record WorkspaceOccurrenceCorrectionDetail(Guid EventId, Guid CommandId, Guid TargetCommandId, DateTimeOffset CorrectedAtUtc);
 public sealed record WorkspaceCompletionItem(Guid EventId, Guid TaskId, Guid CommandId, CompanionTaskKind Kind,
     string TaskText, string? Notes, string DetailSource, DateTimeOffset CompletedAtUtc,
     Guid? OccurrenceId, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceRestorationDetail? Restoration = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceRestorationDetail? Restoration = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceOccurrenceCorrectionDetail? OccurrenceCorrection = null);
 
 public static class WorkspaceCompletionHistory
 {
@@ -44,8 +46,10 @@ public static class WorkspaceCompletionHistory
             var text = accepted?.Text ?? task.Text; var notes = accepted is null ? task.Notes : accepted.Notes;
             if (query.Length > 0 && !WorkspaceTaskQuery.Fold(text).Contains(query,StringComparison.Ordinal) && !WorkspaceTaskQuery.Fold(notes ?? "").Contains(query,StringComparison.Ordinal)) continue;
             var restoration = restorations.TryGetValue(value.Id,out var restored) ? new WorkspaceRestorationDetail(restored.Id,restored.CommandId,restored.RestoredAtUtc,restored.IsArchived) : null;
+            var correction = (document.OccurrenceCorrections ?? []).FirstOrDefault(row => row.TargetCommandId == value.CommandId && row.PreviousOccurrence.Id == value.OccurrenceId);
+            var correctionDetail = correction is null ? null : new WorkspaceOccurrenceCorrectionDetail(correction.Id, correction.CommandId, correction.TargetCommandId, correction.CorrectedAtUtc);
             rows.Add((value.Revision,index,new(value.Id,task.Id,value.CommandId,task.Kind,text,notes,accepted is null ? "currentTask" : "commandSnapshot",
-                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived,restoration)));
+                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived,restoration,correctionDetail)));
         }
         var ordered = rows.OrderByDescending(row => row.Item.CompletedAtUtc).ThenByDescending(row => row.Revision).ThenBy(row => row.Order).ToArray();
         var items = ordered.Skip(filter.Offset).Take(filter.Limit).Select(row => row.Item).ToArray(); var next = filter.Offset + items.Length;

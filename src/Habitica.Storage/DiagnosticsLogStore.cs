@@ -6,6 +6,7 @@ public sealed class DiagnosticsLogStore : IDiagnosticsLogStore
 {
     private readonly IKeyValueStorage _keyValueStorage;
     private readonly int _maxEntries;
+    private readonly SemaphoreSlim _mutationGate = new(1, 1);
 
     public DiagnosticsLogStore(IKeyValueStorage keyValueStorage, int maxEntries = 250)
     {
@@ -21,19 +22,35 @@ public sealed class DiagnosticsLogStore : IDiagnosticsLogStore
 
     public async Task AppendAsync(DiagnosticsLogEntry entry, CancellationToken cancellationToken)
     {
-        var entries = (await GetRecentAsync(cancellationToken)).ToList();
-        entries.Insert(0, entry);
-
-        if (entries.Count > _maxEntries)
+        await _mutationGate.WaitAsync(cancellationToken);
+        try
         {
-            entries.RemoveRange(_maxEntries, entries.Count - _maxEntries);
-        }
+            var entries = (await GetRecentAsync(cancellationToken)).ToList();
+            entries.Insert(0, entry);
 
-        await _keyValueStorage.SetAsync(StorageKeys.DiagnosticsLogEntries, entries.ToArray(), cancellationToken);
+            if (entries.Count > _maxEntries)
+            {
+                entries.RemoveRange(_maxEntries, entries.Count - _maxEntries);
+            }
+
+            await _keyValueStorage.SetAsync(StorageKeys.DiagnosticsLogEntries, entries.ToArray(), cancellationToken);
+        }
+        finally
+        {
+            _mutationGate.Release();
+        }
     }
 
-    public Task ClearAsync(CancellationToken cancellationToken)
+    public async Task ClearAsync(CancellationToken cancellationToken)
     {
-        return _keyValueStorage.RemoveAsync(StorageKeys.DiagnosticsLogEntries, cancellationToken);
+        await _mutationGate.WaitAsync(cancellationToken);
+        try
+        {
+            await _keyValueStorage.RemoveAsync(StorageKeys.DiagnosticsLogEntries, cancellationToken);
+        }
+        finally
+        {
+            _mutationGate.Release();
+        }
     }
 }

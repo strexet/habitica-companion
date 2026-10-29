@@ -4,6 +4,9 @@ import {accept} from '../../src/commands.ts';
 export async function seedLegacyCommand(f,input){
  const row=await f.workspaceDb.prepare('SELECT * FROM workspaces WHERE workspace_id=?').bind(input.workspaceId).first();
  const command=workspaceCommand(input),result=await accept(JSON.parse(row.document_json),command,new Date().toISOString());
+ // This fixture intentionally represents retained commands predating coverage witnesses.
+ result.document.activityCoverage=result.document.activityCoverage.filter(row=>row.commandId!==command.id);
+ if(!result.document.activityCoverage.length)delete result.document.activityCoverage;
  const document=JSON.stringify(result.document),entry=JSON.stringify(result.entry),event=JSON.stringify(result.event),version=row.store_version+1;
  const size=row.archive_bytes-Buffer.byteLength(row.document_json)+Buffer.byteLength(document)+Buffer.byteLength(entry)+Buffer.byteLength(event)+2;
  await f.workspaceDb.batch([

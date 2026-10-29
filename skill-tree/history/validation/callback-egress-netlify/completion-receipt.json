@@ -1,0 +1,134 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The Netlify candidate and Auth single-use grant fence pass local destination, TLS, authentication, replay, uncertainty and size/deadline controls with exact signed bytes and no secret persistence or leakage.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/result.json",
+          "sha256": "832289fde0e36514bd77ff550880f23e4fa5a927e87b1f2c7d3aaf79935a499e"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/node.txt",
+          "sha256": "39d12a3b4eeffb99058f6b1e80d60ed1dc213cc3c8660c7cb60c440e12539988"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/auth-regression.txt",
+          "sha256": "3680cb71e8850dcb871e9288455629802f37a71eaf398d85f422f59e06de86dd"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/documents/callback-egress.md",
+          "sha256": "d4eada726623634cc2163d1a3724ac339ae3368dea8b0c2680d34e92f929a692"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/bundle-tests.txt",
+          "sha256": "29b142cf1297dee8d6ba58b356438c4872204b087261989d98863a2cb9dfac3d"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Deployable configuration and owner setup/rollback instructions preserve Free-plan limits, default-off operation and explicit hosted qualification requirements.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/result.json",
+          "sha256": "832289fde0e36514bd77ff550880f23e4fa5a927e87b1f2c7d3aaf79935a499e"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/node.txt",
+          "sha256": "39d12a3b4eeffb99058f6b1e80d60ed1dc213cc3c8660c7cb60c440e12539988"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/auth-regression.txt",
+          "sha256": "3680cb71e8850dcb871e9288455629802f37a71eaf398d85f422f59e06de86dd"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/documents/callback-egress.md",
+          "sha256": "d4eada726623634cc2163d1a3724ac339ae3368dea8b0c2680d34e92f929a692"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/callback-egress-netlify/bundle-tests.txt",
+          "sha256": "29b142cf1297dee8d6ba58b356438c4872204b087261989d98863a2cb9dfac3d"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/callback-egress-netlify/result.json",
+      "sha256": "832289fde0e36514bd77ff550880f23e4fa5a927e87b1f2c7d3aaf79935a499e"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/callback-egress-netlify/review.md",
+      "sha256": "9944941e2ef615bc3783d296e69f6a0e0002c8649d6851aff846faf1cca7b121"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/callback-egress-netlify/hosted-profile.json",
+      "sha256": "45bd657dab5afe828c621beea7b972adf3b95ca568352f4941658a2b8ec9c7e8"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-070c0755-7a03-4de0-a438-dc7e5cdf850f",
+  "limitations": [
+    "Local Node TLS and synthetic Worker/D1 evidence do not qualify Netlify DNS/TLS, cold starts, provider logging or quotas.",
+    "No account provisioning, remote migration, secret provisioning, deployment, callback, subscription, message or gameplay operation occurred.",
+    "The Auth vault/subscription parent and hosted gateway dependency remain incomplete; actual ChatGPT rendering and local Codex wake-up remain unverified.",
+    "Netlify plugin search returned no integration and no local Netlify CLI was available; concrete owner team/site and hosted execution scope remain required."
+  ],
+  "outcome": "Implemented and locally qualified the default-off Netlify callback gateway and Auth single-use service-grant fence. Exact source packaging, operator setup and required hosted qualification remain explicit.",
+  "parent_pending_ids": [
+    "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
+  ],
+  "recorded_at": "2026-10-29T11:22:51.915000+00:00",
+  "related_task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+  "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "source_fingerprints": {
+    "deploy/callback-egress/netlify.toml": "c067fe9b2cd49bdcdf7e1645e04de7d617a00913f8ceecc6b163d8c771055726",
+    "deploy/callback-egress/netlify/functions/callback-egress.mts": "01f75d7742c5352eb9eecc8aaa0e4912d1bba9a1f55e75e0bd84f4ec4c8fe65c",
+    "deploy/callback-egress/package.json": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+    "deploy/callback-egress/prepare-source.mjs": "aab7da5ab361a77d4eb93f723d5571697ba42e992b3f5619fb19998a994d2ed3",
+    "deploy/callback-egress/public/robots.txt": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+    "deploy/callback-egress/src/gateway.mjs": "8d6eb943c8737dc0ba503c84f9e793700e5060088d8a8901347fa9052e2df48f",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "deploy/callback-egress/test/gateway.test.mjs": "6ce37042f26d7b9976090f0f656c10e54be33a0e27663ec2a14769093f18f391",
+    "deploy/callback-egress/test/package.test.mjs": "01b139f8486247ce4984ce6d1241b6539d819e906bb69430a589a885b7f4403a",
+    "deploy/callback-egress/test/tls.test.mjs": "7ad418725f3cd812ca4ec6ed55fb6b705713cfa37b684334fd66f4c3e23ee812",
+    "deploy/prepare-dev.mjs": "ee305f6a4d6efd86d2962aa48ee62f3df45985a3f314355644d8c183d268da4f",
+    "skill-tree/documents/callback-egress.md": "d4eada726623634cc2163d1a3724ac339ae3368dea8b0c2680d34e92f929a692",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "3a29d3a1b548ae9d28d9ae5fc7ebc6cc30ca90ecb71ffc581670da1fb4e63267",
+    "skill-tree/documents/features.md": "493d4ab6610707a6851169d98d07677c9526e8006699b280d128b0317217fae7",
+    "skill-tree/documents/originating-chat-reminders.md": "cba6bb50e224ab5b368ae1d279fb31a7bd90e96e859d7534f6dfdfc240d0b529",
+    "skill-tree/documents/technical.md": "0af33b8c56e87a958913a76570de7bee3ce7c15d0ff165b96aaf0f3b4c3a6276",
+    "skill-tree/documents/testing.md": "87bf307b7f955403aab3a74025b5a4af2415f414ca594bf8da646230e9111465",
+    "skill-tree/history/validation/callback-egress-netlify/hosted-profile.json": "45bd657dab5afe828c621beea7b972adf3b95ca568352f4941658a2b8ec9c7e8",
+    "tests/Functions/dev-preparation.test.mjs": "b4f9b3f417b5ca2012c8e78c318782cd07188fafc605571694a9ad77853e480f",
+    "workers/chatgpt-auth/migrations/0012-callback-egress.sql": "0d4a2b7f989bb160acd4484547b172ba32c8b2aeb6111abd9819d0617db9cffa",
+    "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
+    "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93",
+    "workers/chatgpt-auth/src/index.ts": "7779c88812020a07547bd97f32f42cd22d992cbbb7524c5d46f1775ba9b1b0de",
+    "workers/chatgpt-auth/test/callback-egress.test.mjs": "787d729a3b8592fd01288b7d67d2c366d8ca8daddd0669b5e6de1c2097538278",
+    "workers/chatgpt-auth/worker-configuration.d.ts": "021ea1a0ae9ca0557f68102b8134543cb2d67bb9511e16382b3c7d78e517818e",
+    "workers/chatgpt-auth/wrangler.jsonc": "127f46a52e8d6faab302264b37ce972be62bb1c5f07e6613f21a9b2998a53571",
+    "workers/shared/build-identity.generated.ts": "8f33a8cde42c495db59c3a78a7bb215318e96994415e1053aae6454c0e3a7b76"
+  },
+  "task_id": "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+  "title": "Implement Netlify callback gateway and one-use Auth grants"
+}

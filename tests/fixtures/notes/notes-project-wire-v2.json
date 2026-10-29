@@ -1,0 +1,773 @@
+{
+  "initial": {
+    "schemaVersion": 1,
+    "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+    "revision": 0,
+    "notes": [],
+    "receipts": [],
+    "purged": []
+  },
+  "authority": {
+    "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+    "source": "browser",
+    "document": {
+      "schemaVersion": 1,
+      "id": "00000000-0000-4000-8000-000000000081",
+      "revision": 1,
+      "categories": [],
+      "projects": [
+        {
+          "name": "Duplicate name",
+          "categoryId": null,
+          "id": "00000000-0000-4000-8000-000000000082",
+          "revision": 1,
+          "isArchived": false
+        },
+        {
+          "name": "Duplicate name",
+          "categoryId": null,
+          "id": "00000000-0000-4000-8000-000000000083",
+          "revision": 1,
+          "isArchived": false
+        }
+      ],
+      "sections": [],
+      "labels": [],
+      "goals": [],
+      "tasks": [],
+      "occurrences": [],
+      "completions": [],
+      "habitScores": [],
+      "projections": []
+    }
+  },
+  "rows": [
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 0,
+        "expectedNoteRevision": 0,
+        "operation": "create",
+        "title": "Project note",
+        "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n"
+      },
+      "hash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+      "atUtc": "2026-10-29T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 1,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 1,
+              "title": "Project note",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": []
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000002",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 1,
+        "expectedNoteRevision": 1,
+        "operation": "update",
+        "title": null,
+        "markdown": null,
+        "project": {
+          "projectId": "00000000-0000-4000-8000-000000000082",
+          "workspaceId": "00000000-0000-4000-8000-000000000081",
+          "source": "browser",
+          "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+        }
+      },
+      "hash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+      "atUtc": "2026-10-29T00:01:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 2,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 2,
+              "title": "Project note",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:01:00+00:00",
+              "project": {
+                "projectId": "00000000-0000-4000-8000-000000000082",
+                "workspaceId": "00000000-0000-4000-8000-000000000081",
+                "source": "browser",
+                "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+              }
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000003",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 2,
+        "expectedNoteRevision": 2,
+        "operation": "update",
+        "title": "Changed title",
+        "markdown": null
+      },
+      "hash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+      "atUtc": "2026-10-29T00:02:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 3,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 3,
+              "title": "Changed title",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:02:00+00:00",
+              "project": {
+                "projectId": "00000000-0000-4000-8000-000000000082",
+                "workspaceId": "00000000-0000-4000-8000-000000000081",
+                "source": "browser",
+                "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+              }
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:01:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000003",
+            "payloadHash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000004",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 3,
+        "expectedNoteRevision": 3,
+        "operation": "update",
+        "title": null,
+        "markdown": null,
+        "project": {
+          "projectId": "00000000-0000-4000-8000-000000000083",
+          "workspaceId": "00000000-0000-4000-8000-000000000081",
+          "source": "browser",
+          "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+        }
+      },
+      "hash": "718b1e257d6dcae5622ca0b90d5f36be79dd3bf353fcd441646394eee6004fea",
+      "atUtc": "2026-10-29T00:03:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 4,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 4,
+              "title": "Changed title",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:03:00+00:00",
+              "project": {
+                "projectId": "00000000-0000-4000-8000-000000000083",
+                "workspaceId": "00000000-0000-4000-8000-000000000081",
+                "source": "browser",
+                "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+              }
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:01:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 3,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:02:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000003",
+            "payloadHash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000004",
+            "payloadHash": "718b1e257d6dcae5622ca0b90d5f36be79dd3bf353fcd441646394eee6004fea",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000005",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 4,
+        "expectedNoteRevision": 4,
+        "operation": "trash",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "a6ffcda2218437637fb13508ce54e75b8ad8b30235c1ace6f3a64b5f7ff87eaf",
+      "atUtc": "2026-10-29T00:04:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 5,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 5,
+              "title": "Changed title",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": true,
+              "atUtc": "2026-10-29T00:04:00+00:00",
+              "project": {
+                "projectId": "00000000-0000-4000-8000-000000000083",
+                "workspaceId": "00000000-0000-4000-8000-000000000081",
+                "source": "browser",
+                "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+              }
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:01:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 3,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:02:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 4,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:03:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000003",
+            "payloadHash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000004",
+            "payloadHash": "718b1e257d6dcae5622ca0b90d5f36be79dd3bf353fcd441646394eee6004fea",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000005",
+            "payloadHash": "a6ffcda2218437637fb13508ce54e75b8ad8b30235c1ace6f3a64b5f7ff87eaf",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000006",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 5,
+        "expectedNoteRevision": 5,
+        "operation": "restore",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "64dbd190f74ebc69e83ebbade7f1e78e9f4b9299bc357b00196b092de7f8b630",
+      "atUtc": "2026-10-29T00:05:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 6,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 6,
+              "title": "Changed title",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:05:00+00:00",
+              "project": {
+                "projectId": "00000000-0000-4000-8000-000000000083",
+                "workspaceId": "00000000-0000-4000-8000-000000000081",
+                "source": "browser",
+                "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+              }
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:01:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 3,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:02:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 4,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:03:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 5,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": true,
+                "atUtc": "2026-10-29T00:04:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000003",
+            "payloadHash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000004",
+            "payloadHash": "718b1e257d6dcae5622ca0b90d5f36be79dd3bf353fcd441646394eee6004fea",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000005",
+            "payloadHash": "a6ffcda2218437637fb13508ce54e75b8ad8b30235c1ace6f3a64b5f7ff87eaf",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000006",
+            "payloadHash": "64dbd190f74ebc69e83ebbade7f1e78e9f4b9299bc357b00196b092de7f8b630",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 6,
+            "notebookRevision": 6
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000007",
+        "noteId": "00000000-0000-4000-8000-000000000084",
+        "expectedNotebookRevision": 6,
+        "expectedNoteRevision": 6,
+        "operation": "update",
+        "title": null,
+        "markdown": null,
+        "clearProject": true
+      },
+      "hash": "57ebd2fa2ba965122ea8a619d75037a492dfb2b291d9877f6419cad138dbcc67",
+      "atUtc": "2026-10-29T00:06:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e",
+        "revision": 7,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000084",
+            "current": {
+              "revision": 7,
+              "title": "Changed title",
+              "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+              "isTrashed": false,
+              "atUtc": "2026-10-29T00:06:00+00:00"
+            },
+            "createdAtUtc": "2026-10-29T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Project note",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:01:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 3,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:02:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000082",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 4,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:03:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 5,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": true,
+                "atUtc": "2026-10-29T00:04:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              },
+              {
+                "revision": 6,
+                "title": "Changed title",
+                "markdown": "# Exact\r\n\uD83E\uDDE5\n\u003C\u003E\u0026\u0022\\\n",
+                "isTrashed": false,
+                "atUtc": "2026-10-29T00:05:00+00:00",
+                "project": {
+                  "projectId": "00000000-0000-4000-8000-000000000083",
+                  "workspaceId": "00000000-0000-4000-8000-000000000081",
+                  "source": "browser",
+                  "ownerScope": "210206063f7b37a20ba5b7a7a44188c7ebeb2e3d50c0024710053df8564c0f9e"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000001",
+            "payloadHash": "993879c64012092c3c5c04264d5cd7e14b4706464586554ab11c0eab6d977e4b",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000002",
+            "payloadHash": "9253055efff559183c2b257bb371038e6a5c6dc2075367b94758657e1604889d",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000003",
+            "payloadHash": "9eb72c8400ac4fc8ff315d6e24cafb08b374b55575115a15d820d95aa12e3e11",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000004",
+            "payloadHash": "718b1e257d6dcae5622ca0b90d5f36be79dd3bf353fcd441646394eee6004fea",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000005",
+            "payloadHash": "a6ffcda2218437637fb13508ce54e75b8ad8b30235c1ace6f3a64b5f7ff87eaf",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000006",
+            "payloadHash": "64dbd190f74ebc69e83ebbade7f1e78e9f4b9299bc357b00196b092de7f8b630",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 6,
+            "notebookRevision": 6
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000007",
+            "payloadHash": "57ebd2fa2ba965122ea8a619d75037a492dfb2b291d9877f6419cad138dbcc67",
+            "noteId": "00000000-0000-4000-8000-000000000084",
+            "noteRevision": 7,
+            "notebookRevision": 7
+          }
+        ],
+        "purged": []
+      }
+    }
+  ]
+}

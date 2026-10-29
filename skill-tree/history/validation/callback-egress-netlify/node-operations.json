@@ -1,0 +1,23 @@
+[
+  {
+    "operation": "node",
+    "classification": "executed-control",
+    "deadline_seconds": 60,
+    "wall_seconds": 0.873,
+    "exit_code": 0
+  },
+  {
+    "operation": "prepare-source",
+    "classification": "executed-control",
+    "deadline_seconds": 30,
+    "wall_seconds": 0.074,
+    "exit_code": 0
+  },
+  {
+    "operation": "bundle-tests",
+    "classification": "executed-control",
+    "deadline_seconds": 60,
+    "wall_seconds": 0.911,
+    "exit_code": 0
+  }
+]

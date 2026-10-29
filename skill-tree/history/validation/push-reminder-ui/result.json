@@ -1,0 +1,64 @@
+{
+  "taskId": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+  "status": "accepted",
+  "scope": "Repository implementation and local synthetic qualification only.",
+  "implementation": [
+    "Explicit Auth-owned account/device consent, direct browser enrollment, exact remote revocation, separate matching local unsubscribe and original request retries/recovery.",
+    "Typed CSharp reminder API with independent Worker wire-hash fixtures, strict identity/receipt validation, account/source/context fences and memory-only acceptance tokens.",
+    "Task cue and schedule creation/edit/cancel in the selected cloud workspace with explicit civil calendars, DST policy, end dates and exact device targets. Configuration and delivery observations remain distinct.",
+    "Opaque per-account/profile/connection IndexedDB CAS state retains original IDs and intent; endpoint/auth secrets are never persisted locally. Acceptance-attempted is durable before send.",
+    "Expiry-bound generic service-worker push and constant same-origin notification routes require fresh authenticated exact-workspace access before revealing task content; sign-in return is strict.",
+    "Account/source changes clear local acknowledgement/filter drafts. Native cue acceptance and recovered schedule/device receipts restore focus. Settings removal explains separate remote consent and local reference lifecycles."
+  ],
+  "checks": {
+    "web": 812,
+    "application": 266,
+    "auth": 175,
+    "workspace": 592,
+    "node": 31,
+    "workerCalendarAndWireHash": 4,
+    "currentPushComponentAndController": 21,
+    "realIndexedDbAssertions": 8,
+    "renderedUniqueCases": 3192,
+    "renderedMeasuredAttempts": 3314,
+    "renderedFixtures": 38,
+    "seededDetectorCases": 2,
+    "matchingWorkerDryRunBuilds": 3,
+    "localReleasePublish": true,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "requiredDependency": {
+    "taskId": "T-4b332426-b30d-4e73-a465-3d1f80eb0746",
+    "status": "accepted",
+    "evidence": "settings-download-result.json"
+  },
+  "evidence": [
+    "matrix-final-summary.json",
+    "matrix-base.jsonl.gz",
+    "matrix-remainder.jsonl.gz",
+    "matrix-delta.jsonl.gz",
+    "matrix-negative.json",
+    "habitica-push-ui-indexeddb.json",
+    "controls.json",
+    "source-fingerprints.json",
+    "habitica-push-ui-web-boundaries-final.log",
+    "habitica-push-ui-phone-light-final.png",
+    "habitica-push-ui-phone-obsidian-final.png"
+  ],
+  "retainedControls": [
+    "Initial32px push/review buttons repaired to44px.",
+    "Enabled Settings Download black-on-dark contrast repaired through required dependency.",
+    "Original service-worker regex/test-boundary failures, stale Auth dist expiry assertion and old test DI failures retained with subsequent successful controls.",
+    "Late cue test exposed an invalid synthetic journal StoreVersion; corrected the fixture without weakening WorkspaceJournalValidation. Account-ack test now reopens the new scoped context before checking the checkbox.",
+    "Fixture-server expiry and300-second matrix deadline remain prerequisite-unavailable observations. Missing cases were independently measured in bounded remainder/delta packages. No timing cap increased.",
+    "An expired-tab data-error reload was rejected by browser URL policy. No further interaction with the error tab; the two current cue states passed in a separate bounded local fixture session."
+  ],
+  "limitations": [
+    "Actual iPhone/iPad permission, installed-app closed/background delivery, Focus behavior, assistive technology and physical devices remain unqualified.",
+    "No live account/provider operation, new secret provisioning, remote migration, Worker/Pages publication, push flag enablement or commit was performed.",
+    "Shown/read remain unknown. Unknown accepted delivery is never automatically resent. Browser data clear removes original local references but does not revoke remote push consent or system permission.",
+    "Current rendered fixtures are synthetic Razor output with production styles; real IndexedDB behavior is separately executed. Local publish is not hosted-client or OS delivery qualification.",
+    "Active controller time was not instrumented; tool wall time and browser timing are retained separately. No cumulative root time pool applies."
+  ]
+}

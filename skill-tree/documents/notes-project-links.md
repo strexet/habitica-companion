@@ -1,0 +1,33 @@
+# Versioned Notes project associations
+
+## Existing storage and identity
+
+Personal Notes retain the existing notebook, note IDs, created timestamps, exact title/Markdown, lifecycle, sixteen retained versions, original receipts and contentHash meaning. The optional project object contains projectId, workspaceId, source and ownerScope. Source is browser or cloud; ownerScope is the existing hashed Notes owner. No display name or project membership enters Markdown, task IDs or Habitica projection.
+
+Absent association fields mean unassigned in legacy versions. New nullable fields are omitted from legacy command/version JSON, preserving existing command bytes and hashes. The neutral notes-wire-v1 fixture remains unchanged. notes-project-wire-v2 binds extended C#/Worker command bytes, hashes, retained association history and unchanged Markdown. Association-only update commands contain the new project object or clearProject:true; omitted fields preserve the current association. Explicit false, conflicting attach/clear, association fields on lifecycle/append commands and clearing during creation refuse.
+
+## Acceptance and source authority
+
+New or changed links require the exact active canonical project in the intended own Workspace and source. Duplicate names supply no authority. A retained archived, removed, missing or unavailable link stays readable and editable; explicit clearing needs no active project. Project removal never deletes Notes. Trash/restore preserve the current association. Exact retained-version reads expose the association from the selected version. Original accepted commands recover before fresh project validation, including after a project becomes stale.
+
+Browser NotesService resolves a fresh own-account Workspace proof. IndexedDbNotesDatabase commits the note revision and checks the exact Workspace store revision, source authority and active project in one existing Dexie transaction across Notes and workspaces. The volatile raw account storage key supplies the transaction binding; only the existing owner hash enters persisted association metadata. Foreign owner/source, frozen/transferred Workspace authority, stale revisions and archived/removed projects refuse new links. A plain metadata-preserving edit or explicit detach retains normal note CAS behavior.
+
+Workspace migration0017 adds nullable project_json to the existing current personal_notes row. Existing personal_note_versions JSON retains historical associations. The cloud API derives ownership from the authenticated Notes profile/connection and checks active canonical Workspace identity. Note acceptance guards both Notes revision/epochs and the observed Workspace store revision/access epoch in one D1 batch. A failed guard or receipt write leaves content, association, history and receipt counters unchanged. Purge removes current and retained association copies alongside note content; profile deletion retains existing cascade behavior.
+
+NotesService export/import preserves retained metadata under the same owner scope, including stale references. Source switching never copies or silently rebinds an association. Browser and cloud owner namespaces remain independent. An imported reference is retained evidence, never authority for a new link.
+
+## Notes access and reviewed tools
+
+Existing separate Notes consent and notes.read/notes.write remain mandatory. Project-only access reveals no private note title, snippet or Markdown. prepare_note_command accepts exact projectId/projectWorkspaceId for create/update, or clearProject:true for update. The server constructs the cloud association; caller owner/source fields are unavailable. Preparation and acceptance require tasks:read when explicitly attaching or moving a project, without granting project mutation. Clear and metadata-preserving edits retain Notes permissions alone.
+
+MCP previews include exact before/after association metadata and unchanged Markdown hashes for association-only edits. Existing request/command/notebook identity, grant/access epochs, reviewed hash and original receipt recovery remain authoritative. Response loss never permits a replacement intent. get_note returns current or exact retained-version metadata; projectContext resolves a display name and active/archived/removed/missing state only with current canonical tasks:read access. Unavailable permission/source retains the exact stored link with unavailable context and no name.
+
+## Filtered reads and browser transports
+
+search_notes and the owner Notes search API accept either exact projectId plus projectWorkspaceId or unassigned:true. The complete text/trash/project eligible set is filtered before twenty-row paging. Cloud project filters match only cloud associations in the exact Workspace. Continuation requires the same notebook revision; stale pages restart. Search results include association metadata and bounded existing snippets, never complete content. Local NotesQueries applies equivalent project/source/unassigned filtering to the existing own notebook and returns revision-bound pages.
+
+NotesCloudClient transports association-only commands, validates exact original receipt hashes, preserves association metadata in full exports and retained versions, and rejects foreign ownership or project-filter mismatches before exposing read results. Existing browser title/Markdown editing omits association fields and preserves unseen metadata. NotesPanel supplies the project picker, explicit unassignment, exact association reviews and combined revision-bound twenty-row library pages. TodoProjectNotesPanel composes the same editor on demand for the exact selected project. Source selection and Notes consent remain independent of project navigation. The read-only canonical Workspace context supplies eligible choices and stale-link labels; the existing backend and atomic store remain acceptance authorities.
+
+## Qualification boundary
+
+Neutral wire fixtures, synthetic D1/SDK/HTTP controls and C# model/service/storage/client controls cover legacy identity, exact source bytes, attach/move/detach, retained history, stale links, duplicate names, two owners, permissions, rollback, response loss and complete-set paging beyond twenty results. The isolated localhost browser harness exercises actual existing Dexie transaction guards and removes only generated synthetic owner rows after the checks. The Notes/project UI has component and responsive/theme qualification recorded in testing.md and skill-tree/history/validation/notes-project-ui/result.json. Runtime provider calls, hosted migration, real private Notes, device behavior and installed host skill activation remain unqualified.

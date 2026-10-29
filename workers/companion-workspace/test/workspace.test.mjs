@@ -156,14 +156,14 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
   return Response.json({success:true,data:{id:externalId,userId:user,type:'todo',text:remoteText,notes:'External notes',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{}}});
  }});
  const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; await seedLegacyCommand(f,c);
- const preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ const preview=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId:c.taskId,habiticaTaskId:externalId}})).json();
  assert.equal(preview.task.text,c.patch.text); assert.equal(preview.external.text,remoteText); assert.equal(preview.pendingCommandCount,0);
  remoteText='Changed after preview';
- const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedWorkspaceId:w.workspaceId,expectedAccessEpoch:preview.accessEpoch,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
- assert.equal((await call(f,'/projection/adopt',w.sessionToken,approval)).status,409);
- const fresh=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ const approval={tool:'accept_task_adoption',arguments:{commandId:preview.commandId,reviewHash:preview.reviewHash}};
+ assert.equal((await(await call(f,'/adoption-api',w.sessionToken,approval)).json()).state,'refused');
+ const fresh=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId:c.taskId,habiticaTaskId:externalId}})).json();
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID(),expectedFingerprint:fresh.external.fingerprint})).status,409);
- assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);
+ assert.equal((await(await call(f,'/adoption-api',w.sessionToken,{tool:'accept_task_adoption',arguments:{commandId:fresh.commandId,reviewHash:fresh.reviewHash}})).json()).state,'accepted');
  const exported=await(await call(f,'/export',w.sessionToken)).json(); assert.equal(exported.document.tasks[0].id,c.taskId); assert.equal(exported.document.tasks[0].text,c.patch.text); assert.equal(exported.document.projections[0].habiticaTaskId,externalId); assert.equal(taskWrites,0);
  const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,projectToHabitica:true,patch:{notes:'An explicit later edit'}};
  const saved=await(await call(f,'/commands',w.sessionToken,update)).json(); assert.equal(saved.entry.projectionState,'pending'); assert.deepEqual(saved.entry.effects,['update']);
@@ -208,10 +208,10 @@ test('reviewed adoption supports retained historical and recurring records and r
   await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:kind==='todo'?'createTodo':kind==='daily'?'createDaily':'createHabit',taskId,patch:{text:'Retained native'}});
   let revision=2;if(kind==='todo'){await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:revision++,operation:'completeTask',taskId});}
   await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:revision,operation:'deleteTask',taskId});
-  const before=await(await call(f,'/export',w.sessionToken)).json(),preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId,habiticaTaskId:externalId})).json();
-  const approval={taskId,habiticaTaskId:externalId,expectedWorkspaceId:w.workspaceId,expectedAccessEpoch:preview.accessEpoch,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
-  const response=await call(f,'/projection/adopt',w.sessionToken,approval);assert.equal(response.status,200,await response.clone().text());const receipt=await response.json(),readCount=reads;
-  const duplicate=await call(f,'/projection/adopt',w.sessionToken,approval);assert.equal(duplicate.status,200);assert.deepEqual(await duplicate.json(),receipt);assert.equal(reads,readCount);assert.equal(writes,0);
+  const before=await(await call(f,'/export',w.sessionToken)).json(),preview=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId,habiticaTaskId:externalId}})).json();
+  const approval={tool:'accept_task_adoption',arguments:{commandId:preview.commandId,reviewHash:preview.reviewHash}};
+  const response=await call(f,'/adoption-api',w.sessionToken,approval);assert.equal(response.status,200,await response.clone().text());const receipt=await response.json(),readCount=reads;
+  const duplicate=await call(f,'/adoption-api',w.sessionToken,approval);assert.equal(duplicate.status,200);assert.deepEqual(await duplicate.json(),receipt);assert.equal(reads,readCount);assert.equal(writes,0);
   const after=await(await call(f,'/export',w.sessionToken)).json();assert.deepEqual(after.document.tasks,before.document.tasks);assert.deepEqual(after.commands,before.commands);assert.deepEqual(after.document.completions,before.document.completions);assert.equal(after.document.projections[0].habiticaTaskId,externalId);
   assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID()})).status,409);
  }

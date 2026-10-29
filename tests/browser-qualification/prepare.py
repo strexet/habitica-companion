@@ -8,7 +8,7 @@ if not (root/'coverage.json').exists():p.error('Generate Razor fixtures with HAB
 for name in ['css/app.css','js/colorSchemes.js']:
  if (published/name).read_bytes()!=(repository/'src/Habitica.WebApp/wwwroot'/name).read_bytes():p.error('Published asset is stale; publish the app before staging: '+name)
 
-for name in ['qualification-core.mjs','qualification-frame.mjs','matrix.html']:shutil.copyfile(source/name,root/name)
+for name in ['qualification-core.mjs','qualification-frame.mjs','qualification-session.mjs','matrix.html']:shutil.copyfile(source/name,root/name)
 for original,target in [('css/app.css','app.css'),('_content/MudBlazor/MudBlazor.min.css','mud.css'),('js/colorSchemes.js','colorSchemes.js')]:shutil.copyfile(published/original,root/target)
 print(json.dumps({'fixtures':len(json.loads((root/'coverage.json').read_text())),'directory':str(root),'entrypoint':'matrix.html'}))
 

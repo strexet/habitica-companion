@@ -1,0 +1,168 @@
+{
+  "taskId": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+  "status": "accepted",
+  "implementation": [
+    "Explicit UTC/timezone review and independent manual-stale actions with retained causal events.",
+    "Cross-runtime v10 identity, native preview/receipt recovery, read/write SDK tools and revision-bound history.",
+    "Todo editor uses exact native command review with no task/game mutation or browser permission."
+  ],
+  "checks": {
+    "domain": 36,
+    "application": 262,
+    "storage": 25,
+    "web": 777,
+    "workspace": 577,
+    "auth": 169,
+    "sdk": 4,
+    "rendered": 504,
+    "coldDetectorCases": 2,
+    "warmDetectorCases": 2
+  },
+  "requiredDependency": "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+  "dependencyEvidence": "skill-tree/history/validation/qualification-startup/result.json",
+  "controls": [
+    {
+      "kind": "executed_control",
+      "name": "domain-full",
+      "exitCode": 0,
+      "toolWallSeconds": 3.14,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "application-full",
+      "exitCode": 0,
+      "toolWallSeconds": 4.4,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "storage-full",
+      "exitCode": 0,
+      "toolWallSeconds": 2.42,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "web-accepted",
+      "exitCode": 0,
+      "toolWallSeconds": 44.45,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "workspace-full",
+      "exitCode": 0,
+      "toolWallSeconds": 73.77,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "auth-full",
+      "exitCode": 0,
+      "toolWallSeconds": 36.62,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "sdk-tests",
+      "exitCode": 0,
+      "toolWallSeconds": 2.16,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "focus-return-tests",
+      "exitCode": 0,
+      "toolWallSeconds": 15.57,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "publish-accepted",
+      "exitCode": 0,
+      "toolWallSeconds": 18.67,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "auth-build",
+      "exitCode": 0,
+      "toolWallSeconds": 3.35,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "mcp-build",
+      "exitCode": 0,
+      "toolWallSeconds": 3.13,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "name": "workspace-build2",
+      "exitCode": 0,
+      "toolWallSeconds": 3.3,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "retainedFailures": [
+    "partial.json",
+    "interrupted-browser.json",
+    "detector-startup-failure.json"
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "note": "Controller sampling not separately instrumented. Tool walls and browser case phases are independent records. Server prerequisite expirations remain in partial evidence."
+  },
+  "limitations": [
+    "Physical devices, assistive technology, live ChatGPT/Codex calls, production publication and actual notification delivery remain unrun.",
+    "Static final-state qualification does not establish animation progression.",
+    "Strict older clients can reject optional reviewEvents; coordinated reader rollout is required. No migration, new OAuth scope or secret is required."
+  ],
+  "sourceFingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceTaskReview.cs": "1f1571af0014439e3ddb000f84d0fd967e4bfed160685c08a83d71456d276d79",
+    "src/Habitica.Application/Workspace/WorkspaceTaskReviews.cs": "4d46a546e92d4a5c5d3af14d02e13995c3c53509a7068ef1977ca6547d41ed81",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "df59db4744990267a601c78dedb343321d186ef09d47ea47f0c1ef24b4f6f023",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "39760120d2cc1cd3b7c57ea6f71ba5c08ffb045a32f852d40b88e077099d9e7a",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "5efb06ec6be817164081b5451d85fd0314c25de55b25eac077fd08991223803a",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "b04b97a7522bf7857b21b6d6814daf387f4b312fbcb14ff9391d84ec3f839f8d",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "40c98c1892a3eccd01d810130d84bc13abe11a356a7efc3f3469b3a254cf171e",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationHistory.cs": "5ea5013f2ec704c7b5bf91304d999c6c4c69fac042943bc9e418f9483ab1797d",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "6e617dca81fce928f5457991f309e7e1f0d9591c89c1e3a3647284e8860efed2",
+    "workers/shared/task-review.ts": "c0df7e7bc24a6fa391ec7432c7456e7aafc63d952b9107826f91d907d11ef298",
+    "workers/shared/task-tools.ts": "8f24bfac554293d0adf64c35c8ac8c846c046be63919b90dcfbe5c3ae01a782b",
+    "workers/shared/workspace-domain.ts": "cc13e9b96702d85ed3e60c5053624faf4a1a84798d3837667bff6c41bb65da6b",
+    "workers/shared/workspace-commands.ts": "9da4d74b1fcb7976f89f011780d459efefac0b5ab2673bf3a36984b64a7d5c1f",
+    "workers/shared/workspace-organization.ts": "7851c2f72268706b51f2b7139cdb338bf0d311dc9aa7ae1778ffeb14fb5f2982",
+    "workers/chatgpt-mcp/src/task-tools.ts": "b95da87da4a2464cf03d0028bbc52425aeab4ed40dd67e703d83766d3e7a169b",
+    "workers/companion-workspace/src/commands.ts": "c561b98acb829b62a7cdd594c2b0b0d04e8f5bc82a842811870793e457239359",
+    "workers/companion-workspace/src/journal.ts": "ade64d0de412c261452223d29044cfd90d6107f038701375a93aafdcb1e27fd9",
+    "workers/companion-workspace/src/organization-commands.ts": "035c4dd23113175842852e06439a4af3ac1f1dff61c07df09e5372e1dd803338",
+    "workers/companion-workspace/src/task-api.ts": "7e347654b06cb0b8f981e4b86341885c5ee643476af39dd7f3d8cfe6fcbf4249",
+    "src/Habitica.WebApp/Components/TodoReviewEditor.razor": "65c829c4f7252ef980ea51876ad52b974849ca9051bb66c479e7dd7ca6d9562f",
+    "src/Habitica.WebApp/Components/TodoTaskWorkflowEditor.razor": "d15751f6f39354e355b04403f29612bf1a3640a93e989c151f8dd7dbe76c11df",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "14b3904704e8ac393567c2675304335f255fd1eb9ef270c368c04bf070d1122b",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "68296de0f15f3a223227d09d25740f1d21d18ee284329bca12397df667b8d6b6",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "37bab0f42f9d514af443491100fbe89cdfe8f07689246e02c748375b7213ac4f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTaskReviewTests.cs": "6209701ed051b16bfb9814c17ebe4043debcf69199d358d057a2d50e5000bc49",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReviewEditorTests.cs": "6c7537302d6c19c28a156e471f0f7c0ac0071492cbd09a67da48b0d710cc4b25",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ReviewTests.cs": "125231c142913141f82d0bfec67569973e12dd1e92896844f2da4a59fbe69d19",
+    "tests/fixtures/workspace/task-review-command-v10.json": "98776a05939dda4dfb39c53917a2334b309412ea77d3a186400dfcd9838fe23d",
+    "workers/companion-workspace/test/task-review.test.mjs": "d0563c4538e752609510e3baf8c467a6f77de2818d690ddcaa699fe1010aa3ba",
+    "plugin/skills/habitica-task-management/SKILL.md": "57a4b180824172fb83512f9adfe1e6543d37baf4014ea4cbacf369c048dbc642",
+    "skill-tree/documents/task-reviews.md": "44dce20b4d559a7f7e14987d20859f144f22b5aa5c9504f0e002bf43836163ec"
+  }
+}

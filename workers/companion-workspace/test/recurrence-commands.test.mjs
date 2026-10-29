@@ -27,7 +27,7 @@ test('calendar authoring, scheduled completion and clear retain history and immu
  const cleared=await accept(document,command(document,id,'updateTask',{clearRecurrence:true}),now);assert.equal(cleared.document.tasks[0].recurrence,null);assert.equal(cleared.document.completions.length,1);assert.equal(cleared.document.occurrences.length,1);assert.deepEqual(created.entry.taskSnapshot.recurrence,schedule);
  const exported={document:cleared.document,storeVersion:cleared.document.revision,commands:[created,partial,complete,cleared].map(v=>v.entry),events:[created,partial,complete,cleared].map(v=>v.event)};
  await journal(exported);
- const falseEffect=structuredClone(exported);falseEffect.commands[0].command.projectToHabitica=true;falseEffect.commands[0].payloadHash=await commandHash(falseEffect.commands[0].command);falseEffect.commands[0].projectionState='pending';falseEffect.commands[0].effects=['create'];await journal(falseEffect);
+ const falseEffect=structuredClone(exported);falseEffect.commands[0].command.projectToHabitica=true;falseEffect.commands[0].payloadHash=await commandHash(falseEffect.commands[0].command);falseEffect.commands[0].projectionState='pending';falseEffect.commands[0].effects=['create'];await assert.rejects(journal(falseEffect));delete falseEffect.document.activityCoverage;await journal(falseEffect);
  const changedSnapshot=structuredClone(exported);changedSnapshot.commands[0].taskSnapshot.recurrence.interval=2;await assert.rejects(journal(changedSnapshot));
  const missingSnapshot=structuredClone(exported);delete missingSnapshot.commands[0].taskSnapshot;await assert.rejects(journal(missingSnapshot));
 });

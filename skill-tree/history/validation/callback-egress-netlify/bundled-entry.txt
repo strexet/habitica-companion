@@ -1,0 +1,2 @@
+200 {"service":"callback-egress","version":"callback-egress-v1","activation":"unqualified"}
+503 {"state":"unavailable"}

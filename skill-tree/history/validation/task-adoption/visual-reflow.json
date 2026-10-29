@@ -1,0 +1,75 @@
+{
+  "taskId": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+  "automatedMatrixScope": "Geometry and contrast; manual visual readability and keyboard focus remain separate.",
+  "finding": "At 390px and 200-percent text, nested root/link/review rem padding split the recovery button into word fragments despite zero geometric overflow.",
+  "repair": "Scoped todo-link-editor class removes repeated nested card inset at phone widths and reduces review inset. No desktop or unrelated control change.",
+  "before": [
+    "pre-reflow-browser-results.json",
+    "pre-reflow-obsidian-focus.png"
+  ],
+  "after": {
+    "matrix": {
+      "cases": 672,
+      "errors": 0,
+      "schemes": [
+        "boss-battle",
+        "generated-calm",
+        "generated-moderate",
+        "gryphy-dark",
+        "gryphy-light",
+        "obsidian-glow",
+        "toxic-swamp"
+      ],
+      "widths": [
+        360,
+        390,
+        430,
+        768,
+        1024,
+        1200
+      ],
+      "textPercent": [
+        100,
+        200
+      ]
+    },
+    "manualFocus": [
+      {
+        "route": "/tasks",
+        "width": 390,
+        "textPercent": 200,
+        "scheme": "obsidian-glow",
+        "focused": "Recover original link receipt",
+        "visual": "Full words readable; visible focus ring; cancel and close disabled",
+        "evidence": "obsidian-focus.png"
+      },
+      {
+        "route": "/todo/history",
+        "width": 390,
+        "textPercent": 200,
+        "scheme": "gryphy-light",
+        "focused": "Recover original link receipt",
+        "visual": "Full words readable; visible focus ring; cancel and close disabled",
+        "evidence": "light-history-focus.png"
+      },
+      {
+        "route": "/tasks",
+        "viewportWidth": 1265,
+        "textPercent": 100,
+        "scheme": "gryphy-light",
+        "focused": "Confirm exact link",
+        "focusVisible": true,
+        "outline": "rgb(67, 143, 208) solid 2px",
+        "buttonHeight": 44,
+        "buttonWidth": 162.8984375,
+        "evidence": "desktop-focus.png"
+      }
+    ],
+    "negativeControlErrorKinds": [
+      "contrast",
+      "overflow",
+      "overlap"
+    ],
+    "transportObservation": "The first local server reached the explicit 600-second deadline after qualification. Restarted the bounded server; a stale browser error document refused DOM operations, so a fresh allowed localhost tab completed the independent desktop check. No network/security policy changed."
+  }
+}

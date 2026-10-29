@@ -34,11 +34,11 @@ public sealed record WorkspaceTagReviewDetails(Guid EntityId,WorkspaceOrganizati
     Guid? OriginalWorkId=null,Guid? OriginalAttemptId=null,WorkspaceTagObservedTag? ObservedTag=null,WorkspaceTagObservedTask? ObservedTask=null);
 public sealed record WorkspaceTagReview(Guid? CommandId,Guid? RequestId,Guid WorkspaceId,string Operation,long ExpectedRevision,DateTimeOffset ExpiresAtUtc,
     bool CanAccept,[property:JsonRequired] int GameEffects,WorkspaceTagReviewDetails? Details,bool Expired=false,bool SavedInCompanion=false,WorkspaceTagReceipt? Receipt=null,
-    string? Reason=null,WorkspaceTagOriginal? Original=null);
+    string? Reason=null,WorkspaceTagOriginal? Original=null,string? ReviewOutcome=null);
 public sealed record WorkspaceTagOriginal(Guid WorkId,Guid CommandId,long SourceRevision,string State,string? Error,Guid EntityId,WorkspaceOrganizationKind Kind,
     string Operation,Guid? OriginalAttemptId,string? Provenance=null,bool? OutcomeUnknown=null,int? GameEffects=null);
 public sealed record WorkspaceTagReceipt(Guid CommandId,Guid? RequestId,Guid? WorkspaceId,string? Operation,bool? SavedInCompanion,
-    [property:JsonRequired] int GameEffects,[property:JsonRequired] bool OutcomeUnknown,IReadOnlyList<Guid>? WorkIds=null,WorkspaceTagOriginal? Original=null,bool? Prepared=null);
+    [property:JsonRequired] int GameEffects,[property:JsonRequired] bool OutcomeUnknown,IReadOnlyList<Guid>? WorkIds=null,WorkspaceTagOriginal? Original=null,bool? Prepared=null,string? ReviewOutcome=null,string? Reason=null,DateTimeOffset? ClosedAtUtc=null);
 public sealed record WorkspaceTagRequest(Guid RequestId,string Operation,WorkspaceOrganizationKind? Kind=null,Guid? EntityId=null,Guid? HabiticaTagId=null,Guid? WorkId=null);
 public interface IWorkspaceTagApi
 {

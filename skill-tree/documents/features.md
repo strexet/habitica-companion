@@ -1487,12 +1487,14 @@ Application entry point: `Habitica.WebApp.State.AppSessionController`
 Primary Habitica data: local session state, task snapshot freshness, sync timestamp, diagnostics history
 Mutates Habitica state: no
 Requires confirmation: no
-Offline behavior: fully available from local session, snapshot, and diagnostics stores
+Offline behavior: public app shell after successful service-worker installation; saved local session, snapshots and diagnostics remain subject to browser storage availability. Auth, privacy and API routes remain network-only.
 Rate-limit sensitivity: none by itself
 
 ### Goal
 
 Provide a stable responsive PWA shell with routes for sign-in, dashboard, tasks, Equipment (`/inventory`), Pets & Mounts, party, quests, spells, settings, diagnostics, and privacy, while keeping the foldable feature drawer hidden until an authenticated session exists.
+
+The [PWA installation contract](pwa-installation.md) owns manifest identity, Safari installation steps, cache-route boundaries and physical-device release checks. PwaInstallPanel is available before sign-in and in Settings. Initialization restores only explicitly remembered credentials; unavailable browser storage leaves sign-in unrestored with sanitized recovery feedback. Installation changes no Habitica state or notification permission.
 
 ### Inputs
 
@@ -1861,7 +1863,7 @@ Current view-model rules:
 19. Stack battle preset cards vertically at full content width.
 20. Highlight the highest positive visible stat values on battle gear, best-in-category items, normal equipment cards, and saved preset item cards; tied highest stats are highlighted together.
 21. For individual battle equip candidates, show the stat delta compared with the current battle loadout after applying that item. Two-handed weapons clear the shield slot for the comparison.
-22. Build optimizer recommendations from owned stat-bearing battle gear using the selected goal: Balanced, Strength, Intelligence, Constitution, Perception, Boss damage, or Survival.
+22. Build optimizer recommendations from owned stat-bearing battle gear using the selected goal: Balanced, Strength, Intelligence, Constitution, Perception, Boss damage, or Survival. Intelligence is the initial preference for every class and the fallback for invalid input. Explicit choices remain selected while the page is mounted. Opening the page or changing the goal performs no equip or preset save; the preference has no persistence and does not assert a universal mathematical optimum.
 23. Score one-handed weapon plus shield against two-handed weapon as a pair and clear the shield when the two-handed recommendation wins.
 24. Let users equip optimizer recommendations through the same sequential slot equip flow used by presets.
 25. Let users save optimizer recommendations as local battle presets with explicit names.
@@ -3053,9 +3055,11 @@ Status: Implemented in shared app.css and colorSchemes.js. Transient text-primar
 
 ## Safe correlated application diagnostics
 
-Status: Implemented locally through DiagnosticsLogWriter, DiagnosticsLogSanitizer and bounded browser log storage. Diagnostic events remain supplementary observations; canonical command receipts remain authoritative for accepted tasks and confirmed Habitica effects. Missing or failed logs never authorize command replay. No remote log upload or new integration permission is introduced. Diagnostics remain excluded from private device sync by default.
+Local diagnostic append and clear operations share one asynchronous mutation gate per scoped DiagnosticsLogStore. Overlapping successful appends preserve committed entries in newest-first order and retain the configured capacity (250 by default); clear executes after the active mutation finishes. Cancellation and storage failures release ownership without changing canonical commands or permitting replay. Independent scopes and browser tabs remain uncoordinated; this does not provide cross-tab atomicity. Reads can observe the last committed storage value while a mutation waits.
 
-DiagnosticsLogSanitizer replaces caller messages with fixed operation/result summaries, accepts only catalogued operation names and finite metadata fields, hashes log row identities and normalizes UTC timestamps. Task/note text, preset names, account identifiers, item identifiers, exception messages, headers and credential/linking/management tokens are omitted. Allowed numeric counts, bounded game measurements, fixed lifecycle choices and validated sync section/status lists retain diagnostic value. Structured context contains bounded duration, result category, non-secret command/correlation identities and accepted/requested/confirmed counts. Mode distinguishes browser-local work, server reads and server mutations; mode alone never establishes a Habitica effect. Original command/correlation identities remain available for receipt lookup.
+Status: Implemented locally through DiagnosticsLogWriter, DiagnosticsLogSanitizer and bounded browser log storage. Diagnostic events remain supplementary observations; canonical command receipts remain authoritative for accepted tasks and confirmed Habitica effects. Missing or failed logs never authorize command replay. Local recording never uploads logs. Explicit diagnostic sharing uses separate consent and diagnostics.read under [shared-diagnostics.md](shared-diagnostics.md). Diagnostics remain excluded from private device sync by default.
+
+DiagnosticsLogSanitizer preserves the eight fixed group-tag consent/status/candidate/prepare/accept/recovery operation names through retained storage and manual bundle export. Unknown operation names retain app-operation fallback. DiagnosticsLogSanitizer replaces caller messages with fixed operation/result summaries, accepts only catalogued operation names and finite metadata fields, hashes log row identities and normalizes UTC timestamps. Task/note text, preset names, account identifiers, item identifiers, exception messages, headers and credential/linking/management tokens are omitted. Allowed numeric counts, bounded game measurements, fixed lifecycle choices and validated sync section/status lists retain diagnostic value. Structured context contains bounded duration, result category, non-secret command/correlation identities and accepted/requested/confirmed counts. Mode distinguishes browser-local work, server reads and server mutations; mode alone never establishes a Habitica effect. Original command/correlation identities remain available for receipt lookup.
 
 | Boundary | Local diagnostic owner | Observation and coverage limit |
 | --- | --- | --- |
@@ -3065,7 +3069,7 @@ DiagnosticsLogSanitizer replaces caller messages with fixed operation/result sum
 | Canonical tasks and recovery | WorkspaceTaskController | Local/cloud load, prepare, acceptance and original receipt recovery record safe command context; unknown acceptance remains distinct from confirmed projection. Link adoption records observation without inferring a missing receipt. |
 | Projects, organization and saved lists | WorkspaceCloudClient validated public adapters | Complete preview/accept/recovery and saved-view read results omit names, predicates and response bodies. Unknown organization acceptance retains original command/correlation IDs. |
 | Saved appearance | ColorSchemeService | Selection/save/delete and applied imported changes emit outcomes. Routine loads, previews and slider updates emit no event per render. |
-| Native agent/backend execution | Existing server journals and operational receipts | Browser diagnostics cannot claim server execution coverage. Explicitly shared browser bundles provide supplementary local evidence; no browser-log MCP reader exists. |
+| Native agent/backend execution | Existing server journals and operational receipts | Browser diagnostics cannot claim server execution coverage. Explicitly shared browser copies provide supplementary local evidence. Diagnostic MCP tools read accepted server copies; hidden browser history remains unavailable. |
 | Read-only local lists and row rendering | Canonical models and component assertions | No per-row diagnostic emission; command journals and query validation remain the primary source. |
 
 Writer observation failures, formatter/clock failures and bounded diagnostic-storage deadlines cannot replace original results or exceptions. Cancellation remains cancellation. Account/connection generation changes discard old command context. Log writes and local message refresh have one-second deadlines. Diagnostics reads local history on page entry without a Habitica request; failed reads preserve the last available view with explicit unavailable copy.
@@ -3243,7 +3247,7 @@ Status: implemented locally. Owners: WorkspaceTaskController, TodoWorkspacePrese
 
 Adoption displays both task identities, kinds, completion states, notes, dates and available Daily schedules. Fields remain independent; adoption does not overwrite differences or grant rewards. Browser workspaces explain the cloud prerequisite. Completed and archived history remains retained. Client parsing accepts complete normalized Daily schedule metadata and refuses malformed metadata.
 
-A definitive preparation rejection keeps the draft and exposes correction/cancellation. Unknown preparation retains the original request ID, including after a later refusal, until the original preview is recovered. Unknown command acceptance retains receipt lookup. Unknown adoption retains the exact original review and blocks cancellation, source/type changes and replacement writes; recovery repeats the identical idempotent adoption request. Confirmed adoption with failed refresh stays read only until reload. Existing diagnostics record refused versus uncertain preparation/link outcomes without task content.
+A definitive preparation rejection keeps the draft and exposes correction/cancellation. Unknown preparation retains the original request ID, including after a later refusal, until the original preview is recovered. Unknown command acceptance retains receipt lookup. Unknown adoption retains the exact original review and blocks cancellation, source/type changes and replacement writes; recovery reads the durable original command before any identical acceptance retry. Confirmed adoption with failed refresh stays read only until reload. Existing diagnostics record refused versus uncertain preparation/link outcomes without task content.
 
 
 ## Shared required task defaults
@@ -3291,7 +3295,7 @@ GET /tag-projection in the authenticated Workspace session and tagProjection in 
 
 Status: implemented locally. Settings and /todo/sync expose separate habitica-tags-v1 consent, canonical task/group coverage, exact native candidate adoption, complete membership review and original receipt recovery. Consent starts unverified per tab; no automatic server read, grant expansion or activation occurs on render. Agents use six dedicated group-tag tools with additive habitica.tags.write for preparation/acceptance and existing tasks:read for audit/recovery.
 
-Coverage includes retained completed/archived task mappings and separate identity/membership counts. Duplicate names show exact native IDs. Every membership review page requires acknowledgement before browser confirmation. Existing task and organization previews also expose complete tagProjection membership and keep gameplay effects separate. Unknown acceptance preserves the original command and permits original receipt lookup or explicit original acceptance retry. Native unknown recovery requires a separate reviewed observation without replay. Stored saves and observations never imply game rewards. Open task/organization editors require reload after accepted tag intent. Hosted clients, physical devices and live accounts remain unqualified.
+Coverage includes retained completed/archived task mappings and separate identity/membership counts. Stored membership survives unrelated workspace revisions when exact group identity/lifecycle and complete confirmed canonical/native membership remain unchanged. Changed groups, remaps, incomplete/ambiguous receipts and unavailable current-connection provenance require review. Stored confirmation remains separate from fresh provider observation. Duplicate names show exact native IDs. Every membership review page requires acknowledgement before browser confirmation. Existing task and organization previews also expose complete tagProjection membership and keep gameplay effects separate. Unknown acceptance preserves the original command and permits original receipt lookup or explicit original acceptance retry. A stale or expired preparation can close only through durable terminal-unaccepted evidence, atomically excluding acceptance and existing work. The browser releases an earlier uncertainty fence only after validating the exact terminal receipt and requires a fresh complete review. Missing records and generic refusals preserve uncertainty. Native unknown recovery requires a separate reviewed observation without replay. Stored saves and observations never imply game rewards. Open task/organization editors require reload after accepted tag intent. Hosted clients, physical devices and live accounts remain unqualified.
 
 
 ## Resumable checklist project conversion
@@ -3398,6 +3402,14 @@ Trash and restore use exact note/revision reviews; permanent purge requires a se
 
 NotesMarkdownRenderer encodes raw HTML, omits remote images, allows only absolute HTTP(S) links without embedded credentials, and renders headings, lists, tables and fenced code. Source text remains exact even where preview supports only a subset. Shared semantic surfaces, readable foregrounds, keyboard focus and forty-four-pixel primary targets support the existing themes. Synthetic component, transport and rendered evidence does not establish physical-device or hosted agent behavior.
 
+### Project-linked Notes presentation
+
+Status: implemented locally. NotesPanel on /notes and the explicitly opened project Notes section on /todo/projects share NotesController and the existing notebook. The editor presents exact project/source/Workspace identity and active, archived, removed, missing or unavailable context. Eligible choices come from the currently loaded matching canonical Workspace. Unassigned explicitly clears an association; ordinary content edits preserve the association. Association changes, including create-in-project, require a review of exact before/after identities and the displayed content before the versioned Notes command is sent. Original unknown acceptance blocks replacement writes and uses the retained command receipt.
+
+Text, trash and project/unassigned filters apply to the complete authorized notebook before twenty-row paging. A retained filter keeps the original source and Workspace when project access changes. The all-notes view remains available. Project Notes opens on demand with an exact project filter; New note selects the active matching project in a private draft. Existing notes use All notes, exact selection and the reviewed editor picker for attach/move/detach. Project navigation never switches Notes source, connects cloud consent, uploads content or changes tasks. Missing separate Notes access and mismatched sources expose an unavailable explanation without private titles or snippets. Account changes clear association drafts; hiding the section preserves a scoped draft. Retained versions include the original association.
+
+NotesController, NotesPanel and TodoProjectNotesPanel own presentation and orchestration; NotesService, NotesCloudClient and the existing atomic store retain acceptance authority. Notes operations remain independent of Habitica API calls, scoring and task creation. Browser availability, cloud consent/read failures, stale revisions and unknown receipts retain explicit states. Local component/rendered evidence and unrun device/host boundaries reside in testing.md and notes-project-links.md.
+
 ### Dedicated Todo statistics
 
 The /todo/statistics page separates retained Companion completion/Habit activity, current project/goal progress, requested/confirmed Habitica effects and the separate Habitica cache. Week, thirty-day and year controls use explicit inclusive UTC dates. Current title/notes, kind and Companion-project filters never merge the two sources. Project membership applies only to Companion; progress uses current nonarchived, noncancelled Todos and states the denominator. Progress rows paginate without truncating aggregate totals.
@@ -3416,3 +3428,81 @@ Global Settings links to Todo Sync for task consent, execution, tags, backup and
 Status: implemented locally. The persistent Todo menu exposes Today, Habits, Dailies and Tasks as direct category routes, followed by Projects, Statistics and Sync. Inbox, Planning, Saved lists, History and the legacy Habitica tasks/Rewards page remain reachable in the same open menu. Category tabs repeat the four daily destinations and identify the selected route. The Dashboard opens Today. Existing `/tasks` links continue to open the mixed Habitica view, including Rewards and per-task detail charts.
 
 Habits and Dailies compose the shared `TodoTaskPanel` with exact task-kind filters, immediate title capture and visible score or completion actions. Tasks combines immediate Todo capture with the retained hierarchy, subtask, placement and workflow controls. Today places the selected-day grouping and exact Daily occurrence review beside an immediate Add task link to the task capture page. Route entry neither changes a task nor enables cloud execution. All category pages share the selected workspace, original pending intent and Habitica correspondence state; unsupported or unavailable source data remains explicit.
+
+## Companion discovery qualification
+
+Status: implemented local metadata and evaluation contract. The MCP list_companion_tasks description identifies connected-workspace task reviews and narrow project, agenda and retained-history alternatives. The tool remains read-only with existing schemas and OAuth grants; preparation and acceptance remain separate. No Habitica endpoint, formula, consent or persistence change occurs.
+
+The [discovery contract](companion-discovery.md) owns the sourced capability decision, direct/indirect/negative prompt corpus, new/existing conversation matrix and manual selection/connection recovery. The actual SDK metadata fixture checks expected argument shapes, advertised scopes and honest annotations with zero command rows or additional upstream requests. Expected prompts are synthetic data; no live model selection, host activation, publication or device qualification is inferred.
+
+## Web Push subscription foundation
+
+Locally implemented; disabled pending separate provisioning and reminder UI/sender work. Auth owns encrypted per-device endpoint/auth material, independent web-push-v1 consent and original command receipts. The authenticated status/subscribe/unsubscribe API and C# client preserve profile/connection/revision identity. Browser interop requests permission only after explicit consent and a direct gesture in a supported standalone app. No Habitica state, task text or chat transcript is used for subscription setup. Offline or uncertain writes report unavailable and recover the original request; writes never replay automatically. Details, privacy/retention rules and synthetic validation reside in [push-subscriptions.md](push-subscriptions.md). No notification delivery or physical-device qualification is claimed.
+
+## Voluntary task review
+
+Locally implemented reviewTask commands manage independent review cues and manual stale flags with retained causal history. Organize on /todo/tasks offers exact UTC input, explicit display timezone, separate set/snooze/clear/mark-reviewed actions and retained history. No completion, urgency, deadline, planned date or Habitica effect follows from a review action. Legacy fields remain valid without fabricated history. Browser offline/uncertain acceptance uses existing original-command recovery and never replays effects. [task-reviews.md](task-reviews.md) owns semantics, compatibility, privacy and qualification limits; retained review metadata follows existing private Workspace export/deletion ownership.
+
+## Optional foreground review reminders
+
+Locally implemented on Today. An explicit per-account/source/workspace browser opt-in displays reached saved review cues, independently of browser notification permission. A separate user gesture enables generic service-worker notifications only while this app is open and visible. Exact cue/event identities and atomic local receipts suppress duplicate attempts across tabs and reopen; uncertain delivery is never replayed. No Habitica polling, automatic task/game change or Web Push enrollment occurs. Loaded-snapshot freshness, clock changes, permission failure, storage/receipt limits and closed-app/background unavailability stay visible. [foreground-reminders.md](foreground-reminders.md) owns lifecycle, privacy and local qualification boundaries.
+
+## Durable scheduled push reminders
+
+Locally implemented and disabled pending explicit provisioning/release qualification. Workspace retains independently reviewed one-time/recurring review-cue intents and delivery-attempt receipts; Auth encrypts/signs generic Web Push messages with the separately owned vault. Exact revisions, explicit timezone/DST policy, profile/device consent, durable dedupe, expiry and quotas bound dispatch. Original unknown outcomes never replay. HTTP201 confirms push-service acceptance only; shown/read remain unknown. Four reviewed MCP tools share the browser configuration API without granting browser permission or enrolling a device. [scheduled-push-reminders.md](scheduled-push-reminders.md) owns lifecycle, deployment and actual local evidence; the dedicated device/setup/push-click UI remains separate.
+
+Push device setup and task schedule review are available in Todo Sync and `/todo/reminders`; notification opening requires fresh authenticated exact-workspace access. Original command recovery, generic lock-screen text, separate revocation and delivery limits are described in [push-reminder-ui.md](push-reminder-ui.md). Physical iPhone and hosted delivery remain unqualified.
+
+Originating-chat capability research distinguishes documented ChatGPT Work/Cloud/dot events, unimplemented Companion Events and custom app-server thread control. An isolated ten-control fake-host prototype changes no production capabilities; see [originating-chat-reminders.md](originating-chat-reminders.md).
+
+Explicit ordinary task create/edit requests now authorize the exact matching acceptance after internal preview checks without another agent approval question. Existing scopes, consent, revision/receipt recovery, host controls and consequential-action reviews remain intact; see [ordinary-task-intent.md](ordinary-task-intent.md).
+
+## Task journey qualification pack
+
+Current-route capture, dates, native completion/restore, recurrence, projects, sync and diagnostic recovery have a reproducible synthetic journey pack and observation form in [task-journey-qualification.md](task-journey-qualification.md). The pack qualifies local preparation and records actual local evidence; authenticated competitor research, human usability, physical devices and assistive technologies remain unrun release requirements.
+
+## Native recovery command and MCP contract
+
+Archived native tasks can be unarchived through reviewed unarchiveTask, preserving state and retained history. Exact native Daily terminal occurrences can be corrected to Pending through correctOccurrence while retaining original completion/skip snapshots and causal source receipts. Unsupported references require explicit placement/relationship repair; linked/uncertain tasks and missing source journals refuse. Both commands create zero game effects and schedule no tag reconciliation. get_task_recovery, unarchive_task and correct_occurrence provide scoped read/preview/accept/original-receipt workflows. The [native recovery contract](companion-workspace-contract.md#native-archival-and-occurrence-recovery) owns the exact fields and portable validation. The [history recovery controls](history-recovery.md) expose native actions and a separate linked Habitica uncheck review with original receipts.
+
+## Private recovery preparation primitive
+
+The private Auth gateway can review an exact completed own Todo or eligible current-day Daily and retain one original down-score outcome under existing grants, gates and quotas. Shared/challenge tasks, stale reviews, unknown day state, revoked authority and unresolved game effects refuse. Dispatched uncertainty never replays or becomes an inferred refund. The private primitive does not expose a public linked-uncheck action or mutate native history; the selected linked-recovery orchestration remains incomplete until canonical/public integration passes acceptance.
+
+## Reviewed linked task recovery
+
+Own linked completed Todos and eligible current-day Dailies have an expiring MCP preview/accept/original-receipt recovery contract and typed browser adapter. Proven original down receipts causally reopen retained Companion history once; unknown outcomes remain fenced, with no refund promise. See [linked task recovery](linked-task-recovery.md) for exact gates, proofs, limits and current UI boundary.
+
+## Extended recovery in task history
+
+Task history includes separate exact native unarchive, terminal Daily correction and linked Habitica uncheck reviews, with concrete refusal reasons and visible original receipts. Uncertain actions preserve original request/command identity and block replacement actions. See [history recovery controls](history-recovery.md).
+
+## Retained recovery discovery for agents
+
+`list_task_recovery_records` gives bounded read-only MCP discovery of archived tasks and terminal Daily records, including exact source/receipt identities and concrete native eligibility reasons. Existing reviewed mutations remain separate. See [retained recovery discovery](retained-recovery-discovery.md).
+
+## Retained task activity coverage
+
+Implemented optional causal task witnesses in Domain/Application command acceptance and shared Worker validation. [Task activity coverage](task-activity-coverage.md) defines original-command/event/snapshot binding, effective historical recurrence/timezone/lifecycle, bounded known intervals and explicit unknown gaps. Legacy records remain unknown; full-journal imports and read clocks cannot extend observed history. No Habitica calls, credentials, reward changes or background work are added. Neutral C#/Worker fixtures and corruption controls qualify local serialization and command behavior; live provider/device history remains unqualified.
+
+## Shared browser and MCP task adoption
+
+Status: implemented locally. Workspace adoption-api.ts, Auth inspectAdoption, shared adoption-tools.ts, MCP descriptors and WorkspaceCloudClient own one exact-record review and original-receipt workflow. Preparation reads the exact owned native task, including retained completed Todos; acceptance changes only the mapping and saves an immutable receipt atomically. Existing task read/write scopes, native privacy/ownership checks and independent consents remain mandatory. Offline browser adoption remains unavailable. Matching kind/completion, native uniqueness, fresh fingerprint, revision/epochs, executor lease and unresolved-effect controls fail closed. Original receipt recovery survives later revisions; known terminal refusal permits a new review and uncertainty forbids replacement. No native write, score, unarchive or content/schedule synchronization occurs. [The adoption contract](task-adoption.md) records lifecycle, migration parity and synthetic validation limits.
+
+
+## Consented shared diagnostic reads
+
+Status: implemented locally in diagnostic-api.ts, the shared diagnostic sanitizer/catalog, Auth scope catalogue, read-only MCP tools and typed WorkspaceCloudClient transport. Explicit owner consent and metadata-only preparation precede accepted sanitized copies. No automatic browser extraction, synchronization or provider log acquisition exists. The seven-day history cap, original hash/receipt recovery, strict row/byte quotas, profile lifecycle cleanup and coherent filtered source pages are specified in [explicit diagnostic sharing](shared-diagnostics.md). Browser occurrence time remains untrusted; reduced server receipts never establish fresh native verification. Offline cloud sharing is unavailable. Manual local copy/download remains available. Local synthetic fixtures supply validation; actual hosted access, migration/publication and device behavior remain unqualified.
+
+Diagnostic sharing on /diagnostics and /live-tests uses separate consent, frozen local cloud preview, metadata-only preparation and explicit acknowledged upload. Original receipt recovery preserves uncertainty; revocation distinguishes logical access closure from pending physical cleanup. The manual bundle path remains available. The canonical source/retention contract resides in [shared-diagnostics.md](shared-diagnostics.md).
+
+Notes retain one optional versioned project association under the existing private notebook. Association-only attach/move/detach preserves Markdown, note identity and original receipt semantics; omitted fields preserve stale links. Complete-set project/unassigned search precedes twenty-row paging. Independent Notes permissions remain mandatory; project labels require canonical read access. The canonical contract resides in [notes-project-links.md](notes-project-links.md).
+
+## MCP protocol compatibility
+
+Status: implemented and qualified locally. The MCP Worker serves modern2026-07-28 discovery and per-request tools alongside legacy initialize/tools clients using exact server/core SDK2.4.0 pins. The request-local factory preserves the existing OAuth, Origin, quota, tool-scope and original command/receipt boundaries. The interpreter-backed Worker validator requires no unsafe-eval permission. get_connector_compatibility reports qualified transport versions separately from backend identity, tool schemas and caller-reported package installation. No Events capability, subscription, callback or game effect follows protocol discovery. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns package, offline behavior, failure, privacy, rollback and validation boundaries; actual hosts and deployments remain unqualified.
+
+
+## Protected callback transport candidate
+
+Status: locally implemented, disabled pending hosted qualification. The Node22 Netlify function and Auth single-use claim route bind exact dispatch bytes, identity, audience and expiry; the TLS connection pins an approved public address while verifying the original hostname. Auth retains opaque replay fences; the gateway persists no callback URL, body or webhook key. Unsupported configuration, DNS/TLS refusal, quota exhaustion and missing acknowledgements fail closed without a paid fallback or automatic resend. The feature performs no Habitica request, changes no task and supplies no subscription, scheduler or chat reply. Offline dispatch is unavailable; Workspace must retain original undelivered/unknown state. Local TLS and synthetic Worker/D1 controls remain distinct from hosted checks. [callback-egress.md](callback-egress.md) owns detailed privacy, failure, validation and operator setup.

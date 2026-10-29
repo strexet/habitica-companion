@@ -18,6 +18,7 @@ namespace Habitica.WebApp.Tests;
 
 public sealed class AppNavMenuTests : BunitContext
 {
+    public AppNavMenuTests() => ComponentFactories.AddStub<Habitica.WebApp.Components.ForegroundReminderHost>();
     protected override void Dispose(bool disposing)
     {
         if (disposing)

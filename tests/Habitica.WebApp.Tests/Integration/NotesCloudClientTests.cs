@@ -98,4 +98,23 @@ public sealed class NotesCloudClientTests
         Assert.True((await client.SearchAsync("",false,0,null,default)).Succeeded);bad=true;
         Assert.False((await client.ReadAsync(note.Id,default)).Succeeded);Assert.False((await client.SearchAsync("",false,0,null,default)).Succeeded);
     }
+    [Fact]
+    public async Task Project_filters_and_association_receipts_preserve_exact_metadata_and_refuse_foreign_or_unassigned_mismatches()
+    {
+        var workspace=Guid.NewGuid();var link=new NoteProjectLink(Guid.NewGuid(),workspace,"cloud",Scope);var original=Command();var note=NotesEngine.Apply(NotesModel.Empty(Scope),original,DateTimeOffset.UtcNow).Notebook.Notes[0];var mode=0;
+        var command=new NoteCommand(Guid.NewGuid(),note.Id,1,1,NoteOperation.Update,Project:link);var receipt=new NoteReceipt(command.Id,NotesJson.Hash(command),note.Id,2,2);
+        var hash=Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(note.Current.Markdown))).ToLowerInvariant();
+        using var http=new HttpClient(new Handler(async(request,token)=>{
+            var path=request.RequestUri!.AbsolutePath;if(path=="/enroll")return Enrolled();if(path=="/notes/connect")return Connection();
+            if(path=="/notes/command"){using var input=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token));var c=input.RootElement.GetProperty("command");Assert.Equal(workspace,c.GetProperty("project").GetProperty("workspaceId").GetGuid());Assert.Equal(JsonValueKind.Null,c.GetProperty("markdown").ValueKind);return Json(new{notebookId=Notebook,ownerScope=Scope,receipt,saved=true,disposition="accepted"});}
+            var current=mode==1?link with {OwnerScope=NotesModel.Scope("foreign")}:link;
+            if(path=="/notes/get")return Json(new CloudNote(Notebook,Scope,1,note with {Current=note.Current with {Project=current}},hash,16,false));
+            using var query=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token));if(query.RootElement.TryGetProperty("projectId",out var project)){Assert.Equal(link.ProjectId,project.GetGuid());Assert.Equal(workspace,query.RootElement.GetProperty("projectWorkspaceId").GetGuid());}
+            return Json(new NotesSearchPage(Notebook,Scope,1,[new(note.Id,note.Current.Title,1,false,note.Current.AtUtc,"snippet",true,current)],1,null,false));
+        }));
+        var client=new NotesCloudClient(http,new(http,"https://auth.invalid"),"https://workspace.invalid");Assert.True((await client.ConnectAsync(new("fixture","fixture"),default)).Succeeded);var filter=new NotesProjectFilter(link.ProjectId,workspace,"cloud");
+        Assert.Equal(link,(await client.ReadAsync(note.Id,default)).Value!.Note.Current.Project);Assert.Equal(link,(await client.SearchAsync("",false,0,null,filter,default)).Value!.Results[0].Project);Assert.True((await client.SubmitAsync(command,default)).Succeeded);
+        Assert.False((await client.SearchAsync("",false,0,null,new(Unassigned:true),default)).Succeeded);mode=1;Assert.False((await client.ReadAsync(note.Id,default)).Succeeded);var refused=await client.SearchAsync("",false,0,null,filter,default);Assert.False(refused.Succeeded);Assert.Null(refused.Value);
+    }
+
 }

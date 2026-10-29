@@ -46,7 +46,7 @@ public sealed class WorkspaceTodoRestoreTests
         Assert.Equal(SubmissionDisposition.RevisionConflict,WorkspaceCommandEngine.Accept(state,command with { ExpectedRevision=1 },Now).Disposition);
         Assert.Equal("unsupported_projection",WorkspaceCommandEngine.Accept(state,command with { ProjectToHabitica=true },Now).ErrorCode);
         var restored=WorkspaceCommandEngine.Accept(state,command,Now).Snapshot!;Assert.Equal("todo_not_completed",WorkspaceCommandEngine.Accept(restored,Restore(restored),Now).ErrorCode);
-        var archived=state with { Document=state.Document with { Tasks=[state.Document.Tasks[0] with { IsArchived=true }] } };Assert.Equal("task_unavailable",WorkspaceCommandEngine.Accept(archived,command,Now).ErrorCode);
+        var archived=state with { Document=state.Document with { ActivityCoverage=null, Tasks=[state.Document.Tasks[0] with { IsArchived=true }] } };Assert.Equal("task_unavailable",WorkspaceCommandEngine.Accept(archived,command,Now).ErrorCode);
         var other=Guid.NewGuid();var added=WorkspaceCommandEngine.Accept(state,new(Guid.NewGuid(),state.Document.Id,state.Document.Revision,WorkspaceOperation.CreateTodo,other,new(Text:"Other")),Now).Snapshot!;
         added=WorkspaceCommandEngine.Accept(added,new(Guid.NewGuid(),added.Document.Id,added.Document.Revision,WorkspaceOperation.CompleteTask,other),Now).Snapshot!;
         Assert.Equal("completion_unavailable",WorkspaceCommandEngine.Accept(added,Restore(added,added.Document.Completions.Last().Id),Now).ErrorCode);

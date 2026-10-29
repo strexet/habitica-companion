@@ -1,0 +1,73 @@
+{
+  "task_id": "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+  "source_fingerprints": {
+    "workers/shared/diagnostics.ts": "834136d5aa1a9b82485265c0fc1ab30d42346b824e63a5bc53f4ad5bcd0d904d",
+    "workers/shared/diagnostic-catalog.ts": "995201d9115fdac4fcc82596ea2cf060c2d2f5dc5a835a83f0d4deac897a9bdb",
+    "workers/companion-workspace/src/diagnostic-api.ts": "99c0bcf4b445e206b6caa2e03c019f54f94035d7e687374bd9ec4e242078a2d9",
+    "workers/companion-workspace/migrations/0016-diagnostics.sql": "d8b948f037eb4a84f59052fc7ba8a5dc591cdf75324f8b534e168be5f5328fe7",
+    "workers/chatgpt-mcp/src/diagnostic-tools.ts": "5c7de6a5f02c22985549669d9f7a8c185f2cefb293c6de9b993342ea61de1332",
+    "workers/chatgpt-auth/src/oauth.ts": "9d5337aa313ecebaa6ac8b7f40315b9ecda2dd7d8d9ca2ea54ce3c94a00a7d01",
+    "workers/chatgpt-auth/src/workspace-identity.ts": "b0971d825f50dc4e301e5dcd3101ce5a70ef7404af8af0477dba8fd112859b99",
+    "workers/companion-workspace/src/notes-api.ts": "0b4256af73c316057b0a4a6f958ecf597a541d1670212958508999de436ab59d",
+    "src/Habitica.Application/Diagnostics/DiagnosticSharing.cs": "881cc5fe75543e487bc015803963c9e7ce16cc159ea83fe978f3415066344d5f",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.DiagnosticsSharing.cs": "8b927e636a81288e8bf3425554a647a823adc2c89a35f6b6e0c77632686bcb93",
+    "workers/companion-workspace/test/diagnostic-api.test.mjs": "a87afdcc822cd69c57486ad74673e8525b35e669a33c3c49d321e6bb34b348f1",
+    "workers/companion-workspace/test/diagnostic-protocol.test.mjs": "fea08144ffc8584d90db8bb8f6b281c346050c8266303c4d2d829332f47f0289",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.DiagnosticSharingTests.cs": "47f9f1b032967ced872fc820c072e8b27bd6cd1e661e3a1f45f362699bd9eea3",
+    "tests/Habitica.Application.Tests/Diagnostics/DiagnosticSharingTests.cs": "4880fb13dcaf7e4a253a19a96fa31b7cbdd05850e5c4892b04de2288799cbf3c",
+    "tests/fixtures/workspace/diagnostic-sharing-v1.json": "7f6be769a253589bc77ba3684eb6a186668d959b5a1675e4018be767e5d44f0c",
+    "skill-tree/documents/shared-diagnostics.md": "59b4ea6209451059c21120d52bcf0f646ac11c9214d423112914312b7c8719bc"
+  },
+  "checks": {
+    "solution": {
+      "pass": 1417,
+      "failed": 0
+    },
+    "workspace": {
+      "pass": 705,
+      "failed": 0
+    },
+    "auth": {
+      "pass": 203,
+      "failed": 0
+    },
+    "final_diagnostic_api_protocol": {
+      "pass": 12,
+      "failed": 0
+    },
+    "worker_dry_builds": "all three pass",
+    "auth_rendered": {
+      "cases": 32,
+      "errors": 0,
+      "minimum_contrast_light": 4.648262768,
+      "minimum_contrast_dark": 7.08251924,
+      "native_tab_focus": "visible three-pixel outline",
+      "primary_controls": "present and within measured geometry",
+      "disabled_controls": "visible identity lock and thirteen preview controls"
+    },
+    "security": "Separate management consent and OAuth diagnostics.read; two profiles; no provider dispatch; canary minimization; rollback, response loss, revocation races, connection/grant fencing, row/byte bounds, cleanup failure and profile deletion pass.",
+    "documentation": "validators pass; existing historical stale-audit warning retained",
+    "diff_check": "pass"
+  },
+  "operations": {
+    "full_workspace_wall_seconds": 101.3,
+    "full_auth_wall_seconds": 45.9,
+    "final_diagnostics_wall_seconds": 8.1,
+    "worker_build_wall_seconds": [
+      3.7,
+      3.2,
+      3.5
+    ],
+    "prerequisite_wait_seconds": 0,
+    "test_deadline_seconds": 300,
+    "build_deadline_seconds": 180,
+    "cleanup_reserve_seconds": 15,
+    "active_controller_seconds": null
+  },
+  "limitations": [
+    "Local synthetic HTTP/D1/SDK/C# and rendered captured HTML only; no actual account consent, upload, deployment, remote migration, device or host qualification.",
+    "Physical scheduled cleanup latency and provider backup recovery window remain unmeasured; immediate logical expiry/revocation is enforced.",
+    "Auth captured-page controls select the exact native light/dark CSS rules; native OS preference switching and assistive technology remain unqualified. PWA obsidian-glow is not consumed by Auth.",
+    "Initial unconstrained Workspace run cancelled three files at file-level 30-second deadlines without assertion failures; concurrency-four rerun passed all705, followed by12 final diagnostic controls including the added original-closure race."
+  ]
+}

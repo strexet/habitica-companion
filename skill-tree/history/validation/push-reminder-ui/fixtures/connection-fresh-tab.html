@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic connection-fresh-tab</title><link rel="stylesheet" href="/mud.css"><link rel="stylesheet" href="/app.css"></head><body><main style="padding:16px;max-width:1100px;margin:auto"><p>Synthetic Razor output. Component interactions are qualified separately.</p><div class="settings-shell"><section id="install" class="card-surface settings-card" data-testid="pwa-install-panel"><p class="section-label">Use Companion as an app</p>
+    <h2>Install on iPhone</h2>
+    <p>Open Habitica Companion from your Home Screen in its own window.</p>
+    <button aria-expanded="false" aria-controls="pwa-install-steps" data-testid="pwa-install-toggle" data-layout-primary="true" blazor:onclick="23" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple pwa-install-toggle" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Show installation steps</span></button></section>
+    <section class="card-surface settings-card"><p class="section-label">Session controls</p>
+        <h1>Local data and sign-in behavior</h1>
+        <p class="panel-copy">
+            Use the actions below to sign out, check connections, manage saved browser data, or sync supported data between your devices.
+        </p>
+
+        <div class="mud-alert mud-alert-outlined-info mud-dense mud-elevation-0" blazor:onclick="9"><div class="mud-alert-position justify-start"><div class="mud-alert-icon mud-alert-icon-left"><svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="img"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg></div><div class="mud-alert-message">
+            If the app looks old, refresh first. Before clearing browser data, export any browser-only Notes from Notes and local workspaces from Todo Sync.
+        </div></div></div>
+
+        <div class="settings-grid settings-session-actions" data-testid="settings-session-actions"><div class="mud-paper mud-elevation-0 card-surface action-card" style=""><h2>Sign out for this tab</h2>
+                <p>Ends the current sign-in session without deleting saved app data in this browser.</p>
+                <button data-testid="settings-sign-out" blazor:onclick="24" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Sign Out</span></button></div>
+
+            <div class="mud-paper mud-elevation-0 card-surface action-card" style=""><h2>Check app connections</h2>
+                <p>Open safe connection checks and the optional reversible gear check.</p>
+                <a data-testid="settings-open-checks" data-layout-primary="true" blazor:onclick="25" type="button" href="/live-tests" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-secondary mud-button-outlined-size-medium mud-ripple" blazor:elementreference=""><span class="mud-button-label">Open Checks</span></a></div></div></section>
+
+    <section class="card-surface settings-card dashboard-appearance"><div class="dashboard-appearance-head"><div><p class="section-label">Appearance</p>
+                <h2>Color scheme</h2></div>
+            <button data-testid="settings-appearance-toggle" blazor:onclick="20" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-small mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Customize theme<span class="mud-button-icon-end mud-button-icon-size-small"><svg class="mud-icon-root mud-svg-icon mud-icon-size-small" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="img"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg></span></span></button></div></section>
+
+    <section class="card-surface settings-card"><p class="section-label">Optional connection</p>
+        <h2>Codex and ChatGPT</h2>
+        <p>Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. Codex and ChatGPT receive separate access only after you approve permissions for each client. Browser-only use and private device sync do not require this connection.</p>
+        <p>The integration stores credentials until disconnect or profile deletion. Linking codes expire within ten minutes; operational audit metadata is limited to thirty days. Companion does not store conversation text. <a href="/privacy">Privacy and data handling</a></p><p role="status" data-testid="integration-unverified">Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.</p>
+            <p>Verify the account to restore management access. Verification sends the current Habitica credentials to the integration server and can create an encrypted profile if none exists. Existing client permissions are retained; verification grants no new permissions.</p>
+            <label class="checkbox-row"><input data-testid="integration-consent" type="checkbox" blazor:onchange="1">
+                <span>I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.</span></label>
+            <button data-testid="integration-restore-access" blazor:onclick="21" type="button" disabled="" class="mud-button-root mud-button mud-button-filled mud-button-filled-secondary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Verify account and restore access</span></button>
+            <button data-testid="integration-enroll" blazor:onclick="22" type="button" disabled="" class="mud-button-root mud-button mud-button-filled mud-button-filled-default mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Enable agent connection</span></button></section>
+
+    <section class="card-surface settings-card"><p class="section-label">Todo connections</p><h2>Task source and sync</h2><p>Choose a workspace, review pending game effects, manage Habitica tags, and back up or transfer local tasks in <a href="/todo/sync" data-testid="settings-todo-sync">Todo Sync</a>. Cloud task consent and background execution have separate controls there.</p></section>
+    <section class="card-surface settings-card" data-testid="authenticated-party-settings"><p class="section-label">Optional shared planning</p>
+    <h2>Authenticated party planning</h2>
+    <p>This queue is separate from legacy party planning. The server stores readable quest selections, contributor labels, votes and planning receipts. Only separately consented current party members can read shared planning. Records remain until explicit removal. Planning does not start quests, purchase scrolls or cast spells.</p>
+    <p>You can export or remove your own contributions after leaving a party. Removing your queued quests also removes votes on those quests. The verified current leader can delete the whole authenticated queue. Browser-claimed roles grant no access. Cloud workspace deletion and credential deletion do not remove these separate shared records; use the contribution controls before credential deletion or revalidate later.</p><p>Authenticated party planning is not enabled on this app.</p></section>
+
+    <section class="card-surface settings-card"><p class="section-label">Portable app data</p>
+        <h2>Backup, restore, and private sync</h2>
+        <p class="panel-copy">
+            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Export personal Notes from Notes and workspaces from Todo Sync separately. Habitica API tokens are not included.
+            <a href="/privacy">Privacy and data handling</a></p>
+
+        <div class="settings-grid"><div class="mud-paper mud-elevation-0 card-surface action-card" style=""><h2>Download backup</h2>
+                <p>Downloads a readable backup of this browser's saved app data. Keep the file private.</p>
+                <button data-testid="export-local-data" blazor:onclick="26" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Export
+                </span></button></div>
+
+            <div class="mud-paper mud-elevation-0 card-surface action-card" style=""><h2>Restore backup</h2>
+                <p>Imports a Habitica Tool backup. If this browser already has app data, choose merge before importing.</p>
+                <input class="app-input" data-testid="import-local-data" type="file" blazor:elementreference="2cde8106-ec76-4a58-87cb-c87d19ffe515"></div>
+
+            <div class="mud-paper mud-elevation-0 card-surface action-card" style=""><h2>Private device sync</h2>
+                <p>Your browser encrypts the upload before it leaves this device. The sync server stores only encrypted data.</p>
+                <span class="dashboard-stat-note">No cloud sync activity in this session.</span>
+                <div class="action-row"><button data-testid="push-cloud-sync" blazor:onclick="27" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Upload
+                    </span></button>
+                    <button data-testid="download-cloud-sync" blazor:onclick="28" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-secondary mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Download
+                    </span></button></div></div>
+
+            <div class="mud-paper mud-elevation-0 card-surface action-card danger-card" style=""><h2>Clear this browser</h2>
+                <p>Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first. Push device bindings and original pending-command references are also removed. Revoke push devices in Todo Sync first; local removal does not revoke cloud push consent or browser permission.</p>
+                <button data-testid="clear-local-data" blazor:onclick="29" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-error mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Clear Local Data
+                </span></button></div></div><div class="sync-status-panel" data-testid="cloud-sync-status"><div><h3>Cloud sync sections</h3>
+                <p class="panel-copy">Each section uploads independently. Excluded sections stay only in this browser.</p></div>
+            <div class="sync-section-list"><div class="sync-section-row"><div><strong>User profile</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span></div><div class="sync-section-row"><div><strong>Saved presets</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span></div><div class="sync-section-row"><div><strong>Tasks</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="2">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Task order</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="3">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Inventory catalog</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="4">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Party</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="5">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Party CRON history</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="6">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Color schemes</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="7">
+                                <span>Exclude</span></label></div><div class="sync-section-row"><div><strong>Diagnostics</strong>
+                            <span>No sync activity yet</span></div>
+                        <span class="sync-status-pill ui-pill">Idle</span><label class="checkbox-row compact-checkbox-row"><input type="checkbox" blazor:onchange="8">
+                                <span>Exclude</span></label></div></div></div></section></div></main><script src="/colorSchemes.js"></script><script type="module" src="/qualification-frame.mjs"></script></body></html>

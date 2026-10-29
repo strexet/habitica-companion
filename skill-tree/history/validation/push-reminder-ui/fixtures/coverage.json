@@ -1,0 +1,512 @@
+{
+  "push-schedule-empty": {
+    "file": "push-schedule-empty.html",
+    "route": "/todo/reminders",
+    "state": "one-time-initial-editor",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-schedule-preview": {
+    "file": "push-schedule-preview.html",
+    "route": "/todo/reminders",
+    "state": "exact-one-time-preview",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-schedule-unknown": {
+    "file": "push-schedule-unknown.html",
+    "route": "/todo/reminders",
+    "state": "acceptance-unknown-original-id-retained",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-schedule-receipt": {
+    "file": "push-schedule-receipt.html",
+    "route": "/todo/reminders",
+    "state": "configuration-only-receipt",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-schedule-weekly": {
+    "file": "push-schedule-weekly.html",
+    "route": "/todo/reminders",
+    "state": "explicit-repeat-dst-and-end-date-preview",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-schedule-paused": {
+    "file": "push-schedule-paused.html",
+    "route": "/todo/reminders",
+    "state": "disabled-service-paused-schedule",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-available-denied": {
+    "file": "push-device-available-denied.html",
+    "route": "/todo/sync",
+    "state": "available-denied",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-installation-required-default": {
+    "file": "push-device-installation-required-default.html",
+    "route": "/todo/sync",
+    "state": "installation-required-default",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-unsupported-unsupported": {
+    "file": "push-device-unsupported-unsupported.html",
+    "route": "/todo/sync",
+    "state": "unsupported-unsupported",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-reminders-route": {
+    "file": "push-reminders-route.html",
+    "route": "/todo/reminders",
+    "state": "source-task-cue-device-schedule-page",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-open-unchecked": {
+    "file": "push-open-unchecked.html",
+    "route": "/todo/reminders/open",
+    "state": "authenticated-unchecked",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-open-offline": {
+    "file": "push-open-offline.html",
+    "route": "/todo/reminders/open",
+    "state": "offline-fresh-access-refused",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-open-verified": {
+    "file": "push-open-verified.html",
+    "route": "/todo/reminders/open",
+    "state": "fresh-exact-task-access",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-open-signin": {
+    "file": "push-open-signin.html",
+    "route": "/todo/reminders/open",
+    "state": "signed-out-safe-return",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-ready": {
+    "file": "push-device-ready.html",
+    "route": "/todo/sync",
+    "state": "explicit-consent-device-ready",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-enrolled": {
+    "file": "push-device-enrolled.html",
+    "route": "/todo/sync",
+    "state": "enrolled-with-separate-revoke-and-local-removal",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-device-pending": {
+    "file": "push-device-pending.html",
+    "route": "/todo/sync",
+    "state": "original-request-unconfirmed",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-sync-original-receipt": {
+    "file": "todo-sync-original-receipt.html",
+    "route": "/todo/sync",
+    "state": "original-receipt-no-retry",
+    "surfaces": [
+      "navigation",
+      "form",
+      "status"
+    ],
+    "interactionTest": "Exact_original_receipt_read_keeps_lost_outcome_distinct_and_discards_old_account_response",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "pwa-sign-in-expanded": {
+    "file": "pwa-sign-in-expanded.html",
+    "route": "/sign-in",
+    "state": "install-expanded",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-empty": {
+    "file": "sign-in-empty.html",
+    "route": "/sign-in",
+    "state": "signed-out-empty",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-loading": {
+    "file": "sign-in-loading.html",
+    "route": "/sign-in",
+    "state": "loading",
+    "surfaces": [
+      "form",
+      "disabled-controls",
+      "loading"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-error": {
+    "file": "sign-in-error.html",
+    "route": "/sign-in",
+    "state": "credential-validation-error",
+    "surfaces": [
+      "form",
+      "error"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "integration-management": {
+    "file": "integration-management.html",
+    "route": "/settings",
+    "state": "integration-management",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Integration_management_requires_confirmation_and_keeps_grant_revocation_separate_from_deletion",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-stale": {
+    "file": "todo-review-stale.html",
+    "route": "/todo/tasks",
+    "state": "changed-revision-disables-review-controls",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Legacy_due_cues_and_manual_stale_flags_display_explicitly_and_source_changes_fence_drafts",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-settings-clear-review": {
+    "file": "push-settings-clear-review.html",
+    "route": "/settings",
+    "state": "explicit-browser-clear-push-reference-disclosure",
+    "surfaces": [
+      "confirmation",
+      "form",
+      "navigation"
+    ],
+    "interactionTest": "Clearing_browser_data_requires_a_cancelable_review_that_names_separate_Notes_and_workspace_backups",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-empty": {
+    "file": "todo-review-empty.html",
+    "route": "/todo/tasks",
+    "state": "optional-review-no-cue",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Set_review_mark_reviewed_and_original_uncertain_receipt_preserve_task_and_game_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-confirm": {
+    "file": "todo-review-confirm.html",
+    "route": "/todo/tasks",
+    "state": "explicit-set-review-instant-and-zone",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Set_review_mark_reviewed_and_original_uncertain_receipt_preserve_task_and_game_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-sync-overview": {
+    "file": "todo-sync-overview.html",
+    "route": "/todo/sync",
+    "state": "source-history-consent",
+    "surfaces": [
+      "navigation",
+      "form",
+      "disabled-controls"
+    ],
+    "interactionTest": "Sync_page_uses_shared_source_and_policy_without_automatic_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-unknown": {
+    "file": "todo-review-unknown.html",
+    "route": "/todo/tasks",
+    "state": "original-review-acceptance-unknown",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Set_review_mark_reviewed_and_original_uncertain_receipt_preserve_task_and_game_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-renewal": {
+    "file": "workspace-renewal.html",
+    "route": "/settings",
+    "state": "workspace-renewal",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "ConnectedWorkspaceRenewalRequiresExplicitDataConsent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "pwa-settings-collapsed": {
+    "file": "pwa-settings-collapsed.html",
+    "route": "/settings",
+    "state": "install-collapsed",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Pwa_installation_steps_expand_without_signin_or_notification_requests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "pwa-settings-expanded": {
+    "file": "pwa-settings-expanded.html",
+    "route": "/settings",
+    "state": "install-expanded",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Pwa_installation_steps_expand_without_signin_or_notification_requests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "connection-fresh-tab": {
+    "file": "connection-fresh-tab.html",
+    "route": "/settings",
+    "state": "unknown-access",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "disabled-controls"
+    ],
+    "interactionTest": "Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-history": {
+    "file": "todo-review-history.html",
+    "route": "/todo/tasks",
+    "state": "retained-review-actions-with-no-task-completion",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Set_review_mark_reviewed_and_original_uncertain_receipt_preserve_task_and_game_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "settings-actions": {
+    "file": "settings-actions.html",
+    "route": "/settings",
+    "state": "settings-actions",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "settings-actions-long": {
+    "file": "settings-actions-long.html",
+    "route": "/settings",
+    "state": "settings-actions-long",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-review-invalid": {
+    "file": "todo-review-invalid.html",
+    "route": "/todo/tasks",
+    "state": "invalid-timezone-refuses-preparation",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Invalid_instant_timezone_snooze_and_future_manual_stale_flags_do_not_prepare",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "push-reminders-cue-confirm": {
+    "file": "push-reminders-cue-confirm.html",
+    "route": "/todo/reminders",
+    "state": "exact-native-cue-change-from-push-page",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "confirmation",
+      "error"
+    ],
+    "interactionTest": "PushReminderComponentTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}
