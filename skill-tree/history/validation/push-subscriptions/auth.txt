@@ -1,0 +1,1438 @@
+(node:42999) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:43000) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43000) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Codex-shaped CIMD loopback flow accepts selected ports with exact callback, issuer and audience
+ok 1 - Codex-shaped CIMD loopback flow accepts selected ports with exact callback, issuer and audience
+  ---
+  duration_ms: 967.260667
+  ...
+# (node:43001) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43001) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: same verified credentials preserve connected sessions while management credentials rotate
+ok 2 - same verified credentials preserve connected sessions while management credentials rotate
+  ---
+  duration_ms: 922.337458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43001) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: concurrent unchanged enrollments preserve the active epoch without stale overwrites
+ok 3 - concurrent unchanged enrollments preserve the active epoch without stale overwrites
+  ---
+  duration_ms: 501.803333
+  ...
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fixed-offset day boundaries match the neutral C\# fixture without a timezone-transition parity claim
+ok 4 - fixed-offset day boundaries match the neutral C\# fixture without a timezone-transition parity claim
+  ---
+  duration_ms: 6.619958
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: verified Cron status is bounded and one successful receipt never repeats the accepted request
+ok 5 - verified Cron status is bounded and one successful receipt never repeats the accepted request
+  ---
+  duration_ms: 1131.05275
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: fresh day/account/Daily/checklist/quest changes refuse execution before any Cron effect
+ok 6 - fresh day/account/Daily/checklist/quest changes refuse execution before any Cron effect
+  ---
+  duration_ms: 923.08175
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: already-started days, unknown readiness, timezone transitions and incomplete safety facts cannot prepare
+ok 7 - already-started days, unknown readiness, timezone transitions and incomplete safety facts cannot prepare
+  ---
+  duration_ms: 754.070708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: independent grants and profile identity prevent a private Cron effect
+ok 8 - independent grants and profile identity prevent a private Cron effect
+  ---
+  duration_ms: 759.001708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: overlapping copies cannot release the original lease or dispatch another Cron request
+ok 9 - overlapping copies cannot release the original lease or dispatch another Cron request
+  ---
+  duration_ms: 697.565459
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: day progress after a failed response remains unknown and fences task and spell effects
+ok 10 - day progress after a failed response remains unknown and fences task and spell effects
+  ---
+  duration_ms: 721.528042
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: any dispatched non-success or malformed success remains unknown without replay
+ok 11 - any dispatched non-success or malformed success remains unknown without replay
+  ---
+  duration_ms: 677.6565
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: final-read quota and failed durable dispatch reservation prevent an upstream Cron call
+ok 12 - final-read quota and failed durable dispatch reservation prevent an upstream Cron call
+  ---
+  duration_ms: 694.007792
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: revoking the credential while preflight is held prevents dispatch
+ok 13 - revoking the credential while preflight is held prevents dispatch
+  ---
+  duration_ms: 661.376709
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: replacing the OAuth grant during preflight denies the old token before dispatch
+ok 14 - replacing the OAuth grant during preflight denies the old token before dispatch
+  ---
+  duration_ms: 737.574833
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: no-party accounts can prepare; receipt lookup never sends another upstream request
+ok 15 - no-party accounts can prepare; receipt lookup never sends another upstream request
+  ---
+  duration_ms: 644.96625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unknown task receipts fence Cron and disabled configuration exposes no new private action
+ok 16 - unknown task receipts fence Cron and disabled configuration exposes no new private action
+  ---
+  duration_ms: 649.696584
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43002) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disabled Cron status is unavailable and malformed success cannot confirm completion
+ok 17 - disabled Cron status is unavailable and malformed success cannot confirm completion
+  ---
+  duration_ms: 1346.634917
+  ...
+# (node:43003) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stable opaque profile derivation separates users and canonicalizes account casing
+ok 18 - stable opaque profile derivation separates users and canonicalizes account casing
+  ---
+  duration_ms: 4.594417
+  ...
+# Subtest: authenticated envelopes roundtrip and use distinct random nonces
+ok 19 - authenticated envelopes roundtrip and use distinct random nonces
+  ---
+  duration_ms: 1.883833
+  ...
+# Subtest: wrong profile AAD, key, version, schema and modified ciphertext fail closed
+ok 20 - wrong profile AAD, key, version, schema and modified ciphertext fail closed
+  ---
+  duration_ms: 1.32
+  ...
+# Subtest: key-version rotation retains access only to known key versions
+ok 21 - key-version rotation retains access only to known key versions
+  ---
+  duration_ms: 2.217791
+  ...
+# Subtest: management credentials contain 256 random bits and hashes compare safely
+ok 22 - management credentials contain 256 random bits and hashes compare safely
+  ---
+  duration_ms: 0.674333
+  ...
+# Subtest: profile derivation and credential encryption reject shared master keys
+ok 23 - profile derivation and credential encryption reject shared master keys
+  ---
+  duration_ms: 0.291667
+  ...
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: bounded key jobs resume by identity, preserve credentials/profile identity and return only safe counts
+ok 24 - bounded key jobs resume by identity, preserve credentials/profile identity and return only safe counts
+  ---
+  duration_ms: 1002.905166
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: current, referenced and unfinished-job keys cannot be declared removable
+ok 25 - current, referenced and unfinished-job keys cannot be declared removable
+  ---
+  duration_ms: 735.377541
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: durable batch progress and envelope write roll back together after storage failure
+ok 26 - durable batch progress and envelope write roll back together after storage failure
+  ---
+  duration_ms: 700.30225
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unreadable envelopes block safely and resume after repair without plaintext diagnostics
+ok 27 - unreadable envelopes block safely and resume after repair without plaintext diagnostics
+  ---
+  duration_ms: 635.577375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: generation checks preserve a concurrent credential replacement instead of overwriting the fresh envelope
+ok 28 - generation checks preserve a concurrent credential replacement instead of overwriting the fresh envelope
+  ---
+  duration_ms: 654.441417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an active owner blocks overlap; an expired owner resumes with the original job
+ok 29 - an active owner blocks overlap; an expired owner resumes with the original job
+  ---
+  duration_ms: 617.825584
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: missing required keys and changed target configuration block rotation without changing credentials
+ok 30 - missing required keys and changed target configuration block rotation without changing credentials
+  ---
+  duration_ms: 649.473625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: operator boundary rejects disabled flags, public routing, invalid limits and supplied secret fields
+ok 31 - operator boundary rejects disabled flags, public routing, invalid limits and supplied secret fields
+  ---
+  duration_ms: 586.313417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: operator inputs accept only bounded numeric batches and configured version identifiers
+ok 32 - operator inputs accept only bounded numeric batches and configured version identifiers
+  ---
+  duration_ms: 581.689458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43004) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: inactive operator progress expires after thirty days without removing any credential envelope
+ok 33 - inactive operator progress expires after thirty days without removing any credential envelope
+  ---
+  duration_ms: 606.499041
+  ...
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: management status projects current permissions, verified use and credential repair without vault details
+ok 34 - management status projects current permissions, verified use and credential repair without vault details
+  ---
+  duration_ms: 655.777542
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: grant revocation rejects access and refresh immediately while preserving vault identity and management access
+ok 35 - grant revocation rejects access and refresh immediately while preserving vault identity and management access
+  ---
+  duration_ms: 631.573708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: management rotation invalidates the old bearer without revoking separate ChatGPT grants
+ok 36 - management rotation invalidates the old bearer without revoking separate ChatGPT grants
+  ---
+  duration_ms: 479.282959
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: the durable grant epoch alone rejects a provider token even before provider cleanup
+ok 37 - the durable grant epoch alone rejects a provider token even before provider cleanup
+  ---
+  duration_ms: 462.21
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: revocation invalidates pending consent and a late old linking ticket cannot acquire a new epoch
+ok 38 - revocation invalidates pending consent and a late old linking ticket cannot acquire a new epoch
+  ---
+  duration_ms: 466.457917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43014) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: concurrent management rotations leave exactly one current management bearer
+ok 39 - concurrent management rotations leave exactly one current management bearer
+  ---
+  duration_ms: 421.470709
+  ...
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"e358eb33-1630-44ec-a972-735ddd422db3","tool":"get_profile","route":"profile-cache","durationMs":4,"status":200,"rate":{}}
+# {"correlationId":"2d2fe966-5813-4307-b035-ade114313d27","tool":"get_profile","route":"profile-cache","durationMs":3,"status":200,"rate":{}}
+# Subtest: bootstrap tools work repeatedly with exactly the scopes advertised on the wire
+    # Subtest: get_profile
+    ok 1 - get_profile
+      ---
+      duration_ms: 654.823167
+      ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"d0b8f204-97f5-4eb8-a191-3d71d32b201b","tool":"get_account_status","route":"account","durationMs":9,"status":200,"rate":{}}
+# {"correlationId":"daabb5b4-3fe7-4b2c-befb-6124c00ea24e","tool":"get_account_status","route":"account","durationMs":8,"status":200,"rate":{}}
+    # Subtest: get_account_status
+    ok 2 - get_account_status
+      ---
+      duration_ms: 555.125208
+      ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"c68398c9-ab5a-4819-8f94-7fc023aed252","tool":"list_tasks","route":"tasks","durationMs":10,"status":200,"rate":{}}
+# {"correlationId":"e95e7465-3b11-46cf-a672-e9141353261f","tool":"list_tasks","route":"tasks","durationMs":8,"status":200,"rate":{}}
+    # Subtest: list_tasks
+    ok 3 - list_tasks
+      ---
+      duration_ms: 551.797792
+      ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"7eabe838-8479-4cb1-929b-95d301af9d96","tool":"get_task","route":"tasks","durationMs":17,"status":200,"rate":{}}
+# {"correlationId":"ebd40ba3-f8a2-416e-83ee-01aff26a3f48","tool":"get_task","route":"tasks","durationMs":12,"status":200,"rate":{}}
+    # Subtest: get_task
+    ok 4 - get_task
+      ---
+      duration_ms: 553.83025
+      ...
+    1..4
+ok 40 - bootstrap tools work repeatedly with exactly the scopes advertised on the wire
+  ---
+  duration_ms: 2316.76575
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: refresh inherits the bound resource, rotates tokens and preserves repeated access
+ok 41 - refresh inherits the bound resource, rotates tokens and preserves repeated access
+  ---
+  duration_ms: 13562.637792
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: refresh rejects explicit wrong audience and wrong client without destroying the valid grant
+ok 42 - refresh rejects explicit wrong audience and wrong client without destroying the valid grant
+  ---
+  duration_ms: 467.363292
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: temporary profile storage failure does not revoke a recoverable refresh grant
+ok 43 - temporary profile storage failure does not revoke a recoverable refresh grant
+  ---
+  duration_ms: 465.346958
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43018) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorizing a second registered client preserves the first client grant
+ok 44 - authorizing a second registered client preserves the first client grant
+  ---
+  duration_ms: 528.98625
+  ...
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: two profiles complete PKCE and retain isolated token contexts
+ok 45 - two profiles complete PKCE and retain isolated token contexts
+  ---
+  duration_ms: 596.163166
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: metadata, wrong resource, redirect and PKCE fail safely
+ok 46 - metadata, wrong resource, redirect and PKCE fail safely
+  ---
+  duration_ms: 484.596
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: single-use linking rejects expired codes and concurrent consumption
+ok 47 - single-use linking rejects expired codes and concurrent consumption
+  ---
+  duration_ms: 462.829125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: denial and invalid browser binding issue no grant; session attempts are bounded
+ok 48 - denial and invalid browser binding issue no grant; session attempts are bounded
+  ---
+  duration_ms: 436.948667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disconnect denies access and refresh even when provider records remain
+ok 49 - disconnect denies access and refresh even when provider records remain
+  ---
+  duration_ms: 474.242833
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: CIMD discovery and explicit scope upgrade retain stable profile identity
+ok 50 - CIMD discovery and explicit scope upgrade retain stable profile identity
+  ---
+  duration_ms: 521.277667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: token exchange requires exact resource and scope challenges request minimum access
+ok 51 - token exchange requires exact resource and scope challenges request minimum access
+  ---
+  duration_ms: 420.439375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: consent shows the whole catalogue and issues only chosen supported scopes
+ok 52 - consent shows the whole catalogue and issues only chosen supported scopes
+  ---
+  duration_ms: 439.307084
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: browser consent preserves same-origin POST and rejects hostile or opaque origins
+ok 53 - browser consent preserves same-origin POST and rejects hostile or opaque origins
+  ---
+  duration_ms: 422.518458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: consent CSP permits Auth posts and only the validated callback origin
+ok 54 - consent CSP permits Auth posts and only the validated callback origin
+  ---
+  duration_ms: 496.78775
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43038) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: consent rejects callback hosts that would add CSP wildcards or directives
+ok 55 - consent rejects callback hosts that would add CSP wildcards or directives
+  ---
+  duration_ms: 821.437083
+  ...
+# (node:43049) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43049) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: MCP and public/private Auth surfaces cannot dispatch party departure or arbitrary member mutations
+ok 56 - MCP and public/private Auth surfaces cannot dispatch party departure or arbitrary member mutations
+  ---
+  duration_ms: 569.277084
+  ...
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private gateway requires verified absence and deduplicates a durable create attempt
+ok 57 - private gateway requires verified absence and deduplicates a durable create attempt
+  ---
+  duration_ms: 686.926667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: foreign, group and challenge tasks cannot obtain a write precondition
+ok 58 - foreign, group and challenge tasks cannot obtain a write precondition
+  ---
+  duration_ms: 643.289584
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: known scoring receipts never replay and consumed preconditions cannot authorize another score
+ok 59 - known scoring receipts never replay and consumed preconditions cannot authorize another score
+  ---
+  duration_ms: 643.487708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: ambiguous scoring pauses later writes and never repeats the uncertain upstream call
+ok 60 - ambiguous scoring pauses later writes and never repeats the uncertain upstream call
+  ---
+  duration_ms: 611.41175
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: upstream quota and credential failures persist profile-wide refusal without exposing raw bodies
+ok 61 - upstream quota and credential failures persist profile-wide refusal without exposing raw bodies
+  ---
+  duration_ms: 586.519125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: automated calls share a persisted thirty-second gate
+ok 62 - automated calls share a persisted thirty-second gate
+  ---
+  duration_ms: 579.773708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Daily scoring requires fresh server due-state, confirmed Cron state and matching Habitica day
+ok 63 - Daily scoring requires fresh server due-state, confirmed Cron state and matching Habitica day
+  ---
+  duration_ms: 592.116583
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Daily readiness comes from full UserGet and unavailable server readiness cannot authorize scoring
+ok 64 - Daily readiness comes from full UserGet and unavailable server readiness cannot authorize scoring
+  ---
+  duration_ms: 619.30975
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: credential disconnect deletes private projection state and denies subsequent operations
+ok 65 - credential disconnect deletes private projection state and denies subsequent operations
+  ---
+  duration_ms: 698.581833
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: ambiguous create reconciles positive alias evidence without repeating creation; absence never proves failure
+ok 66 - ambiguous create reconciles positive alias evidence without repeating creation; absence never proves failure
+  ---
+  duration_ms: 617.354542
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scheduled retention removes expired operational metadata without touching current credentials
+ok 67 - scheduled retention removes expired operational metadata without touching current credentials
+  ---
+  duration_ms: 567.537542
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: known write refusals remain durable receipts and preserve shared quota deadlines
+ok 68 - known write refusals remain durable receipts and preserve shared quota deadlines
+  ---
+  duration_ms: 644.909292
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: two concurrent attempts cannot consume one precondition twice
+ok 69 - two concurrent attempts cannot consume one precondition twice
+  ---
+  duration_ms: 602.829333
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed durable dispatch reservation prevents an upstream mutation
+ok 70 - failed durable dispatch reservation prevents an upstream mutation
+  ---
+  duration_ms: 616.562667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: expired preconditions cannot dispatch a write
+ok 71 - expired preconditions cannot dispatch a write
+  ---
+  duration_ms: 584.627666
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43057) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: local upstream quota refuses before consuming a create precondition or reserving dispatch
+ok 72 - local upstream quota refuses before consuming a create precondition or reserving dispatch
+  ---
+  duration_ms: 615.54
+  ...
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: subscription requires separate consent; encrypted material is context-bound and absent from status, receipt and logs
+ok 73 - subscription requires separate consent; encrypted material is context-bound and absent from status, receipt and logs
+  ---
+  duration_ms: 511.0785
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: original command recovery, concurrent duplicate and stale revision do not replace current device
+ok 74 - original command recovery, concurrent duplicate and stale revision do not replace current device
+  ---
+  duration_ms: 479.99
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: endpoint identity cannot cross accounts or devices; tokens and connection ids cannot cross profiles
+ok 75 - endpoint identity cannot cross accounts or devices; tokens and connection ids cannot cross profiles
+  ---
+  duration_ms: 476.740292
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unsubscribe is exact-device CAS, removes secrets, and preserves tasks and original receipts
+ok 76 - unsubscribe is exact-device CAS, removes secrets, and preserves tasks and original receipts
+  ---
+  duration_ms: 460.279959
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: consent revocation atomically clears all devices and invalidates old epochs, including after regrant
+ok 77 - consent revocation atomically clears all devices and invalidates old epochs, including after regrant
+  ---
+  duration_ms: 457.295667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: expiry erases material and retains revision tombstone; old receipt never resurrects a subscription
+ok 78 - expiry erases material and retains revision tombstone; old receipt never resurrects a subscription
+  ---
+  duration_ms: 579.387417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed receipt storage rolls back subscription and consent mutations
+ok 79 - failed receipt storage rolls back subscription and consent mutations
+  ---
+  duration_ms: 463.497875
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: malformed, private, redirected-looking and unknown push endpoints are rejected without outbound fetch
+ok 80 - malformed, private, redirected-looking and unknown push endpoints are rejected without outbound fetch
+  ---
+  duration_ms: 509.386084
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: push off or invalid separate key configuration refuses grant yet permits status and revocation
+ok 81 - push off or invalid separate key configuration refuses grant yet permits status and revocation
+  ---
+  duration_ms: 2134.561625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disconnect, deletion and credential replacement clear only the selected profile secret material
+ok 82 - disconnect, deletion and credential replacement clear only the selected profile secret material
+  ---
+  duration_ms: 1363.685209
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cleanup failure blocks profile first, remains explicit and retries secret erasure
+ok 83 - cleanup failure blocks profile first, remains explicit and retries secret erasure
+  ---
+  duration_ms: 450.104125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private binding offers current opaque status only, with exact connection fence
+ok 84 - private binding offers current opaque status only, with exact connection fence
+  ---
+  duration_ms: 454.008292
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Workspace export/disconnect/delete exclude subscription secrets and preserve independent account consent
+ok 85 - Workspace export/disconnect/delete exclude subscription secrets and preserve independent account consent
+  ---
+  duration_ms: 677.860792
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43076) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: bounded device and receipt capacity fail closed without partial writes
+ok 86 - bounded device and receipt capacity fail closed without partial writes
+  ---
+  duration_ms: 5491.866167
+  ...
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"ad001b11-250b-4f58-aec1-b197762dc149","tool":"get_account_status","route":"account","durationMs":7,"status":200,"rate":{}}
+# {"correlationId":"531e90bf-34f7-46e2-85ce-e3b73ac0151c","tool":"get_account_status","route":"account","durationMs":8,"status":200,"rate":{}}
+# {"correlationId":"c1e57f36-50dc-4ec0-aa99-377a38dfc1e2","tool":"get_account_status","route":"account","durationMs":7,"status":200,"rate":{}}
+# {"correlationId":"1af8476a-622c-446e-806f-7056cfd8ae52","tool":"get_account_status","route":"account","durationMs":7,"status":200,"rate":{}}
+# {"correlationId":"1f07936d-f10f-4137-82c3-846d5d316eba","tool":"get_account_status","route":"account","durationMs":7,"status":200,"rate":{}}
+# {"correlationId":"fbe48311-ed95-4f44-85f8-59427dec6322","tool":"get_account_status","route":"account","durationMs":7,"status":200,"rate":{}}
+# Subtest: account status uses the actual top-level server readiness and leaves malformed values unknown
+ok 87 - account status uses the actual top-level server readiness and leaves malformed values unknown
+  ---
+  duration_ms: 640.173166
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"3ddba940-8064-4818-a47f-bc6b184b5f10","tool":"get_profile","route":"profile-cache","durationMs":3,"status":200,"rate":{}}
+# {"correlationId":"26eb4aff-f1f2-4ced-b87d-4570e051d159","tool":"get_account_status","route":"account","durationMs":10,"status":200,"rate":{}}
+# {"correlationId":"b2d11e9a-24aa-42e4-96fb-c6de8d99a2f2","tool":"list_tasks","route":"tasks","durationMs":9,"status":200,"rate":{}}
+# {"correlationId":"fdc881b8-ed1b-4022-8303-398988ddd2f9","tool":"list_tasks","route":"tasks","durationMs":8,"status":200,"rate":{}}
+# {"correlationId":"74ae9971-1db3-4d71-8672-4992995b3a91","tool":"list_tasks","route":"tasks","durationMs":13,"status":200,"rate":{}}
+# {"correlationId":"1126364c-006f-4a73-97b7-c68ef1658174","tool":"get_task","route":"tasks","durationMs":15,"status":200,"rate":{}}
+# {"correlationId":"32f2e559-a1f6-4680-aa43-fee0c12a8f5b","tool":"get_task","route":"tasks","durationMs":13,"status":200,"rate":{}}
+# {"correlationId":"866b32bb-3d7a-4a63-9db1-12e2cb021a2d","tool":"list_tasks","route":"tasks","durationMs":8,"status":200,"rate":{}}
+# Subtest: SDK initialization, strict tool schemas and useful read-only outputs
+ok 88 - SDK initialization, strict tool schemas and useful read-only outputs
+  ---
+  duration_ms: 644.81625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scopes, account selectors, origins and public Auth proxy are denied
+ok 89 - scopes, account selectors, origins and public Auth proxy are denied
+  ---
+  duration_ms: 528.361625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"492f3a0f-2ff4-405c-bbdd-12dc7cda3ef6","tool":"get_profile","route":"profile-cache","durationMs":2,"status":200,"rate":{}}
+# {"correlationId":"61a492d1-caad-47c0-89f7-241d4061d338","tool":"get_profile","route":"profile-cache","durationMs":3,"status":200,"rate":{}}
+# Subtest: two OAuth accounts return distinct profile identities without selectors
+ok 90 - two OAuth accounts return distinct profile identities without selectors
+  ---
+  duration_ms: 528.725667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"f4016de3-ccc8-4324-9f9d-e9329ae1f89a","tool":"get_account_status","durationMs":8,"status":401,"rate":{}}
+# {"correlationId":"91a95ac0-50f8-4188-b897-7087c6e57fc2","tool":"get_account_status","durationMs":3,"status":401,"rate":{}}
+# Subtest: upstream 401 returns safe guidance without automatic retries
+ok 91 - upstream 401 returns safe guidance without automatic retries
+  ---
+  duration_ms: 610.822917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"769c63b7-9c14-48ae-af06-5061ebe5fc82","tool":"get_account_status","durationMs":8,"status":429,"rate":{"remaining":0,"retryAfterSeconds":120}}
+# {"correlationId":"19fb5894-93e3-44ce-802c-88bf7db0a766","tool":"get_account_status","durationMs":3,"status":429,"rate":{"retryAfterSeconds":120}}
+# Subtest: upstream 429 returns safe guidance without automatic retries
+ok 92 - upstream 429 returns safe guidance without automatic retries
+  ---
+  duration_ms: 514.740291
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"772b3d33-6052-4919-b12b-2b33e38f0e08","tool":"get_account_status","durationMs":8,"status":502,"rate":{}}
+# Subtest: upstream 500 returns safe guidance without automatic retries
+ok 93 - upstream 500 returns safe guidance without automatic retries
+  ---
+  duration_ms: 473.313042
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"b96780e1-b28e-4b12-bfcf-f8fb052521cc","tool":"get_account_status","route":"account","durationMs":9,"status":200,"rate":{"remaining":0,"resetUnixSeconds":1793000514}}
+# {"correlationId":"c4594344-7828-4c51-b222-f4195cc34eac","tool":"get_account_status","durationMs":4,"status":429,"rate":{"retryAfterSeconds":181}}
+# Subtest: exhausted successful quota blocks later calls until upstream reset
+ok 94 - exhausted successful quota blocks later calls until upstream reset
+  ---
+  duration_ms: 497.59775
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"feebe226-0e01-44c9-8e7a-6fbb4f2c8676","tool":"get_account_status","durationMs":9,"status":502,"rate":{}}
+# {"correlationId":"e219b22d-bc91-4003-a929-14fad309f2cd","durationMs":0,"status":400,"rate":{}}
+# Subtest: upstream redirects and malformed envelopes never expose credentials
+ok 95 - upstream redirects and malformed envelopes never expose credentials
+  ---
+  duration_ms: 519.39775
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"945f1a3b-47b0-4a0c-bc92-4395fc5b3fa1","tool":"get_account_status","durationMs":9,"status":429,"rate":{"retryAfterSeconds":120}}
+# {"correlationId":"8aea3c81-ebc1-4b74-84ec-470cac271727","tool":"get_account_status","route":"account","durationMs":28,"status":200,"rate":{}}
+# {"correlationId":"30485e99-a22b-4a35-a966-046fc438ae28","tool":"get_account_status","durationMs":3,"status":429,"rate":{"retryAfterSeconds":120}}
+# Subtest: late concurrent success cannot erase a quota cooldown
+ok 96 - late concurrent success cannot erase a quota cooldown
+  ---
+  duration_ms: 531.820709
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43077) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"7d4d3b8a-0b23-4946-91ba-55d240455e92","tool":"get_account_status","route":"account","durationMs":9,"status":200,"rate":{}}
+# Subtest: read tool scope challenge is complete for a fresh client grant
+ok 97 - read tool scope challenge is complete for a fresh client grant
+  ---
+  duration_ms: 536.904
+  ...
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private exact own-Todo retirement confirms one empty-object DELETE receipt and deduplicates original attempts
+ok 98 - private exact own-Todo retirement confirms one empty-object DELETE receipt and deduplicates original attempts
+  ---
+  duration_ms: 704.968458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: retirement requires explicit irreversible approval, manual dispatch and a fresh matching owned Todo
+ok 99 - retirement requires explicit irreversible approval, manual dispatch and a fresh matching owned Todo
+  ---
+  duration_ms: 702.809542
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an already-absent source before dispatch is a separate refusal and never generates a delete attempt
+ok 100 - an already-absent source before dispatch is a separate refusal and never generates a delete attempt
+  ---
+  duration_ms: 637.496417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unknown delete never resends and explicit absence reconciliation differs from original success
+ok 101 - unknown delete never resends and explicit absence reconciliation differs from original success
+  ---
+  duration_ms: 673.512667
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: definitive native refusal records a refusal without claiming source retirement
+ok 102 - definitive native refusal records a refusal without claiming source retirement
+  ---
+  duration_ms: 619.827625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed durable reservation sends no DELETE and leaves the source untouched
+ok 103 - failed durable reservation sends no DELETE and leaves the source untouched
+  ---
+  duration_ms: 627.019833
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: lost storage acknowledgement after DELETE keeps the original unknown fence without resend
+ok 104 - lost storage acknowledgement after DELETE keeps the original unknown fence without resend
+  ---
+  duration_ms: 633.938458
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a quota exhausted by final verification prevents reservation and deletion
+ok 105 - a quota exhausted by final verification prevents reservation and deletion
+  ---
+  duration_ms: 652.278958
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43125) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: revoked consent during final native observation prevents reservation and DELETE
+ok 106 - revoked consent during final native observation prevents reservation and DELETE
+  ---
+  duration_ms: 667.627958
+  ...
+# (node:43135) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43135) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real local service binding reaches Auth named entrypoint
+ok 107 - real local service binding reaches Auth named entrypoint
+  ---
+  duration_ms: 227.905917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43135) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: both public workers deny protected requests even with arbitrary bearer values
+ok 108 - both public workers deny protected requests even with arbitrary bearer values
+  ---
+  duration_ms: 203.937375
+  ...
+# Subtest: environment configs isolate integration storage and service bindings
+ok 109 - environment configs isolate integration storage and service bindings
+  ---
+  duration_ms: 0.254917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43135) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: missing Auth binding yields bounded unavailable response
+ok 110 - missing Auth binding yields bounded unavailable response
+  ---
+  duration_ms: 196.972083
+  ...
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: neutral spell fixture agrees with C\# metadata while marking stricter gateway limits
+ok 111 - neutral spell fixture agrees with C\# metadata while marking stricter gateway limits
+  ---
+  duration_ms: 2.824375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private casts bind fresh context, return minimal receipts and never repeat an attempt
+ok 112 - private casts bind fresh context, return minimal receipts and never repeat an attempt
+  ---
+  duration_ms: 837.481958
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: changed preconditions, invalid allowlist, level, class and total mana prevent effects
+ok 113 - changed preconditions, invalid allowlist, level, class and total mana prevent effects
+  ---
+  duration_ms: 783.788792
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: scope and profile identity are independently enforced without a write
+ok 114 - scope and profile identity are independently enforced without a write
+  ---
+  duration_ms: 785.791583
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: same in-flight attempt cannot be refused over a later applied receipt or release its lease
+ok 115 - same in-flight attempt cannot be refused over a later applied receipt or release its lease
+  ---
+  duration_ms: 730.867959
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: uncertain upstream effects never replay and fence new task and spell writes
+ok 116 - uncertain upstream effects never replay and fence new task and spell writes
+  ---
+  duration_ms: 723.305333
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an unknown task receipt also prevents a new spell effect
+ok 117 - an unknown task receipt also prevents a new spell effect
+  ---
+  duration_ms: 642.611583
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: quota from the final read stops dispatch; semantic refusal does not invalidate credentials
+ok 118 - quota from the final read stops dispatch; semantic refusal does not invalidate credentials
+  ---
+  duration_ms: 795.554
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: malformed success remains unknown instead of guessing partial party effects
+ok 119 - malformed success remains unknown instead of guessing partial party effects
+  ---
+  duration_ms: 673.111375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: revocation during preflight prevents dispatch
+ok 120 - revocation during preflight prevents dispatch
+  ---
+  duration_ms: 673.788042
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: grant replacement during preflight prevents a write even with active credentials
+ok 121 - grant replacement during preflight prevents a write even with active credentials
+  ---
+  duration_ms: 716.8185
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed durable dispatch reservation prevents an upstream cast
+ok 122 - failed durable dispatch reservation prevents an upstream cast
+  ---
+  duration_ms: 735.712708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43149) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: local final-dispatch quota preserves an original known refusal receipt without casting
+ok 123 - local final-dispatch quota preserves an original known refusal receipt without casting
+  ---
+  duration_ms: 708.652166
+  ...
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: tag writes require separate owner consent; old organization scopes and public routes grant no private gateway
+ok 124 - tag writes require separate owner consent; old organization scopes and public routes grant no private gateway
+  ---
+  duration_ms: 813.649167
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reviewed creation binds one native tag and recovers the exact original receipt without another POST
+ok 125 - reviewed creation binds one native tag and recovers the exact original receipt without another POST
+  ---
+  duration_ms: 647.58
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: explicit adoption and rename preserve unrelated tags; names alone and challenge/group tags cannot authorize mutation
+ok 126 - explicit adoption and rename preserve unrelated tags; names alone and challenge/group tags cannot authorize mutation
+  ---
+  duration_ms: 693.893875
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: individual add/remove preserves unrelated user tags and never scores or deletes native tags
+ok 127 - individual add/remove preserves unrelated user tags and never scores or deletes native tags
+  ---
+  duration_ms: 776.238708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: membership refuses group task ownership before dispatch
+ok 128 - membership refuses group task ownership before dispatch
+  ---
+  duration_ms: 685.779333
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: membership refuses challenge task ownership before dispatch
+ok 129 - membership refuses challenge task ownership before dispatch
+  ---
+  duration_ms: 627.158917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: membership refuses foreign task ownership before dispatch
+ok 130 - membership refuses foreign task ownership before dispatch
+  ---
+  duration_ms: 664.416041
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: timeout after tag create remains unknown; lookup and a replacement attempt never recreate it
+ok 131 - timeout after tag create remains unknown; lookup and a replacement attempt never recreate it
+  ---
+  duration_ms: 666.536292
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: expired checks, wrong fingerprints, revoked consent and quota stop before dispatch
+ok 132 - expired checks, wrong fingerprints, revoked consent and quota stop before dispatch
+  ---
+  duration_ms: 671.096167
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: checks and tag ownership are isolated from other profiles, contexts and revoked credential connections
+ok 133 - checks and tag ownership are isolated from other profiles, contexts and revoked credential connections
+  ---
+  duration_ms: 645.643083
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: shared effect leases and adaptive admission refuse before reserving a tag dispatch
+ok 134 - shared effect leases and adaptive admission refuse before reserving a tag dispatch
+  ---
+  duration_ms: 643.293375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed durable reservation never sends; lost result persistence keeps the original unknown fence
+ok 135 - failed durable reservation never sends; lost result persistence keeps the original unknown fence
+  ---
+  duration_ms: 697.308333
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: removing unrelated tags in an unexpected upstream response remains uncertain and is never replayed
+ok 136 - removing unrelated tags in an unexpected upstream response remains uncertain and is never replayed
+  ---
+  duration_ms: 660.903083
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: disconnect purges private tag context while remote tags survive
+ok 137 - disconnect purges private tag context while remote tags survive
+  ---
+  duration_ms: 607.513417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an unknown tag effect fences ordinary task writes through the shared Auth ledger
+ok 138 - an unknown tag effect fences ordinary task writes through the shared Auth ledger
+  ---
+  duration_ms: 566.438833
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a retained unknown gameplay receipt prevents new tag dispatches
+ok 139 - a retained unknown gameplay receipt prevents new tag dispatches
+  ---
+  duration_ms: 556.315375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: explicit recovery reviews exact metadata before resolving the original unknown create without a second POST
+ok 140 - explicit recovery reviews exact metadata before resolving the original unknown create without a second POST
+  ---
+  duration_ms: 584.129834
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: recovery rejects absence, renamed identity, wrong original payload and revoked review tokens
+ok 141 - recovery rejects absence, renamed identity, wrong original payload and revoked review tokens
+  ---
+  duration_ms: 608.105708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reviewed membership recovery preserves original unrelated tags and sends no repeated add
+ok 142 - reviewed membership recovery preserves original unrelated tags and sends no repeated add
+  ---
+  duration_ms: 603.446541
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: verified tag consent disclosure keeps selectable scope and safe callback policy
+ok 143 - verified tag consent disclosure keeps selectable scope and safe callback policy
+  ---
+  duration_ms: 546.036625
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: oversized complete native tag observations refuse without first-page truncation or effects
+ok 144 - oversized complete native tag observations refuse without first-page truncation or effects
+  ---
+  duration_ms: 545.850375
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43153) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private tag observations expose only the exact registered context and queued authority epochs are enforced
+ok 145 - private tag observations expose only the exact registered context and queued authority epochs are enforced
+  ---
+  duration_ms: 581.155208
+  ...
+# (node:43175) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43175) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: atomic quota admits exactly the cap, records anonymous denials and resets next window
+ok 146 - atomic quota admits exactly the cap, records anonymous denials and resets next window
+  ---
+  duration_ms: 788.224125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43175) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: verified profile throttling preserves separate receipt recovery and another profile
+ok 147 - verified profile throttling preserves separate receipt recovery and another profile
+  ---
+  duration_ms: 501.136125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43175) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: MCP ingress returns one bounded 429 before token processing or tool dispatch
+ok 148 - MCP ingress returns one bounded 429 before token processing or tool dispatch
+  ---
+  duration_ms: 400.358541
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43175) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"76b57a61-07ad-4670-bcaf-0eb9196f12a1","tool":"get_account_status","durationMs":7,"status":429,"rate":{"retryAfterSeconds":57}}
+# {"correlationId":"32343845-2845-4772-baea-fbde19ea5736","tool":"get_account_status","durationMs":8,"status":429,"rate":{"retryAfterSeconds":90}}
+# {"correlationId":"de1832db-abc4-458f-b45d-434179eee821","tool":"get_account_status","durationMs":4,"status":429,"rate":{"retryAfterSeconds":90}}
+# Subtest: read quota prevents upstream HTTP and upstream 429 persists cooldown without identifying logs
+ok 149 - read quota prevents upstream HTTP and upstream 429 persists cooldown without identifying logs
+  ---
+  duration_ms: 490.722042
+  ...
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: concurrent independent admissions cannot overspend shared capacity
+ok 150 - concurrent independent admissions cannot overspend shared capacity
+  ---
+  duration_ms: 1033.374208
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: early slowdown preserves reserve and denied profile leaves another profile capacity
+ok 151 - early slowdown preserves reserve and denied profile leaves another profile capacity
+  ---
+  duration_ms: 4691.87775
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: shared remaining headers, 429 and success retain hard cooldown and gradually recover
+ok 152 - shared remaining headers, 429 and success retain hard cooldown and gradually recover
+  ---
+  duration_ms: 490.52425
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stale successful header observation cannot refill capacity reserved by concurrent callers
+ok 153 - stale successful header observation cannot refill capacity reserved by concurrent callers
+  ---
+  duration_ms: 611.938417
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: successful exhaustion is a hard pause without a failure recovery penalty
+ok 154 - successful exhaustion is a hard pause without a failure recovery penalty
+  ---
+  duration_ms: 413.092708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: CAS loss and a failed second update do not consume one side of the reservation
+ok 155 - CAS loss and a failed second update do not consume one side of the reservation
+  ---
+  duration_ms: 431.651084
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: bounded cleanup retains cooldown and profile deletion cascades private pacing state
+ok 156 - bounded cleanup retains cooldown and profile deletion cascades private pacing state
+  ---
+  duration_ms: 410.999792
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43196) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"dd3e25d6-ba67-4e39-9e5c-833ad1169dbd","tool":"get_account_status","durationMs":5,"status":429,"rate":{"retryAfterSeconds":60}}
+# {"correlationId":"22c980d0-cb42-4972-8867-993d2d980386","tool":"get_account_status","durationMs":2,"status":401,"rate":{}}
+# Subtest: enabled runtime gate stops upstream reads before dispatch and emits only anonymous metrics
+ok 157 - enabled runtime gate stops upstream reads before dispatch and emits only anonymous metrics
+  ---
+  duration_ms: 404.203333
+  ...
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: two validated accounts persist isolated ciphertext and stable reenrollment identity
+ok 158 - two validated accounts persist isolated ciphertext and stable reenrollment identity
+  ---
+  duration_ms: 441.06075
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: invalid credentials, missing consent, disabled enrollment and encryption failure persist nothing
+ok 159 - invalid credentials, missing consent, disabled enrollment and encryption failure persist nothing
+  ---
+  duration_ms: 1031.158083
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: cross-profile management is denied; disconnect deletes envelope; revalidation reconnects
+ok 160 - cross-profile management is denied; disconnect deletes envelope; revalidation reconnects
+  ---
+  duration_ms: 408.558209
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:43200) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: oversized input, hostile origin and database failure are bounded and secret-free
+ok 161 - oversized input, hostile origin and database failure are bounded and secret-free
+  ---
+  duration_ms: 358.771542
+  ...
+# (node:43220) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: neutral command fixture preserves UTF-8 identity across C\# and Worker contracts
+ok 162 - neutral command fixture preserves UTF-8 identity across C\# and Worker contracts
+  ---
+  duration_ms: 5.258667
+  ...
+# Subtest: Worker command contract rejects selectors, numeric coercion and ignored fields
+ok 163 - Worker command contract rejects selectors, numeric coercion and ignored fields
+  ---
+  duration_ms: 0.436833
+  ...
+# Subtest: extended task settings have portable identity and reject invalid nested payloads
+ok 164 - extended task settings have portable identity and reject invalid nested payloads
+  ---
+  duration_ms: 2.722792
+  ...
+# Subtest: native lifecycle hashes match portable fixtures and deletion rejects unused payload fields
+ok 165 - native lifecycle hashes match portable fixtures and deletion rejects unused payload fields
+  ---
+  duration_ms: 1.068584
+  ...
+1..165
+# tests 169
+# suites 0
+# pass 169
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 34705.150792

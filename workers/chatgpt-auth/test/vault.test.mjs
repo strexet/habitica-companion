@@ -29,7 +29,7 @@ async function fixture(t, overrides = {}) {
   }));
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("HABITICA_INTEGRATION_DB", "auth");
-  for (const migration of ["0001-integration-profiles.sql","0002-linking.sql","0003-read-state.sql","0004-management-identity.sql","0005-projection-gateway.sql","0006-grant-revocation.sql","0007-credential-key-jobs.sql"])
+  for (const migration of ["0001-integration-profiles.sql","0002-linking.sql","0003-read-state.sql","0004-management-identity.sql","0005-projection-gateway.sql","0006-grant-revocation.sql","0007-credential-key-jobs.sql","0008-upstream-pacing.sql","0009-tag-gateway.sql","0010-push-subscriptions.sql","0011-push-dispatches.sql"])
     for (const sql of (await readFile(new URL("migrations/"+migration, root), "utf8")).split(";")) if (sql.trim()) await db.prepare(sql).run();
   const worker = await mf.getWorker("auth");
   return { worker, db, messages };

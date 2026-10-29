@@ -103,9 +103,8 @@ public sealed class WorkspaceTaskControllerTests
     [Fact]
     public async Task TodoRestorationReviewsExactHistoryAndRecoversOneEventAfterLostAcknowledgement()
     {
-        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());await f.Controller.ConfirmAsync();
+        var f=new WorkspaceTaskFixture();await f.SeedLegacyLocalAsync(completed: true);
         var task=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
-        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.CompleteTask,TaskId=task.Id });await f.Controller.ConfirmAsync();
         var completion=Assert.Single(f.Controller.Snapshot!.Document.Completions);
         await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.RestoreTodo,TaskId=task.Id,RestoreTodo=new(completion.Id) });
         Assert.False(f.Controller.Preview!.MayAffectHabitica);Assert.Equal(completion.Id,f.Controller.Preview.Command.Patch!.RestoreTodo!.CompletionId);Assert.Contains("no Habitica effect",f.Controller.Message);

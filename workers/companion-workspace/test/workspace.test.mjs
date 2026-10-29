@@ -1,3 +1,4 @@
+import {seedLegacyCommand} from './fixtures/legacy-todo.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -65,18 +66,18 @@ test('multiple sessions survive unchanged credential validation; revocation and 
 
 test('neutral canonical fixture supports typed update, Daily completion and bounded Habit scoring without upstream writes', async t => {
  const f = await fixture(t, { workspace: true }); const document = JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/workspace-v1.json', import.meta.url), 'utf8'));
- document.tasks.push({ ...document.tasks[0], id: crypto.randomUUID(), kind: "daily", recurrence: { frequency: "daily", interval: 1, startDate: "2026-10-15", timeZoneId: "UTC", weekdays: [], daysOfMonth: [] } }, { ...document.tasks[0], id: crypto.randomUUID(), kind: "habit" });
+ document.tasks.push({ ...document.tasks[0], id: crypto.randomUUID(), kind: "daily", deadline:null, recurrence: { frequency: "daily", interval: 1, startDate: "2026-10-15", timeZoneId: "UTC", weekdays: [], daysOfMonth: [] } }, { ...document.tasks[0], id: crypto.randomUUID(), kind: "habit",deadline:null });
  const w = await connect(f, await enrolled(f), document.id);
  await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?').bind(JSON.stringify(document)).run();
  const daily = document.tasks.find(task => task.kind === 'daily'); const habit = document.tasks.find(task => task.kind === 'habit');
  assert.ok(daily); assert.ok(habit);
  let rev = document.revision;
- const complete = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'completeTask', taskId: daily.id, occurrenceDate: '2026-10-15' };
+ const complete = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'completeTask', taskId: daily.id, occurrenceDate: '2026-10-15',projectToHabitica:true };
  const completed = await call(f, '/commands', w.sessionToken, complete); assert.equal(completed.status, 201, await completed.clone().text());
- const score = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'scoreHabit', taskId: habit.id, direction: 'up', count: 3 };
+ const score = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'scoreHabit', taskId: habit.id, direction: 'up', count: 3,projectToHabitica:true };
  assert.equal((await call(f, '/commands', w.sessionToken, score)).status, 201);
  const result = await (await call(f, '/export', w.sessionToken)).json(); assert.equal(result.document.completions.length, (document.completions ?? []).length + 1); assert.equal(result.document.habitScores.length, (document.habitScores ?? []).length + 3);
- assert.equal(result.commands[1].projectionState, 'notRequested');
+ assert.equal(result.commands[1].projectionState, 'pending');assert.deepEqual(result.commands[1].effects,['create','scoreUp','scoreUp','scoreUp']);
  const invalid = { ...score, id: crypto.randomUUID(), expectedRevision: rev, count: 11 };
  assert.equal((await call(f, '/commands', w.sessionToken, invalid)).status, 422);
 });
@@ -154,17 +155,17 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
   if (request.method!=='GET')taskWrites++;
   return Response.json({success:true,data:{id:externalId,userId:user,type:'todo',text:remoteText,notes:'External notes',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{}}});
  }});
- const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
- const preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; await seedLegacyCommand(f,c);
+ const preview=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId:c.taskId,habiticaTaskId:externalId}})).json();
  assert.equal(preview.task.text,c.patch.text); assert.equal(preview.external.text,remoteText); assert.equal(preview.pendingCommandCount,0);
  remoteText='Changed after preview';
- const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedWorkspaceId:w.workspaceId,expectedAccessEpoch:preview.accessEpoch,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
- assert.equal((await call(f,'/projection/adopt',w.sessionToken,approval)).status,409);
- const fresh=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ const approval={tool:'accept_task_adoption',arguments:{commandId:preview.commandId,reviewHash:preview.reviewHash}};
+ assert.equal((await(await call(f,'/adoption-api',w.sessionToken,approval)).json()).state,'refused');
+ const fresh=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId:c.taskId,habiticaTaskId:externalId}})).json();
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID(),expectedFingerprint:fresh.external.fingerprint})).status,409);
- assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);
+ assert.equal((await(await call(f,'/adoption-api',w.sessionToken,{tool:'accept_task_adoption',arguments:{commandId:fresh.commandId,reviewHash:fresh.reviewHash}})).json()).state,'accepted');
  const exported=await(await call(f,'/export',w.sessionToken)).json(); assert.equal(exported.document.tasks[0].id,c.taskId); assert.equal(exported.document.tasks[0].text,c.patch.text); assert.equal(exported.document.projections[0].habiticaTaskId,externalId); assert.equal(taskWrites,0);
- const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,patch:{notes:'An explicit later edit'}};
+ const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,projectToHabitica:true,patch:{notes:'An explicit later edit'}};
  const saved=await(await call(f,'/commands',w.sessionToken,update)).json(); assert.equal(saved.entry.projectionState,'pending'); assert.deepEqual(saved.entry.effects,['update']);
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedRevision:exported.document.revision+1,expectedFingerprint:fresh.external.fingerprint})).status,409);
 });
@@ -181,7 +182,7 @@ test('accepted completion drives ordered create then score through the private g
   remote={id:'90000000-0000-4000-8000-000000000002',userId:user,notes:'',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{},...await request.json()};
   return Response.json({success:true,data:remote},{status:201});
  }});
- const profile=await enrolled(f);const w=await connect(f,profile);const c={...command(w.workspaceId),projectToHabitica:false};assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
+ const profile=await enrolled(f);const w=await connect(f,profile);const c={...command(w.workspaceId),projectToHabitica:false};await seedLegacyCommand(f,c);
  const complete={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'completeTask',taskId:c.taskId,projectToHabitica:true};assert.equal((await call(f,'/commands',w.sessionToken,complete)).status,201);
  const exported=await(await call(f,'/export',w.sessionToken)).json();let doc=exported.document;let entry=exported.commands[1];
  const context=await(await f.workspaceIdentity.fetch('https://identity.internal/management',{method:'POST',headers:{authorization:`Bearer ${profile.managementToken}`}})).json();
@@ -194,4 +195,24 @@ test('accepted completion drives ordered create then score through the private g
   doc=confirmMapping(doc,c.taskId,result.task);entry={...entry,confirmedEffects:entry.confirmedEffects+1};
  }
  assert.deepEqual(writes,['/api/v3/tasks/user','/api/v3/tasks/90000000-0000-4000-8000-000000000002/score/up']);assert.equal(doc.tasks[0].id,c.taskId);assert.equal(doc.tasks[0].state,'completed');assert.equal(doc.completions.length,1);assert.equal(entry.confirmedEffects,2);
+});
+
+test('reviewed adoption supports retained historical and recurring records and recovers identical approval without another remote read',async t=>{
+ for(const kind of ['todo','daily','habit']){
+  let reads=0,writes=0;const externalId=crypto.randomUUID();
+  const f=await fixture(t,{workspace:true,projection:true,habitica:async request=>{
+   const user=request.headers.get('x-api-user');if(request.url.includes('user?userFields=_id,profile'))return Response.json({success:true,data:{_id:user,profile:{name:'Fixture'}}});
+   if(request.method!=='GET')writes++;else reads++;
+   return Response.json({success:true,data:{id:externalId,userId:user,type:kind,text:'Retained remote',notes:'Retained',priority:1,attribute:'str',completed:kind==='todo',up:true,down:true,checklist:[],group:{},challenge:{}}});
+  }}),w=await connect(f,await enrolled(f)),taskId=crypto.randomUUID();
+  await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:kind==='todo'?'createTodo':kind==='daily'?'createDaily':'createHabit',taskId,patch:{text:'Retained native'}});
+  let revision=2;if(kind==='todo'){await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:revision++,operation:'completeTask',taskId});}
+  await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:revision,operation:'deleteTask',taskId});
+  const before=await(await call(f,'/export',w.sessionToken)).json(),preview=await(await call(f,'/adoption-api',w.sessionToken,{tool:'prepare_task_adoption',arguments:{requestId:crypto.randomUUID(),taskId,habiticaTaskId:externalId}})).json();
+  const approval={tool:'accept_task_adoption',arguments:{commandId:preview.commandId,reviewHash:preview.reviewHash}};
+  const response=await call(f,'/adoption-api',w.sessionToken,approval);assert.equal(response.status,200,await response.clone().text());const receipt=await response.json(),readCount=reads;
+  const duplicate=await call(f,'/adoption-api',w.sessionToken,approval);assert.equal(duplicate.status,200);assert.deepEqual(await duplicate.json(),receipt);assert.equal(reads,readCount);assert.equal(writes,0);
+  const after=await(await call(f,'/export',w.sessionToken)).json();assert.deepEqual(after.document.tasks,before.document.tasks);assert.deepEqual(after.commands,before.commands);assert.deepEqual(after.document.completions,before.document.completions);assert.equal(after.document.projections[0].habiticaTaskId,externalId);
+  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID()})).status,409);
+ }
 });

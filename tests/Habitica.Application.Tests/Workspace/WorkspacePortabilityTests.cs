@@ -85,6 +85,17 @@ public sealed class WorkspacePortabilityTests
         var handoff=WorkspaceJournalJson.Deserialize(await new WorkspaceHandoffService(source).PrepareAsync(document.Id,default));Assert.Equal(WorkspaceAuthorityMode.Frozen,handoff.Authority!.Mode);Assert.Equal(WorkspaceJson.Serialize(document),WorkspaceJson.Serialize(handoff.Document));
     }
 
+    [Fact]
+    public async Task TagLedgerSurvivesExportRestoreAndHandoffWithoutExecutionAuthority()
+    {
+        using var fixture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"fixtures","tag-projection-v1.json")));
+        var document=WorkspaceJson.Deserialize(fixture.RootElement.GetProperty("cases")[0].GetProperty("document").GetRawText());
+        var source=new Store(new(document,document.Revision,[],[]));var json=await new WorkspacePortabilityService(source).ExportAsync(document.Id,default);var target=new Store();
+        Assert.Equal(WorkspaceRestoreOutcome.Restored,await new WorkspacePortabilityService(target).RestoreAsync(json!,default));
+        var restored=target.Read()!;Assert.Equal(WorkspaceJson.Serialize(document),WorkspaceJson.Serialize(restored.Document));Assert.Empty(restored.Commands);Assert.Empty(restored.Events!);Assert.Equal(WorkspaceAuthorityMode.Paused,restored.Authority!.Mode);
+        var handoff=WorkspaceJournalJson.Deserialize(await new WorkspaceHandoffService(source).PrepareAsync(document.Id,default));Assert.Equal(WorkspaceAuthorityMode.Frozen,handoff.Authority!.Mode);Assert.Equal(WorkspaceJson.Serialize(document),WorkspaceJson.Serialize(handoff.Document));
+    }
+
     private sealed class Clock(DateTimeOffset value) : TimeProvider { public override DateTimeOffset GetUtcNow() => value; }
     private sealed class Store : ICompanionWorkspaceStore
     {

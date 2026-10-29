@@ -1,0 +1,140 @@
+{
+  "taskId": "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+  "recordedAtUtc": "2026-10-21T12:32:37.990722+00:00",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "3d04b0a455900d6008fcd09f63a5e73ad0e37d220d749e8aa3d2bce60b19709d",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "2861692476f102c6ea2ac4525e7c0e7b56dfd638aedfb99a7cc0c87c2b04341a",
+    "skill-tree/documents/companion-workspace-contract.md": "6f38a5947140169a7bd09b8f1a9648dad96584a9d73b9f138cb45cc88f88db2b",
+    "skill-tree/documents/features.md": "b7ae7a5af430b786a5bcb97bd1ec49bd30055a0eb6795cb4c9ccf9c0b5a8fe9d",
+    "skill-tree/documents/habitica-api.md": "071700fe7c3b0cda74019776ee87afa32c9afb7e4003d4cd4ddaebaa284b5d38",
+    "skill-tree/documents/technical.md": "090ef33b099797395733fb3eca848651d744d55979c6fd73f84051f3f0c4e1cf",
+    "skill-tree/documents/testing.md": "3fd24117be757c4ffa2413eff9eb2f7ac605087e672d092819cd9bf04e6fbcbb",
+    "skill-tree/documents/ux-ui-manifest.md": "0be8feb10e4a9eada6dba69a22a20e893b8be9c348304e6e2a747a564b8e00f5",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "b0e66965b7a473d4666064742bcd7a72fd76c5e647c9e901746e3d053b71accf",
+    "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "924e015cbd546e4efc80a93f6e78ccdf342b185999342f19ae3f15b66771341a",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "c06c8201511e370284996db9f3b794e9b196d8a19705b440f39a84e6ee6d6e56",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "6a9545d8e624165bc90d596e1dcdbb5b95c13548c6b5988752e96693ca31635a",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "eb2295f692ca00e99fb45cc8d9a83d1a0ea837118c8db43451a06bd39ac1be65",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "449efcafeb7de58e9c2e566b9bca9a1a7fe5528d2f44062324f1e85a903698e4",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "028d2bfff47592535b5249438866b81dca201bbaed72641c13ad7e7a9fb0e5ce",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "5b6bff79bc2b6b604af20a898dda6bd2ac1644901ca5acb3d8af5473dfa43b80",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCommandTests.cs": "635625976fe903be3c4506eb78060ef269a85e3ccaa5a376775113487dc8f50c",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceLifecycleTests.cs": "133607b05b02a4bb08007c696b838cc8680487a0af4b02e5a945c98b866c1e65",
+    "tests/Habitica.WebApp.Tests/Workspace/CompanionTasksPanelTests.cs": "57fa99a20250b6278aa47156842801ed41f0202a72bdbb0e6c2f2cd6990eb7f2",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "26e7fa8402210b601eba3685e721c639c7a04f5a3bb998add9c82cb2748751e0",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "c0a34082281bd16e956022d9de1d4e4eadfc55bb4b664275658f099e7700a8b9",
+    "tests/fixtures/workspace/habit-commands-v9.json": "ed4c640881c6d084cb946fbb7f7f34099fe7328add36ef814c137a5d5e49280b",
+    "workers/chatgpt-auth/src/projection.ts": "19bdb8ca30a73aa66189dd1584bfeb5c746a8944cf66eecb6e6461f6347fddf0",
+    "workers/chatgpt-mcp/src/task-tools.ts": "1c8caaf88b73be8ce0b561a32094b974519e1dfe944a4c65ff135aba2fd1b732",
+    "workers/companion-workspace/src/commands.ts": "47d791262596790fa0e2925a37ed543632fe9dad0f4607147667f0bb1f6c2efe",
+    "workers/companion-workspace/src/journal.ts": "0ac8affca3eefdd5159880e303966cfda69f0f6a86806a46a92b86bda5a56a9e",
+    "workers/companion-workspace/src/projection-adapter.ts": "cb0210169b1e4504e7f67fcaee64cff1af7fb9f7c6583649fd39d660a967136d",
+    "workers/companion-workspace/test/habit-create-api.test.mjs": "b45bad83899259047ac3dc82314d256dcfb9b0c6fbc8640d5ed18d484a5369a5",
+    "workers/companion-workspace/test/habit-create.test.mjs": "90dce2154f01ae53f093b580279069718e8c2f57dd622dd73e884c91a75e6a3c",
+    "workers/companion-workspace/test/habit-history.test.mjs": "3327e8d2ca58c0561be6230907f056ad6c5578896d8816f9534de48a3172ce4f",
+    "workers/companion-workspace/test/projection-repair.test.mjs": "f43dbb83bef8d02b1dcc1a3806c32742b9683c0d1c390ca378da47e9f1d9c507",
+    "workers/companion-workspace/test/task-api.test.mjs": "f5020ff6bf43e11c4e7ef1a36cf0d1f50d4890935d97e4cea7dad9d334233798",
+    "workers/shared/projection.ts": "e32b41c93ccecef06e2a399d2e90e78f8172e2eb31efe8c977ce1314bc33b12d",
+    "workers/shared/task-details.ts": "20ae421704115a0ca755891d598ccd9605d94459c9cab4c0af891c95ed7125a9",
+    "workers/shared/todo-projection-policy.ts": "017d6b631e109f6d88c043e158186526cae4a4fc4cda0b2379cfadb6027fa173",
+    "workers/shared/workspace-commands.ts": "3d5dc70a2c5d397c542a2ff4771f6cfcfd5eebbd42baafc9eebf6dd671baa694",
+    "workers/shared/workspace-domain.ts": "1c654ea77ce67baf6cdde1d413355d47f8c121c4d04e628bb475ec12f1f13727"
+  },
+  "checks": {
+    "dotnet": {
+      "sha256": "e4bb3d5b92f8dfc951accd4269fa667b0d6dd24c961044c41003e8b7f6227f46",
+      "terminalEvidence": [
+        "Passed!  - Failed:     0, Passed:    43, Skipped:     0, Total:    43, Duration: 110 ms - Habitica.Rules.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    33, Skipped:     0, Total:    33, Duration: 401 ms - Habitica.Domain.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    22, Skipped:     0, Total:    22, Duration: 165 ms - Habitica.Storage.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    87, Skipped:     0, Total:    87, Duration: 4 s - Habitica.Api.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:   205, Skipped:     0, Total:   205, Duration: 1 s - Habitica.Application.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:   592, Skipped:     0, Total:   592, Duration: 9 s - Habitica.WebApp.Tests.dll (net8.0)"
+      ]
+    },
+    "workspaceDefaultEntryPoint": {
+      "sha256": "13260f702d44cff972f86defb0d2ca1322e1eac756f48bdaa54dba76d598c927",
+      "terminalEvidence": [
+        "# tests 395",
+        "# pass 395",
+        "# fail 0",
+        "# cancelled 0",
+        "# duration_ms 34728.112333"
+      ]
+    },
+    "privateGatewayAndSdk": {
+      "sha256": "0f6a9444331ffbf36615bf1f7e3a3d68f84711a00c6d7a8be32e2352e7218ff6",
+      "terminalEvidence": [
+        "# tests 9",
+        "# pass 9",
+        "# fail 0",
+        "# cancelled 0",
+        "# duration_ms 6901.95175"
+      ]
+    },
+    "workspaceBuild": {
+      "sha256": "dd862e871ecc010c09480ee950c16f51923f22b0bd6988df1dff679cc3194b44",
+      "terminalEvidence": [
+        "--dry-run: exiting now."
+      ]
+    },
+    "authBuild": {
+      "sha256": "b5cabd9d7d1e7d29fd200261288c65480dc6011a81a68e4f0fe9d78d65cb17f7",
+      "terminalEvidence": [
+        "--dry-run: exiting now."
+      ]
+    },
+    "mcpBuild": {
+      "sha256": "64b8abda372ac044880f4b4201912cc9ce2af3b1e11da267dd7460aa418de8fc",
+      "terminalEvidence": [
+        "--dry-run: exiting now."
+      ]
+    },
+    "releasePublish": {
+      "sha256": "dbd2273b48352162e7c7e7d0f618cf75639e28e04b9659f69fcb5b31c60e5d5e",
+      "terminalEvidence": [
+        "  Habitica.WebApp -> /tmp/habitica-habit-create-publish-final/"
+      ]
+    }
+  },
+  "qualified": {
+    "dotnetTests": 982,
+    "workspaceDefaultSuiteTests": 395,
+    "additionalFocusedGatewaySdkPackageTests": 9,
+    "browserCases": 144,
+    "browserErrors": 0,
+    "browserSeededDefects": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "changedProseDiagnostics": []
+  },
+  "sourceResearch": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js"
+  ],
+  "acceptanceEvidence": [
+    "Ordinary new Habit preparation requires a correctly typed game counterpart and stores explicit effective directions. Creation and unchanged-Habit repair carry one Create effect with no score event.",
+    "All four direction combinations preserve portable v9 identity and later scoring eligibility. Difficulty remains independent of native urgency.",
+    "Unsupported Habit deadline/checklist fields and malformed direction flags fail before dispatch. Owned Habit responses may omit the Todo completed field.",
+    "Private gateway/SDK fixtures qualify actual Habit creation, later verified positive/negative scores, tenant isolation, revoked consent and original uncertain receipts.",
+    "Unknown creation stays paused across executor wakes; explicit positive reconciliation reuses the saved original private attempt without another POST.",
+    "Browser reviews disclose directions, primary unavailable scoring buttons are disabled, and rendered responsive/theme checks pass."
+  ],
+  "validationControls": {
+    "operationDeadlineSeconds": 240,
+    "unchangedFailureStreak": 0,
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": 0,
+    "timingLimitation": "Controller sampling time is unavailable; test wall durations remain in terminal evidence.",
+    "repairs": "Updated legacy-native expectations, added a missing test namespace, rerendered an explicitly seeded legacy fixture, and corrected the test to require original positive reconciliation rather than automatic inference."
+  },
+  "limitations": [
+    "No deployment, live account mutation, physical-device or assistive-technology qualification.",
+    "Daily counterpart creation and unified browser/legacy-default coordination remain separate snapshot tasks.",
+    "Current ordinary Habit creation requests required projection; retained native-only history remains immutable. Legacy scoring-default coordination remains within T-7bb19b25-83e8-470d-9e94-94a91d744440.",
+    "The published plugin archive and installed host copies remain unchanged.",
+    "Existing unrelated prose and historical audit findings remain outside the changed sections."
+  ]
+}

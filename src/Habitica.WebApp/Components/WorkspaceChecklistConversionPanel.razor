@@ -1,0 +1,140 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject WorkspaceConversionController Conversion
+@inject IWorkspaceCloudClient Cloud
+@implements IDisposable
+
+<section class="card-surface todo-task-panel" data-testid="checklist-conversion">
+    <div class="task-group-header"><h1>Convert checklist to project</h1><a href="/todo/projects" data-layout-primary="true">Projects</a></div>
+    <p>Keep the source description and history while turning checklist items into independently tracked work. Choose each item's meaning explicitly: a checkmark can mean plan intake rather than completion. Existing tasks are selected by ID; matching names never trigger a copy or a link.</p>
+    @if (Cloud.WorkspaceId is null) { <p>Connect the cloud workspace in <a href="/todo/sync">Todo Sync</a>. Browser-only work remains unchanged; transfer the intended workspace before conversion.</p> }
+    else
+    {
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || !Todo.CanSwitchSource)" OnClick="LoadCloudAsync" Variant="Variant.Outlined" data-testid="conversion-load-cloud">Load cloud workspace</MudButton>
+            @if (Conversion.SourceTaskId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RefreshAsync" Variant="Variant.Outlined" data-testid="conversion-refresh">Read current conversion status</MudButton> }
+        </div>
+        @if (!Conversion.Available) { <p>Conversion controls are unavailable in this client. Existing task and project data remain available.</p> }
+        else if (Todo.Selection?.Source!=TodoWorkspaceSource.Cloud || Todo.Snapshot is null) { <p>Load the exact cloud workspace before choosing a source or target. Resolve any original task/organization review before switching sources.</p> }
+        else
+        {
+            <label class="field-row">Source checklist Todo<select class="app-input" value="@Conversion.SourceTaskId" @onchange="SelectSourceAsync" disabled="@(Busy || Conversion.HasPendingIntent)" data-testid="conversion-source"><option value="">Choose an exact source</option>@foreach(var task in Sources){<option value="@task.Id">@task.Text · @task.Id</option>}</select></label>
+        }
+        @if (_message is not null) { <p role="status">@_message</p> }
+        @if (Conversion.Message is not null) { <p role="status" data-testid="conversion-message">@Conversion.Message</p> }
+        @if (Conversion.LastReceipt is {} saved) { <p role="status" data-testid="conversion-receipt">Saved in Companion: Yes · original command: @saved.CommandId · conversion: @saved.ConversionId · game scores: 0. Native task/tag presence and rewards remain separate.</p> }
+        @if (Conversion.Preview is {} preview)
+        {
+            <section class="todo-command-review" aria-label="Review checklist conversion" data-testid="conversion-review">
+                <h2 tabindex="-1" @ref="_reviewHeading">Review @preview.Command.ProjectName</h2>
+                <p>Source: <strong>@preview.Conversion.SourceSnapshot.Text</strong> · @preview.Command.SourceTaskId · revision @preview.Command.SourceRevision. Destination project: @preview.Command.ProjectId.</p>
+                <h3>Retained source description</h3><pre class="conversion-notes">@preview.Conversion.SourceSnapshot.Notes</pre>
+                <p>New active captures: @preview.NewCaptureCount. Required Habitica counterpart creation stays pending until separately enabled execution confirms receipts. Reused tasks keep descriptions and urgency. Historical targets are retained/archived without a new completion or score. The source is retained.</p>
+                @foreach(var target in preview.Targets.Skip(Conversion.ReviewOffset).Take(WorkspaceConversionController.PageSize))
+                {
+                    var item=preview.Command.Items.Single(item=>item.SourceItemId==target.Binding.SourceItemId);var sourceItem=preview.Conversion.SourceSnapshot.HabiticaDetails!.Checklist!.Single(item=>item.Id==target.Binding.SourceItemId);
+                    <article class="todo-direct-row"><div class="todo-row-content"><strong>@sourceItem.Text</strong><span>Source checkmark: @(sourceItem.Completed?"checked":"unchecked") · decision: @item.Mode · @StateLabel(item.DesiredState)</span><span>Source item: @sourceItem.Id · target: @(target.Binding.TargetTaskId?.ToString()??"Deferred; no copy created")</span>
+                        @if(target.Task is {} task){<span>Target: @task.Text · @task.Priority · @(task.IsArchived?"archived":task.State.ToString())</span><pre class="conversion-notes">@task.Notes</pre>@if(item.Mode==ChecklistConversionMode.Create){<span>Reviewed game settings: @task.HabiticaDetails?.Difficulty · @task.HabiticaDetails?.Attribute</span>}}
+                        @if(target.Binding.HistoricalTimeUncertain){<span>Historical completion time remains uncertain. Original recorded history stays unchanged.</span>}
+                    </div></article>
+                }
+                <label class="checkbox-row"><input type="checkbox" checked="@Conversion.PageReviewed" disabled="@Busy" @onchange="args=>Conversion.AcknowledgePage(args.Value is true)" data-testid="conversion-page-ack" /><span>Reviewed items @(Conversion.ReviewOffset+1)–@(Math.Min(Conversion.ReviewOffset+WorkspaceConversionController.PageSize,preview.Targets.Count)) of @preview.Targets.Count, including notes and lifecycle choices</span></label>
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||Conversion.ReviewOffset==0)" OnClick="()=>Conversion.ReviewPage(Conversion.ReviewOffset-WorkspaceConversionController.PageSize)" Variant="Variant.Text">Previous review items</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||Conversion.ReviewOffset+WorkspaceConversionController.PageSize>=preview.Targets.Count)" OnClick="()=>Conversion.ReviewPage(Conversion.ReviewOffset+WorkspaceConversionController.PageSize)" Variant="Variant.Text">Next review items</MudButton></div>
+                <WorkspaceTagChangeReview CommandId="preview.PreparedCommandId" Preview="preview.TagProjection" Tasks="@(Todo.Snapshot?.Document.Tasks??[])" Disabled="@Busy" Reviewed="value=>Conversion.TagsReviewed(preview.PreparedCommandId,value)" />
+                <p>Original review: @preview.PreparedCommandId · expires @preview.ExpiresAtUtc.ToString("u").</p>
+                @if(Conversion.AcceptanceUnknown){<p role="alert">Acceptance is uncertain. Preserve this original review; no replacement conversion is allowed.</p>}
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Conversion.CanConfirm)" OnClick="ConfirmAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="conversion-confirm">@(Conversion.AcceptanceUnknown?"Retry original conversion":"Confirm reviewed conversion")</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="()=>Conversion.RecoverAsync()" Variant="Variant.Outlined" data-testid="conversion-recover">Check original conversion receipt</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||Conversion.AcceptanceUnknown)" OnClick="CancelAsync" Variant="Variant.Text">Cancel unaccepted review</MudButton></div>
+            </section>
+        }
+        else if(Conversion.HasPendingIntent)
+        {
+            <p>Preparation is unresolved. Recover the same request ID: @Conversion.Request?.RequestId.</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="()=>Conversion.RetryPreparationAsync()" Variant="Variant.Outlined" data-testid="conversion-retry-preview">Recover original conversion preview</MudButton>
+            @if(Conversion.PreparationRejected){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="CancelAsync" Variant="Variant.Text">Return to current source</MudButton>}
+        }
+        else if(Conversion.Status is {} status)
+        {
+            <h2>@status.Source.Text</h2><p>Source: @status.Source.Id · source revision @status.Source.Revision · workspace revision @status.Revision · urgency @status.Source.Priority.</p>
+            <h3>Source description</h3><pre class="conversion-notes">@status.Source.Notes</pre>
+            @if(!status.SourceUnchanged&&Todo.Snapshot?.Document.SourceRetirements?.Any(row=>row.SourceTaskId==status.Source.Id)!=true){<p role="alert" data-testid="conversion-source-changed">The source changed after the saved conversion. Existing identities remain retained. Review the current and original descriptions; conversion amendments are unavailable.</p><h3>Retained original description</h3><pre class="conversion-notes">@status.Conversion?.SourceSnapshot.Notes</pre>}
+            @if(status.Conversion is {} conversion)
+            {
+                <p data-testid="conversion-progress">Conversion: @conversion.Id · project: @conversion.ProjectId. Placement complete: @status.Targets.Count(target=>target.PlacementComplete) of @status.Targets.Count · stored counterpart coverage: @status.Targets.Count(target=>target.StoredCorrespondence) of @status.Targets.Count.</p>
+                <p>Stored coverage is not fresh native verification. Historical gaps and uncertain effects block source retirement. Source retirement is a separate review.</p>
+                <a href="@($"/todo/retire/{conversion.Id:D}")" data-layout-primary="true">Review source cleanup and retained retirement history</a>
+                @foreach(var target in status.Targets.Skip(_statusOffset).Take(10))
+                {<article class="todo-direct-row"><div class="todo-row-content"><strong>@(target.Task?.Text??SourceItemName(target.Binding.SourceItemId))</strong><span>@StateLabel(target.Binding.DesiredState) · @(target.Task?.IsArchived==true?"archived":"retained") · @target.Binding.TargetTaskId</span><span>Placement: @(target.PlacementComplete?"saved":"review needed") · counterpart: @(target.StoredCorrespondence?"stored link":target.Mapping?.State.ToString()??"missing") · pending original commands: @target.PendingCommandIds.Count</span>@if(target.RequiresHistoricalMatch){<span>Exact historical counterpart still requires review.</span>}@if(target.Binding.HistoricalTimeUncertain){<span>Historical completion time uncertain; no new score.</span>}</div></article>}
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_statusOffset==0)" OnClick="()=>_statusOffset=Math.Max(0,_statusOffset-10)" Variant="Variant.Text">Previous target status</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_statusOffset+10>=status.Targets.Count)" OnClick="()=>_statusOffset+=10" Variant="Variant.Text">Next target status</MudButton></div>
+                <div class="action-row"><a data-layout-primary="true" href="/todo/sync#habitica-tags">Group tag consent, coverage and recovery</a><a data-layout-primary="true" href="/todo/tasks">Task counterpart linking and recovery</a></div>
+            }
+            <fieldset disabled="@(Busy||!status.SourceUnchanged||!FreshWorkspace)">
+                <h3>Destination and item choices</h3>
+                @if(status.Conversion is null){<TodoPlacementPicker Kind="Project" Caption="Existing destination project" Value="Conversion.ProjectId" ValueChanged="value=>Conversion.ProjectId=value" Disabled="@Busy" EmptyLabel="Create a new project" />@if(Conversion.ProjectId is null){<label class="field-row">New project name<input class="app-input" maxlength="256" @bind="Conversion.ProjectName" data-testid="conversion-project-name" /></label>}}
+                else{<p>Resuming exact destination @status.ProjectTag?.Name · @status.Conversion.ProjectId. Bound targets and lifecycle choices cannot be redirected.</p>}
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" OnClick="Conversion.ClassifyUnassignedActive" Variant="Variant.Outlined" data-testid="conversion-classify-active">Classify unselected items as active planning work</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="Conversion.DeferUnassigned" Variant="Variant.Outlined">Defer unselected actions; unclassified items become active planning work</MudButton></div>
+                <p>Choose new-task game settings only when creating active tasks. Existing tasks keep their own settings. Source notes and urgency are retained; extra notes are optional.</p>
+                <div class="todo-source-controls"><label class="field-row">New-task game difficulty<select class="app-input" value="@Conversion.Difficulty?.ToString(CultureInfo.InvariantCulture)" @onchange="SetDifficulty" data-testid="conversion-difficulty"><option value="">Choose for new captures</option><option value="0.1">Trivial</option><option value="1">Easy</option><option value="1.5">Medium</option><option value="2">Hard</option></select></label><label class="field-row">New-task game attribute<select class="app-input" value="@Conversion.Attribute" @onchange="SetAttribute" data-testid="conversion-attribute"><option value="">Choose for new captures</option>@foreach(var stat in Enum.GetValues<HabiticaTaskAttribute>()){<option value="@stat">@stat</option>}</select></label></div>
+                @foreach(var draft in Conversion.Drafts.Skip(_draftOffset).Take(10))
+                {
+                    var item=status.Source.HabiticaDetails!.Checklist!.Single(item=>item.Id==draft.SourceItemId);
+                    <article class="todo-direct-row"><div class="todo-row-content"><strong>@item.Text</strong><span>Source item @item.Id · checkmark @(item.Completed?"checked":"unchecked"); completion is a separate choice.</span>
+                        <label class="field-row">Meaning<select class="app-input" value="@draft.DesiredState" @onchange="args=>SetState(draft,args)" disabled="@draft.Bound" data-testid="@($"conversion-state-{item.Id:D}")"><option value="">Choose explicitly</option><option value="Active">Active work</option><option value="CompletedArchived">Completed, retained in archive</option></select></label>
+                        <label class="field-row">Action<select class="app-input" value="@draft.Mode" @onchange="args=>SetMode(draft,args)" disabled="@draft.Bound" data-testid="@($"conversion-mode-{item.Id:D}")"><option value="">Choose action</option><option value="Reuse">Reuse exact existing Todo</option><option value="Create">Create active Todo</option><option value="Defer">Defer; leave a visible gap</option></select></label>
+                        @if(draft.Mode==ChecklistConversionMode.Reuse){<p>Selected target: @(draft.TargetTaskId?.ToString()??"None; choose exact ID")</p>@if(!draft.Bound){<MudButton HtmlTag="button" data-layout-primary="true" OnClick="()=>OpenTargets(draft)" Variant="Variant.Outlined" data-testid="@($"conversion-choose-{item.Id:D}")">Choose exact existing target</MudButton>}}
+                        @if(draft.Mode==ChecklistConversionMode.Create){<label class="field-row">Optional extra task notes<textarea class="app-input" rows="3" maxlength="10000" @bind="draft.Notes" data-testid="@($"conversion-notes-{item.Id:D}")"></textarea></label>}
+                    </div></article>
+                }
+                <div class="action-row"><span>@Conversion.Drafts.Count source items; every item must have explicit choices</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_draftOffset==0)" OnClick="()=>_draftOffset=Math.Max(0,_draftOffset-10)" Variant="Variant.Text">Previous item choices</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_draftOffset+10>=Conversion.Drafts.Count)" OnClick="()=>_draftOffset+=10" Variant="Variant.Text">Next item choices</MudButton></div>
+                @if(_choosing is {} chosen)
+                {
+                    var matches=TargetChoices(chosen).ToArray();
+                    <section aria-label="Choose existing conversion target"><h3>Choose exact target for @SourceItemName(chosen.SourceItemId)</h3><label class="field-row">Search title<input class="app-input" value="@_targetSearch" @oninput="SearchTargets" data-testid="conversion-target-search" /></label><p>@matches.Length matching tasks. Duplicate names are separate IDs.</p>
+                        @foreach(var target in matches.Skip(_targetOffset).Take(20)){<article class="todo-direct-row"><div class="todo-row-content"><strong>@target.Text</strong><span>@target.Id · @target.State · @target.Priority · @(target.IsArchived?"archived":"current")</span><pre class="conversion-notes">@target.Notes</pre></div><MudButton HtmlTag="button" data-layout-primary="true" OnClick="()=>ChooseTarget(chosen,target.Id)" Variant="Variant.Outlined" data-testid="@($"conversion-target-{target.Id:D}")">Reuse this exact Todo</MudButton></article>}
+                        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_targetOffset==0)" OnClick="()=>_targetOffset=Math.Max(0,_targetOffset-20)" Variant="Variant.Text">Previous target choices</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_targetOffset+20>=matches.Length)" OnClick="()=>_targetOffset+=20" Variant="Variant.Text">Next target choices</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="()=>_choosing=null" Variant="Variant.Text">Close target choices</MudButton></div>
+                    </section>
+                }
+                <MudButton HtmlTag="button" data-layout-primary="true" OnClick="PrepareAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="conversion-prepare">Review complete conversion</MudButton>
+            </fieldset>
+            @if(!FreshWorkspace){<p role="status">Reload the cloud workspace and current conversion status before another review. Original receipts remain available.</p>}
+        }
+    }
+</section>
+
+@code {
+    [Parameter] public Guid? SourceTaskId {get;set;}
+    private bool _disposed,_localBusy,_focus;private ElementReference _reviewHeading;private Guid? _seenReview,_refreshedReceipt;private string? _message;
+    private int _draftOffset,_statusOffset,_targetOffset;private ChecklistConversionDraft? _choosing;private string _targetSearch="";
+    private bool Busy=>_localBusy||Conversion.IsBusy||Todo.IsBusy;
+    private bool FreshWorkspace=>Todo.Selection is {Source:TodoWorkspaceSource.Cloud} selected&&selected.WorkspaceId==Cloud.WorkspaceId&&Todo.Revision==Conversion.Status?.Revision;
+    private IEnumerable<CompanionTask> Sources=>Todo.Snapshot?.Document.Tasks.Where(task=>task.Kind==CompanionTaskKind.Todo&&!task.IsArchived&&task.HabiticaDetails?.Checklist is {Count:>0})??[];
+    protected override void OnInitialized(){Conversion.Changed+=Changed;Todo.Changed+=Changed;}
+    protected override async Task OnParametersSetAsync(){Conversion.CheckScope();if(SourceTaskId is {} source&&Conversion.SourceTaskId!=source&&Conversion.Available)await Conversion.LoadAsync(source);}
+    private void Changed(){if(_disposed)return;Conversion.CheckScope();if(_seenReview!=Conversion.Preview?.PreparedCommandId){_seenReview=Conversion.Preview?.PreparedCommandId;_focus=_seenReview is not null;} _=InvokeAsync(StateHasChanged);}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(_focus&&Conversion.Preview is not null){_focus=false;try{await _reviewHeading.FocusAsync();}catch(JSException){}}
+        if(Conversion.LastReceipt is {} receipt&&_refreshedReceipt!=receipt.CommandId&&!Conversion.IsBusy&&!Conversion.HasPendingIntent&&Todo.CanSwitchSource&&Todo.Selection is {Source:TodoWorkspaceSource.Cloud}){_refreshedReceipt=receipt.CommandId;await RunAsync(()=>Todo.LoadSelectedAsync());}
+    }
+    private async Task RunAsync(Func<Task> action){if(_localBusy)return;_localBusy=true;_message=null;try{await action();}catch{_message="Workspace data is unavailable. Preserve original requests and receipts before another action.";}finally{if(!_disposed){_localBusy=false;await InvokeAsync(StateHasChanged);}}}
+    private Task LoadCloudAsync()=>RunAsync(async()=>{if(Cloud.WorkspaceId is not {} id||!Todo.CanSwitchSource)return;await Todo.RefreshSourcesAsync();await Todo.SelectAsync(new(TodoWorkspaceSource.Cloud,id));if((SourceTaskId??Conversion.SourceTaskId) is {} source)await Conversion.LoadAsync(source);});
+    private Task SelectSourceAsync(ChangeEventArgs args)=>Guid.TryParse(args.Value?.ToString(),out var id)?RunAsync(async()=>{_draftOffset=_statusOffset=0;_choosing=null;await Conversion.LoadAsync(id);}):Task.CompletedTask;
+    private Task RefreshAsync()=>RunAsync(async()=>{if(Todo.Selection?.Source==TodoWorkspaceSource.Cloud&&Todo.CanSwitchSource)await Todo.LoadSelectedAsync();if(Conversion.SourceTaskId is {} source)await Conversion.LoadAsync(source);});
+    private Task CancelAsync()=>RunAsync(async()=>{Conversion.CancelReview();if(!Conversion.HasPendingIntent&&Conversion.SourceTaskId is {} source)await Conversion.LoadAsync(source);});
+    private Task PrepareAsync()=>RunAsync(async()=>{if(FreshWorkspace)await Conversion.PrepareAsync();else _message="Reload the exact workspace before reviewing a conversion.";});
+    private Task ConfirmAsync()=>Conversion.ConfirmAsync();
+    private void SetDifficulty(ChangeEventArgs args)=>Conversion.Difficulty=double.TryParse(args.Value?.ToString(),NumberStyles.AllowDecimalPoint,CultureInfo.InvariantCulture,out var value)&&value is 0.1 or 1 or 1.5 or 2?value:null;
+    private void SetAttribute(ChangeEventArgs args)=>Conversion.Attribute=Enum.TryParse<HabiticaTaskAttribute>(args.Value?.ToString(),out var value)&&Enum.IsDefined(value)?value:null;
+    private static void SetState(ChecklistConversionDraft draft,ChangeEventArgs args){if(!draft.Bound)draft.DesiredState=Enum.TryParse<ChecklistConversionState>(args.Value?.ToString(),out var state)&&Enum.IsDefined(state)?state:null;}
+    private void SetMode(ChecklistConversionDraft draft,ChangeEventArgs args){if(draft.Bound)return;draft.Mode=Enum.TryParse<ChecklistConversionMode>(args.Value?.ToString(),out var mode)&&Enum.IsDefined(mode)?mode:null;draft.TargetTaskId=null;_choosing=null;}
+    private void SearchTargets(ChangeEventArgs args){_targetSearch=args.Value?.ToString()??"";_targetOffset=0;}
+    private void OpenTargets(ChecklistConversionDraft draft){_choosing=draft;_targetOffset=0;_targetSearch="";}
+    private void ChooseTarget(ChecklistConversionDraft draft,Guid id){if(TargetChoices(draft).Any(task=>task.Id==id)){draft.TargetTaskId=id;_choosing=null;}}
+    private IEnumerable<CompanionTask> TargetChoices(ChecklistConversionDraft draft)=>Todo.Snapshot?.Document.Tasks.Where(task=>task.Kind==CompanionTaskKind.Todo&&task.Id!=Conversion.SourceTaskId
+        &&(draft.DesiredState==ChecklistConversionState.CompletedArchived?task.State==CompanionTaskState.Completed:task.State==CompanionTaskState.Active&&!task.IsArchived)
+        &&!Conversion.Drafts.Any(other=>other.SourceItemId!=draft.SourceItemId&&other.TargetTaskId==task.Id)
+        &&task.Text.Contains(_targetSearch,StringComparison.OrdinalIgnoreCase))??[];
+    private string SourceItemName(Guid id)=>Conversion.Status?.Conversion?.SourceSnapshot.HabiticaDetails?.Checklist?.FirstOrDefault(item=>item.Id==id)?.Text??Conversion.Status?.Source.HabiticaDetails?.Checklist?.FirstOrDefault(item=>item.Id==id)?.Text??id.ToString();
+    private static string StateLabel(ChecklistConversionState state)=>state==ChecklistConversionState.Active?"Active work":"Completed, retained in archive";
+    public void Dispose(){_disposed=true;Conversion.Changed-=Changed;Todo.Changed-=Changed;}
+}

@@ -1,0 +1,102 @@
+{
+  "taskId": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+  "status": "accepted",
+  "implementation": [
+    "Canonical saved review cues and cue-event revisions with separate per-account/source/workspace browser opt-in.",
+    "Direct user permission action, generic notifications through an existing covering worker, visible-page best-effort timer and clock/wake catch-up.",
+    "Atomic IndexedDB attempt receipts, original-identity dedupe, capacity refusal, late account/source callback fences and browser-clear cleanup.",
+    "No upstream polling, push enrollment, task/game mutation or private task text in OS notifications."
+  ],
+  "checks": {
+    "web": 783,
+    "application": 264,
+    "node": 18,
+    "focusedComponentAndSession": 25,
+    "rendered": 1260,
+    "detectorCases": 2,
+    "realIndexedDbAssertions": 8
+  },
+  "maximumCaseElapsedMs": 153.79999995231628,
+  "controls": [
+    {
+      "name": "node-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.19,
+      "deadlineSeconds": 30,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "application-full",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.56,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "web-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 48.26,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "capture",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 14.44,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "publish-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 2.71,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "repairs": [
+    "Added new reminder fixture DI to existing navigation/category/Today tests and valid completion history to the synthetic completed-task model.",
+    "New panel initially overflowed on long task titles; bounded width and wrapping fixed all1260 cases. Original failure retained in overflow-initial.json."
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "note": "Controller sampling was not separately instrumented. Tool walls and browser phases remain independent records. No prerequisite wait estimate invented."
+  },
+  "limitations": [
+    "Operating-system permission/delivery, physical devices, assistive technology, hosted accounts, publication and notification-click behavior remain unrun.",
+    "Timer delivery requires an open visible app and the currently loaded snapshot; remote changes need explicit reload. Closed-tab/background delivery is unavailable.",
+    "A durable attempted/unknown receipt suppresses retry even if the notification was never shown. Shown means API resolution only. Receipt capacity2048 stops further browser attempts without evicting dedupe history.",
+    "Static final-state rendered checks do not qualify animation progression."
+  ],
+  "cleanup": "All three qualification tabs closed; owned fixture server19875 on17955 terminated after fresh PID/parent/start metadata verification.",
+  "sourceFingerprints": {
+    "src/Habitica.Application/Notifications/IForegroundReminderBrowser.cs": "f0eba29a788f815a08c3ac4aa588c121c569f471af797a6ee8bd4ed17fb3c3e4",
+    "src/Habitica.Application/Workspace/WorkspaceReminderCues.cs": "0e5e8b1465149bd2e6bd96b3e8530abd85121f1fa125a3224945e58c60a06ed6",
+    "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "08f13f231e3f2f1babeb4f0b66d8eaecd290e6885352682f9318e3fa5f409e21",
+    "src/Habitica.WebApp/Components/ForegroundReminderHost.razor": "c5838b122b0e4ac5c390278be5a691475132df1de5dcc7d5b159bfdb479e312e",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "8e96f1e347a75fabf3e08fd17e7b1c929a7d6a687b2365045d95d84b361b6360",
+    "src/Habitica.WebApp/Integration/ForegroundReminderBrowser.cs": "f122b663df7011919c812ffe0f2cf25c2a1bf31e8c242cc288d404dde1880bdc",
+    "src/Habitica.WebApp/State/ForegroundReminderController.cs": "d4396807684ddc82f4b329358816f99a1a633ba853b8dbc7764d6f4a28a0479e",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "1d44b533e203bcdcfc4f16589e13b03d9b3b31b8aff8561edc75bbdd7849ec05",
+    "src/Habitica.WebApp/Program.cs": "16a0fb58553a895fc3b127cf7fd8c99d982cbbc11cdb6fc7b6b801e27d132ab6",
+    "src/Habitica.WebApp/wwwroot/js/foregroundReminders.js": "20b9095ba6388cf2c5da1e6c1ec23b143e5104a3409a24ba8337b2bb5bfd4d94",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "543e02e73b323ed14dbbd98da0a4889754f16b18eb4e6f06988c610b3375d867",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "5e018501bf528ccbc2bc28e657800fb6eabb8e28f0f7098ed82d4b243ab2b696",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceReminderCuesTests.cs": "74207d607e0e48566d7a66495b3881a74d2eb3d5bd08afd4030dd5918a6bb684",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "53b37aa424117a5d9c6c87b90c1328ec15a0bc12352f58b1a10a803fde3ebf2c",
+    "tests/Habitica.WebApp.Tests/Workspace/ReminderBrowserFixture.cs": "28046a4e944e807b262fffac07194e46d3fcbe5e9b717a4508f200a690ef4f5e",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "c0ba4b06add5951c259124bf45ef85b748104f11d3dd79768538c0f39dbd2059",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "3c4f37383454d4a43dd2af912b81c6f8d6356c343ba34ff7ec66842b4c4f8974",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "63f84f61061d7a25c5526d28d74f9403d8ef89e6c48547a6a87a4ba5aa03f177",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4",
+    "tests/Functions/foreground-reminders.test.mjs": "349537654c8a21a9e65a989b1b30f410a61dd0e7df6760cfdb6b62f46066a0e8",
+    "tests/browser-qualification/reminder-storage.html": "0890ca393f5b699ed366665859b05340b989176175b53472c49c744e746c5338",
+    "skill-tree/documents/foreground-reminders.md": "e2340cd85c2c6c41d46478617c1693406c55ea760ca07f0d5c469777ffb63a1c"
+  }
+}

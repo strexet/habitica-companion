@@ -11,3 +11,5 @@ Connection and denied-scope failures require the normal authorization flow, neve
 
 
 For a reported connection, synchronization or uncertain-command problem, use the [on-demand diagnostic workflow](../habitica-diagnostics/SKILL.md). Browser logs require explicit user-shared bundles; routine reviews need no log collection.
+
+For package-version or update questions, read the [package identity guidance](references/package-version.md). Ordinary task execution needs no compatibility call.

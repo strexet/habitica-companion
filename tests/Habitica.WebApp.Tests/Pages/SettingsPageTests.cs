@@ -13,6 +13,28 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class SettingsPageTests : BunitContext
 {
+    [Fact]
+    public void Pwa_installation_steps_expand_without_signin_or_notification_requests()
+    {
+        var (session, cut) = ConnectionPage();
+        session.SetState(SessionViewModel.Empty);
+        var toggle = cut.Find("[data-testid='pwa-install-toggle']");
+        Assert.Equal("false", toggle.GetAttribute("aria-expanded"));
+        Assert.Empty(cut.FindAll("[data-testid='pwa-install-steps']"));
+        Qualification.PageLayoutEvidence.Save("pwa-settings-collapsed", cut.Markup, "/settings", "install-collapsed", ["form", "navigation", "disabled-controls"], nameof(Pwa_installation_steps_expand_without_signin_or_notification_requests));
+        toggle.Click();
+        Assert.Equal("true", cut.Find("[data-testid='pwa-install-toggle']").GetAttribute("aria-expanded"));
+        var steps = cut.Find("[data-testid='pwa-install-steps']");
+        Assert.Contains("Add to Home Screen", steps.TextContent);
+        Assert.Contains("Installation does not save credentials or enable notifications.", steps.TextContent);
+        Assert.Contains("separate storage", steps.TextContent);
+        Assert.Equal("https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios", steps.QuerySelector("a")!.GetAttribute("href"));
+        Assert.DoesNotContain(JSInterop.Invocations, call => call.Identifier.Contains("permission", StringComparison.OrdinalIgnoreCase));
+        Qualification.PageLayoutEvidence.Save("pwa-settings-expanded", cut.Markup, "/settings", "install-expanded", ["form", "navigation", "disabled-controls"], nameof(Pwa_installation_steps_expand_without_signin_or_notification_requests));
+        cut.Find("[data-testid='pwa-install-toggle']").Click();
+        Assert.Empty(cut.FindAll("[data-testid='pwa-install-steps']"));
+    }
+
     public SettingsPageTests()
     {
         Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), null), null));
@@ -38,6 +60,7 @@ public sealed class SettingsPageTests : BunitContext
         Assert.Equal("BUTTON", logout.TagName);
         Assert.False(logout.HasAttribute("disabled"));
         Assert.Equal("/live-tests", cut.Find("[data-testid='settings-open-checks']").GetAttribute("href"));
+        Assert.Contains("mud-button-outlined-secondary", cut.Find("[data-testid='settings-open-checks']").ClassList);
         Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("settings-actions", cut.Find("[data-testid='settings-session-actions']").OuterHtml);
         var paragraphs = cut.FindAll(".settings-session-actions p");
         paragraphs[0].TextContent += " Long translated description with additional browser-session details, retained private data and sign-in information. This text must wrap without a fixed height.";
@@ -98,7 +121,7 @@ public sealed class SettingsPageTests : BunitContext
         Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
         var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
         Services.AddSingleton<IAppSessionController>(session); Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new ExecutorCloud());
-        var cut = Render<SettingsPage>();
+        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
         Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled")); Assert.Equal(0, session.WorkspaceConnectCalls);
         Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("workspace-renewal", cut.Markup);
         cut.Find("[data-testid='workspace-renew-consent']").Change(true); cut.Find("[data-testid='workspace-renew']").Click();
@@ -149,14 +172,34 @@ public sealed class SettingsPageTests : BunitContext
         var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
         Services.AddSingleton<IAppSessionController>(controller);
         Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), "https://auth.invalid/", false), "https://workspace.invalid/"));
-        var cut = Render<SettingsPage>();
+        var settings = Render<SettingsPage>();
+        Assert.NotNull(settings.Find("[data-testid='integration-unavailable']"));
+        Assert.Equal("/todo/sync", settings.Find("[data-testid='settings-todo-sync']").GetAttribute("href"));
+        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
         Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
-        Assert.NotNull(cut.Find("[data-testid='integration-unavailable']"));
         Assert.Equal(0, controller.WorkspaceConnectCalls);
         cut.Find("[data-testid='workspace-consent']").Change(true);
         cut.Find("[data-testid='workspace-connect']").Click();
         Assert.Equal(1, controller.WorkspaceConnectCalls); Assert.Equal(0, controller.ChatGptEnrollCalls);
         Assert.Contains("server can read", cut.Markup);
+    }
+
+    [Fact]
+    public void Clearing_browser_data_requires_a_cancelable_review_that_names_separate_Notes_and_workspace_backups()
+    {
+        var (session, cut) = ConnectionPage();
+        Assert.Contains("export any browser-only Notes", cut.Markup, StringComparison.OrdinalIgnoreCase);
+        cut.Find("[data-testid='clear-local-data']").Click();
+        Assert.Equal(0, session.ClearLocalDataCalls);
+        Assert.Contains("general app backup does not include Notes", cut.Find("[data-testid='clear-local-review']").TextContent);
+        Assert.Contains("pending-command references",cut.Markup);
+        Qualification.PageLayoutEvidence.Save("push-settings-clear-review",cut.Markup,"/settings","explicit-browser-clear-push-reference-disclosure",["confirmation","form","navigation"],nameof(Clearing_browser_data_requires_a_cancelable_review_that_names_separate_Notes_and_workspace_backups));
+        cut.Find("[data-testid='clear-local-cancel']").Click();
+        Assert.Equal(0, session.ClearLocalDataCalls);
+        Assert.Empty(cut.FindAll("[data-testid='clear-local-review']"));
+        cut.Find("[data-testid='clear-local-data']").Click();
+        cut.Find("[data-testid='clear-local-confirm']").Click();
+        Assert.Equal(1, session.ClearLocalDataCalls);
     }
 
     [Fact]
@@ -179,6 +222,10 @@ public sealed class SettingsPageTests : BunitContext
         cut.Find("[data-testid='integration-enroll']").Click();
         Assert.Equal(1, controller.ChatGptEnrollCalls);
         Assert.Equal("0123456789AB", cut.Find("[data-testid='integration-link-code']").TextContent);
+        Assert.Contains("Authenticate", cut.Find("[data-testid='integration-linking-guide']").TextContent);
+        Assert.Contains("Connect", cut.Find("[data-testid='integration-linking-guide']").TextContent);
+        cut.Find("[data-testid='integration-copy-code']").Click();
+        Assert.Contains("Code copied", cut.Find("[data-testid='integration-code-card']").TextContent);
         cut.Find("[data-testid='integration-disconnect']").Click();
         Assert.Equal(0, controller.ChatGptDisconnectCalls);
         cut.Find("[data-testid='integration-cancel-cleanup']").Click();

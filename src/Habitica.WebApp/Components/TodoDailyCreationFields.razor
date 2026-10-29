@@ -1,0 +1,17 @@
+@using Habitica.Domain.Workspace
+<div class="todo-editor-fields" data-testid="daily-creation-fields">
+    <label class="field-row">Repeat<select class="app-input" @bind="Draft.Frequency" data-testid="daily-frequency"><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option></select></label>
+    <label class="field-row">Every interval<input class="app-input" type="number" min="1" max="366" @bind="Draft.Interval" data-testid="daily-interval" /></label>
+    <label class="field-row">Start date (required)<input class="app-input" type="date" value="@Draft.StartDate" @onchange="args => Draft.StartDate = args.Value?.ToString() ?? string.Empty" data-testid="daily-start" /></label>
+    <label class="field-row">Fixed timezone, matching Habitica<input class="app-input" maxlength="128" @bind="Draft.TimeZoneId" data-testid="daily-zone" /></label>
+    @if (Draft.Frequency == RecurrenceFrequency.Weekly)
+    {
+        @foreach (var day in Enum.GetValues<DayOfWeek>()) { <label class="checkbox-row"><input type="checkbox" checked="@Draft.Weekdays.Contains(day)" @onchange="args => SetDay(day,args.Value is true)" /><span>@day</span></label> }
+    }
+    @if (Draft.Frequency == RecurrenceFrequency.Monthly) { <label class="field-row">Month days, separated by commas<input class="app-input" @bind="Draft.MonthDays" placeholder="1, 15, 31" data-testid="daily-month-days" /></label> }
+</div>
+<p>Creates a linked Habitica Daily after separate consent and executor setup. Choose the complete schedule. Fixed zones: UTC or Etc/GMT−style IDs (for UTC+7 use Etc/GMT-7). Multiweek intervals require a Monday start. DST zones and nonmidnight Habitica day starts are unavailable here. No past completion or Cron is run; future missed Dailies can have normal Habitica penalties.</p>
+@code {
+    [Parameter, EditorRequired] public DailyCreationDraft Draft { get; set; } = null!;
+    private void SetDay(DayOfWeek day, bool selected) { if (selected) Draft.Weekdays.Add(day); else Draft.Weekdays.Remove(day); }
+}

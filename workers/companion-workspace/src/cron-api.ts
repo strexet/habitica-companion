@@ -79,8 +79,9 @@ async function execute(env:WorkspaceEnv,row:WorkspaceRow,initial:Action,token:st
   a={...a,status,entry_json:JSON.stringify(e),attempt_json:attempt?JSON.stringify(attempt):null,version:a.version+1};
  };
  try{
+  if(await env.WORKSPACE_DB.prepare('SELECT 1 FROM workspaces WHERE profile_id=? AND (linked_recovery_fence IS NOT NULL OR retirement_fence IS NOT NULL)').bind(row.profile_id).first())throw new WorkspaceError('unresolved_gameplay_pending',409);
   for(const table of ['prepared_spell_actions','prepared_cron_actions'])if(await env.WORKSPACE_DB.prepare(`SELECT 1 FROM ${table} WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1`).bind(row.profile_id).first())throw new WorkspaceError('unknown_gameplay_pending',409);
-  if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_commands WHERE profile_id=? AND json_extract(entry_json,'$.projectionState') IN ('executing','unknownOutcome','leased') LIMIT 1").bind(row.profile_id).first())throw new WorkspaceError('unknown_gameplay_pending',409);
+  if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_commands WHERE profile_id=?1 AND json_extract(entry_json,'$.projectionState') IN ('executing','unknownOutcome','leased') UNION ALL SELECT 1 FROM workspace_tag_work WHERE profile_id=?1 AND state IN ('executing','unknownOutcome') LIMIT 1").bind(row.profile_id).first())throw new WorkspaceError('unknown_gameplay_pending',409);
   const accepted=await env.WORKSPACE_DB.prepare(`UPDATE prepared_cron_actions SET status='accepted',token_hash=NULL,consumed_at_utc=?,version=version+1 WHERE profile_id=? AND action_id=? AND version=? AND status='prepared' AND token_hash=? AND expires_at_utc>? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1)`)
    .bind(now(),row.profile_id,a.action_id,a.version,await workspaceTokenHash(token),now(),row.profile_id,row.connection_id,row.access_epoch).run();
   if(!accepted.meta.changes){const duplicate=await action(env,row.profile_id,a.action_id);if(duplicate&&duplicate.status!=='prepared')return view(duplicate);throw new WorkspaceError('preview_token_invalid_or_changed',409);}

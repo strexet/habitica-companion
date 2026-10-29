@@ -16,7 +16,7 @@ using System.Text.Json;
 
 namespace Habitica.WebApp.Tests.State;
 
-public sealed class AppSessionControllerTests
+public sealed partial class AppSessionControllerTests
 {
     [Fact]
     public async Task RefreshDiagnostics_reads_local_entries_safely_without_sign_in_or_snapshot_refresh()
@@ -153,10 +153,12 @@ public sealed class AppSessionControllerTests
                 new Dictionary<string, string>())
         });
 
-        var controller = CreateController(logStore);
+        var reminders = new Workspace.ReminderBrowserFixture();
+        var controller = CreateController(logStore, foregroundReminders: reminders);
         await controller.InitializeAsync();
 
         await controller.ClearLocalDataAsync();
+        Assert.Equal(1, reminders.Clears);
 
         Assert.Empty(controller.State.DiagnosticsLogEntries!);
         Assert.False(controller.State.HasDiagnosticsHistory);
@@ -2362,10 +2364,16 @@ public sealed class AppSessionControllerTests
         IChatGptIntegrationClient? integrationClient = null,
         bool ownerIsolatedTesting = false,
         ColorSchemeService? colorSchemeService = null,
-        LocalUserDataPortabilityService? portability = null)
+        LocalUserDataPortabilityService? portability = null,
+        TimeProvider? timeProvider = null,
+        SpellGearRecoveryStore? spellGearRecoveryStore = null,
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
+        ICredentialStore? credentialStore = null,
+        Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts, notesCloud, credentialStore, foregroundReminders);
     }
 
     private static AppSessionController CreateController(
@@ -2377,9 +2385,15 @@ public sealed class AppSessionControllerTests
         IChatGptIntegrationClient? integrationClient = null,
         bool ownerIsolatedTesting = false,
         ColorSchemeService? colorSchemeService = null,
-        LocalUserDataPortabilityService? portability = null)
+        LocalUserDataPortabilityService? portability = null,
+        TimeProvider? timeProvider = null,
+        SpellGearRecoveryStore? spellGearRecoveryStore = null,
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
+        ICredentialStore? credentialStore = null,
+        Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null)
     {
-        var credentialStore = new FakeCredentialStore();
+        credentialStore ??= new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
         var taskSnapshotStore = new TaskSnapshotStore(storage);
         var userSnapshotStore = new UserSnapshotStore(storage);
@@ -2387,24 +2401,24 @@ public sealed class AppSessionControllerTests
         var partyCronHistoryStore = new PartyCronHistoryStore(storage);
         var gearCatalogStore = new GearCatalogStore(storage);
         var equipmentPresetStore = new EquipmentPresetStore(storage);
-        var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
+        var logWriter = new DiagnosticsLogWriter(logStore, timeProvider ?? TimeProvider.System);
 
         var freshnessPolicy = new SnapshotFreshnessPolicy();
         var refreshCoordinator = new RefreshCoordinator(
             syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore,
-            partyCronHistoryStore, gearCatalogStore, logWriter, freshnessPolicy, TimeProvider.System);
+            partyCronHistoryStore, gearCatalogStore, logWriter, freshnessPolicy, timeProvider ?? TimeProvider.System);
 
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
             habiticaSyncClient: syncClient,
-            liveTestWorkflow: new LiveTestWorkflow(syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore, logWriter, TimeProvider.System),
+            liveTestWorkflow: new LiveTestWorkflow(syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore, logWriter, timeProvider ?? TimeProvider.System),
             diagnosticsPresetWorkflow: new DiagnosticsPresetWorkflow(syncClient, logWriter),
             credentialStore: credentialStore,
             equipmentPresetStore: equipmentPresetStore,
             gearCatalogStore: gearCatalogStore,
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
-            localUserDataPortabilityService: portability ?? new LocalUserDataPortabilityService(storage, TimeProvider.System),
+            localUserDataPortabilityService: portability ?? new LocalUserDataPortabilityService(storage, timeProvider ?? TimeProvider.System),
             refreshCoordinator: refreshCoordinator,
             remotePartyDataSyncProvider: remotePartyDataSyncProvider ?? new FakeRemotePartyDataSyncProvider(),
             remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
@@ -2414,9 +2428,13 @@ public sealed class AppSessionControllerTests
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: freshnessPolicy,
             featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0, OwnerIsolatedTestingEnabled = ownerIsolatedTesting },
-            timeProvider: TimeProvider.System,
+            timeProvider: timeProvider ?? TimeProvider.System,
             integrationClient: integrationClient,
-            colorSchemeService: colorSchemeService);
+            colorSchemeService: colorSchemeService,
+            spellGearRecoveryStore: spellGearRecoveryStore,
+            notesDrafts: notesDrafts,
+            notesCloud: notesCloud,
+            foregroundReminders: foregroundReminders);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)
@@ -2968,6 +2986,10 @@ public sealed class AppSessionControllerTests
             PartySnapshot = partySnapshot;
         }
 
+        public Func<int,CancellationToken,Task>? CastAction {get;set;}
+        public Func<int,CancellationToken,Task>? EquipAction {get;set;}
+        public Exception? UserReadFailure {get;set;}
+        public UserSnapshot? UserReadOverride {get;set;}
         public List<(string SpellId, string? TargetTaskId)> CastCalls { get; } = new();
 
         public List<(EquipmentSetKind Kind, string Key)> EquipCalls { get; } = new();
@@ -2998,20 +3020,10 @@ public sealed class AppSessionControllerTests
 
         public string? EquipGearFailureKey { get; init; }
 
-        public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+        public Task EquipGearAsync(HabiticaCredentials credentials,string key,CancellationToken cancellationToken)=>EquipGearAsync(credentials,EquipmentSetKind.Battle,key,cancellationToken);
+        public async Task EquipGearAsync(HabiticaCredentials credentials,EquipmentSetKind kind,string key,CancellationToken cancellationToken)
         {
-            ThrowIfEquipGearFails(key);
-            EquipCalls.Add((EquipmentSetKind.Battle, key));
-            OperationLog.Add($"equip:{key}");
-            return Task.CompletedTask;
-        }
-
-        public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
-        {
-            ThrowIfEquipGearFails(key);
-            EquipCalls.Add((kind, key));
-            OperationLog.Add($"equip:{key}");
-            return Task.CompletedTask;
+            ThrowIfEquipGearFails(key);EquipCalls.Add((kind,key));OperationLog.Add($"equip:{key}");if(EquipAction is {} action)await action(EquipCalls.Count,cancellationToken);
         }
 
         private void ThrowIfEquipGearFails(string key)
@@ -3022,10 +3034,9 @@ public sealed class AppSessionControllerTests
             }
         }
 
-        public Task CastSpellAsync(HabiticaCredentials credentials, string spellId, string? targetId, CancellationToken cancellationToken)
+        public async Task CastSpellAsync(HabiticaCredentials credentials,string spellId,string? targetId,CancellationToken cancellationToken)
         {
-            CastCalls.Add((spellId, targetId));
-            return Task.CompletedTask;
+            CastCalls.Add((spellId,targetId));if(CastAction is {} action)await action(CastCalls.Count,cancellationToken);
         }
 
         public int RunCronCalls { get; private set; }
@@ -3191,8 +3202,9 @@ public sealed class AppSessionControllerTests
 
         public Task<UserSnapshot> GetUserSnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
+            if(UserReadFailure is {} failure)throw failure;
             GetUserSnapshotCalls++;
-            return Task.FromResult(_userSnapshot);
+            return Task.FromResult(UserReadOverride ?? _userSnapshot);
         }
     }
 

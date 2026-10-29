@@ -10,6 +10,7 @@
 <PageTitle>Settings</PageTitle>
 
 <div class="settings-shell">
+    <PwaInstallPanel />
     <section class="card-surface settings-card">
         <p class="section-label">Session controls</p>
         <h1>Local data and sign-in behavior</h1>
@@ -18,7 +19,7 @@
         </p>
 
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-            If the app keeps showing an old version, clear this site's browser data and refresh the page once.
+            If the app looks old, refresh first. Before clearing browser data, export any browser-only Notes from Notes and local workspaces from Todo Sync.
         </MudAlert>
 
         <div class="settings-grid settings-session-actions" data-testid="settings-session-actions">
@@ -31,7 +32,7 @@
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Check app connections</h2>
                 <p>Open safe connection checks and the optional reversible gear check.</p>
-                <MudButton data-testid="settings-open-checks" Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Checks</MudButton>
+                <MudButton data-testid="settings-open-checks" data-layout-primary="true" Color="Color.Secondary" Href="/live-tests" Variant="Variant.Outlined">Open Checks</MudButton>
             </MudPaper>
 
         </div>
@@ -63,8 +64,8 @@
 
     <section class="card-surface settings-card">
         <p class="section-label">Optional connection</p>
-        <h2>ChatGPT linking</h2>
-        <p>Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. ChatGPT receives separate, limited access. Browser-only use and private device sync do not require this connection.</p>
+        <h2>Codex and ChatGPT</h2>
+        <p>Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. Codex and ChatGPT receive separate access only after you approve permissions for each client. Browser-only use and private device sync do not require this connection.</p>
         <p>The integration stores credentials until disconnect or profile deletion. Linking codes expire within ten minutes; operational audit metadata is limited to thirty days. Companion does not store conversation text. <a href="/privacy">Privacy and data handling</a></p>
         @if (!SessionController.IsChatGptIntegrationAvailable)
         {
@@ -77,13 +78,13 @@
         else if (!SessionController.HasChatGptConnection)
         {
             <p role="status" data-testid="integration-unverified">@(_integrationDisconnected ? "Disconnected from this tab. Verify the account before checking current server status." : "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.")</p>
-            <p>Verify the account to restore management access. Verification sends the current Habitica credentials to the integration server and can create an encrypted profile if none exists. Existing ChatGPT permissions are retained; verification grants no new permissions.</p>
+            <p>Verify the account to restore management access. Verification sends the current Habitica credentials to the integration server and can create an encrypted profile if none exists. Existing client permissions are retained; verification grants no new permissions.</p>
             <label class="checkbox-row">
                 <input data-testid="integration-consent" type="checkbox" @bind="_integrationConsent" />
                 <span>I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.</span>
             </label>
             <MudButton Color="Color.Secondary" data-testid="integration-restore-access" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="RestoreIntegrationAsync" Variant="Variant.Filled">Verify account and restore access</MudButton>
-            <MudButton data-testid="integration-enroll" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="EnableIntegrationAsync" Variant="Variant.Filled">Enable ChatGPT linking</MudButton>
+            <MudButton data-testid="integration-enroll" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="EnableIntegrationAsync" Variant="Variant.Filled">Enable agent connection</MudButton>
         }
         else
         {
@@ -92,10 +93,10 @@
             {
                 <p role="status" data-testid="integration-status-unverified">Server permissions and credential status are unverified. Check integration status or revalidate stored credentials.</p>
             }
-            <p>Revoke ChatGPT access keeps stored credentials and separate Workspace/background access. Disconnect or disable the Workspace separately to pause its executor. To replace a Habitica API token, update the browser sign-in credentials, then revalidate.</p>
+            <p>Revoke client access keeps stored credentials and separate Workspace/background access. Disconnect or disable the Workspace separately to pause its executor. To replace a Habitica API token, update the browser sign-in credentials, then revalidate.</p>
             <div class="action-row">
                 <MudButton data-testid="integration-status" Disabled="@_integrationBusy" OnClick="LoadIntegrationStatusAsync" Variant="Variant.Outlined">Check integration status</MudButton>
-                <MudButton data-testid="integration-revoke-grants" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = "revoke")" Variant="Variant.Outlined">Revoke ChatGPT access</MudButton>
+                <MudButton data-testid="integration-revoke-grants" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = "revoke")" Variant="Variant.Outlined">Revoke Codex/ChatGPT access</MudButton>
                 <MudButton data-testid="integration-rotate-management" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = "rotate")" Variant="Variant.Outlined">Replace tab management credential</MudButton>
                 <MudButton data-testid="integration-revalidate" Disabled="@(_integrationBusy || SessionController.State.IsBusy)" OnClick="@(() => _integrationManagementAction = "revalidate")" Variant="Variant.Outlined">Revalidate stored Habitica credentials</MudButton>
             </div>
@@ -106,31 +107,29 @@
                 {
                     <dl data-testid="integration-status-details">
                         <dt>Connected account</dt><dd>@_integrationStatus.DisplayName</dd>
-                        <dt>Permissions</dt><dd>@(_integrationStatus.Permissions?.Length > 0 ? string.Join(", ", _integrationStatus.Permissions) : "No active ChatGPT permissions")</dd>
+                        <dt>Permissions</dt><dd>@(_integrationStatus.Permissions?.Length > 0 ? string.Join(", ", _integrationStatus.Permissions) : "No active client permissions")</dd>
                         <dt>Credential status</dt><dd>@(_integrationStatus.CredentialStatus == "repair_needed" ? "Repair needed" : "Verified at the time shown below")</dd>
                         <dt>Last verified</dt><dd>@(_integrationStatus.LastVerifiedAtUtc?.ToLocalTime().ToString("g") ?? "Unavailable")</dd>
-                        <dt>Last ChatGPT tool authorization</dt><dd>@(_integrationStatus.LastUsedAtUtc?.ToLocalTime().ToString("g") ?? "No recorded use")</dd>
+                        <dt>Last client tool authorization</dt><dd>@(_integrationStatus.LastUsedAtUtc?.ToLocalTime().ToString("g") ?? "No recorded use")</dd>
                     </dl>
                     @if (_integrationStatus.PermissionsTruncated) { <p>The permission list is incomplete. Revoke access to remove all previous grants.</p> }
                 }
             }
             @if (_integrationManagementAction is not null)
             {
-                <p>@(_integrationManagementAction == "revoke" ? "Revoke all ChatGPT grants and invalidate old unaccepted previews? Stored credentials and separate Workspace access remain available." : _integrationManagementAction == "rotate" ? "Replace the management credential for this tab? Other tab management credentials stop working. ChatGPT access remains available." : "Send the current browser sign-in credentials to verify and replace the encrypted server credential? No new ChatGPT access is granted.")</p>
+                <p>@(_integrationManagementAction == "revoke" ? "Revoke all Codex and ChatGPT grants and invalidate old unaccepted previews? Stored credentials and separate Workspace access remain available." : _integrationManagementAction == "rotate" ? "Replace the management credential for this tab? Other tab management credentials stop working. Client access remains available." : "Send the current browser sign-in credentials to verify and replace the encrypted server credential? No new client access is granted.")</p>
                 <MudButton data-testid="integration-confirm-management" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationManagementAsync" Variant="Variant.Filled">Confirm</MudButton>
                 <MudButton data-testid="integration-cancel-management" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = null)" Variant="Variant.Outlined">Cancel</MudButton>
             }
-            <MudAlert Class="inline-banner" Severity="Severity.Info" Variant="Variant.Outlined" data-testid="integration-linking-guide">
-                <h3>Where to enter the one-time code</h3>
+            <div class="integration-linking-guide" data-testid="integration-linking-guide">
+                <h3>Connect Codex or ChatGPT</h3>
                 <ol>
-                    <li>In Codex, open <strong>Settings → MCP servers</strong> and select <strong>Authenticate</strong> for Habitica Companion. A Companion authorization page opens in the browser.</li>
-                    <li>Keep Companion Settings open. Select <strong>Generate new code</strong> below, then paste the code into <strong>One-time Companion code</strong> on the authorization page and select <strong>Verify code</strong>.</li>
-                    <li>Check the account and requested permissions, then select <strong>Allow selected access</strong>. Return to Codex to finish connecting.</li>
+                    <li>Start the connection in your client: <strong>Authenticate</strong> in Codex Settings → MCP servers, or <strong>Connect</strong> in ChatGPT. Keep the browser authorization page open.</li>
+                    <li>Generate a fresh code here, then enter it in <strong>One-time Companion code</strong> on that browser page.</li>
+                    <li>Verify the account and choose the permissions you want to grant. Select <strong>Allow selected access</strong> to return to the client.</li>
                 </ol>
-                <p>For ChatGPT, start connecting the Habitica Companion plugin, then use the same browser authorization steps with a separate fresh code.</p>
-                <p><strong>Paste the code only on the Companion authorization page.</strong> Do not enter it in MCP server settings or chat.</p>
-                <p>Codes expire within ten minutes and can be used once. If a code has expired or was already used, select <strong>Generate new code</strong> and enter the new code on the authorization page.</p>
-            </MudAlert>
+                <p><strong>Never paste a code into MCP server settings or chat.</strong> The code works once for ten minutes. If it expires or the browser reports a lost session, restart Authenticate/Connect and generate a new code.</p>
+            </div>
             <div class="action-row">
                 <MudButton data-testid="integration-new-code" Disabled="@_integrationBusy" OnClick="NewIntegrationCodeAsync" Variant="Variant.Filled">Generate new code</MudButton>
                 <MudButton data-testid="integration-disconnect" Disabled="@_integrationBusy" OnClick="@(() => _integrationCleanup = false)" Variant="Variant.Outlined">Disconnect</MudButton>
@@ -138,7 +137,7 @@
             </div>
             @if (_integrationCleanup is not null)
             {
-                <p>@(_integrationCleanup.Value ? "Delete the integration profile and stored credentials?" : "Disconnect and remove the stored integration credentials?") Browser data and the Habitica account remain available.</p>
+                <p>@(_integrationCleanup.Value ? "Delete the integration profile, stored credentials, cloud Notes and retained Notes versions? Export any cloud Notes first." : "Disconnect and remove stored integration credentials? Cloud Notes become inaccessible until connection is restored; retained cloud content is not deleted.") Browser data and the Habitica account remain available.</p>
                 <MudButton data-testid="integration-confirm-cleanup" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationCleanupAsync" Color="Color.Error" Variant="Variant.Filled">Confirm</MudButton>
                 <MudButton data-testid="integration-cancel-cleanup" OnClick="@(() => _integrationCleanup = null)" Variant="Variant.Outlined">Cancel</MudButton>
             }
@@ -148,20 +147,25 @@
             <p role="status">@_integrationResult.Message</p>
             @if (_integrationResult.Code is not null)
             {
-                <p>One-time Companion code: <code data-testid="integration-link-code">@_integrationResult.Code</code></p>
-                <p>Valid until @_integrationResult.ExpiresAtUtc?.ToLocalTime().ToString("g"). Paste into <strong>One-time Companion code</strong> in the browser page opened by <strong>Authenticate</strong>. If the code expires, select <strong>Generate new code</strong> above.</p>
+                <div class="integration-code-card" data-testid="integration-code-card">
+                    <strong>One-time Companion code</strong>
+                    <code data-testid="integration-link-code">@_integrationResult.Code</code>
+                    <MudButton data-testid="integration-copy-code" Variant="Variant.Outlined" OnClick="CopyIntegrationCodeAsync">Copy code</MudButton>
+                    <span>Expires @_integrationResult.ExpiresAtUtc?.ToLocalTime().ToString("g"). Enter it on the browser page opened by Authenticate or Connect.</span>
+                    @if (_integrationCopyMessage is not null) { <span role="status">@_integrationCopyMessage</span> }
+                </div>
             }
         }
     </section>
 
-    <WorkspaceSettingsPanel />
+    <section class="card-surface settings-card"><p class="section-label">Todo connections</p><h2>Task source and sync</h2><p>Choose a workspace, review pending game effects, manage Habitica tags, and back up or transfer local tasks in <a href="/todo/sync" data-testid="settings-todo-sync">Todo Sync</a>. Cloud task consent and background execution have separate controls there.</p></section>
     <PartyPlanningSettingsPanel />
 
     <section class="card-surface settings-card">
         <p class="section-label">Portable app data</p>
         <h2>Backup, restore, and private sync</h2>
         <p class="panel-copy">
-            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Habitica API tokens are not included.
+            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Export personal Notes from Notes and workspaces from Todo Sync separately. Habitica API tokens are not included.
             <a href="/privacy">Privacy and data handling</a>
         </p>
 
@@ -202,7 +206,7 @@
                                data-testid="download-cloud-sync"
                                Disabled="@(!SessionController.State.IsAuthenticated || IsCloudSyncBusy)"
                                OnClick="HandleCloudDownloadAsync"
-                               Variant="Variant.Filled">
+                               Variant="Variant.Outlined">
                         Download
                     </MudButton>
                 </div>
@@ -210,15 +214,23 @@
 
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
                 <h2>Clear this browser</h2>
-                <p>Removes saved credentials, saved Habitica data, party history, app messages, and local app setup from this browser.</p>
+                <p>Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first. Push device bindings and original pending-command references are also removed. Revoke push devices in Todo Sync first; local removal does not revoke cloud push consent or browser permission.</p>
                 <MudButton Color="Color.Error"
                            data-testid="clear-local-data"
-                           OnClick="HandleClearLocalDataAsync"
+                           OnClick="@(() => _clearLocalReview = true)"
                            Variant="Variant.Filled">
                     Clear Local Data
                 </MudButton>
             </MudPaper>
         </div>
+        @if (_clearLocalReview)
+        {
+            <div class="card-surface danger-card" role="group" aria-label="Review browser data removal" data-testid="clear-local-review">
+                <p>Clear this browser now? All browser Notes, including deleted versions, local workspaces, saved credentials and other local app data will be removed. The general app backup does not include Notes or workspace journals. Push bindings and pending-command references will also be removed. Cloud push consent, device registrations and browser notification permission remain separate; revoke devices in Todo Sync first. Cloud Notes, cloud workspaces and Habitica records have separate controls.</p>
+                <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" data-testid="clear-local-confirm" Variant="Variant.Filled">Confirm browser removal</MudButton>
+                <MudButton OnClick="@(() => _clearLocalReview = false)" data-testid="clear-local-cancel" Variant="Variant.Outlined">Cancel</MudButton>
+            </div>
+        }
 
         @if (!string.IsNullOrWhiteSpace(_dataMessage))
         {
@@ -312,10 +324,11 @@
 </div>
 
 @code {
-    private bool _appearanceCollapsed = true;
+    private bool _appearanceCollapsed = true, _clearLocalReview;
     private bool _integrationConsent, _integrationBusy, _integrationDisconnected, _disposed;
     private bool? _integrationCleanup;
     private IntegrationLinkResult? _integrationResult;
+    private string? _integrationCopyMessage;
     private IntegrationStatusResult? _integrationStatus;
     private string? _integrationManagementAction;
     private (bool Authenticated, string? UserId) _integrationOwner;
@@ -335,8 +348,8 @@
         {
             _integrationOwner = owner;
             _integrationGeneration++;
-            _integrationConsent = _integrationBusy = _integrationDisconnected = false;
-            _integrationCleanup = null; _integrationResult = null; _integrationStatus = null; _integrationManagementAction = null;
+            _integrationConsent = _integrationBusy = _integrationDisconnected = _clearLocalReview = false;
+            _integrationCleanup = null; _integrationResult = null; _integrationStatus = null; _integrationManagementAction = null; _integrationCopyMessage = null;
         }
         _ = InvokeAsync(StateHasChanged);
     }
@@ -369,7 +382,7 @@
     {
         if (_integrationBusy || !SessionController.State.IsAuthenticated) return;
         var generation = _integrationGeneration;
-        _integrationBusy = true; _integrationStatus = null; _integrationResult = null;
+        _integrationBusy = true; _integrationStatus = null; _integrationResult = null; _integrationCopyMessage = null;
         try
         {
             var result = await action();
@@ -420,6 +433,21 @@
 
     private Task NewIntegrationCodeAsync() => RunIntegrationAsync(() => SessionController.CreateChatGptLinkAsync());
 
+    private async Task CopyIntegrationCodeAsync()
+    {
+        var code = _integrationResult?.Code;
+        if (code is null || !SessionController.State.IsAuthenticated) return;
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", code);
+            _integrationCopyMessage = "Code copied. Paste it into the Companion authorization page.";
+        }
+        catch
+        {
+            _integrationCopyMessage = "Copy unavailable. Select the code above and copy it manually.";
+        }
+    }
+
     private async Task ConfirmIntegrationCleanupAsync()
     {
         if (_integrationCleanup is not { } delete || _integrationBusy) return;
@@ -450,6 +478,8 @@
 
     private async Task HandleClearLocalDataAsync()
     {
+        if (!_clearLocalReview) return;
+        _clearLocalReview = false;
         await SessionController.ClearLocalDataAsync();
         NavigationManager.NavigateTo("/");
     }

@@ -1,0 +1,106 @@
+{
+  "todo-link-choice": {
+    "file": "todo-link-choice.html",
+    "route": "/tasks",
+    "state": "exact-create-versus-adopt",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Direct_link_creation_reviews_the_unchanged_task_and_requests_no_score",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-adoption-review": {
+    "file": "todo-link-adoption-review.html",
+    "route": "/tasks",
+    "state": "exact-existing-record-comparison",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Existing_record_adoption_retains_exact_review_across_lost_acknowledgement",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-adoption-unknown": {
+    "file": "todo-link-adoption-unknown.html",
+    "route": "/tasks",
+    "state": "original-link-acceptance-fence",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Existing_record_adoption_retains_exact_review_across_lost_acknowledgement",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-history-choice": {
+    "file": "todo-link-history-choice.html",
+    "route": "/todo/history",
+    "state": "retained-historical-record-link-entry",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Existing_record_adoption_retains_exact_review_across_lost_acknowledgement",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-history-review": {
+    "file": "todo-link-history-review.html",
+    "route": "/todo/history",
+    "state": "exact-existing-record-comparison",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Existing_record_adoption_retains_exact_review_across_lost_acknowledgement",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-history-unknown": {
+    "file": "todo-link-history-unknown.html",
+    "route": "/todo/history",
+    "state": "original-link-acceptance-fence",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Existing_record_adoption_retains_exact_review_across_lost_acknowledgement",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-link-original-refused": {
+    "file": "todo-link-original-refused.html",
+    "route": "/tasks",
+    "state": "original-terminal-nonacceptance-fresh-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Original_terminal_nonacceptance_clears_only_the_adoption_uncertainty_fence",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-link-unknown": {
+    "file": "canonical-link-unknown.html",
+    "route": "/tasks",
+    "state": "advanced-original-link-receipt-recovery",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Advanced_panel_retains_an_enabled_original_link_recovery_outside_disabled_fields",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

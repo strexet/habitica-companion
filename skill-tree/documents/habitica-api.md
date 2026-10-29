@@ -1304,3 +1304,137 @@ The private gateway sends only `POST /cron` with an empty object, after fresh ac
 ## Remote Cron orchestration
 
 Workspace sends the private Cron gateway only the saved attempt identity and exact preconditions. Workspace does not construct arbitrary upstream paths, replay saved dispatches or combine Cron with a spell. A new typed Cron ledger owns expiring previews, acceptance, recovery and explicit own-history projection. The [reviewed Cron boundary](companion-workspace-contract.md#adopted-reviewed-cron-action-boundary) defines shared ownership, uncertainty and refresh limits.
+
+## Required prospective Todo projection
+
+New ordinary Companion Todo create/update/complete commands carry required correspondence under todo-required-v1. Full subtasks are independent Todos. Preparation reveals the effective game intent; fresh raw false submissions are refused. Native priority never becomes Habitica difficulty. An active unlinked completion plans create before score/up; confirmed original receipts, not canonical saved state alone, establish external completion and rewards. No credential upload, executor enablement or Habitica call is implicit in preparation or local capture. Historical accepted commands are recovered verbatim, and completed unlinked edits require separate historical review.
+
+## Unchanged-task correspondence repair
+
+EnsureProjection queues a missing active Todo counterpart through the existing alias-correlated v3 create gateway and original command receipt. Repair contains no fake content patch and never scores. An existing linked mapping can be freshly verified by the same Create effect without another remote create. Missing historical counterparts require explicit review rather than synthesized completed/dateCompleted fields or retroactive rewards. Exact retained-record adoption uses an authenticated owned UUID read, matching kind and Todo completion state, and the reviewed fingerprint; no Habitica write occurs. Identical accepted adoption recovers the retained mapping receipt.
+
+## Habit creation and direction fields
+
+The [official task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) documents type habit and Boolean up/down defaults true/true. The [task model](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) defines Habit directions independently of Daily/Todo completed and checklist fields. Companion supports all four explicit direction combinations; disabled directions cannot score. Habit creation sends supported text, notes, difficulty, attribute and direction flags only. Native urgency never becomes game difficulty.
+
+Owned Habit responses can omit completed; normalization supplies false while requiring valid direction flags. Create results must match the requested kind, correlation alias and explicit fields before mapping confirmation. Unknown creates require original-receipt lookup or positively verified original alias reconciliation; a missing record never authorizes a replacement. Habit creation semantics are qualified with synthetic private-gateway fixtures.
+
+
+## Daily creation schedule allowlist
+
+Supported private creation sends POST tasks/user with type daily and the complete normalized frequency/everyX/startDate/repeat/daysOfMonth/weeksOfMonth fields. All weekdays are explicit so Habitica defaults cannot broaden recurrence. The start timestamp represents account-local midnight; custom dayStart is excluded from the supported native contract. UTC and fixed Etc/GMT offsets must match the fresh account observation. No date field, habit directions, completed flag, streak or historical score is sent for Daily creation.
+
+Official [due-date logic](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/cron.js) and [start-date normalization](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js) were inspected on 2026-10-21. Habitica computes weekly intervals from the start date; native recurrence anchors weeks on Monday. Multiweek creation therefore requires a Monday start. Month-date recurrence skips absent dates. Named DST zones, other unsupported timezone representations, yearly/weeks-of-month authoring and custom account day starts refuse before a write. Original receipt recovery and exact alias/kind/schedule matching prevent replacement creates after uncertain outcomes. Local qualification makes no live API or penalty-parity claim.
+
+
+## Browser counterpart and adoption review
+
+Todo and History use the existing typed ensureProjection and exact-record adoption endpoints. No extra Habitica endpoint, score, Cron operation or permission is introduced. Adoption repeats the identical reviewed request only to recover the original server mapping receipt; uncertain sends retain original workspace, access epoch, revision, remote identity and fingerprint. Browser preparation rejects/cancels only after known refusal; lost acknowledgement retains the original command reference.
+
+Habitica [Daily schema](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) permits everyX zero, while the due evaluator treats intervals below one as not due. Retained zero-interval schedules remain readable for exact-record adoption and fingerprints. New native schedule authoring still requires interval one or greater; no zero-interval creation or score is authorized.
+
+
+## Required defaults across all task kinds
+
+New prepare_task_command activity uses task-required-v1 for createTodo/createDaily/createHabit, ordinary updateTask, completeTask and scoreHabit. Omitted/false projectToHabitica input normalizes to required effects; fresh raw commands must carry true. Native schedule-only authoring and dedicated planning/state/relationship/lifecycle commands remain explicit non-scoring operations. Incompatible unlinked Daily schedules or retained mapping identities refuse before new acceptance. Exact accepted legacy receipts remain recoverable verbatim.
+
+Fresh legacy Habit activity can request counterpart creation followed by bounded scores; no accepted historical event is replayed. Fresh Daily completion similarly records required creation/recovery and score effects, subject to the existing current-day/isDue/needsCron gateway checks. Offline/local acceptance remains pending until separately granted server consent, cloud ownership and enabled execution. Native urgency never substitutes for Habitica priority/difficulty.
+
+
+## Tag correspondence model boundary
+
+The optional canonical tagLedger represents owned native tag identity and desired task membership for all six organization kinds. The ledger records exact account/group/task IDs, original correlation/receipt references, source revisions and pending/confirmed/unknown/review states. Stable internal correlation aliases are not assumed to exist as Habitica tag API fields. Matching tag names supply no identity evidence. Remote tag IDs do not substitute for reward-bearing task IDs.
+
+The data milestone introduces no endpoint, permission, upstream request, tag deletion or score. Populated exports retain account UUID and mapping metadata without credentials. Imported confirmation records are historical evidence and grant no execution authority. The following gateway milestone must verify current official endpoints, own-account scope, exact fingerprints and preservation of unrelated tags before dispatch.
+
+
+## Native tag gateway allowlist
+
+Official source checks on 2026-10-22 covered [tag controllers](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tags.js), [task-tag controllers](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js), [tag schema](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/tag.js) and [sanitizer](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/baseModel.js). The current schema/sanitizer accepts an explicit UUID when creating a tag. The gateway sends only reviewed id/name on create and name on rename; no internal correlation alias is sent as an unsupported tag field. A changed upstream shape or identity leaves the outcome unconfirmed.
+
+Permitted calls are GET /tags, POST /tags, PUT /tags/{tagId}, GET /tasks/{taskId}, POST /tasks/{taskId}/tags/{tagId} and DELETE /tasks/{taskId}/tags/{tagId}. Tag IDs and task IDs are exact UUIDs. Membership uses individual native endpoints, never a replacement tag array. All calls use owned credentials and x-client, bounded JSON, manual redirect handling, admission control and bounded deadlines. A native tag is adoptable only from the authenticated user's current native tag list; challenge/group metadata is excluded. Task ownership rejects party/challenge/shared/foreign targets.
+
+DELETE /tags/{tagId} remains absent because Habitica removes references from all owned tasks. Matching names never establish identity. Unknown create/rename/membership attempts retain the original attempt fence; lookup does not send. Explicit recovery requires original hashed intent/observation plus a fresh exact metadata review. Only approval of that review records an observed result, distinct from the original HTTP receipt. Missing/changed evidence keeps the unknown fence. Per-account tag consent and separately scoped agent authorization remain independent from native Companion organization permission.
+
+The freshness window cannot make Habitica's API transactional with changes from another client. Individual membership operations avoid deliberate unrelated-tag replacement; unexpected response loss of observed unrelated tags is unconfirmed and never replayed automatically. Live conflict/race behavior remains a separate qualification limit.
+
+## Complete membership executor
+
+Workspace derives every changed organization's complete membership before queuing native metadata. Reconciliation uses the existing private tag allowlist, current account consent and validated additive MCP scope. Each independently linked task is inspected by exact remote ID. Registry identity is checked before touching an existing tag; missing ownership requires explicit adoption review. Empty selections still verify the mapped tag. Work never calls scoring, creates a task for a group or replaces the complete native tags array.
+
+Only individual owned membership additions/removals are sent. Removed groups preserve historical links and remove only previously managed active membership. Archive retains native tags and history. Source changes, missing counterparts, changed consent and unknown effects remain pending or require review. Lost acknowledgements use the exact original receipt; lookup failure never clears an unknown send. Qualification uses local synthetic fixtures, with no new claim about live endpoint behavior.
+
+
+## Public group-tag review adapters
+
+Companion exposes get_group_tag_status, inspect_group_tag_candidates, prepare_group_tag_command, accept_group_tag_command, get_group_tag_command and recover_group_tag_receipt through MCP and the authenticated Workspace /tag-api route. The route is a strict tool allowlist without account selectors or arbitrary native URLs. Browser owner management uses Auth /profiles/{profileId}/tag-consent with habitica-tags-v1. Write preparation/acceptance requires independent consent and additive habitica.tags.write for agent requests. Read audit and original receipt recovery retain tasks:read.
+
+Reconcile reviews exact group identity and full taskChanges, then queues metadata work. Adopt requires an exact inspected native ID and makes no native mutation. Recover reviews observed metadata for the original durable workId and records reviewed_observation without resend. Native tags are never deleted. No group action creates/scores tasks or supplies game rewards. Original command and attempt identities survive expiry, lost acknowledgements and paused execution; an absent receipt never proves rejection.
+
+
+## Checklist conversion tools
+
+get_checklist_conversion reads one exact source Todo and every retained target, including archives. prepare_checklist_conversion requires requestId, sourceTaskId/sourceRevision, expectedRevision, exact existing projectId or a new projectName, and every source item in order. Each item supplies sourceItemId, mode create/reuse/defer and desiredState active/completedArchived. Reuse selects targetTaskId; create omits target identity and supplies explicit gameDetails difficulty/attribute. Create supports active tasks only, with at most ten new captures per cloud review. Defer retains an explicit unresolved item. Exact existing bindings survive restart and cannot be redirected by matching names.
+
+accept_checklist_conversion consumes the approved preparedCommandId as commandId; get_checklist_conversion_command recovers original acceptance. Unknown responses require original identity, never another copy. Agent writes require habitica.tasks.write plus workspace.organization.write; existing task reads retain tasks:read. New active tasks queue normal counterpart creation. Historical reuse, project placement and archive changes never score. Complete tagProjection has independent consent/scope and background controls. canonicalComplete and storedCorrespondenceComplete remain distinct from fresh upstream verification; retirementReady remains false until a separate verified retirement workflow exists.
+
+
+Browser conversion uses authenticated POST /conversion-api with the same four tool names and exact arguments. New task inputs omit targetTaskId rather than sending null. The typed adapter validates complete ordered source/binding identities, original ledger hashes, source notes and original acceptance receipts against the connected workspace. Status never upgrades stored mappings to fresh native presence. A missing original acceptance is uncertain; retry preserves the original ID. Browser navigation retains unresolved review identity in the scoped controller, without storing credentials or descriptions in diagnostics.
+
+
+## Exact converted source retirement
+
+The private Auth gateway supports owned Todo retirement through DELETE /api/v3/tasks/{taskId} only after a separately approved conversion cleanup. The server requires exact source/native/conversion/workspace identity, matching fingerprint and completed Boolean, a fresh owned-task check and irreversible approval. The remoteTask content fingerprint excludes completed, so retirement compares completed independently. Foreign, party/group and challenge tasks remain refused.
+
+A final GET precedes reservation of one DELETE. Each upstream operation has an independent ten-second deadline and quota reservation. Confirmed HTTP 200/201 success requires success true and empty object data, following the [Habitica task controller](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/tasks.js). Definitive refusal creates no canonical source archival. A timeout or lost acknowledgement remains unknown and never authorizes resending. Original attempt lookup is read-only upstream; explicit reconciliation may observe source absence with a distinct outcome. Absence before dispatch creates no native delete attempt. No conditional DELETE or cross-service atomic snapshot exists; the final observation-to-deletion race remains explicit. Broad clearCompletedTodos and scoring are excluded.
+
+
+## Foreground cast acknowledgement semantics
+
+Foreground cast and equipment operations require success true with object data. The [Habitica spell implementation](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/libs/spells.js) returns a result object after user/task or member saves; a server error can follow partial effects. Transport loss, timeout, malformed success and nondefinitive server errors remain unknown and never trigger automatic replay. Definitive HTTP refusal status remains separate from request pacing; subsequent explicit calls obey the existing shared cooldown. Cancellation while queued sends no mutation, while cancelled dispatched acknowledgement cannot prove absence of effects. Refreshing user/task state never reconstructs an original missing cast acknowledgement.
+
+### Foreground equipment recovery
+
+Equipment recovery uses the existing paced own-account reads and equipped-gear endpoint. A fresh read verifies original gear before temporary equipment; every dispatch records an in-flight slot and every acknowledgement requires an observed expected selection. Missing acknowledgements remain unresolved. Explicit recovery reads again and preserves equipment differing from both recorded selections. Native equipment has no conditional-write token, so external-client changes can race the final read and toggle. Recovery supplies neither cast replay nor background execution.
+
+
+## Canonical project aliases
+
+resolve_project is an own-workspace canonical read under tasks:read, independent of Habitica task/tag correlation aliases. Input contains reference and optional expectedRevision only. Output identifies workspace/revision and one exact project, including retained lifecycle flags. Exact UUID selects canonical ID; normalized alias or exact-name collisions refuse ambiguity. list_projects exposes optional alias alongside unchanged name/ID. Organization preparation accepts alias/clearAlias only for projects and requires explicit expectedRevision. Archived/removed records permit only exact clearAlias updates. Alias identity grants no scope, enrollment or native mapping. No Habitica endpoint, request, score or tag identity is introduced.
+
+
+## Agent-resolved deadline dates
+
+prepare_task_command continues to accept patch.deadline as an exact ISO civil date on supported task kinds. Relative `dd`/`дд` expressions must resolve before calling the tool; ambiguous intent, numeric order, missing current-date/timezone context and invalid/leap dates require clarification. updateTask targets the exact existing canonical task and retains the ordinary required correspondence policy. The workflow changes no native endpoint, timezone interpretation or Habitica due-state formula. A saved deadline grants no reminder, review or originating-chat delivery guarantee; receipt recovery retains original arguments after acknowledgement loss.
+
+### Connector compatibility read boundary
+
+get_connector_compatibility requires existing authenticated profile:read access and accepts only optional packageVersion, packageHash and toolSchemaVersion fields. The compatibility tool calls private build-identity endpoints and performs no Habitica read, credential lookup, Workspace consent activation or command submission. The MCP initialization version follows the explicit backend release. This value describes the backend rather than installed host skills.
+
+## Native task recovery boundary
+
+unarchiveTask and correctOccurrence operate on native canonical state only. Both reject retained Habitica identities and uncertain/pending task effects, produce zero projection effects and schedule no tag reconciliation. No Habitica DELETE, negative score, completed:false, schedule rewrite or reward reversal is sent. Reviewed own-task upstream unchecking remains a separate implementation contract.
+
+## Private linked-task recovery gateway
+
+The private ProjectionService supports inspectRecovery and recoverTask under the existing Workspace/projection gates. Ordinary score still rejects non-Habit down scoring. inspectRecovery requires an exact owned Todo/Daily ID, explicit kind, Daily civil date and a source-context SHA-256 supplied by the canonical caller. Auth binds the context to a fresh completed task/checklist fingerprint, task value/completion metadata and verified current account day/readiness. Shared/challenge copies, unknown readiness, Cron-needed state, timezone transitions and prior-day Dailies refuse. Auth does not prove the canonical completion itself; the selected Workspace orchestration must verify the original confirmed source before creating the context hash.
+
+The ninety-second token is single-use and recovery-only. recoverTask repeats account/task observation, verifies the original review hash and current authority, reserves a durable attempt under the account lease, then sends at most one POST tasks/{id}/score/down. Reservation atomically rechecks token expiry, lease, profile/connection/grant and unresolved cross-tool attempts. Upstream reads/writes retain existing budgets and ten-second network deadlines. Resources remain unknown in the reviewed context and receipt; no exact refund is claimed.
+
+Only the original HTTP200 successful numeric nonpositive score response establishes an applied private recovery receipt. Any dispatched non200, transport loss, malformed success or receipt-persistence failure remains unknown. Original attempt/arguments/timestamp recover the stored outcome before token freshness is considered. Lookup/reconcile cannot infer a score outcome from current task state and never redispatch. Native recovery/history is not recorded by this private primitive; canonical acceptance, source receipts and public MCP exposure remain the selected parent task boundary. Default gates remain off and no real score/Cron qualification is claimed.
+
+Official server source reviewed on2026-10-27: [task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) returns score results; [task scoring service](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/index.js) rejects inconsistent completed state and can invoke shared/challenge processing; [score operation](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js) changes resources and can remove Daily history/streak state during unchecking. [Daily due calculation](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js) derives isDue from the requested date and account preferences. Native canonical history must remain retained independently of upstream changes. Habitica supplies no conditional score transaction across independent clients, so a final external race remains possible.
+
+## Original completion score provenance
+
+New server-executed Todo/Daily completeTask score-up attempts include optional sourceContext with companion-completion-score-v1, workspace/task/command/completion identities, canonical command payload hash, effect index, kind and exact Daily date. Auth validates the shape and scoring compatibility, then retains the binding only in an applied original score receipt. Ordinary Habit scores and unused legacy arguments remain unchanged. The server caller owns canonical event validation; the source binding cannot be supplied through public ordinary task fields.
+
+Private scoreReceipt reads an exact retained Auth attempt for the current profile/connection and checks the expected upstream task/fingerprint plus the complete canonical binding. The reader returns verified source metadata only for an applied non-Habit score receipt. Missing, unknown, legacy, wrong-context and wrong-account records remain unavailable. The reader issues no upstream request and returns no credential, old check token or private task text. Dispatched Workspace journal events retain the original attempt token, so verification remains possible after executor prepared_request_json is cleared. Existing thirty-day operational retention and lifecycle cleanup limit availability; later task state never reconstructs an absent original receipt.
+
+## Reviewed linked recovery composition
+
+Workspace requires the complete original score-source proof before preparing a private Auth recovery. A durable original attempt and canonical document fence precede down dispatch; only the original successful receipt permits native restoration/correction. No current-state inference, replay, exact refund or party management is permitted. See [linked task recovery](linked-task-recovery.md).
+
+## Retained recovery read boundary
+
+`list_task_recovery_records` reads only the owned canonical journal through the reviewed Workspace MCP boundary. The query performs no Habitica request, scoring, consent or mutation and makes no fresh upstream ownership/day/refund claim. See [retained recovery discovery](retained-recovery-discovery.md).

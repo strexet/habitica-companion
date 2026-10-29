@@ -1,0 +1,44 @@
+@using Habitica.Application.Notifications
+@inject PushDeviceController Push
+@implements IDisposable
+
+<section class="card-surface settings-card" aria-label="Push devices" data-testid="push-devices">
+    <h2 tabindex="-1" @ref="_heading">Push devices</h2>
+    <p>Web Push is an optional, separate channel for generic review reminders. Lock-screen messages contain no task title or notes. Delivery depends on the browser, system and network; shown and read remain unknown.</p>
+    <p>On iPhone or iPad, add this app to the Home Screen and open that installed app before enrolling this device. Allow notifications only from the explicit device button below. Denied permission must be changed in browser or system settings.</p>
+    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Push.IsBusy" OnClick="Push.RefreshAsync" Variant="Variant.Outlined" data-testid="push-refresh">Check push setup</MudButton>
+    @if(Push.Message is {} message){<p role="status">@message</p>}
+    <p>Browser capability: @Push.Capability.State · Permission: @Push.Capability.Permission · Local receipt storage: @(Push.StorageAvailable?"available":"unavailable or not loaded")</p>
+    @if(Push.Status is {} status)
+    {
+        <p>Account push: @(status.Enabled?"enabled":"off") · Subscription service: @(status.Available?"available":"disabled or unconfigured"). Task delivery has a separate service readiness check.</p>
+        <label class="checkbox-row"><input type="checkbox" @bind="_acknowledged" disabled="@Push.IsBusy" data-testid="push-ack" /> I agree to store this device's push endpoint and authentication material in the Auth vault for generic reminders. Revoke the device or turn off account push to delete that material.</label>
+        <div class="action-row">
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Push.CanChange||!status.Enabled&&!_acknowledged||!status.Enabled&&!status.Available)" OnClick="() => Push.SetConsentAsync(!status.Enabled,_acknowledged)" Variant="Variant.Outlined" data-testid="push-consent">@(status.Enabled?"Turn off account push and revoke devices":"Enable account push consent")</MudButton>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Push.CanRegister||!_acknowledged)" OnClick="() => Push.RegisterAsync(_acknowledged)" Color="Color.Primary" Variant="Variant.Filled" data-testid="push-register">Allow and enroll this browser</MudButton>
+        </div>
+        @foreach(var device in status.Devices)
+        {
+            <article class="todo-direct-row"><div class="todo-row-content"><strong>@(Push.ThisDevice(device)?"This browser":"Device")</strong><span>@device.DeviceId · revision @device.Revision · @device.State</span></div>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Push.CanChange||device.State!="active")" OnClick="() => Push.RevokeDeviceAsync(device.DeviceId)" Variant="Variant.Outlined">Revoke device @device.DeviceId.ToString("D")[..8]</MudButton>
+            </article>
+        }
+        <p>Remote revocation stops future delivery and deletes Auth-held secrets. Browser permission and the local browser subscription have separate lifecycles. Turning off push does not change tasks, review cues or Habitica rewards.</p>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Push.CanRemoveLocal)" OnClick="Push.RemoveLocalAsync" Variant="Variant.Outlined" data-testid="push-remove-local">Remove matching local browser subscription</MudButton>
+    }
+    @if(Push.Pending is {} pending)
+    {
+        <p>Unconfirmed original @pending.Operation request: @pending.RequestId. Keep this ID; no replacement upload runs automatically.</p>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Push.IsBusy||pending.Operation=="subscribe"&&!_acknowledged)" OnClick="() => Push.RetryOriginalAsync(_acknowledged)" Variant="Variant.Outlined" data-testid="push-retry">Retry exact original device request</MudButton>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Push.IsBusy" OnClick="Push.RecoverAsync" Variant="Variant.Outlined" data-testid="push-recover">Check original device receipt</MudButton>
+    }
+    <p><a href="/todo/reminders">Choose a task and review its push schedule</a>. Browser-only foreground cues remain separate in <a href="/todo/today">Today</a>.</p>
+</section>
+@code {
+    private bool _acknowledged,_hadPending,_focus;
+    private ElementReference _heading;
+    protected override void OnInitialized(){_hadPending=Push.Pending is not null;Push.Changed+=Changed;}
+    private void Changed(){if(Push.Status is null)_acknowledged=false;if(_hadPending&&Push.Pending is null)_focus=true;_hadPending=Push.Pending is not null;_=InvokeAsync(StateHasChanged);}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;await _heading.FocusAsync();}}
+    public void Dispose()=>Push.Changed-=Changed;
+}

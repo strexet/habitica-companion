@@ -39,9 +39,9 @@ The [research prototype](../prototypes/navigation-review.html) frames the [navig
 
 A casual organizer captures a task and returns later to plan the task. Default entry therefore exposes the title and a short review. Dates, notes, labels and projects remain optional. A personal-project organizer needs projects, sections, labels and progress without mandatory hierarchy. A game-focused owner needs Dashboard, Spells, Equipment, Pets & Mounts, Party and Quests to remain findable. The prototype provides direct named destinations under More; the study does not establish whether frequent game use warrants a primary shortcut.
 
-## Adopted local navigation contract
+## Historical prototype navigation contract
 
-The prototype uses five primary destinations: Today, Inbox, Plan, Projects and More. Plan contains Upcoming, Week and Month with an agenda. More exposes completed history, search, recurring work, gameplay, connections and settings. Desktop uses the same destinations in a side rail. Task capture remains visible independently of navigation. Phone editors open as scrollable modal sheets and retain labelled manual date controls.
+The superseded prototype uses five primary destinations: Today, Inbox, Plan, Projects and More. Plan contains Upcoming, Week and Month with an agenda. More exposes completed history, search, recurring work, gameplay, connections and settings. Desktop uses the same destinations in a side rail. Task capture remains visible independently of navigation. Phone editors open as scrollable modal sheets and retain labelled manual date controls.
 
 Unplanned, unassigned Todo capture enters Inbox and states the destination after saving. Planned date and deadline remain independent. A review describes Companion-only persistence before saving; game projection requires a separate explicit choice. Pending or uncertain game outcomes require labelled state and original receipt lookup. A local canonical completion or restore never proves a confirmed or reversed Habitica reward.
 
@@ -65,11 +65,15 @@ Responsive measurements cover 360, 390, 430, 768 and 1024 CSS pixels. Each measu
 
 ## Adoption and remaining qualification
 
-The owner directed automatic adoption of further local contracts and explicitly included the E01 area in the implementation run. The intake permits screenshots or documented workflows for the inventory. The dated public-flow inventory satisfies that evidence alternative, and the checked prototype is adopted as the local design baseline on 2026-10-18. Current-route journey preparation resides in prioritized task T-06336249-6901-4d10-8df1-229ca9bcad6b. Authenticated competitor journeys and actual human/device qualification remain acceptance requirements of blocked release task T-d76d2a9a-1318-4e63-9bb4-73f620b108cc; preparation never qualifies actual observations. No owner usability feedback, competitor session or real-device result is claimed. Automatic local contract adoption removes a repeated design-approval question; adoption does not qualify hands-on research.
+The owner directed automatic adoption of further local contracts and explicitly included the E01 area in the implementation run. The intake permits screenshots or documented workflows for the inventory. The dated public-flow inventory satisfies that evidence alternative, and the checked prototype is adopted as the local design baseline on 2026-10-18. Current-route journey preparation and local results reside in [task-journey-qualification.md](task-journey-qualification.md), implemented under T-06336249-6901-4d10-8df1-229ca9bcad6b. Authenticated competitor journeys and actual human/device qualification remain acceptance requirements of blocked release task T-d76d2a9a-1318-4e63-9bb4-73f620b108cc; preparation never qualifies actual observations. No owner usability feedback, competitor session or real-device result is claimed. Automatic local contract adoption removes a repeated design-approval question; adoption does not qualify hands-on research.
 
 Detailed UI units can be researched against the contract and existing canonical APIs. Owner selection on 2026-10-19 permits development implementation and feature exposure before hands-on E01 qualification; broader release retains the gate. Prototype evidence qualifies the design baseline only. Every UI unit requires feature-specific persistence, identity, error recovery, accessibility and local browser checks. Release gates retain actual two-account, client, virtual keyboard, assistive-technology and device qualification.
 
-## Default and advanced behavior
+## Current production navigation and journey pack
+
+The owner Todo structure supersedes the prototype navigation: Today, Habits, Dailies and Tasks are immediately visible under Todo; Projects, Statistics and Sync follow, with Inbox, Planning, Saved lists and History as secondary links. [Current task journey qualification](task-journey-qualification.md) owns exact current-route steps, reproducible synthetic setup, observation forms and explicit device/human handoff. Its local evidence does not close the deferred release gate.
+
+## Historical prototype defaults and advanced behavior
 
 Global Add opens title-first Todo capture. Normal native urgency and Companion-only persistence are defaults; no project, label, date, recurrence or game projection is required. Review precedes acceptance through the existing command contract. The success message names the saved destination. Advanced details expose task type, notes, separate plan/deadline dates, hierarchy and supported recurrence without requiring status administration.
 

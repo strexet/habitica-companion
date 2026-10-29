@@ -1,0 +1,8 @@
+<nav class="todo-category-tabs" aria-label="Todo categories" data-testid="todo-category-tabs">
+    <a href="/todo/today" aria-current="@(Active == "today" ? "page" : null)">Today</a>
+    <a href="/todo/habits" aria-current="@(Active == "habits" ? "page" : null)">Habits</a>
+    <a href="/todo/dailies" aria-current="@(Active == "dailies" ? "page" : null)">Dailies</a>
+    <a href="/todo/tasks" aria-current="@(Active == "tasks" ? "page" : null)">Tasks</a>
+</nav>
+
+@code { [Parameter, EditorRequired] public string Active { get; set; } = ""; }

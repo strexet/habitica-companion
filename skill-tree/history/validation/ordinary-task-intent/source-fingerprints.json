@@ -1,0 +1,20 @@
+{
+  "workers/shared/task-tools.ts": "92044b9925edc737f885400b07365d224a25928fa0b4d2c12f9c12fadd6efac4",
+  "workers/chatgpt-mcp/src/task-tools.ts": "1d7975917cbc1a07145e426519b6340d3031aa1c146c10543d1af422ed4748bd",
+  "workers/companion-workspace/src/task-api.ts": "7e347654b06cb0b8f981e4b86341885c5ee643476af39dd7f3d8cfe6fcbf4249",
+  "workers/companion-workspace/test/ordinary-task-intent.test.mjs": "a218114e57e9287e83aac230799bd29b50027b92342812fa0274205488139df4",
+  "workers/companion-workspace/test/task-api.test.mjs": "3861324d1b4d6576b933660aab0b547b32e1c3f2e4d479789bf4dd212e626db2",
+  "workers/companion-workspace/test/plugin.test.mjs": "7335a7523ac8cd29dc76ae10a46cce73ddd7fdb52a23a1b558b3f336fa659829",
+  "workers/shared/build-identity.generated.ts": "32e7d6641b0d8fe503816bc2e241e4a54dd3cf67afb7c79b319116892aebacc8",
+  "plugin/README.md": "5ff50f3331d68abef0a3f5b6040db0b2d6a7e671d2a8b2bc9e106236c2806c71",
+  "plugin/skills/habitica-task-management/SKILL.md": "effcb07ab7e449f32e6dc9b361cfa45700dc9f7edcee4c8a4e0c158822eb0225",
+  "plugin/skills/habitica-task-management/references/deadline-dates.md": "4547fdbf18ae78efa7da82959d465cf13617f218d5bc93da0eb48ccf044d6b8c",
+  "tests/fixtures/plugin/ordinary-task-intent-v1.json": "7795c67a9e10f4035373ae062ff88de4d29db1d01a3647bb44666439f40f51be",
+  "tests/fixtures/plugin/discovery-prompts-v1.json": "bc14ff2b7b922226ec4a262bd2906247430e399e0daf1133842f5b6da4b43504",
+  "skill-tree/documents/ordinary-task-intent.md": "b781bda71b6513aadc0356a6133c7e22185f5ec0b49b160f6d6565d97b6a62e4",
+  "skill-tree/documents/companion-discovery.md": "cb5a5b3a22a106f96ac86243c9a101b1dadfd88ca406f78091c08e80647535b1",
+  "skill-tree/documents/features.md": "689d0d6f8ca34df7774c0096d79458e3547ea66d78ff39b6d1d44fc9d835b95d",
+  "skill-tree/documents/technical.md": "66f6cef404322688fd1e9e41364dcbe0486426d733ebf83b43afaa8c1a588fbe",
+  "skill-tree/documents/testing.md": "8846e3c4c3c24efd829238465664a0039fc57d10fb6646804e0940fb8f348764",
+  "skill-tree/documents/ux-ui-manifest.md": "9862eb09f60cb16932580ad941eccbc89f12e2f7af49f54b1efcc55f8d3a7514"
+}

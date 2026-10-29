@@ -1,0 +1,92 @@
+{
+  "taskId": "T-fed75824-e410-4bca-8664-5039742424da",
+  "recordedAtUtc": "2026-10-23T02:28:39.481788+00:00",
+  "status": "pass",
+  "checks": {
+    "dotnet": {
+      "Api": 94,
+      "Application": 237,
+      "Domain": 36,
+      "Rules": 43,
+      "Storage": 24,
+      "WebApp": 682,
+      "total": 1116
+    },
+    "workspaceWorker": 543,
+    "workerDryRunBuilds": [
+      "Auth",
+      "MCP",
+      "Workspace"
+    ],
+    "changedProse": "pass",
+    "diffCheck": "pass",
+    "metadata": "pass with inherited stale audit warning"
+  },
+  "evidenceNotes": [
+    "The retained non-Web regression attempt passed the first five suites, then exposed a new Web fixture constructor error. The corrected Web fixture and full Web suite passed separately.",
+    "The initial new API fixture expected422 rather than the established409 preparation conflict; the assertion was corrected after inspecting organizationApi.",
+    "The first Web fixture used a create-only helper for an update. Fixture setup was corrected; no production exception was observed.",
+    "Historical intermediate alias collisions are refused in both portable validators, with dedicated corrupted-history controls."
+  ],
+  "limits": [
+    "Local synthetic qualification only; no publication, real-account change, deployment or live Habitica operation.",
+    "Browser alias controls and planning skill guidance belong to the next snapshot task."
+  ],
+  "operations": {
+    "perOperationDeadlineSeconds": "20-240",
+    "cleanupReserveSeconds": 5,
+    "activeControllerTimeSeconds": null,
+    "activeControllerTiming": "Not instrumented separately in this resumed segment; tool wall time is retained from bounded controls.",
+    "toolWallSeconds": {
+      "finalWebTests": 43.87,
+      "workspaceTests": 94.66,
+      "workspaceBuild": 2.02,
+      "mcpBuild": 2.01,
+      "authBuild": 1.97
+    },
+    "prerequisiteWaitingSeconds": 0,
+    "hostPolicyRejections": [
+      "Initial VSTest socket bind denied; scoped local-socket execution succeeded.",
+      "Read-only process inventory unavailable in sandbox; no process modification attempted."
+    ],
+    "unchangedFailureCircuit": "No two consecutive executed controls retained an identical unresolved signature; each failing fixture had an inspected targeted repair."
+  },
+  "sourceFingerprints": {
+    "skill-tree/documents/features.md": "b8246a30d389d208f57795e9d4878ac0689efada3dbe883f14184e0386ad1631",
+    "skill-tree/documents/habitica-api.md": "0ff5c787f34427737401e7e85a8694520808087ac65506dcf9e4d08e49d5005e",
+    "skill-tree/documents/technical.md": "5cdffd98b4f9a6202501a1a59fb1fed3fc4d6fb6d1287ffc259137c3f3717725",
+    "skill-tree/documents/testing.md": "0ae3a56233ad8220954f3cfa3a0cba9c9409f36444d00958125a4be08187079c",
+    "skill-tree/documents/ux-ui-manifest.md": "fa6cbdf219b3d129842ac358510a3935da7957e775d86203251d755836ab3204",
+    "src/Habitica.Application/Workspace/WorkspaceOrganization.cs": "ec940fc4a24396d5b54c726eb9755298455d8ea85736226ad4e3938cf5bb59b9",
+    "src/Habitica.Application/Workspace/WorkspaceOrganizationEngine.cs": "e468b63e74cf6aecd251953b1decfcec03c82e093846344dd215f265ff0e6da1",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "c0fc2e3d2874308e79e28d19e45bae7f1c72198008fe25816f56a47d1eea685e",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs": "ccf17dde3bc506a6fdd30f12d2cb5fc1cd172ca16afe87d283a4c2e7fec25396",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationHistory.cs": "f2110617254d362cabc00277f0a0e747341f64cf1bd972db927a7d5e3bd6d339",
+    "src/Habitica.Domain/Workspace/WorkspaceProjectAliases.cs": "3599008548f5c7bba2373305f3cb12462e71ae8653d23cf5d4162fbfca6de726",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "be9a02566f6ae75d1ac104ab0849c2e6ae70745a2f1f03d9f30eb02c851b078f",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Organization.cs": "3eefd2c2ceae7f6155a8c962fdca34b7427ff449b3b69cb92c60998d1679d5dc",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceOrganizationModelTests.cs": "42a2cde367991c0613a5e5d6777e636539da53bd0039cbc6de0015dcdcdfbf72",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceProjectAliasTests.cs": "4064f77165e7d5237824c2121875165518d5dbc3a29028eaa76c3e8834d55f09",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceOrganizationClientTests.cs": "9791e70fef3dea81ffbf56e80b226ad0804e4b8c23c9e5c7a2642f3b2d050000",
+    "tests/fixtures/workspace/project-alias-v1.json": "6b6ddbd5beeaf2d913530b73c2705683c5ca456413c8cff89663b82c6f1d229e",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "47efff6d89710f596e3096311cf4528511311fbfc6e14b596e1073dcea64979c",
+    "workers/chatgpt-mcp/src/task-tools.ts": "f3069e0320804556ba745934f7c6821cf5862ac626679ecce13e5b332d695c8e",
+    "workers/companion-workspace/src/organization-commands.ts": "23f249529081fa2c72171dce61b7e400e006baa1f1af2748726bb465fae8700e",
+    "workers/companion-workspace/test/organization-api.test.mjs": "c48ac90e9b14a71f53655fc988c95e26b0302ffb7cc6d4f4c5fdcb3ba370e0ec",
+    "workers/companion-workspace/test/organization-query.test.mjs": "a71f6dc5e0487d4d617546d145fb7994e69358c9c8ced81aa36155a9505d0477",
+    "workers/companion-workspace/test/project-alias.test.mjs": "5e060a245efec8a88764a19ca7b29f3ef51c955787a1abf01ad797bac99a3ce7",
+    "workers/shared/organization-query.ts": "f776066131048dee2d0a627227cf28b583eb0513bfd7fe24d1930101c955fd38",
+    "workers/shared/organization-tools.ts": "7dc7faa16ddc8a614ca63af3a3879420bc7a7e4cda22319911e83210bcb8c975",
+    "workers/shared/task-tools.ts": "9854895cec421fb7f070bac87952d823f5675aca7979331dabbf28c43385fbdc",
+    "workers/shared/workspace-domain.ts": "a3e3236e53135f1a6ee60b07909e8e59fb436ee37c4c9b747ca796683b4dca7a",
+    "workers/shared/workspace-organization.ts": "e11838d3d1b9aa04291de827da2f928229c9e83119c281c5548ce42d23af362e"
+  },
+  "logs": [
+    "non-web-regression-attempt.txt",
+    "web-regression.txt",
+    "workspace-regression.txt",
+    "workspace-build.txt",
+    "mcp-build.txt",
+    "auth-build.txt"
+  ]
+}

@@ -1,0 +1,555 @@
+{
+  "initial": {
+    "schemaVersion": 1,
+    "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+    "revision": 0,
+    "notes": [],
+    "receipts": [],
+    "purged": []
+  },
+  "rows": [
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000031",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 0,
+        "expectedNoteRevision": 0,
+        "operation": "create",
+        "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+        "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F"
+      },
+      "hash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 1,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 1,
+              "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+              "isTrashed": false,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": []
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000032",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 1,
+        "expectedNoteRevision": 1,
+        "operation": "update",
+        "title": "Unicode \u2014 \u5C3E",
+        "markdown": null
+      },
+      "hash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 2,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 2,
+              "title": "Unicode \u2014 \u5C3E",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+              "isTrashed": false,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000033",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 2,
+        "expectedNoteRevision": 2,
+        "operation": "append",
+        "title": null,
+        "markdown": "\r\nnew content\\"
+      },
+      "hash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 3,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 3,
+              "title": "Unicode \u2014 \u5C3E",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+              "isTrashed": false,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000033",
+            "payloadHash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000034",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 3,
+        "expectedNoteRevision": 3,
+        "operation": "trash",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "ab3520f61f620ba9f1c0c69ff254fcfda1fd6582c7d9ed1ec549469e4c4e554b",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 4,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 4,
+              "title": "Unicode \u2014 \u5C3E",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+              "isTrashed": true,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 3,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000033",
+            "payloadHash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000034",
+            "payloadHash": "ab3520f61f620ba9f1c0c69ff254fcfda1fd6582c7d9ed1ec549469e4c4e554b",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000035",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 4,
+        "expectedNoteRevision": 4,
+        "operation": "restore",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "9904f7374aa34a1cb76d5a85a144bad700faafc7a7eb173c773b9a4327ab355f",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 5,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 5,
+              "title": "Unicode \u2014 \u5C3E",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+              "isTrashed": false,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 3,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 4,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": true,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000033",
+            "payloadHash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000034",
+            "payloadHash": "ab3520f61f620ba9f1c0c69ff254fcfda1fd6582c7d9ed1ec549469e4c4e554b",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000035",
+            "payloadHash": "9904f7374aa34a1cb76d5a85a144bad700faafc7a7eb173c773b9a4327ab355f",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000036",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 5,
+        "expectedNoteRevision": 5,
+        "operation": "trash",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "322dae1ce290ef94a6f69d1ad53da21e3b115da768a7c116f98038a5573ab2a6",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 6,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "current": {
+              "revision": 6,
+              "title": "Unicode \u2014 \u5C3E",
+              "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+              "isTrashed": true,
+              "atUtc": "2026-10-23T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-10-23T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "\u041B\u0438\u0447\u043D\u0430\u044F \uD83E\uDDE5 \u0437\u0430\u043C\u0435\u0442\u043A\u0430",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 2,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 3,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 4,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": true,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              },
+              {
+                "revision": 5,
+                "title": "Unicode \u2014 \u5C3E",
+                "markdown": "# Measurements\r\n\u0060\u0060\u0060md\n\u003C\u003E\u0026\u0027\u0022\u0060\u002B\\\n\u0060\u0060\u0060\n\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000B\f\r\u000E\u000F\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001A\u001B\u001C\u001D\u001E\u001F !\u0022#$%\u0026\u0027()*\u002B,-./0123456789:;\u003C=\u003E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\u0060abcdefghijklmnopqrstuvwxyz{|}~\u007F\r\nnew content\\",
+                "isTrashed": false,
+                "atUtc": "2026-10-23T00:00:00+00:00"
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000033",
+            "payloadHash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000034",
+            "payloadHash": "ab3520f61f620ba9f1c0c69ff254fcfda1fd6582c7d9ed1ec549469e4c4e554b",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000035",
+            "payloadHash": "9904f7374aa34a1cb76d5a85a144bad700faafc7a7eb173c773b9a4327ab355f",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000036",
+            "payloadHash": "322dae1ce290ef94a6f69d1ad53da21e3b115da768a7c116f98038a5573ab2a6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 6,
+            "notebookRevision": 6
+          }
+        ],
+        "purged": []
+      }
+    },
+    {
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000037",
+        "noteId": "00000000-0000-4000-8000-000000000021",
+        "expectedNotebookRevision": 6,
+        "expectedNoteRevision": 6,
+        "operation": "purge",
+        "title": null,
+        "markdown": null
+      },
+      "hash": "6599bb901614abf0ea89c86f101c7437d0c548d6b8e37e9f88722facb9bd10f3",
+      "atUtc": "2026-10-23T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 1,
+        "ownerScope": "d11e81bc8942960c211bce52582136c6852e1131625828cefe5c9b5412062d07",
+        "revision": 7,
+        "notes": [],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000031",
+            "payloadHash": "4c70e30561f9d3898145da830f1e033d6693d824f3411fe79c19048d40f6ce01",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000032",
+            "payloadHash": "c13df6bca0adabf034731a442c93e6353b0a7850d9f643530c13440cca3409f6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 2,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000033",
+            "payloadHash": "97d3fd3451fc7b476bb7ea0cb7567da70c2e6600b515ea386fe7f8eb6305f6ca",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 3,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000034",
+            "payloadHash": "ab3520f61f620ba9f1c0c69ff254fcfda1fd6582c7d9ed1ec549469e4c4e554b",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 4,
+            "notebookRevision": 4
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000035",
+            "payloadHash": "9904f7374aa34a1cb76d5a85a144bad700faafc7a7eb173c773b9a4327ab355f",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 5,
+            "notebookRevision": 5
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000036",
+            "payloadHash": "322dae1ce290ef94a6f69d1ad53da21e3b115da768a7c116f98038a5573ab2a6",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 6,
+            "notebookRevision": 6
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000037",
+            "payloadHash": "6599bb901614abf0ea89c86f101c7437d0c548d6b8e37e9f88722facb9bd10f3",
+            "noteId": "00000000-0000-4000-8000-000000000021",
+            "noteRevision": 7,
+            "notebookRevision": 7
+          }
+        ],
+        "purged": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "revision": 7
+          }
+        ]
+      }
+    }
+  ]
+}

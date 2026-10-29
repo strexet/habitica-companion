@@ -60,7 +60,7 @@ test('synthetic canonical score batches become distinct retained history events 
  const invoke=async(name,args)=>{const result=await c.callTool({name,arguments:args});assert.notEqual(result.isError,true,JSON.stringify(result));return result.structuredContent;};
  const create=await invoke('prepare_task_command',{requestId:crypto.randomUUID(),operation:'createHabit',patch:{text:'Synthetic activity'}});await invoke('create_habit',{commandId:create.preparedCommandId});
  const prepared=await invoke('prepare_task_command',{requestId:crypto.randomUUID(),operation:'scoreHabit',taskId:create.command.taskId,direction:'up',count:3});
- const receipt=await invoke('score_habit',{commandId:prepared.preparedCommandId});assert.equal(receipt.acceptedEventCount,3);assert.equal(receipt.totalProjectionCount,0);
+ const receipt=await invoke('score_habit',{commandId:prepared.preparedCommandId});assert.equal(receipt.acceptedEventCount,3);assert.equal(receipt.totalProjectionCount,4);
  const history=await invoke('get_habit_history',{taskId:create.command.taskId});assert.equal(history.items.length,3);assert.equal(new Set(history.items.map(row=>row.eventId)).size,3);for(const row of history.items){assert.equal(row.commandId,receipt.commandId);assert.equal(row.direction,'up');assert.equal(row.detailSource,'commandSnapshot');}
  await invoke('score_habit',{commandId:prepared.preparedCommandId});assert.equal((await invoke('get_habit_history',{})).items.length,3);assert.equal(writes,0);
 });

@@ -1,0 +1,39 @@
+{
+  "status": "pass",
+  "uniqueCases": 3108,
+  "measuredAttempts": 3146,
+  "fixtures": 37,
+  "themes": [
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate",
+    "gryphy-dark",
+    "gryphy-light",
+    "obsidian-glow",
+    "toxic-swamp"
+  ],
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "errors": 0,
+  "unqualifiedSurfaces": 0,
+  "retainedUnavailableRuns": [
+    {
+      "harnessError": "Matrix exceeded 300-second deadline",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable"
+    }
+  ],
+  "maximumCaseElapsedMs": 436.09999990463257,
+  "minimumMeasuredContrast": 4.279234284916437,
+  "accounting": "Union of original measured prefix and an explicitly selected five-fixture remainder. The300-second run deadline remains unavailable; the missing cases are measured in the remainder, not inferred."
+}

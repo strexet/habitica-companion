@@ -176,3 +176,32 @@ test('local upstream quota refuses before consuming a create precondition or res
  assert.equal(await f.db.prepare('SELECT state FROM integration_projection_attempts WHERE attempt_id=?').bind(a.attemptId).first(),null);
  await f.db.prepare("DELETE FROM authorization_attempts WHERE bucket LIKE 'traffic:upstream:profile:%'").run();assert.equal((await(await f.call('create',args,a)).json()).kind,'applied');assert.equal(f.requests.filter(r=>r.method==='POST').length,1);
 });
+
+function completionSource(kind='todo',extra={}){return {contract:'companion-completion-score-v1',workspaceId:crypto.randomUUID(),taskId:crypto.randomUUID(),commandId:crypto.randomUUID(),commandPayloadHash:'a'.repeat(64),completionId:crypto.randomUUID(),effectIndex:0,taskKind:kind,occurrenceDate:kind==='daily'?new Date().toISOString().slice(0,10):null,...extra};}
+test('original completion receipt retains exact canonical binding and private lookup makes no upstream call',async t=>{
+ const f=await setup(t,request=>Response.json({success:true,data:request.method==='GET'?task():{delta:1}}));
+ const inspected=await(await f.call('inspect',{selector:taskId})).json(),sourceContext=completionSource(),attempt=f.attempt();
+ const args={selector:taskId,checkToken:inspected.checkToken,expectedFingerprint:inspected.task.fingerprint,direction:'up',sourceContext};
+ const applied=await(await f.call('score',args,attempt)).json();assert.equal(applied.kind,'applied');assert.deepEqual(applied.sourceContext,sourceContext);
+ assert.deepEqual(await(await f.call('score',args,attempt)).json(),applied);
+ const before=f.requests.length,lookup={attemptId:attempt.attemptId,selector:taskId,taskKind:'todo',expectedFingerprint:inspected.task.fingerprint,sourceContext};
+ const proof=await(await f.call('scoreReceipt',lookup)).json();assert.equal(proof.verified,true);assert.deepEqual(proof.sourceContext,sourceContext);assert.equal(proof.attemptId,attempt.attemptId);
+ for(const change of [x=>x.sourceContext.commandId=crypto.randomUUID(),x=>x.sourceContext.completionId=crypto.randomUUID(),x=>x.sourceContext.commandPayloadHash='b'.repeat(64),x=>x.sourceContext.effectIndex=1,x=>x.selector=crypto.randomUUID(),x=>x.expectedFingerprint='c'.repeat(64),x=>x.attemptId=crypto.randomUUID()]){const changed=structuredClone(lookup);change(changed);assert.equal((await(await f.call('scoreReceipt',changed)).json()).verified,false);}
+ assert.equal(f.requests.length,before);assert.equal(f.requests.filter(row=>row.method==='POST').length,1);assert.equal(JSON.stringify(proof).includes('checkToken'),false);
+ const other=await enrolled(f,accounts[1]),otherRow=await f.db.prepare('SELECT connection_id FROM integration_profiles WHERE profile_id=?').bind(other.profileId).first();assert.equal((await(await f.call('scoreReceipt',lookup,{profileId:other.profileId,connectionId:otherRow.connection_id})).json()).verified,false);
+ assert.equal((await f.call('scoreReceipt',lookup,{connectionId:crypto.randomUUID()})).status,401);assert.equal(f.requests.length,before);
+
+ await f.db.prepare("UPDATE integration_projection_attempts SET state='unknown' WHERE attempt_id=?").bind(attempt.attemptId).run();assert.equal((await(await f.call('scoreReceipt',lookup)).json()).verified,false);assert.equal(f.requests.length,before);
+});
+test('legacy or malformed canonical source proof never becomes a verified completion receipt',async t=>{
+ const f=await setup(t,request=>Response.json({success:true,data:request.method==='GET'?task():{delta:1}}));const inspected=await(await f.call('inspect',{selector:taskId})).json(),attempt=f.attempt(),sourceContext=completionSource();
+ const args={selector:taskId,checkToken:inspected.checkToken,expectedFingerprint:inspected.task.fingerprint,direction:'up'};assert.equal((await(await f.call('score',args,attempt)).json()).kind,'applied');const before=f.requests.length;
+ const lookup={attemptId:attempt.attemptId,selector:taskId,taskKind:'todo',expectedFingerprint:inspected.task.fingerprint,sourceContext};assert.equal((await(await f.call('scoreReceipt',lookup)).json()).verified,false);
+ for(const field of ['workspaceId','taskId','commandId','completionId']){const changed=structuredClone(lookup);changed.sourceContext[field]='bad';assert.equal((await f.call('scoreReceipt',changed)).status,400);}
+ assert.equal(f.requests.length,before);
+});
+test('Habit or contradictory Daily source context refuses before score dispatch',async t=>{
+ const f=await setup(t,request=>Response.json({success:true,data:task({type:'habit'})}));const inspected=await(await f.call('inspect',{selector:taskId})).json();
+ assert.equal((await f.call('score',{selector:taskId,checkToken:inspected.checkToken,expectedFingerprint:inspected.task.fingerprint,direction:'up',sourceContext:completionSource()},f.attempt())).status,422);assert.equal(f.requests.filter(row=>row.method==='POST').length,0);
+ const proof={attemptId:crypto.randomUUID(),selector:taskId,taskKind:'daily',expectedFingerprint:inspected.task.fingerprint,sourceContext:completionSource('daily',{occurrenceDate:'2026-02-30'})};assert.equal((await f.call('scoreReceipt',proof)).status,422);
+});

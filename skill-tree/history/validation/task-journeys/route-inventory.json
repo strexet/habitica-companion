@@ -1,0 +1,225 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [
+        "diagnostics-agent-bundle",
+        "diagnostics-read-unavailable"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/notes": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [
+        "todo-capture-ready",
+        "todo-capture-review",
+        "todo-capture-unknown",
+        "todo-recurring-review"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/dailies": {
+      "fixtures": [
+        "todo-dailies-main"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/habits": {
+      "fixtures": [
+        "todo-habits-main"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/history": {
+      "fixtures": [
+        "todo-history-review",
+        "todo-history-unknown"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [
+        "todo-plan-review"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/projects": {
+      "fixtures": [
+        "todo-organization-page"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/reminders": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/reminders/open": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/statistics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [
+        "todo-sync-original-receipt"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/tasks": {
+      "fixtures": [
+        "todo-tasks-main"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/today": {
+      "fixtures": [
+        "todo-nav-main",
+        "todo-today-main"
+      ],
+      "qualification": "captured synthetic states only"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "todo-capture-ready",
+      "todo-capture-review",
+      "todo-capture-unknown",
+      "todo-dailies-main",
+      "todo-habits-main",
+      "todo-history-review",
+      "todo-history-unknown",
+      "todo-organization-page",
+      "todo-plan-review",
+      "todo-recurring-review",
+      "todo-sync-original-receipt",
+      "todo-tasks-main",
+      "todo-today-main"
+    ],
+    "navigation": [
+      "todo-dailies-main",
+      "todo-habits-main",
+      "todo-nav-main",
+      "todo-organization-page",
+      "todo-plan-review",
+      "todo-recurring-review",
+      "todo-sync-original-receipt",
+      "todo-tasks-main",
+      "todo-today-main"
+    ],
+    "confirmation": [
+      "todo-capture-ready",
+      "todo-capture-review",
+      "todo-capture-unknown",
+      "todo-history-review",
+      "todo-history-unknown",
+      "todo-organization-page",
+      "todo-plan-review",
+      "todo-recurring-review"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [
+      "diagnostics-agent-bundle",
+      "diagnostics-read-unavailable"
+    ],
+    "disabled-controls": [
+      "diagnostics-read-unavailable",
+      "todo-capture-ready",
+      "todo-capture-review",
+      "todo-capture-unknown",
+      "todo-history-review",
+      "todo-history-unknown",
+      "todo-organization-page",
+      "todo-plan-review",
+      "todo-recurring-review"
+    ],
+    "error": [
+      "diagnostics-read-unavailable",
+      "todo-history-review",
+      "todo-history-unknown",
+      "todo-organization-page",
+      "todo-plan-review",
+      "todo-recurring-review"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

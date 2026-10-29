@@ -1,0 +1,7 @@
+@page "/todo/tasks"
+
+<PageTitle>Tasks and subtasks</PageTitle>
+<TodoCategoryTabs Active="tasks" />
+<TodoHierarchyPanel InitialTaskId="TaskId" />
+
+@code { [SupplyParameterFromQuery] public Guid? TaskId { get; set; } }

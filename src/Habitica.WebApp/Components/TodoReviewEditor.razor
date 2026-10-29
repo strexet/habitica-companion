@@ -1,0 +1,80 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+
+<section class="todo-command-review" aria-label="Voluntary task review" data-testid="task-review-editor">
+    <h3>Voluntary review</h3>
+    <p>Optional cues for revisiting work. Review does not complete a task or change urgency, deadlines, planning or Habitica rewards.</p>
+    @if (_original is {} task)
+    {
+        <p data-testid="review-cue-state">Review cue: @Cue(task.ReviewAfterUtc) · Manual stale flag: @Cue(task.StaleSinceUtc)</p>
+        <p>UTC instants are exact. Display timezone: @_zone. Snooze postpones an existing cue; only Mark reviewed records a review. Mark reviewed clears the cue and keeps the separate manual stale flag.</p>
+        @if (Stale) { <p role="status">Task or workspace data changed. Reload the current review context.</p> }
+        @if (_error is not null) { <p role="alert">@_error</p> }
+        <fieldset disabled="@Disabled">
+            <label class="field-row">Review action<select class="app-input" value="@_action" @onchange="ChangeAction" data-testid="review-action"><option value="Set">Set review cue</option><option value="Snooze">Snooze existing cue</option><option value="Clear">Clear cue without review</option><option value="MarkReviewed">Mark reviewed</option><option value="SetStale">Set manual stale flag</option><option value="ClearStale">Clear manual stale flag</option></select></label>
+            <p data-testid="review-draft-action">Selected action: @ActionLabel(_action)</p>
+            @if (_action is TaskReviewAction.Set or TaskReviewAction.Snooze or TaskReviewAction.SetStale)
+            {
+                <label class="field-row">@(_action==TaskReviewAction.SetStale?"Manually chosen stale-since instant (UTC)":"Review instant (UTC)")<input class="app-input" type="text" maxlength="40" placeholder="2026-11-01T09:00:00Z" @bind="_instant" @bind:event="oninput" data-testid="review-instant" /></label>
+                <p data-testid="review-draft-instant">Unsaved UTC draft: @(string.IsNullOrEmpty(_instant)?"Not chosen":_instant)</p>
+            }
+            <label class="field-row">Display timezone<input class="app-input" maxlength="128" @bind="_zone" @bind:event="oninput" data-testid="review-zone" /></label>
+            <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReviewAsync" Color="Color.Primary" Variant="Variant.Outlined" data-testid="review-prepare">Review exact cue change</MudButton>
+        </fieldset>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Reload" Variant="Variant.Text" data-testid="review-reload">Reload review context</MudButton>
+        <details><summary>Retained review actions (@History.MatchedCount)</summary>
+            @if (History.Items.Count==0) { <p>No retained review actions. Legacy cues can exist without review history.</p> }
+            @foreach (var row in History.Items) { <p>@row.Action · @Display(row.RecordedAtUtc,row.TimeZoneId) · command @row.CommandId</p> }
+            <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset==0||Stale)" OnClick="Previous" Variant="Variant.Text">Previous review actions</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(History.NextOffset is null||Stale)" OnClick="Next" Variant="Variant.Text">Next review actions</MudButton></div>
+        </details>
+    }
+    else { <p role="status">The exact task is unavailable. Reload the workspace before reviewing.</p> }
+</section>
+
+@code {
+    [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback<TodoWorkflowReview> Reviewed { get; set; }
+    private CompanionTask? _original;
+    private TodoWorkspaceSelection? _source;
+    private long? _revision;
+    private TaskReviewAction _action;
+    private string _instant="",_zone="UTC";
+    private string? _error;
+    private int _offset;
+    private bool Stale=>_source!=Todo.Selection||_revision!=Todo.Revision||Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==TaskId)!=_original;
+    private bool Disabled=>_original is null||Stale||Todo.IsReadOnly||Todo.IsBusy||Todo.Commands.HasPendingIntent;
+    private WorkspaceReadPage<TaskReviewEvent> History=>Todo.Snapshot is {} snapshot&&!Stale?WorkspaceTaskReviews.Read(snapshot.Document,TaskId,10,_offset,_revision):new(Guid.Empty,1,[],0,false,0,null);
+    protected override void OnParametersSet(){if(_original?.Id!=TaskId)Reload();}
+    private void Reload(){_source=Todo.Selection;_revision=Todo.Revision;_original=Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==TaskId&&!task.IsArchived);_action=TaskReviewAction.Set;_instant=WorkspaceTaskReview.CanonicalUtc(_original?.ReviewAfterUtc)??"";_zone="UTC";_offset=0;_error=null;}
+    private void ChangeAction(ChangeEventArgs args){if(Enum.TryParse<TaskReviewAction>(args.Value?.ToString(),out var action)&&Enum.IsDefined(action)){_action=action;_instant=WorkspaceTaskReview.CanonicalUtc(action==TaskReviewAction.SetStale?_original?.StaleSinceUtc:_original?.ReviewAfterUtc)??"";_error=null;}}
+    private void Previous()=>_offset=Math.Max(0,_offset-10);
+    private void Next(){if(History.NextOffset is {} next)_offset=next;}
+    private static string ActionLabel(TaskReviewAction action)=>action switch {TaskReviewAction.Set=>"Set review cue",TaskReviewAction.Snooze=>"Snooze existing cue",TaskReviewAction.Clear=>"Clear cue without review",TaskReviewAction.MarkReviewed=>"Mark reviewed",TaskReviewAction.SetStale=>"Set manual stale flag",TaskReviewAction.ClearStale=>"Clear manual stale flag",_=>"Unsupported action"};
+    private string Cue(DateTimeOffset? instant)=>instant is {} value?$"{Display(value,_zone)} · {(value<=DateTimeOffset.UtcNow?"reached":"future")}":"Not set";
+    private static string Display(DateTimeOffset value,string zone)
+    {
+        if(!WorkspaceTaskReview.ValidZone(zone))return $"{WorkspaceTaskReview.CanonicalUtc(value)} · display timezone unavailable";
+        try { return TimeZoneInfo.ConvertTime(value,TimeZoneInfo.FindSystemTimeZoneById(zone)).ToString("yyyy-MM-dd HH:mm:ss zzz",CultureInfo.InvariantCulture)+" · "+zone; }
+        catch(ArgumentException) { return $"{WorkspaceTaskReview.CanonicalUtc(value)} · display outside supported range"; }
+    }
+    private async Task ReviewAsync()
+    {
+        _error=null;
+        try
+        {
+            if(Disabled||_original is null||_source is null||_revision is null)throw new InvalidOperationException("Reload current task and review context first.");
+            DateTimeOffset? instant=null;
+            if(_action is TaskReviewAction.Set or TaskReviewAction.Snooze or TaskReviewAction.SetStale)
+            {
+                if(!System.Text.RegularExpressions.Regex.IsMatch(_instant,"^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,7})?(?:Z|\\+00:00)$")||!DateTimeOffset.TryParse(_instant,CultureInfo.InvariantCulture,DateTimeStyles.None,out var parsed))throw new InvalidOperationException("Choose a complete UTC instant with seconds and Z or +00:00.");
+                instant=parsed;
+            }
+            var patch=new WorkspaceTaskReview(_action,_zone,_action is TaskReviewAction.Set or TaskReviewAction.Snooze?instant:null,_action==TaskReviewAction.SetStale?instant:null);
+            if(!patch.CanApply(_original,DateTimeOffset.UtcNow))throw new InvalidOperationException("Choose a supported timezone and valid explicit cue. Snooze needs a later future instant; manual stale-since cannot be in the future.");
+            await Reviewed.InvokeAsync(new(_source,_revision.Value,new(WorkspaceOperation.ReviewTask,TaskId,_original.Text,"",_original.Priority,_original.Deadline,null,false,HabitScoreDirection.Up,1,null,Review:patch)));
+        }
+        catch(InvalidOperationException error){_error=error.Message;}
+    }
+}

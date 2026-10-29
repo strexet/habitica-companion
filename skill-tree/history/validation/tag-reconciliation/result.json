@@ -1,0 +1,111 @@
+{
+  "task_id": "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+  "recorded_at": "2026-10-22T04:33:56.993322+00:00",
+  "branch": "develop",
+  "base_commit": "98d269d774db2e052ae06809528594fff4a6a532",
+  "scope": "Local synthetic backend tag reconciliation; no live account operation, enrollment, migration or deployment.",
+  "tests": {
+    "tag-focused": {
+      "passed": 20,
+      "failed": 0,
+      "cancelled": 0,
+      "log_sha256": "61092e46697f67d1b5abbdee0e8131205296d10a4cf5369c16a59a02f2e5e149"
+    },
+    "workspace": {
+      "passed": 503,
+      "failed": 0,
+      "cancelled": 0,
+      "log_sha256": "c0c85c293a9f27d32c1572429a67784bd65c8dd4cac1bfd3710567badeb087fe"
+    },
+    "auth": {
+      "passed": 145,
+      "failed": 0,
+      "cancelled": 0,
+      "log_sha256": "9967e191f1102db7052ac098206a42c8fa4c0b9e02f5a62ee3e2d2874f019bf1"
+    },
+    "dotnet": {
+      "passed": 1018,
+      "projects": {
+        "Habitica.Rules.Tests.dll": 43,
+        "Habitica.Storage.Tests.dll": 22,
+        "Habitica.Domain.Tests.dll": 36,
+        "Habitica.Application.Tests.dll": 211,
+        "Habitica.Api.Tests.dll": 87,
+        "Habitica.WebApp.Tests.dll": 619
+      },
+      "failed": 0
+    }
+  },
+  "builds": {
+    "workers": [
+      "Auth dry build",
+      "Workspace dry build",
+      "MCP dry build"
+    ],
+    "app": "Release solution build, zero warnings/errors"
+  },
+  "checks": {
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "diff_check": true
+  },
+  "coverage": [
+    "all six group kinds; own project/section/labels; direct category override; explicit goals; cross-project children",
+    "237-match complete selection and 205-unblocked selection; empty/dynamic view; mapping filters and source revision changes",
+    "atomic canonical/work acceptance; metadata outages/review gaps; old/new MCP scope and separate owner consent",
+    "preview-bound consent/grant/ledger observations; current Auth epoch recheck; registered native identity and external-name conflict",
+    "one member effect per wake; full member receipts; original lost acknowledgement recovery without resend",
+    "unknown send fences game task, spell and Cron paths; shared lease prevents duplicate wake",
+    "logical removal only of previously managed membership; archive retains provenance; external user tags preserved; zero score/task-create calls"
+  ],
+  "superseded_checks": [
+    "An unrestricted Workspace run timed out its Cron test file under host load and exposed a sparse legacy-document normalization regression. Normalization was repaired; final suites retain 30s file deadlines at concurrency 2.",
+    "A transient mixed Auth/Workspace local bundle did not include the new registry fingerprint response. Final qualification rebuilt all matching bundles before testing.",
+    "Final bounded status reply types were repaired before the coordinated successful build."
+  ],
+  "limitations": [
+    "Browser tag consent/adoption/repair controls remain the next task; backend is not published independently.",
+    "No live endpoint, installed host, physical device or assistive technology qualification.",
+    "Saved-selection changes due to game projection acknowledgements remain explicit tag_membership_changed_after_projection review, without inferred extra permission.",
+    "Old portable confirmations may require review after unrelated source revisions; stored audit evidence is not fresh upstream observation.",
+    "Native operations have no cross-client transaction/CAS; exact fresh checks and unknown fences remain mandatory.",
+    "Metadata work status has complete state counts and an explicit 100-row detail sample, not a truncated membership plan.",
+    "The existing documentation audit remains stale; full-strict inherited prose gaps outside changed lines were not altered."
+  ],
+  "source_fingerprints": {
+    "skill-tree/documents/companion-workspace-contract.md": "af9ef704e466b16fdb7eabdc77d2e3f2a5d44abdc4058d65ba0d77ec4fd7a396",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "036eef2e6e31ec661d5a245c8abbb143499935f1622df1e60ce67c6a6031b3e5",
+    "skill-tree/documents/features.md": "2e39567220fb4df2d76675fb1bd25361c9ee3f5667604ef86ff388fe3052ba43",
+    "skill-tree/documents/habitica-api.md": "4df507812732568b33e35dc672ec999dfde1cb9769ba91c3995945d270f017b5",
+    "skill-tree/documents/technical.md": "328487f866c44501bc37ea2030a52d4b06e72440fff1bdc15395f73457ee7675",
+    "skill-tree/documents/testing.md": "d17540ef1e04c35024519c262e4c1eae625f744607713370413edecece3e4e33",
+    "skill-tree/documents/ux-ui-manifest.md": "33e9ee202933ce092a4021cac2a44b5c0b5dbc3c89910f65366a9eba2df954ba",
+    "src/Habitica.Domain/Workspace/WorkspaceTagProjection.cs": "1873c3910164ced5fd0f4030547b08c3f38fed451b1984616b5b94624588ab60",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "55aaf66e5f411d55267914c7a6725230a4fd7b3e733fbd83065a7c3ccf012798",
+    "workers/chatgpt-auth/src/workspace-identity.ts": "034fb958ade99e09b72739eecaea194151a25341204ab0473de7f9c7d73cd462",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c1ec69888a277c9ff9b7a837750a7e86520fe819aa598df8c78440642d6d73f3",
+    "workers/chatgpt-auth/test/tag-gateway.test.mjs": "027c4149ecbd63908c1fc30d74e2d8a541f1300273de8bf1f14b86c534a602a6",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "474432b302f1f341ebf784b72e85f2a901a144aa799d70278c453afa2f1cf983",
+    "workers/chatgpt-mcp/src/task-tools.ts": "677dceb44dd540db722fedb0ef5a8d8ea84da042e4a663ea82092a5f2ee96d46",
+    "workers/companion-workspace/migrations/0008-tag-reconciliation.sql": "8ff7fd38c630498de5c85ae845479deeda55266534de64a24f48c855771b258e",
+    "workers/companion-workspace/src/cron-api.ts": "29f6a1f42e1b5d900788a02bc89964d0621967c4a78e6bea013fdfdbc6515dd9",
+    "workers/companion-workspace/src/executor.ts": "fe55920f246a1a2065760f325fba6b1df2e34bb88d56b269d7844ad533792ccc",
+    "workers/companion-workspace/src/index.ts": "f28a3a6a7efdd266f7cf33f66f2a22cb571b63a2676c199aa1de82eceef77f23",
+    "workers/companion-workspace/src/organization-api.ts": "5af347c388ef96ff910a6d5a7c18016c44423f82dd6ed58ea829d5bcedd67b8f",
+    "workers/companion-workspace/src/spell-api.ts": "5a223144c578b2a43159f0bcbbefeac78bafd9d351fb356a6d421b7ec9943432",
+    "workers/companion-workspace/src/tag-authority.ts": "e22be905c7e32cd0af88ffdfb216065cbe92a55749de0acf0e782cf3ca23140b",
+    "workers/companion-workspace/src/tag-executor.ts": "87e82a982848275acd3fc633e4f4d92205526a101025dc30ff8e787dc9a91e07",
+    "workers/companion-workspace/src/tag-planner.ts": "014fc31e418eee6e32553281bcbde766b696e75b512030599636951083e3dbef",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "c04264e3af54d35b9e0b0aa883e939d9e10aad771b40731faadf2fb30085fc3a",
+    "workers/companion-workspace/src/task-api.ts": "d81f3757390a992964c998c4e6524c6d2432bc2966d403950af85aacaa690a03",
+    "workers/companion-workspace/src/task-status.ts": "8a93d5b0e0315eb24f912efd9af144c3d033391849c55508458b204c192e7680",
+    "workers/companion-workspace/test/cron.test.mjs": "e1948fb16f91df73ff74ef945f3df5dca0db4195940d2609b68144c02074a849",
+    "workers/companion-workspace/test/tag-membership.test.mjs": "ebbade2b2a6f50190b1867e11eaf6979f673d04e6a211164e8ae54fb0aee956b",
+    "workers/companion-workspace/test/tag-planner.test.mjs": "86266c1b0ed1e9f21869dea0dbc8cb325c4912b181a300bce0b2b1849b37546f",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "87b46cf13c4bf76854081173f98a6519d9439367a6123cc79b221e390aad95f3",
+    "workers/shared/tag-gateway.ts": "baed3d30f59bed3b07319f18013b68164d2f63216b19b2d5366c9861620eb2f7",
+    "workers/shared/tag-membership.ts": "11d765dda1c63748549d159140f1cf9a43640ce12555f903e3699dd8b0077f7f",
+    "workers/shared/tag-projection.ts": "9e6d1811a2ac8c15ad1ea0bd9d91ebfc5e38070bffde4f36d619a5575e46b9a4"
+  }
+}

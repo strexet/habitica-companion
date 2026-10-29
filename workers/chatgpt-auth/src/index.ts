@@ -1,3 +1,12 @@
+import {callbackEgressClaim} from './callback-egress';
+import {pushDispatchRoute} from './push-dispatch';
+import {pushDispatchAvailable} from './push-message';
+import {identityEnvelope} from '../../shared/build-identity';
+import {pushRoute,pushStatus,clearPushContext,expirePush} from './push-subscriptions';
+import {activeProfile} from './vault';
+import {workspaceJson,workspaceObject,uuid} from '../../shared/workspace-http';
+import {tagOperation} from './tag-gateway';
+import {tagConsentRoute,clearTagContext} from './tag-consent';
 import {purgePacing} from './upstream-pacing';
 import {networkBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
@@ -20,6 +29,7 @@ const headers = { "cache-control": "no-store", "x-content-type-options": "nosnif
 export class AuthService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> {
     const path = new URL(request.url).pathname;
+    if(path === "/build-identity" && request.method === "GET") return Response.json(identityEnvelope("auth"), {headers});
     if(path === "/traffic") return trafficOperation(request,this.env);
     if (path === "/health" && request.method === "GET") {
       return Response.json({ service: "auth", authorization: "unavailable" }, { headers });
@@ -42,6 +52,18 @@ export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
 }
 
+export class PushService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request:Request):Promise<Response>{
+    if(['/dispatch','/receipt'].includes(new URL(request.url).pathname))return pushDispatchRoute(request,this.env);
+    try{
+      if(request.method!=='POST'||new URL(request.url).pathname!=='/status')throw new Error();
+      const body=workspaceObject(await workspaceJson(request,1024),['profileId','connectionId']);
+      if(typeof body.profileId!=='string'||!/^prf_[A-Za-z0-9_-]{43}$/.test(body.profileId))throw new Error();
+      return Response.json({...await pushStatus(this.env,await activeProfile(this.env,body.profileId,uuid(body.connectionId))),dispatchAvailable:await pushDispatchAvailable(this.env)},{headers});
+    }catch{return Response.json({error:'push_unavailable'},{status:503,headers});}
+  }
+}
+
 export class CredentialKeyService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request:Request):Promise<Response>{return keyOperation(request,this.env);}
 }
@@ -59,13 +81,24 @@ export class PartyService extends WorkerEntrypoint<AuthEnv> {
 }
 
 export class ProjectionService extends WorkerEntrypoint<AuthEnv> {
-  async fetch(request: Request): Promise<Response> { return projectionOperation(request, this.env); }
+  async fetch(request: Request): Promise<Response> { return new URL(request.url).pathname==="/tags"?tagOperation(request,this.env):projectionOperation(request, this.env); }
 }
 
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     resourceConfiguration(env.ENVIRONMENT, env);
-    const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); });
+    const callbackClaim = await callbackEgressClaim(request,env); if(callbackClaim)return callbackClaim;
+    const vault = await vaultRoute(request, env, async (id, connectionId,deleteProfile) => {
+      if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId);
+      await clearProjectionContext(env,id,connectionId); await clearTagContext(env,id,connectionId);
+      await clearPushContext(env,id,connectionId,deleteProfile);
+      if(env.NOTES_LIFECYCLE){
+        const cleanup=await env.NOTES_LIFECYCLE.fetch('https://notes.internal/cleanup',{method:'POST',body:JSON.stringify({profileId:id,connectionId,deleteProfile}),signal:AbortSignal.timeout(10000)});
+        if(!cleanup.ok||(await cleanup.json<{cleaned?:boolean}>()).cleaned!==true)throw new Error('Notes cleanup pending.');
+      }else if(env.WORKSPACE_ENABLED)throw new Error('Notes cleanup binding unavailable.');
+    });
     if (vault) return vault;
+    const push=await pushRoute(request,env);if(push)return push;
+    const tagConsent=await tagConsentRoute(request,env);if(tagConsent)return tagConsent;
     const management=await managementRoute(request,env);if(management)return management;
     if (new URL(request.url).pathname === "/health" && request.method === "GET") return Response.json({ service: "auth", authorization: Boolean(env.OAUTH_ENABLED) ? "enabled" : "unavailable" }, { headers });
     if (Boolean(env.OAUTH_ENABLED)) {
@@ -94,7 +127,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); },
+  async scheduled(_event, env): Promise<void> { await expirePush(env);await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT, env);

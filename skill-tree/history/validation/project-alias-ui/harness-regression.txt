@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: saved import updates live CSS and exact preferences without restamping
+ok 1 - saved import updates live CSS and exact preferences without restamping
+  ---
+  duration_ms: 3.483208
+  ...
+# Subtest: cache-only import preserves a transient preview and reload applies the saved selection
+ok 2 - cache-only import preserves a transient preview and reload applies the saved selection
+  ---
+  duration_ms: 1.545708
+  ...
+# Subtest: preview alone leaves saved preferences and the reload cache untouched
+ok 3 - preview alone leaves saved preferences and the reload cache untouched
+  ---
+  duration_ms: 1.550542
+  ...
+# Subtest: unavailable localStorage does not prevent live appearance application
+ok 4 - unavailable localStorage does not prevent live appearance application
+  ---
+  duration_ms: 0.540208
+  ...
+# Subtest: derived foreground uses measured contrast on gold and middle-tone surfaces
+ok 5 - derived foreground uses measured contrast on gold and middle-tone surfaces
+  ---
+  duration_ms: 5.422459
+  ...
+# Subtest: a qualifying authored foreground stays unchanged
+ok 6 - a qualifying authored foreground stays unchanged
+  ---
+  duration_ms: 0.568958
+  ...
+# Subtest: surface text derives readable gold, status and muted colors without changing preferences
+ok 7 - surface text derives readable gold, status and muted colors without changing preferences
+  ---
+  duration_ms: 1.239
+  ...
+# Subtest: readable surface authoring stays exact while transparent pale text is repaired
+ok 8 - readable surface authoring stays exact while transparent pale text is repaired
+  ---
+  duration_ms: 0.707792
+  ...
+# Subtest: task foreground follows actual task color on theme application and explicit rerender refresh
+ok 9 - task foreground follows actual task color on theme application and explicit rerender refresh
+  ---
+  duration_ms: 0.777208
+  ...
+# Subtest: contrast keeps exact thresholds and composites translucent foregrounds
+ok 10 - contrast keeps exact thresholds and composites translucent foregrounds
+  ---
+  duration_ms: 0.703542
+  ...
+# Subtest: seeded geometry catches overflow, overlap and undersized primary controls
+ok 11 - seeded geometry catches overflow, overlap and undersized primary controls
+  ---
+  duration_ms: 0.141708
+  ...
+# Subtest: an intentional contained horizontal table scroller remains distinct from page overflow
+ok 12 - an intentional contained horizontal table scroller remains distinct from page overflow
+  ---
+  duration_ms: 0.135958
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.640583

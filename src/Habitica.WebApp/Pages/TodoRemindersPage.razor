@@ -1,0 +1,43 @@
+@page "/todo/reminders"
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+@implements IDisposable
+
+<PageTitle>Push reminders</PageTitle>
+<div class="settings-shell">
+    <section class="card-surface settings-card"><h1>Push reminders</h1><p>Choose a loaded cloud task, save its review cue and explicitly review device delivery. Start with <a href="/todo/sync">Todo Sync</a> for connection and device consent. Installed iPhone delivery is best effort; check system notification permission and Focus settings if a reminder does not arrive.</p></section>
+    <TodoTaskPanel @ref="_taskPanel" ShowCapture="false" ShowTaskList="false" ExpandSourcePicker="true" ReviewClosed="ReturnToCue" />
+    <PushDevicePanel />
+    <section class="card-surface settings-card"><h2>Choose exact task</h2>
+        <label class="field-row">Filter loaded task titles<input class="app-input" maxlength="200" @bind="_filter" @bind:event="oninput" data-testid="reminder-task-filter" /></label>
+        <label class="field-row">Task<select class="app-input" value="@_taskId" @onchange="SelectTask"><option value="">Choose a task</option>@foreach(var task in Tasks.Take(100)){<option value="@task.Id">@task.Text · @task.Id</option>}</select></label>
+        @if(Tasks.Skip(100).Any()){<p>First 100 matching tasks shown. Narrow the filter to find another exact task.</p>}
+    </section>
+    @if(_taskId is {} id&&Todo.Snapshot?.Document.Tasks.Any(t=>t.Id==id&&!t.IsArchived)==true)
+    {
+        <section class="card-surface settings-card"><h2 tabindex="-1" @ref="_cueHeading">Saved review cue</h2><TodoReviewEditor @key="(Todo.Selection,id)" TaskId="id" Reviewed="Review" /></section>
+        <TaskPushReminderEditor @key="(Todo.Selection,id)" TaskId="id" />
+    }
+</div>
+@code {
+    [SupplyParameterFromQuery] public Guid? TaskId {get;set;}
+    private Guid? _taskId;
+    private string _filter="";
+    private TodoTaskPanel? _taskPanel;
+    private TodoWorkspaceSelection? _source;
+    private ElementReference _cueHeading;
+    private bool _returnToCue;
+    private IEnumerable<CompanionTask> Tasks=>(Todo.Snapshot?.Document.Tasks??[]).Where(t=>!t.IsArchived&&t.Text.Contains(_filter,StringComparison.OrdinalIgnoreCase)).OrderBy(t=>t.Text,StringComparer.OrdinalIgnoreCase);
+    protected override void OnInitialized(){_source=Todo.Selection;Todo.Changed+=Changed;}
+    protected override void OnParametersSet(){if(TaskId is {} id&&id!=Guid.Empty)_taskId=id;}
+    private void SelectTask(ChangeEventArgs args)=>_taskId=Guid.TryParse(args.Value?.ToString(),out var id)&&id!=Guid.Empty?id:null;
+    private Task Review(TodoWorkflowReview review)=>_taskPanel?.ReviewWorkflowAsync(review)??Task.CompletedTask;
+    private Task ReturnToCue(){_returnToCue=true;return InvokeAsync(StateHasChanged);}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!_returnToCue)return;_returnToCue=false;
+        if(_taskId is {} id&&Todo.Snapshot?.Document.Tasks.Any(task=>task.Id==id&&!task.IsArchived)==true)await _cueHeading.FocusAsync();
+    }
+    private void Changed(){if(_source!=Todo.Selection){_filter="";_returnToCue=false;_source=Todo.Selection;}_=InvokeAsync(StateHasChanged);}
+    public void Dispose()=>Todo.Changed-=Changed;
+}

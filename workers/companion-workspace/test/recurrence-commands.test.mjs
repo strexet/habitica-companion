@@ -27,7 +27,7 @@ test('calendar authoring, scheduled completion and clear retain history and immu
  const cleared=await accept(document,command(document,id,'updateTask',{clearRecurrence:true}),now);assert.equal(cleared.document.tasks[0].recurrence,null);assert.equal(cleared.document.completions.length,1);assert.equal(cleared.document.occurrences.length,1);assert.deepEqual(created.entry.taskSnapshot.recurrence,schedule);
  const exported={document:cleared.document,storeVersion:cleared.document.revision,commands:[created,partial,complete,cleared].map(v=>v.entry),events:[created,partial,complete,cleared].map(v=>v.event)};
  await journal(exported);
- const falseEffect=structuredClone(exported);falseEffect.commands[0].command.projectToHabitica=true;falseEffect.commands[0].payloadHash=await commandHash(falseEffect.commands[0].command);falseEffect.commands[0].projectionState='pending';falseEffect.commands[0].effects=['create'];await assert.rejects(journal(falseEffect));
+ const falseEffect=structuredClone(exported);falseEffect.commands[0].command.projectToHabitica=true;falseEffect.commands[0].payloadHash=await commandHash(falseEffect.commands[0].command);falseEffect.commands[0].projectionState='pending';falseEffect.commands[0].effects=['create'];await assert.rejects(journal(falseEffect));delete falseEffect.document.activityCoverage;await journal(falseEffect);
  const changedSnapshot=structuredClone(exported);changedSnapshot.commands[0].taskSnapshot.recurrence.interval=2;await assert.rejects(journal(changedSnapshot));
  const missingSnapshot=structuredClone(exported);delete missingSnapshot.commands[0].taskSnapshot;await assert.rejects(journal(missingSnapshot));
 });
@@ -37,7 +37,7 @@ test('invalid recurrence edits, wrong task kinds and linked projections cannot a
  for(const recurrence of [{...schedule,interval:0},{...schedule,weekdays:[]},{...schedule,daysOfMonth:[1]},{...schedule,endpoint:'/cron'}])assert.throws(()=>command(document,id,'createDaily',{text:'Reject',recurrence}));
  await assert.rejects(accept(document,command(document,id,'createDaily',{text:'Reject',recurrence:{...schedule,timeZoneId:'Missing/Zone'}}),now),error=>error.code==='invalid_patch');
  assert.throws(()=>command(document,id,'createDaily',{text:'Reject',recurrence:schedule,clearRecurrence:true}));
- await assert.rejects(accept(document,command(document,id,'createDaily',{text:'Reject',recurrence:schedule},{projectToHabitica:true}),now),error=>error.code==='unsupported_projection');
+ assert.deepEqual((await accept(document,command(document,id,'createDaily',{text:'Supported',recurrence:schedule},{projectToHabitica:true}),now)).entry.effects,['create']);
  document=(await accept(document,command(document,id,'createDaily',{text:'Unlinked'}),now)).document;
  for(const state of ['linked','pending','unknownOutcome','externalConflict']){
   const mapped={...document,projections:[{id:crypto.randomUUID(),taskId:id,revision:document.revision,isArchived:false,state,habiticaTaskId:state==='linked'?crypto.randomUUID():null}]};
@@ -51,15 +51,15 @@ test('actual MCP reviews one scheduled Daily and retains original command receip
  const invoke=async(name,args)=>{const result=await c.callTool({name,arguments:args});assert.equal(result.isError,undefined,JSON.stringify(result));return result.structuredContent;};
  const tools=await c.listTools();assert.ok(tools.tools.find(t=>t.name==='prepare_task_command').inputSchema.properties.patch.properties.recurrence);
  const input={requestId:crypto.randomUUID(),operation:'createDaily',patch:{text:'MCP recurring Daily',recurrence:schedule}};
- const preview=await invoke('prepare_task_command',input);assert.deepEqual(preview.command.patch.recurrence,schedule);assert.equal(preview.mayAffectHabitica,false);assert.equal(preview.savedInCompanion,false);
+ const preview=await invoke('prepare_task_command',input);assert.deepEqual(preview.command.patch.recurrence,schedule);assert.equal(preview.mayAffectHabitica,true);assert.equal(preview.savedInCompanion,false);
  assert.equal((await invoke('prepare_task_command',input)).preparedCommandId,preview.preparedCommandId);
- const accepted=await invoke('create_daily',{commandId:preview.preparedCommandId});assert.equal(accepted.savedInCompanion,true);assert.equal(accepted.totalProjectionCount,0);
+ const accepted=await invoke('create_daily',{commandId:preview.preparedCommandId});assert.equal(accepted.savedInCompanion,true);assert.equal(accepted.totalProjectionCount,1);
  assert.equal((await invoke('create_daily',{commandId:preview.preparedCommandId})).commandId,accepted.commandId);
  const daily=await invoke('get_companion_task',{taskId:accepted.taskId});assert.deepEqual(daily.task.recurrence,schedule);
  const notDue=await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:accepted.taskId,occurrenceDate:'2026-10-18'});assert.equal(notDue.status,422);
  const done=await invoke('prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:accepted.taskId,occurrenceDate:'2026-10-19'});const receipt=await invoke('complete_task',{commandId:done.preparedCommandId});assert.equal(receipt.acceptedEventCount,1);assert.equal(receipt.confirmedProjectionCount,0);
  await invoke('complete_task',{commandId:done.preparedCommandId});assert.equal((await invoke('get_task_command',{commandId:done.preparedCommandId})).commandId,done.preparedCommandId);
- const clear=await invoke('prepare_task_command',{requestId:crypto.randomUUID(),operation:'updateTask',taskId:accepted.taskId,patch:{clearRecurrence:true}});assert.equal(clear.mayAffectHabitica,false);await invoke('update_task',{commandId:clear.preparedCommandId});assert.equal((await invoke('get_companion_task',{taskId:accepted.taskId})).task.recurrence,null);
- const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:'Bearer '+w.sessionToken}})).json();assert.equal(exported.document.completions.length,1);assert.equal(exported.document.occurrences.length,1);assert.equal(exported.commands.length,3);await journal(exported);assert.equal(upstreamWrites,0);
+ const clear=await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'updateTask',taskId:accepted.taskId,patch:{clearRecurrence:true}});assert.equal(clear.status,422);
+ const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:'Bearer '+w.sessionToken}})).json();assert.equal(exported.document.completions.length,1);assert.equal(exported.document.occurrences.length,1);assert.equal(exported.commands.length,2);await journal(exported);assert.equal(upstreamWrites,0);
  const other=await connect(f,await enrolled(f,accounts[1]));assert.equal((await call(f,other,'get_task_command',{commandId:done.preparedCommandId})).status,200);assert.equal((await(await call(f,other,'get_task_command',{commandId:done.preparedCommandId})).json()).savedInCompanion,null);
 });

@@ -1,0 +1,136 @@
+@using Habitica.Application.Workspace
+@using Habitica.Application.Integration
+@using Habitica.Domain.Workspace
+@inject IWorkspaceCloudClient Cloud
+@implements IDisposable
+
+<section class="card-surface settings-card todo-task-panel" id="habitica-tags" data-testid="workspace-tags">
+    <p class="section-label">Habitica correspondence</p>
+    <h2>Project and group tags</h2>
+    <p>Connect categories, projects, sections, labels, goals and saved lists to native Habitica tags. Each linked task keeps its own Habitica record. Tag metadata gives no experience, gold or completion rewards.</p>
+    @if (Api is null || !Cloud.IsAvailable)
+    { <p>Tag controls are unavailable in this client. Native task and organization data remain available.</p> }
+    else if (Cloud.WorkspaceId is null)
+    { <p>Verify and connect the cloud workspace above before managing tags. Opening another device does not disable existing server access.</p> }
+    else
+    {
+        <p>Tag access is optional and separate from workspace access, agent permission and background execution. Enabling access allows inspection and reviewed creation, naming and individual task membership changes for native tags. Unrelated user tags and historical tag identities remain. Native tags are never deleted automatically.</p>
+        <p>Agents need the additional <code>habitica.tags.write</code> permission. Existing task or organization permission does not expand automatically. Background work needs the separate executor opt-in; an uncertain original result pauses gameplay until reviewed.</p>
+        <div class="action-row">
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="CheckConsentAsync" Variant="Variant.Outlined" data-testid="tag-consent-check">Check tag consent</MudButton>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="ReloadAsync" Variant="Variant.Outlined" data-testid="tag-coverage-check">Check tag coverage</MudButton>
+        </div>
+        <p role="status" data-testid="tag-consent-status">@(_consent?.Enabled is true ? "Tag access is enabled on the server." : _consent?.Enabled is false ? "Tag access is paused on the server." : "Tag consent is unverified in this tab.")</p>
+        @if (_consent?.Succeeded == true && _consent.Enabled == false)
+        {
+            <label class="checkbox-row"><input type="checkbox" @bind="_disclosure" disabled="@_busy" data-testid="tag-consent-disclosure" /><span>I enable the tag metadata access described above. Task rewards, agent grants and background execution have separate controls.</span></label>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || !_disclosure)" OnClick="EnableAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="tag-consent-enable">Enable tag metadata access</MudButton>
+        }
+        else if (_consent?.Enabled == true)
+        { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="PauseAsync" Variant="Variant.Outlined" data-testid="tag-consent-pause">Pause new tag operations</MudButton> }
+        @if (_message is not null) { <p role="status" data-testid="tag-message">@_message</p> }
+        @if (_status is {} status)
+        {
+            <section aria-label="Tag coverage">
+                <h3>Stored correspondence</h3>
+                <p data-testid="tag-task-coverage">Tasks: @status.TaskCoverage.Linked of @status.TaskCoverage.Total have stored Habitica links, including @status.TaskCoverage.Archived archived records. Missing: @status.TaskCoverage.Missing · pending: @status.TaskCoverage.Pending · review: @status.TaskCoverage.NeedsReview.</p>
+                <p data-testid="tag-group-coverage">Groups: @status.GroupCoverage.Confirmed of @status.GroupCoverage.Total have recorded complete membership. Missing: @status.GroupCoverage.Missing · pending: @status.GroupCoverage.Pending · review: @status.GroupCoverage.NeedsReview.</p>
+                <p>Stored evidence does not prove current upstream state or game rewards. After accepting tag intent, reload any open task or organization editor before another review.</p>
+                @if (!status.AccountVerified) { <p role="alert">The account association is unverified. Stored native tag IDs are hidden.</p> }
+                @if (!status.TagScopeAllowed) { <p>Native reads remain available. Reauthorize the agent with tag permission before requesting metadata changes.</p> }
+                @foreach (var group in status.Groups)
+                {
+                    <article class="todo-direct-row" data-testid="@($"tag-group-{group.EntityId:D}")">
+                        <div class="todo-row-content"><strong>@group.Name</strong><span>@group.Kind · identity: @group.IdentityState · membership: @group.MembershipState</span><span>@group.ConfirmedMemberCount recorded member results · @group.DesiredTaskCount desired tasks</span>
+                            <details><summary>References</summary><p>Group: @group.EntityId</p><p>Habitica tag: @(group.HabiticaTagId ?? "Not verified")</p></details>
+                        </div>
+                        <div class="todo-row-actions">
+                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanStart || group.Archived && !group.Removed)" OnClick='() => PrepareAsync(new(Guid.NewGuid(),"reconcile",group.Kind,group.EntityId))'  Variant="Variant.Outlined" data-testid="@($"tag-reconcile-{group.EntityId:D}")">Review tag sync</MudButton>
+                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanStart || group.Archived)" OnClick="() => CandidatesAsync(group,0)" Variant="Variant.Text" data-testid="@($"tag-candidates-{group.EntityId:D}")">Choose existing tag</MudButton>
+                            @foreach (var workId in group.UnknownWorkIds ?? []) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="() => RecoverWorkAsync(workId)" Variant="Variant.Text">Check original tag result</MudButton> }
+                        </div>
+                    </article>
+                }
+                <div class="action-row"><span>@status.MatchedCount retained groups</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _groupOffset == 0)" OnClick="() => PageAsync(Math.Max(0,_groupOffset-20))" Variant="Variant.Text">Previous groups</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || status.NextOffset is null)" OnClick="() => PageAsync(status.NextOffset!.Value)" Variant="Variant.Text">Next groups</MudButton></div>
+            </section>
+        }
+        @if (_candidates is {} candidates && _candidateGroup is {} selected)
+        {
+            <section aria-label="Existing native tags" data-testid="tag-candidates"><h3>Choose an exact native tag for @selected.Name</h3><p>Duplicate names are separate records. Choosing a candidate opens a review; nothing is adopted yet.</p>
+                @foreach (var candidate in candidates.Candidates) { <article class="todo-direct-row"><div class="todo-row-content"><strong>@candidate.Name</strong><span>@candidate.Id</span></div><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanStart)" OnClick='() => PrepareAsync(new(Guid.NewGuid(),"adopt",selected.Kind,selected.EntityId,candidate.Id))'  Variant="Variant.Outlined" data-testid="@($"tag-adopt-{candidate.Id:D}")">Review this exact tag</MudButton></article> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _candidateOffset == 0)" OnClick="() => CandidatesAsync(selected,Math.Max(0,_candidateOffset-20))" Variant="Variant.Text">Previous tags</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || candidates.NextOffset is null)" OnClick="() => CandidatesAsync(selected,candidates.NextOffset!.Value)" Variant="Variant.Text">Next tags</MudButton></div>
+            </section>
+        }
+        @if (_preview is { Details: {} details } preview)
+        {
+            <section class="todo-command-review" aria-label="Review tag metadata" data-testid="tag-review">
+                <h3 tabindex="-1" @ref="_reviewHeading">Review @preview.Operation · @details.Name</h3>
+                <p>@details.Disclosure</p>
+                <p>Habitica tag: @(details.HabiticaTagId ?? "New tag, verified before creation") · requested name: @(details.DesiredName ?? details.Name).</p>
+                @if (details.ObservedTag is {} observed) { <p>Observed tag: <strong>@observed.Name</strong> · @observed.Id</p> }
+                @if (details.ObservedTask is {} observedTask) { <p>Observed native task: @observedTask.Id · @observedTask.Kind.</p> }
+                <p>No game effect is requested. Existing native tags and unrelated memberships remain.</p>
+                @if (details.TaskChanges.Count>0)
+                {
+                    <p>Review every page of the complete membership selection (@details.TaskChanges.Count tasks).</p>
+                    <ul>@foreach (var change in details.TaskChanges.Skip(_taskOffset).Take(20)) { <li><strong>@change.Text</strong> · @(change.Present?"Add or retain tag":"Remove managed tag") · @(change.HabiticaTaskId is null?"Habitica counterpart requires review":change.HabiticaTaskId)</li> }</ul>
+                    <label class="checkbox-row"><input type="checkbox" checked="@_reviewedPages.Contains(_taskOffset)" disabled="@_busy" @onchange="AcknowledgePage" data-testid="tag-membership-ack" /><span>Reviewed tasks @(_taskOffset+1)–@(Math.Min(_taskOffset+20,details.TaskChanges.Count)) of @details.TaskChanges.Count</span></label>
+                    <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _taskOffset==0)" OnClick="PreviousTasks" Variant="Variant.Text">Previous task changes</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _taskOffset+20>=details.TaskChanges.Count)" OnClick="NextTasks" Variant="Variant.Text">Next task changes</MudButton></div>
+                }
+                <p>Original review: @preview.CommandId · expires @preview.ExpiresAtUtc.ToString("u")</p>
+                @if (_acceptanceUnknown) { <p role="alert">Acceptance is uncertain. Check the original review receipt; a replacement action could duplicate intent.</p> }
+                <div class="action-row">
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || !AllPagesReviewed || !_acceptanceUnknown && (preview.Expired || preview.ExpiresAtUtc<=DateTimeOffset.UtcNow))" OnClick="AcceptAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="tag-confirm">@(_acceptanceUnknown ? "Retry original tag acceptance" : "Confirm reviewed tag action")</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="ReadReviewAsync" Variant="Variant.Outlined" data-testid="tag-review-recover">Check original review receipt</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _acceptanceUnknown)" OnClick="CancelReview" Variant="Variant.Text">Cancel tag review</MudButton>
+                </div>
+            </section>
+        }
+        else if (_intent is not null)
+        { <p>Preparation is unresolved. Recover the same original request.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="RetryPreparationAsync" Variant="Variant.Outlined" data-testid="tag-prepare-recover">Recover original tag preview</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || _acceptanceUnknown)" OnClick="CancelReview" Variant="Variant.Text">Cancel tag review</MudButton> }
+        @if (_receipt is {} receipt) { <p role="status" data-testid="tag-receipt">@if(receipt.ReviewOutcome=="terminal-unaccepted"){<span>The original tag review was not accepted and is closed. Review the current complete selection before confirming a new action.</span>} Tag action saved in Companion: @(receipt.SavedInCompanion is true?"Yes":receipt.ReviewOutcome=="terminal-unaccepted"?"No":"Unconfirmed"). Game effects: 0. @(receipt.ReviewOutcome=="terminal-unaccepted"?"No metadata work was queued.":receipt.OutcomeUnknown?"Original result remains uncertain.":receipt.Operation=="reconcile"?"Metadata work is queued; check coverage for confirmations.":"Check recorded tag state below.") Original review: @receipt.CommandId</p> }
+        @if (_original is {} original)
+        {
+            <section aria-label="Original tag result" data-testid="tag-original"><h3>Original tag result</h3><p>@original.State · @(original.Error ?? "Original receipt recorded")</p><p>Original work: @original.WorkId · attempt: @original.OriginalAttemptId</p>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@_busy" OnClick="() => RecoverWorkAsync(original.WorkId)" Variant="Variant.Outlined">Check original result again</MudButton>
+                @if (original.State is "executing" or "unknownOutcome") { <p>An unknown send is never retried. A separately reviewed observation can record current matching metadata without another mutation.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanStart)" OnClick='() => PrepareAsync(new(Guid.NewGuid(),"recover",WorkId:original.WorkId))'  Variant="Variant.Outlined" data-testid="tag-observation-review">Review current matching observation</MudButton> }
+            </section>
+        }
+    }
+</section>
+
+@code {
+    private IWorkspaceTagApi? Api=>Cloud as IWorkspaceTagApi;
+    private Guid? _scope; private int _generation; private bool _busy,_disposed,_disclosure,_acceptanceUnknown,_focusReview;
+    private CancellationTokenSource _lifetime=new();
+    private IntegrationTagConsentResult? _consent;private WorkspaceTagStatusPage? _status;private WorkspaceTagCandidatePage? _candidates;private WorkspaceGroupTagState? _candidateGroup;
+    private WorkspaceTagRequest? _intent;private WorkspaceTagReview? _preview;private WorkspaceTagReceipt? _receipt;private WorkspaceTagOriginal? _original;
+    private int _groupOffset,_candidateOffset,_taskOffset;private string? _message;private readonly HashSet<int> _reviewedPages=[];private ElementReference _reviewHeading;
+    private sealed record Scope(int Generation,Guid? WorkspaceId);
+    private bool CanStart=>!_busy&&Api is not null&&Cloud.WorkspaceId is not null&&_intent is null&&!_acceptanceUnknown&&_status is { TagConsentEnabled:true,TagScopeAllowed:true };
+    private bool AllPagesReviewed=>_preview?.Details is {} details&&Enumerable.Range(0,(details.TaskChanges.Count+19)/20).All(page=>_reviewedPages.Contains(page*20));
+    protected override void OnParametersSet()=>ResetScope();
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focusReview&&_preview is not null){_focusReview=false;try{await _reviewHeading.FocusAsync();}catch(JSException){}}}
+    private void ResetScope(){if(_scope==Cloud.WorkspaceId)return;_scope=Cloud.WorkspaceId;_generation++;_lifetime.Cancel();_lifetime.Dispose();_lifetime=new();_busy=_acceptanceUnknown=_disclosure=false;_consent=null;_status=null;_candidates=null;_candidateGroup=null;_intent=null;_preview=null;_receipt=null;_original=null;_message=null;_groupOffset=_candidateOffset=_taskOffset=0;_reviewedPages.Clear();}
+    private bool Current(Scope scope)=>!_disposed&&scope.Generation==_generation&&scope.WorkspaceId==Cloud.WorkspaceId;
+    private async Task Run(Func<Scope,Task> action){ResetScope();if(_busy||_disposed||Api is null||Cloud.WorkspaceId is null)return;var scope=new Scope(_generation,Cloud.WorkspaceId);_busy=true;try{await action(scope);}catch(OperationCanceledException) when(_disposed||!Current(scope)){}catch{if(Current(scope))_message="The tag result is unavailable. Preserve the original review and check its receipt.";}finally{if(Current(scope))_busy=false;}}
+    private Task CheckConsentAsync()=>Run(async scope=>{var result=await Cloud.ReadTagConsentAsync(_lifetime.Token);if(!Current(scope))return;_consent=result;_message=result.Message;});
+    private Task EnableAsync()=>_disclosure?SetConsentAsync(true):Task.CompletedTask;
+    private Task PauseAsync()=>SetConsentAsync(false);
+    private Task SetConsentAsync(bool enabled)=>Run(async scope=>{var result=await Cloud.SetTagConsentAsync(enabled,_lifetime.Token);if(!Current(scope))return;_consent=result;_disclosure=false;_message=result.Message;if(result.Succeeded)await LoadStatusAsync(scope,0,null);});
+    private Task ReloadAsync()=>Run(scope=>LoadStatusAsync(scope,0,null));
+    private Task PageAsync(int offset)=>Run(scope=>LoadStatusAsync(scope,offset,_status?.Revision));
+    private async Task LoadStatusAsync(Scope scope,int offset,long? revision){var result=await Api!.ReadGroupTagsAsync(offset,revision,_lifetime.Token);if(!Current(scope))return;_status=result.Succeeded?result.Value:null;_groupOffset=result.Succeeded?offset:0;_message=result.Message;}
+    private Task CandidatesAsync(WorkspaceGroupTagState group,int offset)=>Run(async scope=>{var result=await Api!.InspectTagCandidatesAsync(group.Kind,group.EntityId,offset,offset==0?null:_candidates?.Fingerprint,_lifetime.Token);if(!Current(scope))return;_candidateGroup=group;_candidateOffset=offset;_candidates=result.Succeeded?result.Value:null;_message=result.Message;});
+    private Task PrepareAsync(WorkspaceTagRequest intent){if(!CanStart)return Task.CompletedTask;_intent=intent;_receipt=null;return RetryPreparationAsync();}
+    private Task RetryPreparationAsync()=>Run(async scope=>{if(_intent is null)return;var result=await Api!.PrepareTagReviewAsync(_intent,_lifetime.Token);if(!Current(scope))return;_message=result.Message;if(result.Succeeded&&result.Value is {} review){if(_preview?.CommandId!=review.CommandId){_taskOffset=0;_reviewedPages.Clear();}if(review.Receipt is { SavedInCompanion:false } terminal){Saved(terminal);await LoadStatusAsync(scope,0,null);}else{_preview=review;_focusReview=true;}}});
+    private Task AcceptAsync()=>Run(async scope=>{if(_preview is null||!AllPagesReviewed||!_acceptanceUnknown&&(_preview.Expired||_preview.ExpiresAtUtc<=DateTimeOffset.UtcNow))return;_acceptanceUnknown=true;var result=await Api!.AcceptTagReviewAsync(_preview,_lifetime.Token);if(!Current(scope))return;_message=result.Message;if(result.Succeeded&&result.Value is {} receipt){Saved(receipt);await LoadStatusAsync(scope,0,null);}});
+    private Task ReadReviewAsync()=>Run(async scope=>{if(_preview?.CommandId is not {} id)return;var result=await Api!.ReadTagReviewAsync(id,_lifetime.Token);if(!Current(scope))return;_message=result.Message;if(result.Succeeded&&result.Value is {} receipt){Saved(receipt);await LoadStatusAsync(scope,0,null);}});
+    private void Saved(WorkspaceTagReceipt receipt){if(receipt.SavedInCompanion is null){_acceptanceUnknown=true;return;}_receipt=receipt;_original=receipt.Original;_acceptanceUnknown=false;_intent=null;_preview=null;_reviewedPages.Clear();_taskOffset=0;_status=null;}
+    private Task RecoverWorkAsync(Guid workId)=>Run(async scope=>{var result=await Api!.RecoverTagReceiptAsync(workId,_lifetime.Token);if(!Current(scope))return;_original=result.Succeeded?result.Value:_original;_message=result.Message;});
+    private void CancelReview(){if(_busy||_acceptanceUnknown)return;_intent=null;_preview=null;_reviewedPages.Clear();_taskOffset=0;}
+    private void AcknowledgePage(ChangeEventArgs args){if(args.Value is true)_reviewedPages.Add(_taskOffset);else _reviewedPages.Remove(_taskOffset);}
+    private void PreviousTasks()=>_taskOffset=Math.Max(0,_taskOffset-20);
+    private void NextTasks(){if(_preview?.Details is {} details&&_taskOffset+20<details.TaskChanges.Count)_taskOffset+=20;}
+    public void Dispose(){_disposed=true;_lifetime.Cancel();_lifetime.Dispose();}
+}

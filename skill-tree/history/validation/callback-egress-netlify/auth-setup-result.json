@@ -1,0 +1,119 @@
+{
+  "status": "auth-setup-complete-dispatch-disabled",
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "run_id": "WR-5663ac54-9d1e-4145-8792-17c83b2b8bd3",
+  "recorded_at_utc": "2026-10-29T13:05:24.121567+00:00",
+  "worker": "habitica-companion-auth",
+  "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+  "gateway_audience": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+  "version_id": "96a4d62f-9c14-4f68-924d-b46dd03e09f2",
+  "deployment_id": "def67bf9-5f1a-42fc-8b10-e884fe0d01d9",
+  "traffic_percentage": 100,
+  "base_version_id": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+  "base_application_byte_identical": true,
+  "deployed_modules_sha256": {
+    "callback-entry.mjs": "0b9ef3107bd34daf8d65ad58445178cccb9c6013a1f5a86eab9756b4d6486796",
+    "callback-claim.mjs": "6c20af026d0434e016d03fe1da201f0c02107a1ab05e7a93843c7956d79aff79",
+    "src/index.js": "28302bd931783c632c8527c2caa663eb8aa862a84b7f5d17d99fb1f20db25b87"
+  },
+  "rollout": {
+    "callback_egress_enabled": false,
+    "original_vars_and_resource_bindings_unchanged": true,
+    "original_runtime_cron_logging_tracing_settings_unchanged": true,
+    "original_default_and_named_handlers_retained": true,
+    "service_secret_names": [
+      "CALLBACK_EGRESS_GRANT_KEY",
+      "CALLBACK_EGRESS_CLAIM_KEY"
+    ],
+    "secret_values_in_evidence": false,
+    "secrets_uploaded_from_owner_netlify_file": true,
+    "netlify_runtime_key_equality_verified": false
+  },
+  "database": {
+    "name": "habitica-companion-auth",
+    "applied_migration": "0012-callback-egress.sql",
+    "unrelated_migrations_applied": false,
+    "claim_count_after_deploy": 0
+  },
+  "checks": {
+    "scoped_candidate_dry_run": "pass",
+    "synthetic_callback_and_base_parity_tests": {
+      "passed": 7,
+      "failed": 0,
+      "evidence": "skill-tree/history/validation/callback-egress-netlify/auth-overlay-qualification.txt"
+    },
+    "staged_binding_runtime_handler_comparison": "pass",
+    "deployed_module_byte_comparison": "pass",
+    "deployed_logging_and_triggers_comparison": "pass",
+    "public_browser": {
+      "auth_health": {
+        "service": "auth",
+        "authorization": "enabled"
+      },
+      "claim_get": {
+        "error": "egress_claim_unavailable"
+      },
+      "oauth_discovery": "Expected issuer, endpoints, resource, retained scopes and PKCE S256 render.",
+      "mcp_health": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      },
+      "qualification": "Read-only public metadata/refusal observations; no new authenticated OAuth session or Habitica request."
+    }
+  },
+  "rollback": {
+    "version_id": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+    "procedure": "Redeploy the recorded base Worker version to100 percent using the selected exact Auth configuration. Retain the additive callback table, migration ledger and any original claim fences.",
+    "executed": false
+  },
+  "operations": {
+    "migration-operation.json": {
+      "classification": "executed-control",
+      "deadline_seconds": 60,
+      "wall_seconds": 2.327,
+      "exit_code": 0
+    },
+    "upload-operation.json": {
+      "classification": "executed-control",
+      "deadline_seconds": 90,
+      "wall_seconds": 8.643,
+      "exit_code": 0
+    },
+    "deploy-operation.json": {
+      "classification": "executed-control",
+      "deadline_seconds": 60,
+      "wall_seconds": 9.96,
+      "exit_code": 0
+    },
+    "overlay-qualification-operation.json": {
+      "classification": "executed-control",
+      "deadline_seconds": 90,
+      "wall_seconds": 9.996,
+      "exit_code": 0
+    }
+  },
+  "limitations": [
+    "Callback dispatch remains disabled. No hosted signed challenge, event, subscription or chat message was sent.",
+    "Full hosted DNS/TLS, controlled receiver fixtures, Netlify runtime secrets, cold-start behavior, account quota/logging and rollback execution remain unqualified.",
+    "The retained base build identity describes the base application; the scoped addon is identified by the separate deployment version and module hashes.",
+    "Direct terminal public requests hit Cloudflare1010 browser-integrity refusal. Normal browser GETs succeed; no protection was bypassed.",
+    "The current full local Auth source includes unrelated unshipped features and migrations; the scoped publication retains the deployed base module.",
+    "No Pages, Workspace or MCP code, existing credential/profile secrets, unrelated authority flags, account/game data, Git history or scheduler settings changed."
+  ],
+  "source_fingerprints": {
+    "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93",
+    "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
+    "workers/shared/resources.ts": "d1f9405c1c1fec5ea11ab5ef070e7b35e4c7bbb3045b2203cbdf4ce17e39357f",
+    "workers/chatgpt-auth/migrations/0012-callback-egress.sql": "0d4a2b7f989bb160acd4484547b172ba32c8b2aeb6111abd9819d0617db9cffa",
+    "skill-tree/documents/callback-egress.md": "8acb6b1bc8813d9f71a07b56a3a61c3d6ab41523fcd4b76faeed5c3ed2160caa",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "b0e0cf4c7aa3b591f08ca1d9ed965f90d8d3163612b0279982df5d7b3f65ad85",
+    "deploy/README.md": "b0e2fbb50e970835643b34fb6114ade83b876010dd5733d38007ddd15ae916f5"
+  },
+  "documentation_checks": {
+    "new_contract_prose": "pass",
+    "queue_consistency": "pass",
+    "repository_consistency": "pass; historical audit freshness warning retained",
+    "git_diff_check": "pass"
+  }
+}

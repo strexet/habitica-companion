@@ -1,0 +1,241 @@
+{
+  "taskId": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+  "status": "accepted",
+  "checks": {
+    "applicationFinal": 281,
+    "typedCloudTransportFinal": 59,
+    "workspaceWorkerSuite": 608,
+    "focusedCronAndRecoveryMcp": 19,
+    "finalRecoveryMcpAfterTaskSqlFilter": 1,
+    "matchingWorkerDryRunBuilds": 3,
+    "independentV11GoldenCases": 3,
+    "neutralWorkerJournalValidatedByCSharp": true,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "implementation": [
+    "Unarchive preserves state and exact task identity; inactive references require explicit placement/relationship repair.",
+    "Native Daily correction retains terminal snapshot and original completion/skip/source command, returns the same occurrence to Pending, and supports later explicit cycles.",
+    "Both operations retain exact original command recovery and produce zero projection/tag work. Retained game identities and unresolved effects refuse.",
+    "Scoped get_task_recovery/unarchive_task/correct_occurrence tools and typed cloud receipt validation keep native recovery inspectable without a browser workaround."
+  ],
+  "controls": [
+    {
+      "name": "csharp-first",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 2.52,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "csharp-tests",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.96,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-check",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 3.72,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-check2",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 2.53,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-check3",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 1.79,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "ts-unit",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 0.31,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "ts-unit2",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 0.26,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "ts-unit3",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.39,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "dotnet",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 78.87,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "worker-suite",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 59.6,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "api-cron",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 20.53,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "webapp-final",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 13.2,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "webapp-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.56,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "worker-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 72.85,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "application-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.3,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "api-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 1.77,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "docs",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.08,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-auth-source-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.75,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-mcp-source-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.91,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "companion-workspace-source-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.68,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "failedControlResolution": [
+    "Initial C# local-name collisions and TypeScript record-interface mismatch were repaired before successful compilation.",
+    "A skip provenance negative exposed missing terminal command binding; terminal writes now bind the original command and full journals verify exact source receipts. The first marker patch missed single-quoted skip assignment; direct source inspection located the omission before targeted repair.",
+    "Initial parallel Workspace run passed602, failed the new annotation assertion and cancelled Cron at the unchanged30-second file deadline. Destructive annotations were repaired; isolated Cron/recovery19 and full suite608 at concurrency4 pass with the original30-second timeout.",
+    "Initial typed cloud test used generic JSON serialization without command enum encoding. The fixture now uses the production WorkspaceTaskApiJson serializer; all59 client controls pass."
+  ],
+  "limitations": [
+    "Local/synthetic engine, D1, SDK and HTTP evidence only; no real account, hosted client, physical device, upstream uncheck, reward reversal or deployment.",
+    "Current History UI exposure remains owned by the separate extended recovery UI task; no changed Razor route is claimed.",
+    "Full Workspace608 controls precede the final same-task SQL filter; final scoped MCP control and matching bundles cover the final loader change. Final C#281/59 controls cover the current native and cloud contracts.",
+    "Strict older clients require coordinated publication for optional recovery fields. Missing original source receipts remain unavailable.",
+    "Active controller time was not instrumented; per-control wall time and independent deadlines are retained."
+  ],
+  "sourceFingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7528a7a0e1b740f4f9552924896d4accb399be56df1693c43b2d6e00b3d07635",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "ce68363b098cbfe5a73a0e163a1a1d980a9508aae66d71d6567645663df42c18",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "7129eb410f26f7e0521507b16e33dfb914cbf4d7232b383aa281a43ae33107bc",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "bb696ba7bcc684877641590365fac0739d9e9b09929e1a885422612b84460940",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "b7627cf21d4a29bd9ea1688a540cf06c0f19745f94ff8ac17fd5a450254e8993",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskRecovery.cs": "399b2996b2474ccae325481fda2ede650245d4a901af069f56a32c66f0242134",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationHistory.cs": "982f88cd6d12a26278a6f3c39e75fbd839c5e5e2a0dfd56aaf33e4092eb1ac46",
+    "src/Habitica.Domain/Workspace/WorkspaceChecklistConversion.cs": "28669fb94774684aecd0b92dcfb449dd5963d77e17a42510dbb0076bf58e09ef",
+    "src/Habitica.Domain/Workspace/WorkspaceSourceRetirement.cs": "8ddfa345fdd40e150285e7c9a4a4d2f06dd0ae77005ad0d71b9066e811a4e8fa",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "b26eeddaf53c73c543ac281c0c1c3c27a54e1c23a0e21deddfe66957f3038791",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f7b54b33a5b7739615a4ed5cee70fcd76801cbb06cb58088afc39a1aff9f5fd8",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "90702bfafe7914b8d97618827a1f61ea5a106e829006ba26edc06b8b4bf4ea9f",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "10f9ee4b7ee6988ee67d1c2683a77eef9ce3edbac0575236c16ad5382f47a8f9",
+    "workers/shared/workspace-commands.ts": "66da20744c37b2e23ba73fc4208e9e0a24ccd7ae9e2a97e58dc995a996baa5b5",
+    "workers/shared/workspace-domain.ts": "856de10023a5cf24a679c5fa2e27833c4ae5b6cf1e4e5c40568561e2bc07b41d",
+    "workers/shared/task-recovery.ts": "b443fee3c6afb3b37a4c48b1c146d57eba646e7f721b721d25a69c664f632a66",
+    "workers/shared/task-recovery-query.ts": "2882351f6bee3ed46d4386e6ea4e2665afc775dbdffd695828f384dd1ef2669d",
+    "workers/shared/task-tools.ts": "96feafb2574f08841e20bd412e65d758aac80d064fa6a0fcfb7bf6be8d5fa1be",
+    "workers/shared/completion-history.ts": "d08144bd3fb7a70eb3de458f4b9cdb6e278a44a785e3696e530396295ffce13e",
+    "workers/shared/workspace-organization.ts": "54496b2ea2db7b307990743bcb8f97f13655e39de46214ea9ff1f60a462e1ac0",
+    "workers/shared/checklist-conversion.ts": "d82d63530a332e091fe517dda9f6dc69fc888abdb5b29f41c233069374e79c95",
+    "workers/shared/source-retirements.ts": "ad3bc2593a0fd36d3ef2e0e29486bb98cd3733a7919af68cac75f5ff5af2a256",
+    "workers/shared/build-identity.generated.ts": "8996b120aebc85e1787b14d97df304da212782c2c749bccc684f2eebd29385fe",
+    "workers/companion-workspace/src/commands.ts": "b476cd0561256402c3821ece05d9dcf3eb8ed535b9d601dbe193c8af8a6d1c5c",
+    "workers/companion-workspace/src/index.ts": "4ba1d332ab19a6cddd4893db91c5f012d594bc514631b3ff42705e0bfbd7302a",
+    "workers/companion-workspace/src/journal.ts": "f6b1054f6308b4ea91e3802afff91c597d84049d394b953c0cbdef2416949414",
+    "workers/companion-workspace/src/task-api.ts": "73ebe5b669f78cc3c7de4767a9b3b0523b6224536c3ca3b9986af5e4e8053cd0",
+    "workers/companion-workspace/src/task-recovery-store.ts": "0948394403c80aa8420fe8eb6c3531b2746fe795bc97d9063623e0ee5bca64c5",
+    "workers/chatgpt-mcp/src/task-tools.ts": "48f43269dd8b7e91024b88d5c0898c201c78d31fa65ebc4192e60b0b95aefe85",
+    "workers/companion-workspace/test/task-recovery.test.mjs": "55c37a3734a1bea0a50931ec523ba3c260207f6ce20d99267ab28b3053c59d82",
+    "workers/companion-workspace/test/task-recovery-api.test.mjs": "dd45524a56449010c0e08636f94adc77112ec5bb5b4d101dd0f6c91e4d5c94c6",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTaskRecoveryTests.cs": "5bccad0c532c75ae962ba19b6779a38cee901a95e9b92073dbde84cd005bc3e2",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.RecoveryTests.cs": "62603ba446e444c9965ec2d2e8dc06ee1259d1196092fea33145509dc858a649",
+    "tests/fixtures/workspace/task-recovery-command-v11.json": "2f706cc3bb2edd47f2a1ba93592f9193c4dba6982f4e5511696f199d3cd290a3",
+    "tests/fixtures/workspace/task-recovery-journal-v1.json": "2bb20e10c0ca23738b53f2602f7b47ec19d5e6084a8e7f68915ee4be06c91e39",
+    "skill-tree/documents/features.md": "ad1664f2b82d5493702ebe77692e3fdf166232e4853df81f6ba31a019779d611",
+    "skill-tree/documents/testing.md": "63326faf916761b7a753cd8ece45ac01b52b22f88abd2d8402dde3710e72e601",
+    "skill-tree/documents/technical.md": "d62577b93d28764afb1a879f486f4c2c6aad2be405246fc546e8bb227c6f7c1a",
+    "skill-tree/documents/habitica-api.md": "4d170f51edefefc3f0d6de6cdc6313a640de1b1a2fda349ca4a87dc33e9d53be",
+    "skill-tree/documents/ux-ui-manifest.md": "7a18a90d6647cfaac1f992448d6e05b3432100cbfdf3ef85989e98c2ba1b3f41",
+    "skill-tree/documents/companion-workspace-contract.md": "5c429dd224fd78632285c2149519fcfa328b0e6421a86e3a5bc3ea35fcf3d372",
+    "skill-tree/documents/task-journey-qualification.md": "73324d1724f66a0b8103c380785a12b8d5a3c44ca48db5a8f9029b18e7ba459b"
+  }
+}

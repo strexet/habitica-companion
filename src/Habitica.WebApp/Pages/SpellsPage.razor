@@ -26,6 +26,35 @@
         </div>
     </section>
 
+    @if (SessionController.State.IsAuthenticated)
+    {
+        <section class="card-surface spell-card-section" aria-label="Saved equipment recovery">
+            <h2>Equipment recovery</h2>
+            <p>Check saved original gear after an interrupted cast. Recovery never casts a spell.</p>
+            <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => ReviewRecoveryAsync())">Check saved recovery</MudButton>
+            @if (_recoveryOwner == SessionController.State.UserId && _gearRecovery is {} review)
+            {
+                <p role="status">@review.Message</p>
+                @if (review.Journal is {} journal)
+                {
+                    @foreach (var slot in journal.Slots)
+                    {
+                        <p>@slot.Slot: original @(slot.OriginalKey.Length == 0 ? "unequipped" : slot.OriginalKey); temporary @(slot.TemporaryKey.Length == 0 ? "unequipped" : slot.TemporaryKey). @slot.Status</p>
+                    }
+                    <div class="empty-state-actions">
+                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => ReviewRecoveryAsync(true))">Restore original gear</MudButton>
+                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => ReviewRecoveryAsync(false, true))">Keep current gear</MudButton>
+                    </div>
+                }
+            }
+        </section>
+    }
+
+    @if(SessionController.State.LastSpellCastOutcome is {} outcome)
+    {
+        <section class="card-surface spell-card-section" aria-label="Last spell operation" role="status" data-testid="spell-last-outcome"><h2>Last spell operation</h2><p><strong>Acknowledged @outcome.Acknowledged of @outcome.Requested casts</strong></p><p>@outcome.Summary</p><p>Operation: @outcome.OperationId · spell: @outcome.SpellId. Acknowledgements confirm casts; refresh and private sync warnings never undo those acknowledgements.</p></section>
+    }
+
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
@@ -363,6 +392,14 @@
             SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh,
             SessionController.State.PartyFreshness == SnapshotFreshnessState.Fresh);
 
+    private GearRecoveryReview? _gearRecovery;
+    private string? _recoveryOwner;
+    private async Task ReviewRecoveryAsync(bool restore = false, bool keepCurrent = false)
+    {
+        _recoveryOwner = SessionController.State.UserId;
+        _gearRecovery = await SessionController.ReviewSpellGearRecoveryAsync(restore, keepCurrent, _gearRecovery?.Journal?.OperationId);
+    }
+
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
@@ -472,7 +509,7 @@
     private async Task CastSpellAsync(SpellCastRequest request)
     {
         var result = await SessionController.CastSpellAsync(request);
-        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+        Snackbar.Add(result.Message, result.CastOutcome?.HasWarning==true?Severity.Warning:result.Succeeded ? Severity.Success : Severity.Error);
     }
 
     private Task CancelActiveSpellCastAsync()

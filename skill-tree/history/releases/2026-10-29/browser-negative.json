@@ -1,0 +1,218 @@
+{
+  "results": [
+    {
+      "caseId": "2489-78aa9de4-ab44-4781-9fb9-8b52ba423a24",
+      "fixture": "/reminder-unknown-granted.html",
+      "theme": "gryphy-light",
+      "textPercent": 100,
+      "seed": "geometry",
+      "width": 390,
+      "clientWidth": 375,
+      "scrollWidth": 2000,
+      "controls": 5,
+      "scrollableControls": [],
+      "primaryControls": 2,
+      "textSamples": 20,
+      "minimumMeasuredContrast": 6.944590717243673,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "overflow",
+          "width": 375,
+          "scrollWidth": 2000
+        },
+        {
+          "kind": "overlap",
+          "ids": [
+            "BUTTON-3",
+            "BUTTON-4"
+          ]
+        }
+      ],
+      "unqualifiedSurfaces": [],
+      "qualification": "measured",
+      "operationClass": "executed_control",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "startupLimitMs": 5000,
+        "measurementLimitMs": 5000,
+        "matrixElapsedMs": 53.80000019073486,
+        "phases": [
+          {
+            "phase": "theme",
+            "status": "waiting",
+            "frameElapsedMs": 0.09999990463256836,
+            "matrixElapsedMs": 36.10000014305115
+          },
+          {
+            "phase": "theme",
+            "status": "complete",
+            "frameElapsedMs": 7.199999809265137,
+            "matrixElapsedMs": 42.60000014305115
+          },
+          {
+            "phase": "fonts",
+            "status": "waiting",
+            "frameElapsedMs": 7.299999952316284,
+            "matrixElapsedMs": 42.700000047683716
+          },
+          {
+            "phase": "fonts",
+            "status": "complete",
+            "frameElapsedMs": 7.599999904632568,
+            "matrixElapsedMs": 42.700000047683716
+          },
+          {
+            "phase": "frame",
+            "status": "waiting",
+            "frameElapsedMs": 7.599999904632568,
+            "matrixElapsedMs": 42.80000019073486
+          },
+          {
+            "phase": "frame",
+            "status": "complete",
+            "frameElapsedMs": 12.699999809265137,
+            "matrixElapsedMs": 53.5
+          },
+          {
+            "phase": "animations",
+            "status": "waiting",
+            "frameElapsedMs": 12.799999952316284,
+            "matrixElapsedMs": 53.60000014305115,
+            "details": []
+          },
+          {
+            "phase": "animations",
+            "status": "complete",
+            "frameElapsedMs": 12.899999856948853,
+            "matrixElapsedMs": 53.700000047683716
+          },
+          {
+            "phase": "measurement",
+            "status": "waiting",
+            "frameElapsedMs": 12.899999856948853,
+            "matrixElapsedMs": 53.700000047683716
+          },
+          {
+            "phase": "measurement",
+            "status": "complete",
+            "frameElapsedMs": 17.899999856948853,
+            "matrixElapsedMs": 53.700000047683716
+          }
+        ],
+        "ignoredMessages": 0
+      }
+    },
+    {
+      "caseId": "2490-11b8a924-be46-48f4-9ba3-e752f59e2d3f",
+      "fixture": "/reminder-unknown-granted.html",
+      "theme": "gryphy-light",
+      "textPercent": 100,
+      "seed": "contrast",
+      "width": 390,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "controls": 3,
+      "scrollableControls": [],
+      "primaryControls": 2,
+      "textSamples": 19,
+      "minimumMeasuredContrast": 1,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "contrast",
+          "id": "contrast-canary",
+          "text": "Seeded unreadable contrast canary",
+          "ratio": 1,
+          "minimum": 4.5
+        }
+      ],
+      "unqualifiedSurfaces": [],
+      "qualification": "measured",
+      "operationClass": "executed_control",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "startupLimitMs": 5000,
+        "measurementLimitMs": 5000,
+        "matrixElapsedMs": 32.799999952316284,
+        "phases": [
+          {
+            "phase": "theme",
+            "status": "waiting",
+            "frameElapsedMs": 0,
+            "matrixElapsedMs": 24.299999952316284
+          },
+          {
+            "phase": "theme",
+            "status": "complete",
+            "frameElapsedMs": 3.700000047683716,
+            "matrixElapsedMs": 32.40000009536743
+          },
+          {
+            "phase": "fonts",
+            "status": "waiting",
+            "frameElapsedMs": 3.700000047683716,
+            "matrixElapsedMs": 32.59999990463257
+          },
+          {
+            "phase": "fonts",
+            "status": "complete",
+            "frameElapsedMs": 3.9000000953674316,
+            "matrixElapsedMs": 32.700000047683716
+          },
+          {
+            "phase": "frame",
+            "status": "waiting",
+            "frameElapsedMs": 3.9000000953674316,
+            "matrixElapsedMs": 32.700000047683716
+          },
+          {
+            "phase": "frame",
+            "status": "complete",
+            "frameElapsedMs": 4,
+            "matrixElapsedMs": 32.700000047683716
+          },
+          {
+            "phase": "animations",
+            "status": "waiting",
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 32.700000047683716,
+            "details": []
+          },
+          {
+            "phase": "animations",
+            "status": "complete",
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 32.799999952316284
+          },
+          {
+            "phase": "measurement",
+            "status": "waiting",
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 32.799999952316284
+          },
+          {
+            "phase": "measurement",
+            "status": "complete",
+            "frameElapsedMs": 8.300000190734863,
+            "matrixElapsedMs": 32.799999952316284
+          }
+        ],
+        "ignoredMessages": 0
+      }
+    }
+  ],
+  "summary": {
+    "cases": 2,
+    "errors": 3,
+    "harnessErrors": 0,
+    "prerequisiteUnavailable": 0,
+    "measurementUnavailable": 0,
+    "unqualifiedSurfaces": 0,
+    "errorKinds": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ]
+  }
+}

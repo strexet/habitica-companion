@@ -718,10 +718,23 @@ public static partial class ColorSchemeCatalog
                 "#35b8be", "#2d8289", "#100305", "#031113", "#031310", "#000607", "#c9e4e2", "#000202", "#c9e4e2", "#000405",
                 "rgba(201, 228, 226, 0.055)", "rgba(127, 159, 158, 0.58)", "rgba(38, 150, 156, 0.24)", "#010809", "rgba(53, 184, 190, 0.36)")),
             BuiltIn("obsidian-glow", "Obsidian Glow", isDark: true, Tokens(
-                "#05060a", "rgba(12, 14, 22, 0.96)", "rgba(155, 190, 255, 0.20)", "#e7ecf6", "#98a2b8", "#7fa8ff", "#b78cff",
-                "#d85f78", "#58c99b", "#9fc0ff", "0 24px 72px rgba(150, 185, 255, 0.22)", "rgba(15, 18, 30, 0.82)", "rgba(20, 24, 40, 0.96)",
-                "#7fa8ff", "#b78cff", "#21151f", "#171d2d", "#13251f", "#080a12", "#e7ecf6", "#07080f", "#e7ecf6", "#05060a",
-                "rgba(231, 236, 246, 0.07)", "rgba(152, 162, 184, 0.54)", "rgba(155, 190, 255, 0.16)", "#0e111c", "rgba(155, 190, 255, 0.24)")),
+                "#05060a", "rgba(12, 14, 22, 0.96)", "rgba(155, 190, 255, 0.22)", "#e7ecf6", "#98a2b8", "#7fa8ff", "#b78cff",
+                "#d85f78", "#6fcfb8", "#9fc0ff", "0 24px 72px rgba(150, 185, 255, 0.22)", "rgba(15, 18, 30, 0.84)", "rgba(20, 24, 40, 0.96)",
+                "#7fa8ff", "#b78cff", "#241722", "#171d2d", "#13242d", "#080a12", "#e7ecf6", "#07080f", "#e7ecf6", "#05060a",
+                "rgba(231, 236, 246, 0.07)", "rgba(152, 162, 184, 0.54)", "rgba(155, 190, 255, 0.16)", "#0e111c", "rgba(155, 190, 255, 0.24)") with
+            {
+                SecondaryButtonText = "#e7ecf6",
+                BackgroundGradient = new("#0a1022", "#05060a", "#100b1d", "#060914", "#05060a", "#090c19", "#030409", "#060812", "#0b0714"),
+                CardGradient = new("rgba(17, 21, 36, 0.98)", "rgba(12, 14, 22, 0.96)", "rgba(18, 14, 31, 0.97)", "rgba(12, 14, 22, 0.96)", "rgba(14, 17, 28, 0.96)", "rgba(9, 11, 19, 0.97)", "rgba(12, 14, 22, 0.96)", "rgba(15, 12, 26, 0.97)"),
+                AppBarGradient = new("#11182c", "#080a12", "#171020", "#080a12", "#070911", "#0d0b18"),
+                DrawerGradient = new("#0e1629", "#07080f", "#150e20", "#05060b", "#07080f", "#0d0b18"),
+                PrimaryButtonGradient = new("#a7c1ff", "#7fa8ff", "#6f94ee", "#9d91f5"),
+                SecondaryButtonGradient = new("#18233e", "#211a38"),
+                AccentChipGradient = new("#7fa8ff", "#b78cff"),
+                HeadingTextShadow = "0 0 16px rgba(127, 168, 255, 0.34), 0 0 30px rgba(183, 140, 255, 0.16)",
+                AppBarTextShadow = "0 0 10px rgba(127, 168, 255, 0.22)",
+                DrawerTextShadow = "0 0 10px rgba(183, 140, 255, 0.14)"
+            }),
             BuiltIn("blessed-skyhaven", "Blessed Skyhaven", isDark: false, Tokens(
                 "#edf8ff", "rgba(255, 255, 255, 0.97)", "rgba(255, 213, 92, 0.62)", "#1b3148", "#6f879d", "#6fbfff", "#f0bd3f",
                 "#d75d75", "#56b8f0", "#9bdcff", "0 24px 78px rgba(255, 224, 128, 0.38)", "rgba(245, 252, 255, 0.92)", "rgba(255, 255, 255, 0.99)",

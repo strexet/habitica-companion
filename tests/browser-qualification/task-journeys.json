@@ -1,0 +1,101 @@
+{
+  "format": 1,
+  "taskId": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+  "releaseGate": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "scope": "Synthetic Razor geometry/native controls plus separately executed bUnit event journeys; no hosted or physical-device inference.",
+  "journeys": [
+    {
+      "id": "navigation",
+      "steps": "Open Todo, then Today, Habits, Dailies and Tasks; keep capture visible.",
+      "fixtures": [
+        "todo-nav-main",
+        "todo-today-main",
+        "todo-habits-main",
+        "todo-dailies-main",
+        "todo-tasks-main"
+      ]
+    },
+    {
+      "id": "capture",
+      "steps": "Enter a synthetic title; review exact required game intent; accept once; after lost acknowledgement recover the original receipt.",
+      "fixtures": [
+        "todo-capture-ready",
+        "todo-capture-review",
+        "todo-capture-unknown"
+      ]
+    },
+    {
+      "id": "dates",
+      "steps": "Edit planned date independently from deadline; review exact dates and project placement; reject invalid or stale data.",
+      "fixtures": [
+        "todo-plan-review"
+      ]
+    },
+    {
+      "id": "complete-restore",
+      "steps": "Complete an exact native task; find retained completion in History; restore only an eligible native Todo completion; preserve original receipt on uncertainty.",
+      "fixtures": [
+        "todo-history-review",
+        "todo-history-unknown"
+      ]
+    },
+    {
+      "id": "recurrence",
+      "steps": "Open the complete schedule editor; review timezone and replacement rule; keep native occurrence actions distinct from Habitica schedules and penalties.",
+      "fixtures": [
+        "todo-recurring-review"
+      ]
+    },
+    {
+      "id": "projects",
+      "steps": "Open Projects; inspect exact task branch and optional metadata; review native changes without implying Habitica tag coverage.",
+      "fixtures": [
+        "todo-organization-page"
+      ]
+    },
+    {
+      "id": "sync",
+      "steps": "Open Sync; inspect selected source and original command status; unknown or missing receipt never enables replay.",
+      "fixtures": [
+        "todo-sync-original-receipt"
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "steps": "Open Diagnostics; preview the sanitized bundle before copy/download; unavailable storage remains explicit.",
+      "fixtures": [
+        "diagnostics-agent-bundle",
+        "diagnostics-read-unavailable"
+      ]
+    }
+  ],
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "themes": [
+    "gryphy-light",
+    "gryphy-dark",
+    "obsidian-glow",
+    "toxic-swamp",
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate"
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "humanDeviceStatus": "unrun",
+  "humanDeviceInputs": [
+    "Owner-selected environment and operation scope",
+    "Consenting owner and second test account; no credentials in evidence",
+    "Device/OS/browser versions and iOS Safari/PWA plus Android sessions",
+    "VoiceOver/TalkBack operator and explicit virtual-keyboard/safe-area observations",
+    "Authorized existing Todoist/Things sessions; no new account or purchase implied"
+  ]
+}

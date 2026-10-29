@@ -1,0 +1,71 @@
+(node:86875) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:86876) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: direct MCP has unknown installed package and coherent explicit backend identity
+ok 1 - direct MCP has unknown installed package and coherent explicit backend identity
+  ---
+  duration_ms: 0.735209
+  ...
+# Subtest: client reports never establish installation and incompatible versions stay explicit
+ok 2 - client reports never establish installation and incompatible versions stay explicit
+  ---
+  duration_ms: 0.287208
+  ...
+# Subtest: missing, malformed or mixed peers never claim coherent deployment
+ok 3 - missing, malformed or mixed peers never claim coherent deployment
+  ---
+  duration_ms: 0.243583
+  ...
+# Subtest: unknown selectors, arbitrary claims and malformed hashes are rejected
+ok 4 - unknown selectors, arbitrary claims and malformed hashes are rejected
+  ---
+  duration_ms: 0.175125
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:86876) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authenticated MCP discovery needs no workspace consent and never calls Habitica
+ok 5 - authenticated MCP discovery needs no workspace consent and never calls Habitica
+  ---
+  duration_ms: 1491.620084
+  ...
+# (node:86877) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: portable plugin and MCP configuration validate against pinned upstream schemas
+ok 6 - portable plugin and MCP configuration validate against pinned upstream schemas
+  ---
+  duration_ms: 41.367917
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:86877) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"correlationId":"265e7d55-a331-4b1b-8cfe-a228acbd98b3","tool":"get_account_status","route":"account","durationMs":11,"status":200,"rate":{}}
+# {"correlationId":"ce96a609-f6ba-42da-85dd-75f4ea9bc4ec","tool":"list_tasks","route":"tasks","durationMs":9,"status":200,"rate":{}}
+# {"correlationId":"383b72c2-13d8-4ab0-a534-deac68a26b68","tool":"get_account_status","route":"account","durationMs":9,"status":200,"rate":{}}
+# {"correlationId":"8bdf47b7-e64a-4da8-a985-7182e53339a3","tool":"list_tasks","route":"tasks","durationMs":10,"status":200,"rate":{}}
+# Subtest: packaged workflow tool names route through actual SDK with two isolated OAuth profiles
+ok 7 - packaged workflow tool names route through actual SDK with two isolated OAuth profiles
+  ---
+  duration_ms: 1395.744708
+  ...
+# Subtest: packaged task references share the all-kind required-default contract
+ok 8 - packaged task references share the all-kind required-default contract
+  ---
+  duration_ms: 1.890041
+  ...
+# Subtest: staged release validates portable schemas and reports descriptor evidence separately from installation
+ok 9 - staged release validates portable schemas and reports descriptor evidence separately from installation
+  ---
+  duration_ms: 172.760459
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2120.716708

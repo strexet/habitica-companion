@@ -1,0 +1,95 @@
+{
+  "task_id": "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+  "status": "pass",
+  "recorded_at_utc": "2026-10-23T13:23:12.316043+00:00",
+  "checks": {
+    "solutionTests": 1168,
+    "finalNotesTests": 35,
+    "release": "pass; no warnings/errors",
+    "renderedCases": 720,
+    "renderedErrors": 0,
+    "unsupportedSurfaces": 0,
+    "negativeCases": 2,
+    "detectedNegativeKinds": [
+      "contrast",
+      "overflow",
+      "overlap"
+    ],
+    "keyboard": {
+      "focusVisible": true,
+      "outline": "rgb(67, 143, 208) solid 3px",
+      "tag": "BUTTON",
+      "text": "New note"
+    }
+  },
+  "renderedMatrix": {
+    "fixtures": [
+      "notes-consent",
+      "notes-long",
+      "notes-conflict",
+      "notes-unknown",
+      "notes-empty",
+      "notes-purge",
+      "notes-document",
+      "notes-unavailable",
+      "notes-privacy",
+      "shared-navigation"
+    ],
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "textPercent": [
+      100,
+      200
+    ],
+    "themes": [
+      "gryphy-light",
+      "gryphy-dark",
+      "toxic-swamp",
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate"
+    ],
+    "rawEvidenceSha256": "e55aea2b2413c2de66ceeac55aede8aea80aff74647ffccaecb6ca0ab55aaf09"
+  },
+  "observations": [
+    "Initial Toxic Swamp small version label contrast failed six cases; shared readable muted token corrects the defect.",
+    "Exact Markdown import/export, history, conflict/cancel, lifecycle reviews, source/account fences and original save recovery are qualified through synthetic component and transport tests.",
+    "Normal signed-in browser credentials are used only after a separate cloud Notes consent action; no automatic upload or gameplay effect occurs."
+  ],
+  "limitations": [
+    "Synthetic Razor geometry and component interactions are separate evidence; physical devices and assistive technologies remain unqualified.",
+    "No production migration, publication, live account action or actual host-model Notes invocation has run in this task."
+  ],
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "4b1a9daedb034a4d4ebcb07e5f68bba845b1fbcec36b256d04f3974b96164f39",
+    "skill-tree/documents/technical.md": "131b9487dd21f2df1ec5d39b421b6a4e2982cf4cf219333b4307afa8036db29a",
+    "skill-tree/documents/testing.md": "ff971bea01c4cbc46656d514f11fd5148e7507e2ef00de89efe5df3729993334",
+    "skill-tree/documents/ux-ui-manifest.md": "e1a4e2c4cd72bbb3cf540307ffd1fda8ca7e05ac8fb59da101ffe4dfe656845c",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "bdc6bafa39a6b2147b53c539d4e469a1161d7d0164d13e81526f3f8e1b77c72c",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "976c33b486dbccdffbbce0ee0f1a9a1d96222e49be5609db86d6032944e0590f",
+    "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "d89c39e2d3aca5d8909918c7f96cae8789c804ebcd7d896c9eee2a76c36badeb",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "e1c185feb53059ccadf810beff72de024d87a1eba7f2e4838ccabba0c67c9264",
+    "src/Habitica.WebApp/Formatting/NotesMarkdownRenderer.cs": "4f73466e90a7dfb25b228ec056e0f81e1f3bc54540106cc2fa9d4308ee63efb5",
+    "src/Habitica.WebApp/Pages/NotesPage.razor": "96a11cb1feea7bcde5988c4240a87c7766ae17e495681d8949ba6960825f4b3e",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor": "3f5e47dc4149179019768b5710711afb42b22f85d03175d587a6cafaf72436cc",
+    "src/Habitica.WebApp/Program.cs": "0c35abce2d8e3c97d61f1e89a5f5331d124f7ef7588c38569fb1db4b8ec9616d",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "fb36df42d2dcbfd2dea868bb17e254053f4e142b20073a3b950f7b5eb7e2a944",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "9623a04c204568ffb3dafa8d74a9c97120f509a8a7e80595d0ab34827e092c7a",
+    "src/Habitica.WebApp/State/NotesController.cs": "07c50cadaa64f797befb466da1508551d94c8b877eec1b236bd80cb8956a19ad",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d233f17c9831638cbe3a0522e1c2aa5f25d80c4cdfd62aba4cfc29b073757c1f",
+    "tests/Habitica.WebApp.Tests/FakeAppSessionController.cs": "854e03c0e3da8aa303972191bcba1928f815af3582c218faddb1ed92f9ff6f44",
+    "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+    "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "c55c3cfd096cb4d50ea832d5a934e1e62f4a8110150b57097f8402f55b5caba0",
+    "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "e0bc0733b7c8cdc4db7c5a4baad81b553c80b0db9e22a498aa40881f5b513e1b",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "4a8f39747bb07cab4e38bd3989b8a549e8d047dbf64210158922e1c52b411880"
+  }
+}

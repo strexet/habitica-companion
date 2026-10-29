@@ -1,0 +1,288 @@
+{
+  "diagnostics-sharing-cleanup": {
+    "file": "diagnostics-sharing-cleanup.html",
+    "route": "/diagnostics",
+    "state": "revoked-cleanup-unconfirmed",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-cleanup-alias": {
+    "file": "diagnostics-sharing-cleanup-alias.html",
+    "route": "/live-tests",
+    "state": "revoked-cleanup-unconfirmed",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-unavailable": {
+    "file": "diagnostics-sharing-unavailable.html",
+    "route": "/diagnostics",
+    "state": "manual-fallback",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-unavailable-alias": {
+    "file": "diagnostics-sharing-unavailable-alias.html",
+    "route": "/live-tests",
+    "state": "manual-fallback",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-expired": {
+    "file": "diagnostics-sharing-expired.html",
+    "route": "/diagnostics",
+    "state": "expired-preparation",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-expired-alias": {
+    "file": "diagnostics-sharing-expired-alias.html",
+    "route": "/live-tests",
+    "state": "expired-preparation",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-initial": {
+    "file": "diagnostics-sharing-initial.html",
+    "route": "/diagnostics",
+    "state": "unqueried-sharing",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-initial-alias": {
+    "file": "diagnostics-sharing-initial-alias.html",
+    "route": "/live-tests",
+    "state": "unqueried-sharing",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-consent": {
+    "file": "diagnostics-sharing-consent.html",
+    "route": "/diagnostics",
+    "state": "separate-consent-disabled",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-consent-alias": {
+    "file": "diagnostics-sharing-consent-alias.html",
+    "route": "/live-tests",
+    "state": "separate-consent-disabled",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-preview": {
+    "file": "diagnostics-sharing-preview.html",
+    "route": "/diagnostics",
+    "state": "bounded-sanitized-preview",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-preview-alias": {
+    "file": "diagnostics-sharing-preview-alias.html",
+    "route": "/live-tests",
+    "state": "bounded-sanitized-preview",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-prepared": {
+    "file": "diagnostics-sharing-prepared.html",
+    "route": "/diagnostics",
+    "state": "exact-metadata-review-locked-filters",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-prepared-alias": {
+    "file": "diagnostics-sharing-prepared-alias.html",
+    "route": "/live-tests",
+    "state": "exact-metadata-review-locked-filters",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-receipt": {
+    "file": "diagnostics-sharing-receipt.html",
+    "route": "/diagnostics",
+    "state": "original-upload-receipt",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-receipt-alias": {
+    "file": "diagnostics-sharing-receipt-alias.html",
+    "route": "/live-tests",
+    "state": "original-upload-receipt",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-unknown": {
+    "file": "diagnostics-sharing-unknown.html",
+    "route": "/diagnostics",
+    "state": "unknown-acceptance-original-retained",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-unknown-alias": {
+    "file": "diagnostics-sharing-unknown-alias.html",
+    "route": "/live-tests",
+    "state": "unknown-acceptance-original-retained",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-ready": {
+    "file": "diagnostics-sharing-ready.html",
+    "route": "/diagnostics",
+    "state": "acknowledged-upload-enabled",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-ready-alias": {
+    "file": "diagnostics-sharing-ready-alias.html",
+    "route": "/live-tests",
+    "state": "acknowledged-upload-enabled",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-inflight": {
+    "file": "diagnostics-sharing-inflight.html",
+    "route": "/diagnostics",
+    "state": "upload-response-pending",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-sharing-inflight-alias": {
+    "file": "diagnostics-sharing-inflight-alias.html",
+    "route": "/live-tests",
+    "state": "upload-response-pending",
+    "surfaces": [
+      "diagnostic-sharing",
+      "consent",
+      "cloud-preview",
+      "original-receipt"
+    ],
+    "interactionTest": "DiagnosticSharingPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

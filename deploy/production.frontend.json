@@ -1,0 +1,17 @@
+{
+  "Habitica": {
+    "XClientHeader": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+  },
+  "ChatGptIntegration": {
+    "AuthBaseUrl": "https://habitica-companion-auth.strexet.workers.dev",
+    "Enabled": true
+  },
+  "Features": {
+    "PartySyncEnabled": true,
+    "OwnerIsolatedTestingEnabled": false
+  },
+  "CompanionWorkspace": {
+    "BaseUrl": "https://habitica-companion-workspace.strexet.workers.dev",
+    "PartyPlanningEnabled": true
+  }
+}

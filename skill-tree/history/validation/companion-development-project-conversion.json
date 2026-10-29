@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-21",
+  "owner_request": "Convert the legacy Companion development checklist into a first-class project, account for completed work and capture native aliases as Pending.",
+  "project_id": "c5f8a175-2bee-484a-9b72-018737dc10fd",
+  "project_name": "Companion Development <codev>",
+  "project_create_command_id": "109d5b0d-d5e8-44a9-b884-ab6cff09b337",
+  "native_alias_supported": false,
+  "alias_pending_id": "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+  "alias_priority": 100,
+  "source_task_id": "c3765653-711e-4532-be37-0ba41f0954b3",
+  "source_task_retained_as_backup": true,
+  "source_checklist_flags_mean": "Prior plan intake acknowledgement, not feature completion.",
+  "classification_source": "Current future.md and terminal implementation outcomes. Hierarchy and first-class projects are implemented; the remaining eight source deliverables remain open.",
+  "active_tasks": 8,
+  "completed_archived_tasks": 2,
+  "retained_completion_records": 2,
+  "completion_timestamp_semantics": "Completion events record conversion time; notes disclose repository implementation evidence and separate client/device qualification. No original completion timestamps were available.",
+  "verification": {
+    "exact_all_ten_titles_and_notes": true,
+    "exact_project_membership": true,
+    "expected_states_and_archive_flags": true,
+    "all_ten_source_checklist_ids_represented_once": true,
+    "workspace_revision": 71,
+    "read_only_database_check_rows_written": 0,
+    "ui_project_task_count": 8,
+    "new_habitica_effects": 0,
+    "source_task_exactly_unchanged": true
+  },
+  "tasks": [
+    {
+      "source_item": 10,
+      "source_checklist_id": "50a8d2d0-c268-4b2c-aa5c-3e17d9bd01b5",
+      "task_id": "fe2403b8-ab96-489f-b6ac-5e72f9dee4a9",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "a6a35b179dffb3422a17b93de4a768a7a511ea2b1f8dcb8610f29a1c5e3c4c8d",
+      "create_command_id": "d3adec95-57d6-42c2-bbb4-c848d73523af",
+      "assignment_command_id": "1a2b7911-1e65-4215-9f99-b26e2d44e1be"
+    },
+    {
+      "source_item": 1,
+      "source_checklist_id": "51b3e3fd-5832-485b-9ec5-a4d15111802f",
+      "task_id": "c5b0f069-3adb-4944-b340-e2a84cb63a87",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "4da2556b11a9ce486eb093526407250ad36827c5195dfce6148ed1c5c0229ebd",
+      "create_command_id": "e96a3ae6-339e-4757-9ecc-ffffa2b875bb",
+      "assignment_command_id": "629f7f88-0c53-444c-a131-c1454f483f47"
+    },
+    {
+      "source_item": 2,
+      "source_checklist_id": "ddb24e50-d2bd-4fcf-996f-5847e614e327",
+      "task_id": "7e478750-8e70-455b-ad93-dbfbedfbe485",
+      "state": "completed",
+      "archived": true,
+      "notes_sha256": "b81309bd26133a503bc15106ba99d8711c468b637fa61720a584bbb1458d95ac",
+      "create_command_id": "50af2a72-08ea-4636-b905-821770d4a09b",
+      "assignment_command_id": "90c051fc-353a-4d6a-b7a7-9d6fcb31b806",
+      "completion_command_id": "9ac09617-0d06-45b8-be9f-6be9e68cd82e",
+      "archive_command_id": "3db5b6fc-e94d-49e3-81d4-abb7c9dd00bd"
+    },
+    {
+      "source_item": 3,
+      "source_checklist_id": "b73b600d-b5f6-46aa-b523-1fb1232c70c4",
+      "task_id": "675a4d06-069a-4e3b-97db-757b943aaa4f",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "b608143dc508147f5748ea2d215948796e6c7292fe56c9f15c2d042abc958865",
+      "create_command_id": "3e48d81a-e004-480b-94b8-010806f78e79",
+      "assignment_command_id": "8b0060a9-579b-46ff-be31-492977d5e665"
+    },
+    {
+      "source_item": 4,
+      "source_checklist_id": "c8de1857-1016-4fc3-910e-cf894e677d18",
+      "task_id": "c40993ea-8947-4584-8b40-c3950f307eab",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "91f18965f511c964a77607c0803c4d3989b29f2ba6e0fa3c79fb7db165f2bea2",
+      "create_command_id": "35aa1212-f75c-42ec-a2b9-4380b2cb3dd2",
+      "assignment_command_id": "c95a1681-697e-45e0-927a-02c787f33306"
+    },
+    {
+      "source_item": 5,
+      "source_checklist_id": "e2be8db5-203f-4f83-a682-795bcac14291",
+      "task_id": "e439af5c-2082-4ca8-87a9-5553155d9142",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "c01bdf11c9958b8ec183f30185e206d3c5920c474d84cf0282a59214fe304abe",
+      "create_command_id": "b8726521-1cc0-4289-ad1a-d55bd407ed0c",
+      "assignment_command_id": "3b055274-342f-4069-b98c-ebe035bec5c9"
+    },
+    {
+      "source_item": 6,
+      "source_checklist_id": "d925d574-5f28-42f8-b93e-2b70f57b55ca",
+      "task_id": "d4e0f2b1-8f48-4101-bc25-82aa347f7c4d",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "298517fac0e97f02636679892915b021bd42d8a50f345f8663b3a1cc592c3929",
+      "create_command_id": "76fb92b3-2227-4592-bea5-ee49a2618d32",
+      "assignment_command_id": "7db707f3-6774-4a11-8e49-e14cb05fde1e"
+    },
+    {
+      "source_item": 7,
+      "source_checklist_id": "17584d02-4a46-4d1d-87a3-f623dd52091f",
+      "task_id": "f75f429b-a1de-46b1-bbe7-c9d1d08423e7",
+      "state": "completed",
+      "archived": true,
+      "notes_sha256": "9cc2c607db5f584c6f4a9a3cd3e56c12e3131772656d84df6172251f0ba0b411",
+      "create_command_id": "8784343f-cd97-424b-8cd7-5aee0c3b5504",
+      "assignment_command_id": "70404291-6ce4-4b9f-97fe-c7dbbd414a95",
+      "completion_command_id": "247f7ff0-e543-443c-b7b8-bce7b96f6b39",
+      "archive_command_id": "8e58a85f-d409-478e-b946-83d188c245c4"
+    },
+    {
+      "source_item": 8,
+      "source_checklist_id": "77d6674c-23ed-4a67-870e-a4260ed80f98",
+      "task_id": "c446b243-3900-496a-8a19-0cbf53d03632",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "e2c453acd6b785043ebcfd3f0ae1f064a8ac09c2f351302bd21570671e302922",
+      "create_command_id": "9272d989-e493-4088-9883-909144977106",
+      "assignment_command_id": "bd6dcbf4-2520-4967-a198-1320982c27db"
+    },
+    {
+      "source_item": 9,
+      "source_checklist_id": "8c126b81-0cdd-4cd4-a9a7-7a93b417d82f",
+      "task_id": "c3212899-31eb-49c5-85a8-517443479876",
+      "state": "active",
+      "archived": false,
+      "notes_sha256": "a32d8a17c8996d7c248bd80dbb84bfb1b6116d2b04fd418661a51cac2b37db3a",
+      "create_command_id": "90ad083a-b9dc-45ec-9650-d0e253ac2b69",
+      "assignment_command_id": "e23edf1f-bc2a-42ee-b937-c24872824311"
+    }
+  ],
+  "retained_completion_ids": [
+    {
+      "task_id": "7e478750-8e70-455b-ad93-dbfbedfbe485",
+      "completion_id": "fb3434e4-84e4-43ff-8537-c10166a632da"
+    },
+    {
+      "task_id": "f75f429b-a1de-46b1-bbe7-c9d1d08423e7",
+      "completion_id": "01974d85-9526-4397-bd52-f19a0473a4cc"
+    }
+  ],
+  "limits": [
+    "Native MCP metadata discovery is unavailable in the current direct connection. Browser public reviewed controls performed conversion; installed plugin reads and a narrow read-only own-project database check verify outcomes.",
+    "The linked legacy task remains unchanged as a backup; no Habitica task or party record was deleted.",
+    "The temporary <codev> name marker is not a native unique alias."
+  ]
+}

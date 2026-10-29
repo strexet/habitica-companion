@@ -15,7 +15,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
         if(!result.Succeeded||result.Value is not {} preview)return result;
         var command=preview.Command;
         if(command is null||preview.Snapshot is null||!WorkspaceOrganizationCommands.IsValid(command)||preview.PreparedCommandId!=command.Id||preview.CorrelationId==Guid.Empty
-            ||preview.ExpiresAtUtc==default||preview.ExpiresAtUtc.Offset!=TimeSpan.Zero||preview.MayAffectHabitica||!ValidSnapshot(command,preview.Snapshot)
+            ||preview.ExpiresAtUtc==default||preview.ExpiresAtUtc.Offset!=TimeSpan.Zero||(preview.TagProjection is not null&&!preview.TagProjection.IsValid())||preview.MayAffectHabitica&&preview.TagProjection?.RequestsMetadataChanges!=true||!ValidSnapshot(command,preview.Snapshot)
             ||WorkspaceOrganizationCommands.Hash(command with { Id=intent.Id,EntityId=intent.Operation==WorkspaceOrganizationOperation.Create?intent.EntityId:command.EntityId })!=WorkspaceOrganizationCommands.Hash(intent)
             ||preview.SavedInCompanion!=(preview.Receipt is not null)||preview.Receipt is {} receipt&&(!ValidReceipt(receipt,command.Id)||receipt.CorrelationId!=preview.CorrelationId||WorkspaceOrganizationCommands.Hash(receipt.Entry.Command)!=WorkspaceOrganizationCommands.Hash(command)||!receipt.Entry.Snapshot.Equivalent(preview.Snapshot)))
             return new(false,null,"The native organization preview did not match the requested intent. Keep the original request ID.",true);
@@ -24,7 +24,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
     public Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> AcceptOrganizationAsync(WorkspaceOrganizationPreview preview,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-organization-accept", () => AcceptOrganizationCoreAsync(preview,cancellationToken), preview.PreparedCommandId, preview.CorrelationId);
     private async Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> AcceptOrganizationCoreAsync(WorkspaceOrganizationPreview preview,CancellationToken cancellationToken)
     {
-        if(preview.Command is null||WorkspaceId!=preview.Command.WorkspaceId||preview.PreparedCommandId!=preview.Command.Id||preview.MayAffectHabitica
+        if(preview.Command is null||WorkspaceId!=preview.Command.WorkspaceId||preview.PreparedCommandId!=preview.Command.Id||preview.MayAffectHabitica&&preview.TagProjection?.RequestsMetadataChanges!=true||preview.TagProjection is not null&&!preview.TagProjection.IsValid()
             ||preview.CorrelationId==Guid.Empty||!WorkspaceOrganizationCommands.IsValid(preview.Command)||!ValidSnapshot(preview.Command,preview.Snapshot))return new(false,null,"Review an exact organization preview first.");
         if(!preview.SavedInCompanion&&(preview.Expired||preview.ExpiresAtUtc<=DateTimeOffset.UtcNow))return new(false,null,"The organization preview expired. Check the original receipt before preparing another action.");
         var result=await CallOrganizationAsync<WorkspaceOrganizationReceipt>("accept_organization_command",new { commandId=preview.PreparedCommandId },cancellationToken,preview.PreparedCommandId);
@@ -37,7 +37,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
     {
         var entry=receipt.Entry;var command=entry?.Command;
         return receipt.CommandId==expectedId&&receipt.CorrelationId!=Guid.Empty&&receipt.WorkspaceId==WorkspaceId&&receipt.SavedInCompanion
-            &&!receipt.MayAffectHabitica&&receipt.AcceptedEventCount==0&&receipt.ConfirmedEffectCount==0&&!receipt.OutcomeUnknown
+            &&receipt.AcceptedEventCount==0&&receipt.ConfirmedEffectCount==0&&!receipt.OutcomeUnknown
             &&command is not null&&WorkspaceOrganizationCommands.IsValid(command)&&command.Id==receipt.CommandId&&command.WorkspaceId==receipt.WorkspaceId
             &&command.EntityId==receipt.EntityId&&command.Kind==receipt.Kind&&command.Operation==receipt.Operation
             &&entry!.AcceptedAtUtc!=default&&entry.AcceptedAtUtc.Offset==TimeSpan.Zero&&entry.PayloadHash==WorkspaceOrganizationCommands.Hash(command)&&ValidSnapshot(command,entry.Snapshot);
@@ -45,7 +45,9 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
     private static bool ValidSnapshot(WorkspaceOrganizationCommand command,WorkspaceOrganizationSnapshot? snapshot)
     {
         if(snapshot is null||snapshot.Id!=command.EntityId||snapshot.Kind!=command.Kind||snapshot.Revision!=command.ExpectedRevision+1
-            ||string.IsNullOrWhiteSpace(snapshot.Name)||snapshot.Name.Length>256||snapshot.IsArchived!=(command.Operation==WorkspaceOrganizationOperation.Archive)
+            ||string.IsNullOrWhiteSpace(snapshot.Name)||snapshot.Name.Length>256||snapshot.IsArchived!=(command.Operation is WorkspaceOrganizationOperation.Archive or WorkspaceOrganizationOperation.Remove)&&!WorkspaceProjectAliases.IsRetainedClear(command)
+            ||snapshot.IsRemoved!=(command.Operation==WorkspaceOrganizationOperation.Remove)&&!WorkspaceProjectAliases.IsRetainedClear(command)
+            ||snapshot.IsRemoved&&!snapshot.IsArchived||snapshot.Alias is {} alias&&(snapshot.Kind!=WorkspaceOrganizationKind.Project||!WorkspaceProjectAliases.IsCanonical(alias))
             ||snapshot.Kind!=WorkspaceOrganizationKind.Project&&snapshot.CategoryId is not null||snapshot.CategoryId==Guid.Empty
             ||snapshot.Kind!=WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is not null||snapshot.Position!=0)
             ||snapshot.Kind==WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is null||snapshot.ProjectId==Guid.Empty||snapshot.Position<0)
@@ -55,6 +57,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
             ||snapshot.Kind==WorkspaceOrganizationKind.Goal&&(snapshot.TaskIds is null||snapshot.TaskIds.Count>100000||snapshot.TaskIds.Any(id=>id==Guid.Empty)||snapshot.TaskIds.Distinct().Count()!=snapshot.TaskIds.Count))return false;
         if(command.Operation==WorkspaceOrganizationOperation.Create)return WorkspaceOrganizationCommands.Apply(command,null).Equivalent(snapshot);
         var patch=command.Patch;return patch is null||
+            (patch.Alias is null||WorkspaceProjectAliases.Normalize(patch.Alias)==snapshot.Alias)&&(!patch.ClearAlias||snapshot.Alias is null)&&
             (patch.Query is null||patch.Query==snapshot.Query)&&(patch.Name is null||patch.Name==snapshot.Name)&&(patch.CategoryId is null||patch.CategoryId==snapshot.CategoryId)&&(!patch.ClearCategory||snapshot.CategoryId is null)
             &&(patch.Position is null||patch.Position==snapshot.Position)&&(patch.TaskIds is null||snapshot.TaskIds is not null&&patch.TaskIds.SequenceEqual(snapshot.TaskIds));
     }

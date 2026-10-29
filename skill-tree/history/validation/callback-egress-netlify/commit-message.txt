@@ -1,0 +1,4 @@
+feat: add guarded callback egress candidate
+
+Require Auth migration 0012 before enabling one-use claims.
+Keep Netlify dispatch disabled until hosted qualification.

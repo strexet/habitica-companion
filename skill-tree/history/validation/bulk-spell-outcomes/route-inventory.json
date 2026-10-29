@@ -1,0 +1,157 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [
+        "spell-outcome-equipment-unknown",
+        "spell-outcome-cleanup-failed",
+        "spell-outcome-partial",
+        "spell-outcome-refresh-failed",
+        "spell-outcome-unknown",
+        "spell-outcome-cancelled"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "spell-outcome-cancelled",
+      "spell-outcome-cleanup-failed",
+      "spell-outcome-equipment-unknown",
+      "spell-outcome-partial",
+      "spell-outcome-refresh-failed",
+      "spell-outcome-unknown"
+    ],
+    "navigation": [
+      "spell-outcome-cancelled",
+      "spell-outcome-cleanup-failed",
+      "spell-outcome-equipment-unknown",
+      "spell-outcome-partial",
+      "spell-outcome-refresh-failed",
+      "spell-outcome-unknown"
+    ],
+    "confirmation": [],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "spell-outcome-cancelled",
+      "spell-outcome-cleanup-failed",
+      "spell-outcome-equipment-unknown",
+      "spell-outcome-partial",
+      "spell-outcome-refresh-failed",
+      "spell-outcome-unknown"
+    ],
+    "error": [
+      "spell-outcome-cancelled",
+      "spell-outcome-cleanup-failed",
+      "spell-outcome-equipment-unknown",
+      "spell-outcome-partial",
+      "spell-outcome-refresh-failed",
+      "spell-outcome-unknown"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

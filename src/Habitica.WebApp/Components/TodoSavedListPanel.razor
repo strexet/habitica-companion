@@ -1,0 +1,138 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+@inject WorkspaceOrganizationController Organization
+@implements IDisposable
+
+<section class="card-surface todo-task-panel todo-saved-list-panel">
+    <div class="task-group-header"><h1>Saved lists</h1><a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a></div>
+    <p>Save a named selection of existing Companion tasks. Lists create no tasks or game effects. Dates stay fixed; Today-relative dates and custom expressions are unavailable.</p>
+    <TodoTaskPanel ShowCapture="false" ShowTaskList="false" />
+    @if (_error is not null) { <p role="alert">@_error</p> }
+    @if (Organization.Message is { } message) { <p role="status">@message</p> }
+    @if (Organization.LastReceipt is {Kind:WorkspaceOrganizationKind.SavedTaskView} receipt) { <p role="status" data-testid="saved-list-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · no task duplication or game effects · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required") · original command @receipt.CommandId</p> }
+    @if (Organization.Preview is { } preview)
+    {
+        @if (preview.Command.Kind==WorkspaceOrganizationKind.SavedTaskView)
+        {
+            <section class="todo-command-review" aria-label="Review saved list" data-testid="saved-list-review">
+                <h2 tabindex="-1" @ref="_reviewHeading">Review @preview.Command.Operation.ToString().ToLowerInvariant() saved list</h2><p><strong>@preview.Snapshot.Name</strong> · @preview.Command.EntityId</p>
+                @if (preview.Snapshot.Query is { } query) { <TodoSavedQuerySummary Query="query" /> }
+                <p>Filters above are the complete saved definition. Null filters are cleared or unbounded. Archiving hides the definition while retaining native history; tasks remain unchanged.</p><p>No task, completion or Habitica effect is created. Original command: @preview.PreparedCommandId · expires @preview.ExpiresAtUtc.ToString("u")</p>
+                @if (Organization.AcceptanceUnknown) { <p>Acceptance is uncertain. Recover the original receipt or retry the original command; do not create a replacement.</p> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="ConfirmAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="saved-list-confirm">@(Organization.AcceptanceUnknown?"Retry original saved list":"Confirm saved list change")</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="RecoverAsync" Variant="Variant.Outlined" data-testid="saved-list-recover">Check original receipt</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy||Organization.AcceptanceUnknown)" OnClick="Cancel" Variant="Variant.Text">Cancel saved list review</MudButton></div>
+            </section>
+        }
+        else { <p>Another organization review owns this workspace. <a href="/todo/projects">Open Projects to resolve the original change</a>.</p> }
+    }
+    else if (Organization.HasPendingIntent) { <p>The original organization preparation is unresolved.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="RetryAsync" Variant="Variant.Outlined" data-testid="saved-list-retry">Recover original organization preview</MudButton> }
+    @if (Todo.Snapshot is not null)
+    {
+        @if (Stale) { <p role="status">Workspace data changed. Reload the editor before replacing a saved definition.</p> }
+        <form @onsubmit="PrepareAsync" @onsubmit:preventDefault>
+            <fieldset disabled="@FreshDisabled">
+                <h2 tabindex="-1" @ref="_editorHeading">@(_editing is null?"New saved list":"Edit saved list")</h2>
+                <label class="field-row">List name<input class="app-input" maxlength="256" @bind="_draft.Name" @bind:event="oninput" data-testid="saved-list-name" /></label>
+                <label class="field-row">Source<select class="app-input" value="@_draft.Source" @onchange="ChangeSource" data-testid="saved-list-source"><option value="Tasks">Tasks</option><option value="UnblockedTodos">Unblocked active Todos</option></select></label>
+                <p>Choosing Unblocked active Todos clears the type/state filters; the source already requires active Todos with every prerequisite completed. Other filters remain explicit. Stage filters only select active Todos.</p>
+                <label class="field-row">Search titles and notes (plain text)<input class="app-input" maxlength="256" @bind="_draft.Search" @bind:event="oninput" data-testid="saved-list-search" /></label>
+                <div class="saved-filter-grid">
+                    <label class="field-row">Task type<select class="app-input" @bind="_draft.Kind" disabled="@(_draft.Source=="UnblockedTodos")" data-testid="saved-list-kind"><option value="">Any type permitted by source</option>@foreach(var kind in Enum.GetValues<CompanionTaskKind>()){<option value="@kind">@kind</option>}</select></label>
+                    <label class="field-row">Task state<select class="app-input" @bind="_draft.State" disabled="@(_draft.Source=="UnblockedTodos")" data-testid="saved-list-state"><option value="">Any state permitted by source</option>@foreach(var state in Enum.GetValues<CompanionTaskState>()){<option value="@state">@state</option>}</select></label>
+                    <label class="field-row">Urgency<select class="app-input" @bind="_draft.Priority" data-testid="saved-list-priority"><option value="">Any urgency</option>@foreach(var priority in Enum.GetValues<CompanionPriority>()){<option value="@priority">@priority</option>}</select></label>
+                    <label class="field-row">Active Todo stage<select class="app-input" @bind="_draft.Stage" data-testid="saved-list-stage"><option value="">Any stage</option><option value="Inbox">Inbox</option><option value="Next">Next</option><option value="InProgress">In progress</option></select></label>
+                    <TodoPlacementPicker Kind="Project" Caption="Project filter" EmptyLabel="Any project" Value="_draft.Project" ValueChanged="value=>_draft.Project=value" Disabled="FreshDisabled" />
+                    <TodoPlacementPicker Kind="Category" Caption="Category filter" EmptyLabel="Any category" Value="_draft.Category" ValueChanged="value=>_draft.Category=value" Disabled="FreshDisabled" />
+                    <TodoPlacementPicker Kind="Label" Caption="Label filter" EmptyLabel="Any label" Value="_draft.Label" ValueChanged="value=>_draft.Label=value" Disabled="FreshDisabled" />
+                    <label class="field-row">Habitica mapping state<select class="app-input" @bind="_draft.Projection" data-testid="saved-list-projection"><option value="">Any mapping state</option>@foreach(var state in Enum.GetValues<ProjectionState>()){<option value="@state">@state</option>}</select></label>
+                    <label class="field-row">Planned from (fixed date)<input class="app-input" type="date" value="@_draft.PlannedFrom" @onchange="args=>_draft.PlannedFrom=args.Value?.ToString()??string.Empty" data-testid="saved-list-planned-from" /></label>
+                    <label class="field-row">Planned through (fixed date)<input class="app-input" type="date" value="@_draft.PlannedTo" @onchange="args=>_draft.PlannedTo=args.Value?.ToString()??string.Empty" data-testid="saved-list-planned-to" /></label>
+                    <label class="field-row">Deadline from (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineFrom" @onchange="args=>_draft.DeadlineFrom=args.Value?.ToString()??string.Empty" data-testid="saved-list-deadline-from" /></label>
+                    <label class="field-row">Deadline through (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineTo" @onchange="args=>_draft.DeadlineTo=args.Value?.ToString()??string.Empty" data-testid="saved-list-deadline-to" /></label>
+                </div>
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="saved-list-prepare">Review complete definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearFilters" Variant="Variant.Text" data-testid="saved-list-clear">Clear filters (keep source)</MudButton></div>
+            </fieldset>
+        </form>
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="New" Variant="Variant.Text">New definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadEditor" Variant="Variant.Text" data-testid="saved-list-reload">Reload editor context</MudButton></div>
+        <section aria-label="Saved definitions"><h2>Saved definitions</h2>
+            @if (_rows.Count==0) { <p>No active saved definitions on this page.</p> }
+            @foreach(var row in _rows)
+            {
+                <article class="todo-direct-row"><div class="todo-row-content"><strong>@ListName(row)</strong><span>@row.Query.Source</span><details><summary>Reference</summary><p>@row.Id</p></details></div><div class="todo-row-actions"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="()=>Select(row.Id)" Variant="Variant.Text" aria-label="@($"Open list {row.Name} {row.Id:D}")" data-testid="@($"saved-list-open-{row.Id:D}")">Open list</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="()=>Edit(row.Id)" Variant="Variant.Text" data-testid="@($"saved-list-edit-{row.Id:D}")">Edit definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="()=>ArchiveAsync(row.Id)" Variant="Variant.Text" data-testid="@($"saved-list-archive-{row.Id:D}")">Review archive</MudButton></div></article>
+            }
+            <div class="action-row"><span>@_total active definitions</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||_listOffset==0)" OnClick="PreviousLists" Variant="Variant.Text">Previous definitions</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||_listOffset+20>=_total)" OnClick="NextLists" Variant="Variant.Text">Next definitions</MudButton></div>
+        </section>
+        <section aria-label="Saved list results"><h2 tabindex="-1" @ref="_resultsHeading">Selected list</h2>
+            @if (_selected is null) { <p>Open a saved definition to read matching tasks. No implicit all-task fallback is selected.</p> }
+            else if (_readError is not null) { <p role="alert" data-testid="saved-list-unavailable">@_readError</p> }
+            else if (_page is { } result && _definition is { } definition)
+            {
+                <h3>@definition.Name</h3><details class="saved-definition-details"><summary>Exact saved filters</summary><TodoSavedQuerySummary Query="definition.Query" /></details><p data-testid="saved-list-count">@result.MatchedCount matching nonarchived tasks · revision @result.Revision. Mapping state does not confirm game effects.</p>
+                @if (result.Tasks.Count==0) { <p>No tasks match this saved definition.</p> }
+                @foreach(var task in result.Tasks) { <article class="todo-direct-row" data-testid="@($"saved-list-task-{task.Id:D}")"><div class="todo-row-content"><strong>@task.Text</strong><span>@task.Kind · @task.State · @task.Priority</span>@if(task.PlannedDate is {} planned){<span>Planned: @planned.ToString("yyyy-MM-dd")</span>}@if(task.Deadline is {} deadline){<span>Deadline: @deadline.ToString("yyyy-MM-dd")</span>}<details><summary>Task reference</summary><p>@task.Id</p></details></div></article> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||_taskOffset==0)" OnClick="PreviousTasks" Variant="Variant.Text">Previous matching tasks</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||result.NextOffset is null)" OnClick="NextTasks" Variant="Variant.Text">Next matching tasks</MudButton></div>
+            }
+            @if (_selected is not null) { <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearSelection" Variant="Variant.Text">Clear selected definition</MudButton> }
+        </section>
+    }
+    else { <p>Choose and load a workspace above. Unavailable data does not supply an empty saved list.</p> }
+</section>
+
+@code {
+    private TodoSavedListDraft _draft=new();
+    private TodoWorkspaceSelection? _source,_draftSource;
+    private long? _revision,_draftRevision;
+    private Guid? _editing,_selected;
+    private int _listOffset,_taskOffset,_total;
+    private IReadOnlyList<WorkspaceSavedTaskView> _rows=[];
+    private WorkspaceSavedTaskView? _definition;
+    private WorkspaceTaskPage? _page;
+    private string? _error,_readError;
+    private bool _focusEditor,_focusReview,_focusResults;
+    private ElementReference _editorHeading,_reviewHeading,_resultsHeading;
+    private bool OriginalBusy=>Todo.IsBusy||Organization.IsBusy||Todo.Commands.HasPendingIntent;
+    private bool Busy=>OriginalBusy||Todo.IsReadOnly||Organization.HasPendingIntent;
+    private bool Stale=>_draftSource!=Todo.Selection||_draftRevision!=Todo.Revision;
+    private bool FreshDisabled=>Busy||Stale;
+    protected override void OnInitialized(){_source=Todo.Selection;_revision=Todo.Revision;Reset();Todo.Changed+=Changed;Read();}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try{if(_focusReview&&Organization.Preview?.Command.Kind==WorkspaceOrganizationKind.SavedTaskView){_focusReview=false;await _reviewHeading.FocusAsync();}else if(_focusEditor){_focusEditor=false;await _editorHeading.FocusAsync();}else if(_focusResults){_focusResults=false;await _resultsHeading.FocusAsync();}}catch(JSException){}
+    }
+    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_selected=null;_listOffset=_taskOffset=0;Reset();_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_listOffset=_taskOffset=0;}if(_draftRevision is null&&Todo.Snapshot is not null){_draftRevision=Todo.Revision;_draftSource=Todo.Selection;}Read();_ = InvokeAsync(StateHasChanged);}
+    private void Reset(){_draft=new();_editing=null;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;}
+    private void Read()
+    {
+        _rows=[];_total=0;_page=null;_definition=null;_readError=null;if(Todo.Snapshot is not {} snapshot)return;var active=(snapshot.Document.SavedTaskViews??[]).Where(row=>!row.IsArchived).ToArray();_total=active.Length;_rows=active.Skip(_listOffset).Take(20).ToArray();
+        if(_selected is not {} id)return;_definition=snapshot.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived);
+        try{_page=Todo.SavedView(id,new(20,_taskOffset,Todo.Revision));}catch(Exception error)when(error is InvalidOperationException or ArgumentException){_readError="The selected saved definition is unavailable or archived. Choose another definition or reload; no all-task fallback is shown.";}
+    }
+    private void ChangeSource(ChangeEventArgs args){_draft.Source=args.Value?.ToString()??"";if(_draft.Source=="UnblockedTodos")_draft.Kind=_draft.State="";}
+    private string ListName(WorkspaceSavedTaskView row)=>Todo.Snapshot?.Document.SavedTaskViews?.Count(value=>!value.IsArchived&&value.Name==row.Name)>1?$"{row.Name} · {row.Id}":row.Name;
+    private void ClearFilters()=>_draft=new(){Name=_draft.Name,Source=_draft.Source};
+    private void New(){if(OriginalBusy||Organization.HasPendingIntent)return;Reset();_error=null;_focusEditor=true;}
+    private void Edit(Guid id)
+    {
+        if(Busy)return;var row=Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived);if(row is null){_error="The saved definition is unavailable. Reload the workspace.";return;}_draft=TodoSavedListDraft.From(row.Name,row.Query);_editing=id;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;_focusEditor=true;
+    }
+    private void ReloadEditor(){if(_editing is {} id)Edit(id);else{_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;}_focusEditor=true;}
+    private void Select(Guid id){_selected=id;_taskOffset=0;Read();_focusResults=true;}
+    private void ClearSelection(){_selected=null;_taskOffset=0;Read();}
+    private async Task RunAsync(Func<Task> action){_error=null;try{await action();Read();}catch(InvalidOperationException error){_error=error.Message;}catch{_error="The saved-list result is unavailable. Keep the original request or command and recover the original receipt.";}}
+    private Task PrepareAsync()=>RunAsync(async()=>
+    {
+        if(FreshDisabled)throw new InvalidOperationException("Reload the editor and resolve original commands before replacing a definition.");if(string.IsNullOrWhiteSpace(_draft.Name)||_draft.Name.Length>256)throw new InvalidOperationException("Enter a list name within 256 characters.");var query=_draft.Query();var current=_editing is {} id?Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived):null;if(_editing is not null&&current is null)throw new InvalidOperationException("The saved definition is unavailable. Reload before editing.");
+        if(current?.Name==_draft.Name&&current.Query==query)throw new InvalidOperationException("Change the name or filters before reviewing.");var patch=new WorkspaceOrganizationPatch(Name:current?.Name==_draft.Name?null:_draft.Name,Query:current?.Query==query?null:query);await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.SavedTaskView,_editing is null?WorkspaceOrganizationOperation.Create:WorkspaceOrganizationOperation.Update,_editing,patch));_focusReview=Organization.Preview is not null;
+    });
+    private Task ArchiveAsync(Guid id)=>RunAsync(async()=>{if(Busy)throw new InvalidOperationException("Resolve the original command before archiving.");await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.SavedTaskView,WorkspaceOrganizationOperation.Archive,id));_focusReview=Organization.Preview is not null;});
+    private void Applied(){if(Organization.LastReceipt is {SavedInCompanion:true,Kind:WorkspaceOrganizationKind.SavedTaskView} receipt){_selected=receipt.EntityId;_taskOffset=0;Reset();_focusResults=true;}}
+    private Task ConfirmAsync()=>RunAsync(async()=>{await Todo.ConfirmOrganizationAsync();Applied();});
+    private Task RecoverAsync()=>RunAsync(async()=>{await Todo.RecoverOrganizationAsync();Applied();});
+    private Task RetryAsync()=>RunAsync(async()=>{await Todo.RetryOrganizationPreviewAsync();_focusReview=Organization.Preview is not null;Applied();});
+    private void Cancel(){Todo.CancelOrganizationPreview();_error=null;_focusEditor=true;}
+    private void PreviousLists(){_listOffset=Math.Max(0,_listOffset-20);Read();}
+    private void NextLists(){_listOffset+=20;Read();}
+    private void PreviousTasks(){_taskOffset=Math.Max(0,_taskOffset-20);Read();}
+    private void NextTasks(){if(_page?.NextOffset is {} next){_taskOffset=next;Read();}}
+    public void Dispose()=>Todo.Changed-=Changed;
+}

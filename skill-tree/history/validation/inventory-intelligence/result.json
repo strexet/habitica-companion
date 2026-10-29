@@ -1,0 +1,51 @@
+{
+  "taskIds": [
+    "T-f362faf0-4d48-4ed3-b586-843c47345510",
+    "T-ce88de57-a6d2-42ed-b55c-15799b5d0335"
+  ],
+  "componentTests": 27,
+  "webTests": 753,
+  "renderedCases": 168,
+  "renderedErrors": 0,
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "themes": [
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate",
+    "gryphy-dark",
+    "gryphy-light",
+    "obsidian-glow",
+    "toxic-swamp"
+  ],
+  "minimumMeasuredContrast": 5.017781071771262,
+  "negativeControls": 2,
+  "focus": "Keyboard Tab from recommendation name reaches Equip recommendation; visible outline inspected at 390px and 1200px in gryphy-light and obsidian-glow, 200-percent text.",
+  "operations": {
+    "classification": "executed controls; browser DOM inspection limitation is transport/API uncertainty",
+    "unchangedFailurePair": false,
+    "prerequisiteWaitSeconds": 0,
+    "activeControllerSeconds": null,
+    "activeControllerTimingLimitation": "Not independently instrumented for the controller turn. Shell control wall times are recorded separately.",
+    "deadlines": "Shell controls 120-180 seconds plus five-second cleanup reserve; browser matrix 300 seconds and five seconds per case; local fixture server 900 seconds.",
+    "cleanup": "Temporary browser tabs closed; fixture server interrupted after evidence capture."
+  },
+  "sourceFingerprints": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "d68393c8ef9892deecbf0a78dc8b9c5418b881cda2aeba2235f08cc773ff4c64",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "540e3c736e5e66608e06894d7472391b05336ba55e1bc88f3abbb611a13a7905",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d5e54e1860a7ad5529291282304596b4396757f7df8dee0ba23979c6a8e85777"
+  },
+  "limitations": [
+    "Synthetic component/rendered evidence only. Physical devices, assistive technologies, actual Habitica equipment mutation, hosted clients and production publication remain unqualified."
+  ]
+}

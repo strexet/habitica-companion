@@ -1,0 +1,31 @@
+{
+  "task_id": "T-9f465413-725a-440e-a464-cb5c555cb87d",
+  "checks": {
+    "solutionTestsPassedBeforeFinalTwoReadRaceCases": 842,
+    "solutionTestsFailed": 0,
+    "finalWebAppTestsPassed": 474,
+    "finalWebAppTestsFailed": 0,
+    "newPresentationCases": 13,
+    "compileWarnings": 0,
+    "finalReleasePublish": "pass",
+    "documentation": "pass with stale historical audit warning"
+  },
+  "results": [
+    "Account-scoped browser/cloud choices retain exact workspace and revision without implicit enrollment, merging or effects.",
+    "Existing canonical query, agenda, history, organization and saved-view engines read validated snapshots; unavailable and empty remain distinct.",
+    "Explicit mapping provenance keeps canonical and Habitica identities separate and avoids duplicate cached rows.",
+    "Frozen/cloud-owned local copies remain readable but reject local writes.",
+    "Pending original commands survive presentation recreation and unavailable cloud reload, then recover one original receipt without another acceptance.",
+    "Generation guards reject late account and same-account re-entry results; source-load versions and command ownership reject delayed source replacement.",
+    "Browser listing failure remains explicit without blocking an existing cloud connection; cancelled or invalid loads expose no current canonical result."
+  ],
+  "evidence": [
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs"
+  ],
+  "limitations": [
+    "Shared presentation is registered for task-page consumers; complete Todo page composition remains separate queue work.",
+    "Tests use synthetic storage/cloud fixtures; actual hosted navigation, physical devices and real account mutation remain unqualified."
+  ],
+  "baseCheckpointCommit": "8adb4c3"
+}

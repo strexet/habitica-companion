@@ -4,4 +4,8 @@ Skill Tree navigation resides in skill-tree/skill-tree.json. Applicable reposito
 
 Before non-trivial changes, read `skill-tree/documents/rules.md` and the manifest. Habitica work requires `skill-tree/documents/habitica-api.md`; UI work requires `skill-tree/documents/ux-ui-manifest.md`. Verify current behavior against code and tests.
 
+For every changed UI route, check a readable built-in light scheme and a dark scheme including `obsidian-glow` at phone and desktop widths. Check normal and enlarged text, visible primary actions, disabled controls, focus, geometry and contrast. Do not claim UI qualification from a single color scheme; record untested devices and interaction paths separately.
+
 Canonical documentation and task identities use the current Skill Tree structure. Imported contracts retain source intent and blockers; metadata creation does not count as Process Pending, implementation, validation or acceptance. MCP and Companion-first behavior remains planned. Use the installed generic Skill Tree packages for this Blazor repository.
+
+Agent-required Companion workflows must have reviewed MCP tools. If a supported browser action needed by Codex or ChatGPT has no MCP equivalent, treat that gap as a product bug: capture it in Skill Tree with appropriate priority, implement a scoped MCP preview/accept/receipt contract, and do not normalize browser automation as the permanent agent workflow. Preserve the existing security and user-approval boundaries.

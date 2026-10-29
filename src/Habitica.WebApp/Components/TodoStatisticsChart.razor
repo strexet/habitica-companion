@@ -1,0 +1,7 @@
+@using System.Globalization
+<figure class="todo-stat-chart"><figcaption><strong>@Title</strong><span>@Values.Sum(v=>v.Value) retained record(s)</span></figcaption>
+    <div class="todo-stat-scroll" tabindex="0" role="region" aria-label="@($"{Title} chart; scroll for all buckets")"><div class="todo-stat-bars" style="@($"grid-template-columns:repeat({Values.Count},minmax(3rem,1fr))")">
+        @foreach(var bucket in Values){<div class="todo-stat-bar" title="@($"{bucket.Label}: {bucket.Value}")"><strong>@bucket.Value</strong><span class="todo-stat-track"><i style="@($"height:{(bucket.Value*100m/Math.Max(1,Values.Max(v=>v.Value))).ToString("0.##",CultureInfo.InvariantCulture)}%")"></i></span><small>@bucket.Label</small></div>}
+    </div></div><p class="panel-copy">@Description</p>
+</figure>
+@code{[Parameter,EditorRequired]public string Title{get;set;}="";[Parameter,EditorRequired]public IReadOnlyList<StatisticsBucket> Values{get;set;}=[];[Parameter]public string Description{get;set;}="";}

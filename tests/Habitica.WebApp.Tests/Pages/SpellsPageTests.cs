@@ -35,6 +35,36 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Equal(isolated,cut.Markup.Contains("Start New Day remains disabled"));
     }
 
+    [Theory]
+    [InlineData("partial",17,40,SpellCastStage.Casting,false,false,SpellFollowupStatus.NotNeeded,SpellFollowupStatus.Completed)]
+    [InlineData("unknown",17,40,SpellCastStage.Casting,true,false,SpellFollowupStatus.NotNeeded,SpellFollowupStatus.Completed)]
+    [InlineData("cleanup-failed",10,10,SpellCastStage.RestoreGear,false,false,SpellFollowupStatus.Failed,SpellFollowupStatus.Completed)]
+    [InlineData("refresh-failed",10,10,SpellCastStage.RefreshUser,false,false,SpellFollowupStatus.Completed,SpellFollowupStatus.Failed)]
+    [InlineData("cancelled",0,2,SpellCastStage.Preparation,false,false,SpellFollowupStatus.NotNeeded,SpellFollowupStatus.NotNeeded)]
+    [InlineData("equipment-unknown",0,1,SpellCastStage.AutoEquip,false,true,SpellFollowupStatus.Unknown,SpellFollowupStatus.Completed)]
+    public void Last_cast_outcome_preserves_counts_stage_and_separate_followup_statuses(string name,int acknowledged,int requested,SpellCastStage stage,bool unknown,bool equipmentUnknown,SpellFollowupStatus cleanup,SpellFollowupStatus refresh)
+    {
+        JSInterop.Mode=JSRuntimeMode.Loose;Services.AddMudServices();Services.AddSingleton(new SpellViewModelFactory());Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());var outcome=new SpellCastOutcome(Guid.NewGuid(),"fireball",requested,acknowledged,stage,unknown,equipmentUnknown,name=="cancelled",cleanup,refresh,429,DateTimeOffset.Parse("2026-10-22T23:59:00Z"));Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateState() with {LastSpellCastOutcome=outcome}));var cut=Render<SpellsPage>();var result=cut.Find("[data-testid='spell-last-outcome']");Assert.Contains($"Acknowledged {acknowledged} of {requested} casts",result.TextContent);Assert.Contains(outcome.Summary,result.TextContent);Assert.Empty(result.QuerySelectorAll("button"));if(unknown)Assert.Contains("never replay",result.TextContent);Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save("spell-outcome-"+name,cut.Markup,"/spells",name,["form","navigation","disabled-controls","error"],nameof(SpellsPageTests));
+    }
+
+    [Theory]
+    [InlineData("pending", GearRecoverySlotStatus.InFlight)]
+    [InlineData("later-selection", GearRecoverySlotStatus.Acknowledged)]
+    [InlineData("deadline", GearRecoverySlotStatus.Prepared)]
+    public void Saved_recovery_exposes_exact_slots_and_binds_manual_actions(string name, GearRecoverySlotStatus status)
+    {
+        JSInterop.Mode=JSRuntimeMode.Loose;Services.AddMudServices();Services.AddSingleton(new SpellViewModelFactory());Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var id=Guid.NewGuid();var fake=new FakeAppSessionController(CreateState()) {RecoveryReview=new(new(id,2,[new("Head",new string('a',128),"head_temporary",status)]),name=="deadline"?"Head: recovery stopped; unresolved slots remain saved.":"Review original and temporary slots. Recovery never repeats a spell.")};
+        Services.AddSingleton<IAppSessionController>(fake);var cut=Render<SpellsPage>();
+        cut.FindAll("button").Single(button=>button.TextContent.Contains("Check saved recovery")).Click();
+        Assert.Contains("head_temporary",cut.Markup);
+        cut.FindAll("button").Single(button=>button.TextContent.Contains("Restore original gear")).Click();
+        Assert.Equal((true,false,(Guid?)id),fake.RecoveryCalls.Last());
+        cut.FindAll("button").Single(button=>button.TextContent.Contains("Keep current gear")).Click();
+        Assert.Equal((false,true,(Guid?)id),fake.RecoveryCalls.Last());Assert.Empty(fake.CastSpellCalls);
+        Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save("spell-recovery-"+name,cut.Markup,"/spells",name,["form","navigation","error"],nameof(SpellsPageTests));
+    }
+
     [Fact]
     public void Signed_out_empty_spells_has_sign_in_action()
     {

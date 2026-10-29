@@ -1,0 +1,170 @@
+{
+  "conversion-unavailable": {
+    "file": "conversion-unavailable.html",
+    "route": "/todo/convert",
+    "state": "conversion-unavailable",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-source-changed": {
+    "file": "conversion-source-changed.html",
+    "route": "/todo/convert",
+    "state": "conversion-source-changed",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-draft": {
+    "file": "conversion-draft.html",
+    "route": "/todo/convert/{SourceTaskId:guid}",
+    "state": "conversion-draft",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-exact-targets": {
+    "file": "conversion-exact-targets.html",
+    "route": "/todo/convert",
+    "state": "conversion-exact-targets",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-full-review": {
+    "file": "conversion-full-review.html",
+    "route": "/todo/convert",
+    "state": "conversion-full-review",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-saved-gaps": {
+    "file": "conversion-saved-gaps.html",
+    "route": "/todo/convert",
+    "state": "conversion-saved-gaps",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-unresolved-preview": {
+    "file": "conversion-unresolved-preview.html",
+    "route": "/todo/convert",
+    "state": "conversion-unresolved-preview",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-unknown-acceptance": {
+    "file": "conversion-unknown-acceptance.html",
+    "route": "/todo/convert",
+    "state": "conversion-unknown-acceptance",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-partial-progress": {
+    "file": "conversion-partial-progress.html",
+    "route": "/todo/convert",
+    "state": "conversion-partial-progress",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-capture-entry": {
+    "file": "conversion-capture-entry.html",
+    "route": "/tasks",
+    "state": "conversion-capture-entry",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-tree-entry": {
+    "file": "conversion-tree-entry.html",
+    "route": "/todo/tasks",
+    "state": "conversion-tree-entry",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "conversion-project-entry": {
+    "file": "conversion-project-entry.html",
+    "route": "/todo/projects",
+    "state": "conversion-project-entry",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

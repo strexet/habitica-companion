@@ -1,0 +1,47 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@implements IDisposable
+
+<section class="card-surface todo-history-results" data-testid="recovery-browser">
+    <h2>Archived tasks and Daily occurrences</h2>
+    <p>Unarchive and native occurrence correction are separate from Habitica uncheck. Missing source history never establishes a recovery.</p>
+    <div class="todo-history-filters"><label class="field-row">Retained records<select class="app-input" @bind="_mode" @bind:after="Reset" data-testid="recovery-record-type"><option value="Archived">Archived tasks</option><option value="Occurrences">Terminal Daily occurrences</option></select></label><label class="field-row">Search current task title or notes<input class="app-input" maxlength="256" @bind="_query" @bind:after="Reset" data-testid="recovery-record-query" /></label></div>
+    @if(Todo.Snapshot is {} snapshot)
+    {
+        var rows=Rows(snapshot);var page=rows.Skip(_offset).Take(20).ToArray();
+        <p>@rows.Count matching retained records · revision @snapshot.Document.Revision</p>
+        @if(rows.Count==0){<p role="status">No retained records match. Missing records do not prove inactivity.</p>}
+        @foreach(var row in page)
+        {
+            <article class="todo-history-row" @key="row.Id" data-testid="@($"recovery-record-{row.Id:D}")"><div class="todo-row-content"><strong>@row.Task.Text</strong><span>@row.Task.Kind · @row.State</span><span>Task: @row.Task.Id</span>
+                @if(row.Occurrence is {} occurrence){<span>Civil occurrence date: @occurrence.Date.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) · @occurrence.Id</span><span>Original command: @(row.Source?.ToString()??"Unavailable")</span>}
+                else{<span>Current archived task state: @row.Task.State · task revision @row.Task.Revision</span>}
+                @if(TaskHistoryRecovery.NativeReason(snapshot,row.Selection) is {} reason){<span class="panel-copy">@reason</span>}
+                @if(snapshot.Document.OccurrenceCorrections?.LastOrDefault(value=>value.PreviousOccurrence.Id==row.Occurrence?.Id) is {} corrected){<span>Retained correction receipt: @corrected.CommandId</span>}
+            </div><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||Todo.IsReadOnly||Todo.Commands.HasPendingIntent||Todo.Commands.LinkPreview is not null)" OnClick="() => Selected.InvokeAsync(row.Selection)" Variant="Variant.Outlined" data-testid="@($"recovery-record-open-{row.Id:D}")">Review recovery options</MudButton></article>
+        }
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset==0)" OnClick="Previous" Variant="Variant.Text">Previous retained records</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset+20>=rows.Count)" OnClick="Next" Variant="Variant.Text">Next retained records</MudButton></div>
+    }
+    else{<p role="status">Load an available workspace before reading retained records.</p>}
+</section>
+@code{
+    [Parameter]public EventCallback<HistoryRecoverySelection> Selected{get;set;}
+    private string _mode="Archived",_query="";private int _offset;private TodoWorkspaceSelection? _source;
+    private sealed record Entry(Guid Id,CompanionTask Task,TaskOccurrence? Occurrence,Guid? Source,string State,HistoryRecoverySelection Selection);
+    private List<Entry> Rows(WorkspaceJournalSnapshot snapshot)
+    {
+        var folded=WorkspaceTaskQuery.Fold(_query);
+        bool Match(CompanionTask task)=>WorkspaceTaskQuery.Fold(task.Text).Contains(folded,StringComparison.Ordinal)||WorkspaceTaskQuery.Fold(task.Notes??"").Contains(folded,StringComparison.Ordinal);
+        var tasks=snapshot.Document.Tasks.ToDictionary(row=>row.Id);
+        if(_mode=="Archived")return snapshot.Document.Tasks.Where(row=>row.IsArchived&&Match(row)).OrderByDescending(row=>row.UpdatedAtUtc).ThenBy(row=>row.Id).Select(row=>new Entry(row.Id,row,null,null,"Archived",new(row.Id))).ToList();
+        return snapshot.Document.Occurrences.Where(row=>!row.IsArchived&&row.State!=OccurrenceState.Pending&&tasks.ContainsKey(row.TaskId)&&Match(tasks[row.TaskId])).OrderByDescending(row=>row.Date).ThenBy(row=>row.Id).Select(row=>new Entry(row.Id,tasks[row.TaskId],row,TaskHistoryRecovery.Source(snapshot,row)?.Command.Id,row.State.ToString(),new(row.TaskId,snapshot.Document.Completions.FirstOrDefault(value=>value.OccurrenceId==row.Id&&value.Revision==row.Revision)?.Id,row.Id))).ToList();
+    }
+    protected override void OnInitialized(){_source=Todo.Selection;Todo.Changed+=Changed;}
+    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_query="";_mode="Archived";_offset=0;}else if(Todo.Snapshot is {} snapshot){var count=Rows(snapshot).Count;if(_offset>=count)_offset=Math.Max(0,((Math.Max(0,count-1))/20)*20);}_ = InvokeAsync(StateHasChanged);}
+    private void Reset()=>_offset=0;
+    private void Previous()=>_offset=Math.Max(0,_offset-20);
+    private void Next()=>_offset+=20;
+    public void Dispose()=>Todo.Changed-=Changed;
+}

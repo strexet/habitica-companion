@@ -1,8 +1,11 @@
+import {completionScoreBinding} from '../../shared/completion-score-source.ts';
+import {tagAcknowledgement} from './tag-reconciliation.ts';
+import {executeTagWork} from './tag-executor.ts';
 import { event, type Authority } from './journal.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
 import { projectionStep, confirmMapping, type Observation, type AccountObservation } from './projection-adapter.ts';
 import type { WorkspaceDocument } from '../../shared/workspace-domain.ts';
-export interface WorkspaceRow {mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
+export interface WorkspaceRow {linked_recovery_fence?:string|null;retirement_fence?:string|null;mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
 interface Runtime {access_epoch:string;lease_token:string|null;lease_until_utc:string|null;next_network_at_utc:string|null;command_id:string|null;prepared_request_json:string|null}
 interface Prepared {profileId:string;connectionId:string;operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string}
 interface Outcome {kind?:string;code?:string;retryAtUtc?:string;task?:{id:string;fingerprint:string;alias:string|null}}
@@ -13,7 +16,7 @@ export const cloudAuthority=(id:string):Authority=>({mode:'cloud',transferId:nul
 export async function executeProfile(env:ExecutorEnv,profileId:string,options:{wait?:(ms:number)=>Promise<void>}={}):Promise<string>{
  if(!env.EXECUTOR_ENABLED||!env.WORKSPACE_ENABLED)return 'disabled';
  const initial=await env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND active=1 AND executor_enabled=1').bind(profileId).first<WorkspaceRow>();
- if(!initial)return 'disabled';
+ if(!initial)return 'disabled';if(initial.retirement_fence)return 'source_retirement_pending';if(initial.linked_recovery_fence)return 'linked_recovery_pending';
  const authority:Authority=initial.authority_json?JSON.parse(initial.authority_json):cloudAuthority(initial.workspace_id);if(authority.mode!=='cloud')return 'paused';
  const token=crypto.randomUUID();const until=new Date(Date.now()+240000).toISOString();
  const acquired=await env.WORKSPACE_DB.prepare(`INSERT INTO workspace_runtime(profile_id,access_epoch,lease_token,lease_until_utc,last_wake_at_utc)
@@ -25,7 +28,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
  const runtime=()=>env.WORKSPACE_DB.prepare('SELECT * FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?').bind(profileId,epoch,token,now()).first<Runtime>();
  const row=()=>env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND access_epoch=?').bind(profileId,epoch).first<WorkspaceRow>();
  const currentEntry=(id:string)=>env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=? AND command_id=?').bind(profileId,id).first<{entry_json:string}>();
- async function permitted(){const [w,r]=await Promise.all([row(),runtime()]);return Boolean(w?.active&&w.executor_enabled&&r&&Date.now()<deadline);}
+ async function permitted(){const [w,r]=await Promise.all([row(),runtime()]);return Boolean(w?.active&&!w.retirement_fence&&!w.linked_recovery_fence&&w.executor_enabled&&r&&Date.now()<deadline);}
  async function transition(id:string,change:(entry:CommandEntry,document:WorkspaceDocument)=>{entry:CommandEntry;document?:WorkspaceDocument;kind:string;evidence?:string},prepared?:Prepared|null):Promise<boolean>{
   for(let i=0;i<3;i++){
    const w=await row();const r=await runtime();const c=await currentEntry(id);if(!w||!r||!c)return false;
@@ -35,7 +38,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
    const statements=[env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,store_version=?,archive_bytes=?,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=?
     AND EXISTS(SELECT 1 FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?)`).bind(docJson,version,size,tag,now(),profileId,epoch,w.store_version,profileId,epoch,token,now()),
     env.WORKSPACE_DB.prepare('UPDATE workspace_commands SET entry_json=? WHERE profile_id=? AND command_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(entryJson,profileId,id,profileId,tag),
-    env.WORKSPACE_DB.prepare('INSERT INTO workspace_events(profile_id,event_id,sequence,event_json) SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(e.id,version,eventJson,profileId,tag)];
+    env.WORKSPACE_DB.prepare('INSERT INTO workspace_events(profile_id,event_id,sequence,event_json) SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(e.id,version,eventJson,profileId,tag),...tagAcknowledgement(env,w,doc,next.document??doc,tag)];
    if(prepared!==undefined)statements.push(env.WORKSPACE_DB.prepare('UPDATE workspace_runtime SET command_id=?,prepared_request_json=? WHERE profile_id=? AND lease_token=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(prepared?id:null,prepared?JSON.stringify(prepared):null,profileId,token,profileId,tag));
    const result=await env.WORKSPACE_DB.batch(statements);if(result[0].meta.changes)return true;
   }return false;
@@ -76,6 +79,8 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   },outcome.kind==='unknown'||!['applied','refused'].includes(outcome.kind??'')?undefined:null);
  }
  try{
+  const tagControl={runtime,row,permitted,wait,deadline,token,epoch};
+  const tagRecovery=await executeTagWork(env,profileId,tagControl,true);if(tagRecovery)return tagRecovery;
   if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM prepared_cron_actions WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1").bind(profileId).first())return 'cron_fenced';
   if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM prepared_spell_actions WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1").bind(profileId).first())return 'spell_fenced';
   const r=await runtime();if(!r)return 'lost_lease';
@@ -96,7 +101,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   }
   if(entries.some(c=>c.failure==='credentialRepair'&&c.projectionState==='blocked'||c.failure==='rateLimited'&&Date.parse(c.retryAtUtc??'')>Date.now()))return 'fenced';
   const candidate=entries.find((c,i)=>c.projectionState==='pending'&&!(Date.parse(c.retryAtUtc??'')>Date.now())&&!entries.slice(0,i).some(p=>p.command.taskId===c.command.taskId&&!['confirmed','notRequested','cancelled'].includes(p.projectionState)));
-  if(!candidate)return 'idle';
+  if(!candidate)return await executeTagWork(env,profileId,tagControl)??'idle';
   const w=await row();if(!w||w.archive_bytes>8*1024*1024-32768||w.store_version>Number.MAX_SAFE_INTEGER-8)return 'capacity';
   const lease={owner:'workspace-worker',token:crypto.randomUUID(),expiresAtUtc:until};
   if(!await transition(candidate.command.id,e=>({entry:{...e,projectionState:'leased',lease},kind:'leaseAcquired'})))return 'conflict';
@@ -114,7 +119,8 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
    // Reserve the request only after pacing; attempt timestamps and check receipts remain fresh.
    const rt=await runtime();const delay=Math.max(0,Date.parse(rt?.next_network_at_utc??'')-Date.now());if(Number.isFinite(delay)&&delay>0)await wait(delay);
    if(!await permitted())return 'paused';
-   const prepared:Prepared={profileId,connectionId:initial.connection_id,operation:step.operation,arguments:step.arguments,automated:true,attemptId:lease.token,attemptAtUtc:now()};
+   const sourceContext=step.operation==='score'?completionScoreBinding(document,candidate):null;
+   const prepared:Prepared={profileId,connectionId:initial.connection_id,operation:step.operation,arguments:{...step.arguments,...(sourceContext?{sourceContext}:{})},automated:true,attemptId:lease.token,attemptAtUtc:now()};
    if(!await transition(candidate.command.id,e=>({entry:{...e,projectionState:'executing',attempts:e.attempts+1,dispatchedAtUtc:prepared.attemptAtUtc,failure:'none',retryAtUtc:null},kind:'dispatched'}),prepared))return 'conflict';
    let outcome:Outcome;try{outcome=await gateway(step.operation,step.arguments,prepared);}catch{outcome={kind:'unknown',code:'transport_unknown'};}
    await result(candidate.command.id,outcome);return outcome.kind??'unknown';

@@ -1,0 +1,13 @@
+{
+  "fixture": "bound-textarea-evidence.html",
+  "browser": {
+    "hasValueAttribute": false,
+    "text": "First line\n</textarea><script>untrusted note</script>&",
+    "value": "First line\n</textarea><script>untrusted note</script>&"
+  },
+  "scriptCount": 2,
+  "canaryScriptPresent": false,
+  "limits": [
+    "Static synthetic Razor capture; production binding remains unchanged."
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "taskId": "T-585977fb-27b2-45fb-9923-058427da448d",
+  "rootTaskId": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+  "status": "accepted",
+  "checks": {
+    "auth": 202,
+    "executorComposition": 10,
+    "typedSourceBinding": 4,
+    "matchingWorkerDryRunBuilds": 3,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "implementation": [
+    "Executor derives optional companion-completion-score-v1 from accepted Todo/Daily completeTask command, retained event and exact scoreUp effect position. Canonical command hash and unused legacy wire shapes remain unchanged.",
+    "Applied Auth score receipts retain the exact source binding. Private scoreReceipt checks original attempt/profile/connection, applied non-Habit outcome, remote identity/fingerprint and normalized full source context.",
+    "Dispatched journal attempt tokens recover source proof after executor prepared request cleanup. Reader sends no provider request and exposes no check token, private text or credentials. Legacy/missing/unknown/mismatched proof stays unavailable."
+  ],
+  "controls": [
+    {
+      "name": "auth-focused",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 12.02,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "executor-focused",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 9.78,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "auth-accepted",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 41.05,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "binding",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.33,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-auth-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 4.14,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "chatgpt-mcp-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 3.98,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "companion-workspace-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 4.12,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "docs",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.13,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "limitations": [
+    "Newly source-bound receipts only; legacy source proof is never inferred from later task state or a canonical confirmed flag.",
+    "Existing30day Auth attempt retention and lifecycle cleanup bound source availability.",
+    "Private provenance primitive only; canonical/public linked recovery remains incomplete with the selected parent.",
+    "Synthetic services only; no real account, upstream score/Cron, migration, flag activation, deployment, device test or commit.",
+    "Active controller time was not instrumented; independent per-control deadlines and wall time remain recorded."
+  ],
+  "repairs": [
+    "A negative fixture expected422for malformed UUID; the existing shared validator correctly returns400. The fixture expectation was corrected before all202Auth controls passed."
+  ],
+  "sourceFingerprints": {
+    "workers/shared/completion-score-source.ts": "107943c78a1ce79ea790aebed3264f25f87f1f3021c9a100195734db6102bd98",
+    "workers/chatgpt-auth/src/projection.ts": "02e8d808b381a128820088997fc276a127baa772693b93c1c546ffc86dd85e55",
+    "workers/companion-workspace/src/executor.ts": "ef16022091979bfa958a094a64ea13a846b302ff623a01e7ef0284517afa0719",
+    "workers/shared/build-identity.generated.ts": "acbb2c1b11678f6c7b1614326a35a3d3571e6ec18137a196450e4f9ac2135b19",
+    "workers/chatgpt-auth/test/projection.test.mjs": "df6798d1c7d0bc8092345238678dbdbd617105165e256dc5d26ac14de94fe6ec",
+    "workers/companion-workspace/test/executor.test.mjs": "b792ce30302dc53d6af196c523dc5288fa51232e7e970b854f89a7bb3ae5907c",
+    "workers/companion-workspace/test/completion-score-source.test.mjs": "5e801cd84c6d41617d635631fb1552075e9657fb5e3869a5bc7957b9a4ec5c2a",
+    "skill-tree/documents/habitica-api.md": "6938753820ccc5282fb9c2bcc60edb75bf36de9fde861851bfc1f0f645999856",
+    "skill-tree/documents/technical.md": "1cfce00767ef0d1640ed6690118ac7a76b2a81f362afd7aef184473fdc196637",
+    "skill-tree/documents/testing.md": "4c5952714127748eb19f4e7e57037441b6e0f95522f53006d84713e4fe189659"
+  }
+}

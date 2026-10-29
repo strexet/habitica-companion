@@ -1,0 +1,56 @@
+{
+  "adoption-tests-final": {
+    "tests": 59,
+    "pass": 58,
+    "fail": 1
+  },
+  "adoption-isolated-final": {
+    "tests": 26,
+    "pass": 26,
+    "fail": 0
+  },
+  "adoption-auth-tests": {
+    "tests": 19,
+    "pass": 19,
+    "fail": 0
+  },
+  "adoption-plugin-sdk": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0
+  },
+  "workspaceRegressionUnion": {
+    "uniqueTests": 60,
+    "passed": 60,
+    "source": "Broad run: 58/59; the only failure was a synthetic undefined connectionId binding. Isolated corrected adoption file: 26/26 including a new quota/cascade case. Other broad cases unchanged and passing. No runtime source or pins changed between broad and isolated."
+  },
+  "webApp": {
+    "passed": 892,
+    "verifyActualLog": "adoption-webapp-final2.log",
+    "laterUiChecks": "13/13 after scoped link reflow and 8/8 static asset checks"
+  },
+  "supersedingFinalChecks": {
+    "combinedIntegration": {
+      "tests": 85,
+      "passed": 85,
+      "failed": 0,
+      "files": [
+        "adoption-api.test.mjs",
+        "workspace.test.mjs",
+        "task-api.test.mjs",
+        "executor.test.mjs",
+        "projection*.test.mjs",
+        "plugin.test.mjs"
+      ],
+      "adoptionCases": 27,
+      "log": "adoption-integration-verified.log"
+    },
+    "webApp": {
+      "tests": 895,
+      "passed": 895,
+      "failed": 0,
+      "log": "adoption-webapp-release-final.log"
+    },
+    "note": "Earlier broad-plus-isolated records remain diagnostic attempts. Final combined run passes on final matching Worker bundles and source. UI markup/styles are unchanged after final reflow qualification."
+  }
+}

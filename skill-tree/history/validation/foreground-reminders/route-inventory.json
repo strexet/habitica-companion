@@ -1,0 +1,206 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/notes": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/dailies": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/habits": {
+      "fixtures": [
+        "todo-nav-selected"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/statistics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [
+        "reminder-unknown-granted",
+        "reminder-receipt-capacity-granted",
+        "reminder-idle-unsupported",
+        "reminder-idle-denied",
+        "reminder-off",
+        "reminder-due",
+        "reminder-enabled",
+        "reminder-unavailable",
+        "todo-today-habit",
+        "todo-today-unavailable",
+        "todo-today-review",
+        "todo-nav-main",
+        "todo-today-groups",
+        "todo-today-empty"
+      ],
+      "qualification": "captured synthetic states only"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "todo-today-empty",
+      "todo-today-groups",
+      "todo-today-habit",
+      "todo-today-review",
+      "todo-today-unavailable"
+    ],
+    "navigation": [
+      "reminder-due",
+      "reminder-enabled",
+      "reminder-idle-denied",
+      "reminder-idle-unsupported",
+      "reminder-off",
+      "reminder-receipt-capacity-granted",
+      "reminder-unavailable",
+      "reminder-unknown-granted",
+      "todo-nav-main",
+      "todo-nav-selected"
+    ],
+    "confirmation": [
+      "todo-today-empty",
+      "todo-today-groups",
+      "todo-today-habit",
+      "todo-today-review",
+      "todo-today-unavailable"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "reminder-due",
+      "reminder-enabled",
+      "reminder-idle-denied",
+      "reminder-idle-unsupported",
+      "reminder-off",
+      "reminder-receipt-capacity-granted",
+      "reminder-unavailable",
+      "reminder-unknown-granted",
+      "todo-today-empty",
+      "todo-today-groups",
+      "todo-today-habit",
+      "todo-today-review",
+      "todo-today-unavailable"
+    ],
+    "error": [
+      "reminder-due",
+      "reminder-enabled",
+      "reminder-idle-denied",
+      "reminder-idle-unsupported",
+      "reminder-off",
+      "reminder-receipt-capacity-granted",
+      "reminder-unavailable",
+      "reminder-unknown-granted",
+      "todo-today-empty",
+      "todo-today-groups",
+      "todo-today-habit",
+      "todo-today-review",
+      "todo-today-unavailable"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

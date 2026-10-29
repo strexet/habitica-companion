@@ -1,0 +1,55 @@
+{
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "status": "awaiting-owner-selection-and-scope",
+  "authorization": null,
+  "local_candidate_task_id": "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+  "provider": "Netlify Functions Free",
+  "required_node_major": 22,
+  "selections_required": [
+    "Netlify exact owner/team/site and actual Free-plan remaining quota",
+    "Exact matching Auth Worker issuer, deployment configuration and D1 database",
+    "Publication, remote migration0012 and protected service-key provisioning scope",
+    "Owned public DNS/TLS fixture zones and callback receiver, fixture access and cleanup authority",
+    "Previous deployment identities or explicit new-site shutdown rollback",
+    "Provider request/function logs, retention and drain review"
+  ],
+  "per_operation": {
+    "gateway_deadline_ms": 10000,
+    "controller_network_deadline_ms": 15000,
+    "deployment_deadline_seconds": 180,
+    "cleanup_reserve_seconds": 30,
+    "control_deadline_seconds": 45
+  },
+  "safety": {
+    "subscription_activation": false,
+    "real_user_callback": false,
+    "chat_messages": false,
+    "habitica_requests": false,
+    "paid_resources": false,
+    "automatic_upgrade": false,
+    "provider_fallback": false,
+    "test_ca_in_production": false,
+    "new_total_time_budget": null
+  },
+  "controls": [
+    "Record disabled initial deployment, package manifest, exact audience/issuer, actual Node22 and public health only.",
+    "Enable only selected gateway/claim lane and post a synthetic signed challenge to an owned public fixture; verify exact bytes and original SNI/Host.",
+    "Use owned DNS fixtures for public IPv4/IPv6, private-only, mixed answers and public-to-private change; do not connect to unowned private services.",
+    "Use controlled wrong-host and untrusted-certificate endpoints; prove receiver observed no HTTP body.",
+    "Use owned redirect endpoint; verify no second receiver connection and terminal redirect_refused.",
+    "Post the identical request concurrently across instances/cold starts; recover the original Workspace-side uncertainty and verify at most one receiver delivery.",
+    "Interrupt claim and callback acknowledgements separately; retain original identity and prove no automatic resend.",
+    "Exercise bounded headers/body and slow TLS/body fixtures; verify sockets close by the shared deadline with no payload or credentials in retained logs.",
+    "Simulate paused/unavailable provider and inspect current Free-plan quota controls without exhausting quota or purchasing resources; preserve undelivered/unknown receipts.",
+    "Disable both lanes and execute the recorded rollback/shutdown; verify public/claim refusals and retain fences."
+  ],
+  "evidence": [
+    "sanitized source/package hash and exact deployment/runtime identity",
+    "negative-control result per criterion and owned fixture counters",
+    "actual provider quota/logging settings without account secrets",
+    "original request IDs and reduced receipt states only",
+    "rollback observation"
+  ],
+  "stop_policy": "Classify executed control, prerequisite wait, transport uncertainty and host-policy rejection separately. Stop after two consecutive executed controls with the same unresolved signature and no new evidence. Keep targeted repairs in this checkpoint; no provider fallback or replacement request escapes an unknown fence.",
+  "acceptance_limit": "Hosted transport only. Real Events subscription, consent, callback vault, scheduling and actual ChatGPT rendering remain separate task requirements."
+}

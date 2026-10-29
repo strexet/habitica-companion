@@ -1,0 +1,198 @@
+{
+  "reminder-unknown-granted": {
+    "file": "reminder-unknown-granted.html",
+    "route": "/todo/today",
+    "state": "explicit-reminder-limit-unknown-granted",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Permission_failure_and_clock_change_keep_inapp_cues_and_honest_limits",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-nav-selected": {
+    "file": "todo-nav-selected.html",
+    "route": "/todo/habits",
+    "state": "selected-Habits-route",
+    "surfaces": [
+      "navigation",
+      "selected-state"
+    ],
+    "interactionTest": "Todo_navigation_highlights_the_exact_selected_route",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-receipt-capacity-granted": {
+    "file": "reminder-receipt-capacity-granted.html",
+    "route": "/todo/today",
+    "state": "explicit-reminder-limit-receipt-capacity-granted",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Permission_failure_and_clock_change_keep_inapp_cues_and_honest_limits",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-idle-unsupported": {
+    "file": "reminder-idle-unsupported.html",
+    "route": "/todo/today",
+    "state": "explicit-reminder-limit-idle-unsupported",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Permission_failure_and_clock_change_keep_inapp_cues_and_honest_limits",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-idle-denied": {
+    "file": "reminder-idle-denied.html",
+    "route": "/todo/today",
+    "state": "explicit-reminder-limit-idle-denied",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Permission_failure_and_clock_change_keep_inapp_cues_and_honest_limits",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-off": {
+    "file": "reminder-off.html",
+    "route": "/todo/today",
+    "state": "inapp-off-browser-disabled",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Explicit_browser_action_is_separate_from_inapp_cues_and_read_only_catchup_persists",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-due": {
+    "file": "reminder-due.html",
+    "route": "/todo/today",
+    "state": "missed-review-cue-visible-with-no-browser-permission",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Explicit_browser_action_is_separate_from_inapp_cues_and_read_only_catchup_persists",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-enabled": {
+    "file": "reminder-enabled.html",
+    "route": "/todo/today",
+    "state": "browser-enabled-with-closed-app-limits",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Explicit_browser_action_is_separate_from_inapp_cues_and_read_only_catchup_persists",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "reminder-unavailable": {
+    "file": "reminder-unavailable.html",
+    "route": "/todo/today",
+    "state": "account-bound-source-unavailable",
+    "surfaces": [
+      "actions",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Account_switch_discards_cues_and_late_permission_callback_and_old_binding",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-habit": {
+    "file": "todo-today-habit.html",
+    "route": "/todo/today",
+    "state": "planned-habit-current-event",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Planned_Todo_completion_and_Habit_events_require_projection",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-unavailable": {
+    "file": "todo-today-unavailable.html",
+    "route": "/todo/today",
+    "state": "timezone-unavailable",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Missing_timezone_fails_the_whole_view_without_partial_tasks_and_invalid_dates_never_prepare",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-review": {
+    "file": "todo-today-review.html",
+    "route": "/todo/today",
+    "state": "exact-occurrence-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Daily_action_reviews_exact_source_date_and_original_receipt_recovers_without_duplicate_occurrences",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-nav-main": {
+    "file": "todo-nav-main.html",
+    "route": "/todo/today",
+    "state": "always-open-menu",
+    "surfaces": [
+      "navigation",
+      "selected-state"
+    ],
+    "interactionTest": "Renders_diagnostics_link_instead_of_live_tests_for_authenticated_sessions",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-groups": {
+    "file": "todo-today-groups.html",
+    "route": "/todo/today",
+    "state": "planned-due-recorded-inactive",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Groups_unique_planned_deadline_and_due_rows_and_preserves_recorded_and_inactive_states_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-empty": {
+    "file": "todo-today-empty.html",
+    "route": "/todo/today",
+    "state": "empty-selected-day",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Empty_day_and_unavailable_account_are_distinct_and_paginated_rows_follow_current_revision",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

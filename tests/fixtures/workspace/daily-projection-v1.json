@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "daily interval two",
+      "rule": {
+        "frequency": "daily",
+        "interval": 2,
+        "startDate": "2026-10-19",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": [
+        "2026-10-19",
+        "2026-10-21",
+        "2026-10-23",
+        "2026-10-25"
+      ],
+      "schedule": {
+        "frequency": "daily",
+        "everyX": 2,
+        "startDate": "2026-10-19T00:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": false,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "weekly unordered weekdays",
+      "rule": {
+        "frequency": "weekly",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "UTC",
+        "weekdays": [
+          "friday",
+          "monday"
+        ],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": [
+        "2026-10-19",
+        "2026-10-23"
+      ],
+      "schedule": {
+        "frequency": "weekly",
+        "everyX": 1,
+        "startDate": "2026-10-19T00:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": true,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": true,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "biweekly Monday anchor",
+      "rule": {
+        "frequency": "weekly",
+        "interval": 2,
+        "startDate": "2026-10-19",
+        "timeZoneId": "UTC",
+        "weekdays": [
+          "wednesday",
+          "sunday"
+        ],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-10-19",
+      "through": "2026-11-08",
+      "dates": [
+        "2026-10-21",
+        "2026-10-25",
+        "2026-11-04",
+        "2026-11-08"
+      ],
+      "schedule": {
+        "frequency": "weekly",
+        "everyX": 2,
+        "startDate": "2026-10-19T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": false,
+          "t": false,
+          "w": true,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "monthly gaps",
+      "rule": {
+        "frequency": "monthly",
+        "interval": 1,
+        "startDate": "2026-01-31",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": [
+          31
+        ]
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-01-31",
+      "through": "2026-03-31",
+      "dates": [
+        "2026-01-31",
+        "2026-03-31"
+      ],
+      "schedule": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-01-31T00:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": false,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [
+          31
+        ],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "monthly every two",
+      "rule": {
+        "frequency": "monthly",
+        "interval": 2,
+        "startDate": "2026-01-15",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": [
+          20,
+          15
+        ]
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-01-15",
+      "through": "2026-03-31",
+      "dates": [
+        "2026-01-15",
+        "2026-01-20",
+        "2026-03-15",
+        "2026-03-20"
+      ],
+      "schedule": {
+        "frequency": "monthly",
+        "everyX": 2,
+        "startDate": "2026-01-15T00:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": false,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [
+          15,
+          20
+        ],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "UTC plus seven midnight",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "Etc/GMT-7",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": -420,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
+      ],
+      "schedule": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-18T17:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": false,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "UTC minus five midnight",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "Etc/GMT+5",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 300,
+        "dayStart": 0
+      },
+      "failure": null,
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
+      ],
+      "schedule": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-19T05:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": false,
+          "t": false,
+          "w": false,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "timezone mismatch",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": -420,
+        "dayStart": 0
+      },
+      "failure": "daily_timezone_mismatch",
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": []
+    },
+    {
+      "name": "custom day start",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 4
+      },
+      "failure": "daily_account_day_unrepresentable",
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": []
+    },
+    {
+      "name": "DST rule unrepresentable",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "America/New_York",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_timezone_unrepresentable",
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": []
+    },
+    {
+      "name": "region timezone not fixed",
+      "rule": {
+        "frequency": "daily",
+        "interval": 1,
+        "startDate": "2026-10-19",
+        "timeZoneId": "Asia/Novosibirsk",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_timezone_unrepresentable",
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": []
+    },
+    {
+      "name": "nonMonday multiweek anchor",
+      "rule": {
+        "frequency": "weekly",
+        "interval": 2,
+        "startDate": "2026-10-21",
+        "timeZoneId": "UTC",
+        "weekdays": [
+          "monday"
+        ],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_week_anchor_unrepresentable",
+      "from": "2026-10-21",
+      "through": "2026-10-25",
+      "dates": []
+    },
+    {
+      "name": "missing schedule",
+      "rule": null,
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_schedule_required",
+      "from": "2026-10-19",
+      "through": "2026-10-25",
+      "dates": []
+    }
+  ]
+}

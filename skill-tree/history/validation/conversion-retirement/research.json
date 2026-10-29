@@ -1,0 +1,40 @@
+{
+  "task_id": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+  "status": "implemented; required local qualification passed",
+  "research_date": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/tasks.js",
+      "finding": "Single-task DELETE returns a success envelope with empty data. Server task modification checks include user, group and challenge restrictions. Broad completed-task cleanup is a different endpoint and remains excluded."
+    },
+    {
+      "url": "https://developers.cloudflare.com/workers/runtime-apis/fetch/",
+      "finding": "Retain awaited Worker fetches, bounded response reads and explicit request deadlines; existing private service bindings and pinned runtime/configuration remain baseline."
+    },
+    {
+      "url": "https://developers.cloudflare.com/d1/worker-api/d1-database/",
+      "finding": "Prepared batches run sequentially as transactions; statement failure rolls back the batch. Verified local reservation/archive failure controls preserve one-send recovery."
+    }
+  ],
+  "local_findings": [
+    "Current remoteTask fingerprint excludes completed; retirement compares the Boolean explicitly.",
+    "Ordinary DeleteTask refuses linked mappings and remains unchanged.",
+    "Conversion history retains exact frozen source/target snapshots, immutable bindings and accepted receipts.",
+    "Stored prerequisite policy supplies no dispatch authority; trusted server work and fresh native task/tag verification remain required."
+  ],
+  "implemented": [
+    "Portable immutable source archival receipts, mirrored validators, coverage exception and neutral fixtures.",
+    "Trusted D1 review, exact actor/context binding, incremental fresh native task/tag verification, manual irreversible approval and one DELETE with durable fence/recovery.",
+    "Typed browser review, complete-page and irreversible acknowledgements, original-ID recovery, retained history and redacted diagnostics. Narrow MCP tools and plugin retirement workflow."
+  ],
+  "remaining": [
+    "Hosted publication, remote migration, actual accounts and device qualification remain outside local acceptance."
+  ],
+  "constraints": [
+    "No native conditional-delete/CAS endpoint is available in the inspected task controller; preserve the final observation-to-delete race as an explicit limitation.",
+    "Original timeout remains unknown. Lookup/reconciliation can observe absence without resending DELETE or claiming the original HTTP operation succeeded.",
+    "Already-absent source before dispatch must be reviewed separately, with no synthetic delete receipt.",
+    "Native source/conversion history and all target notes, completion history and tags must remain retained.",
+    "No push, deployment, enrollment, remote migration or live account operation is authorized in the current run."
+  ]
+}

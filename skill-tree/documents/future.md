@@ -72,11 +72,11 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### Default the equipment optimizer to Intelligence for every class
+### Resolve mass spell rate limits and explicit gear recovery
 
 ```yaml
-id: P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e
-priority: 100
+id: P-8e7323df-2f47-4e19-864d-821ed108e7f2
+priority: 106
 status: Pending
 parent_pending_ids: []
 processing_run_id: null
@@ -87,906 +87,422 @@ depends_on: []
 ```
 
 Description:
-- Use Intelligence as the initial equipment optimization goal in the inventory Gear Planning / Equipment optimizer section for every character class.
+- Capture the codev P0 incident involving acknowledged 17 of 40 casts, HTTP 429 and uncertain auto-equip cleanup. Preserve coordinated account pacing across casts, gear and background requests, safe structured diagnostics, confirmed progress and separately visible restoration outcomes. Full original incident details remain in the source artifact.
 
 Expected behavior:
-- Opening the optimizer recommends an Intelligence-focused set by default. Explicit user-selected goals and spell-specific equipment choices remain available; selecting a default never equips gear automatically.
+- Bound request admission by Retry-After and reset evidence; stop or pause safely on quota failures, never replay unknown casts, retain acknowledged partial counts, persist exact manual gear recovery and expose mobile phase/cooldown/cleanup state. Cover failures during cast, restore, refresh and cancellation without hidden errors or fabricated success.
 
 Current context:
-- InventoryPage initializes _optimizationGoal and invalid-selection fallback to Balanced. The owner prefers Intelligence for routine gameplay across classes and different equipment only for explicit spell workflows. Formula claims and the exact handling of remembered goals require Process Pending research.
+- Existing accepted work includes T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee for server pacing and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 for original gear recovery. Process Pending must compare retained source intent, current code and accepted evidence before defining residual work; local evidence does not establish deployed iPhone incident closure.
 
 Source:
-- Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
+- Owner-requested transfer from Companion Development, alias codev, project c5f8a175-2bee-484a-9b72-018737dc10fd, task fe2403b8-ab96-489f-b6ac-5e72f9dee4a9, task revision 115, workspace revision 158. Complete original text: skill-tree/history/intake/codev-2026-10-28/source-tasks.json. Source completion acknowledges intake only.
+
+Priority rationale:
+- Preserve source urgent P0 ordering above the current highest open priority 105; no live spell execution or release authorization is implied.
+
+Processing blocker:
+- Static reinspection confirms acknowledged-count, quota/cooldown, unknown-outcome and original gear recovery controls remain implemented; accepted outcomes T-b89fac23-3ac2-4c64-8560-be7a5d796a81 and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 already cover the feature scope. Fresh loaded PWA build identity and sanitized iPhone evidence remain unavailable; any live reproduction requires a bounded owner profile. No duplicate implementation or deployed incident closure follows. See skill-tree/history/processing/note-folders-2026-10-29/research.md.
 
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Complete safe project retirement and agent project lifecycle
+### Qualify the selected Netlify callback gateway deployment
 
 ```yaml
-id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
-priority: 100
+id: T-ec421773-5864-4bc5-b17f-ce04e0d818c2
+priority: 101
 status: Ready
-parent_pending_ids: ["P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Close project lifecycle gaps without deleting contained tasks.
-Current behavior:
-- Independent WorkspaceProject records and native create/update/archive organization commands already exist with organization-write scopes and no task cascade. Project deletion is absent; client-exposed tool discovery may be stale. Planned browser project workflows already cover creation, rename, placement and archive.
-Desired behavior:
-- Expose the existing project lifecycle consistently to agent clients and add a reviewed safe logical deletion/removal command with retained task/history references.
-Touch:
-- Organization models/commands and history validation in C#/TypeScript, Workspace organization API, MCP schemas/package contracts, project task queries and shared fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Reuse existing exact project identities and independent organization-write scope. Adopt logical deletion with retained audit tombstone rather than destructive row removal. Explicit deletion review lists affected project/section references and preserves every task, completion, receipt and Habitica mapping. Define a consistent Unassigned presentation without silently completing/moving descendants. Preserve one primary project, cross-project section validity and arbitrary-depth parent links. No cascading deletion or upstream project object.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- C#/TypeScript shared command/history fixtures cover create/read/rename/archive/remove, task reassignment, original receipts, missing/stale IDs, cross-account denial, existing sections and parent links, tombstone export/import and zero Habitica effects. MCP discovery tests enumerate actual supported project commands.
-Acceptance:
-- Agent clients can discover and execute exact authorized first-class project lifecycle commands with original receipt recovery.
-- Reviewed project removal preserves tasks, hierarchy, history and game mappings with passing parity/isolation tests.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Qualify automatic Companion discovery and invocation
-
-```yaml
-id: T-9dce9211-4c9d-478a-952c-12adba3e013f
-priority: 100
-status: Ready
-parent_pending_ids: ["P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-9dce9211-4c9d-478a-952c-12adba3e013f
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Determine realistic automatic selection behavior in ChatGPT.
-Current behavior:
-- Current local MCP task/project schemas and installed client discovery differ; official OpenAI metadata guidance describes direct/indirect/negative prompt evaluation rather than guaranteed invocation in every conversation.
-Desired behavior:
-- Document installation, authorization, discovery and tool selection separately; build a reproducible prompt set and improve exact tool metadata/skill routing where supported.
-Touch:
-- MCP tool descriptions, plugin package/skills, integration setup/research docs and synthetic discovery fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Use https://developers.openai.com/plugins/guides/optimize-metadata and current official client guidance. Include new/existing chats, explicit product names, natural task intent and negative unrelated prompts. Do not confuse reconnect/token failures with selection. Do not force global app access, spoof read-only annotations or promise all-chat invocation. Live ChatGPT tests require a separately selected host session; synthetic checks must remain labeled.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Metadata/schema regression fixtures plus a documented host evaluation table record selection, available tools, arguments, permissions and result. Provide manual app selection and connection-repair alternatives where automatic selection is unavailable.
-Acceptance:
-- A sourced capability decision and reproducible direct/indirect/negative prompt set define automatic selection limits.
-- Supported metadata/package improvements preserve honest tool annotations and authorization; live host outcomes remain distinct from synthetic results.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Expose iPhone PWA reminder setup and recovery
-
-```yaml
-id: T-1f1eb5fd-febd-44fc-b475-69121e11400a
-priority: 100
-status: Ready
-parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-1f1eb5fd-febd-44fc-b475-69121e11400a
-related_task_id: null
-relation: main
-depends_on: ["T-ce099b7b-f9cc-49b8-aadd-04b5623b1094", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make push reminder permissions, schedules and delivery limits understandable.
-Current behavior:
-- No task-level push editor, per-device subscription settings or notification-click handler exists.
-Desired behavior:
-- Provide task reminder creation/edit/cancel, device subscribe/unsubscribe and clear iPhone installation/permission recovery with safe task deep links.
-Touch:
-- Todo settings, task reminder UI, notification interop, service-worker push and notificationclick handlers and rendered fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Reuse canonical reminder/subscription state. Explain denied permission and standalone prerequisites without repeated prompts. Show per-device state and delivery limits; disabled schedules remain visible. Keep task bodies out of lock-screen defaults. Notification clicks validate same-origin routes and reauthenticate before revealing private task content. No background gameplay or silently enabled subscriptions.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Component/browser fixtures cover grant/deny/unsupported, one-time/repeat edits, subscribe/unsubscribe, schedule failure/recovery, offline click/login and focus return. Qualify mobile/200-percent/theme cases. Track actual physical iPhone closed-app delivery in release qualification.
-Acceptance:
-- Users can explicitly configure and revoke task/device push reminders with accurate prerequisites and delivery state.
-- Notification-click routing stays same-origin and authenticated; denied/offline/mobile states pass synthetic interaction and layout checks.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Dispatch durable scheduled Web Push reminders
-
-```yaml
-id: T-ce099b7b-f9cc-49b8-aadd-04b5623b1094
-priority: 100
-status: Ready
-parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-ce099b7b-f9cc-49b8-aadd-04b5623b1094
-related_task_id: null
-relation: main
-depends_on: ["T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b", "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"]
-```
-
-Goal:
-- Deliver opted-in reminder intents while the app is closed.
-Current behavior:
-- Foreground reminder cues are planned; no persisted push schedule/delivery ledger or server sender exists.
-Desired behavior:
-- Persist one-time and repeating civil-time reminder intents, dispatch through a bounded server scheduler and retain delivery outcomes independently of task state.
-Touch:
-- Workspace reminder model, D1 migration and scheduling/dispatch module, Web Push signing/encryption integration, quota/error handling and deployment instructions.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Depend on explicit valid subscriptions. Reuse task/review cue identities, explicit timezone rules and DST policy; record schedule revision and occurrence identity. Dedupe application dispatch intent, expire stale cues, stop revoked subscriptions, handle 404/410 removal and 429/Retry-After with bounded retries. Distinguish accepted-by-push-service from shown/read; no exactly-once guarantee or automatic Habitica action. No timer-based upstream polling. Keep live scheduler activation and VAPID provisioning explicit.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Fake-clock and push-transport tests cover closed-app schedule dispatch, one-time/repeating/DST boundaries, duplicate scheduler invocations, changed/cancelled schedules, revoked profiles/devices, expired cues, cooldowns, failed acknowledgements and bounded retry.
-Acceptance:
-- Durable one-time and recurring reminder dispatch obeys consent, timezone, schedule revision, dedupe and quota controls.
-- Receipts distinguish scheduled, dispatched, accepted, refused and unknown delivery without task/game mutation or a false delivered/read guarantee.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Persist explicit account-bound Web Push subscriptions
-
-```yaml
-id: T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b
-priority: 100
-status: Ready
-parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b
-related_task_id: null
-relation: main
-depends_on: ["T-51ce8719-0131-46d3-882a-4219d1bef929"]
-```
-
-Goal:
-- Establish an opt-in private Web Push subscription lifecycle.
-Current behavior:
-- The PWA has a service worker but no push handler, accepted subscription API or stored push permission contract. Foreground reminder work explicitly excludes background push.
-Desired behavior:
-- Provide authenticated own-account subscribe/status/unsubscribe, per-device identity, minimal encrypted endpoint/key storage and independent reminder consent.
-Touch:
-- Existing Workspace Worker API/storage migrations, C# client/notification adapter, browser service worker, secret configuration and privacy contract.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Use supported installed iOS/iPadOS Home Screen PWA capability detection, explicit browser gesture and userVisibleOnly. Notification consent is separate from cloud workspace and ChatGPT enrollment. Do not place endpoints, keys or task text in operational logs. Validate bounded HTTPS public push destinations and refuse redirects/private endpoints. Provision VAPID secrets outside source. Adopt task-neutral default notification text; opening the app resolves private task details. Support revocation and account/device isolation without deleting tasks.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Synthetic authenticated API/storage and browser PushManager fixtures cover grant/deny/unsupported states, duplicate subscription identity, account mismatch, endpoint/SSRF rejection, expired/revoked subscriptions, redaction and unsubscribe. Verify migration and portable data/export/deletion behavior.
-Acceptance:
-- Explicit per-device Web Push subscription lifecycle preserves account isolation and separate consent with safe storage and endpoint validation.
-- No permission request occurs on page load and no notification endpoint/key enters logs or source-controlled configuration.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Determine supported originating-chat reminder delivery
-
-```yaml
-id: T-6a8db6be-b721-4b88-b62b-c6566d759080
-priority: 100
-status: Ready
-parent_pending_ids: ["P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+parent_pending_ids: ["P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"]
+processing_run_id: PR-0397ff3e-5942-44c8-8fbf-32966ad290af
 root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+related_task_id: T-280cb859-c0f7-46e5-97db-bbd41dc6a99a
+relation: blocker
+depends_on: ["T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"]
+```
+
+Goal:
+- Provide the owner-selected Netlify Functions Free callback egress boundary without changing callback-secret custody or activating subscriptions.
+
+Current behavior:
+- Auth has no callback egress grant fence. The retained protocol prototype uses fake network adapters. The owner selected Netlify Functions Free; deployment and real callback execution require a concrete account and explicit scope.
+
+Desired behavior:
+- Qualify the exact candidate on a selected owner Netlify Free account/site and matching Auth deployment using a bounded operator-approved profile. Record runtime, deployment/rollback identity, Free-plan hard limit, environment secret names, redacted provider logging configuration and permitted test destinations.
+- Verify actual signed challenge bytes, public IPv4/IPv6 connection policy, controlled DNS changes, original-host TLS, redirect/private/mixed-address rejection, concurrency/replay, cold-start deadline and unavailable/quota behavior. Keep subscription activation unavailable until evidence passes.
+
+Touch:
+- Operator setup, selected Netlify/Auth deployment configuration and hosted evidence only; scoped repairs return to the existing implementation checkpoint.
+
+Discovery allowance:
+- Inspect connected provider access without exposing credentials. Obtain missing exact account/site, controlled fixture destinations and publication scope from the owner after the local candidate is reviewable.
+
+Out of scope:
+- Paid resources, automatic upgrades, provider fallback, real user callback enrollment, ChatGPT messages, subscriptions and gameplay.
+
+Implementation constraints:
+- Account creation, secret entry, remote migration and publication require explicit operator scope. No provider documentation or local TLS fixture substitutes for hosted acceptance. Do not probe unowned private services.
+
+Questions and required clarifications:
+- [Resolved - execution prerequisite] Netlify Functions Free is selected. The owner supplies the concrete account/site and hosted execution scope when the local implementation and profile are ready. No live access is inferred from the planning decision.
+
+Validation:
+- Execute the bounded hosted profile against owned fixtures after explicit scope; retain sanitized original receipts, negative controls, runtime/configuration and rollback evidence. Failed or unavailable controls leave the dependency incomplete.
+
+Acceptance:
+- The exact deployed gateway and Auth claim endpoint pass the approved hosted DNS/TLS, signed-byte, replay, deadline and unavailable/quota controls with sanitized evidence and a verified rollback path.
+
+Documentation updates:
+- Record actual hosted coverage and remaining host/device limitations; retain no real callback URL, signing material or account credentials.
+
+Risks:
+- Missing owner account, publication authority or controlled fixtures blocks execution. Free quota exhaustion must preserve undelivered state without paid fallback.
+
+### Browse and manage standalone and project Notes folders
+
+```yaml
+id: T-23342106-269e-4cd6-992e-4ff95be3e62d
+priority: 100
+status: Ready
+parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
+processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
+root_task_id: T-23342106-269e-4cd6-992e-4ff95be3e62d
+related_task_id: null
+relation: main
+depends_on: ["T-94b18897-2c2f-44ab-b89b-34e58b3903c5", "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"]
+```
+
+Goal:
+- Make thematic folders usable in general Notes and the exact Companion project view.
+
+Current behavior:
+- NotesPanel exposes a flat title/Markdown library. The existing task T-a48aa46e-fd3c-43ff-b9b3-3becddb47599 owns the project picker and project Notes composition; folder UI extends the accepted project composition instead of duplicating the predecessor.
+
+Desired behavior:
+- Expose All notes, notes without a folder, standalone folders and project-scoped folders with clear current context. Allow folder create/rename/remove-empty, folder browsing, new-note-in-folder and moving existing notes into or out of a folder.
+- Support the owner Altai project with Hotels and Interesting places folders, separate hotel/place notes and exact descriptive content. Keep project notes outside folders visible. Combine folder selection with text/trash/project filters and paging.
+
+Touch:
+- NotesController and volatile drafts, NotesPanel.razor, TodoProjectsPage.razor and accepted project Notes components, scoped styles, diagnostics operation names and focused component/browser fixtures.
+
+Discovery allowance:
+- Inspect the completed project UI and folder API/MCP contracts before editing. Inventory routes sharing changed Notes controls and preserve canonical selection, source and notebook identity.
+
+Out of scope:
+- New backend semantics, nested folders, multi-folder membership, drag-and-drop as the only control, bulk note deletion, project deletion cascades, remote deployment and real device/account qualification.
+
+Implementation constraints:
+- Preserve the existing primary Notes editor, exact Markdown, retained versions, drafts, consent/source isolation, conflict handling, export/import and original uncertain-command recovery. Importing a Markdown file remains an unsaved draft rather than a silent folder assignment.
+- Review exact before/after folder/project scope for note moves. Clearing a folder preserves the project. A move into a standalone/project folder that changes project scope requires an explicit reviewed project change; stale or unavailable references remain visible and detachable.
+- Explain nonempty-folder removal refusal, including trashed current members; provide normal navigation/move controls without implicit deletion. Folder labels never select identities. Account/source/project changes clear obsolete selection and cannot apply late responses to another notebook.
+- Use existing light/dark semantic surfaces, visible keyboard focus, readable wrapping and primary actions at phone/desktop widths. Source navigation never uploads Notes or broadens permissions.
+
+Questions and required clarifications:
+- [Resolved - direct owner replies] Single-level folders and zero-or-one membership are recorded in owner-decisions.json. Folder project scope is fixed; notes without folders remain supported.
+
+Validation:
+- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.
+- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.
+
+Acceptance:
+- Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.
+- All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass.
+
+Documentation updates:
+- Update features.md, ux-ui-manifest.md, testing.md and the canonical folder contract for actual Notes/project routes and verified interaction boundaries.
+
+Risks:
+- Shared selection/draft ownership or crowded project controls can discard content or hide primary actions. Validate every affected route and retain no-folder/project context explicitly.
+
+### Expose reviewed Notes folder workflows through MCP
+
+```yaml
+id: T-94b18897-2c2f-44ab-b89b-34e58b3903c5
+priority: 100
+status: Ready
+parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
+processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
+root_task_id: T-94b18897-2c2f-44ab-b89b-34e58b3903c5
+related_task_id: null
+relation: main
+depends_on: ["T-7aa20175-78af-40c9-86a3-e1ea37109c34"]
+```
+
+Goal:
+- Provide complete reviewed agent parity for discovering folders, managing folder metadata and placing Notes.
+
+Current behavior:
+- search_notes/get_note/prepare_note_command/accept_note_command/get_note_command support Notes and project links, but folder schemas and folder command receipts are absent.
+
+Desired behavior:
+- Expose bounded folder list/search, exact folder reads and create/rename/remove-empty preview/accept/original-receipt tools through the existing Auth/MCP/Workspace boundary. Extend note preview/read/search with exact folder membership, no-folder filters and accepted-version verification.
+- Audit the full folder workflow, including creating a note directly in a folder, moving an existing note, detaching, duplicate labels, empty-folder removal and recovery after uncertain preparation/acceptance. Update packaged habitica-notes guidance for English and Russian folder intent.
+
+Touch:
+- workers/shared/note-tools.ts, workers/chatgpt-mcp/src/note-tools.ts, note-tools-api.ts, scoped tool registration, plugin/skills/habitica-notes/SKILL.md and actual-SDK tests.
+
+Discovery allowance:
+- Inspect current tool discovery/scopes and the accepted folder-cloud contract. Reuse existing reviewed preparation and epoch guards or add a separately typed folder preparation lane without weakening exact identity/hash checks.
+
+Out of scope:
+- Browser UI automation as a permanent workflow, folder recursion/sharing, arbitrary API passthrough, task writes, hosted account/device tests and package publication.
+
+Implementation constraints:
+- Require separate Notes consent/read/write as appropriate; active canonical tasks:read is additionally required when creating a project folder or explicitly changing project placement. Folder names and note bodies remain untrusted data.
+- Previews bind exact notebook/folder/note identities and revisions, before/after folder and project membership, unchanged content hashes, lifecycle consequences, grant/access epochs and expiry. Clarify ambiguous names rather than inferring a target.
+- After uncertainty reuse the original request and arguments or recover the original command receipt. Verify accepted metadata/version before reporting the result; missing receipts never authorize replacement writes. Empty-folder removal never purges member notes or retained content.
+
+Questions and required clarifications:
+- [Resolved - repository rule] Agent-required browser actions require reviewed MCP parity with matching ownership, consent and receipt recovery. Explicit unambiguous folder intent permits matching acceptance under the existing Notes policy.
+
+Validation:
+- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.
+- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.
+
+Acceptance:
+- An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.
+- Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects.
+
+Documentation updates:
+- Update the folder contract, plugin guidance, features.md and testing.md with actual tool identities, permission requirements and unqualified host boundaries.
+
+Risks:
+- A partial tool inventory can leave management/recovery browser-only; renamed labels and stale notebook identities must never redirect a command.
+
+### Persist Notes folders through the cloud owner API
+
+```yaml
+id: T-7aa20175-78af-40c9-86a3-e1ea37109c34
+priority: 100
+status: Ready
+parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
+processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
+root_task_id: T-7aa20175-78af-40c9-86a3-e1ea37109c34
+related_task_id: null
+relation: main
+depends_on: ["T-5111060c-76ae-4a0e-a48b-260ecbb8885f"]
+```
+
+Goal:
+- Provide cloud persistence and browser-client transport for the shared Notes folder contract.
+
+Current behavior:
+- Workspace D1 stores current note rows, retained version JSON, immutable note receipts and separate Notes preparations. Migration0017 adds project_json; no folder storage or folder API exists.
+
+Desired behavior:
+- Add an additive Workspace migration and bounded owner routes for folder discovery/exact reads, explicit folder commands and original receipts. Extend note create/update and search with the shared membership/filter contract.
+- Update NotesCloudClient and application interfaces to validate extended folder backups, identities, current/retained metadata and exact original receipts. Browser and cloud sources retain independent namespaces.
+
+Touch:
+- workers/shared/notes.ts, notes-api.ts, Workspace migrations, Notes lifecycle cleanup, INotesCloudClient.cs, NotesCloudClient.cs and Worker/client fixtures.
+
+Discovery allowance:
+- Use the folder-model wire fixtures and current Notes/project transaction guards. Inspect private Auth Notes identity, current D1 batch conventions and revocation/delete cleanup before extending routes. Consult official platform documentation only for new platform behavior.
+
+Out of scope:
+- MCP tool exposure, folder UI, remote migration/publication, real private content, new consent grants and Habitica API calls.
+
+Implementation constraints:
+- Commit folder/note membership, notebook revision, retained history and original receipts atomically. Recheck current Notes connection/access epoch and exact project authority at acceptance; a failed guard or receipt insert rolls back every write.
+- Preserve existing Notes consent, owner/profile isolation, quotas, content-free diagnostics and original request identity. Separate Notes permissions from project access; project-only readers cannot see private folder names, note titles or snippets.
+- Remove folder names/current metadata and retained content copies during explicit notebook/profile deletion. Disconnect revokes access without deleting stored content. Never automatically copy browser folders or rebind imported project references.
+- Support complete-set text/trash/project/folder/no-folder filtering before twenty-row paging with unchanged notebook revision. Retain stale references visibly and recover original receipts before prospective folder/project validation.
+
+Questions and required clarifications:
+- [Resolved - repository contract] The private Notes namespace owns folders. Folder commands do not use Workspace organization/task commands or native tag consent.
+
+Validation:
+- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.
+- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.
+
+Acceptance:
+- The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.
+- Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work.
+
+Documentation updates:
+- Extend the canonical folder contract, technical.md, features.md, testing.md and migration guidance with verified local boundaries.
+
+Risks:
+- D1 rollback, notebook deletion and preparation cleanup must include folder metadata without changing accepted legacy receipts or leaving private name copies.
+
+### Add versioned Notes folders and local persistence
+
+```yaml
+id: T-5111060c-76ae-4a0e-a48b-260ecbb8885f
+priority: 100
+status: Ready
+parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
+processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
+root_task_id: T-5111060c-76ae-4a0e-a48b-260ecbb8885f
 related_task_id: null
 relation: main
 depends_on: []
 ```
 
 Goal:
-- Establish a supported path for service-initiated Companion reminders in agent clients.
-Current behavior:
-- Companion MCP uses the installed SDK and has no event subscription dispatcher or verified conversation callback mapping. Official OpenAI MCP Events now documents discovery/subscription/signed webhook delivery; Codex app-server provides authenticated thread resume and turn start, without proving access to an existing desktop-owned thread.
-Desired behavior:
-- Produce a current capability matrix and bounded synthetic prototype for supported host events or an explicit sourced limitation with a PWA notification/in-app alternative.
-Touch:
-- Integration research documentation, plugin/MCP capability schemas, local protocol fixtures and optional prototype module isolated from live dispatch.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Inspect official https://developers.openai.com/plugins/build/mcp-events and https://learn.chatgpt.com/docs/app-server . Distinguish an event accepted by a host from a rendered reply in the originating chat. Verify subscription owner, conversation binding exposure, callback challenge/signature, endpoint security, expiry, revocation and dedupe. Never invent a chat ID, expose a local app-server publicly, scrape private APIs or send messages to actual chats during synthetic research. Capture supported implementation as a separately bounded task.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Record source dates and exact supported/unsupported client features; exercise local fake subscription/event or app-server binding only where a documented contract exists. Include forged owner, invalid endpoint/signature, expired subscription and duplicate-event cases in a supported prototype.
-Acceptance:
-- A sourced ChatGPT/Codex capability matrix distinguishes host event delivery, originating-chat binding and actual message rendering.
-- A reproducible local prototype or documented platform limitation includes security requirements and an actionable UX alternative.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+- Support single-level thematic folders in the existing private Notes notebook, with zero or one folder per note.
 
-### Complete iPhone PWA installation and relaunch support
+Current behavior:
+- NotesModel retains note content, receipts and one optional versioned project association. NotesEngine has no folder entity or folder commands. IndexedDB commits assume the current note-only revision/receipt sequence. See source-fingerprints.json and research.md in skill-tree/history/processing/note-folders-2026-10-29.
+
+Desired behavior:
+- Add stable folder identities, revisions, names, optional exact project scope, retained removal identity and explicit create/rename/remove-empty commands. Folder project scope remains immutable; nested folders and multiple-folder membership are excluded.
+- Allow a note create/update to select or clear one folder. Omitted membership preserves the existing folder. Scope-consistent placement preserves exact Markdown, note identity and prior versions. Detaching from a folder preserves the project association; moving to a differently scoped folder must explicitly review and atomically apply the matching project change.
+- Support folder discovery and combined text/trash/project/folder/no-folder filtering before revision-bound paging. Distinguish notes without a folder from notes without a project. Keep folder metadata in account-bound Notes exports/imports.
+
+Touch:
+- NotesModel.cs, NotesEngine.cs, NotesService.cs, NotesProjects.cs, NotesQueries.cs, IndexedDbNotesDatabase.cs, indexedDbStorage.js and focused model/service/storage fixtures.
+
+Discovery allowance:
+- Define a portable folder command/receipt encoding alongside the existing note contract. Inspect global notebook revision and receipt invariants before extending storage. Explicitly version the extended backup shape and refuse unsupported readers without losing metadata.
+
+Out of scope:
+- Cloud HTTP/MCP transports, browser folder UI, recursive folders, shared folders, folder scope moves, multi-folder membership, bulk deletion, task entities and Habitica tag projection.
+
+Implementation constraints:
+- Keep existing accepted command bytes/hashes and legacy backups readable; absent folder metadata means no folder. Use neutral C#/TypeScript wire fixtures for new commands without rewriting existing fixtures.
+- Use exact owner/source/notebook/folder/project identities. New project folders and assignments require active canonical own-project authority checked atomically with the Notes commit. Retained stale project/folder references remain readable, content-editable and explicitly detachable. A project deletion never deletes Notes.
+- Reject folder removal while any current note, including trash, references the folder. Retain an identity tombstone for historical memberships; never silently delete or detach notes. Preserve original receipts after rename/removal and uncertain acknowledgements.
+- Keep revision/CAS and immutable-receipt invariants valid across note and folder commands. Bound folder metadata/capacity and preserve Notes lifecycle reserve, explicit quota failures, account separation and source isolation. Names never establish ownership or enter diagnostics.
+
+Questions and required clarifications:
+- [Resolved - direct owner replies] owner-decisions.json records single-level folders and zero-or-one folder membership with exact content/history preservation.
+- [Resolved - bounded implementation scope] Folder scope is immutable. Empty-only removal, explicit project-change review and no-folder/project distinction avoid implicit cascades or hidden reassociation. Expanded folder lifecycle is outside the selected contract.
+
+Validation:
+- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.
+- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.
+
+Acceptance:
+- Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.
+- Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects.
+
+Documentation updates:
+- Document the folder wire/storage and lifecycle contract in one canonical lowercase kebab-case document; update technical.md, features.md and testing.md only for implemented behavior.
+
+Risks:
+- Adding a second command kind can invalidate the current receipt-count/revision invariant or legacy JSON readers. Backups and historical membership require explicit compatibility controls.
+
+### Deliver due task reminder events with durable original receipts
 
 ```yaml
-id: T-51ce8719-0131-46d3-882a-4219d1bef929
-priority: 100
+id: T-569ff3a0-8765-49b6-9b37-a62e091617ae
+priority: 99
 status: Ready
-parent_pending_ids: ["P-02b78b3e-3fe9-4871-b019-c6baebafe810"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-51ce8719-0131-46d3-882a-4219d1bef929
-related_task_id: null
-relation: main
-depends_on: ["T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+parent_pending_ids: ["P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"]
+processing_run_id: PR-9722057b-0549-4478-8c12-6ee286276060
+root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+related_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+relation: followup
+depends_on: ["T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"]
 ```
 
 Goal:
-- Make existing PWA packaging and installation discoverable and correct.
-Current behavior:
-- manifest.webmanifest already declares standalone, id/start_url and 192/512 icons but uses Habitica.WebApp naming. index.html has apple-touch icons; published service worker caches application assets. AppSessionController reloads explicitly persisted credentials.
-Desired behavior:
-- Use Companion product identity, valid install assets and visible Safari installation instructions. Preserve existing credential persistence choice and route/session recovery on standalone relaunch.
-Touch:
-- PWA manifest, index.html and icons, published service worker, installation guidance surface, AppSessionController and packaging/session tests.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Do not introduce another application shell or assume Safari tab storage transfers to a standalone installation. Require explicit sign-in when storage/session is absent; never silently persist session-only credentials. Check service-worker navigation against auth/privacy/api routes and retain network-only sensitive traffic. Real iPhone installation, safe-area/keyboard, offline/relaunch and session behavior remain separate release evidence.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Release packaging assertions validate manifest/icon dimensions/registration and sensitive-route cache boundaries. Synthetic navigation/session tests cover persisted and session-only choices, signed-out relaunch and unavailable storage. Add reproducible physical iPhone steps without claiming a fixture proves device behavior.
-Acceptance:
-- Companion install metadata, icon assets and Safari Add to Home Screen guidance pass packaging and interaction checks.
-- Synthetic relaunch and cache-boundary tests preserve explicit credential choices; actual iPhone qualification remains visibly tracked by the release gate.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+- Add the default-off exact-task reminder Events channel on the qualified protocol and subscription foundation.
 
-### Build accessible nested Todo task editing
+Current behavior:
+- Durable reminder state and Web Push have separate schedule/receipt contracts. The Events prototype can model signed delivery but is not a production sender and has no actual host reply evidence.
+
+Desired behavior:
+- Match due exact-task reminder state to independently authorized live subscriptions and send generic schema-valid signed events through the Auth-owned protected callback gateway. Persist stable event IDs, original attempt receipts, expiry and connection/resource fences.
+- Report scheduled, accepted-by-host, refused, retryable and unknown delivery separately from an actual subscribed-chat response; unsubscribed, revoked and expired resources stop delivery.
+
+Touch:
+- Workspace reminder/event outbox and scheduler, shared event payload/status contracts, Auth private signing/dispatch gateway, Events subscription lifecycle, MCP read-only original event status and synthetic composition fixtures.
+
+Discovery allowance:
+- Reuse existing reminder civil-time/DST and original delivery identity rules without coupling Events permission to push/foreground consent. Validate the final protocol/event schema against the official profile and the completed predecessor contracts.
+
+Out of scope:
+- Raw conversation IDs, local Codex control sockets, task completion/scoring, implicit subscription or notification consent, actual chat messages, enabling rollout gates, key provisioning and hosted/device publication.
+
+Implementation constraints:
+- Use generic minimum payloads with exact task/event identity and no private Notes, task text, callback URL or signing secret. Enforce current account/connection/grant/resource authorization again before dispatch.
+- Persist dispatch intent before the send; preserve event ID across only contract-permitted bounded transient retries, with fresh signing timestamp/signature and exact body bytes. Stop on410/413, expired subscriptions, revoke and exhausted attempts. Original uncertainty never authorizes a new event identity or a duplicated game action.
+- Use the predecessor protected HTTPS adapter and Auth vault. Keep server schedule state, transport receipt and actual host rendering distinct; a2xx callback alone cannot confirm a subscribed-chat response or Codex support.
+- Retain default-off configuration and bounded quotas/cleanup. Any actual host rescan/subscription/callback operation requires a separately selected qualification profile; local acceptance supplies no real-chat delivery claim.
+
+Questions and required clarifications:
+- [Resolved - owner/repository scope] Auth-vault ownership and separate consent are selected. Protocol migration and verified subscription transport/lifecycle are explicit required dependencies; live host/device operations remain outside local implementation scope.
+
+Validation:
+- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.
+- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.
+
+Acceptance:
+- Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.
+- Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification.
+
+Documentation updates:
+- Update features.md, originating-chat-reminders.md, protocol/scope/retention contracts, testing.md and packaged reminder guidance with the implemented channel and explicit host/device limits.
+
+Risks:
+- A retry or stale subscription can duplicate notifications or leak task context. Preserve exact event identity, minimal payloads and current resource/connection checks at every dispatch.
+
+### Implement Auth-owned callback secrets and reviewed event subscriptions
 
 ```yaml
-id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
-priority: 100
+id: T-280cb859-c0f7-46e5-97db-bbd41dc6a99a
+priority: 99
 status: Ready
-parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
-related_task_id: null
-relation: main
-depends_on: ["T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+parent_pending_ids: ["P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"]
+processing_run_id: PR-9722057b-0549-4478-8c12-6ee286276060
+root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+related_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+relation: followup
+depends_on: ["T-273899d8-6f17-43ee-b82f-41013e1021b9", "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9", "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"]
 ```
 
 Goal:
-- Make complete descendant tasks usable from task and project views.
+- Implement the separately consented subscription foundation using the owner-selected Auth-vault callback boundary and exact resource ownership.
+
 Current behavior:
-- Canonical parent relationships exist, but current task lists and the planned organization surface do not supply a complete expandable tree journey.
+- The current MCP exposes tools only; no production Events subscription store, callback vault or protected callback transport exists. The offline prototype uses fake authorization/network adapters and does not establish production persistence, encryption or egress safety.
+
 Desired behavior:
-- Create and edit descendants, move or detach exact tasks, expand/collapse levels and navigate back to the parent from phone and keyboard.
+- Add authenticated Events discovery/list/subscribe/unsubscribe with deterministic subscription identity, finite expiry/refresh and original lifecycle receipts. Auth encrypts callback URL and signing secrets under separate versioned keys; Workspace stores opaque callback IDs, owner/resource-bound subscriptions and receipts.
+- Activate a subscription only after signed challenge verification through a qualified connection-safe HTTPS adapter. Raw callback URL/secrets never enter Workspace records, MCP results, exported workspaces or diagnostic logs.
+
 Touch:
-- Todo task components, project workspace, workspace task controller/query adapters and browser qualification fixtures.
+- Auth private callback-vault lifecycle and narrow service binding, Workspace subscription/migration/consent records, MCP2 method handlers and scope catalogue, profile/grant cleanup and offline/local Worker security fixtures.
+
 Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+- Reuse existing credential/push vault encryption and cleanup patterns with separate keys and consent. Verify an actual supported callback transport before activation; official TCP socket or fetch documentation alone does not prove validated-address/TLS-host binding. Capture a required transport blocker if the deployment adapter cannot meet the contract.
+
 Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+- Sending application reminder events, reusing Web Push consent/keys, accepting arbitrary account/desktop-thread selectors, exposing a local app-server, actual key/callback provisioning, real subscriptions and publication.
+
 Implementation constraints:
-- Reuse hierarchy-query coverage and existing create/edit commands. Preserve independent status, notes and dates per descendant. Limit visible rows/render work without a fixed schema depth restriction; avoid increasing indentation beyond usable mobile width. Provide explicit move actions, cycle feedback, parent context for filtered/paged results and non-drag alternatives. No cascading completion, deletion or implicit project move.
+- [Owner decision2026-10-28] Auth owns encrypted callback URL/signing secrets; Workspace owns opaque IDs, subscriptions and receipts. Require independent subscription consent, current resource access, short-lived verification challenges, expiry/refresh, replacement-secret rotation and cleanup on revoke/disconnect/delete.
+- [Owner decision2026-10-29] The protected HTTPS egress gateway targets Netlify Functions Free. Preserve Auth/Workspace ownership and the existing connection-safety contract. Required Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 includes deployable configuration and owner setup assistance; free-quota exhaustion must not trigger a paid upgrade or an unapproved hosting fallback.
+- Validate exact event/filter schemas and current principal ownership. Canonicalize subscription arguments and deduplicate same owner/callback/event identity without extending an expired or revoked authority context.
+- Require HTTPS, connection-time public-destination enforcement, original-host TLS verification, bounded time/bytes, no redirects and no private/local address access for challenge and later delivery. DNS preflight followed by unconstrained fetch is insufficient; fail closed when secure connection binding is unavailable.
+- Persist lifecycle changes and original IDs atomically across concurrent subscribe/refresh/unsubscribe. A challenge acknowledgment or stored callback is not proof of a rendered chat response. Preserve legacy tools, existing grants and all default-off rollout gates.
+
 Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+- [Resolved - explicit owner answer2026-10-29] Use Netlify Functions Free for the protected Node.js HTTPS egress gateway and assist with setup during implementation. The owner requested a planning update in the current turn. Required Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 produces local gateway T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9 and hosted qualification T-ec421773-5864-4bc5-b17f-ce04e0d818c2. Complete both recorded dependencies before implementing the parent. See skill-tree/history/validation/callback-egress/owner-decision.md.
+- [Resolved - explicit owner answer] Callback URL/signing-secret ownership is Auth vault with separate consent and revocation cleanup; the prior Web Push decision is no longer used as a substitute. Protocol compatibility is a required predecessor.
+
 Validation:
-- Component journeys cover multi-level creation/edit/move/collapse, keyboard focus, same names, cycles, hidden/paged descendants and partial failure. Qualify narrow widths, long labels, 200-percent text and readable themes.
+- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.
+- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.
+
 Acceptance:
-- Tasks and Projects expose working arbitrary-depth descendant journeys with usable mobile and keyboard controls.
-- Tree operations preserve independent task lifecycle and original receipts with passing interaction and layout evidence.
+- Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.
+- No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim.
+
 Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+- Update technical/privacy/retention and originating-chat-reminders contracts, scope/consent guidance and testing.md; distinguish local security qualification from actual host callbacks.
+
 Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Expose stable arbitrary-depth Todo hierarchy queries
-
-```yaml
-id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
-priority: 100
-status: Ready
-parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Reuse native task parent relationships for complete task hierarchies.
-Current behavior:
-- ParentTaskId, relateTodo, per-task lifecycle and iterative combined cycle validation already exist in C# and TypeScript. Flat queries expose records; no dedicated tree read or complete subtree move contract exists.
-Desired behavior:
-- Provide account-bound hierarchy read/traversal and exact reparenting using existing independent task identities, without a fixed product depth restriction.
-Touch:
-- WorkspaceTaskRelationships.cs, WorkspaceRules.cs, workers/shared/workspace-domain.ts and task command/query modules, MCP schemas and shared hierarchy fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Use iterative traversal and explicit workload/pagination limits; arbitrary depth does not imply unbounded response size. Todo hierarchy remains separate from checklist and dependency completion. Return parent links, depth and pagination coverage without orphaning omitted ancestors. Reparenting never completes descendants or moves project membership implicitly. Missing/archived references retain clear status. Keep existing combined parent/dependency cycle rejection and unrelated task kinds unchanged.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- C#/TypeScript parity fixtures cover at least 2000 parent levels, pagination boundaries, cycles/self-parent, missing or archived parents, reparent/detach, same-name tasks, cross-account isolation and lost response recovery.
-Acceptance:
-- Hierarchy queries and exact reparent commands support deep Todo chains without recursive stack exhaustion or a fixed depth cap.
-- Hierarchy changes preserve task history, task identity, project membership, dependency semantics and zero implicit game effects.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Execute explicitly requested task edits without redundant agent approval
-
-```yaml
-id: T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c
-priority: 100
-status: Ready
-parent_pending_ids: ["P-203bd87e-c49c-447b-913d-b322d6bdf0b2"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Remove redundant conversational approval for explicit ordinary task create/edit intent.
-Current behavior:
-- MCP task descriptions mandate a second explicit preview approval for every create/update; durable prepared commands and request identity already exist in task-tools.ts and task-api.ts.
-Desired behavior:
-- Preserve internal prepare/accept validation while allowing the initiating explicit create/edit request to authorize the exact ordinary task action. Return saved state plus independent projection receipt.
-Touch:
-- workers/chatgpt-mcp/src/task-tools.ts, shared task-tool contracts, Companion agent skill/package guidance, Workspace prepared-command tests and integration documentation.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Do not relabel writes as read-only or remove authorization, independent scopes, revision checks or durable previews. The initial request covers only matching fields and task identity. Ambiguity requires clarification. Deletion, scoring, completion, spells, Cron, bulk operations and unexpected game effects retain applicable review. Host UI safeguards cannot be overridden or guaranteed absent. Reuse the original command after unknown acceptance; never recreate the task.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Synthetic MCP explicit-create/edit journeys cover accepted and duplicate commands, unchanged scope enforcement, ambiguous names, stale revisions, lost acknowledgement and independent saved/projection status. Metadata/guidance fixtures assert ordinary intent versus consequential-action boundaries.
-Acceptance:
-- Explicit ordinary task create/edit guidance permits one initiating request without a mandatory additional agent approval exchange.
-- Original command identity, scope/revision validation, failure recovery and consequential-action boundaries remain covered by passing tests.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Unify account-bound Todo workspace presentation
-
-```yaml
-id: T-9f465413-725a-440e-a464-cb5c555cb87d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-9f465413-725a-440e-a464-cb5c555cb87d
-related_task_id: null
-relation: main
-depends_on: ["T-a7dca938-7c13-4878-9363-04862fbfa04d"]
-```
-
-Goal:
-- Provide one source-aware application boundary for new task pages.
-Current behavior:
-- AppSessionController serves cached Habitica data while WorkspaceTaskController loads browser/cloud canonical snapshots and preserves task intents. New pages need consistent source selection, current revisions and recovery without direct storage/API logic in Razor.
-Desired behavior:
-- Shared presentation loads an already selected source, identifies browser/cloud/Habitica provenance, exposes canonical read models and retains original task-command ownership across page navigation.
-Touch:
-- WorkspaceTaskController and new small application/presentation facade, existing canonical query/agenda/history/organization services, scoped storage and client tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reuse current canonical engines on validated snapshots. Retain one deliberate choice when multiple workspaces exist; never silently merge independent IDs or reinterpret Habitica IDs as canonical IDs. Linked tasks retain explicit mapping/provenance and cannot be counted twice as one combined record. Read loading grants no connection, transfer, executor or game effect. Preserve original requests after uncertainty and block unsafe source switching; account changes discard late results. Expose unavailable versus empty distinctly.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Controller/facade tests cover source load, multiple workspaces, offline browser copy, frozen/cloud ownership, stale revision, mapping provenance, pending intents and sign-out/account change.
-Acceptance:
-- Todo presentation exposes current source/revision and canonical reads without duplicating identities or bypassing existing command/controller boundaries.
-- Source changes, unavailable loads and account switches preserve original command recovery and prevent stale account data or implicit effects.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Build direct title-first task capture and editing
-
-```yaml
-id: T-ea3c2df0-7c13-4a77-a920-1451801b9946
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-ea3c2df0-7c13-4a77-a920-1451801b9946
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make capture and ordinary task edits immediately usable without opening a management console.
-Current behavior:
-- CompanionTasksPanel contains create/edit commands but is hidden behind Manage Companion tasks and exposes many fields at once. WorkspaceTaskInput and the canonical engine already support reviewed basic task operations.
-Desired behavior:
-- A reusable category-aware capture/editor starts with a title and exposes advanced fields on demand; completion and Habit scoring remain direct visible actions.
-Touch:
-- Reusable task rows/editor components, WorkspaceTaskController inputs, existing command previews and component tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Default to native Companion persistence with explicit source and no requested game projection. Support Todo/Daily/Habit creation with clear kind labels, notes, urgency, separate planned date/deadline and relevant game details. Preserve exact reviewed command fields, original IDs, draft state, receipt recovery, keyboard entry/return focus and unavailable reasons. Optional advanced details must not hide the primary create/complete/score action. Destructive archival and requested game effects retain concrete review; no implicit live dispatch.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component tests cover title-only creation, category-specific actions, advanced edits, cancellation, invalid dates, uncertainty/recovery, source change and focus; apply the reusable rendered UI matrix.
-Acceptance:
-- Category capture and existing-task primary actions are reachable without a management disclosure and use the existing exact canonical review/acceptance contract.
-- Drafts, account ownership, original receipts and clear saved-versus-projected feedback survive failure/navigation with passing interaction/layout checks.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Build schedule-aware Today task groups
-
-```yaml
-id: T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Implement the owner-requested Today grouping of current-day tasks and due Dailies.
-Current behavior:
-- WorkspaceAgenda provides planned/deadline flags and canonical Daily occurrences with retained completion/skip overrides. Legacy Habitica snapshots supply separate due information; the app has no Today page.
-Desired behavior:
-- A reusable Today surface groups planned/current-day task work and scheduled Daily occurrences with visible primary actions and clear completion/due state.
-Touch:
-- Todo presentation, Today component/page, WorkspaceAgenda/RecurrenceCalendar reads and existing task action components.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use the selected civil day and explicit rule timezone; Dailies can repeat weekly/monthly and must not appear every day merely because kind is Daily. Keep planned dates and deadlines distinct, labelling same-day deadlines separately. Deduplicate canonical task/date rows, honour retained skipped/completed occurrences and state/archival. Unscheduled Dailies do not acquire an invented schedule. Legacy Habitica due state remains labelled and fresh rather than inferred from canonical recurrence. Viewing creates no occurrence or game effect.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Date-boundary, weekly/monthly/DST, unscheduled, paused, skipped/completed, duplicate and unavailable-timezone fixtures; component actions and rendered mobile checks.
-Acceptance:
-- Today groups current-day planned work and genuinely due canonical Daily occurrences without duplicate rows or invented everyday schedules.
-- Primary actions preserve exact occurrence/source identity and clear freshness, empty, unavailable and completion states.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Expose Inbox and calendar planning views
-
-```yaml
-id: T-fb41407b-58d3-4dca-b389-e80bbe517831
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-fb41407b-58d3-4dca-b389-e80bbe517831
-related_task_id: null
-relation: main
-depends_on: ["T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Expose implemented native planning through accessible list and agenda controls.
-Current behavior:
-- Canonical query/agenda/PlanTask contracts exist, but Inbox, Upcoming, Week/Month, overdue/Anytime and placement controls lack dedicated production UI.
-Desired behavior:
-- Planning surfaces provide date/list navigation, clear planned/deadline labels and exact reviewed rescheduling/clearing without duplicating tasks.
-Touch:
-- Todo planning components/routes, shared source facade, WorkspaceAgenda/TaskQuery and WorkspaceTaskController PlanTask inputs.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Adopt documented Inbox/unplanned, Anytime and agenda semantics from navigation-study.md while respecting the owner Todo section. Keep a keyboard/list alternative to calendars; no drag-only operation. Use existing date-range/page limits, revision resets and explicit timezone errors. Completed history is separate. Plans/placement create no new reward or implicit projection; linked upstream schedules are unchanged unless an existing reviewed game command explicitly covers a field.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Query/placement and component tests for view membership, range changes, date clearing, stale pages, empty/error states and keyboard navigation; reusable UI matrix.
-Acceptance:
-- Inbox and upcoming/week/month/overdue/Anytime access uses explicit canonical membership and date semantics with stable bounded reads.
-- Reviewed rescheduling and clearing preserve task identity/history and do not silently change game rewards or upstream schedules.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Expose retained task history and safe Todo restore
-
-```yaml
-id: T-54623cea-9c8f-4819-b33f-b6552c82df55
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-54623cea-9c8f-4819-b33f-b6552c82df55
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make completion and Habit activity review available with supported exact Todo restoration.
-Current behavior:
-- WorkspaceCompletionHistory, WorkspaceHabitHistory and restoreTodo already retain exact events and native-only restoration cycles. The editor lacks complete history/restore controls.
-Desired behavior:
-- History surfaces filter and page retained activity, label historical versus current fallback text and offer restoration only for supported exact unlinked Todo completions.
-Touch:
-- Todo history components/routes, shared read facade, existing history engines, WorkspaceTaskController restore inputs and tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Keep canonical completion/score acceptance separate from confirmed game effects. Preserve archived-history flags and UTC event versus civil occurrence date labels. Restore requires the exact unrestored completion and an unlinked nonarchived Todo; linked, archived-task or recurring undo stays explicitly unsupported pending separate policy. No deletion of history, negative reward, inferred streak or replay of uncertain actions.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component tests for historical snapshots/fallback, filters/paging, archive flags, multiple cycles, restore review, unsupported targets, lost acknowledgement and no reward changes; rendered UI checks.
-Acceptance:
-- Users can review retained Todo/Daily completion and Habit activity with accurate source/time/history labels and bounded filtering.
-- Only a supported exact native Todo restoration is offered and accepted; original history and every game-effect fence remain intact.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Add reviewed browser organization workflows
-
-```yaml
-id: T-574a6ba2-741e-4d13-b798-b909c24de93d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-574a6ba2-741e-4d13-b798-b909c24de93d
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d"]
-```
-
-Goal:
-- Provide reusable account-bound native organization command state for browser UI.
-Current behavior:
-- WorkspaceOrganizationService/Engine and IWorkspaceOrganizationApi exist, but no organization controller owns browser preview/acceptance/unknown-receipt recovery for pages.
-Desired behavior:
-- A reusable controller supports local/cloud create/update/archive for existing organization kinds using exact previews and original receipts.
-Touch:
-- New focused organization controller, WorkspaceOrganizationService, IWorkspaceOrganizationApi, scoped local store and adapter tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Follow existing task-controller ownership semantics without mixing native organization receipts with task/game receipts. Preserve exact request/command IDs across preparation loss, unknown acceptance, expiry and stale revision. Local changes use optimistic native journal commits; cloud changes use existing scoped organization-api. No arbitrary fields, credentials, silent relationship deletion or implicit executor effects. Source/account changes discard late results and preserve unresolved original intent.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Controller tests cover all native organization kinds, local/cloud parity, no-op/invalid edits, lost preview/acceptance, original recovery, authority restrictions and account changes.
-Acceptance:
-- Browser organization actions use one validated local/cloud preview-acceptance-recovery controller with independent exact identities.
-- Native history/relationships and zero new game effects remain valid through stale revisions, unknown outcomes and account/source changes.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Expose projects goals and optional task organization
-
-```yaml
-id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
-related_task_id: null
-relation: main
-depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0", "T-264e3162-adc3-45f0-943e-a55feccc9d8e", "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"]
-```
-
-Goal:
-- Make existing organization and lightweight task workflows usable from a phone.
-Current behavior:
-- Canonical categories/projects/sections/labels/goals, Todo progress, placement, relationships, states and active stages exist, with no dedicated project workspace UI.
-Desired behavior:
-- A working Projects surface supports optional organization CRUD/archive, project sections/task placement and goal progress; advanced task controls expose relationships and stages without mandatory hierarchy.
-Touch:
-- Projects page/components, organization controller, task edit components and canonical organization/query/progress services.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reuse flat categories, one primary project and Todo-based goal progress. Cancelled/archived/ineligible work must not inflate progress; empty progress is unavailable rather than a fabricated percentage. Exact parent/dependency edits retain cycle validation and full-replacement review. Waiting/someday/current state dominates dormant Inbox/Next/InProgress stage preferences. Project board is optional with keyboard/list alternatives and no staff monitoring metrics. Native organization/state edits never imply completion or game permission.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover simple unassigned capture, project/section/goal creation, placement/move/archive, labels, dependency/cycle rejection, progress updates, stages and original recovery; reusable UI checks.
-Acceptance:
-- Projects, categories, sections, labels and goals have working optional browser controls with correct canonical progress and task placement.
-- Relationship/state/stage controls retain exact review, domain validation and accessible list alternatives without mandatory workflow administration or game effects.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Expose recurring schedules and occurrence lifecycle
-
-```yaml
-id: T-68cb7da7-62e9-4136-b5c5-07da20f97c30
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-68cb7da7-62e9-4136-b5c5-07da20f97c30
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Expose the already implemented Daily recurrence and native lifecycle contracts.
-Current behavior:
-- Canonical Daily schedule replacement, dated completion/skip and pause/resume exist; WorkspaceTaskInput and the visible editor do not expose the complete recurrence/lifecycle workflow.
-Desired behavior:
-- Daily editor supports explicit daily/weekly/monthly schedules and timezone, occurrence review and Companion pause/resume with retained history.
-Touch:
-- Daily editor/occurrence controls, typed controller inputs and existing recurrence/calendar/lifecycle validation.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Expose existing interval/start/weekday/month-day/timezone fields, supported clearing and limits. Review schedule replacement and retained completion/skip precedence. Pause is Companion-only and never promises to stop Habitica penalties. New native Dailies may remain explicitly unscheduled. No implicit type conversion, linked schedule authoring, completion-based recurrence or reward undo; unsupported controls explain the limitation.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component and command-input tests cover daily/weekly/monthly, invalid rules/timezones, DST/date boundaries, occurrence completion/skip, pause/resume, replacement and acknowledgement loss; reusable UI matrix.
-Acceptance:
-- Users author/review supported Daily schedules and exact occurrence/lifecycle actions through the existing canonical contract.
-- History, schedule/due provenance and native-only pause semantics remain correct; unsupported game schedule/type conversions cannot run.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Expose reviewed saved-list authoring
-
-```yaml
-id: T-66aec83d-1d40-4c42-87ec-6566e1ac3769
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-66aec83d-1d40-4c42-87ec-6566e1ac3769
-related_task_id: null
-relation: main
-depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Add complete browser authoring for existing fixed-query saved task views.
-Current behavior:
-- CompanionTaskList selects current fixed definitions; the domain/native engine and scoped adapters support reviewed create/update/archive, but authoring controls are missing.
-Desired behavior:
-- Users name, inspect, edit and archive a saved query with explicit fixed-date/source/filter semantics and original native receipts.
-Touch:
-- Saved-list editor, organization controller, canonical query predicates and existing saved-view tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use existing tasks/unblockedTodos sources, exact organization references and full query replacement. Fixed dates remain fixed; no Today-relative inference or arbitrary expression language. Stage filters remain active-Todo-only and dependency candidates remain unblocked-only. Archived definitions retain history and cannot silently fall back to all tasks. Use independent organization-write cloud grants where applicable; task-write does not supply metadata permission.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover create/name/filter/update/clear/archive, unsupported filter combinations, stale references, query results, account changes and lost acceptance; reusable UI checks.
-Acceptance:
-- Saved lists have reviewed native browser create/update/archive controls and current query evaluation with no task duplication.
-- Definition replacement, fixed dates, scope boundaries and original receipt recovery remain correct across invalid/stale/unknown outcomes.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Move task analytics to a dedicated statistics page
-
-```yaml
-id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Keep analytics off the first task screen and provide useful correctly sourced statistics.
-Current behavior:
-- TasksPage places cached Habitica aggregates and charts before task groups. Canonical completion/Habit history and goal progress engines provide distinct evidence.
-Desired behavior:
-- A dedicated Statistics page provides period/filter controls, existing charts and supported canonical activity/progress summaries with source and history limits.
-Touch:
-- Statistics page/read models, existing task-history renderers, canonical history/progress engines and tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Separate Habitica snapshot/history values, canonical accepted events and confirmed game effects. Do not invent reward totals, streaks, missing-history zeroes, complete historical denominators or reversed rewards. Preserve current week/month/year charts where supported and provide text summaries/empty/unavailable states. Use semantic theme colors plus labels rather than color-only meaning; bounded pagination/ranges cannot silently omit data from totals.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Synthetic known-history aggregate assertions, partial/missing-history, date-boundary, restore-cycle and projection-state cases; component chart/filter navigation and reusable UI checks.
-Acceptance:
-- A dedicated statistics surface retains supported charts and offers correctly sourced period-based task/Habit/project summaries.
-- Incomplete/unavailable history and canonical-versus-game differences are explicit; charts and text summaries remain readable and accessible.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Create dedicated Todo sync and task settings
-
-```yaml
-id: T-c0bf3f10-141f-464c-bc1e-53040d67e61c
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d", "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-c0bf3f10-141f-464c-bc1e-53040d67e61c
-related_task_id: null
-relation: main
-depends_on: ["T-a7dca938-7c13-4878-9363-04862fbfa04d", "T-9f465413-725a-440e-a464-cb5c555cb87d", "T-d007ac44-f38c-4069-9b70-e66adbc64bf0", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Move task source/command management away from the primary action list.
-Current behavior:
-- Manage Companion tasks exposes source/command controls inline above legacy lists; workspace/executor consent and operational status reside in global Settings.
-Desired behavior:
-- A dedicated Todo Sync/settings page owns task sources, relevant preferences, backups/transfers and operational recovery while reusing existing account/privacy controls.
-Touch:
-- Todo Sync page, extracted task management components, WorkspaceDataController/TaskController and existing WorkspaceSettingsPanel behavior.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Do not duplicate consent state or create a second executor policy. Separate server availability, account opt-in and tab access; show pending/blocked/unknown versus executor paused and preserve original receipt lookup. Transfer freezes/ownership and existing backup formats remain explicit; preference ownership follows the sync inventory. Copy/export diagnostics uses the supported redacted path. The primary task lists must not require opening the management page. No destructive cleanup, new connection or background execution occurs on navigation.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover current source, status refresh, unavailable access, separate consent, paused/unknown work, original recovery, local/cloud backup and cancelled transfer/cleanup; reusable UI checks.
-Acceptance:
-- Task source/sync/settings management has a dedicated working destination with accurate account/tab/executor status and relevant preferences.
-- Existing consent, backup/transfer ownership and original command recovery remain single-source and unchanged by navigation or failed reads.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
-### Compose the always-open Todo navigation and task pages
-
-```yaml
-id: T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b
-related_task_id: null
-relation: main
-depends_on: ["T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-fb41407b-58d3-4dca-b389-e80bbe517831", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-fd2c633c-7b39-4776-a364-dacb83abaff7", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30", "T-66aec83d-1d40-4c42-87ec-6566e1ac3769", "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02", "T-c0bf3f10-141f-464c-bc1e-53040d67e61c", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Replace the single Tasks menu with the exact owner-requested Todo section.
-Current behavior:
-- AppNavMenu contains one Tasks link and TasksPage renders a long mixed dashboard. Independently implemented feature components require route composition.
-Desired behavior:
-- Always-expanded Todo contains Today, Habits, Dailies, Tasks and working Statistics, Sync/settings and Projects destinations; main category pages immediately show the selected category list and primary actions.
-Touch:
-- AppNavMenu, MainLayout, TasksPage extraction, new Todo routes and navigation/component/browser tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Owner structure supersedes conflicting primary destinations in navigation-study.md. Use category-specific tabs plus persistent nested menu without a collapse toggle. Compose real working destinations, no placeholder links. Move statistics and management off the first list screen; keep source/freshness status concise. Retain reachable Reward controls and existing task links through safe routing compatibility. Integrate the reviewed capture, Today, planning/history, recurrence, project and saved-list components without duplicating account/workspace state. No task conversion or game effect follows from route migration.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Navigation tests cover all destinations, direct deep links, old /tasks compatibility, selected-tab/menu state, no repeated management disclosure and actual first-action visibility. Exercise synthetic journeys and the full changed-page UI/theme matrix.
-Acceptance:
-- The always-open Todo section and category tabs route to working task-first pages with immediate capture/complete/score access and no statistics/management barrier.
-- Statistics, Sync/settings, Projects and supported advanced features remain discoverable with preserved old links, Reward access and correct shared source/recovery state.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
+- A callback is both a secret-bearing delivery channel and an outbound network target. Enforce vault isolation, resource authorization and protected egress before any data transfer.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
 id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
-priority: 100
+priority: 24
 status: Blocked pending answers
 parent_pending_ids: ["P-29925105-1015-5ced-8844-d56fa47e33c9"]
 processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
@@ -1024,251 +540,6 @@ Documentation updates:
 - Deployment and release qualification matrix; preserve unrun gates in future.md.
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
-
-### Serialize scoped diagnostic append and clear operations
-
-```yaml
-id: T-13c008e0-2062-4846-ab4b-0f331a280f0b
-priority: 99
-status: Ready
-parent_pending_ids: ["P-15da69d1-68cb-47d2-b8ae-2edca2436137"]
-processing_run_id: PR-aa6ec1c6-4a91-4619-8193-5ef4f8d8a54a
-root_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-related_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-relation: followup
-depends_on: []
-```
-
-Goal:
-- Prevent overlapping scoped diagnostic mutations from losing committed local events.
-Current behavior:
-- DiagnosticsLogStore uses awaited read/modify/write append and an independent clear operation. Program.cs registers one scoped store per WebApp instance; no mutation coordinator exists.
-Desired behavior:
-- Append and clear mutations within the same scoped instance execute in a deterministic order, retaining the configured capacity and cancellation behavior.
-Touch:
-- src/Habitica.Storage/DiagnosticsLogStore.cs and deterministic storage/interleaving tests.
-Discovery allowance:
-- Inspect IndexedDbStorageAdapter and existing async coordination before selecting a minimal primitive.
-Out of scope:
-- Canonical command behavior, remote telemetry, cross-device synchronization and a cross-tab atomicity guarantee.
-Implementation constraints:
-- Use async coordination with release in finally; never block the UI thread. Preserve default capacity, newest-first order, clear semantics and cancellation. Logging remains best effort and cannot authorize replay. State explicitly whether cross-tab atomicity remains unavailable; an in-process semaphore cannot establish a database transaction across browser instances.
-Questions and required clarifications:
-- [Resolved - inspected DI scope and source] The selected correction covers concurrent calls to the same scoped store. Cross-tab coordination requires a separately verified storage contract.
-Validation:
-- Storage gates force two overlapping append operations and an append/clear interleaving. Verify no scoped lost update, deterministic clear order, bounded retention and cancellation before acquisition and during storage work.
-Acceptance:
-- Concurrent scoped append and clear operations preserve ordered committed history without exceeding configured retention.
-- Coordination does not block the UI thread, leak the gate after cancellation or change original command behavior.
-Documentation updates:
-- Update testing.md and the diagnostic coverage contract with the exact coordination scope.
-Risks:
-- A local lock can be misrepresented as cross-tab atomicity; retain the explicit boundary.
-
-### Prepare reproducible task UX and device qualification evidence
-
-```yaml
-id: T-06336249-6901-4d10-8df1-229ca9bcad6b
-priority: 99
-status: Ready
-parent_pending_ids: ["P-c5795748-6f25-4c0a-a471-fe72c1a85862"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-06336249-6901-4d10-8df1-229ca9bcad6b
-related_task_id: null
-relation: main
-depends_on: ["T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make the remaining E01 practical checks executable against the implemented Todo routes without treating preparation as completed human research.
-Current behavior:
-- navigation-study.md records public competitor flows and prototype evidence; current E01 lacks authenticated journeys and actual device/assistive-technology results.
-Desired behavior:
-- Provide exact task journeys, synthetic setup, observation forms and a traceable local run. Keep authenticated competitor and real-device acceptance in the existing blocked release gate.
-Touch:
-- navigation-study.md, ai-app-testing.md, release qualification matrix, current Razor routes and existing synthetic browser fixtures.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Replace superseded prototype navigation with the owner Todo/Today/Habits/Dailies/Tasks structure. Reuse Todoist and Things official flow references as documented evidence only. Cover capture, dates, complete/restore, recurrence, projects, sync and diagnostic recovery. Record route, viewport, theme, keyboard/focus, result and evidence provenance. Define real iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader and authenticated competitor checks with explicit unrun status and required owner/session inputs. Do not create third-party accounts, buy software or mark the release gate passed from fixtures.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Execute the available synthetic browser journeys and negative layout/interaction controls after dependent pages exist. Check both normal theme variants and phone/desktop geometry. Review the real-device handoff checklist without claiming actual device execution.
-Acceptance:
-- A reproducible current-route journey pack and actual local browser evidence cover the named task flows with explicit coverage limits.
-- Authenticated competitor, human and physical-device requirements remain traceable in T-d76d2a9a-1318-4e63-9bb4-73f620b108cc with missing inputs and no fabricated pass.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Restore archived tasks and correct native Daily occurrences
-
-```yaml
-id: T-2355607b-ba77-46c0-9495-aae61e16a8f0
-priority: 99
-status: Ready
-parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-2355607b-ba77-46c0-9495-aae61e16a8f0
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Extend retained native recovery beyond completed unlinked Todos.
-Current behavior:
-- DeleteTask sets IsArchived; RestoreTodo rejects archived, linked and non-Todo records. Occurrence states have no retained correction operation.
-Desired behavior:
-- Separate unarchive from completion undo. Unarchive preserves task state; an exact unlinked Daily occurrence correction records a new causal event while preserving the original completion/skip.
-Touch:
-- WorkspaceCommands, WorkspaceCommandIdentity, WorkspaceRules, WorkspaceCommandEngine, history/portable validation, shared Worker commands/schema, Workspace task API and neutral fixtures.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Use explicit typed unarchive and occurrence-correction operations with unique command IDs, expected revision and exact target event/occurrence. No history deletion, reward reversal, automatic next occurrence or changed schedule. Archived references remain valid and previous organization is restored only while references remain available. Invalid references require an explicit repair preview. Reject linked corrections, pending/unknown game effects and unsupported Habit inverse events; the separate linked-recovery task owns upstream unchecking.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Cross-runtime fixtures cover completed/skipped/archived cases, duplicate and concurrent corrections, archive-before-undo, missing references, stale revision, imports, exact zero-effect receipts and rejection of linked/uncertain work.
-Acceptance:
-- Unarchive and native occurrence correction retain original identities/history and produce exactly one validated causal correction without game effects.
-- Malformed, stale, duplicate and linked/uncertain requests cannot delete history, dispatch effects or silently repair relationships.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Add reviewed own-task Habitica unchecking and reconciliation
-
-```yaml
-id: T-0a2f12ac-6df6-498f-b090-f69c2a526b2a
-priority: 99
-status: Ready
-parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-0a2f12ac-6df6-498f-b090-f69c2a526b2a
-related_task_id: null
-relation: main
-depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0"]
-```
-
-Goal:
-- Support explicit recovery of a confirmed linked Todo or current eligible Daily without claiming exact reward reversal.
-Current behavior:
-- Auth projection accepts non-Habit score up only; canonical RestoreTodo rejects linked records. Official Habitica scoreTask.js implements non-Cron down operations with resource/history changes.
-Desired behavior:
-- A separately reviewed linked-recovery command binds the exact upstream completed state and original confirmed Companion completion, dispatches at most once and records native recovery only from the original successful receipt.
-Touch:
-- Auth projection preconditions/receipts, Workspace command engine and task API, C# browser command adapters, MCP definitions, shared task fixtures and Habitica API contract.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Own non-shared tasks only; reject group/challenge tasks, missing mappings, unsupported prior-day Daily recovery, needsCron/unknown day state and overlapping pending/unknown effects. Bind current account, task type/id/fingerprint, exact completion and eligible Daily date/checklist to an expiring single-use preview. Show estimated resource fields as unknown when exact reversal is unavailable; never call the action a guaranteed refund. Keep original history and add a causal recovery event. Lost acknowledgement uses receipt lookup only; no replacement dispatch or inferred success from later task state. Existing scopes, consent, quotas and cross-tool uncertainty fences remain mandatory. Daily skip correction stays native-only. Implement and test locally without a real score or Cron call.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Synthetic Auth/Workspace composition plus neutral C# fixtures cover confirmed/unknown/partial outcomes, repeated requests, same-day versus expired-day Daily state, account/revocation changes, shared-task denial, persistence failures and no retry. Recheck official score/controller semantics before implementation.
-Acceptance:
-- Exact reviewed linked recovery confirms at most one own-task dispatch and retains the original receipt plus causal native recovery.
-- Unknown, stale, shared, prior-day or unverified recovery remains explicit and cannot replay, grant a refund claim or affect party management.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Expose extended recovery actions in task history
-
-```yaml
-id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
-priority: 99
-status: Ready
-parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
-related_task_id: null
-relation: main
-depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0", "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make supported recovery discoverable without hiding the operation meaning.
-Current behavior:
-- The planned history surface exposes only the existing unlinked Todo restore; archive and linked/occurrence recovery need separate controls.
-Desired behavior:
-- History and archived-task views offer exact unarchive, occurrence correction and linked-uncheck actions with supported-state reasons and original receipts.
-Touch:
-- Workspace history controllers, browser/native-cloud command adapters, history UI, task details and MCP recovery tool descriptions.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Use separate labels for unarchive, native correction and Habitica uncheck. Show the task/occurrence, original completion, native changes and possible game resource effects before acceptance. Never replace an unknown command, silently convert an action to an unlinked copy or erase old history. Preserve filters, focus, source identity, accessible touch targets and normal-theme readability.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Component/transport fixtures cover every supported action, refusal explanation, lost acknowledgement, restored filters/focus and receipt lookup. Render phone/desktop normal themes through the shared UI checks.
-Acceptance:
-- Supported recovery actions are reachable from history and execute only the exact reviewed operation with a visible original receipt.
-- Unsupported or uncertain recovery displays a concrete reason and preserves history, draft state and command identity.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Retain trustworthy task activity and schedule coverage
-
-```yaml
-id: T-aa82feee-97b1-4f14-8b5a-d642cca014e3
-priority: 99
-status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-aa82feee-97b1-4f14-8b5a-d642cca014e3
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Establish evidence for history completeness before calculating streaks.
-Current behavior:
-- Completion/Habit reads retain accepted events but lack a coverage anchor, gap intervals or historical schedule epochs.
-Desired behavior:
-- Portable workspace coverage records identify known intervals and schedule/state history; imported or incomplete periods remain unknown.
-Touch:
-- WorkspaceDocument, journal validation/serialization, command engine, recurrence/lifecycle commands, Worker schema/commands and neutral portable fixtures.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Coverage is recorded from actual retained causal journal evidence, not inferred from task creation time or a paginated response. Legacy/imported snapshots default to unknown unless a validated coverage record proves completeness. Retain effective-dated recurrence/timezone/pause/resume changes. Query clocks never mutate coverage. Gap, retention, import and correction records cannot invent missing scores. Add compatible optional data with explicit validators; no migration tooling is required for early development.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- C# and Worker fixtures cover new complete journals, legacy unknown histories, missing revisions, schedule edits, pause intervals, archive/restore, export/import and corrupted coverage assertions.
-Acceptance:
-- Activity coverage and historical schedule intervals round-trip with causal validation and remain unknown across unproven gaps.
-- No read or import can manufacture complete history from timestamps, page counts or current recurrence settings.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
 
 ### Show coverage-aware Daily and Habit activity streaks
 
@@ -1317,12 +588,12 @@ Risks:
 id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
 priority: 99
 status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31", "P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
 root_task_id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
 related_task_id: null
 relation: main
-depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"]
+depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30", "T-07d27408-3019-423f-a5de-4cda1f9e2818"]
 ```
 
 Goal:
@@ -1393,47 +664,6 @@ Documentation updates:
 Risks:
 - Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
 
-### Add voluntary review scheduling and retained review history
-
-```yaml
-id: T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd
-priority: 99
-status: Ready
-parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946"]
-```
-
-Goal:
-- Turn existing review/stale fields into an optional, auditable task workflow.
-Current behavior:
-- ReviewAfterUtc/StaleSinceUtc exist in the task model but have no complete command, review-event or reset contract.
-Desired behavior:
-- Explicit set/snooze/clear review cues and mark-reviewed commands retain history without requiring completion or a mandatory review routine.
-Touch:
-- WorkspaceTaskPatch/identity, review events and validators, C# command/query services, Worker task API/schema, task editor and MCP tools.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Review cues use explicit UTC instants with a displayed timezone. Mark reviewed records one causal review event and clears the consumed review cue; another review date requires an explicit chosen value. Snooze changes the cue without claiming a review. StaleSince is a manual flag, not inferred lateness from inactivity or device clock. No automatic task-state, priority, planned-date, deadline or game change. Exact native preview/receipt ownership and late-session rejection apply; old snapshots without review events remain valid.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Cross-runtime and component tests cover due/future cues, clear/snooze/review distinctions, repeat/idempotent commands, stale revision, imported legacy fields, timezone display, missing refs and zero game effects.
-Acceptance:
-- Voluntary review actions produce exact retained review/cue state with independent snooze, clear and mark-reviewed semantics.
-- Review reads and actions never imply task completion, mandatory ritual, deadline failure, automatic priority or gameplay mutation.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
 ### Evaluate saved lists with explicit relative-date predicates
 
 ```yaml
@@ -1475,52 +705,11 @@ Documentation updates:
 Risks:
 - Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
 
-### Deliver explicit in-app and foreground browser reminder cues
-
-```yaml
-id: T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2
-priority: 99
-status: Ready
-parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2
-related_task_id: null
-relation: main
-depends_on: ["T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd", "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"]
-```
-
-Goal:
-- Provide useful optional reminders with honest delivery limits.
-Current behavior:
-- Today grouping and review metadata do not schedule notification delivery; the PWA has no accepted reminder permission or push-subscription contract.
-Desired behavior:
-- An opt-in task cue appears in the app and can notify while the app is running after a separate user permission action. Missed cues remain visible after reopening.
-Touch:
-- Workspace reminder intent/receipts, Today and Todo settings, browser reminder service/interop, service-worker capability labels and synthetic notification fixtures.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Reuse the reviewed cue time and canonical Today/review queries. In-app cues work without browser permission; permission is requested only from an explicit browser-notification action. Dedupe by account, task/cue identity and schedule revision; permission denial, unsupported devices, clock changes, snooze and account changes remain visible. No periodic upstream polling or task/game effects. Foreground timers are best effort and never promise delivery from a closed tab. Background push is explicitly unavailable under the initial contract and remains part of the existing Background Automation backlog; do not silently enroll a push subscription or store notification endpoints.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Fake-clock/browser permission fixtures verify foreground delivery, duplicate suppression, reopen catch-up, denied/unavailable permission, cross-account cleanup and no upstream/network effect. Component and rendered checks verify delivery-limit wording and accessible cue actions.
-Acceptance:
-- Opt-in in-app/foreground cues obey exact schedule identity and preserve missed-cue visibility without duplicate notifications.
-- Denied permissions, closed-app limits and background unavailability remain explicit; reminders never grant consent, send credentials, poll Habitica or mutate tasks automatically.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 
 ```yaml
 id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-priority: 97
+priority: 24
 status: Ready
 parent_pending_ids: ["P-0ea957c0-5210-5931-b545-82b9f13197db"]
 processing_run_id: null
@@ -1666,6 +855,45 @@ Risks:
 - losing a key before migration.
 - OAuth grants surviving credential deletion.
 - upstream IP-level rate limiting after centralizing requests.
+
+### Add project-filtered retained task history navigation
+
+```yaml
+id: T-16e1b491-18c3-498e-82da-81a97ff1294a
+priority: 25
+status: Ready
+parent_pending_ids: ["P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-16e1b491-18c3-498e-82da-81a97ff1294a
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Add exact project filtering and direct project-to-history navigation while reusing completed history and recovery.
+Current behavior:
+- Completion and Habit history already support exact task, text and UTC dates with safe restoration. Queries and TodoHistoryPanel lack a project filter; statistics and extended recovery have separate existing Ready tasks.
+Desired behavior:
+- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
+Touch:
+- WorkspaceCompletionHistory/WorkspaceHabitHistory filters and parity models, Worker history reads/MCP schemas, TodoHistoryPanel, Projects entrypoints and retained-history skill.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Define project filtering as current retained canonical task assignment, labelled clearly rather than claiming event-time membership when snapshots lack placement. Include archived/removed project identities and completed archived tasks; preserve accepted event text/time provenance. Distinguish current Unassigned from a removed historical project selector. Combine text/project/UTC filters with AND, stable revision-bound paging and full counts. Existing exact-event restoration and linked/uncertain refusal remain unchanged. Reuse the planned statistics and extended-recovery tasks instead of implementing duplicate pages or unsafe undo.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.
+Acceptance:
+- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
 
 ## Backlog
 

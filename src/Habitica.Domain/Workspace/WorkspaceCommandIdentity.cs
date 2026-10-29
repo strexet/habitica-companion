@@ -11,6 +11,33 @@ public static class WorkspaceCommandIdentity
     {
         static string? Name<T>(T? value) where T : struct, Enum => value is null ? null : JsonNamingPolicy.CamelCase.ConvertName(value.Value.ToString());
         var patch = command.Patch;
+        if (patch?.Unarchive is not null || patch?.CorrectOccurrence is not null)
+        {
+            var previous = Hash(command with { Patch = patch with { Unarchive = null, CorrectOccurrence = null } });
+            var unarchive = patch.Unarchive; var correction = patch.CorrectOccurrence;
+            var recoveryFields = new string?[] { unarchive?.ArchivedRevision.ToString(CultureInfo.InvariantCulture),
+                unarchive?.Planning is {} plan ? Hash(command with { Operation = WorkspaceOperation.PlanTask, Patch = new(Planning: plan) }) : null,
+                unarchive?.Relationships is {} links ? Hash(command with { Operation = WorkspaceOperation.RelateTodo, Patch = new(Relationships: links) }) : null,
+                correction?.OccurrenceId.ToString("D"), correction?.OccurrenceRevision.ToString(CultureInfo.InvariantCulture), correction?.TargetCommandId.ToString("D") };
+            var payload = "companion-command-v11\n64:" + previous + string.Concat(recoveryFields.Select(field => field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field));
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
+        if (patch?.Review is {} review)
+        {
+            var previous = Hash(command with { Patch = patch with { Review = null } });
+            var payload = "companion-command-v10\n64:" + previous;
+            foreach (var field in new[] { Name<TaskReviewAction>(review.Action), review.TimeZoneId, WorkspaceTaskReview.CanonicalUtc(review.ReviewAfterUtc), WorkspaceTaskReview.CanonicalUtc(review.StaleSinceUtc) })
+                payload += field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field;
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
+        if (patch?.HabiticaDetails is { } directions && (directions.Up is not null || directions.Down is not null))
+        {
+            var previous = Hash(command with { Patch = patch with { HabiticaDetails = directions with { Up = null, Down = null } } });
+            var payload = "companion-command-v9\n64:" + previous;
+            foreach (var flag in new[] { directions.Up, directions.Down }) payload += flag is null ? "-1:" : flag.Value ? "1:1" : "1:0";
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
+
         var fields = new string?[]
         {
             command.Id.ToString("D"), command.WorkspaceId.ToString("D"), command.ExpectedRevision.ToString(CultureInfo.InvariantCulture),

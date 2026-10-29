@@ -1,0 +1,2057 @@
+{
+  "failures": [
+    {
+      "caseId": "1-f09db9cf-27cd-427d-a83d-8f641f1ed519",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 96.89999985694884,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.2999999523162842,
+            "matrixElapsedMs": 46,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8,
+            "matrixElapsedMs": 52.09999990463257,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8.099999904632568,
+            "matrixElapsedMs": 52.19999980926514,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.5,
+            "matrixElapsedMs": 52.29999995231629,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8.5,
+            "matrixElapsedMs": 52.29999995231629,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 12.799999952316284,
+            "matrixElapsedMs": 96.5,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [],
+            "frameElapsedMs": 12.899999856948853,
+            "matrixElapsedMs": 96.79999995231628,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 12.899999856948853,
+            "matrixElapsedMs": 96.79999995231628,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 12.899999856948853,
+            "matrixElapsedMs": 96.79999995231628,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 52.29999995231629,
+            "matrixElapsedMs": 96.89999985694884,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 6.234847702178141,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "gryphy-light",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "3-c60d0ea0-fa63-4dcf-a696-dbdabd036c30",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 31.700000047683716,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0,
+            "matrixElapsedMs": 13.799999952316284,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.799999952316284,
+            "matrixElapsedMs": 21.299999952316284,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8.899999856948853,
+            "matrixElapsedMs": 21.299999952316284,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.899999856948853,
+            "matrixElapsedMs": 21.40000009536743,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8.899999856948853,
+            "matrixElapsedMs": 21.40000009536743,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.799999952316284,
+            "matrixElapsedMs": 31.40000009536743,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 16.09999990463257,
+            "matrixElapsedMs": 31.5,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 16.200000047683716,
+            "matrixElapsedMs": 31.59999990463257,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 16.200000047683716,
+            "matrixElapsedMs": 31.59999990463257,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 19,
+            "matrixElapsedMs": 31.59999990463257,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 7.012741274813401,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "gryphy-dark",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "5-540af075-c86c-454e-b1bf-30ada6c098e8",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 38.20000004768371,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.19999980926513672,
+            "matrixElapsedMs": 18.5,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 7.8999998569488525,
+            "matrixElapsedMs": 24.59999990463257,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 7.8999998569488525,
+            "matrixElapsedMs": 24.700000047683716,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8,
+            "matrixElapsedMs": 24.700000047683716,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8,
+            "matrixElapsedMs": 24.700000047683716,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 15.899999856948853,
+            "matrixElapsedMs": 38.09999990463257,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 16.5,
+            "matrixElapsedMs": 38.09999990463257,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 16.5,
+            "matrixElapsedMs": 38.09999990463257,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 16.5,
+            "matrixElapsedMs": 38.20000004768371,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 21.09999990463257,
+            "matrixElapsedMs": 38.20000004768371,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 9.252738394203485,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "toxic-swamp",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "7-65c3b6d7-8bf5-48a5-8e15-fb6459644502",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 42.30000019073486,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.09999990463256836,
+            "matrixElapsedMs": 18.40000009536743,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.700000047683716,
+            "matrixElapsedMs": 33.80000019073486,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 14.700000047683716,
+            "matrixElapsedMs": 33.90000009536743,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.900000095367432,
+            "matrixElapsedMs": 33.90000009536743,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 14.900000095367432,
+            "matrixElapsedMs": 33.90000009536743,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 15.099999904632568,
+            "matrixElapsedMs": 34,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 15.5,
+            "matrixElapsedMs": 34,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 15.5,
+            "matrixElapsedMs": 34.10000014305115,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 15.5,
+            "matrixElapsedMs": 34.10000014305115,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 24.09999990463257,
+            "matrixElapsedMs": 42.20000004768371,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 7.368503018929376,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "obsidian-glow",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "9-ba85eeb8-72fb-4866-ac20-f912ccef0f01",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 27.59999990463257,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.20000004768371585,
+            "matrixElapsedMs": 19.200000047683716,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3.8000001907348633,
+            "matrixElapsedMs": 20.799999952316284,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 20.899999856948853,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 20.899999856948853,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 20.899999856948853,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 5.900000095367432,
+            "matrixElapsedMs": 27.399999856948853,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 6.400000095367432,
+            "matrixElapsedMs": 27.399999856948853,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 6.5,
+            "matrixElapsedMs": 27.399999856948853,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 6.5,
+            "matrixElapsedMs": 27.5,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 9.300000190734863,
+            "matrixElapsedMs": 27.5,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 8.096229846802748,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "boss-battle",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "11-4c449efa-14ea-40f3-81fb-a8eaf2a8dfdc",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 31.90000009536743,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.20000004768371585,
+            "matrixElapsedMs": 11.900000095367432,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.099999904632568,
+            "matrixElapsedMs": 25.90000009536743,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 14.099999904632568,
+            "matrixElapsedMs": 25.90000009536743,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.200000047683716,
+            "matrixElapsedMs": 26,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 14.200000047683716,
+            "matrixElapsedMs": 26,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.399999856948853,
+            "matrixElapsedMs": 26,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 14.799999952316284,
+            "matrixElapsedMs": 26.09999990463257,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 14.799999952316284,
+            "matrixElapsedMs": 26.09999990463257,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 14.799999952316284,
+            "matrixElapsedMs": 26.09999990463257,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 21.59999990463257,
+            "matrixElapsedMs": 31.799999952316284,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 7.740050431603224,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "generated-calm",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "13-3cef3884-1b80-4d4f-86e7-523e4389bce8",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 51.5,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.10000014305114746,
+            "matrixElapsedMs": 19.200000047683716,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 26.799999952316284,
+            "matrixElapsedMs": 45.90000009536743,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 26.799999952316284,
+            "matrixElapsedMs": 45.90000009536743,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 26.799999952316284,
+            "matrixElapsedMs": 45.90000009536743,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 26.799999952316284,
+            "matrixElapsedMs": 45.90000009536743,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 26.90000009536743,
+            "matrixElapsedMs": 46,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 27.40000009536743,
+            "matrixElapsedMs": 46.10000014305115,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 27.40000009536743,
+            "matrixElapsedMs": 46.10000014305115,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 27.40000009536743,
+            "matrixElapsedMs": 46.10000014305115,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 34.200000047683716,
+            "matrixElapsedMs": 51.40000009536743,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 274.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 8.014056369781681,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 345,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "generated-moderate",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "15-23e30090-3455-46b6-9e26-900dd059bad7",
+      "clientWidth": 375,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 19.40000009536743,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.09999990463256836,
+            "matrixElapsedMs": 13.700000047683716,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.5,
+            "matrixElapsedMs": 15.100000143051147,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.599999904632568,
+            "matrixElapsedMs": 15.200000047683716,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.599999904632568,
+            "matrixElapsedMs": 15.200000047683716,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.599999904632568,
+            "matrixElapsedMs": 15.200000047683716,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 5.200000047683716,
+            "matrixElapsedMs": 19.299999952316284,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [],
+            "frameElapsedMs": 5.200000047683716,
+            "matrixElapsedMs": 19.299999952316284,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 5.200000047683716,
+            "matrixElapsedMs": 19.299999952316284,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 5.200000047683716,
+            "matrixElapsedMs": 19.299999952316284,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 7.799999952316284,
+            "matrixElapsedMs": 19.299999952316284,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-load",
+          "kind": "primary-target",
+          "width": 304.203125
+        },
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 304.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 6.234847702178141,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 375,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "gryphy-light",
+      "unqualifiedSurfaces": [],
+      "width": 390
+    },
+    {
+      "caseId": "17-1af13a12-debd-44b4-913b-c554474397c6",
+      "clientWidth": 375,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 24.600000143051147,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.10000014305114746,
+            "matrixElapsedMs": 13.300000190734863,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 15.300000190734863,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 15.300000190734863,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 15.300000190734863,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 15.300000190734863,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.700000047683716,
+            "matrixElapsedMs": 24.40000009536743,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 9.200000047683716,
+            "matrixElapsedMs": 24.5,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 9.200000047683716,
+            "matrixElapsedMs": 24.5,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 9.200000047683716,
+            "matrixElapsedMs": 24.5,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 11.900000095367432,
+            "matrixElapsedMs": 24.5,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-load",
+          "kind": "primary-target",
+          "width": 304.203125
+        },
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 304.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 7.012741274813401,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 375,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "gryphy-dark",
+      "unqualifiedSurfaces": [],
+      "width": 390
+    },
+    {
+      "caseId": "19-9eb23639-85aa-4fe6-842e-a57dd7f90662",
+      "clientWidth": 375,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 22.90000009536743,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.09999990463256836,
+            "matrixElapsedMs": 11.300000190734863,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.699999809265137,
+            "matrixElapsedMs": 14.200000047683716,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.699999809265137,
+            "matrixElapsedMs": 14.200000047683716,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.799999952316284,
+            "matrixElapsedMs": 14.200000047683716,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.799999952316284,
+            "matrixElapsedMs": 14.200000047683716,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 9.699999809265137,
+            "matrixElapsedMs": 22.800000190734863,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "background-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 10.099999904632568,
+            "matrixElapsedMs": 22.800000190734863,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 10.199999809265137,
+            "matrixElapsedMs": 22.90000009536743,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 10.199999809265137,
+            "matrixElapsedMs": 22.90000009536743,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 12.799999952316284,
+            "matrixElapsedMs": 22.90000009536743,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 7,
+      "disabledSkipped": 2,
+      "errors": [
+        {
+          "height": 32,
+          "id": "schedule-load",
+          "kind": "primary-target",
+          "width": 304.203125
+        },
+        {
+          "height": 32,
+          "id": "schedule-prepare",
+          "kind": "primary-target",
+          "width": 304.203125
+        }
+      ],
+      "fixture": "/push-schedule-empty.html",
+      "minimumMeasuredContrast": 9.252738394203485,
+      "operationClass": "executed_control",
+      "primaryControls": 4,
+      "qualification": "measured",
+      "scrollWidth": 375,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 14,
+      "theme": "toxic-swamp",
+      "unqualifiedSurfaces": [],
+      "width": 390
+    }
+  ],
+  "summary": "{\"cases\":1038,\"errors\":1113,\"harnessErrors\":0,\"prerequisiteUnavailable\":0,\"measurementUnavailable\":0,\"unqualifiedSurfaces\":0,\"errorKinds\":[\"primary-target\"]}"
+}

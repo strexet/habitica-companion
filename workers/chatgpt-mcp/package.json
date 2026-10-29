@@ -11,15 +11,21 @@
     "check": "npm run types && tsc --noEmit",
     "build": "npm run check && wrangler deploy --dry-run --env \"\" --outdir dist",
     "build:preview": "wrangler deploy --dry-run --env preview --outdir dist-preview",
-    "build:production": "wrangler deploy --dry-run --env production --outdir dist-production"
+    "build:production": "wrangler deploy --dry-run --env production --outdir dist-production",
+    "prebuild": "python3 ../scripts/generate-build-identity.py --check",
+    "prebuild:preview": "python3 ../scripts/generate-build-identity.py --check",
+    "prebuild:production": "python3 ../scripts/generate-build-identity.py --check"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "1.2.3",
-    "@modelcontextprotocol/sdk": "1.32.1"
+    "@modelcontextprotocol/server": "2.4.0",
+    "@modelcontextprotocol/core": "2.4.0"
   },
   "devDependencies": {
     "wrangler": "4.151.0",
     "typescript": "7.0.2",
-    "@cloudflare/workers-types": "5.20261014.1"
+    "@cloudflare/workers-types": "5.20261014.1",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/client": "2.4.0"
   }
 }

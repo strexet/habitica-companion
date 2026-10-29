@@ -1,0 +1,98 @@
+{
+  "taskId": "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+  "recordedAtUtc": "2026-10-22T03:48:42.159346+00:00",
+  "sourceFingerprints": {
+    "skill-tree/documents/companion-workspace-contract.md": "af9ef704e466b16fdb7eabdc77d2e3f2a5d44abdc4058d65ba0d77ec4fd7a396",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "e7c3be006e8d90b44cb80dd159d97f37389d103794808e08c25aa70a3c3666e9",
+    "skill-tree/documents/features.md": "be9eaa8a9765f324e5c229e42b39269f27472ab511130a795eabfe942a202c89",
+    "skill-tree/documents/habitica-api.md": "cca16935933207bde86c5cb788863214b0f229a8a4269a327070112aaef71ea2",
+    "skill-tree/documents/technical.md": "d284d98d5c723c78bfe97396be8b8e728befaec6d3c92a3bed82ce3d7e1cf95d",
+    "skill-tree/documents/testing.md": "582cef794dc340941b360fcd6fdb36bd814aee26f9f3c292f04c03a406c67f02",
+    "skill-tree/documents/ux-ui-manifest.md": "85aca362ed049d213580aa8aca72d901408a8c76c3b0a5b93fcc20e93d2c275f",
+    "workers/chatgpt-auth/migrations/0009-tag-gateway.sql": "47aad60583f579f6a2a570929c6b5a4303847520e6de3ea0014e17bfe058b00d",
+    "workers/chatgpt-auth/src/index.ts": "904e90a7b3c83ce77ae5ae333d5f9d47f346d42fdadc87e674bd5645c512d2c9",
+    "workers/chatgpt-auth/src/oauth.ts": "e3127392dc149aafd95128d63109ad598a272e7d86f278b4b510c505232b6803",
+    "workers/chatgpt-auth/src/tag-consent.ts": "ed357ba4050efc0a1fc1a8ff50be10255d4980779c5767a6d4ec82f35029c139",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "a709b0ce5da239c966486cd6f64c73198b86f85148a10a5de2046c5839e86333",
+    "workers/chatgpt-auth/src/workspace-identity.ts": "55268a8626a538b41295e0bbe8a7fa6fc20164f42b2f9467ed4779c1b58e4261",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "b3cf866bf4f3e370252709967c479971167a6be8fdbaade2e9fd98cde661fdfb",
+    "workers/chatgpt-auth/test/tag-gateway.test.mjs": "743f3b05b0f9198ea3680fa808f13e2451497e090781ab63d06d69f4c3285d61",
+    "workers/chatgpt-auth/test/vault.test.mjs": "0d7ef9d33901eb0f96f1bb0c69de3e025a8e341f0ef87e72c9cff013071901ab",
+    "workers/shared/tag-gateway.ts": "baed3d30f59bed3b07319f18013b68164d2f63216b19b2d5366c9861620eb2f7"
+  },
+  "checks": {
+    "auth": {
+      "result": "pass",
+      "log": "/tmp/habitica-tag-gateway-auth-suite.log",
+      "sha256": "0e20ffd4fd3a851f757dad29b7e1225e132c55757a82560e4b34413945686be0",
+      "total": 144
+    },
+    "workspace": {
+      "result": "pass",
+      "log": "/tmp/habitica-tag-gateway-workspace-suite.log",
+      "sha256": "b0f0363ea18aea790aaa3581ef5435efebca4e47e060a4be40e0bdfba961830a",
+      "total": 482
+    },
+    "workerBuilds": {
+      "result": "pass",
+      "log": "/tmp/habitica-tag-gateway-worker-builds.log",
+      "sha256": "e5dc102207aff5a834954ae72c78c9465476eca0ba297fcee05ea4520579a49c"
+    },
+    "rendered": {
+      "result": "pass",
+      "cases": 24,
+      "evidence": "browser-results.json",
+      "scope": "Synthetic actual-SDK code-entry and verified-scope Auth HTML, six widths and 100/200-percent text; standalone native light presentation, not inherited PWA schemes.",
+      "fontSamples": "font-samples.json",
+      "negativeCases": 2,
+      "negativeEvidence": "browser-negative-results.json",
+      "keyboardFocus": "tag-consent-focus.png"
+    },
+    "unchangedDotnetBaseline": {
+      "sourceEvidence": "skill-tree/history/validation/tag-ledger/result.json",
+      "total": 1018,
+      "note": "No C# or PWA runtime source changed in the gateway task; the preceding qualified baseline is reused, not rerun as new evidence."
+    },
+    "documentation": {
+      "changedLineProse": "pass",
+      "strictFuture": "pass",
+      "repositoryNavigation": "pass",
+      "fullStrictProse": "Existing unrelated prose baseline remains; no clean full-strict verdict.",
+      "audit": "Existing stale audit warning."
+    }
+  },
+  "officialSources": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tags.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/tag.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/baseModel.js",
+    "https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/"
+  ],
+  "delivered": [
+    "Separate habitica-tags-v1 owner consent/epoch and additive habitica.tags.write disclosure with authoritative Workspace identity flag.",
+    "Restricted existing ProjectionService binding provides exact native read/create/adopt/rename and individual task membership; no tag deletion or gameplay forwarding.",
+    "Account/context/epoch-bound single-use checks, adopted identity registry and a 256-KiB complete-observation storage bound refuse before effects instead of truncating.",
+    "Shared original attempt/lease/unknown ledger, pre-dispatch quota/reservation, exact original receipt lookup and retained per-attempt observation details.",
+    "Explicit two-step original observation recovery records reviewed metadata on the same attempt without a second native mutation.",
+    "Migration 0009, bounded cleanup, owner disconnect purge and preserved remote tags.",
+    "Relative Auth font sizing and wrapping/control bounds qualify actual 200-percent text without weakening approval/CSP/binding protections."
+  ],
+  "limits": [
+    "No production migration, deployment, live account call, OAuth scope upgrade or tag consent activation.",
+    "Public canonical tag commands, derived complete membership, background reconciliation and browser tag controls remain following tasks. Agent adapters must require habitica.tags.write even when account consent exists.",
+    "Native Habitica operations have no cross-client transaction/CAS. Checks are bounded recent observations; unexpected identity or unrelated membership changes stay unconfirmed.",
+    "Observed recovery requires a separate explicit review and records reviewed_observation; the observation is not proof of the original successful HTTP response.",
+    "Physical devices, installed hosts and assistive technologies remain unqualified."
+  ],
+  "operationEvidence": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "note": "Aggregate controller timer unavailable. Worker builds/tests use 60/120/180-second deadlines; gateway requests have 10-second network and 15-second lease bounds. Browser matrix uses 5-second case/300-second matrix limits; local server had a 900-second lifetime and was explicitly stopped; temporary tab closed.",
+    "repairs": [
+      "OAuth fixture retained the expected synthetic account label; native tag checks were refreshed after single-use adoption before task-ownership negatives.",
+      "Quota tests update existing account state instead of inserting duplicate primary keys.",
+      "Actual rendered inspection found fixed 18px body text ignored root enlargement. Relative font sizing revealed mobile overflow; wrapping/control bounds fixed the observed defect.",
+      "Original stored observations and per-member evidence support explicit metadata recovery without blind replay."
+    ]
+  }
+}

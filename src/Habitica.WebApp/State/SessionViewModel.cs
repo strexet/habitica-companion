@@ -47,6 +47,8 @@ public sealed record SessionViewModel(
         TaskSnapshot: null,
         DiagnosticsLogEntries: Array.Empty<DiagnosticsLogEntry>());
 
+    public SpellCastOutcome? LastSpellCastOutcome {get;init;}
+
     public bool OwnerIsolatedTestingEnabled { get; init; }
 
     public bool HasCachedTasks => TaskSnapshot?.Items.Count > 0;
@@ -98,7 +100,8 @@ public sealed record SpellCastProgress(
     string SpellId,
     int Completed,
     int Total,
-    string Label = "");
+    string Label = "",
+    SpellCastStage Stage = SpellCastStage.Casting);
 
 public sealed record TaskMutationProgress(
     string TaskId,
@@ -125,7 +128,8 @@ public sealed record PetsMountsQueueProgress(
 
 public sealed record SpellActionResult(
     bool Succeeded,
-    string Message)
+    string Message,
+    SpellCastOutcome? CastOutcome = null)
 {
     public static SpellActionResult Success(string message) => new(true, message);
 

@@ -1,14 +1,16 @@
+import {taskReview,type TaskReview} from './task-review.ts';
 import {todoStage as parseTodoStage,type TodoStage} from './todo-stage.ts';
 import {todoState as parseTodoState,type TodoState} from './todo-state.ts';
 import {taskRelationships,type TaskRelationships} from './task-relationships.ts';
 import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import {workspaceRecurrence,type Recurrence} from './workspace-domain.ts';
 import {taskPlanning,type TaskPlanning} from './task-planning.ts';
+import {taskUnarchive,occurrenceCorrection,type TaskUnarchive,type OccurrenceCorrectionPatch} from './task-recovery.ts';
 import {todoRestore,type TodoRestore} from './todo-restore.ts';
-export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask" | "skipOccurrence" | "pauseTask" | "resumeTask" | "planTask" | "restoreTodo" | "relateTodo" | "setTodoState" | "setTodoStage";
-export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean; habiticaDetails?: HabiticaTaskDetails | null; recurrence?:Recurrence|null;clearRecurrence?:boolean;planning?:TaskPlanning|null;restoreTodo?:TodoRestore|null;relationships?:TaskRelationships|null;todoState?:TodoState|null;todoStage?:TodoStage|null }
+export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask" | "skipOccurrence" | "pauseTask" | "resumeTask" | "planTask" | "restoreTodo" | "relateTodo" | "setTodoState" | "setTodoStage" | "ensureProjection" | "reviewTask" | "unarchiveTask" | "correctOccurrence";
+export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean; habiticaDetails?: HabiticaTaskDetails | null; recurrence?:Recurrence|null;clearRecurrence?:boolean;planning?:TaskPlanning|null;restoreTodo?:TodoRestore|null;relationships?:TaskRelationships|null;todoState?:TodoState|null;todoStage?:TodoStage|null;review?:TaskReview|null;unarchive?:TaskUnarchive|null;correctOccurrence?:OccurrenceCorrectionPatch|null }
 export interface WorkspaceCommand { id: string; workspaceId: string; expectedRevision: number; operation: WorkspaceOperation; taskId: string; patch: WorkspacePatch | null; direction: "up" | "down" | null; count: number; occurrenceDate: string | null; projectToHabitica: boolean }
-const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask", "skipOccurrence", "pauseTask", "resumeTask", "planTask", "restoreTodo", "relateTodo", "setTodoState", "setTodoStage"];
+const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask", "skipOccurrence", "pauseTask", "resumeTask", "planTask", "restoreTodo", "relateTodo", "setTodoState", "setTodoStage", "ensureProjection", "reviewTask", "unarchiveTask", "correctOccurrence"];
 export function isTaskCreation(operation: unknown): boolean { return ["createTodo", "createDaily", "createHabit"].includes(operation as string); }
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid_command");
@@ -34,15 +36,18 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
   if (!Number.isSafeInteger(input.expectedRevision) || Number(input.expectedRevision) < 1 || (typeof input.operation !== "string" || !operations.includes(input.operation))) throw new Error("invalid_command");
   let patch: WorkspacePatch | null = null;
   if (input.patch !== undefined && input.patch !== null) {
-    const candidate = object(input.patch); keys(candidate, ["text", "notes", "clearNotes", "priority", "deadline", "clearDeadline", "habiticaDetails", "recurrence", "clearRecurrence", "planning", "restoreTodo", "relationships", "todoState", "todoStage"]);
+    const candidate = object(input.patch); keys(candidate, ["text", "notes", "clearNotes", "priority", "deadline", "clearDeadline", "habiticaDetails", "recurrence", "clearRecurrence", "planning", "restoreTodo", "relationships", "todoState", "todoStage", "review", "unarchive", "correctOccurrence"]);
     if (candidate.priority !== undefined && candidate.priority !== null && (typeof candidate.priority !== "string" || !["low", "normal", "high", "urgent"].includes(candidate.priority))) throw new Error("invalid_command");
     patch = { text: text(candidate.text, 2048), notes: text(candidate.notes, 10000), clearNotes: bool(candidate.clearNotes), priority: candidate.priority as WorkspacePatch["priority"] ?? null, deadline: date(candidate.deadline), clearDeadline: bool(candidate.clearDeadline), habiticaDetails: habiticaDetails(candidate.habiticaDetails,false) };
     let recurrence:Recurrence|null;try{recurrence=workspaceRecurrence(candidate.recurrence);}catch{throw new Error('invalid_command');}
     const clearRecurrence=bool(candidate.clearRecurrence);
     const planning=taskPlanning(candidate.planning);if(planning)patch.planning=planning;
+    const unarchive=taskUnarchive(candidate.unarchive);if(unarchive)patch.unarchive=unarchive;
+    const correction=occurrenceCorrection(candidate.correctOccurrence);if(correction)patch.correctOccurrence=correction;
     const restore=todoRestore(candidate.restoreTodo);if(restore)patch.restoreTodo=restore;
     const relationships=taskRelationships(candidate.relationships);if(relationships)patch.relationships=relationships;
     const todoState=parseTodoState(candidate.todoState);if(todoState)patch.todoState=todoState;
+    const review=taskReview(candidate.review);if(review)patch.review=review;
     const todoStage=parseTodoStage(candidate.todoStage);if(todoStage)patch.todoStage=todoStage;
     if(clearRecurrence&&recurrence)throw new Error('invalid_command');
     // Do not introduce new default keys into legacy previews or request identities.
@@ -51,8 +56,11 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
     if (Object.values(patch).every(value => value === null || value === false)) throw new Error("invalid_command");
   }
   const operation = input.operation as WorkspaceOperation;
-  if (isTaskCreation(operation) || operation === "updateTask" || operation === "planTask" || operation === "restoreTodo" || operation === "relateTodo" || operation === "setTodoState" || operation === "setTodoStage") { if (!patch || isTaskCreation(operation) && (patch.text === null || /^\p{White_Space}*$/u.test(patch.text))) throw new Error("invalid_command"); }
+  if (isTaskCreation(operation) || operation === "updateTask" || operation === "planTask" || operation === "restoreTodo" || operation === "relateTodo" || operation === "setTodoState" || operation === "setTodoStage" || operation === "reviewTask" || operation === "unarchiveTask" || operation === "correctOccurrence") { if (!patch || isTaskCreation(operation) && (patch.text === null || /^\p{White_Space}*$/u.test(patch.text))) throw new Error("invalid_command"); }
   else if (patch) throw new Error("invalid_command");
+  if(operation==='unarchiveTask'? !patch?.unarchive||Object.entries(patch).some(([key,value])=>key!=='unarchive'&&value!==null&&value!==false):Boolean(patch?.unarchive))throw new Error('invalid_command');
+  if(operation==='correctOccurrence'? !patch?.correctOccurrence||Object.entries(patch).some(([key,value])=>key!=='correctOccurrence'&&value!==null&&value!==false):Boolean(patch?.correctOccurrence))throw new Error('invalid_command');
+  if(operation==='reviewTask'? !patch?.review||Object.entries(patch).some(([key,value])=>key!=='review'&&value!==null&&value!==false):Boolean(patch?.review))throw new Error('invalid_command');
   if(operation==='setTodoStage'? !patch?.todoStage||Object.entries(patch).some(([key,value])=>key!=='todoStage'&&value!==null&&value!==false):Boolean(patch?.todoStage))throw new Error('invalid_command');
   if(operation==='setTodoState'? !patch?.todoState||Object.entries(patch).some(([key,value])=>key!=='todoState'&&value!==null&&value!==false):Boolean(patch?.todoState))throw new Error('invalid_command');
   if(operation==='relateTodo'? !patch?.relationships||Object.entries(patch).some(([key,value])=>key!=='relationships'&&value!==null&&value!==false):Boolean(patch?.relationships))throw new Error('invalid_command');
@@ -68,6 +76,27 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
 }
 export async function commandHash(command: WorkspaceCommand): Promise<string> {
   const patch = command.patch;
+  if(patch?.unarchive||patch?.correctOccurrence){
+   const previous=await commandHash({...command,patch:{...patch,unarchive:null,correctOccurrence:null}}),u=patch.unarchive,c=patch.correctOccurrence;
+   const fields=[u?String(u.archivedRevision):null,u?.planning?await commandHash({...command,operation:'planTask',patch:{text:null,notes:null,clearNotes:false,priority:null,deadline:null,clearDeadline:false,planning:u.planning}}):null,
+    u?.relationships?await commandHash({...command,operation:'relateTodo',patch:{text:null,notes:null,clearNotes:false,priority:null,deadline:null,clearDeadline:false,relationships:u.relationships}}):null,c?.occurrenceId??null,c?String(c.occurrenceRevision):null,c?.targetCommandId??null];
+   const payload='companion-command-v11\n64:'+previous+fields.map(field=>field===null?'-1:':new TextEncoder().encode(field).length+':'+field).join('');
+   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload))),value=>value.toString(16).padStart(2,'0')).join('');
+  }
+  if(patch?.review){
+   const {review,...previousPatch}=patch;
+   const previous=await commandHash({...command,patch:previousPatch});
+   const fields=[review.action,review.timeZoneId,review.reviewAfterUtc,review.staleSinceUtc];
+   const encoder=new TextEncoder(),payload='companion-command-v10\n64:'+previous+fields.map(value=>value===null?'-1:':encoder.encode(value).length+':'+value).join('');
+   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(payload))),value=>value.toString(16).padStart(2,'0')).join('');
+  }
+  if(patch?.habiticaDetails&&(patch.habiticaDetails.up!==undefined||patch.habiticaDetails.down!==undefined)){
+   const {up,down,...details}=patch.habiticaDetails;
+   const previous=await commandHash({...command,patch:{...patch,habiticaDetails:details}});
+   const payload='companion-command-v9\n64:'+previous+[up,down].map(flag=>flag===undefined?'-1:':flag?'1:1':'1:0').join('');
+   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload))),value=>value.toString(16).padStart(2,'0')).join('');
+  }
+
   const fields = [command.id, command.workspaceId, String(command.expectedRevision), command.operation, command.taskId, patch === null ? "0" : "1", patch?.text ?? null, patch?.notes ?? null, patch?.clearNotes ? "1" : "0", patch?.priority ?? null, patch?.deadline ?? null, patch?.clearDeadline ? "1" : "0", command.direction, String(command.count), command.occurrenceDate, command.projectToHabitica ? "1" : "0"];
   const encoder = new TextEncoder();
   const details=patch?.habiticaDetails;

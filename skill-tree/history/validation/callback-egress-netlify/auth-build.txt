@@ -1,0 +1,151 @@
+
+> habitica-chatgpt-auth@0.1.0 prebuild
+> python3 ../scripts/generate-build-identity.py --check
+
+
+> habitica-chatgpt-auth@0.1.0 build
+> npm run check && wrangler deploy --dry-run --env "" --outdir dist
+
+
+> habitica-chatgpt-auth@0.1.0 check
+> npm run types && tsc --noEmit
+
+
+> habitica-chatgpt-auth@0.1.0 types
+> wrangler types --include-runtime false --env-interface AuthEnv
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Generating project types...
+
+interface __BaseEnv_AuthEnv {
+	OAUTH_KV: KVNamespace;
+	HABITICA_INTEGRATION_DB: D1Database;
+	ENVIRONMENT: "preview" | "production" | "local";
+	CREDENTIAL_CURRENT_KEY_VERSION: "1";
+	HABITICA_X_CLIENT_HEADER: "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool";
+	ENROLLMENT_ENABLED: false;
+	OAUTH_ENABLED: false;
+	WORKSPACE_ENABLED: false;
+	PROJECTION_ENABLED: false;
+	PARTY_ENABLED: false;
+	SPELLS_ENABLED: false;
+	CRON_ENABLED: false;
+	KEY_OPERATIONS_ENABLED: false;
+	ADAPTIVE_PACING_ENABLED: false;
+	CALLBACK_EGRESS_ENABLED: false;
+	CALLBACK_EGRESS_AUDIENCE: "";
+	PUSH_ENABLED: false;
+	PUSH_VAULT_CURRENT_KEY_VERSION: "1";
+	PUSH_VAPID_PUBLIC_KEY: "";
+	PUSH_DISPATCH_ENABLED: false;
+	PUSH_VAPID_SUBJECT: "";
+	PROFILE_ID_KEY: string;
+	CREDENTIAL_KEY_V1: string;
+	CREDENTIAL_KEY_V2: string;
+	NOTES_LIFECYCLE: Service /* entrypoint NotesLifecycleService from habitica-companion-workspace-preview */ | Service /* entrypoint NotesLifecycleService from habitica-companion-workspace-production */ | Service /* entrypoint NotesLifecycleService from habitica-companion-workspace-local */;
+}
+declare namespace Cloudflare {
+	interface GlobalProps {
+		mainModule: typeof import("./src/index");
+	}
+	interface PreviewEnv {
+		OAUTH_KV: KVNamespace;
+		HABITICA_INTEGRATION_DB: D1Database;
+		ENVIRONMENT: "preview";
+		CREDENTIAL_CURRENT_KEY_VERSION: "1";
+		HABITICA_X_CLIENT_HEADER: "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool";
+		ENROLLMENT_ENABLED: false;
+		OAUTH_ENABLED: false;
+		WORKSPACE_ENABLED: false;
+		PROJECTION_ENABLED: false;
+		PARTY_ENABLED: false;
+		SPELLS_ENABLED: false;
+		CRON_ENABLED: false;
+		KEY_OPERATIONS_ENABLED: false;
+		ADAPTIVE_PACING_ENABLED: false;
+		CALLBACK_EGRESS_ENABLED: false;
+		CALLBACK_EGRESS_AUDIENCE: "";
+		PUSH_ENABLED: false;
+		PUSH_VAULT_CURRENT_KEY_VERSION: "1";
+		PUSH_VAPID_PUBLIC_KEY: "";
+		PUSH_DISPATCH_ENABLED: false;
+		PUSH_VAPID_SUBJECT: "";
+		PROFILE_ID_KEY: string;
+		CREDENTIAL_KEY_V1: string;
+		CREDENTIAL_KEY_V2: string;
+		NOTES_LIFECYCLE: Service /* entrypoint NotesLifecycleService from habitica-companion-workspace-preview */;
+	}
+	interface ProductionEnv {
+		OAUTH_KV: KVNamespace;
+		HABITICA_INTEGRATION_DB: D1Database;
+		ENVIRONMENT: "production";
+		CREDENTIAL_CURRENT_KEY_VERSION: "1";
+		HABITICA_X_CLIENT_HEADER: "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool";
+		ENROLLMENT_ENABLED: false;
+		OAUTH_ENABLED: false;
+		WORKSPACE_ENABLED: false;
+		PROJECTION_ENABLED: false;
+		PARTY_ENABLED: false;
+		SPELLS_ENABLED: false;
+		CRON_ENABLED: false;
+		KEY_OPERATIONS_ENABLED: false;
+		ADAPTIVE_PACING_ENABLED: false;
+		CALLBACK_EGRESS_ENABLED: false;
+		CALLBACK_EGRESS_AUDIENCE: "";
+		PUSH_ENABLED: false;
+		PUSH_VAULT_CURRENT_KEY_VERSION: "1";
+		PUSH_VAPID_PUBLIC_KEY: "";
+		PUSH_DISPATCH_ENABLED: false;
+		PUSH_VAPID_SUBJECT: "";
+		PROFILE_ID_KEY: string;
+		CREDENTIAL_KEY_V1: string;
+		CREDENTIAL_KEY_V2: string;
+		NOTES_LIFECYCLE: Service /* entrypoint NotesLifecycleService from habitica-companion-workspace-production */;
+	}
+	interface Env extends __BaseEnv_AuthEnv {}
+}
+interface AuthEnv extends __BaseEnv_AuthEnv {}
+type StringifyValues<EnvType extends Record<string, unknown>> = {
+	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
+};
+declare namespace NodeJS {
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "ENVIRONMENT" | "CREDENTIAL_CURRENT_KEY_VERSION" | "HABITICA_X_CLIENT_HEADER" | "ENROLLMENT_ENABLED" | "OAUTH_ENABLED" | "WORKSPACE_ENABLED" | "PROJECTION_ENABLED" | "PARTY_ENABLED" | "SPELLS_ENABLED" | "CRON_ENABLED" | "KEY_OPERATIONS_ENABLED" | "ADAPTIVE_PACING_ENABLED" | "CALLBACK_EGRESS_ENABLED" | "CALLBACK_EGRESS_AUDIENCE" | "PUSH_ENABLED" | "PUSH_VAULT_CURRENT_KEY_VERSION" | "PUSH_VAPID_PUBLIC_KEY" | "PUSH_DISPATCH_ENABLED" | "PUSH_VAPID_SUBJECT" | "PROFILE_ID_KEY" | "CREDENTIAL_KEY_V1" | "CREDENTIAL_KEY_V2">> {}
+}
+
+
+✨ Types written to worker-configuration.d.ts
+
+📣 Remember to rerun 'wrangler types' after you change your wrangler.jsonc file.
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.155.0)
+───────────────────────────────────────────────
+Total Upload: 511.54 KiB / gzip: 109.02 KiB
+Your Worker has access to the following bindings:
+Binding                                                                                            Resource                  
+env.OAUTH_KV (00000000000000000000000000000001)                                                    KV Namespace              
+env.HABITICA_INTEGRATION_DB (habitica-integration-local)                                           D1 Database               
+env.NOTES_LIFECYCLE (habitica-companion-workspace-local#NotesLifecycleService)                     Worker                    
+env.ENVIRONMENT ("local")                                                                          Environment Variable      
+env.CREDENTIAL_CURRENT_KEY_VERSION ("1")                                                           Environment Variable      
+env.HABITICA_X_CLIENT_HEADER ("ff304279-d0c6-43e5-bd2d-caa41c7e017a-...")                          Environment Variable      
+env.ENROLLMENT_ENABLED (false)                                                                     Environment Variable      
+env.OAUTH_ENABLED (false)                                                                          Environment Variable      
+env.WORKSPACE_ENABLED (false)                                                                      Environment Variable      
+env.PROJECTION_ENABLED (false)                                                                     Environment Variable      
+env.PARTY_ENABLED (false)                                                                          Environment Variable      
+env.SPELLS_ENABLED (false)                                                                         Environment Variable      
+env.CRON_ENABLED (false)                                                                           Environment Variable      
+env.KEY_OPERATIONS_ENABLED (false)                                                                 Environment Variable      
+env.ADAPTIVE_PACING_ENABLED (false)                                                                Environment Variable      
+env.CALLBACK_EGRESS_ENABLED (false)                                                                Environment Variable      
+env.CALLBACK_EGRESS_AUDIENCE ("")                                                                  Environment Variable      
+env.PUSH_ENABLED (false)                                                                           Environment Variable      
+env.PUSH_VAULT_CURRENT_KEY_VERSION ("1")                                                           Environment Variable      
+env.PUSH_VAPID_PUBLIC_KEY ("")                                                                     Environment Variable      
+env.PUSH_DISPATCH_ENABLED (false)                                                                  Environment Variable      
+env.PUSH_VAPID_SUBJECT ("")                                                                        Environment Variable      
+
+--dry-run: exiting now.

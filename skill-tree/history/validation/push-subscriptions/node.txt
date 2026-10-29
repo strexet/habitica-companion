@@ -1,0 +1,123 @@
+(node:42417) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:42419) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public overrides retain unrelated settings and reject credential or URL leakage
+ok 1 - public overrides retain unrelated settings and reject credential or URL leakage
+  ---
+  duration_ms: 1.014708
+  ...
+# Subtest: dev artifacts isolate resource identities and keep all game-effect flags off
+ok 2 - dev artifacts isolate resource identities and keep all game-effect flags off
+  ---
+  duration_ms: 141.07175
+  ...
+# Subtest: unsafe or incomplete dev input is rejected before output is written
+ok 3 - unsafe or incomplete dev input is rejected before output is written
+  ---
+  duration_ms: 1.262292
+  ...
+# Subtest: explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+ok 4 - explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+  ---
+  duration_ms: 113.835167
+  ...
+# Subtest: runtime origins reject partial bindings and stay consistent for all environments
+ok 5 - runtime origins reject partial bindings and stay consistent for all environments
+  ---
+  duration_ms: 31.970042
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on success
+ok 6 - actual Pages build preserves full settings and restores source on success
+  ---
+  duration_ms: 1474.275833
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on publish failure
+ok 7 - actual Pages build preserves full settings and restores source on publish failure
+  ---
+  duration_ms: 736.368667
+  ...
+# Subtest: normal app source defaults never inherit agent test restrictions
+ok 8 - normal app source defaults never inherit agent test restrictions
+  ---
+  duration_ms: 0.240709
+  ...
+# Subtest: explicit development profile enables implemented availability while retaining identities and consent boundaries
+ok 9 - explicit development profile enables implemented availability while retaining identities and consent boundaries
+  ---
+  duration_ms: 103.281
+  ...
+# Subtest: new capability flags require explicit mapping and never gain accidental development activation
+ok 10 - new capability flags require explicit mapping and never gain accidental development activation
+  ---
+  duration_ms: 0.389667
+  ...
+# Subtest: ordinary capability profiles keep separately provisioned Web Push disabled
+ok 11 - ordinary capability profiles keep separately provisioned Web Push disabled
+  ---
+  duration_ms: 0.132834
+  ...
+# (node:42420) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: import and capability inspection never request permission or touch a subscription
+ok 12 - import and capability inspection never request permission or touch a subscription
+  ---
+  duration_ms: 2.017833
+  ...
+# Subtest: consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+ok 13 - consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+  ---
+  duration_ms: 0.453541
+  ...
+# Subtest: grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+ok 14 - grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+  ---
+  duration_ms: 3.492041
+  ...
+# Subtest: a different VAPID binding is refused without replacing the browser subscription
+ok 15 - a different VAPID binding is refused without replacing the browser subscription
+  ---
+  duration_ms: 0.166917
+  ...
+# Subtest: unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+ok 16 - unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+  ---
+  duration_ms: 0.792542
+  ...
+# Subtest: missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+ok 17 - missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+  ---
+  duration_ms: 0.195
+  ...
+# (node:42421) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: PWA identity, actual PNG dimensions and startup registration agree
+ok 18 - PWA identity, actual PNG dimensions and startup registration agree
+  ---
+  duration_ms: 4.730667
+  ...
+# Subtest: registration runs on secure load only and refused offline setup preserves online use
+ok 19 - registration runs on secure load only and refused offline setup preserves online use
+  ---
+  duration_ms: 2.424416
+  ...
+# Subtest: every current app route restores cached shell while sensitive, unknown and foreign routes stay network-only
+ok 20 - every current app route restores cached shell while sensitive, unknown and foreign routes stay network-only
+  ---
+  duration_ms: 23.297709
+  ...
+# Subtest: installation caches only same-origin public build assets and includes the manifest
+ok 21 - installation caches only same-origin public build assets and includes the manifest
+  ---
+  duration_ms: 2.242083
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2681.876167

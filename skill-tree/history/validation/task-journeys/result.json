@@ -1,0 +1,75 @@
+{
+  "taskId": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+  "status": "accepted-local-preparation",
+  "journeys": 8,
+  "freshRazorStates": 16,
+  "checks": {
+    "webAppTests": 812,
+    "localReleasePublish": true,
+    "browserCases": 1344,
+    "browserErrors": 0,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "themes": 7,
+    "textPercent": [
+      100,
+      200
+    ],
+    "seededControls": {
+      "geometry": [
+        "overflow",
+        "overlap"
+      ],
+      "contrast": [
+        "contrast"
+      ]
+    },
+    "nativeKeyboard": "Input, Tab focus with solid outline, Enter expansion and Space collapse observed; disabled paging retained.",
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "controls": [
+    {
+      "name": "components",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 50.75,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "publish",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 19.8,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "docs",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.13,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "releaseGate": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "humanDeviceStatus": "unrun",
+  "publicReferencesRecheckedOn": "2026-10-27",
+  "limitations": [
+    "Static browser geometry/native controls and bUnit synthetic event dispatch are separate evidence; no hosted browser application persistence is claimed.",
+    "Restoration journey is limited to currently supported eligible completed native Todos; archived restoration, Daily correction and Habitica unchecking remain separate work.",
+    "Actual iOS Safari/PWA, Android, keyboards, safe-area, screen readers, human feedback and authenticated competitor sessions unrun; missing inputs recorded in task-journey-qualification.md and client release matrix.",
+    "Automatic contrast sampling excludes disabled text; disabled-text ratios remain unqualified. Screenshot supplements geometry and native focus evidence.",
+    "No enrollment, permission grant, live account action, purchase, deployment or commit. Active controller time not instrumented."
+  ]
+}

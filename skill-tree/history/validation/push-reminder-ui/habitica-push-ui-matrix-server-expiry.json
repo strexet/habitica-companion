@@ -1,0 +1,500 @@
+{
+  "progress": "Running 1810: sign-in-error, 768px, gryphy-dark, 200% · navigation prerequisite",
+  "summary": "{\"cases\":1809,\"errors\":0,\"harnessErrors\":26,\"prerequisiteUnavailable\":26,\"measurementUnavailable\":0,\"unqualifiedSurfaces\":0,\"errorKinds\":[]}",
+  "unavailable": [
+    {
+      "caseId": "1784-26daa37b-8159-4993-8df0-d7f90c06077e",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.799999952316,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "toxic-swamp",
+      "width": 390
+    },
+    {
+      "caseId": "1785-9ed409ff-e3a3-4772-a888-088ed2f4bbf4",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.100000143051,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "obsidian-glow",
+      "width": 390
+    },
+    {
+      "caseId": "1786-7b2a0a4c-c7f7-466f-9764-08dfa1e7886d",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5000.399999856949,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "obsidian-glow",
+      "width": 390
+    },
+    {
+      "caseId": "1787-9f149fea-a0f4-4c65-92cb-3c44c43bd380",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.200000047684,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "boss-battle",
+      "width": 390
+    },
+    {
+      "caseId": "1788-f2442784-8ad8-4f75-bc82-7b6cd73ae75d",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.800000190735,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "boss-battle",
+      "width": 390
+    },
+    {
+      "caseId": "1789-5eeaa9ba-badf-4733-b2aa-3a16c7a886d2",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.099999904633,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "generated-calm",
+      "width": 390
+    },
+    {
+      "caseId": "1790-d7061b50-1490-4743-8b18-bed18cf2799c",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5000.700000047684,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "generated-calm",
+      "width": 390
+    },
+    {
+      "caseId": "1791-3a161eab-c6d9-4b70-955b-f459154a2278",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.599999904633,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "generated-moderate",
+      "width": 390
+    },
+    {
+      "caseId": "1792-164745c9-4bc7-4675-b7e6-5ab320fe4e1e",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "generated-moderate",
+      "width": 390
+    },
+    {
+      "caseId": "1793-3320790f-aa4c-42c3-a34c-b4d7f437614f",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5002.5,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "gryphy-light",
+      "width": 430
+    },
+    {
+      "caseId": "1794-d416e6b4-86bc-44c8-b0c9-581461d3a2e4",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.800000190735,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "gryphy-light",
+      "width": 430
+    },
+    {
+      "caseId": "1795-29e19146-f520-408c-96f3-045dde211a99",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5000.699999809265,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "gryphy-dark",
+      "width": 430
+    },
+    {
+      "caseId": "1796-fc776b3a-8daf-408a-b3be-687ef48aad0e",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5000.899999856949,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "gryphy-dark",
+      "width": 430
+    },
+    {
+      "caseId": "1797-9bbef9d7-86b7-47d1-a64a-bb93aa62f81e",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.900000095367,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "toxic-swamp",
+      "width": 430
+    },
+    {
+      "caseId": "1798-f2a0248d-404a-4111-9242-e8861a1c777b",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.299999952316,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "toxic-swamp",
+      "width": 430
+    },
+    {
+      "caseId": "1799-48a70149-6d93-4dd5-908a-621a2d4609bd",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.700000047684,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "obsidian-glow",
+      "width": 430
+    },
+    {
+      "caseId": "1800-d5e14f63-6660-4969-a110-ba8210b19c8c",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.300000190735,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "obsidian-glow",
+      "width": 430
+    },
+    {
+      "caseId": "1801-be89743f-74aa-4fdd-9cbe-35a83a44e206",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.100000143051,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "boss-battle",
+      "width": 430
+    },
+    {
+      "caseId": "1802-0f914c48-9d4c-40c8-bd02-f9958db2fceb",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.900000095367,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "boss-battle",
+      "width": 430
+    },
+    {
+      "caseId": "1803-50708486-cfa9-4fca-997f-a615bc0f0efd",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5003,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "generated-calm",
+      "width": 430
+    },
+    {
+      "caseId": "1804-27d91367-0ba0-49d7-996a-4ccd3139aa66",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.100000143051,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "generated-calm",
+      "width": 430
+    },
+    {
+      "caseId": "1805-c64c2382-5bab-47d1-a9d6-a97478f7620d",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5000.5,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "generated-moderate",
+      "width": 430
+    },
+    {
+      "caseId": "1806-dead830b-3854-4838-bf84-93481848ce09",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.399999856949,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "generated-moderate",
+      "width": 430
+    },
+    {
+      "caseId": "1807-4b40497d-7329-43db-a5d8-fdec43f6b210",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.5,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "gryphy-light",
+      "width": 768
+    },
+    {
+      "caseId": "1808-8fc191cd-3d85-457d-97bd-0e09349c6b6e",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.599999904633,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 200,
+      "theme": "gryphy-light",
+      "width": 768
+    },
+    {
+      "caseId": "1809-2c548607-674e-4d65-85fd-128499a0f431",
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 5001.599999904633,
+        "measurementLimitMs": 5000,
+        "phases": [],
+        "startupLimitMs": 5000
+      },
+      "fixture": "/sign-in-error.html",
+      "harnessError": "Case deadline exceeded during startup prerequisite",
+      "operationClass": "prerequisite_wait",
+      "qualification": "unavailable",
+      "seed": null,
+      "textPercent": 100,
+      "theme": "gryphy-dark",
+      "width": 768
+    }
+  ]
+}

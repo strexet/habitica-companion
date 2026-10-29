@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json.Serialization;
 using Habitica.Domain.Workspace;
 
@@ -46,7 +45,7 @@ public static class WorkspaceTaskQuery
                 || filter.Priority is { } p && task.Priority != p || filter.ProjectId is { } project && task.ProjectId != project
                 || filter.LabelId is { } label && !(task.LabelIds?.Contains(label) ?? false)
                 || !Within(task.PlannedDate, filter.PlannedFrom, filter.PlannedTo) || !Within(task.Deadline, filter.DeadlineFrom, filter.DeadlineTo)) continue;
-            var category = task.CategoryId ?? (task.ProjectId is { } projectId && projects.TryGetValue(projectId, out var owner) ? owner.CategoryId : null);
+            var category = task.CategoryId ?? (task.ProjectId is { } projectId && projects.TryGetValue(projectId, out var owner) && !owner.IsRemoved ? owner.CategoryId : null);
             var mapping = mappings.TryGetValue(task.Id, out var value) ? value.State : ProjectionState.Unlinked;
             if (filter.CategoryId is { } c && category != c || filter.ProjectionState is { } m && mapping != m
                 || query.Length > 0 && !Fold(task.Text).Contains(query, StringComparison.Ordinal) && !Fold(task.Notes ?? "").Contains(query, StringComparison.Ordinal)) continue;
@@ -58,5 +57,5 @@ public static class WorkspaceTaskQuery
 
     private static bool ValidRange(DateOnly? from, DateOnly? to) => from != DateOnly.MinValue && to != DateOnly.MinValue && (from is null || to is null || from <= to);
     private static bool Within(DateOnly? value, DateOnly? from, DateOnly? to) => from is null && to is null || value is not null && (from is null || value >= from) && (to is null || value <= to);
-    internal static string Fold(string value) => value.Normalize(NormalizationForm.FormKC).Replace("\u0130", "i\u0307", StringComparison.Ordinal).ToLowerInvariant().Replace('\u03c2', '\u03c3');
+    public static string Fold(string value) => WorkspaceSearchNormalization.Normalize(value).Replace("\u0130", "i\u0307", StringComparison.Ordinal).ToLowerInvariant().Replace('\u03c2', '\u03c3');
 }

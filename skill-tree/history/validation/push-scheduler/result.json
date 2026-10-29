@@ -1,0 +1,140 @@
+{
+  "taskId": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+  "status": "accepted",
+  "implementation": [
+    "Separate reviewed one-time/recurring Workspace reminder intents and immutable original configuration receipts.",
+    "Exact review cue/event revisions, explicit civil timezone/DST/end-date policy and per-device occurrence/attempt identities.",
+    "Fair bounded durable profile leases, consent/authority/expiry/quota fences and three attempts only for known rate refusals.",
+    "Auth-only RFC8291 encryption, RFC8292 VAPID and provider dispatch with original dedupe claims; unknown results never replay.",
+    "Four reviewed MCP tools share the browser API; lifecycle/disconnect/deletion and all ordinary deployment flags remain fail-closed.",
+    "Private sender readiness is distinct from the unchanged public subscription status schema."
+  ],
+  "checks": {
+    "auth": 175,
+    "workspace": 591,
+    "authDispatchCases": 6,
+    "workspaceReminderApiAndSdkCases": 11,
+    "calendarCases": 3,
+    "deploymentCases": 11,
+    "package": 7,
+    "matchingWorkerBuilds": 3
+  },
+  "controls": [
+    {
+      "name": "auth-ready-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.07,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-ready-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.95,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "mcp-ready-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.06,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "auth-ready-full",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 42.62,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "workspace-ready-full",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 95.13,
+      "deadlineSeconds": 240,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "package",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.32,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "deployment2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 2.45,
+      "deadlineSeconds": 30,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "retainedFailure": "workspace-full.txt records589passing checks and a Miniflare D1 bridge fetch failure in the parallel run. The isolated exact disconnect control and serial full590baseline passed; after final readiness changes current-source full591 passed. No product assertion failure was inferred from the bridge transport error.",
+  "repairs": [
+    "Pinned Workers crypto types required explicit key-pair/raw-key narrowing while retaining the standard runtime public ECDH field.",
+    "Workers rejects redirect:error before transport; manual plus explicit3xx refusal preserves no-redirect security and is checked by destination/count/result. Miniflare outbound Request.redirect metadata is normalized and is not used as the proof.",
+    "Legacy UTC spellings normalize for exact cue comparison; source task documents remain unchanged.",
+    "Explicit module extensions and fixture setup/command flags were corrected before valid controls."
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "note": "Controller sampling was not separately instrumented. Per-control tool walls are preserved without inventing prerequisite or cumulative controller time."
+  },
+  "limits": {
+    "retainedSchedulesPerProfile": 64,
+    "targetsPerSchedule": 4,
+    "configurationIdentitiesPerProfile": 2048,
+    "occurrenceDeviceRowsPerProfile": 8192,
+    "authDispatchIdentitiesPerProfile": 8192,
+    "attemptsPerInvocation": 20,
+    "authAttemptsPerProfileHour": 20,
+    "knownRateRefusalAttempts": 3,
+    "cueExpirySeconds": 3600
+  },
+  "limitations": [
+    "Local/synthetic fake-clock, actual D1/SDK and mocked provider evidence does not qualify physical iPhone/OS permission or actual delivery, hosted ChatGPT/Codex behavior, production deployment or live scheduler activation.",
+    "Dedicated device/setup and service-worker push/click UI remains the next selected unit; sender acceptance confirms backend dispatch behavior only.",
+    "HTTP201 establishes push-service acceptance; shown/read stay unknown. Cancellation cannot recall a message already handed off. No exactly-once delivery claim.",
+    "Live retained-history pages can change during progression. Canonical task archives exclude the separate reminder ledger; original config receipts retain exact intent.",
+    "Dispatch, vault/VAPID provisioning and contact activation remain explicitly off in ordinary profiles."
+  ],
+  "sourceFingerprints": {
+    "workers/chatgpt-auth/migrations/0011-push-dispatches.sql": "bb355bc6ce4c8ca9f88b8eb457d753983a87927f23a3932f15988086504e9bb1",
+    "workers/chatgpt-auth/src/push-message.ts": "fe3348831b11cad2ef46ff9ea4bcb7a58eea1c08030e120a1cee4f5961a304f4",
+    "workers/chatgpt-auth/src/push-dispatch.ts": "469647d4712cd25a261fe88bbf9357509d7bb2442e31d628ae64933195c5a101",
+    "workers/chatgpt-auth/src/push-subscriptions.ts": "f386670ac463c60e326f7d3493ac01a5ddbb4b22ebe466918acc27559abc749e",
+    "workers/chatgpt-auth/src/index.ts": "c573c6b1029eda7c7238f0f21e009ed7df581cf1e74a3c9e23ad3752066ebc59",
+    "workers/chatgpt-auth/wrangler.jsonc": "39fb0e24161b140348ff1b344fe84d2bc3879e9d0ee5d2d8726dd0d30ef86d4a",
+    "workers/chatgpt-auth/worker-configuration.d.ts": "43b6253fb61342dbc014e82318dc02301885a52e8aab94dcc103fe916e39e566",
+    "workers/shared/reminder-calendar.ts": "02d0580bf464e68b65248dce7d95cfdf10a6aec1b6ddb3a57931547a10623c84",
+    "workers/shared/reminder-tools.ts": "4b05f735004f12f90b5be4c52137a129206f2032a836f81fda33133b7159843d",
+    "workers/shared/build-identity.generated.ts": "3507c355b5bb0664129216615755e6354455835c4384fc85d6bf54c7522e57d9",
+    "workers/companion-workspace/migrations/0013-scheduled-reminders.sql": "c00a7647b7296322d4b030297844f8e084242f42ef70775b45d0128e45ed4c08",
+    "workers/companion-workspace/src/reminder-api.ts": "6875d8554ad23dc8bc5df16b0f75b15c920112b61e3cb67392f3add8a4d470a1",
+    "workers/companion-workspace/src/reminder-scheduler.ts": "cef28b30238a9f551ba55e5bea60ada3834b07f1c5e3ea0fcef11899035fc7c9",
+    "workers/companion-workspace/src/index.ts": "bdf673c15c4717758bfe5d654a6ca7551b97eaf961a044046dd759ab7f4dba09",
+    "workers/companion-workspace/src/notes-api.ts": "ad72dd6b4648b5b074e8fc5dbc8697712f26d6b573c12862d8fc139451cd9d3f",
+    "workers/companion-workspace/wrangler.jsonc": "c6ce3e7141962ecb61b6e0ff1c6b13fad544c3ce31e5b1c84f7d75a0c76b2d2d",
+    "workers/companion-workspace/worker-configuration.d.ts": "452d5b85c47267bfed48815859c95a214e91cad11d8ab622e4d582bfa5a235fb",
+    "workers/chatgpt-mcp/src/reminder-tools.ts": "e6cca177c250fa6941d59820ef097ab5b47199ab7bccd98b98e81135f1ab131a",
+    "workers/chatgpt-mcp/src/tools.ts": "a37663c8f51fe319489e68bfa46be1ed4b91179c2f7fd9c4fe115cf495d13caf",
+    "workers/chatgpt-auth/test/push-dispatch.test.mjs": "ce0cda677b57845c40d50d047cb62d15e15e565b654a451d11f4e6791184c67c",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "7ebdf6feec4dd9b7451ddb96019059e4d0a65cccc0218423f9146d974b7c4b25",
+    "workers/chatgpt-auth/test/vault.test.mjs": "37d4e091e3e74cefa5a9745b57650257b262cc64293a8280e294c0da8e3d3ea3",
+    "workers/companion-workspace/test/reminder-api.test.mjs": "12922c22e162635612f9324c73f3da857cdf8f87aa5916e50c8e5796c386f7fb",
+    "workers/companion-workspace/test/reminder-calendar.test.mjs": "bedcc5402fce3fc2c6a952c718867cba7bc9625d4e7d2ad1dea83d3604d8ad1a",
+    "deploy/prepare-dev.mjs": "c75b9c60ad2d51462a7d76f286d40880ea7ab13ec8d6fe71ad2c0240668d5441",
+    "tests/Functions/dev-preparation.test.mjs": "7b9c71ffcb78e6dcaec903a34c4165196c8f7ef3da5bb7119a3ab80600f264e2",
+    "plugin/skills/habitica-task-management/SKILL.md": "9ce7cdc9e7a998eeb044ec6680f2e8388b3d847ef5b922fa607a15a6f59afdf4",
+    "skill-tree/documents/scheduled-push-reminders.md": "745fbd90adbb5c434c0152fbc925d7bc390ef5027b67436b2970d32c536515ac",
+    "skill-tree/documents/push-subscriptions.md": "a77cbe9af6e44ad1f54706bdf57c4c4b9f28e0e2e128e8ce094dbcdc261f1dd8"
+  }
+}

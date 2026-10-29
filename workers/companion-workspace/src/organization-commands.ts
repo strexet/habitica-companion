@@ -1,5 +1,5 @@
 import {journal,type Journal} from './journal.ts';
-import {organizationCommand,organizationCommandHash,currentOrganizationSnapshot,applyOrganizationSnapshot,type OrganizationCommand,type OrganizationEntry} from '../../shared/workspace-organization.ts';
+import {organizationCommand,organizationCommandHash,retainedAliasClear,removalMatches,currentOrganizationSnapshot,applyOrganizationSnapshot,type OrganizationCommand,type OrganizationEntry} from '../../shared/workspace-organization.ts';
 import {utcTicks} from '../../shared/workspace-domain.ts';
 export type OrganizationDisposition='accepted'|'duplicate'|'revisionConflict'|'idempotencyConflict'|'invalid'|'unavailable';
 export interface OrganizationSubmission {disposition:OrganizationDisposition;snapshot:Journal|null;entry:OrganizationEntry|null;errorCode:string|null;savedInCompanion:boolean|null}
@@ -13,23 +13,25 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  try{command=organizationCommand(input);if(command.workspaceId!==state.document.id||utcTicks(now)===utcTicks('0001-01-01T00:00:00Z'))throw new Error();}catch{return result('invalid',state,null,'invalid_command');}
  const document=state.document,payloadHash=await organizationCommandHash(command),existing=document.organizationHistory?.find(entry=>entry.command.id===command.id);
  if(existing)return existing.payloadHash===payloadHash?result('duplicate',state,existing):result('idempotencyConflict',state,null,'command_id_reused');
- if(state.commands.some(entry=>entry.command.id===command.id)||[...document.completions,...document.habitScores,...(document.restorations??[])].some(row=>row.commandId===command.id))return result('idempotencyConflict',state,null,'command_id_reused');
+ if(state.commands.some(entry=>entry.command.id===command.id)||[...document.completions,...document.habitScores,...(document.reviewEvents??[]),...(document.restorations??[])].some(row=>row.commandId===command.id))return result('idempotencyConflict',state,null,'command_id_reused');
  if(owner==='cloud'?state.authority?.mode!=='cloud'||state.authority.cloudWorkspaceId!==document.id:state.authority?.mode==='frozen'||state.authority?.mode==='cloud')return result('invalid',state,null,'workspace_owned_elsewhere');
  if(command.expectedRevision!==document.revision)return result('revisionConflict',state,null,'stale_revision');
  if(document.revision>=Number.MAX_SAFE_INTEGER||state.storeVersion>=Number.MAX_SAFE_INTEGER)return result('invalid',state,null,'revision_exhausted');
  const current=currentOrganizationSnapshot(document,command.kind,command.entityId),patch=command.patch;
- if(command.operation==='create'?current!==null:current===null||current.isArchived)return result('invalid',state,null,'organization_unavailable');
+ if(command.operation==='create'?current!==null:current===null||(current.isRemoved||current.isArchived&&command.operation!=='remove')&&!retainedAliasClear(command))return result('invalid',state,null,'organization_unavailable');
+ if(command.operation==='remove'&&!removalMatches(document,command.entityId,patch!.removal!))return result('invalid',state,null,'project_removal_impact_changed');
  if(patch?.categoryId&&!document.categories.some(row=>row.id===patch.categoryId&&!row.isArchived)
     ||patch?.projectId&&!document.projects.some(row=>row.id===patch.projectId&&!row.isArchived)
     ||patch?.query&&(patch.query.filter.categoryId&&!document.categories.some(row=>row.id===patch.query!.filter.categoryId)||patch.query.filter.projectId&&!document.projects.some(row=>row.id===patch.query!.filter.projectId)||patch.query.filter.labelId&&!document.labels.some(row=>row.id===patch.query!.filter.labelId))
     ||patch?.taskIds?.some(id=>!document.tasks.some(task=>task.id===id&&!task.isArchived&&task.kind==='todo')))return result('invalid',state,null,'invalid_organization_reference');
  const accepted=applyOrganizationSnapshot(command,current),entry:OrganizationEntry={command,payloadHash,acceptedAtUtc:now,snapshot:accepted},next=structuredClone(state),d=next.document;
+ if(accepted.alias!==undefined&&document.projects.some(row=>row.id!==accepted.id&&row.alias===accepted.alias))return result('invalid',state,null,'project_alias_in_use');
  const create=command.operation==='create';
  const replace=<T extends {id:string}>(rows:T[],row:T):T[]=>create?[...rows,row]:rows.map(value=>value.id===row.id?row:value);
  const base={id:accepted.id,revision:accepted.revision,name:accepted.name,isArchived:accepted.isArchived};
  switch(command.kind){
   case 'category':d.categories=replace(d.categories,base);break;
-  case 'project':d.projects=replace(d.projects,{...base,categoryId:accepted.categoryId});break;
+  case 'project':d.projects=replace(d.projects,{...base,categoryId:accepted.categoryId,...(accepted.alias===undefined?{}:{alias:accepted.alias}),...(accepted.isRemoved?{isRemoved:true}:{})});break;
   case 'section':d.sections=replace(d.sections,{...base,projectId:accepted.projectId!,position:accepted.position});break;
   case 'label':d.labels=replace(d.labels,base);break;
   case 'savedTaskView':d.savedTaskViews=replace(d.savedTaskViews??[],{...base,query:accepted.query!});break;

@@ -16,6 +16,16 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class TasksPageTests : BunitContext
 {
+    public TasksPageTests()
+    {
+        var workspace = new Workspace.WorkspaceTaskFixture();
+        Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(workspace.Client);
+        Services.AddSingleton(workspace.Database);
+        Services.AddScoped<WorkspaceTaskController>();
+        Services.AddScoped<TodoWorkspacePresentation>();
+        Services.AddScoped<TodoTaskDraftStore>();
+    }
+
     [Fact]
     public void Signed_out_empty_tasks_has_sign_in_action()
     {
@@ -282,15 +292,12 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
-        Assert.Contains("Task statistics", cut.Markup);
-        Assert.Contains("Task-history histogram", cut.Markup);
-        Assert.Contains("Month activity", cut.Markup);
-
-        cut.Find("[data-testid='task-analysis-period']").Change("Month");
-        Assert.Contains("Last 30 days", cut.Markup);
-        Qualification.PageLayoutEvidence.Save("tasks-charts", cut.Markup, "/tasks", "cached-month-statistics", ["charts", "tasks", "filters"], nameof(Task_statistics_render_history_charts_for_selected_period));
-
+        Assert.DoesNotContain("task-statistics-panel", cut.Markup);
+        Assert.Contains("href=\"/todo/statistics\"", cut.Markup);
         cut.FindAll("button").Single(button => button.TextContent.Contains("Details", StringComparison.Ordinal)).Click();
+        cut.Find("[data-testid='task-detail-period']").Change("Month");
+        Assert.Contains("Last 30 days", cut.Markup);
+        Qualification.PageLayoutEvidence.Save("tasks-charts", cut.Markup, "/tasks", "cached-detail-month-statistics", ["charts", "tasks", "filters"], nameof(Task_statistics_render_history_charts_for_selected_period));
         Assert.Contains("Task value history", cut.Markup);
         Assert.Contains("Task month activity", cut.Markup);
     }

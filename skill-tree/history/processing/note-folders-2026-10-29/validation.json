@@ -1,0 +1,23 @@
+{
+  "planning_only": true,
+  "future_document_strict": {
+    "ok": true,
+    "errors": []
+  },
+  "repository_documentation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Latest recorded audit is stale; historical verdicts remain unchanged"
+    ]
+  },
+  "changed_task_and_research_prose": {
+    "ok": true
+  },
+  "git_diff_check": {
+    "ok": true
+  },
+  "existing_task_metadata_preserved": true,
+  "stopped_active_run_preserved": true,
+  "runtime_checks_executed": false
+}

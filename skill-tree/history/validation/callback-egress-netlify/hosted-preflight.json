@@ -1,0 +1,27 @@
+{
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "status": "awaiting-owner-sign-in-and-target",
+  "observations": {
+    "plugin_search": "No Netlify plugin returned.",
+    "local_cli": "No Netlify executable available.",
+    "browser": "The available in-app browser shows the Netlify Log in page at https://app.netlify.com/. No active account or site is established. The tab remains open for owner handoff.",
+    "screenshot": "skill-tree/artifacts/callback-egress/netlify-sign-in.png"
+  },
+  "operations": [
+    {
+      "classification": "prerequisite-wait",
+      "reason": "Owner sign-in, exact Free account/team/site and publication scope are absent.",
+      "executed_callback_controls": 0
+    }
+  ],
+  "performed": {
+    "login": false,
+    "account_creation": false,
+    "terms_acceptance": false,
+    "publication": false,
+    "remote_migration": false,
+    "secret_entry": false,
+    "callback": false
+  },
+  "next_action": "Owner signs in and selects the exact Netlify Free team/site. Inspect the selected account/quota/logging and prepare the exact publication scope before deployment approval; do not request secret values in chat."
+}

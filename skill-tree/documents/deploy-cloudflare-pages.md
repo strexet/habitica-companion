@@ -4,7 +4,7 @@ This app is a Blazor WebAssembly app with Cloudflare Pages Functions for persona
 
 ## Owner-first launch readiness
 
-The owner development rollout is published directly to [habitica-companion.pages.dev](https://habitica-companion.pages.dev). The selected environment is production, with no separate dev website or backend names. Current frontend source `d48fae13e76522b5e5a5bd02865cdad50eb007ba` comes from local `develop`; the existing Pages production slot remains `main`. Git deployment settings remain unchanged. [Latest frontend evidence](../history/validation/canonical-list-publication.json) records task filters and saved-list selection; [development backend evidence](../history/validation/development-publication.json) supersedes initial pilot availability below. Template defaults and earlier test observations remain historical.
+The owner development rollout is published directly to [habitica-companion.pages.dev](https://habitica-companion.pages.dev). The selected environment is production, with no separate dev website or backend names. The current manual Pages publication uses dirty local `develop` source at `adbfcc5` in the existing `main` production slot; no Git push occurred. Git deployment settings remain unchanged. [Plugin authorization publication evidence](../history/validation/plugin-authorization-prod-20261025.json) records the current Auth, Workspace, MCP and Pages versions and public checks. Template defaults and earlier rollout observations remain historical.
 
 Auth, Workspace and MCP Workers are published. Production integration OAuth KV and Auth/Workspace D1 resources are separate from the retained browser-sync KV and party database. [Publication evidence](../history/validation/production-publication.json) records the deployed versions, bindings, build and public boundary checks. [The operator guide](../../deploy/README.md#current-owner-action-sign-in-and-connect) provides exact owner sign-in, consent and client setup steps.
 
@@ -346,3 +346,92 @@ Auth migration 0008 supplies adaptive pacing before activation. Remote preflight
 Publication completed from source aab2b87 with matching Auth, Workspace, MCP and Pages bundles. All 1,291 local checks passed; public settings, boot manifest and service-worker assets match the build. Auth migration 0008 was applied; retained bindings and secret names match preflight. Executor preflight found zero opted-in workspaces, and no consent was enabled during publication.
 
 The reopened owner sequence verified native Todo create/edit/deadline/completion/archive, dated native Daily completion/archive and seven matching original command receipts. All native commands requested no Habitica projection. The website cast one self-only Defensive Stance, spending 25 MP, and changed headgear to Dandy Hat before restoring Nameless Helm and original equipment stats. No party mutation, Start New Day, background dispatch, real key operation or ChatGPT test ran. [Sanitized owner evidence](../history/validation/development-owner-checks.json) retains exact receipts and observations; cached Codex discovery has not qualified newer tool names.
+
+## Party quest pool hotfix qualification
+
+The 2026-10-20 update uses two transactional D1 statements for owner-pool replacement instead of a separate delete followed by one statement per quest. No migration or binding change is required. The complete handler uses 22 statements in the synthetic 52/300-type fixtures; other access roles can add fixed management reads. The previous production deployment is `d06b3032-a927-45e9-8de3-a3ae7cfb39d9`; code rollback does not restore database contents. Publication and artifact records reside in `skill-tree/history/validation/party-quest-pool-publication.json`. Production party mutation testing remains excluded; blocked public artifact inspection is recorded explicitly.
+
+
+## Ready-feature production publication
+
+Source db79a3d is published to the existing habitica-companion Pages production slot with matching Auth, Workspace and MCP Workers. The production-ready-publication evidence records exact versions and rollback predecessors. All runtime variables, resource bindings, current credential-key version and per-account executor consent remain retained. Auth and Workspace report no pending migrations. Production preparation passes 123 Auth tests, 374 Workspace tests, Worker typechecks/dry builds and the frontend Release build. The current frontend source has 961 passing solution tests from local qualification.
+
+The hosted browser signs in, restores existing cloud management access and renders direct capture, hierarchy, Projects and Saved lists with the existing theme. Expired tab access reports unverified status; explicit verification restores access and a fresh server check reports zero pending, stalled, uncertain or blocked commands and zero expired execution leases. Read observations do not qualify native create/update/archive dispatch. Shell artifact/health GETs return HTTP 403; deployment metadata and browser behavior do not establish remote artifact hash equality. Party writes, Start New Day, real spells, key operations and independent-user/device checks remain excluded. The separately captured bulk-casting rate-limit and gear-restoration defect remains unresolved.
+
+The staged publication archive is output/habitica-companion-plugin-db79a3d.zip. The package retains manifest version 0.1.0 and contains the production MCP URL plus five skills from the publication revision. Current repository task-management guidance adds the required correspondence contract; the publication archive does not contain the source guidance update. Existing custom MCP connections require refreshed tool metadata after tool-schema changes; packaged skills require an updated imported package. Installed-package version discovery and backend compatibility reporting remain Pending for a later release. No runtime version-discovery feature is introduced by publication.
+
+The 2026-10-21 frontend repair publishes source f66410c as Pages deployment e1cefdbc-74ac-4b29-88d5-c1737fa894e0. The previous Pages deployment is 8733a2ee-8c12-4ed1-a6a0-d6021d57859f; Workers, databases, bindings, secrets and consent remain unchanged. Browser NFKC normalization replaces the unsupported .NET 8 browser operation. Thirty shared query cases pass in actual WebAssembly, and the previously crashing production saved list returns the matching active Todo. Native saved-list create, filter update and archive qualification remain recorded with original command identities in production-ready-publication.json. The owner-approved source checklist transfer separately confirms one of one Habitica projection effects; completion marks plan intake rather than implementation.
+
+
+## Tag gateway rollout prerequisite
+
+Auth migration 0009 must precede deployment of the matching tag gateway/Auth cleanup handlers. The migration stores separate tag consent epochs, short-lived checks, adopted identity and bounded original-attempt observations. Existing ProjectionService bindings and Workspace/Projection flags are retained; no new secret is required. Deploy matching Auth, Workspace and MCP adapters before exposing canonical tag controls. Old organization/task OAuth grants do not gain habitica.tags.write; end users choose that permission on reauthorization and separately enable habitica-tags-v1 after the matching consent UI is available.
+
+The local gateway milestone performs no production migration, deployment, enrollment, scope upgrade or consent activation. Canonical tag reconciliation is implemented locally; matching browser consent and repair UI remains a subsequent task. Rollback must account for any retained tag identities/receipts; a code rollback does not delete Habitica tags or undo membership. Never delete native tags as a cleanup shortcut. Public Auth HTTP routes cannot dispatch the private tag gateway; the existing restricted service binding remains the transport boundary documented by [Cloudflare service bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/).
+
+## Reconciliation deployment dependency
+
+Apply Workspace migration 0008 together with Auth migration 0009 before deploying the matching tag executor. The Workspace migration adds trusted work, source review status and preparation authority records; no new secret, binding or flag is required. Deploy matching Auth, Workspace and MCP code and the following browser consent/recovery controls as one reviewed release. Existing native task and organization grants can still save canonical metadata, but existing grants cannot acquire habitica.tags.write implicitly.
+
+No migration, live scope upgrade, consent activation or deployment ran during the reconciliation milestone. Retain unresolved original attempts across rollback; never delete native tags to clean up a failed release.
+
+
+## Group-tag controls release dependency
+
+The local tag UI/MCP release requires Auth migration 0009, Workspace migration 0008 and Workspace migration 0009, matching Auth/Workspace/MCP bundles and the matching browser application. Dry-run builds and synthetic tests do not publish resources or apply remote migrations. Existing grants retain original scopes; requested tag operations need normal reauthorization plus separate owner tag consent. No release activates consent or executor automatically. Confirm matching schema/tool discovery and explicit consent in the separately authorized live qualification before claiming production support.
+
+
+## Checklist conversion release dependency
+
+The optional checklistConversions document field requires matching browser, Workspace, Auth and MCP readers before cloud conversion is offered. Older strict readers can reject documents containing the new field. Deploy matching qualified assets as one release sequence; do not expose a backend-only conversion release. Existing preparations retain accepted conversion bindings, so no new D1 migration, secret, feature flag or enrollment is required for the conversion backend. Existing habitica.tasks.write and workspace.organization.write grants are both required for agent writes; owner tag consent and executor remain separate. Current local dry builds and synthetic fixtures grant no deployment or live-account qualification.
+
+
+## Source retirement schema publication
+
+Source retirement requires Workspace migration 0010-source-retirement.sql before the corresponding Workspace Worker. The migration creates trusted review/recovery storage and a durable source-retirement fence with a document-update trigger. Publish matching Auth, Workspace, MCP and PWA code before enabling use of sourceRetirements in portable journals. The private gateway extends the existing projection binding; no new secret or consent is created by deployment. Existing task, organization and tag permissions remain required. An unresolved retirement must recover through the original command; database edits, fence overrides and native DELETE retries are unsupported. Local dry builds and synthetic migration fixtures do not establish remote migration or production qualification.
+
+## Notes service publication
+
+Notes storage requires Workspace migrations 0011-personal-notes.sql and0012-note-previews.sql before the matching Workspace Worker. Auth configuration requires the restricted NOTES_LIFECYCLE binding to Workspace NotesLifecycleService. Publish Workspace before Auth so profile cleanup can reach the new entrypoint. The deployment preparation source rewrites the binding to the selected Workspace Worker. Matching PWA and MCP publication remains necessary for the complete Notes scenario; storage-only publication supplies no usable Notes page. Notes MCP tools require matching server discovery, independent read/write grants and Notes consent.
+
+Notes consent remains independent of workspace-v1 and existing OAuth grants. Deployment never enables per-account notes-v1 consent or adds notes.read/notes.write to an existing grant. Integration profile deletion includes active Notes tables and reports pending cleanup until the private service acknowledges deletion. Provider point-in-time backups retain the provider recovery policy. Local synthetic migration and lifecycle tests do not establish production migration or live account qualification.
+
+## Notes release candidate 0.2.0
+
+The owner-selected sequence completes Notes, publishes accumulated ready work, then completes the three Todo presentation units. Unrelated prioritized work remains outside this release. The candidate uses package/backend0.2.0 and tool schema1.1.0, with package/backend compatibility limited to0.2.x. Package preparation binds actual files and six skills to an explicit reviewed source revision; installation remains unknown until the client reports evidence. Existing0.1.x packaged guidance requires a new import. Direct MCP clients need refreshed tool discovery and separate Notes scopes on reauthorization; deployment never grants Notes consent.
+
+Preflight targets the existing habitica-companion Pages production branch main and the existing Auth/MCP/Workspace Workers, without a dev suffix. All deployed runtime variables, feature flags, credential-key selection and retained resource bindings match the generated candidate. No secret value changes are required. Workspace adds the private NotesLifecycleService entrypoint before Auth binds NOTES_LIFECYCLE. Apply Auth0009 and Workspace0008 through0012 before matching Worker publication. Migrations add tables, columns and an inactive-by-default retirement fence; no existing task text is rewritten. Record D1 Time Travel bookmarks and exact Pages/Worker predecessors before changes. Code rollback does not reverse schema or user data; additive migrations remain in place during ordinary code rollback. Review active retirement fences before rolling back compatible task code.
+
+Notes UI qualification uses1168 solution tests,35 final Notes controls and720 matching rendered cases. The candidate runs matching Worker builds, package/identity controls and synthetic backend regressions before remote migration/publication. Production smoke checks read public health, OAuth discovery and release assets only; publication is not a new live gameplay test round. Hosted Notes consent, model behavior and physical devices retain separate qualification.
+
+The0.2.0 candidate is now published from ba5a96d to the existing production slot. Exact Pages/Worker versions, preceding deployments, D1 bookmarks and the verified package receipt reside in skill-tree/history/validation/notes-production-publication.json. Auth154, Workspace572 and package/identity controls pass against matching builds. Remote migrations have no remainder. Ordinary browser inspection confirms the production settings, OAuth Notes scopes, MCP-to-Auth health and rendered WebAssembly Notes route. Terminal403/DNS restrictions and blocked direct manifest navigation remain explicit inspection limits. The ready package is output/habitica-companion-plugin-0.2.0.zip; importing the package and separately granting Notes access remain user actions. No actual hosted Notes enrollment or gameplay test is claimed.
+
+## Web Push subscription release prerequisites
+
+Apply Auth0010-push-subscriptions.sql before the matching Auth Worker, including when PUSH_ENABLED is false: profile cleanup and bounded scheduled expiry reference push tables. Publish Auth PushService before Workspace binds AUTH_PUSH. Deploy matching clients with the restricted status contract. Pilot and development preparation both retain PUSH_ENABLED=false; no ordinary feature profile provisions or enables Web Push.
+
+A separately reviewed activation must provision dedicated Auth-only PUSH_VAULT_KEY_V1 (base64url AES256), optional retained PUSH_VAULT_KEY_V2, PUSH_VAULT_CURRENT_KEY_VERSION, a distinct PUSH_VAPID_PRIVATE_JWK P-256 signing secret and the matching public PUSH_VAPID_PUBLIC_KEY. Never put private keys in source, public deployment JSON, build logs or Workspace bindings. The optional push secrets are required only for the enabled capability; existing mandatory credential-secret requirements remain intact. Verify key separation and complete sender/UI/device release gates before enabling. No actual key was provisioned, remote migration applied, provider contacted or feature deployed by local qualification. Rollback must retain compatible push cleanup/migration support and previous decryption keys until separately qualified erasure/rotation.
+
+## Voluntary review compatibility
+
+Publish matching browser/Auth/Workspace/MCP code before exposing patch.review, reviewEvents, review_task and get_task_reviews. The optional extension needs no migration, secret or executor activation. Older strict readers can reject used review metadata; unused records preserve prior JSON and command hashes. Existing tasks:read and habitica.tasks.write grants remain narrow and unchanged. Local synthetic qualification grants no publication or live user testing.
+
+## Foreground reminders
+
+The Today foreground reminder unit requires no new Worker secret, resource, migration or OAuth scope. Foreground assets deploy through the ordinary PWA package; per-browser opt-in and local receipts stay in IndexedDB. The foreground unit neither enables PUSH_ENABLED nor enrolls a subscription. Closed-app/background delivery and physical-device qualification remain separate gates; see [foreground-reminders.md](foreground-reminders.md).
+
+## Scheduled push migration and activation
+
+Auth migration0011-push-dispatches.sql and Workspace migration0013-scheduled-reminders.sql must precede the coordinated Auth/Workspace/MCP code, including private lifecycle cleanup. All ordinary deployment profiles keep PUSH_ENABLED, PUSH_DISPATCH_ENABLED and PUSH_REMINDERS_ENABLED false. Explicit later activation requires dedicated push vault/VAPID secrets, matching public key, valid PUSH_VAPID_SUBJECT contact and separate release/device qualification. The existing Workspace cron remains a hook behind the disabled capability; local implementation does not change live triggers. Operator guidance and uncertainty/retention rules reside in [scheduled-push-reminders.md](scheduled-push-reminders.md).
+
+## Linked recovery migration
+
+The next Workspace migration after scheduled reminders is `0014-linked-task-recovery.sql`. Apply migration0014 only in a separately authorized deployment using the existing rollout/backup process before serving a build that references linked recovery. The local implementation adds no deployment, account, executor or live Habitica authorization. Existing default gates remain disabled. See [linked task recovery](linked-task-recovery.md).
+
+
+## Separate callback egress candidate
+
+The owner-selected Netlify Functions Free callback gateway has separate source/configuration under deploy/callback-egress. Ordinary pilot/development preparation keeps CALLBACK_EGRESS_ENABLED=false. Apply Auth0012-callback-egress.sql on the exact selected integration database before enabling the narrow claim endpoint; no existing credential, Push or subscription permission grants this lane. The [callback egress contract](callback-egress.md) owns account selection, runtime/service-key setup, Free-plan hard-limit behavior, hosted negative controls and rollback. Source packaging and local dry builds grant no Netlify/Cloudflare publication, remote migration or real callback scope.
+
+
+The selected Auth callback setup is provisioned with dispatch disabled. Exact initial deployment/base-module identities, the applied `0012` migration and pending hosted qualification are recorded in [callback-egress.md](callback-egress.md#published-auth-setup). The subsequent [2026-10-29 coordinated release](../history/releases/2026-10-29/README.md) publishes full repository Auth/Workspace/MCP source after the remaining migrations and lifecycle bindings. Web Push availability is enabled with dedicated keys and separate device/account consent; callback delivery remains disabled.

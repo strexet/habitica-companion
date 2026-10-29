@@ -1,0 +1,29 @@
+<section id="install" class="card-surface settings-card" data-testid="pwa-install-panel">
+    <p class="section-label">Use Companion as an app</p>
+    <h2>Install on iPhone</h2>
+    <p>Open Habitica Companion from your Home Screen in its own window.</p>
+    <MudButton Class="pwa-install-toggle" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(() => _expanded = !_expanded)"
+               aria-expanded="@(_expanded ? "true" : "false")" aria-controls="pwa-install-steps"
+               data-testid="pwa-install-toggle" data-layout-primary="true">
+        @(_expanded ? "Hide installation steps" : "Show installation steps")
+    </MudButton>
+    @if (_expanded)
+    {
+        <div id="pwa-install-steps" data-testid="pwa-install-steps">
+            <ol>
+                <li>Open this Companion website in Safari.</li>
+                <li>Open Share, from the page menu or toolbar, then choose Add to Home Screen.</li>
+                <li>Leave Open as Web App enabled when Safari offers the option, then tap Add.</li>
+                <li>Open Habitica Companion from the new Home Screen icon.</li>
+            </ol>
+            <p>If sign-in or saved data is absent in the installed app, sign in there again. Safari and the installed app may use separate storage.</p>
+            <p>Sign-in remains session-only unless you explicitly choose Remember credentials on this device. Closing the app may end a session-only sign-in. Installation does not save credentials or enable notifications.</p>
+            <p>Open the app online once before trying offline startup. Cached screens can show saved data; refreshing, signing in and changing Habitica still need a connection. Browser storage can be unavailable or cleared.</p>
+            <a class="inline-link" href="https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios" target="_blank" rel="noopener noreferrer">Apple installation instructions</a>
+        </div>
+    }
+</section>
+
+@code {
+    private bool _expanded;
+}

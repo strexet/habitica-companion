@@ -1,0 +1,197 @@
+{
+  "taskId": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+  "status": "accepted locally",
+  "behavior": "Shared exact-owned-pair adoption review and metadata-only atomic acceptance with immutable original receipts, retained-history support and zero native writes/scores.",
+  "sourceFingerprints": {
+    "workers/shared/adoption-tools.ts": "e4bc9194694c1c7d295476ada1f458ad0a51445dcc4cffa655cbc96cc5594051",
+    "workers/companion-workspace/src/adoption-api.ts": "40e56281703af2e5dbaab4d1655ae992c47bc7d41d5932c924901d5ef2be5f08",
+    "workers/companion-workspace/migrations/0015-task-adoption.sql": "53a740efbd3974b0aa1f693d904b1fa1bdaaf2c8a8c2d6f070de37a65c893d16",
+    "workers/companion-workspace/src/index.ts": "db2d4155bb109724150a5914a72652be1f6a94a07883ec47d3994266b830faf5",
+    "workers/chatgpt-auth/src/projection.ts": "15273d7337c2d53e57c63abddff923a33e71e66bc448a4b2aee7c544d4e35054",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "763bae33e6a8aed2fa6ab5d60ae6051ae289e2b151b5420239efcbf93a43d5d1",
+    "workers/chatgpt-mcp/src/adoption-tools.ts": "183ccb15717a50dac4d9f8ce2c76a13c6942839de0dcdae0aa5e4c76e397b224",
+    "workers/chatgpt-mcp/src/tools.ts": "e6a20e4deab1fced96bb7ff941647aa3bb2aaf728dd2d5daa3f9f017f0932a82",
+    "workers/chatgpt-mcp/src/index.ts": "8ee11cbd2a0a1c5691afc3ecc66eb08185a8466d2cab3a928c70d3e33e1a2e56",
+    "workers/shared/build-identity.generated.ts": "b30e26ca060fec555d7b3e2e478d43d85ba174692a74925829bd7818b6e14931",
+    "workers/companion-workspace/test/adoption-api.test.mjs": "9f7f9d828760448107235fb671ea76d778d12d9e2a8ea5aae5317c6777a52d0d",
+    "workers/companion-workspace/test/workspace.test.mjs": "7ed68002a2528477282a535467bb235fe3d6d0446f0dd5172db7c0207512a786",
+    "src/Habitica.Application/Workspace/IWorkspaceCloudClient.cs": "f8124e7549007cf5cb1c2c21fec0846986d0d12f50f8e31884aa3191720bdfc8",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "8c784dea9cd72a2442995937c5393ec81771392785ddee5ee4fa3aa3d68e349d",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "53342cc5508969081043e0ae5f5ec456f092b811fdd1d75e58b1d19c833d8051",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "d8d2a4bc3f1dd4648a0ed9f35e0a8f6fcff729e4cb6c1f0bef2bd32348c94a6a",
+    "src/Habitica.WebApp/Components/TodoTaskLinkEditor.razor": "b8c1f04c8fc78cf85b030d2659f2b1792132e8201fb038f4d01e458b3303d9e8",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "07c726409b125e59e4095658afcbe7e0910af5e6e68c617198e5bbb55cbf67bb",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ProjectionTests.cs": "f2f6502042e2029becf3144fca1e257ba7fdfa7fd0865111e5fe7e1f0c4585ed",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTaskClientTests.cs": "3127a42248045884f98c17556dd50f9598d97317cee93002d841d2471ce994f4",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "43232a2a3c60593faa83341abb5d90e3215d6a8d00ed9fce4a9e683c64415d20",
+    "plugin/skills/habitica-task-management/SKILL.md": "417760cf067c9c173cd4032d30cb74853d4fed45e336188e2cd50f720bc364f9",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "99b6ff153ece21b92f8ee429e7e20dbedfdb6a522d72571bc15dde540a0c79f3",
+    "skill-tree/documents/task-adoption.md": "2e49136cfd6c16bc1a961a262eae8a70bfbc9af51e96811f8d348fd75754c87d",
+    "skill-tree/documents/companion-workspace-contract.md": "b0a9ba387619136a2da8d39959f31abeb574820785b4d8f9f85848f0450e2a16",
+    "skill-tree/documents/features.md": "1aed427743aad4dfc009e906f6da59097550b1f299a21fd658a6f36168a925d3",
+    "skill-tree/documents/testing.md": "2eecf313a0bb9b1593b5445fc42022c103ad264c23bf0024b456354026b32230",
+    "skill-tree/documents/ux-ui-manifest.md": "b44666185a00d939fcbd4d40bfb70cdccd10ed17dd27f5c87d836cfac6ae8760"
+  },
+  "testSummary": {
+    "adoption-tests-final": {
+      "tests": 59,
+      "pass": 58,
+      "fail": 1
+    },
+    "adoption-isolated-final": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0
+    },
+    "adoption-auth-tests": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0
+    },
+    "adoption-plugin-sdk": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0
+    },
+    "workspaceRegressionUnion": {
+      "uniqueTests": 60,
+      "passed": 60,
+      "source": "Broad run: 58/59; the only failure was a synthetic undefined connectionId binding. Isolated corrected adoption file: 26/26 including a new quota/cascade case. Other broad cases unchanged and passing. No runtime source or pins changed between broad and isolated."
+    },
+    "webApp": {
+      "passed": 892,
+      "verifyActualLog": "adoption-webapp-final2.log",
+      "laterUiChecks": "13/13 after scoped link reflow and 8/8 static asset checks"
+    },
+    "supersedingFinalChecks": {
+      "combinedIntegration": {
+        "tests": 85,
+        "passed": 85,
+        "failed": 0,
+        "files": [
+          "adoption-api.test.mjs",
+          "workspace.test.mjs",
+          "task-api.test.mjs",
+          "executor.test.mjs",
+          "projection*.test.mjs",
+          "plugin.test.mjs"
+        ],
+        "adoptionCases": 27,
+        "log": "adoption-integration-verified.log"
+      },
+      "webApp": {
+        "tests": 895,
+        "passed": 895,
+        "failed": 0,
+        "log": "adoption-webapp-release-final.log"
+      },
+      "note": "Earlier broad-plus-isolated records remain diagnostic attempts. Final combined run passes on final matching Worker bundles and source. UI markup/styles are unchanged after final reflow qualification."
+    }
+  },
+  "browser": {
+    "matrix": {
+      "cases": 672,
+      "errors": 0,
+      "schemes": [
+        "boss-battle",
+        "generated-calm",
+        "generated-moderate",
+        "gryphy-dark",
+        "gryphy-light",
+        "obsidian-glow",
+        "toxic-swamp"
+      ],
+      "widths": [
+        360,
+        390,
+        430,
+        768,
+        1024,
+        1200
+      ],
+      "textPercent": [
+        100,
+        200
+      ]
+    },
+    "manualFocus": [
+      {
+        "route": "/tasks",
+        "width": 390,
+        "textPercent": 200,
+        "scheme": "obsidian-glow",
+        "focused": "Recover original link receipt",
+        "visual": "Full words readable; visible focus ring; cancel and close disabled",
+        "evidence": "obsidian-focus.png"
+      },
+      {
+        "route": "/todo/history",
+        "width": 390,
+        "textPercent": 200,
+        "scheme": "gryphy-light",
+        "focused": "Recover original link receipt",
+        "visual": "Full words readable; visible focus ring; cancel and close disabled",
+        "evidence": "light-history-focus.png"
+      },
+      {
+        "route": "/tasks",
+        "viewportWidth": 1265,
+        "textPercent": 100,
+        "scheme": "gryphy-light",
+        "focused": "Confirm exact link",
+        "focusVisible": true,
+        "outline": "rgb(67, 143, 208) solid 2px",
+        "buttonHeight": 44,
+        "buttonWidth": 162.8984375,
+        "evidence": "desktop-focus.png"
+      }
+    ],
+    "negativeControlErrorKinds": [
+      "contrast",
+      "overflow",
+      "overlap"
+    ],
+    "transportObservation": "The first local server reached the explicit 600-second deadline after qualification. Restarted the bounded server; a stale browser error document refused DOM operations, so a fresh allowed localhost tab completed the independent desktop check. No network/security policy changed."
+  },
+  "builds": [
+    "adoption-auth-verifiedbuild.log.meta.json",
+    "adoption-mcp-verifiedbuild.log.meta.json",
+    "adoption-workspace-verifiedbuild.log.meta.json"
+  ],
+  "review": {
+    "result": "No unresolved selected-scope defect found after review and narrow reflow repair.",
+    "controls": [
+      "Exact identity, grant/access scope and ownership checked independently in Workspace and Auth",
+      "Conditional revision/preparation/lease save and receipt rollback",
+      "No mapping revision used as original-receipt proof",
+      "Retained canonical content, history and mapping IDs preserved",
+      "No live data, credential provisioning, deployment, commits or unrelated edit removal",
+      "Stored review bytes rehashed before acceptance; typed mapping identity/state/fingerprint validated; corrupt review control refuses."
+    ]
+  },
+  "limitations": [
+    "Synthetic local SDK/HTTP/D1, component transport and rendered fixture evidence only; physical devices, installed hosts, assistive technology and live account migration remain unqualified.",
+    "Migration 0015 and matching assets are local and unapplied to hosted environments.",
+    "Frozen Implement All WR-db3533db-230a-4c61-a88b-0db609cb6ff5 remains unfinished in a preserved checkpoint; no implicit resumption."
+  ],
+  "priorRunCheckpoint": "skill-tree/history/checkpoints/implement-all-WR-db3533db-230a-4c61-a88b-0db609cb6ff5.json",
+  "externalReference": {
+    "url": "https://developers.cloudflare.com/d1/worker-api/d1-database/#batch",
+    "usedFor": "D1 batch transaction rollback contract; exercised by local receipt-write failure control."
+  },
+  "executionAccounting": {
+    "activeControllerSeconds": null,
+    "activeControllerReason": "Controller time was not instrumented; no inferred duration.",
+    "prerequisiteWaitingSeconds": null,
+    "operationDeadlines": "Per-operation .meta.json records and bounded browser controller diagnostics; cleanup reserve five seconds for subprocess controls.",
+    "selectedTaskBudget": null,
+    "unchangedExecutedFailureStop": false,
+    "finalSubprocessToolWallSeconds": 110.43
+  },
+  "deferredIds": [
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20"
+  ],
+  "commitMessage": "feat(workspace): add reviewed MCP task adoption"
+}

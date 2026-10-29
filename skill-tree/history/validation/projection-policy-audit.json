@@ -1,0 +1,95 @@
+{
+  "recordedAtUtc": "2026-10-21T09:21:16.604094+00:00",
+  "scope": "Owner-requested correspondence/priority audit, explicit code policy and Pending intake; not full projection remediation",
+  "priorityFeature": {
+    "implemented": true,
+    "values": [
+      "low",
+      "normal",
+      "high",
+      "urgent"
+    ],
+    "browser": "More details > Urgency",
+    "mcp": "prepare_task_command patch.priority",
+    "independentGameDifficulty": "habiticaDetails.difficulty",
+    "newPendingRequired": false
+  },
+  "policy": "Every task and full subtask requires corresponding Habitica task; task-bearing organization uses tags; history keeps identities; missing consent/execution stays explicit; no retroactive reward backfill.",
+  "currentGaps": {
+    "pendingIds": [
+      "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+      "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+      "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+      "P-7414291b-9448-4d98-884c-97b582cd2d67",
+      "P-505551fa-3ca7-4415-b19e-b64585bf8f9f"
+    ],
+    "priority": 103,
+    "status": "Pending, unprocessed; no claims of fixed default projection, Daily/Habit creation, tags or source retirement"
+  },
+  "conversionSnapshotEvidence": "skill-tree/history/validation/companion-development-project-conversion.json",
+  "conversionSnapshotLimits": [
+    "Ten converted tasks remain unlinked at the recorded snapshot: eight active, two completed archived.",
+    "Legacy linked checklist source is retained; no new mapping or retirement acceptance follows from this audit."
+  ],
+  "validation": {
+    "solutionTests": {
+      "passed": 967,
+      "failed": 0
+    },
+    "finalFocusedPanelPresentationTests": {
+      "passed": 24,
+      "failed": 0
+    },
+    "pluginSchemaAndSdkTests": {
+      "passed": 2,
+      "failed": 0,
+      "runtime": "Node 22.12.0 with repository experimental-strip-types flag"
+    },
+    "releaseBuild": "passed",
+    "renderedCases": 144,
+    "renderedErrors": 0,
+    "unqualifiedPaintSamples": 0,
+    "renderedWidths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "renderedTextPercent": [
+      100,
+      200
+    ],
+    "renderedThemes": [
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate",
+      "gryphy-dark",
+      "gryphy-light",
+      "toxic-swamp"
+    ],
+    "keyboard": "Native Tab reaches todo-title input, focus-visible true, solid 2px outline observed."
+  },
+  "limitations": [
+    "Synthetic markup is separate from browser event interaction assertions.",
+    "No physical-device or assistive-technology qualification.",
+    "No production deployment, installed plugin update or new live game effects.",
+    "Existing publication archive retains previous skill contents; source guidance update is not installed automatically.",
+    "Stopped implementation controller remains stopped; Pending intake does not resume it."
+  ],
+  "sourceFingerprints": {
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "dc8dfa2c13f5e6cf5c559e78e10bb0549608b6c1570100d417c153ebdf23892a",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "1b176b411024b58eea700e31be38d4b0de2f916d25e5baf329640e26b63463bd",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "cb0606ef8c8b0dc6896ad3eef57b2ec2126e1f0d53d8280ae6d19d9a901fcf30",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHabiticaCoveragePolicyTests.cs": "dc80f2eef0c2238da0ae2bd85ca72302fe4730cd483247f702f2afa5d383fcb6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "cbf1ca4de212dbbe045e2130a3e0d0b5e6cfd2b8b6e17ac44583c41173054166",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "6a8e456be557a568d6a0325bba425587832761b07636c26e80be015bdff98203",
+    "plugin/skills/habitica-task-management/SKILL.md": "da568b32fd9e60898604fc3516123780e3c55260c480cf6d5e5661b340e4c8c4",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "66c842765fb71ba0bfbaff0e751dea9453152130be3b16662764a55c8023ff1d",
+    "plugin/skills/habitica-task-management/references/project-planning.md": "0b0650810c664fc634b4311ceff131cdd85e31db8e2389d758fe2b25978441b9",
+    "plugin/skills/habitica-task-management/references/organization-management.md": "c81e3fa47f5c201819d9d5621c5ba87a7621d5492cf715aefbf0a67505e2d1d9",
+    "skill-tree/documents/companion-workspace-contract.md": "334cde2a3301e835f33dc403ea23f5291da0f4290dba82d2865cd59fb0a2233b",
+    "skill-tree/history/validation/projection-policy-layout.json": "e6c71966a6efa64ca82b15539c8c165f1dc1ba86971a1d53d9b5ebda8f947eca"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "taskId": "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+  "recordedAtUtc": "2026-10-21T15:12:39.693952+00:00",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "caccb13afe9198d6629c9820f6ea78c11e9bba70e939935a75ab98c9c1f0d455",
+    "skill-tree/documents/features.md": "7952382da87a87a33996da0d1da264d20a186708b0c629cf43051a6f4549e3ba",
+    "skill-tree/documents/habitica-api.md": "d4ce0b96bfa4883759d69fc4903c6a21fa1db3902c3f8bfe0729ed697003bb55",
+    "skill-tree/documents/technical.md": "4cf7bc6179c17ef5e293ed4f66cdd0a8d45e283a542d9b428744eddbf06e4adf",
+    "skill-tree/documents/testing.md": "1c42aad072511a62f3d442bc8158a7708ed35f391a4468d8da6378b12bdf9b00",
+    "skill-tree/documents/ux-ui-manifest.md": "785654b112e3b87c009f97d0889176bfdb6e09a5cb84ceb0b52abe1c67cb4cc9",
+    "src/Habitica.Application/Workspace/IWorkspaceCloudClient.cs": "8dbb61112a98f7423fc485f76d65a2751f3d0335b9bd7fb3d7634c68c1b0c751",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "569170802bf6a61d50b8b71ba4ab4f4ffe4844fbc04390980607698f8084949c",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "4bea91699480adab99963cca836c3b09f02134280d01c8bc252866c1240d50d7",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "bd9d47e70b03fbe88f93f01ce38c1e1ddee1470e29d1b190095b385572fabdf8",
+    "src/Habitica.WebApp/Components/TodoTaskLinkEditor.razor": "13643b930a5d025b58e137dc87d02afad5ee836641a2a0fb924dafa8a9649faa",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "d3fcecce4f6e5bb2fa206b2522cd4bec02aff7504020860cec2a8841023ca10d",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "f3fea7ea2160017ce1ead43a03f5fdcd3c0fc6fc929719d063ea5a6f0595b75e",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "b9b71c31f4c28429b48fd84d04a78e137ed4f128d28e9a3f4d2503ba7cd0d7f0",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "8826b37c57125a01c85417aacd54483147acdfd268f3341389b72ce0290202c2",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ProjectionTests.cs": "21d8c731f6127c31cb9c998394cbc3bd63cf7f7919a175d70de79ed5b6183845",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "edf5561df4a772661f30fb13ef3c89959d323dbdbca943bca34ec2eef7739c5d",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "ca15d775f8ad0ee5f1b6d858fa030f856e6e917b5298a214ebe1750615189bef",
+    "workers/companion-workspace/test/daily-create.test.mjs": "fea74f7be8644c358cecd8d2cd907dd17a4bbf8b50b6d81a2351084e88691cc5",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13"
+  },
+  "checks": {
+    "dotnet": {
+      "log": "/tmp/habitica-link-current-dotnet.log",
+      "sha256": "eaba0094b22e34b2f78b776888888530b9626e9cd330a6f2c92f28b27a1b6ad8",
+      "result": "pass",
+      "total": 1005
+    },
+    "releasePublish": {
+      "log": "/tmp/habitica-link-current-publish.log",
+      "sha256": "da94e367d105b95f1ad514ddc625af2d8e6b418479bf0c9192b2b976c6632587",
+      "result": "pass"
+    },
+    "workerBuilds": {
+      "log": "/tmp/habitica-link-worker-builds.log",
+      "sha256": "004370fbc6d7c11f01110f90b530e6782ca11edcefec04d02807417b1f3a493d",
+      "result": "pass"
+    },
+    "workers": {
+      "log": "/tmp/habitica-link-workers.log",
+      "sha256": "2822682b24325ebab5492409d04745cdf0bc45d540d2f275abb0d79baeea888a",
+      "result": "pass",
+      "total": 414
+    },
+    "rendered": {
+      "result": "pass",
+      "cases": 648,
+      "errors": 0,
+      "unqualifiedSurfaces": 0,
+      "evidence": "browser-results.json"
+    },
+    "negativeControls": {
+      "cases": 2,
+      "detected": [
+        "overflow",
+        "overlap",
+        "contrast"
+      ],
+      "evidence": "browser-negative-results.json"
+    },
+    "documentation": {
+      "changedLineProse": "pass",
+      "strictFuture": "pass",
+      "navigationAndCheckpoint": "pass",
+      "fullStrictProse": "existing baseline errors outside changed lines; not rerun as a clean verdict",
+      "audit": "existing stale audit warning"
+    }
+  },
+  "delivered": [
+    "Exact active task and retained History entrypoints separate counterpart creation/verification from existing-record adoption.",
+    "Checkbox-only unchanged projection uses EnsureProjection without invented fields or score events.",
+    "Known preparation rejection exposes correction/cancellation; earlier uncertainty survives later refusal until original preview recovery.",
+    "Unknown adoption retains exact reviewed identity and fences cancellation, source/type changes and replacement requests; original idempotent request recovers mapping.",
+    "Known adoption with failed refresh remains read only; advanced panel retains enabled original-link recovery outside disabled fields.",
+    "Typed Daily schedule metadata supports retained read observations, including upstream everyX zero; new authoring still requires a positive interval."
+  ],
+  "sources": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js"
+  ],
+  "limits": [
+    "No real account mutation, deployment, installed-host refresh, physical-device or assistive-technology qualification.",
+    "Stored links alone do not confirm pending game effects; ordinary consent and executor requirements remain independent.",
+    "Unknown adoption retains the in-memory original review. Account changes discard private local context; no cross-account receipt is reused."
+  ],
+  "operationEvidence": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "note": "No aggregate controller timer available; test logs retain self-reported durations. Build/test controls use 180/240-second deadlines; the synthetic browser server uses a 900-second deadline.",
+    "repairs": [
+      "Completed/archived task entrypoints were added to History rather than searching active-only lists.",
+      "Tests use the current bUnit rendered component interface.",
+      "Uncertain adoption recovery was moved outside disabled advanced fields.",
+      "Task-type switching and post-confirmation refresh failures preserve original receipt fences."
+    ]
+  }
+}

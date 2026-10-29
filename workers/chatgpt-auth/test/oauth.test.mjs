@@ -109,12 +109,40 @@ test("token exchange requires exact resource and scope challenges request minimu
   assert.equal(missing.status, 400);
   assert.equal((await missing.json()).error, "invalid_target");
   const profile = await enrolled(f);
-  const noProfile = await exchange(f, await authorization(f, profile, "account:read"));
-  assert.equal(noProfile.status, 200);
-  const token = (await noProfile.json()).access_token;
-  const response = await f.mcp.fetch(resource, { headers: { authorization: `Bearer ${token}` } });
-  assert.equal(response.status, 403);
-  assert.ok(response.headers.get("www-authenticate").includes("profile:read"));
+  const code = await ticket(f, profile); const page = await authPage(f, "account:read");
+  const identified = await form(f, page, { handle: handle(await page.response.text()), decision: "identify", code: code.code, scope: "account:read" });
+  assert.equal(identified.status, 200);
+  const noProfile = await form(f, page, { handle: handle(await identified.text()), decision: "approve", scope: "account:read" });
+  assert.equal(noProfile.status, 400);
+  assert.match(await noProfile.text(), /invalid_scope/);
+});
+
+test("consent shows the whole catalogue and issues only chosen supported scopes", async t => {
+  const f = await fixture(t); const profile = await enrolled(f); const code = await ticket(f, profile);
+  const page = await authPage(f, "profile:read tasks:read"); const first = await page.response.text();
+  for (const label of ["Identify the linked account","Read tasks","Manage Habitica tags","Cast spells","Read personal Notes","Change personal Notes","Read explicitly shared diagnostics"]) assert.ok(first.includes(label));
+  assert.match(first, /One-time Companion code/);
+  assert.ok(first.indexOf('<form method="post">') < first.indexOf('name="code"'));
+  assert.ok(first.indexOf('name="code"') < first.indexOf('>Verify code</button>'));
+  assert.ok(first.indexOf('>Verify code</button>') < first.indexOf('</form>'));
+  assert.ok(first.indexOf('</form>') < first.indexOf('id="permission-preview-title"'));
+  assert.equal((first.match(/type="checkbox"/g) ?? []).length, 13);
+  assert.equal((first.match(/disabled aria-label=/g) ?? []).length, 13);
+  assert.equal((first.match(/name="scope"/g) ?? []).length, 0);
+  const identified = await form(f, page, { handle: handle(first), decision: "identify", code: code.code, scope: "profile:read tasks:read" });
+  assert.equal(identified.status, 200); const html = await identified.text();
+  assert.match(html, /name="scope" value="tasks:read" checked/);
+  assert.match(html, /name="scope" value="habitica.tags.write"  /);
+  assert.ok(html.indexOf('id="permission-preview-title"') === -1);
+  assert.ok(html.indexOf('name="scope" value="habitica.tags.write"') < html.indexOf('>Allow selected access</button>'));
+  const allowed = await form(f, page, { handle: handle(html), decision: "approve", scope: "profile:read habitica.tags.write" });
+  assert.equal(allowed.status, 302);
+  const callback = new URL(allowed.headers.get("location"));
+  const tokens = await exchange(f, { code: callback.searchParams.get("code"), verifier: page.verifier });
+  assert.equal(tokens.status, 200);
+  const validated = await f.internal.fetch("https://auth.internal/validate", { method: "POST", body: JSON.stringify({ resource, token: (await tokens.json()).access_token }) });
+  const grant = await validated.json();
+  assert.deepEqual(grant.scope.sort(), ["profile:read","habitica.tags.write"].sort());
 });
 
 
@@ -174,8 +202,15 @@ test("consent rejects callback hosts that would add CSP wildcards or directives"
     const f = await fixture(t, { clientMetadata: { client_id: clientId, client_name: "Unsafe CSP fixture", redirect_uris: [callback], token_endpoint_auth_method: "none" } });
     const page = await authPage(f, "profile:read", { client_id: clientId, redirect_uri: callback });
     assert.equal(page.response.status, 400);
-    assert.equal((await page.response.json()).reason, "invalid_redirect");
+    assert.match(await page.response.text(), /invalid_redirect/);
     const kv = await f.mf.getKVNamespace("OAUTH_KV", "auth");
     assert.equal((await kv.list({ prefix: "grant:" })).keys.length, 0);
   }
+});
+test('diagnostic permission is independently requested, disclosed and never implied by task or Notes grants',async t=>{
+ const f=await fixture(t),profile=await enrolled(f),code=await ticket(f,profile),page=await authPage(f,'profile:read diagnostics.read'),first=await page.response.text();
+ assert.match(first,/Read explicitly shared diagnostics/);assert.match(first,/seven days/);const identified=await form(f,page,{handle:handle(first),decision:'identify',code:code.code,scope:'profile:read diagnostics.read'});assert.equal(identified.status,200);const html=await identified.text();
+ assert.match(html,/name="scope" value="diagnostics.read" checked/);assert.match(html,/name="scope" value="notes.read"  /);assert.match(html,/name="scope" value="tasks:read"  /);
+ if(process.env.HABITICA_AUTH_BROWSER_EVIDENCE){const {mkdir,writeFile}=await import('node:fs/promises');await mkdir(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,{recursive:true});await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/diagnostic-consent.html',html);await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/diagnostic-identify.html',first);}
+ const allowed=await form(f,page,{handle:handle(html),decision:'approve',scope:'profile:read'});assert.equal(allowed.status,302);const callback=new URL(allowed.headers.get('location')),tokens=await exchange(f,{code:callback.searchParams.get('code'),verifier:page.verifier});assert.equal(tokens.status,200);assert.equal((await tokens.json()).scope,'profile:read');
 });

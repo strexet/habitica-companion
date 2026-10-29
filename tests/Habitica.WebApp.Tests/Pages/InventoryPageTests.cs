@@ -4,6 +4,7 @@ using Habitica.Domain.Sync;
 using Habitica.Domain.User;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
+using Habitica.WebApp.Tests.Qualification;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -11,6 +12,114 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class InventoryPageTests : BunitContext
 {
+    [Theory]
+    [InlineData("warrior")]
+    [InlineData("wizard")]
+    [InlineData("rogue")]
+    [InlineData("healer")]
+    [InlineData("unknown")]
+    public void Optimizer_defaults_to_intelligence_without_equipping(string className)
+    {
+        var controller = ConfigureOptimizer(className);
+        var cut = Render<InventoryPage>();
+
+        Assert.Equal("Intelligence", cut.Find("select[data-testid='equipment-optimizer-goal']").GetAttribute("value"));
+        Assert.Contains("Scholar Wand", cut.Find(".optimizer-item-strip").TextContent);
+        Assert.DoesNotContain("Might Wand", cut.Find(".optimizer-item-strip").TextContent);
+        AssertNoEquipmentChanges(controller);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("invalid")]
+    [InlineData("999")]
+    [InlineData("-1")]
+    public void Invalid_optimizer_goal_returns_to_intelligence_without_equipping(string? rawValue)
+    {
+        var controller = ConfigureOptimizer("wizard");
+        var cut = Render<InventoryPage>();
+        cut.Find("[data-testid='equipment-optimizer-goal']").Change("Strength");
+
+        cut.Find("[data-testid='equipment-optimizer-goal']").Change(rawValue);
+
+        Assert.Equal("Intelligence", cut.Find("[data-testid='equipment-optimizer-goal']").GetAttribute("value"));
+        Assert.Contains("Scholar Wand", cut.Find(".optimizer-item-strip").TextContent);
+        AssertNoEquipmentChanges(controller);
+    }
+
+    [Theory]
+    [InlineData("Balanced")]
+    [InlineData("Strength")]
+    [InlineData("Constitution")]
+    [InlineData("Perception")]
+    [InlineData("BossDamage")]
+    [InlineData("Survival")]
+    public void Explicit_optimizer_goal_survives_session_refresh_without_equipping(string goal)
+    {
+        var controller = ConfigureOptimizer("warrior");
+        var cut = Render<InventoryPage>();
+        cut.Find("[data-testid='equipment-optimizer-goal']").Change(goal);
+
+        controller.SetState(controller.State with { DisplayName = "Refreshed account" });
+
+        Assert.Equal(goal, cut.Find("[data-testid='equipment-optimizer-goal']").GetAttribute("value"));
+        AssertNoEquipmentChanges(controller);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Optimizer_exports_long_labels_and_disabled_actions(bool stale)
+    {
+        var controller = ConfigureOptimizer("wizard", longLabels: true);
+        if (stale) controller.SetState(controller.State with { UserFreshness = SnapshotFreshnessState.Expired });
+        var cut = Render<InventoryPage>();
+        cut.Find("[data-testid='optimizer-preset-name']").Input("Intelligence casting equipment");
+
+        Assert.Equal(stale, cut.Find("[data-testid='equip-optimizer-recommendation']").HasAttribute("disabled"));
+        Assert.Equal(stale, cut.Find("[data-testid='save-optimizer-recommendation']").HasAttribute("disabled"));
+        AssertNoEquipmentChanges(controller);
+        PageLayoutEvidence.Save("inventory-intelligence-" + (stale ? "stale" : "fresh"), cut.Markup,
+            "/inventory", stale ? "stale-disabled" : "fresh-long-labels", ["form", "disabled-controls"],
+            nameof(Optimizer_exports_long_labels_and_disabled_actions));
+    }
+
+    private FakeAppSessionController ConfigureOptimizer(string className, bool longLabels = false)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var snapshot = CreateSnapshot() with
+        {
+            ClassName = className,
+            Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, ["weapon_str_10", "weapon_int_12"])
+        };
+        var controller = new FakeAppSessionController(SessionViewModel.Empty with
+        {
+            IsAuthenticated = true, UserId = "synthetic-optimizer", ClassName = className,
+            UserSnapshot = snapshot, UserFreshness = SnapshotFreshnessState.Fresh,
+            GearCatalogSnapshot = new GearCatalogSnapshot(snapshot.RetrievedAtUtc,
+                new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                {
+                    ["weapon_str_10"] = new("weapon_str_10", "Might Wand", "Weapon", "special", null, new GearStatBlock(30m, 0m, 0m, 0m)),
+                    ["weapon_int_12"] = new("weapon_int_12", longLabels ? "Scholar Wand for extraordinarily long intelligence casting recommendations and equipment comparisons" : "Scholar Wand",
+                        "Weapon", "special", null, new GearStatBlock(0m, 12m, 0m, 0m))
+                })
+        });
+        Services.AddSingleton<IAppSessionController>(controller);
+        return controller;
+    }
+
+    private static void AssertNoEquipmentChanges(FakeAppSessionController controller)
+    {
+        Assert.Empty(controller.EquipGearSlotsCalls);
+        Assert.Empty(controller.EquipItemCalls);
+        Assert.Empty(controller.EquipPresetCalls);
+        Assert.Empty(controller.SavePresetCalls);
+        Assert.Empty(controller.SavePresetWithSlotsCalls);
+    }
+
     [Fact]
     public void Signed_out_empty_equipment_page_has_sign_in_action()
     {

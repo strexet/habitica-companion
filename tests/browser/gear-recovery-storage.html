@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>Disposable gear recovery checks</title>
+<style>body{font:18px system-ui;max-width:55rem;margin:2rem auto}button{font:inherit;margin:.5rem;padding:.8rem}pre{white-space:pre-wrap}</style>
+<h1>Disposable gear recovery checks</h1><p>Synthetic data on an isolated localhost origin. No Habitica requests.</p>
+<button id="journal">Run journal checks</button><button id="reload">Verify persisted journal</button><button id="hold">Acquire exclusive lease</button><button id="release">Release lease</button><pre id="result"></pre>
+<script type="module">
+import * as storage from '/js/storage/indexedDbStorage.js';
+const scope='gear_fixture', operationId='44444444-4444-4444-8444-444444444444',lease='55555555-5555-4555-8555-555555555555';
+const output=document.querySelector('#result');function check(ok,label){output.textContent+=(ok?'PASS ':'FAIL ')+label+'\n';if(!ok)throw Error(label);}
+function action(id,fn){document.querySelector(id).onclick=async()=>{try{await fn();}catch(e){output.textContent+='ERROR '+e.message+'\n';}};}
+action('#journal',async()=>{
+ const previous=await storage.getGearRecovery(scope);if(previous){check(true,'fixture already saved; use persisted check');return;}
+ const row={operationId,revision:1,slots:[{slot:'Head',originalKey:'head_old',temporaryKey:'head_new',status:0}]};
+ check(await storage.commitGearRecovery(scope,0,JSON.stringify(row)),'initial record saved');
+ const next={...row,revision:2,slots:[{...row.slots[0],status:1}]};
+ const results=await Promise.all([storage.commitGearRecovery(scope,1,JSON.stringify(next)),storage.commitGearRecovery(scope,1,JSON.stringify(next))]);
+ check(results.filter(Boolean).length===1,'concurrent CAS reserves only once');
+ check(await storage.getGearRecovery('different_account')===null,'account scopes isolated');
+ let rejected=false;try{await storage.commitGearRecovery(scope,2,JSON.stringify({...next,revision:3,slots:[{...next.slots[0],originalKey:'head_other'}]}));}catch{rejected=true;}
+ check(rejected,'original gear immutable');
+});
+action('#reload',async()=>{const row=JSON.parse(await storage.getGearRecovery(scope));check(row.operationId===operationId&&row.revision===2&&row.slots[0].status===1,'in-flight journal survives reload');});
+action('#hold',async()=>{const acquired=await storage.acquireGearRecovery(scope,lease);output.textContent+='LEASE '+(acquired?'ACQUIRED':'BUSY')+'\n';});
+action('#release',async()=>{storage.releaseGearRecovery(lease);output.textContent+='LEASE RELEASED\n';});
+</script>

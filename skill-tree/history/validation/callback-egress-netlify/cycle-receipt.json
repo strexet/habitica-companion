@@ -1,0 +1,129 @@
+{
+  "completed_ids": [
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
+  ],
+  "completion_refs": {
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9": "O-64dce565-a7ad-4cea-9e0a-b15e60ca878e",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4": "O-65887ecd-b10e-4c94-b385-ad3fb28e6bfc",
+    "T-56a7a511-0ebf-41f8-8e1f-65ae87399459": "O-131595a2-986a-4048-b6e0-0d50b49278be",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373": "O-063e216a-5b1c-4a83-8992-d93dfebc8228",
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d": "O-bb4caa60-f7ca-4ec6-80e5-f66be56506f8",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599": "O-859df127-6a08-4eae-a897-53fb3af5d317",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9": "O-070c0755-7a03-4de0-a438-dc7e5cdf850f",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20": "O-9150e8b1-999e-4ea3-aca4-a569ebb539b7",
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e": "O-f1e7b0be-49f7-44da-8e2b-94924f1fe8a1"
+  },
+  "current_task_id": null,
+  "cycle_signature": "19f6293067ed185679bee33c48934f7764501ce42dbd9d69c412afe01c99892b",
+  "deferred_ids": [],
+  "history_refs": [
+    "skill-tree/history/validation/tag-review-outcomes/result.json",
+    "skill-tree/history/validation/scoped-tag-correspondence/result.json",
+    "skill-tree/history/validation/tag-diagnostic-operations/result.json",
+    "skill-tree/history/validation/shared-diagnostics/result.json",
+    "skill-tree/history/validation/diagnostic-sharing-ui/result.json",
+    "skill-tree/history/validation/note-project-links/result.json",
+    "skill-tree/history/validation/notes-project-ui/result.json",
+    "skill-tree/history/validation/mcp2-migration/result.json",
+    "skill-tree/history/validation/callback-egress/result.json",
+    "skill-tree/history/validation/callback-egress/proposal.md",
+    "skill-tree/history/validation/callback-egress/owner-decision.md"
+  ],
+  "id": "WR-5663ac54-9d1e-4145-8792-17c83b2b8bd3",
+  "limits": {},
+  "mode": "all",
+  "next_action": "Select required task or finish root",
+  "partial_work": [
+    "Eight of the seventeen frozen snapshot units are complete. The current turn completed project Notes UI T-a48aa46e-fd3c-43ff-b9b3-3becddb47599 and MCP2 compatibility T-273899d8-6f17-43ee-b82f-41013e1021b9 with original terminal outcomes and source-bound evidence.",
+    "The Notes UI passes1441 solution tests,74 focused controls,1188 rendered cases across33 fixtures and three themes, seeded negative controls, native visible keyboard focus and local Release publication.",
+    "The MCP2 migration pins server/core/client2.4.0, retains genuine v1 client1.32.1 and passes209 Auth tests,713 Workspace controls,10 retained prototype controls and all three Worker type/dry builds. No pre-existing package version changed.",
+    "The owner selected Netlify Functions Free on 2026-10-29 for the protected Node.js HTTPS callback egress gateway and requested setup assistance during implementation. The planning decision resolves the hosting question; required Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 remains unpromoted, and no new dependency identity or implementation acceptance is recorded.",
+    "A bounded local helper repair permits required findings under an exact completed historical root while preserving the prioritized direct parent. All seven installed helper copies match; five synthetic provenance controls pass.",
+    "The remaining nine frozen units and later Notes-folder tasks are unimplemented. No publication, deployment, commit, callback key, new backend, subscription or actual account/game operation occurred."
+  ],
+  "pending_ids": [
+    "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
+  ],
+  "phase": "resume-parent",
+  "processing_results": [
+    {
+      "created_ids": [],
+      "dispositions": {
+        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4": {
+          "reason": "The callback adapter is researched against current repository code, pinned workerd1.20261012.1 source, installed types and official Cloudflare contracts. No supported connection-address and original-host TLS binding is qualified. The concrete local Node22 protected gateway proposal adds a backend trust boundary and requires the owner decision under repository rules section14. No Ready contract or dependency identity is produced before the decision; callback subscriptions remain blocked and inactive.",
+          "status": "retained"
+        }
+      },
+      "id": "PR-db357572-5d65-4449-ae55-3148c9da6b6c",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+        "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
+      ],
+      "dispositions": {
+        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4": {
+          "reason": "The owner-selected Netlify Functions Free boundary is researched against current Netlify runtime/credit limits, Node22 HTTPS/TLS and IANA special-address registries. Split local deployable gateway/Auth one-use reservation from mandatory hosted qualification; local implementation does not grant publication or qualify the hosted runtime.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-0397ff3e-5942-44c8-8fbf-32966ad290af",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
+      ],
+      "task_keys": {
+        "hosted-gateway": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+        "local-gateway": "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
+      }
+    }
+  ],
+  "required_ids": [
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
+  ],
+  "root_task_id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+  "snapshot": [
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+  ],
+  "started_at": "2026-10-28T13:05:17.256755+00:00",
+  "stop_reason": null
+}

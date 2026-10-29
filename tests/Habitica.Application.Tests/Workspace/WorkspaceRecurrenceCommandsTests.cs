@@ -44,7 +44,7 @@ public sealed class WorkspaceRecurrenceCommandsTests
         foreach (var rule in new[] { Schedule with { Interval = 0 }, Schedule with { TimeZoneId = "Missing/Zone" }, Schedule with { Weekdays = [] } })
             Assert.Equal(SubmissionDisposition.Invalid, Apply(state, WorkspaceOperation.CreateDaily, id, new(Text: "Reject", Recurrence: rule)).Disposition);
         Assert.Equal(SubmissionDisposition.Invalid, Apply(state, WorkspaceOperation.CreateDaily, id, new(Text: "Reject", Recurrence: Schedule, ClearRecurrence: true)).Disposition);
-        Assert.Equal(SubmissionDisposition.Invalid, Apply(state, WorkspaceOperation.CreateDaily, id, new(Text: "Reject", Recurrence: Schedule), project: true).Disposition);
+        Assert.Equal(SubmissionDisposition.Accepted, Apply(state, WorkspaceOperation.CreateDaily, id, new(Text: "Supported", Recurrence: Schedule), project: true).Disposition);
         state = Apply(state, WorkspaceOperation.CreateDaily, id, new(Text: "Unlinked")).Snapshot!;
         foreach (var projection in new[] { ProjectionState.Linked, ProjectionState.Pending, ProjectionState.UnknownOutcome, ProjectionState.ExternalConflict })
         {
@@ -62,7 +62,9 @@ public sealed class WorkspaceRecurrenceCommandsTests
         var state = Empty(); var created = Apply(state, WorkspaceOperation.CreateDaily, Guid.NewGuid(), new(Text: "Canonical only", Recurrence: Schedule)).Snapshot!;
         var entry = created.Commands[0];
         var command = entry.Command with { ProjectToHabitica = true };
-        Assert.False(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { Command = command, PayloadHash = WorkspaceCommandIdentity.Hash(command), Effects = [ProjectionEffectKind.Create], ProjectionState = ProjectionCommandState.Pending }] }));
+        var projected = created with { Commands = [entry with { Command = command, PayloadHash = WorkspaceCommandIdentity.Hash(command), Effects = [ProjectionEffectKind.Create], ProjectionState = ProjectionCommandState.Pending }] };
+        Assert.False(WorkspaceJournalValidation.IsValid(projected)); // Existing coverage binds the original command hash.
+        Assert.True(WorkspaceJournalValidation.IsValid(projected with { Document = projected.Document with { ActivityCoverage = null } }));
         var malformed = entry.Command with { Patch = entry.Command.Patch! with { Recurrence = Schedule with { Weekdays = null! } } };
         Assert.False(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { Command = malformed }] }));
         Assert.False(WorkspaceJournalValidation.IsValid(created with { Commands = [entry with { TaskSnapshot = null }] }));

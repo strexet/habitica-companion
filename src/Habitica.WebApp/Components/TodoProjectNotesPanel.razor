@@ -1,0 +1,27 @@
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+
+<section class="card-surface notes-panel" aria-label="Project Notes" data-testid="project-notes">
+    <h2>Notes for this project</h2>
+    @if (Todo.Snapshot is null || ProjectId is null)
+    {
+        <p>Choose an exact project in an available workspace to browse linked Notes.</p>
+    }
+    else
+    {
+        <p class="notes-reference">@ProjectName · @ProjectId · workspace @Todo.Selection!.WorkspaceId</p>
+        <p>Notes requires separate private Notes access. Opening this section never connects cloud Notes, uploads browser content or changes tasks.</p>
+        <button data-layout-primary="true" class="notes-button" @onclick="() => _open = !_open" aria-expanded="@_open" data-testid="project-notes-toggle">@(_open ? "Hide project Notes" : "Open project Notes")</button>
+        @if (_open)
+        {
+            <p>Create with New note. To attach an existing note, choose All notes, open the exact record, select this project and review Save note. Text, history and source remain independent.</p>
+            <NotesPanel ProjectId="ProjectId" ProjectWorkspaceId="Todo.Selection.WorkspaceId" ProjectSource="@(Todo.Selection.Source==TodoWorkspaceSource.Cloud?NotesSource.Cloud:NotesSource.Browser)" />
+        }
+    }
+</section>
+
+@code {
+    [Parameter] public Guid? ProjectId {get;set;}
+    private bool _open;
+    private string ProjectName=>Todo.Snapshot?.Document.Projects.FirstOrDefault(p=>p.Id==ProjectId)?.Name??"Retained project";
+}

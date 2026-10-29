@@ -27,7 +27,14 @@
     "SPELLS_ENABLED": false,
     "CRON_ENABLED": false,
     "KEY_OPERATIONS_ENABLED": false,
-    "ADAPTIVE_PACING_ENABLED": false
+    "ADAPTIVE_PACING_ENABLED": false,
+    "CALLBACK_EGRESS_ENABLED": false,
+    "CALLBACK_EGRESS_AUDIENCE": "",
+    "PUSH_ENABLED": false,
+    "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
+    "PUSH_VAPID_PUBLIC_KEY": "",
+    "PUSH_DISPATCH_ENABLED": false,
+    "PUSH_VAPID_SUBJECT": ""
   },
   "env": {
     "preview": {
@@ -44,7 +51,14 @@
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
         "KEY_OPERATIONS_ENABLED": false,
-        "ADAPTIVE_PACING_ENABLED": false
+        "ADAPTIVE_PACING_ENABLED": false,
+        "CALLBACK_EGRESS_ENABLED": false,
+        "CALLBACK_EGRESS_AUDIENCE": "",
+        "PUSH_ENABLED": false,
+        "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
+        "PUSH_VAPID_PUBLIC_KEY": "",
+        "PUSH_DISPATCH_ENABLED": false,
+        "PUSH_VAPID_SUBJECT": ""
       },
       "kv_namespaces": [
         {
@@ -71,7 +85,14 @@
         "crons": [
           "17 * * * *"
         ]
-      }
+      },
+      "services": [
+        {
+          "binding": "NOTES_LIFECYCLE",
+          "service": "habitica-companion-workspace-preview",
+          "entrypoint": "NotesLifecycleService"
+        }
+      ]
     },
     "production": {
       "name": "habitica-chatgpt-auth-production",
@@ -87,7 +108,14 @@
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
         "KEY_OPERATIONS_ENABLED": false,
-        "ADAPTIVE_PACING_ENABLED": false
+        "ADAPTIVE_PACING_ENABLED": false,
+        "CALLBACK_EGRESS_ENABLED": false,
+        "CALLBACK_EGRESS_AUDIENCE": "",
+        "PUSH_ENABLED": false,
+        "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
+        "PUSH_VAPID_PUBLIC_KEY": "",
+        "PUSH_DISPATCH_ENABLED": false,
+        "PUSH_VAPID_SUBJECT": ""
       },
       "kv_namespaces": [
         {
@@ -114,7 +142,14 @@
         "crons": [
           "17 * * * *"
         ]
-      }
+      },
+      "services": [
+        {
+          "binding": "NOTES_LIFECYCLE",
+          "service": "habitica-companion-workspace-production",
+          "entrypoint": "NotesLifecycleService"
+        }
+      ]
     }
   },
   "kv_namespaces": [
@@ -143,5 +178,12 @@
     "crons": [
       "17 * * * *"
     ]
-  }
+  },
+  "services": [
+    {
+      "binding": "NOTES_LIFECYCLE",
+      "service": "habitica-companion-workspace-local",
+      "entrypoint": "NotesLifecycleService"
+    }
+  ]
 }

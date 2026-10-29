@@ -1,3 +1,4 @@
+import {seedLegacyCommand} from './fixtures/legacy-todo.mjs';
 import {test} from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
 import {workspaceCommand,commandHash} from '../../shared/workspace-commands.ts';import {emptyWorkspace,workspaceDocument} from '../../shared/workspace-domain.ts';import {accept} from '../src/commands.ts';import {journal} from '../src/journal.ts';
 import {fixture,enrolled,authorization,exchange,resource,accounts} from '../../chatgpt-auth/test/fixtures/oauth.mjs';
@@ -6,7 +7,7 @@ const hashes=JSON.parse(await readFile(new URL('../../../tests/fixtures/workspac
 const now='2026-10-18T12:00:00Z',origin='http://localhost:8789';
 const command=(d,operation,extra={})=>workspaceCommand({id:crypto.randomUUID(),workspaceId:d.id,expectedRevision:d.revision,operation,taskId:d.tasks[0]?.id??crypto.randomUUID(),...extra});
 const restore=(d,extra={})=>command(d,'restoreTodo',{patch:{restoreTodo:{completionId:d.completions.at(-1).id}},...extra});
-async function seed(){let d=emptyWorkspace();d=(await accept(d,command(d,'createTodo',{patch:{text:'Retained work',notes:'Original notes',deadline:'2026-10-21'}}),now)).document;return (await accept(d,command(d,'completeTask'),now)).document;}
+async function seed(){let d=emptyWorkspace();d=(await accept(d,command(d,'createTodo',{patch:{text:'Retained work',notes:'Original notes',deadline:'2026-10-21'}}),now)).document;const legacy=(await accept(d,command(d,'completeTask'),now)).document;delete legacy.activityCoverage;return legacy;}
 for(const value of hashes.cases)test('portable restore v5 identity: '+value.name,async()=>assert.equal(await commandHash(workspaceCommand(value.command)),value.payloadHash));
 test('repeated native restore/complete cycles preserve history order and portable causal receipts',async()=>{
  let d=await seed();const original=structuredClone(d.tasks[0]),entries=[],events=[];
@@ -38,15 +39,17 @@ test('synthetic MCP restores exact history once per cycle and protects private b
  const invoke=async(name,args)=>{const r=await c.callTool({name,arguments:args});assert.notEqual(r.isError,true,JSON.stringify(r));return r.structuredContent;};
  const tools=(await c.listTools()).tools,tool=tools.find(row=>row.name==='restore_todo');assert.equal(tool.annotations.destructiveHint,true);assert.equal(tool.annotations.readOnlyHint,false);assert.deepEqual(tool._meta.securitySchemes,[{type:'oauth2',scopes:['profile:read','habitica.tasks.write']}]);assert.deepEqual(tools.find(row=>row.name==='prepare_task_command').inputSchema.properties.patch.properties.restoreTodo.required,['completionId']);
  const prepare=async args=>invoke('prepare_task_command',{requestId:crypto.randomUUID(),...args});
- const created=await prepare({operation:'createTodo',patch:{text:'Synthetic restoration'}});await invoke('create_todo',{commandId:created.preparedCommandId});const taskId=created.command.taskId;
- const finish=async()=>{const p=await prepare({operation:'completeTask',taskId});return invoke('complete_task',{commandId:p.preparedCommandId});};await finish();
+ const taskId=crypto.randomUUID();
+ await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained legacy restoration'}});
+ await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'completeTask',taskId});
+ const finish=async()=>{const p=await prepare({operation:'completeTask',taskId});return invoke('complete_task',{commandId:p.preparedCommandId});};
  const history=await invoke('get_completed_history',{taskId}),completionId=history.items[0].eventId,args={requestId:crypto.randomUUID(),operation:'restoreTodo',taskId,patch:{restoreTodo:{completionId}}};
  const preview=await invoke('prepare_task_command',args);assert.equal(preview.mayAffectHabitica,false);assert.equal(preview.command.patch.restoreTodo.completionId,completionId);assert.equal((await invoke('prepare_task_command',args)).preparedCommandId,preview.preparedCommandId);
  const accepted=await invoke('restore_todo',{commandId:preview.preparedCommandId});assert.equal(accepted.acceptedEventCount,1);assert.equal(accepted.totalProjectionCount,0);assert.equal(accepted.habiticaProjectionStatus,'notRequested');assert.equal((await invoke('get_companion_task',{taskId})).task.state,'active');
  await finish();const next=await invoke('get_completed_history',{taskId});assert.equal(next.items.length,2);assert.ok(next.items.find(row=>row.eventId===completionId).restoration);assert.equal(next.items.filter(row=>!row.restoration).length,1);
  assert.equal((await invoke('restore_todo',{commandId:preview.preparedCommandId})).commandId,accepted.commandId);assert.equal((await invoke('get_companion_task',{taskId})).task.state,'completed');assert.equal((await invoke('get_task_command',{commandId:accepted.commandId})).acceptedEventCount,1);
- const again=await prepare({operation:'restoreTodo',taskId,patch:{restoreTodo:{completionId:next.items.find(row=>!row.restoration).eventId}}});await invoke('restore_todo',{commandId:again.preparedCommandId});
- const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:'Bearer '+w.sessionToken}})).json();await journal(exported);assert.equal(exported.document.completions.length,2);assert.equal(exported.document.restorations.length,2);assert.equal(exported.commands.length,5);assert.equal(writes,0);
+ const refused=await c.callTool({name:'prepare_task_command',arguments:{requestId:crypto.randomUUID(),operation:'restoreTodo',taskId,patch:{restoreTodo:{completionId:next.items.find(row=>!row.restoration).eventId}}}});assert.equal(refused.isError,true);
+ const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:'Bearer '+w.sessionToken}})).json();await journal(exported);assert.equal(exported.document.completions.length,2);assert.equal(exported.document.restorations.length,1);assert.equal(exported.commands.length,4);assert.equal(writes,0);
  const other=await connect(f,await enrolled(f,accounts[1]));assert.equal((await call(f,other,'restore_todo',{commandId:accepted.commandId})).status,409);assert.equal((await(await call(f,other,'get_completed_history',{taskId})).json()).items.length,0);
  const readonly=await native(t,f,p,'profile:read tasks:read'),binding=(await f.mf.getBindings('mcp')).WORKSPACE_SERVER;
  const request={method:'POST',headers:{authorization:'Bearer '+readonly.token,'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify({jsonrpc:'2.0',id:999,method:'tools/call',params:{name:'restore_todo',arguments:{commandId:accepted.commandId}}})};assert.equal((await f.mcp.fetch(resource,request)).status,403);

@@ -1,0 +1,1093 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "name": "todo creation",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "createTodo",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": "New todo"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "todo_projection_required"
+    },
+    {
+      "name": "todo fields",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "notes": "New notes"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "todo_projection_required"
+    },
+    {
+      "name": "todo activity",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "todo_projection_required"
+    },
+    {
+      "name": "daily creation",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "createDaily",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": "New daily",
+          "recurrence": {
+            "frequency": "daily",
+            "interval": 1,
+            "startDate": "2026-10-19",
+            "timeZoneId": "UTC",
+            "weekdays": [],
+            "daysOfMonth": []
+          }
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "daily fields",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "notes": "New notes"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "daily activity",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "occurrenceDate": "2026-10-21"
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "habit creation",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "createHabit",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": "New habit"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "habit_projection_required"
+    },
+    {
+      "name": "habit fields",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "notes": "New notes"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "habit_projection_required"
+    },
+    {
+      "name": "habit activity",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "scoreHabit",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "direction": "up",
+        "count": 2
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "habit_projection_required"
+    },
+    {
+      "name": "explicit native schedule edit",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "recurrence": {
+            "frequency": "daily",
+            "interval": 1,
+            "startDate": "2026-10-19",
+            "timeZoneId": "UTC",
+            "weekdays": [],
+            "daysOfMonth": []
+          }
+        },
+        "projectToHabitica": false
+      },
+      "projected": false,
+      "preparedFailure": null,
+      "rawFailure": null
+    },
+    {
+      "name": "native planning",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "planTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "planning": {
+            "plannedDate": "2026-10-21"
+          }
+        },
+        "projectToHabitica": false
+      },
+      "projected": false,
+      "preparedFailure": null,
+      "rawFailure": null
+    },
+    {
+      "name": "missing Daily schedule",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "occurrenceDate": "2026-10-21"
+      },
+      "projected": true,
+      "preparedFailure": "daily_schedule_required",
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "unrepresentable Daily zone",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "Europe/Paris",
+              "weekdays": [],
+              "daysOfMonth": []
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "occurrenceDate": "2026-10-21"
+      },
+      "projected": true,
+      "preparedFailure": "daily_timezone_unrepresentable",
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "adopted Daily without native schedule",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "10000000-0000-4000-8000-000000000004",
+            "revision": 1,
+            "isArchived": false,
+            "taskId": "10000000-0000-4000-8000-000000000002",
+            "state": "linked",
+            "habiticaTaskId": "10000000-0000-4000-8000-000000000005"
+          }
+        ]
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "occurrenceDate": "2026-10-21"
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "daily_projection_required"
+    },
+    {
+      "name": "archived mapping needs review",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "10000000-0000-4000-8000-000000000004",
+            "revision": 1,
+            "isArchived": true,
+            "taskId": "10000000-0000-4000-8000-000000000002",
+            "state": "linked",
+            "habiticaTaskId": "10000000-0000-4000-8000-000000000005"
+          }
+        ]
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "completeTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": "projection_review_required",
+      "rawFailure": "todo_projection_required"
+    },
+    {
+      "name": "historical unlinked Todo",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "10000000-0000-4000-8000-000000000006",
+            "revision": 1,
+            "isArchived": false,
+            "taskId": "10000000-0000-4000-8000-000000000002",
+            "commandId": "10000000-0000-4000-8000-000000000007",
+            "completedAtUtc": "2026-10-21T00:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "notes": "Retained change"
+        },
+        "projectToHabitica": false
+      },
+      "projected": true,
+      "preparedFailure": "historical_projection_requires_review",
+      "rawFailure": "todo_projection_required"
+    },
+    {
+      "name": "retained mapping forbids native schedule edit",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing daily",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "10000000-0000-4000-8000-000000000004",
+            "revision": 1,
+            "isArchived": true,
+            "taskId": "10000000-0000-4000-8000-000000000002",
+            "state": "linked",
+            "habiticaTaskId": "10000000-0000-4000-8000-000000000005"
+          }
+        ]
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "updateTask",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "recurrence": {
+            "frequency": "daily",
+            "interval": 1,
+            "startDate": "2026-10-19",
+            "timeZoneId": "UTC",
+            "weekdays": [],
+            "daysOfMonth": []
+          }
+        },
+        "projectToHabitica": false
+      },
+      "projected": false,
+      "preparedFailure": "unsupported_projection",
+      "rawFailure": "unsupported_projection"
+    },
+    {
+      "name": "unsupported legacy Habit fields",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": "2026-10-21",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": []
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "scoreHabit",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "direction": "up",
+        "count": 2
+      },
+      "projected": true,
+      "preparedFailure": "unsupported_habit_fields",
+      "rawFailure": "habit_projection_required"
+    },
+    {
+      "name": "retained unlinked mapping with omitted optional ID",
+      "document": {
+        "schemaVersion": 1,
+        "id": "10000000-0000-4000-8000-000000000001",
+        "revision": 1,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "isArchived": false,
+            "text": "Existing habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-21T00:00:00Z",
+            "updatedAtUtc": "2026-10-21T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "10000000-0000-4000-8000-000000000008",
+            "revision": 1,
+            "isArchived": false,
+            "taskId": "10000000-0000-4000-8000-000000000002",
+            "state": "unlinked"
+          }
+        ]
+      },
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "scoreHabit",
+        "taskId": "10000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "projectToHabitica": false,
+        "direction": "up",
+        "count": 2
+      },
+      "projected": true,
+      "preparedFailure": null,
+      "rawFailure": "habit_projection_required",
+      "rawDocument": true
+    }
+  ]
+}

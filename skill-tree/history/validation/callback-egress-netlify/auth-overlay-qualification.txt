@@ -1,0 +1,75 @@
+TAP version 13
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual D1 atomic claim allows exactly one concurrent winner and stores no callback material
+ok 1 - actual D1 atomic claim allows exactly one concurrent winner and stores no callback material
+  ---
+  duration_ms: 503.78575
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: invalid MAC, proof, scope, lifetime, shape and browser requests refuse before reservation
+ok 2 - invalid MAC, proof, scope, lifetime, shape and browser requests refuse before reservation
+  ---
+  duration_ms: 427.828708
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: off gate, missing keys, key reuse and storage refusal remain unavailable
+ok 3 - off gate, missing keys, key reuse and storage refusal remain unavailable
+  ---
+  duration_ms: 2211.120583
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: slow and oversized claim bodies fail within the ingress deadline without reservation
+ok 4 - slow and oversized claim bodies fail within the ingress deadline without reservation
+  ---
+  duration_ms: 5260.338083
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: capacity, expired cleanup and original acknowledgement loss preserve single use
+ok 5 - capacity, expired cleanup and original acknowledgement loss preserve single use
+  ---
+  duration_ms: 299.073959
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: production Node gateway composes actual Worker/D1 redemption; response loss never redelivers
+ok 6 - production Node gateway composes actual Worker/D1 redemption; response loss never redelivers
+  ---
+  duration_ms: 226.432834
+  ...
+# (node:50812) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: retained base routes, RPC entry and disabled claim match the scoped deployment
+ok 7 - retained base routes, RPC entry and disabled claim match the scoped deployment
+  ---
+  duration_ms: 503.079458
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9919.259041
+(node:50811) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,1 @@
+{"tag-consent": {"route": "/authorize", "state": "tag-consent", "file": "tag-consent.html", "surfaces": ["form", "confirmation"]}, "tag-identify": {"route": "/authorize", "state": "tag-identify", "file": "tag-identify.html", "surfaces": ["form", "confirmation"]}}

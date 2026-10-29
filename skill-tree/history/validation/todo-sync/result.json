@@ -1,0 +1,15 @@
+{
+  "taskId": "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+  "scope": "Dedicated local Todo source and recovery page",
+  "checks": {
+    "component": "25 focused Todo Sync, Settings and tag tests passed",
+    "browser": "432 synthetic rendered cases across six fixtures, then 72 final Todo Sync cases after the source-panel adjustment; four viewport widths, six themes and three text scales; zero layout or harness errors",
+    "build": "Release publish succeeded with no reported warnings or errors",
+    "source": "Todo Sync composes the existing source selector, WorkspaceSettingsPanel and WorkspaceTagPanel; original command lookup is account and workspace fenced and read only",
+    "safety": "Navigation does not accept commands, enable the executor, renew cloud access or clear data; browser clear requires a separate cancelable review"
+  },
+  "limitations": [
+    "Rendered qualification uses synthetic Razor output; hosted browser sessions, physical devices and assistive technology are unqualified.",
+    "No production account or Habitica mutation was used for this task."
+  ]
+}

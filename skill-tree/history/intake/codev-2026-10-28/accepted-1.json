@@ -1,0 +1,17 @@
+{
+  "operation": "completeTask",
+  "taskId": "df808294-5a0c-4d4e-86cf-1133fbdc85ec",
+  "commandId": "8bdb58e9-4baa-4168-b23b-e58e3bd4d3c0",
+  "correlationId": "df9a3f6f-b961-405f-a2ff-a251cc40414a",
+  "taskText": "Предоставить ChatGPT/Codex безопасный доступ к диагностике Companion через MCP",
+  "savedInCompanion": true,
+  "habiticaProjectionStatus": "pending",
+  "acceptedEventCount": 1,
+  "confirmedProjectionCount": 0,
+  "totalProjectionCount": 1,
+  "failurePosition": null,
+  "failure": "none",
+  "retryAtUtc": null,
+  "refreshSucceeded": true,
+  "outcomeUnknown": false
+}

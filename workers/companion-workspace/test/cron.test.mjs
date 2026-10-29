@@ -116,7 +116,7 @@ test('an old in-flight preview cannot regain authority after a newer grant epoch
 
 test('re-enrollment after grant revocation restores retained Workspace access without old preview authority',async t=>{
  const {enrolled}=await import('../../chatgpt-auth/test/fixtures/oauth.mjs');const s=await setup(t),p=await s.prepare(),profile=s.profiles[0],before=await(await s.http(0,'/workspace',undefined,'GET')).json(),taskId=crypto.randomUUID();
- assert.equal((await s.http(0,'/commands',{id:crypto.randomUUID(),workspaceId:before.document.id,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained synthetic Todo'},projectToHabitica:false})).status,201);
+ assert.equal((await s.http(0,'/commands',{id:crypto.randomUUID(),workspaceId:before.document.id,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained synthetic Todo'},projectToHabitica:true})).status,201);
  assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}/revoke-grants`,{method:'POST',headers:{authorization:'Bearer '+profile.managementToken,'content-type':'application/json'},body:JSON.stringify({confirm:'revoke-chatgpt-grants'})})).status,200);
  await s.client(0,scope);assert.notEqual((await s.tool(0,'get_cron_status')).isError,true);const oldEpoch=(await s.f.workspaceDb.prepare('SELECT mcp_grant_epoch FROM workspaces WHERE profile_id=?').bind(profile.profileId).first()).mcp_grant_epoch;assert.notEqual(oldEpoch,'legacy');
  assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}`,{method:'DELETE',headers:{authorization:'Bearer '+profile.managementToken}})).status,200);s.profiles[0]=await enrolled(s.f);assert.equal(s.profiles[0].profileId,profile.profileId);
@@ -133,4 +133,13 @@ test('credential re-enrollment cannot turn an inaccessible original Cron receipt
 
 test('successful original-refusal receipt lookup still resolves an uncertain Cron acknowledgement without dispatch',async t=>{
  const s=await setup(t),p=await s.prepare();s.state.task.completed=true;s.state.lost=true;assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);const receipt=(await s.tool(0,'get_cron_command',{actionId:p.actionId})).structuredContent;assert.equal(receipt.status,'stopped');assert.equal(receipt.outcomeUnknown,false);assert.equal(receipt.failure,'cron_precondition_changed');assert.equal(s.state.posts,0);
+});
+
+test('durable unknown tag metadata fences Cron and spells before any gameplay dispatch',async t=>{
+ const s=await setup(t),cron=await s.prepare();
+ assert.equal((await s.http(0,'/party/consent',{consentVersion:'party-planning-v1',expectedPartyId:party})).status,200);
+ const spell=await s.tool(0,'prepare_spell_cast',{requestId:crypto.randomUUID(),spellId:'healAll',count:1});assert.notEqual(spell.isError,true,JSON.stringify(spell));
+ const row=await s.f.workspaceDb.prepare('SELECT * FROM workspaces WHERE profile_id=?').bind(s.profiles[0].profileId).first();
+ await s.f.workspaceDb.prepare(`INSERT INTO workspace_tag_work(profile_id,work_id,workspace_id,connection_id,access_epoch,command_id,source_revision,intent_id,desired_hash,work_json,state,created_at_utc,updated_at_utc) VALUES(?,?,?,?,?,?,1,?,'synthetic','{}','unknownOutcome',?,?)`).bind(row.profile_id,crypto.randomUUID(),row.workspace_id,row.connection_id,row.access_epoch,crypto.randomUUID(),crypto.randomUUID(),new Date().toISOString(),new Date().toISOString()).run();
+ assert.equal((await s.execute(cron)).isError,true);assert.equal((await s.tool(0,'execute_spell_cast',{actionId:spell.structuredContent.actionId,executeToken:spell.structuredContent.executeToken})).isError,true);assert.equal(s.state.posts,0);
 });

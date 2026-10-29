@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <ProjectReference Include="../../src/Habitica.Application/Habitica.Application.csproj" />
+    <EmbeddedResource Include="../fixtures/workspace/task-query-v1.json" LogicalName="task-query-v1.json" />
+  </ItemGroup>
+</Project>

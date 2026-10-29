@@ -82,6 +82,7 @@ test('handoff is atomic, preserves IDs and history, deduplicates lost acknowledg
  // Use an independent local identity to qualify the real transfer path.
  const localId=crypto.randomUUID();archive.document.id=localId;for(const c of archive.commands)c.command.workspaceId=localId;
  const {commandHash}=await import('../../shared/workspace-commands.ts');for(const c of archive.commands)c.payloadHash=await commandHash(c.command);
+ for(const witness of archive.document.activityCoverage??[])witness.payloadHash=archive.commands.find(c=>c.command.id===witness.commandId).payloadHash;
  const payload={consentVersion:'workspace-handoff-v1',transferId,archive:JSON.stringify(archive)};
  assert.equal((await call(x.f,'/handoff',connected.sessionToken,{...payload,consentVersion:undefined})).status,403);
  const accepted=await call(x.f,'/handoff',connected.sessionToken,payload);assert.equal(accepted.status,201,await accepted.clone().text());assert.equal((await accepted.json()).executorEnabled,false);
@@ -93,7 +94,7 @@ test('handoff is atomic, preserves IDs and history, deduplicates lost acknowledg
 test('handoff append failure rolls all canonical state and receipt data back',async t=>{
  const x=await setup(t);const source=await x.exported();const transferId=crypto.randomUUID();source.authority={mode:'frozen',transferId,cloudWorkspaceId:null};
  // Clear the synthetic target only; transfer data remains independently held in this fixture.
- await x.f.workspaceDb.batch([x.f.workspaceDb.prepare('DELETE FROM workspace_commands'),x.f.workspaceDb.prepare('DELETE FROM workspace_events'),x.f.workspaceDb.prepare('UPDATE workspaces SET store_version=1,document_json=?').bind(JSON.stringify({...source.document,tasks:[],projections:[],revision:1}))]);
+ await x.f.workspaceDb.batch([x.f.workspaceDb.prepare('DELETE FROM workspace_commands'),x.f.workspaceDb.prepare('DELETE FROM workspace_events'),x.f.workspaceDb.prepare('UPDATE workspaces SET store_version=1,document_json=?').bind(JSON.stringify({...source.document,activityCoverage:undefined,tasks:[],projections:[],revision:1}))]);
  await x.f.workspaceDb.prepare("CREATE TRIGGER fixture_transfer_fail BEFORE INSERT ON workspace_events BEGIN SELECT RAISE(ABORT,'synthetic'); END").run();
  const before=await x.exported();assert.equal((await call(x.f,'/handoff',x.w.sessionToken,{consentVersion:'workspace-handoff-v1',transferId,archive:JSON.stringify(source)})).status,503);assert.deepEqual(await x.exported(),before);assert.equal((await x.f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_handoffs').first()).n,0);
 });
@@ -126,10 +127,19 @@ test('hosted Daily execution obtains fresh account and due receipts before the p
  const verified=await remoteTask(remote,remote.userId,true);const document=archive.document;
  document.tasks[0]={...document.tasks[0],kind:'daily',text:remote.text,recurrence:{frequency:'daily',interval:1,startDate:date,timeZoneId:'UTC',weekdays:[],daysOfMonth:[]}};
  document.projections[0]={...document.projections[0],habiticaTaskId:externalId,state:'linked',fingerprint:verified.fingerprint};
- const first={...archive.commands[0],command:{...archive.commands[0].command,projectToHabitica:false},effects:[],projectionState:'notRequested'};first.payloadHash=await commandHash(first.command);
+ const first={...archive.commands[0],command:{...archive.commands[0].command,operation:'createDaily',patch:{...archive.commands[0].command.patch,text:remote.text,recurrence:document.tasks[0].recurrence},projectToHabitica:false},taskSnapshot:structuredClone(document.tasks[0]),effects:[],projectionState:'notRequested'};first.payloadHash=await commandHash(first.command);
+ // Synthetic creation now describes the Daily consistently in the retained source and witness.
+ Object.assign(document.activityCoverage[0],{payloadHash:first.payloadHash,kind:'daily',recurrence:structuredClone(document.tasks[0].recurrence)});
  await x.f.workspaceDb.batch([x.f.workspaceDb.prepare('UPDATE workspaces SET document_json=?').bind(JSON.stringify(document)),x.f.workspaceDb.prepare('UPDATE workspace_commands SET entry_json=?').bind(JSON.stringify(first))]);
- const complete={id:crypto.randomUUID(),workspaceId:x.w.workspaceId,expectedRevision:document.revision,operation:'completeTask',taskId:x.c.taskId,occurrenceDate:date};
+ const complete={id:crypto.randomUUID(),workspaceId:x.w.workspaceId,expectedRevision:document.revision,operation:'completeTask',taskId:x.c.taskId,occurrenceDate:date,projectToHabitica:true};
  assert.equal((await call(x.f,'/commands',x.w.sessionToken,complete)).status,201);await x.enable();
  assert.equal(await executeProfile(x.env,x.p.profileId,{wait:x.wait}),'applied');assert.equal(writes,1);assert.equal(x.delays.filter(ms=>ms>=29000).length,2);
  const completed=await x.exported();assert.equal(completed.commands[1].projectionState,'confirmed');assert.equal(completed.document.completions.length,1);assert.equal(completed.document.occurrences[0].state,'completed');await journal(completed);
+ const source=completed.commands[1],completion=completed.document.completions[0],dispatched=completed.events.find(row=>row.commandId===complete.id&&row.kind==='dispatched');assert.ok(dispatched.attemptToken);
+ const connection=await x.f.db.prepare('SELECT connection_id FROM integration_profiles WHERE profile_id=?').bind(x.p.profileId).first();
+ const runtime=await x.f.workspaceDb.prepare('SELECT prepared_request_json FROM workspace_runtime').first();assert.equal(runtime.prepared_request_json,null);
+ const before=x.observed.length;
+ const lookup=await x.env.AUTH_PROJECTION.fetch('https://projection.internal/operation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({profileId:x.p.profileId,connectionId:connection.connection_id,operation:'scoreReceipt',automated:false,arguments:{attemptId:dispatched.attemptToken,selector:externalId,taskKind:'daily',expectedFingerprint:completed.document.projections[0].fingerprint,sourceContext:{contract:'companion-completion-score-v1',workspaceId:completed.document.id,taskId:complete.taskId,commandId:complete.id,commandPayloadHash:source.payloadHash,completionId:completion.id,effectIndex:0,taskKind:'daily',occurrenceDate:date}}})});
+ assert.equal(lookup.status,200);const proof=await lookup.json();assert.equal(proof.verified,true);assert.equal(proof.sourceContext.completionId,completion.id);assert.equal(x.observed.length,before);
+
 });

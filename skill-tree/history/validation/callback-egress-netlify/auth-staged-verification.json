@@ -1,0 +1,16 @@
+{
+  "version_id": "96a4d62f-9c14-4f68-924d-b46dd03e09f2",
+  "base_version_id": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+  "original_bindings_unchanged": true,
+  "runtime_unchanged": true,
+  "handlers_unchanged": true,
+  "callback_binding_names": [
+    "CALLBACK_EGRESS_AUDIENCE",
+    "CALLBACK_EGRESS_CLAIM_KEY",
+    "CALLBACK_EGRESS_ENABLED",
+    "CALLBACK_EGRESS_GRANT_KEY"
+  ],
+  "callback_enabled": false,
+  "secrets_verified_by_name_only": true,
+  "live_version_guard": true
+}

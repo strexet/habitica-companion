@@ -1,0 +1,138 @@
+{
+  "taskId": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+  "decision": "Owner selected Auth-owned vault on 2026-10-26; local implementation only.",
+  "status": "locally accepted",
+  "checks": {
+    "auth": {
+      "passed": 169,
+      "pushScenarios": 14
+    },
+    "workspace": {
+      "passed": 573
+    },
+    "web": {
+      "passed": 770,
+      "pushChecks": 12
+    },
+    "browserApi": {
+      "passed": 7
+    },
+    "pwaAndDeployment": {
+      "passed": 15
+    },
+    "workerBuilds": 3
+  },
+  "controls": [
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/auth.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 34.81,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/workspace.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 64.11,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/web.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 47.89,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/node.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 2.76,
+      "deadlineSeconds": 90,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/browser.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 0.18,
+      "deadlineSeconds": 30,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/auth-build.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 3.61,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/workspace-build.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 4.07,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "kind": "executed_control",
+      "evidence": "skill-tree/history/validation/push-subscriptions/mcp-build.txt",
+      "exitCode": 0,
+      "toolWallSeconds": 3.82,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "timing": {
+    "toolWallSeconds": 161.25,
+    "prerequisiteWaitingSeconds": 0,
+    "activeControllerSeconds": null,
+    "activeControllerMeasurement": "Controller sampling time was not separately instrumented; tool timings cover the recorded accepted controls only."
+  },
+  "repairs": [
+    "Added the missing Bunit namespace after the first client fixture compilation failure.",
+    "Scoped the module import assertion to import calls after Bunit also recorded child-module calls.",
+    "Bound expiry cleanup to the selected profile and excluded expired receipts independently of cleanup.",
+    "Mapped the new provisioning-dependent flag explicitly to disabled in both ordinary deployment profiles."
+  ],
+  "circuitBreaker": "No unchanged executed failure pair remains unresolved.",
+  "limitations": [
+    "Synthetic authenticated and browser API evidence does not qualify real provider delivery, physical iPhone behavior, assistive technology, live accounts or publication.",
+    "Reminder schedules, sender, device settings and authenticated notification-click UI remain dependent tasks. Browser permission revocation is observable on reopening; a closed browser supplies no immediate revocation callback.",
+    "No real encryption or VAPID key was provisioned. PUSH_ENABLED remains false; Auth migration0010 and matching service binding publication remain release prerequisites.",
+    "Device revision tombstones remain until profile deletion with a 64-device lifetime cap. Receipts expire after thirty days with a 1000-receipt admission cap; expired receipt absence is not failed-effect evidence."
+  ],
+  "sourceFingerprints": {
+    "workers/chatgpt-auth/src/push-subscriptions.ts": "de31ef9edb2b236ce7814e469696e1e42ce68179edc65c6587b99d2da3fb7e58",
+    "workers/chatgpt-auth/src/push-cryptography.ts": "d23bd2306a75e527f6deefcfd2028f1293aaf8db187d013a5d4ce802edf8728a",
+    "workers/chatgpt-auth/src/index.ts": "ce51cb4fc05e80fd9336d3022a2fae934af618526a84177082d095c2d78c2642",
+    "workers/chatgpt-auth/src/vault.ts": "8fd2eb9327a46c26eda3515fbef9b211ef4607d080ccd0caa55a74da07584bd6",
+    "workers/chatgpt-auth/migrations/0010-push-subscriptions.sql": "36f59653ae0ac4f9c94e970b9c87613ce4b1c0956906dba33274b92094d41fdd",
+    "workers/chatgpt-auth/wrangler.jsonc": "6c66bd3bebdc1df7d9239a95377778f044949d53ae92de74425af44545b68005",
+    "workers/companion-workspace/wrangler.jsonc": "5b2937ebca075b70a41df8d388bb8bfeb3dfc57b48b41081828e58c7a06b6629",
+    "workers/chatgpt-auth/test/push.test.mjs": "e5b5bf0333b2f5b7d2293f82058cc5539e8e3e87fe24d4fabea88d3cd6edf8cf",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "84ad60c05a1951273adf3122b7b5388dc355e6274a7c067ca697f6e1bdbbc7a0",
+    "workers/chatgpt-auth/test/vault.test.mjs": "554691c34dfc15768e548329dc4963a443b117d352ebabfc2a8b10adbdb72a23",
+    "src/Habitica.Application/Notifications/IPushSubscriptionClient.cs": "b3cc5de46f103b0672b25a861cca225b54894d34d74c974c0e87ff5230443ae4",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.Push.cs": "6e10f4b6ab39f0892e2e012462e7a3d8fe16a1ff37582eab547c3448652ed90f",
+    "src/Habitica.WebApp/Integration/PwaPushBrowser.cs": "df15b990bd35723a5991c61c6c232a64103acd5a5340ebe8a9586883d66718a6",
+    "src/Habitica.WebApp/Program.cs": "bb92e6ac5fd7655ba5cf369db14806ef0d99c18ee95eb91f460b6deb69659eb9",
+    "src/Habitica.WebApp/wwwroot/js/pwaPush.js": "720b9c586488139da9d52369f929d40dfa575ab042882ae7ab8e36ca707be7dd",
+    "tests/Habitica.WebApp.Tests/Integration/PushSubscriptionTests.cs": "2a3b8030c72418900feaac37925a827eeda83596a6b3392956e052ca7308159f",
+    "tests/Functions/pwa-push.test.mjs": "e5895da9e8ebb4905cdc5957ecba0c61537d7a7cb5b881a301fa2cc609fc47fb",
+    "tests/Functions/dev-preparation.test.mjs": "4efb41b74434a8656e8ef172c8769931f162bf8b16bdee56c0e44d73b46ada7e",
+    "deploy/prepare-dev.mjs": "89203cdcb773b375317a60cd893ba38d92d5dcbc6eff193cd7fb229c8159fd42",
+    "skill-tree/documents/push-subscriptions.md": "b3ba87dd6bf966528294ffe1142515c2703570915b049810a4c0c1dc50eb806d",
+    "skill-tree/documents/technical.md": "00bf0c1d94d3791191f541e2e72947bd121fe459faeb69dff10b21042c8badd4",
+    "skill-tree/documents/features.md": "6f78493d2f411fcb157d2150709088d9ef7aead092973a36393da6a27f3711fe",
+    "skill-tree/documents/testing.md": "684ace5aa8407130ed9cfeb209d9b963b204ee27710386c794a81d404a217e7a",
+    "skill-tree/documents/ux-ui-manifest.md": "3bf2aaa7b408a4a512e4f01a419b49791ea4857031b835dbf080ee3a1a075292",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "5aae31eef343df44d9f030080dd9e72f79621eb717a3df013dffc1fa786df611"
+  },
+  "review": "Reviewed secret custody, atomic SQL guards/rollback, stale identity and response fencing, lifecycle cleanup, endpoint validation, source config and final targeted diff."
+}

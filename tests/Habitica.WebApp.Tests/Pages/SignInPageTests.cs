@@ -13,6 +13,18 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class SignInPageTests : BunitContext
 {
     [Fact]
+    public void Notification_return_survives_repeated_authentication_observers_without_open_redirect()
+    {
+        JSInterop.Mode=JSRuntimeMode.Loose;Services.AddMudServices();Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());Services.AddScoped<ColorSchemeService>();
+        var controller=new FakeAppSessionController(SessionViewModel.Empty);Services.AddSingleton<IAppSessionController>(controller);
+        var navigation=Services.GetRequiredService<NavigationManager>();
+        var target=new Habitica.Application.Notifications.NotificationTarget(Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid());var route=Habitica.Application.Notifications.NotificationRoute.Build(target);
+        navigation.NavigateTo("/sign-in?returnTo="+Uri.EscapeDataString(route));var cut=Render<SignIn>();
+        controller.SetState(controller.State with{IsAuthenticated=true});cut.WaitForAssertion(()=>Assert.EndsWith(route,navigation.Uri));
+        controller.SetState(controller.State with{IsAuthenticated=true});cut.WaitForAssertion(()=>Assert.EndsWith(route,navigation.Uri));
+    }
+
+    [Fact]
     public void Renders_credential_help_and_safety_copy()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -42,6 +54,10 @@ public sealed class SignInPageTests : BunitContext
         Assert.Contains("Session-only sign-in is the default.", cut.Markup);
         Assert.Contains("Credentials are never saved in exports, app messages, or device sync.", cut.Markup);
         Assert.Contains("Treat this like a password", cut.Markup);
+        cut.Find("[data-testid='pwa-install-toggle']").Click();
+        Assert.Contains("Open as Web App", cut.Find("[data-testid='pwa-install-steps']").TextContent);
+        Qualification.PageLayoutEvidence.Save("pwa-sign-in-expanded", cut.Markup, "/sign-in", "install-expanded", ["form", "navigation", "disabled-controls"], nameof(Renders_credential_help_and_safety_copy));
+        cut.Find("[data-testid='pwa-install-toggle']").Click();
         // Color scheme demo panel is available before signing in.
         Assert.Contains("Color scheme", cut.Markup);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));

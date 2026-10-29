@@ -7,21 +7,26 @@ using System.Text.Json.Serialization;
 namespace Habitica.Domain.Workspace;
 
 public enum WorkspaceOrganizationKind { Category, Project, Section, Label, Goal, SavedTaskView }
-public enum WorkspaceOrganizationOperation { Create, Update, Archive }
+public enum WorkspaceOrganizationOperation { Create, Update, Archive, Remove }
 public sealed record WorkspaceOrganizationPatch(string? Name = null, Guid? CategoryId = null, bool ClearCategory = false,
     Guid? ProjectId = null, int? Position = null, IReadOnlyList<Guid>? TaskIds = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceSavedTaskQuery? Query = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceSavedTaskQuery? Query = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceProjectRemoval? Removal = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Alias = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool ClearAlias = false);
 public sealed record WorkspaceOrganizationCommand(Guid Id, Guid WorkspaceId, long ExpectedRevision,
     [property: JsonRequired] WorkspaceOrganizationKind Kind, [property: JsonRequired] WorkspaceOrganizationOperation Operation,
     Guid EntityId, WorkspaceOrganizationPatch? Patch = null);
 public sealed record WorkspaceOrganizationSnapshot([property: JsonRequired] WorkspaceOrganizationKind Kind, Guid Id, long Revision,
     [property: JsonRequired] string Name, bool IsArchived = false, Guid? CategoryId = null, Guid? ProjectId = null, int Position = 0, IReadOnlyList<Guid>? TaskIds = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceSavedTaskQuery? Query = null)
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceSavedTaskQuery? Query = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool IsRemoved = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Alias = null)
 {
     public static WorkspaceOrganizationSnapshot? From(WorkspaceDocument document, WorkspaceOrganizationKind kind, Guid id) => kind switch
     {
         WorkspaceOrganizationKind.Category => document.Categories.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived) : null,
-        WorkspaceOrganizationKind.Project => document.Projects.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived,CategoryId:row.CategoryId) : null,
+        WorkspaceOrganizationKind.Project => document.Projects.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived,CategoryId:row.CategoryId,IsRemoved:row.IsRemoved,Alias:row.Alias) : null,
         WorkspaceOrganizationKind.Section => document.Sections.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived,ProjectId:row.ProjectId,Position:row.Position) : null,
         WorkspaceOrganizationKind.Label => document.Labels.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived) : null,
         WorkspaceOrganizationKind.Goal => document.Goals.FirstOrDefault(row=>row.Id==id) is { } row ? new(kind,row.Id,row.Revision,row.Name,row.IsArchived,TaskIds:row.TaskIds) : null,
@@ -29,7 +34,7 @@ public sealed record WorkspaceOrganizationSnapshot([property: JsonRequired] Work
         _ => null
     };
     public bool Equivalent(WorkspaceOrganizationSnapshot? other) => other is not null && Kind==other.Kind && Id==other.Id && Revision==other.Revision
-        && Query==other.Query && Name==other.Name && IsArchived==other.IsArchived && CategoryId==other.CategoryId && ProjectId==other.ProjectId && Position==other.Position
+        && Query==other.Query && Name==other.Name && Alias==other.Alias && IsArchived==other.IsArchived && IsRemoved==other.IsRemoved && CategoryId==other.CategoryId && ProjectId==other.ProjectId && Position==other.Position
         && (TaskIds is null ? other.TaskIds is null : other.TaskIds is not null && TaskIds.SequenceEqual(other.TaskIds));
 }
 public sealed record WorkspaceOrganizationEntry([property: JsonRequired] WorkspaceOrganizationCommand Command,
@@ -42,8 +47,13 @@ public static class WorkspaceOrganizationCommands
         if (command.Id==Guid.Empty || command.WorkspaceId==Guid.Empty || command.EntityId==Guid.Empty || command.ExpectedRevision is <1 or >=WorkspaceDocument.MaxRevision
             || !Enum.IsDefined(command.Kind) || !Enum.IsDefined(command.Operation)) return false;
         var patch=command.Patch;
+        if (command.Operation==WorkspaceOrganizationOperation.Remove) return command.Kind==WorkspaceOrganizationKind.Project
+            && patch?.Removal is { } removal && removal.IsValid() && (patch with { Removal=null })==new WorkspaceOrganizationPatch();
+        if (patch?.Removal is not null) return false;
         if (command.Operation==WorkspaceOrganizationOperation.Archive) return patch is null;
         if (patch is null || patch==new WorkspaceOrganizationPatch() || patch.Name is not null && (string.IsNullOrWhiteSpace(patch.Name)||patch.Name.Length>256)
+            || patch.Alias is not null && !WorkspaceProjectAliases.IsValid(patch.Alias) || patch.ClearAlias&&patch.Alias is not null
+            || command.Kind!=WorkspaceOrganizationKind.Project&&(patch.Alias is not null||patch.ClearAlias)
             || command.Operation==WorkspaceOrganizationOperation.Create && patch.Name is null
             || patch.CategoryId==Guid.Empty || patch.ProjectId==Guid.Empty || patch.Position<0 || patch.ClearCategory&&patch.CategoryId is not null
             || patch.TaskIds is not null && (patch.TaskIds.Count>100||patch.TaskIds.Any(id=>id==Guid.Empty)||patch.TaskIds.Distinct().Count()!=patch.TaskIds.Count)) return false;
@@ -53,7 +63,7 @@ public static class WorkspaceOrganizationCommands
             || command.Kind!=WorkspaceOrganizationKind.SavedTaskView && patch.Query is not null
             || patch.Query is not null && !patch.Query.IsValid()
             || command.Kind==WorkspaceOrganizationKind.SavedTaskView && command.Operation==WorkspaceOrganizationOperation.Create && patch.Query is null) return false;
-        if (command.Operation==WorkspaceOrganizationOperation.Create && patch.ClearCategory) return false;
+        if (command.Operation==WorkspaceOrganizationOperation.Create && (patch.ClearCategory||patch.ClearAlias)) return false;
         if (command.Kind==WorkspaceOrganizationKind.Section && (command.Operation==WorkspaceOrganizationOperation.Create ? patch.ProjectId is null : patch.ProjectId is not null)) return false;
         return true;
     }
@@ -63,10 +73,12 @@ public static class WorkspaceOrganizationCommands
         var patch=command.Patch;var revision=command.ExpectedRevision+1;
         if (command.Operation==WorkspaceOrganizationOperation.Create)
             return new(command.Kind,command.EntityId,revision,patch!.Name!,CategoryId:patch.CategoryId,ProjectId:patch.ProjectId,Position:patch.Position??0,
-                TaskIds:command.Kind==WorkspaceOrganizationKind.Goal?patch.TaskIds??Array.Empty<Guid>():null,Query:patch.Query);
+                TaskIds:command.Kind==WorkspaceOrganizationKind.Goal?patch.TaskIds??Array.Empty<Guid>():null,Query:patch.Query,Alias:patch.Alias is null?null:WorkspaceProjectAliases.Normalize(patch.Alias));
         if (command.Operation==WorkspaceOrganizationOperation.Archive) return current! with { Revision=revision,IsArchived=true };
+        if (command.Operation==WorkspaceOrganizationOperation.Remove) return current! with { Revision=revision,IsArchived=true,IsRemoved=true };
         return current! with { Revision=revision,Name=patch!.Name??current.Name,CategoryId=patch.ClearCategory?null:patch.CategoryId??current.CategoryId,
-            Position=patch.Position??current.Position,TaskIds=patch.TaskIds??current.TaskIds,Query=patch.Query??current.Query };
+            Position=patch.Position??current.Position,TaskIds=patch.TaskIds??current.TaskIds,Query=patch.Query??current.Query,
+            Alias=patch.ClearAlias?null:patch.Alias is null?current.Alias:WorkspaceProjectAliases.Normalize(patch.Alias) };
     }
 
     public static string Hash(WorkspaceOrganizationCommand command)
@@ -89,7 +101,19 @@ public static class WorkspaceOrganizationCommands
                     f.ProjectionState is {} projection?Name(projection):null,f.ExecutionStage is {} stage?Name(stage):null]);
             }
         }
-        var body=(extended?"companion-organization-command-v2\n":"companion-organization-command-v1\n")+string.Concat(fields.Select(value=>value is null?"-1:":Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture)+":"+value));
+        var removal=command.Operation==WorkspaceOrganizationOperation.Remove||patch?.Removal is not null;
+        if(removal)
+        {
+            fields.Add(patch?.Removal is null?"0":"1");
+            if(patch?.Removal is {} approval)
+            {
+                fields.Add(approval.TaskIds.Count.ToString(CultureInfo.InvariantCulture));foreach(var id in approval.TaskIds)fields.Add(id.ToString("D"));
+                fields.Add(approval.SectionIds.Count.ToString(CultureInfo.InvariantCulture));foreach(var id in approval.SectionIds)fields.Add(id.ToString("D"));
+            }
+        }
+        var alias=patch?.Alias is not null||patch?.ClearAlias==true;
+        if(alias)fields.AddRange([patch?.Alias,patch?.ClearAlias==true?"1":"0"]);
+        var body=(alias?"companion-organization-command-v4\n":removal?"companion-organization-command-v3\n":extended?"companion-organization-command-v2\n":"companion-organization-command-v1\n")+string.Concat(fields.Select(value=>value is null?"-1:":Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture)+":"+value));
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body))).ToLowerInvariant();
     }
 }

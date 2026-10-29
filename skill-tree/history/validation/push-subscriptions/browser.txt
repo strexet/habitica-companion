@@ -1,0 +1,45 @@
+TAP version 13
+# Subtest: import and capability inspection never request permission or touch a subscription
+ok 1 - import and capability inspection never request permission or touch a subscription
+  ---
+  duration_ms: 1.9215
+  ...
+# Subtest: consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+ok 2 - consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+  ---
+  duration_ms: 0.411083
+  ...
+# Subtest: grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+ok 3 - grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+  ---
+  duration_ms: 3.6505
+  ...
+# Subtest: a different VAPID binding is refused without replacing the browser subscription
+ok 4 - a different VAPID binding is refused without replacing the browser subscription
+  ---
+  duration_ms: 0.226125
+  ...
+# Subtest: unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+ok 5 - unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+  ---
+  duration_ms: 0.588958
+  ...
+# Subtest: outside-app permission revocation is observable without another prompt
+ok 6 - outside-app permission revocation is observable without another prompt
+  ---
+  duration_ms: 0.287333
+  ...
+# Subtest: missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+ok 7 - missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+  ---
+  duration_ms: 0.157125
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 76.400625

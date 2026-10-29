@@ -18,6 +18,7 @@ namespace Habitica.WebApp.Tests;
 
 public sealed class AppNavMenuTests : BunitContext
 {
+    public AppNavMenuTests() => ComponentFactories.AddStub<Habitica.WebApp.Components.ForegroundReminderHost>();
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -57,8 +58,39 @@ public sealed class AppNavMenuTests : BunitContext
         Assert.Contains("/spells", cut.Markup);
         Assert.Contains("/pets-mounts", cut.Markup);
 
+        var todoSection = cut.Find("[data-testid='todo-nav-section']");
+        Assert.NotNull(todoSection.QuerySelector(".todo-nav-heading"));
+        Assert.Null(todoSection.QuerySelector("details"));
+        foreach (var route in new[] { "/todo/today", "/todo/habits", "/todo/dailies", "/todo/tasks", "/todo/projects", "/todo/statistics", "/todo/sync", "/todo/inbox", "/todo/plan", "/todo/lists", "/todo/history", "/tasks" })
+            Assert.Single(todoSection.QuerySelectorAll($"a[href='{route}']"));
+        Qualification.PageLayoutEvidence.Save("todo-nav-main", "<aside class=\"app-drawer\" style=\"min-height:100vh;max-width:300px\">" + cut.Markup + "</aside>", "/todo/today", "always-open-menu", ["navigation", "selected-state"], nameof(Renders_diagnostics_link_instead_of_live_tests_for_authenticated_sessions));
+
         AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Equipment", "Pets &amp; Mounts", "Party", "Quests", "Spells", "Settings", "Diagnostics");
         Assert.Contains("href=\"/inventory\"", cut.Markup);
+    }
+
+    [Fact]
+    public void Todo_category_tabs_mark_only_the_selected_destination()
+    {
+        Services.AddMudServices();
+        var cut = Render<Habitica.WebApp.Components.TodoCategoryTabs>(parameters => parameters.Add(x => x.Active, "dailies"));
+        Assert.Equal(4, cut.FindAll("a").Count);
+        Assert.Equal("page", cut.Find("a[href='/todo/dailies']").GetAttribute("aria-current"));
+        Assert.Null(cut.Find("a[href='/todo/tasks']").GetAttribute("aria-current"));
+    }
+
+    [Fact]
+    public void Todo_navigation_highlights_the_exact_selected_route()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true }));
+        Services.GetRequiredService<NavigationManager>().NavigateTo("/todo/habits");
+        var cut = Render<AppNavMenu>();
+        Assert.Contains("active", cut.Find("a[href='/todo/habits']").ClassList);
+        Assert.DoesNotContain("active", cut.Find("a[href='/todo/dailies']").ClassList);
+        Assert.DoesNotContain("active", cut.Find("a[href='/tasks']").ClassList);
+        Qualification.PageLayoutEvidence.Save("todo-nav-selected", "<aside class=\"app-drawer\" style=\"min-height:100vh;max-width:300px\">" + cut.Markup + "</aside>", "/todo/habits", "selected-Habits-route", ["navigation", "selected-state"], nameof(Todo_navigation_highlights_the_exact_selected_route));
     }
 
     [Fact]

@@ -1,0 +1,129 @@
+{
+  "taskId": "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+  "recordedAtUtc": "2026-10-23T02:44:56.372057+00:00",
+  "status": "pass",
+  "checks": {
+    "webRegression": 687,
+    "currentExpandedFixtureRegression": 33,
+    "agentMcpIntegration": 8,
+    "harnessAndThemeControls": 12,
+    "renderedCases": 576,
+    "renderedErrors": 0,
+    "harnessErrors": 0,
+    "unqualifiedRenderedSurfaces": 0,
+    "negativeControls": {
+      "cases": 2,
+      "errorKinds": [
+        "overflow",
+        "overlap",
+        "contrast"
+      ],
+      "errors": 3,
+      "harnessErrors": 0,
+      "unqualifiedSurfaces": 0
+    },
+    "keyboardFocus": {
+      "clientWidth": 375,
+      "focusVisible": true,
+      "height": 104.296875,
+      "innerWidth": 390,
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "scrollWidth": 375,
+      "testId": "organization-alias",
+      "width": 261
+    },
+    "pluginValidator": "pass with temporary PyYAML dependency",
+    "publish": "pass",
+    "changedProse": "pass",
+    "diffCheck": "pass",
+    "metadata": "pass with inherited stale audit warning"
+  },
+  "evidenceNotes": [
+    "The full Web suite passed687tests before the maximum-length/extra-route fixture expansion; the current33focused tests include the new conversion-destination case and updated fixtures.",
+    "The optional alias input on project creation and separate alias-only editing preserve exact names and separate original metadata receipts.",
+    "No actual project marker was removed and no live codev alias was assigned.",
+    "Temporary browser tabs, viewport override and local qualification server were cleaned up."
+  ],
+  "limits": [
+    "Synthetic local handlers and MCP fixtures do not qualify actual host/model reasoning or live effects.",
+    "Physical devices and assistive technologies remain unqualified.",
+    "Browser metadata authoring uses active projects; retained alias references remain visible in pickers and retained alias release remains available through the typed canonical/MCP command.",
+    "The local publish reports the existing optional wasm-tools optimization gap; no workload change is included."
+  ],
+  "operationPolicy": {
+    "perOperationDeadlineSeconds": "30-600",
+    "cleanupReserveSeconds": 5,
+    "controllerTimeSeconds": null,
+    "controllerTiming": "Not instrumented separately; bounded tool timings remain separate from prerequisite state.",
+    "toolTimings": {
+      "fixtureTests": {
+        "exitCode": 0,
+        "toolWallSeconds": 5.99,
+        "deadlineSeconds": 120,
+        "cleanupReserveSeconds": 5
+      },
+      "agentTests": {
+        "exitCode": 0,
+        "toolWallSeconds": 6.07,
+        "deadlineSeconds": 60,
+        "cleanupReserveSeconds": 5
+      },
+      "publish": {
+        "exitCode": 0,
+        "toolWallSeconds": 1.85,
+        "deadlineSeconds": 180,
+        "cleanupReserveSeconds": 5
+      },
+      "harness": {
+        "exitCode": 0,
+        "toolWallSeconds": 0.2,
+        "deadlineSeconds": 30,
+        "cleanupReserveSeconds": 5
+      },
+      "web": {
+        "exitCode": 0,
+        "toolWallSeconds": 41.58,
+        "deadlineSeconds": 120,
+        "cleanupReserveSeconds": 5
+      }
+    },
+    "prerequisiteWaitingSeconds": 0,
+    "prerequisiteRepairs": [
+      "Skill validator lacked PyYAML in available Python runtimes; temporary registry dependency installed outside repository.",
+      "Default uv cache was sandbox-unwritable; the approved operation used a temporary cache and target."
+    ],
+    "unchangedFailureCircuit": "No repeated unchanged executed test failure."
+  },
+  "sourceFingerprints": {
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "4cba825ab5d19e22aad862f08764c513eee241c204a0032dee0f623c4881fc5d",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "d3cb206eab114a941ce32061cf0eff024435a63b38517d1dd005b78c926ad6dc",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "6aac04f7160d54286f88fbb39670917542c64cc1ff6248d06505cecd210f8dcb",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoProjectAliasTests.cs": "b741c5db382d7578ae45ccbb93654936663b9aa17b99dc470e070bdf0246576c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "752c7cb9f2a84fa8d17adf5f9caf21043286c99e1557e7227a36cba658d42ea6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "ba89c04165fbd8ad49ad2a8fda00bbc663df74fae79c7027238041efb85e96e4",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "c7a9a3528224ee0f314ac42de23c97741770c1dcdfb1ee3e9ec7b18fc9d555f3",
+    "workers/companion-workspace/test/organization-api.test.mjs": "2413165689e1c736e29afb519cdcf810ec354331986f72cb6db22e3d3f30e7c7",
+    "plugin/skills/habitica-task-management/references/organization-management.md": "130a567ab676ba0f73e8df97386bf7b370226a9bae7a9533b3fe9467c869fa3f",
+    "plugin/skills/habitica-task-management/references/project-planning.md": "c0858c5700b495fdd91726696a3306ca0ee67027e627993183628287c573d978",
+    "skill-tree/documents/features.md": "bd6535360a29efa6b200df4d696c994fa29224995f34576e2838947675e54bec",
+    "skill-tree/documents/technical.md": "23df04e570eef690e5464ebf6e961c2cd78dd102b0230cfba2314b6dd1d83d46",
+    "skill-tree/documents/testing.md": "6ba124ec4508758fd58f359907fbcd622f3574745b74865998c235db3ac0c572",
+    "skill-tree/documents/ux-ui-manifest.md": "d7f2bb34348fc4a432153b5aa32fd36582a725d7060cf1478fc6fe1c3cdcb69e"
+  },
+  "artifacts": [
+    "web-regression.txt",
+    "fixture-regression.txt",
+    "agent-regression.txt",
+    "harness-regression.txt",
+    "publish.txt",
+    "browser-first.json",
+    "browser-second.json",
+    "browser-negative.json",
+    "keyboard-focus.json",
+    "phone-focus.png",
+    "desktop-review.png",
+    "asset-fingerprints.json",
+    "route-inventory.json"
+  ]
+}

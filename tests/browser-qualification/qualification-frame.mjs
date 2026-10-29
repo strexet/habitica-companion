@@ -1,3 +1,4 @@
+import {finishSnapshotTransitions} from './qualification-session.mjs';
 import {composite, contrast, threshold, geometry} from './qualification-core.mjs';
 const query = new URLSearchParams(location.search);
 const colors = new Map(), rasters = new Map();
@@ -55,7 +56,11 @@ const visible=el=>{
   }
   return true;
 };
+const identity=()=>({caseId:query.get('case'),fixture:location.pathname,theme:query.get('theme')||'gryphy-light',textPercent:Number(query.get('text')||100),seed:query.get('seed'),width:innerWidth});
+const inspectionStarted=performance.now();
+const phase=(name,status,details)=>parent.postMessage({type:'qualification-phase',phase:{...identity(),phase:name,status,elapsedMs:performance.now()-inspectionStarted,...(details?{details}:{})}},location.origin);
 async function inspect(){
+  phase('theme','waiting');
   const selected=query.get('theme')||'gryphy-light';
   const schemes=await(await fetch('/schemes.json')).json();
   if(!schemes[selected])throw Error('Unknown qualification theme');
@@ -68,8 +73,14 @@ async function inspect(){
   if(query.get('seed')==='contrast'){
     const text=document.createElement('p');text.id='contrast-canary';text.style.cssText='color:rgb(125,125,125);background:rgb(125,125,125)';text.textContent='Seeded unreadable contrast canary';document.body.append(text);
   }
-  await document.fonts.ready;await new Promise(requestAnimationFrame);
-  await Promise.allSettled(document.getAnimations().filter(a=>Number.isFinite(a.effect?.getComputedTiming().endTime)).map(a=>a.finished));
+  phase('theme','complete');phase('fonts','waiting');
+  await document.fonts.ready;phase('fonts','complete');phase('frame','waiting');
+  await new Promise(requestAnimationFrame);phase('frame','complete');
+  const finiteAnimations=document.getAnimations().filter(a=>Number.isFinite(a.effect?.getComputedTiming().endTime));
+  const settledTransitions=finishSnapshotTransitions(finiteAnimations,globalThis.CSSTransition);
+  phase('animations','waiting',finiteAnimations.slice(0,12).map(a=>({name:String(a.animationName??a.transitionProperty??a.id??'').slice(0,80),state:a.playState,pending:a.pending,rate:a.playbackRate,time:a.currentTime,endTime:a.effect?.getComputedTiming().endTime,target:a.effect?.target?.tagName??'',classes:String(a.effect?.target?.className??'').slice(0,160),settlement:settledTransitions.includes(a)?'css-transition-final-state':'natural-finish-wait'})));
+  await Promise.allSettled(finiteAnimations.map(a=>a.finished));
+  phase('animations','complete');phase('measurement','waiting');
   const elements=[...document.querySelectorAll('button,a,input,select,textarea,summary,[role="button"]')].filter(visible);
   const controls=elements.map((el,i)=>{const r=el.getBoundingClientRect();return {id:el.dataset.testid||el.id||el.tagName+'-'+i,element:el,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,primary:el.matches('[data-layout-primary],.mud-button-filled:not(.mud-button-filled-size-small),.mud-nav-link')};});
   for(const a of controls)a.contains=controls.filter(b=>a!==b&&a.element.contains(b.element)).map(b=>b.id);
@@ -100,10 +111,11 @@ async function inspect(){
       if(Number.isFinite(ratio)){ratios.push(ratio);if(ratio<minimum)errors.push({kind:'contrast',id:el.dataset.testid||el.id||el.tagName,text:node.textContent.trim().slice(0,70),ratio,minimum});}
     }catch(e){unknown.push({element:el.tagName,reason:e.message});}
   }
+  phase('measurement','complete');
   const result={caseId:query.get('case'),fixture:location.pathname,theme:selected,textPercent:Number(query.get('text')||100),seed:query.get('seed'),width:innerWidth,clientWidth:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth,controls:controls.length,scrollableControls:controls.filter(c=>c.scrollContainer).map(c=>c.id),primaryControls:controls.filter(c=>c.primary).length,textSamples:ratios.length,minimumMeasuredContrast:Math.min(...ratios),disabledSkipped,errors,unqualifiedSurfaces:unknown};
   if(query.get('debug')) result.debugControls=controls.map(control=>({id:control.id,left:control.left,right:control.right,width:control.width,parents:(()=>{const chain=[];for(let el=control.element;el&&chain.length<6;el=el.parentElement){const s=getComputedStyle(el),r=el.getBoundingClientRect();chain.push({tag:el.tagName,classes:el.className,left:r.left,right:r.right,width:r.width,minWidth:s.minWidth,columns:s.gridTemplateColumns,flex:s.flex});}return chain;})()}));
   if(query.get('debug')) result.debugOverflow=[...document.body.querySelectorAll('*')].filter(visible).map(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {tag:el.tagName,classes:el.className,left:r.left,right:r.right,width:r.width,minWidth:s.minWidth,columns:s.gridTemplateColumns,overflow:s.overflowX,text:el.textContent.trim().slice(0,70)};}).filter(row=>row.right>document.documentElement.clientWidth+1||row.left<0).slice(0,80);
   const output=document.createElement('pre');output.id='qualification-result';output.textContent=JSON.stringify(result);output.hidden=true;document.body.append(output);
   parent.postMessage({type:'qualification-result',result},location.origin);
 }
-inspect().catch(error=>parent.postMessage({type:'qualification-result',result:{caseId:query.get('case'),fixture:location.pathname,harnessError:error.message}},location.origin));
+inspect().catch(error=>parent.postMessage({type:'qualification-result',result:{...identity(),harnessError:error.message}},location.origin));

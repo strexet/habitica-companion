@@ -1,0 +1,12 @@
+{
+  "tests/protocol-prototypes/mcp-events.mjs": "2ad32283e0896c1099f3470115562f51d4ba9343c5334852bfda7382a2ce6265",
+  "tests/Functions/mcp-events-prototype.test.mjs": "9428cfc5d64bece64e291cc738bd4c1275cac6aebd2aaae94c0a0245d47958af",
+  "workers/chatgpt-mcp/package.json": "7f0da1db1c11b54eafeb16c3eca3d18751ccb47b001af9bdf5a40afeea5f889e",
+  "workers/chatgpt-mcp/package-lock.json": "81543e608f161c41926310688b30b89672b2d584f4174cd404d94e34cd4dfd34",
+  "workers/chatgpt-mcp/src/tools.ts": "a37663c8f51fe319489e68bfa46be1ed4b91179c2f7fd9c4fe115cf495d13caf",
+  "skill-tree/documents/originating-chat-reminders.md": "e931de4d20226fee83f5338b2a508cd3f4515dd026e9741e80bd35e9c092cefb",
+  "skill-tree/documents/features.md": "7f2edab0ae9c2c444288cdea8dd40913a8b2d74c5002c25fc79c2dd931a9fd35",
+  "skill-tree/documents/technical.md": "822ef1034ddcbe70164daa88630c0aa51468792aaff42ad909c1bb0bab0958cf",
+  "skill-tree/documents/testing.md": "8cd9ff9383e8ab303d8146d8506117b3f30afb89074f9da98ef78e9ae87f273e",
+  "skill-tree/documents/ux-ui-manifest.md": "1d21988db10f4497c305981f152aa7f43be0065fa90e3a4736bb9730a507f1b4"
+}

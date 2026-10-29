@@ -1,0 +1,69 @@
+(node:26609) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:26610) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: public overrides retain unrelated settings and reject credential or URL leakage
+ok 1 - public overrides retain unrelated settings and reject credential or URL leakage
+  ---
+  duration_ms: 1.048708
+  ...
+# Subtest: dev artifacts isolate resource identities and keep all game-effect flags off
+ok 2 - dev artifacts isolate resource identities and keep all game-effect flags off
+  ---
+  duration_ms: 143.956333
+  ...
+# Subtest: unsafe or incomplete dev input is rejected before output is written
+ok 3 - unsafe or incomplete dev input is rejected before output is written
+  ---
+  duration_ms: 1.07625
+  ...
+# Subtest: explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+ok 4 - explicit existing Pages selection retains only reviewed browser storage and uses production backend names
+  ---
+  duration_ms: 108.8815
+  ...
+# Subtest: runtime origins reject partial bindings and stay consistent for all environments
+ok 5 - runtime origins reject partial bindings and stay consistent for all environments
+  ---
+  duration_ms: 29.50825
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on success
+ok 6 - actual Pages build preserves full settings and restores source on success
+  ---
+  duration_ms: 1191.478208
+  ...
+# Subtest: actual Pages build preserves full settings and restores source on publish failure
+ok 7 - actual Pages build preserves full settings and restores source on publish failure
+  ---
+  duration_ms: 686.492375
+  ...
+# Subtest: normal app source defaults never inherit agent test restrictions
+ok 8 - normal app source defaults never inherit agent test restrictions
+  ---
+  duration_ms: 0.193208
+  ...
+# Subtest: explicit development profile enables implemented availability while retaining identities and consent boundaries
+ok 9 - explicit development profile enables implemented availability while retaining identities and consent boundaries
+  ---
+  duration_ms: 103.297625
+  ...
+# Subtest: new capability flags require explicit mapping and never gain accidental development activation
+ok 10 - new capability flags require explicit mapping and never gain accidental development activation
+  ---
+  duration_ms: 0.468584
+  ...
+# Subtest: ordinary capability profiles keep separately provisioned Web Push disabled
+ok 11 - ordinary capability profiles keep separately provisioned Web Push disabled
+  ---
+  duration_ms: 0.150125
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2356.686292

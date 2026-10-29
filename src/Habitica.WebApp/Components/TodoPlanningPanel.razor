@@ -1,0 +1,142 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject TimeProvider Clock
+@implements IDisposable
+
+<div class="todo-planning" data-testid="todo-planning">
+    <section class="card-surface todo-planning-header">
+        <div class="todo-day-title"><h1>@_view</h1><MudButton Href="/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
+        <div class="todo-planning-controls">
+            <label class="field-row">View<select class="app-input" value="@_view" @onchange="ChangeView" data-testid="plan-view" @ref="_viewInput">@foreach (var view in Enum.GetValues<TodoPlanningView>()) { <option value="@view">@view</option> }</select></label>
+            <label class="field-row">Reference day<input class="app-input" type="date" value="@_date" @onchange="ChangeDay" data-testid="plan-day" /></label>
+        </div>
+        @if (IsAgenda)
+        {
+            <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" OnClick="() => Move(-1)" Variant="Variant.Text" data-testid="plan-previous-period">Previous period</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="() => Move(1)" Variant="Variant.Text" data-testid="plan-next-period">Next period</MudButton><a href="/todo/today">Open Today</a></div>
+        }
+    </section>
+    <TodoTaskPanel @ref="_review" ShowTaskList="false" ShowCapture="false" ReviewClosed="FocusEditorAsync" />
+    @if (_editing is { } taskId) { <TodoPlanEditor @key="(_editingSource, taskId)" @ref="_editor" TaskId="taskId" Reviewed="ReviewPlacementAsync" Closed="CloseEditorAsync" /> }
+    <section class="card-surface todo-planning-results" aria-label="Planning results">
+        <p class="panel-copy">@Description</p>
+        @if (_error is not null) { <p role="alert" data-testid="plan-error">@_error</p> }
+        @if (_revision is { } revision)
+        {
+            <p>Selected @(_source?.Source == TodoWorkspaceSource.Cloud ? "cloud" : "browser") workspace · revision @revision @(_range is { } range ? $"· {Iso(range.From)}–{Iso(range.Through)} inclusive" : "")</p>
+            @if (_total == 0) { <p role="status" data-testid="plan-empty">No matching tasks in this view.</p> }
+            @foreach (var group in _rows.GroupBy(row => row.Day))
+            {
+                @if (group.Key is { } date) { <h2>@Iso(date)</h2> }
+                @foreach (var row in group)
+                {
+                    <article class="todo-direct-row" @key="(row.Task.Id, row.Day)" data-testid="@($"plan-row-{row.Task.Id:D}")">
+                        <div class="todo-row-content"><strong>@row.Task.Text</strong><span>@row.Task.Kind · @row.Task.State</span>
+                            <span>Planned: @(row.Task.PlannedDate is { } planned ? Iso(planned) : "Not planned") · Deadline: @(row.Task.Deadline is { } deadline ? Iso(deadline) : "None")</span>
+                            @if (row.Task.ProjectId is { } projectId && Todo.Snapshot?.Document.Projects.Any(project => project.Id == projectId && project.IsRemoved) == true) { <span>Unassigned · removed project reference retained</span> }
+                            @if (_view == TodoPlanningView.Overdue && ValidDay is { } day) { <span>@(row.Task.PlannedDate < day ? "Planned earlier. " : "")@(row.Task.Deadline < day ? "Deadline overdue." : "")</span> }
+                            @if (row.Occurrence is { } occurrence) { <span>Daily occurrence: @occurrence · @row.Zone</span> }
+                        </div>
+                        <div class="todo-row-actions"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanEdit)" OnClick="() => EditAsync(row.Task.Id)" Variant="Variant.Outlined" data-testid="@($"plan-edit-{row.Task.Id:D}")">Plan / move</MudButton></div>
+                    </article>
+                }
+            }
+            <div class="action-row"><span>Showing @(_rows.Count == 0 ? 0 : _offset + 1)–@(_offset + _rows.Count) of @_total @(_range is null ? "tasks" : "task/date rows")</span>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset == 0)" OnClick="Previous" Variant="Variant.Text" data-testid="plan-previous">Previous results</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_next is null)" OnClick="Next" Variant="Variant.Text" data-testid="plan-next">Next results</MudButton>
+            </div>
+        }
+        else if (_error is null) { <p role="status">Choose and load an available workspace above. Unavailable data is not an empty planning list.</p> }
+        <p class="panel-copy">Dates are civil days; weeks run Monday–Sunday. Agenda rows combine planned dates, deadlines and named-zone Daily occurrences. Completed tasks stay in separate history. Lists and manual date controls work without dragging.</p>
+    </section>
+</div>
+
+@code {
+    [Parameter] public TodoPlanningView View { get; set; } = TodoPlanningView.Upcoming;
+    [Parameter] public DateOnly? Day { get; set; }
+    private TodoPlanningView _view, _parameterView;
+    private bool _initialized;
+    private string _date = "";
+    private TodoWorkspaceSelection? _source, _editingSource;
+    private long? _revision;
+    private DateOnly? _parameterDay;
+    private Guid? _editing;
+    private TodoTaskPanel? _review;
+    private TodoPlanEditor? _editor;
+    private ElementReference _viewInput;
+    private List<Row> _rows = [];
+    private (DateOnly From, DateOnly Through)? _range;
+    private int _offset, _total;
+    private int? _next;
+    private string? _error;
+    private DateOnly? ValidDay => DateOnly.TryParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) && day != default ? day : null;
+    private bool IsAgenda => _view is TodoPlanningView.Upcoming or TodoPlanningView.Week or TodoPlanningView.Month;
+    private bool CanEdit => !Todo.IsBusy && !Todo.IsReadOnly && !Todo.Commands.HasPendingIntent;
+    private string Description => _view switch { TodoPlanningView.Inbox => "Inbox: active Todos without a planned day and without an assigned project. Removed project references count as Unassigned. A deadline alone does not remove a task from Inbox.", TodoPlanningView.Anytime => "Anytime: all active Todos without a planned day, including Inbox and project tasks. Deadlines remain visible.", TodoPlanningView.Overdue => "Overdue: active Todos planned before the reference day or with an earlier deadline. Each task appears once.", TodoPlanningView.Week => "Week agenda, Monday–Sunday containing the reference day.", TodoPlanningView.Month => "Month agenda containing the reference day.", _ => "Upcoming agenda: reference day and the next 29 days." };
+    protected override void OnInitialized() { Todo.Changed += Changed; _date = Iso(Day ?? DateOnly.FromDateTime(Clock.GetLocalNow().DateTime)); }
+    protected override void OnParametersSet()
+    {
+        if (!_initialized || View != _parameterView) { _view = View; _offset = 0; }
+        if (Day != _parameterDay && Day is { } day) { _date = Iso(day); _offset = 0; }
+        _parameterDay = Day; _initialized = true; _parameterView = View; Rebuild();
+    }
+    private void Changed()
+    {
+        if (_source != Todo.Selection || _revision != Todo.Revision) _offset = 0;
+        if (_editingSource != Todo.Selection) _editing = null;
+        Rebuild(); _ = InvokeAsync(StateHasChanged);
+    }
+    private void Rebuild()
+    {
+        _rows = []; _range = null; _total = 0; _next = null; _revision = null; _source = Todo.Selection; _error = null;
+        if (ValidDay is not { } day || !Enum.IsDefined(_view)) { _error = "Choose a valid civil day and planning view."; return; }
+        if (Todo.Snapshot is not { } snapshot) return;
+        try
+        {
+            if (IsAgenda)
+            {
+                _range = TodoPlanningRange.For(_view, day);
+                var page = Todo.Agenda(new(_range.Value.From, _range.Value.Through, 20, _offset, Todo.Revision));
+                var tasks = snapshot.Document.Tasks.ToDictionary(row => row.Id);
+                _rows = page.Items.Select(item => new Row(tasks[item.TaskId], item.Date, item.OccurrenceState, item.RuleTimeZoneId)).ToList();
+                _total = page.MatchedCount; _next = page.NextOffset;
+            }
+            else
+            {
+                var list = _view == TodoPlanningView.Inbox ? WorkspacePlanningList.Inbox : _view == TodoPlanningView.Anytime ? WorkspacePlanningList.Anytime : WorkspacePlanningList.Overdue;
+                var page = Todo.Planning(list, day, _offset);
+                _rows = page.Tasks.Select(task => new Row(task, null, null, null)).ToList(); _total = page.MatchedCount; _next = page.NextOffset;
+            }
+            _revision = snapshot.Document.Revision;
+        }
+        catch (InvalidOperationException) { _error = "Planning is unavailable. Reload current task data and check every schedule time zone. No partial agenda is shown."; }
+        catch (ArgumentException) { _error = "The requested date range or page is unavailable. Choose a valid date and reload."; }
+    }
+    private void ChangeView(ChangeEventArgs args) { if (Enum.TryParse<TodoPlanningView>(args.Value?.ToString(), out var view) && Enum.IsDefined(view)) _view = view; _offset = 0; Rebuild(); }
+    private void ChangeDay(ChangeEventArgs args) { _date = args.Value?.ToString() ?? ""; _offset = 0; Rebuild(); }
+    private void Move(int direction)
+    {
+        if (ValidDay is not { } day) return;
+        try { _date = Iso(_view == TodoPlanningView.Month ? day.AddMonths(direction) : day.AddDays(direction * (_view == TodoPlanningView.Week ? 7 : 30))); _offset = 0; Rebuild(); }
+        catch (ArgumentOutOfRangeException) { _error = "The next period is outside the supported civil date range."; }
+    }
+    private void Previous() { _offset = Math.Max(0, _offset - 20); Rebuild(); }
+    private void Next() { if (_next is { } next) { _offset = next; Rebuild(); } }
+    private async Task EditAsync(Guid id)
+    {
+        if (!CanEdit || _source != Todo.Selection || _revision != Todo.Revision || !_rows.Any(row => row.Task.Id == id)) return;
+        _editing = id; _editingSource = _source;
+        if (_editor is not null) await _editor.FocusAsync();
+    }
+    private async Task ReviewPlacementAsync(TodoPlacementReview review)
+    {
+        if (_review is null || review.TaskId != _editing || review.Source != _editingSource || review.Source != Todo.Selection || review.Revision != Todo.Revision) throw new InvalidOperationException("Reload the selected task before reviewing placement.");
+        await _review.ReviewPlacementAsync(review.TaskId, review.Revision, review.Planning);
+    }
+    private async Task FocusEditorAsync() { if (_editor is not null) await _editor.FocusAsync(); else try { await _viewInput.FocusAsync(); } catch (JSException) { } }
+    private async Task CloseEditorAsync() { _editing = null; try { await _viewInput.FocusAsync(); } catch (JSException) { } }
+    private static string Iso(DateOnly day) => day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    public void Dispose() => Todo.Changed -= Changed;
+    private sealed record Row(CompanionTask Task, DateOnly? Day, OccurrenceState? Occurrence, string? Zone);
+}

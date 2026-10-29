@@ -1,0 +1,37 @@
+(node:46733) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+TAP version 13
+# (node:46734) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: review actions retain causal history without native/task/game changes
+ok 1 - review actions retain causal history without native/task/game changes
+  ---
+  duration_ms: 122.381583
+  ...
+# Subtest: legacy fields stay optional; invalid/mixed/projected/stale review intents and archive tampering fail
+ok 2 - legacy fields stay optional; invalid/mixed/projected/stale review intents and archive tampering fail
+  ---
+  duration_ms: 7.46625
+  ...
+# Subtest: v10 identity canonicalizes UTC and preserves unused legacy encodings
+ok 3 - v10 identity canonicalizes UTC and preserves unused legacy encodings
+  ---
+  duration_ms: 3.845708
+  ...
+# CIMD (Client ID Metadata Document) is disabled: add '"compatibility_flags": ["global_fetch_strictly_public"]' to your wrangler.jsonc to enable. See: https://developers.cloudflare.com/workers/configuration/compatibility-flags/\#global-fetch-strictly-public
+# (node:46734) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authenticated SDK review preview/accept/original receipt enforce account, revision and scope without game dispatch
+ok 4 - authenticated SDK review preview/accept/original receipt enforce account, revision and scope without game dispatch
+  ---
+  duration_ms: 1165.259917
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2059.015

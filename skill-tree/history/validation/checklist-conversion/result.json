@@ -1,0 +1,68 @@
+{
+  "task_id": "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+  "recorded_at": "2026-10-22T10:18:17.047398+00:00",
+  "base_commit": "7daab5a28381d52e1183ca2aa9d920aca053b92c",
+  "scope": "Local synthetic C#/Worker/domain/cloud/MCP conversion backend; no live operation, enrollment, deployment or remote migration.",
+  "checks": {
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "diff_check": true
+  },
+  "logs": {
+    "build": {
+      "sha256": "f3782a4b4e429499f0e18a62e0cd1f5ce277ad97661b90f6735fd8f14132b689"
+    },
+    "dotnet": {
+      "sha256": "1f7f9363842e979a60ff9ede591d00124e8dff3f4a64935d7fe70cdc629bc297",
+      "passed": 1035
+    },
+    "publish": {
+      "sha256": "5123b88ef18efec12da70871cbcb7ef2c6b636b4b4e88c4ab23e1d64b23389ba"
+    },
+    "chatgpt-auth-build": {
+      "sha256": "6f7c3cdedf1203bd6a177b9e28cbd6bbf8e27ca7fa50374b6197c27ccf09f7c3"
+    },
+    "companion-workspace-build": {
+      "sha256": "01b509df782258c9508dd968f8bf3f48968f937f39ae1612538dead8feeeb16f"
+    },
+    "chatgpt-mcp-build": {
+      "sha256": "fa2e1ea1a0228212e53830edcf7b8c66b1a84db8cb5ec380b7f34661cac2274e"
+    },
+    "workspace-full": {
+      "sha256": "eb5213bddf736345c88f15d4bfde213ce0955d55b5a46048549c63ab2bb89f24",
+      "tests": 523,
+      "pass": 523,
+      "fail": 0,
+      "cancelled": 0
+    },
+    "auth-full": {
+      "sha256": "507a3c092219561a47b1ba70c1d3f2c94865f2677ac0f0a899f2ecee4fa9e0c5",
+      "tests": 145,
+      "pass": 145,
+      "fail": 0,
+      "cancelled": 0
+    }
+  },
+  "fixtures": [
+    "tests/fixtures/workspace/checklist-conversion-reuse.json",
+    "tests/fixtures/workspace/checklist-conversion-create.json"
+  ],
+  "coverage": [
+    "Exact complete ordered source checklist item identities, frozen source content/revision and original target provenance",
+    "10 reused targets with8active/2archived; checkmarks independent of desired lifecycle; UTF8 descriptions and task urgency preserved",
+    "New active targets produce normal pending create-only effects; historical missing matches deferred; no extra score/completion events",
+    "Original accepted command/request recovery, partial resume and no target rebinding or name-based matching",
+    "C#/Worker command hashes and deterministic internal IDs match neutral fixtures; impossible/partial receipt history rejected",
+    "Separate local/cloud ownership and both validated habitica.tasks.write/workspace.organization.write scopes",
+    "Atomic D1 document/command/event/tag acceptance and rollback; SQL sequence positions include preparation/store-version gaps",
+    "Accepted conversion preparations retained through cleanup; explicit stored mapping/tag status and historical gaps"
+  ],
+  "limitations": [
+    "Browser conversion forms and verified legacy source retirement are separate following frozen tasks.",
+    "Stored mappings/tag confirmations are not fresh native verification; retirementReady remains false.",
+    "No physical device, installed host, live Habitica or production qualification.",
+    "Existing inherited prose errors outside changed lines remain backlog.",
+    "Cloud steps admit at most10 new active captures; all other source items remain explicit for resumable selection."
+  ]
+}

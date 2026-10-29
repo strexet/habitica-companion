@@ -1,0 +1,84 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+
+<div class="todo-placement-picker">
+    <label class="field-row">@Caption<select class="app-input" value="@Value" @onchange="Choose" disabled="@Disabled" data-testid="@($"plan-{Kind.ToLowerInvariant()}")">
+        <option value="">@EmptyLabel</option>
+        @if (Value is { } selected && !_items.Any(row => row.Id == selected)) { <option value="@selected">@CurrentName(selected) (retained selection)</option> }
+        @foreach (var row in _items) { <option value="@row.Id">@ChoiceName(row.Id,row.Name)</option> }
+    </select></label>
+    @if (Kind=="Project" && Value is {} selectedId && Todo.Snapshot?.Document.Projects.FirstOrDefault(row=>row.Id==selectedId)?.Alias is {} selectedAlias)
+    { <p data-testid="selected-project-alias">Alias: @selectedAlias</p> }
+    @if (_error is not null) { <p role="alert">@_error</p> }
+    @if (_total > 20)
+    {
+        <div class="action-row"><span>@(_offset + 1)–@(_offset + _items.Count) of @_total</span>
+            <MudButton HtmlTag="button" Disabled="@(Disabled || _offset == 0)" OnClick="Previous" Variant="Variant.Text" aria-label="@($"Previous {Caption}")">Previous</MudButton>
+            <MudButton HtmlTag="button" Disabled="@(Disabled || _next is null)" OnClick="Next" Variant="Variant.Text" aria-label="@($"Next {Caption}")">Next</MudButton>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Kind { get; set; } = "Project";
+    [Parameter] public string Caption { get; set; } = "Project";
+    [Parameter] public string EmptyLabel { get; set; } = "None";
+    [Parameter] public Guid? Value { get; set; }
+    [Parameter] public EventCallback<Guid?> ValueChanged { get; set; }
+    [Parameter] public Guid? ProjectId { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    private List<(Guid Id, string Name)> _items = [];
+    private TodoWorkspaceSelection? _source;
+    private long? _revision;
+    private Guid? _project;
+    private int _offset, _total;
+    private int? _next;
+    private string? _error;
+    protected override void OnParametersSet()
+    {
+        if (_source != Todo.Selection || _revision != Todo.Revision || _project != ProjectId) _offset = 0;
+        _source = Todo.Selection; _revision = Todo.Revision; _project = ProjectId; Read();
+    }
+    private void Read()
+    {
+        _items = []; _total = 0; _next = null; _error = null;
+        if (Todo.Snapshot is null) return;
+        try
+        {
+            var filter = new WorkspaceReadFilter(20, _offset, _revision);
+            switch (Kind)
+            {
+                case "Category": Set(Todo.Categories(filter), row => (row.Id, row.Name)); break;
+                case "Project": Set(Todo.Projects(filter), row => (row.Id, row.Name)); break;
+                case "Section" when ProjectId is { } id: Set(Todo.Sections(filter, id), row => (row.Id, row.Name)); break;
+                case "Label": Set(Todo.Labels(filter), row => (row.Id, row.Name)); break;
+            }
+        }
+        catch (InvalidOperationException) { _error = "Placement data changed. Reload the task before editing."; }
+        catch (ArgumentException) { _error = "Placement choices are unavailable. Reload task data."; }
+    }
+    private void Set<T>(WorkspaceReadPage<T> page, Func<T, (Guid, string)> map) { _items = page.Items.Select(map).ToList(); _total = page.MatchedCount; _next = page.NextOffset; }
+    private string ChoiceName(Guid id,string name)
+    {
+        var doc=Todo.Snapshot?.Document;
+        IEnumerable<string> names=Kind switch { "Category"=>doc?.Categories.Where(row=>!row.IsArchived).Select(row=>row.Name)??[], "Section"=>doc?.Sections.Where(row=>!row.IsArchived&&row.ProjectId==ProjectId).Select(row=>row.Name)??[], "Label"=>doc?.Labels.Where(row=>!row.IsArchived).Select(row=>row.Name)??[], _=>doc?.Projects.Where(row=>!row.IsArchived).Select(row=>row.Name)??[] };
+        return (names.Count(value=>value==name)>1?$"{name} · {id}":name)+AliasSuffix(id);
+    }
+    private string AliasSuffix(Guid id)=>Kind=="Project"&&Todo.Snapshot?.Document.Projects.FirstOrDefault(row=>row.Id==id)?.Alias is {} alias?$" · alias: {alias}":"";
+    private string CurrentName(Guid id)
+    {
+        var doc = Todo.Snapshot?.Document;
+        if (Kind == "Project" && doc?.Projects.FirstOrDefault(row => row.Id == id) is { IsRemoved: true } removed) return "Unassigned (removed project: " + removed.Name + ")" + AliasSuffix(id);
+        if(Kind=="Project"&&doc?.Projects.FirstOrDefault(row=>row.Id==id) is {} project)return ChoiceName(id,project.Name);
+        return Kind switch { "Category" => doc?.Categories.FirstOrDefault(row => row.Id == id)?.Name, "Section" => doc?.Sections.FirstOrDefault(row => row.Id == id)?.Name, "Label" => doc?.Labels.FirstOrDefault(row => row.Id == id)?.Name, _ => doc?.Projects.FirstOrDefault(row => row.Id == id)?.Name } ?? "Unavailable record";
+    }
+    private async Task Choose(ChangeEventArgs args)
+    {
+        var text = args.Value?.ToString();
+        if (string.IsNullOrEmpty(text)) await ValueChanged.InvokeAsync(null);
+        else if (Guid.TryParse(text, out var id) && (id == Value || _items.Any(row => row.Id == id))) await ValueChanged.InvokeAsync(id);
+    }
+    private void Previous() { _offset = Math.Max(0, _offset - 20); Read(); }
+    private void Next() { if (_next is { } next) { _offset = next; Read(); } }
+}

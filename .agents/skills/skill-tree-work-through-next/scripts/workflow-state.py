@@ -334,7 +334,11 @@ def intake(store,payload):
             related=resolve(tasks,[parent],'Prioritized Next Changes')[0]
             expected_root=related['root_task_id'] or related['id']
             if root!=expected_root: raise WorkflowError('Finding root does not match direct parent')
-            root_task=resolve(tasks,[root],'Prioritized Next Changes')[0]
+            root_task=next((task for task in tasks if task['id']==root and task['queue']=='Prioritized Next Changes'),None)
+            if root_task is None:
+                completed_root=any(outcome['task_id']==root and outcome.get('disposition')=='completed' for outcome in store.outcomes())
+                if relation not in {'blocker','subtask'} or not completed_root:
+                    raise WorkflowError('Finding root requires a prioritized task or a completed outcome for required work')
             if priority is None: priority=max((t['priority'] for t in tasks),default=100)+1 if relation in {'blocker','subtask'} else root_task['priority']-1
         if priority is None: priority=25 if payload.get('low_priority') else 100
         meta={'id':identity('P'),'priority':priority,'status':'Pending','parent_pending_ids':[],'processing_run_id':None,'root_task_id':root,'related_task_id':parent,'relation':relation,'depends_on':[]}

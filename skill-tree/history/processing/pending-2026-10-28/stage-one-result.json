@@ -1,0 +1,43 @@
+{
+  "recordedAtUtc": "2026-10-28T10:29:33.210187+00:00",
+  "processingRunId": "PR-cc5061a4-7801-422f-b5c3-9cdb86d4c235",
+  "selectedCount": 8,
+  "promotedPendingCount": 4,
+  "createdCount": 5,
+  "createdIds": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
+  ],
+  "reusedIds": [],
+  "retainedIds": [
+    "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192",
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2"
+  ],
+  "resolvedIds": [
+    "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa"
+  ],
+  "sourceHashBefore": "52ea950aaccca0a2a9bdc5a17551466ebf8cbb22f2ea951c92e76eb15d9c27cf",
+  "sourceHashAfter": "e5398b4446d021bfd105fe61918e051f063d1533538d786a229c7610bdc4c58a",
+  "sourceFingerprintsUnchanged": true,
+  "activeRunPreservation": {
+    "id": true,
+    "mode": true,
+    "snapshot": true,
+    "root_task_id": true,
+    "current_task_id": true,
+    "required_ids": true,
+    "completed_ids": true,
+    "limits": true,
+    "owner_deferred_priorities": true
+  },
+  "newTasksOutsideInitialSnapshot": true,
+  "runtimeBuildsOrTestsRun": false,
+  "liveOperations": "Read-only exact retained conversion and original tag review; no dispatch, acceptance or native task/tag mutation.",
+  "research": "skill-tree/history/processing/pending-2026-10-28/research.md",
+  "decisions": "skill-tree/history/processing/pending-2026-10-28/decision-proposals.md",
+  "nextAction": "Await owner selection after standalone processing. Preserve the original frozen Implement All scope; no automatic advance or new run."
+}

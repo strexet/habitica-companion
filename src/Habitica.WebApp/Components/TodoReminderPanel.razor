@@ -1,0 +1,43 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject ForegroundReminderController Reminders
+@implements IDisposable
+
+<section class="card-surface todo-reminder-panel" aria-label="Optional reminders" data-testid="todo-reminders">
+    <h2>Optional reminders</h2>
+    <p>Saved review cues can appear here after you enable them for the selected workspace in this browser. Set, snooze or clear an exact review cue in <a href="/todo/tasks">Tasks → Organize → Voluntary review</a>.</p>
+    <p>Browser notifications are best effort while this app is open and visible. Closed tabs and background delivery are unavailable here. Reopen Today to see missed cues. No Habitica polling or task changes run automatically.</p>
+    <p>Reminders use the currently loaded workspace snapshot. Reload the workspace to include changes made elsewhere. Clearing browser data removes these preferences and local delivery receipts.</p>
+    @if(Reminders.Error is {} error){<p role="alert">@error</p>}
+    @if(!Reminders.Ready){<p role="status">Select and load a workspace. Reminder preferences and review cues stay bound to that account and source.</p>}
+    else if(Reminders.State is {} state)
+    {
+        <p data-testid="reminder-state">In-app cues: @(state.InApp?"enabled":"off") · Browser notifications: @(state.Browser?"enabled":"off") · Permission: @state.Permission</p>
+        <p>Capability: @state.Capability · Local reminder storage: @state.Storage · Last delivery observation: @state.Delivery. A delivery observation does not mean you saw a notification.</p>
+        @if(state.ClockChanged){<p role="status">Device clock changed. Cue times were checked again; saved tasks and dates were unchanged.</p>}
+        @if(state.Permission=="denied"){<p role="status">Browser permission is denied. In-app cues still work; change notification permission in browser or system settings if you want to try again.</p>}
+        @if(state.Delivery is "unknown" or "receipt-capacity"){<p role="status">Delivery is uncertain or the local receipt limit is full. This cue will not be sent again automatically. Review the saved cue below.</p>}
+        <div class="action-row">
+            <MudButton HtmlTag="button" data-layout-primary="true" OnClick="() => Reminders.SetInAppAsync(!state.InApp)" Variant="Variant.Outlined" Color="Color.Primary" data-testid="reminder-inapp">@(state.InApp?"Turn off in-app cues":"Enable in-app cues here")</MudButton>
+            @if(state.Browser){<MudButton HtmlTag="button" data-layout-primary="true" OnClick="Reminders.DisableBrowserAsync" Variant="Variant.Outlined" data-testid="reminder-browser-off">Turn off browser notifications</MudButton>}
+            else{<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!state.InApp||state.Capability!="available"||state.Storage!="available"||state.Permission=="denied")" OnClick="Reminders.EnableBrowserAsync" Variant="Variant.Outlined" data-testid="reminder-browser">Enable browser notifications here</MudButton>}
+        </div>
+        <p>These browser preferences do not enroll Web Push or grant notification access to an agent. Turning off in-app cues also turns off this browser notification channel. Other browsers and sources have separate preferences.</p>
+        @if(state.InApp)
+        {
+            var due=Reminders.Due;
+            <p role="status" data-testid="reminder-count">@due.Count reached review cues · @Reminders.Cues.Count total saved cues. Reached cues remain visible until you explicitly change their review cue or task state.</p>
+            @foreach(var cue in due.Take(20))
+            {
+                <article class="todo-direct-row" data-testid="reminder-cue"><div class="todo-row-content"><strong>@cue.Text</strong><span>@WorkspaceTaskReview.CanonicalUtc(cue.ReviewAfterUtc) · display zone @cue.TimeZoneId</span><span>Review cue reached. Reviewing remains optional.</span></div></article>
+            }
+            @if(due.Count>20){<p>Showing the first twenty reached cues. All saved review cues remain available in Tasks.</p>}
+        }
+    }
+</section>
+
+@code {
+    protected override void OnInitialized()=>Reminders.Changed+=Changed;
+    private void Changed()=>_=InvokeAsync(StateHasChanged);
+    public void Dispose()=>Reminders.Changed-=Changed;
+}

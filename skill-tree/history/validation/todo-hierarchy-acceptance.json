@@ -1,0 +1,58 @@
+{
+  "task_id": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+  "date": "2026-10-20",
+  "checks": {
+    "dotnet": {
+      "passed": 906,
+      "application": 194,
+      "web": 527,
+      "api": 87,
+      "domain": 33,
+      "rules": 43,
+      "storage": 22,
+      "failed": 0
+    },
+    "release_publish": "pass; optional wasm-tools workload absent",
+    "worker_builds": "Auth, MCP and Workspace pinned dry runs pass; no deployment",
+    "worker_affected": {
+      "distinct_passed": 23,
+      "note": "22 initially passed; new SDK assertion incorrectly expected no journal acceptance events. Corrected assertion requires exactly two accepted events, no confirmed effects and no effect intents. Complete SDK journey then passed."
+    },
+    "shared_cases": 10,
+    "deep_chain": {
+      "tasks": 2001,
+      "parent_edges": 2000,
+      "reversed_source_order": true,
+      "page_limit": 100,
+      "all_nodes_recovered": true,
+      "ancestor_continuation": "1900 offset with exact earlier parent position; no fixed product depth cap"
+    },
+    "preservation": "Existing exact relateTodo set/clear accepted, project and independent lifecycle/history retained; original command duplicate returns same receipt; combined cycles refused; no game effects",
+    "sdk": "Actual discovered read tool, portable direct/MCP parity, archived context, scope denial on public/private boundaries, foreign exact task 404 and empty foreign forest, deliberate lost accepted response recovered by original receipt, stale continuation gives no rows",
+    "facade": "Selected canonical source exposes hierarchy; foreign/missing identity and unavailable data throw explicit errors; no account write or game request",
+    "diagnostics": "Canonical read unavailability remains separate from mutation uncertainty; existing sanitized task-command diagnostics retained",
+    "documentation": "Changed prose and structural documentation/index/navigation pass; historical audit warning only"
+  },
+  "sources": {
+    "plugin/skills/habitica-task-management/SKILL.md": "faa6b2512af721af0fb96a12447afef81b4a17b75b344bc84c61cd994c8e53e2",
+    "plugin/skills/habitica-task-management/references/todo-hierarchy.md": "374c59f3f34b6ddba7db2c669914909ed3f2c074ed68fa923b4223f6de2e2dfe",
+    "src/Habitica.Application/Workspace/WorkspaceTodoHierarchy.cs": "0ff8bac1a8688b9980032a60b14e306cad3e2d4c64ef04857429bc373c0828f5",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "976b8410e751296f431b2c35833b6817d22d431a9d0d4ee354b85ef5e4dbfafc",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTodoHierarchyTests.cs": "d69114d1eaaf2c8140f66a97eec6a564d474293db05444c221edd00fda3156e7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "24ea1fe577a02104ebf1bc0b4811d3879ad9316d6279153d5c473a43002dbd8d",
+    "tests/fixtures/workspace/todo-hierarchy-v1.json": "05bdd4bfc4d865b487e277572f8f51c87468d969797e84a0653e5441848af07e",
+    "workers/chatgpt-mcp/src/task-tools.ts": "ec8156838dfad0884d8789154a2d5d421568ea9526d1738034c5ea2dc66a8ae7",
+    "workers/companion-workspace/src/task-api.ts": "de2f00bb564d6f9057c7e504abb4a01280cd63124fcb731489042c0493674eee",
+    "workers/companion-workspace/test/canonical-read-errors.test.mjs": "4b24459c2583cdc5176dae2cbc04f6334213ed07efc52101db49367a99fc57e9",
+    "workers/companion-workspace/test/todo-hierarchy-api.test.mjs": "4e98e5fd4f79dd7ff94d2dc1dc706b5a74eac010c04953108d162939117e4047",
+    "workers/companion-workspace/test/todo-hierarchy.test.mjs": "6a54dc3f1a2896a108cbc8b0b80b3824741d98ea9e8e8575617ce94244db360f",
+    "workers/shared/task-tools.ts": "3537cc0e5f270b6333f3dbbb8308e4fd740f5f8f4dfaef6209ab9735baade4cb",
+    "workers/shared/todo-hierarchy.ts": "9f3e9c5f2af772a5eaf4c90aa3bd62204d8b332fea088de3494e52520d9b751e"
+  },
+  "limitations": [
+    "No new tree editor markup or rendered UI journey in this query dependency. Consumer browser task/project editing remains a separate required task.",
+    "No deployment, live account/party mutation, hosted client or physical-device qualification.",
+    "Traversal is bounded by the existing full canonical document workload limit; pages contain at most 100 rows plus one selected context task.",
+    "Parent context may be on an earlier page or outside the current selection; exact parent identity, selection offset where applicable, and ancestor mode explicitly preserve navigation."
+  ]
+}

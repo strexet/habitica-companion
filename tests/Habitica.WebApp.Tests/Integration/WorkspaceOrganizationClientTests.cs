@@ -18,6 +18,34 @@ public sealed class WorkspaceOrganizationClientTests
     private static WorkspaceOrganizationCommand Intent(Guid id)=>new(Guid.NewGuid(),id,1,WorkspaceOrganizationKind.Category,WorkspaceOrganizationOperation.Create,Guid.NewGuid(),new(Name:"Reviewed area"));
     private static WorkspaceOrganizationPreview Preview(WorkspaceOrganizationCommand command)=>new(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,null),false,false);
     private static WorkspaceOrganizationReceipt Receipt(WorkspaceOrganizationPreview p)=>new(p.Command.Id,p.CorrelationId,p.Command.WorkspaceId,p.Command.Kind,p.Command.Operation,p.Command.EntityId,new(p.Command,WorkspaceOrganizationCommands.Hash(p.Command),DateTimeOffset.UtcNow,p.Snapshot),true,false,0,0,true,false);
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task Alias_preview_binds_normalized_value_and_retained_clear(bool clear)
+    {
+        var id=Guid.NewGuid();var command=Intent(id) with {Kind=WorkspaceOrganizationKind.Project,Operation=clear?WorkspaceOrganizationOperation.Update:WorkspaceOrganizationOperation.Create,Patch=clear?new(ClearAlias:true):new(Name:"Exact <codev>",Alias:" CODEV ")};
+        var snapshot=clear?new WorkspaceOrganizationSnapshot(command.Kind,command.EntityId,command.ExpectedRevision+1,"Retained",true,IsRemoved:true):WorkspaceOrganizationCommands.Apply(command,null);
+        var preview=new WorkspaceOrganizationPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(5),false,command,snapshot,false,false);var altered=false;
+        using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(id):Json(altered?preview with {Snapshot=snapshot with {Alias="wrong"}}:preview))));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        Assert.True((await client.PrepareOrganizationAsync(Guid.NewGuid(),command,default)).Succeeded);
+        altered=true;Assert.False((await client.PrepareOrganizationAsync(Guid.NewGuid(),command,default)).Succeeded);
+    }
+
+    [Fact]
+    public async Task Worker_shaped_saved_view_create_response_is_accepted()
+    {
+        var json = """{"preparedCommandId":"11111111-1111-4111-8111-111111111111","correlationId":"44444444-4444-4444-8444-444444444444","expiresAtUtc":"2099-01-01T00:00:00.000Z","expired":false,"command":{"id":"11111111-1111-4111-8111-111111111111","workspaceId":"22222222-2222-4222-8222-222222222222","expectedRevision":43,"kind":"savedTaskView","operation":"create","entityId":"33333333-3333-4333-8333-333333333333","patch":{"name":"Synthetic list — Cyrillic","categoryId":null,"clearCategory":false,"projectId":null,"position":null,"taskIds":null,"query":{"source":"tasks","filter":{"query":"Заметки Alpha","kind":"todo","state":"active"}}}},"snapshot":{"kind":"savedTaskView","id":"33333333-3333-4333-8333-333333333333","revision":44,"name":"Synthetic list — Cyrillic","isArchived":false,"categoryId":null,"projectId":null,"position":0,"taskIds":null,"query":{"source":"tasks","filter":{"query":"Заметки Alpha","kind":"todo","state":"active"}}},"mayAffectHabitica":false,"savedInCompanion":false}""";
+        var server = WorkspaceTaskApiJson.Deserialize<WorkspaceOrganizationPreview>(json);
+        Assert.True(WorkspaceOrganizationCommands.IsValid(server.Command));
+        Assert.True(WorkspaceOrganizationCommands.Apply(server.Command, null).Equivalent(server.Snapshot));
+        var intent = server.Command with { Id=Guid.NewGuid(), EntityId=Guid.NewGuid() };
+        using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(intent.WorkspaceId):new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(json)})));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");
+        await client.ConnectAsync(Credentials,default);
+        var result=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);
+        Assert.True(result.Succeeded,result.Message);
+    }
+
     [Fact]
     public async Task Creation_binds_all_intent_fields_and_recovers_original_native_receipt_after_lost_acknowledgement()
     {
@@ -52,6 +80,32 @@ public sealed class WorkspaceOrganizationClientTests
         if(mutation=="receipt")preview=preview with {SavedInCompanion=true,Receipt=Receipt(preview) with {Entry=Receipt(preview).Entry with {Snapshot=preview.Snapshot with {Query=other}}}};
         using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(id):Json(preview))));var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
         var result=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);Assert.Equal(mutation=="none",result.Succeeded);if(mutation!="none"){Assert.True(result.OutcomeUnknown);Assert.Null(result.Value);}
+    }
+
+    [Theory]
+    [InlineData("none")][InlineData("approval")][InlineData("tombstone")][InlineData("archive")]
+    public async Task Project_removal_binds_exact_approval_and_tombstone_and_recovers_original_receipt(string mutation)
+    {
+        var id=Guid.NewGuid();var current=new WorkspaceOrganizationSnapshot(WorkspaceOrganizationKind.Project,Guid.NewGuid(),1,"Retained project",true);
+        var intent=new WorkspaceOrganizationCommand(Guid.NewGuid(),id,1,WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,current.Id,new(Removal:new([Guid.NewGuid()],[Guid.NewGuid()])));
+        var command=intent with {Id=Guid.NewGuid()};var preview=new WorkspaceOrganizationPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,current),false,false);
+        preview=mutation switch {"approval"=>preview with {Command=command with {Patch=new(Removal:new([],[]))}},"tombstone"=>preview with {Snapshot=preview.Snapshot with {IsRemoved=false}},"archive"=>preview with {Snapshot=preview.Snapshot with {IsArchived=false}},_=>preview};
+        var originalReceipt=Receipt(preview);
+        using var vault=Vault();using var http=new HttpClient(new Handler(async request=>{
+            if(request.RequestUri!.AbsolutePath=="/connect")return Connection(id);
+            using var body=JsonDocument.Parse(await request.Content!.ReadAsStringAsync());
+            if(body.RootElement.GetProperty("tool").GetString()=="prepare_organization_command")
+            {
+                var args=body.RootElement.GetProperty("arguments");Assert.Equal(current.Id,args.GetProperty("entityId").GetGuid());Assert.Equal(1,args.GetProperty("expectedRevision").GetInt32());
+                Assert.Equal(intent.Patch!.Removal!.TaskIds[0],args.GetProperty("patch").GetProperty("removal").GetProperty("taskIds")[0].GetGuid());return Json(preview);
+            }
+            return Json(originalReceipt);
+        }));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var prepared=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);Assert.Equal(mutation=="none",prepared.Succeeded);
+        if(mutation!="none"){Assert.True(prepared.OutcomeUnknown);Assert.Null(prepared.Value);return;}
+        var saved=await client.AcceptOrganizationAsync(prepared.Value!,default);Assert.True(saved.Succeeded);Assert.True(saved.Value!.Entry.Snapshot.IsRemoved);Assert.Equal(0,saved.Value.AcceptedEventCount);
+        var original=await client.ReadOrganizationAsync(preview.PreparedCommandId,default);Assert.True(original.Succeeded);Assert.Equal(WorkspaceTaskApiJson.Serialize(saved.Value),WorkspaceTaskApiJson.Serialize(original.Value));
     }
 
     [Theory]

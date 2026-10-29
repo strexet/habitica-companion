@@ -1,0 +1,156 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic diagnostics-compact-many</title><link rel="stylesheet" href="/mud.css"><link rel="stylesheet" href="/app.css"></head><body><main style="padding:16px;max-width:1100px;margin:auto"><p>Synthetic Razor output. Component interactions are qualified separately.</p><div class="diagnostics-shell"><section class="card-surface dashboard-hero"><div><p class="section-label">Diagnostics</p>
+            <h1>Diagnostics</h1>
+            <p class="panel-copy">
+                Use this page for safe refresh checks, optional gear verification, quick Habitica account reads, and recent app messages.
+            </p></div></section>
+
+    <section class="diagnostics-grid"><div class="diagnostics-main"><article class="card-surface diagnostics-panel"><p class="section-label">Overview</p>
+                <h2>Current saved data</h2>
+                <div class="diagnostics-overview-grid"><span class="ui-pill">Sign-in Offline only</span>
+                    <span class="ui-pill">Warnings 6</span>
+                    <span class="ui-pill">User Missing</span>
+                    <span class="ui-pill">Tasks Missing</span>
+                    <span class="ui-pill">Party Missing</span>
+                    <span class="ui-pill">Synced Never</span></div></article>
+
+            <article class="card-surface diagnostics-panel"><p class="section-label">Safe checks</p>
+                <h2>Safe refresh checks</h2>
+                <p class="panel-copy">
+                    Refreshes supported Habitica data one step at a time using a small number of requests.
+                </p>
+                <button blazor:onclick="27" type="button" disabled="" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Run safe live tests
+                </span></button></article>
+
+            <article class="card-surface diagnostics-panel warning-card"><p class="section-label">Guarded tests</p>
+                <h2>Optional gear check</h2>
+                <p class="panel-copy">
+                    This reversible check temporarily changes equipped battle gear, verifies the change, and restores the original loadout.
+                </p>
+                <label class="checkbox-row"><input name="acknowledge-gear-test" type="checkbox" blazor:onchange="1">
+                    <span>I understand this temporarily changes equipped battle gear during the check.</span></label>
+                <button blazor:onclick="28" type="button" disabled="" class="mud-button-root mud-button mud-button-filled mud-button-filled-secondary mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                    Run reversible gear test
+                </span></button></article>
+
+            <article class="card-surface diagnostics-panel"><p class="section-label">Quick account reads</p>
+                <h2>Choose what to inspect</h2>
+                <div class="action-row"><button data-testid="preset-user-account" blazor:onclick="29" type="button" class="mud-button-root mud-button mud-button-filled mud-button-filled-default mud-button-filled-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check account
+                    </span></button>
+                    <button blazor:onclick="30" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check inventory
+                    </span></button>
+                    <button blazor:onclick="31" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check tasks
+                    </span></button>
+                    <button blazor:onclick="32" type="button" class="mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">
+                        Check party
+                    </span></button></div></article></div>
+
+        <aside class="card-surface diagnostics-console"><div class="task-group-header"><div><p class="section-label">App messages</p>
+                    <h2>Recent app messages</h2></div>
+                <div class="action-row"><button data-layout-primary="true" data-testid="copy-diagnostics-jsonl" blazor:onclick="33" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Copy all messages</span></button>
+                    <button data-layout-primary="true" data-testid="download-diagnostics-jsonl" blazor:onclick="34" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Download messages</span></button>
+                    <button blazor:onclick="35" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Clear messages</span></button></div></div><div class="diagnostics-filter-row"><label class="field-row compact"><span>Feature</span>
+                    <select class="app-input" value="" blazor:onchange="2"><option value="">All features</option><option value="Inventory">Inventory</option><option value="Sync">Sync</option></select></label>
+
+                <label class="field-row compact"><span>Severity</span>
+                    <select class="app-input" value="" blazor:onchange="3"><option value="">All severities</option><option value="Success">Success</option><option value="Warning">Warning</option></select></label>
+
+                <label class="field-row compact"><span>Mode</span>
+                    <select class="app-input" value="" blazor:onchange="4"><option value="">All modes</option><option value="Local">Local</option></select></label></div>
+
+            <details class="diagnostics-bundle"><summary>Share diagnostics with Codex or ChatGPT</summary>
+                <div class="diagnostics-bundle-content"><p class="panel-copy">Preview up to 100 filtered messages, then copy or download the reviewed bundle. Attach it to Codex or ChatGPT only when needed. Nothing is uploaded automatically; logs from other devices and server receipts are separate.</p>
+                <button data-layout-primary="true" data-testid="preview-diagnostics-bundle" blazor:onclick="36" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple" blazor:onclick:stoppropagation="" blazor:elementreference=""><span class="mud-button-label">Preview diagnostic bundle</span></button></div></details>
+
+            <section class="diagnostic-sharing diagnostics-bundle-content" aria-label="Shared diagnostics"><h3>Agent access to shared diagnostics</h3>
+    <p class="panel-copy">Source: this exporting browser profile only. No device identifier is collected. Server operators and agents granted diagnostics.read can read an explicitly uploaded sanitized copy after separate consent. Other devices, raw provider logs and unshared history remain unavailable.</p>
+    <p class="panel-copy">Up to 100 entries per bundle; 2000 event rows and 1 MiB charged storage per profile. Metadata and indexed copies count toward the quota. Shared records expire within seven days of preparation. Revocation blocks reads immediately; scheduled physical cleanup and provider recovery history are separate.</p><p role="status">Connect the intended cloud Workspace in Settings to use this channel. Manual copy/download remains available.</p></section>
+
+            <p class="diagnostics-copy-hint">Click or tap a message to copy it. Open Details to inspect.</p><div class="diagnostics-log-list" aria-label="Recent app messages"><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="5"><span class="diagnostics-log-heading"><time datetime="2026-10-19T12:00:00.0000000+00:00">10/19/2026 7:00 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-f12f4ca1e8e6c6e3605fc3d380966849c0ea48d6fb9e0b8b136069814c73dc32","occurredAtUtc":"2026-10-19T12:00:00+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="6"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:59.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-5e2d5d1e58e94d7607e0745cd3e612c4a358fc93f37fc5ab1fed8d04bbf7ce77","occurredAtUtc":"2026-10-19T11:59:59+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="7"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:58.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-edda7b47233f9790fcc6d116d0a0c0eac38a5d6e44b7cf0c002c6d30bfa61e74","occurredAtUtc":"2026-10-19T11:59:58+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="8"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:57.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-6e18ec763c0751ffab6eddca795cf9a03b16c59b30cc266b9281a23a55897359","occurredAtUtc":"2026-10-19T11:59:57+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="9"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:56.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-75fd4a268b09c13ab16af6af68987296498cea8f18054d63d7d26a00714f8d33","occurredAtUtc":"2026-10-19T11:59:56+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="10"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:55.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-b7c2e52d90733be990c46f507e7ea3151bba2e1fd656be8695502ce2c5de4cd3","occurredAtUtc":"2026-10-19T11:59:55+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="11"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:54.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-05cf6326adfd4b14809361fa0a8d2b2271f58e707147e94cb8d02b6a05845d69","occurredAtUtc":"2026-10-19T11:59:54+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="12"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:53.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-29fd7f922bf17266ec390af322024daf75fa91133b8fb25049b4dc66723a6308","occurredAtUtc":"2026-10-19T11:59:53+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="13"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:52.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-92d11bcc469c24d37a908c037f5b3caa0f95cb6716e8ae4d357741a7a0d7edb8","occurredAtUtc":"2026-10-19T11:59:52+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="14"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:51.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-7e7768dc6b4b94a8c5df48261195015567ef500557c66a62a9f57e373a98df09","occurredAtUtc":"2026-10-19T11:59:51+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="15"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:50.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity count-pill">Warning</span>
+                                    <strong>cloud-sync-upload</strong></span>
+                                <span>cloud sync upload: Warning.</span>
+                                <span class="diagnostics-log-context">Sync · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-14f026c4a66a5520225e9dc7f3697dea4c3ed6a4208ac57c64a8b57f73c84a20","occurredAtUtc":"2026-10-19T11:59:50+00:00","featureArea":1,"operation":"cloud-sync-upload","severity":2,"mode":0,"message":"cloud sync upload: Warning.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div><div class="diagnostics-log-row"><button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="false" title="Copy message" blazor:onclick="16"><span class="diagnostics-log-heading"><time datetime="2026-10-19T11:59:49.0000000+00:00">10/19/2026 6:59 PM</time>
+                                    <span class="diagnostics-log-severity success-pill">Success</span>
+                                    <strong>inventory-equip-item</strong></span>
+                                <span>inventory equip item: Success.</span>
+                                <span class="diagnostics-log-context">Inventory · Local</span></button>
+                            <details class="diagnostics-log-details"><summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">sectionStatuses=user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped requestCount=1</code>
+                                <pre>{"id":"log-8a18d2d839f05cf6635a52959edf64867c5efe2905150cb0706d0344c4e68482","occurredAtUtc":"2026-10-19T11:59:49+00:00","featureArea":3,"operation":"inventory-equip-item","severity":1,"mode":0,"message":"inventory equip item: Success.","metadata":{"sectionStatuses":"user-profile:Success, tasks-current:Success, inventory-current:Success, party-current:Success, diagnostics:Skipped","requestCount":"1"},"context":null}</pre></details></div></div></aside></section></div></main><script src="/colorSchemes.js"></script><script type="module" src="/qualification-frame.mjs"></script></body></html>

@@ -1,0 +1,567 @@
+{
+  "rows": [
+    {
+      "caseId": "1-846c5241-f2e7-41a5-bb06-6d8307133067",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 100.5,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.20000004768371585,
+            "matrixElapsedMs": 54.29999995231629,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.5,
+            "matrixElapsedMs": 57.09999990463257,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.5,
+            "matrixElapsedMs": 57.29999995231629,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.5,
+            "matrixElapsedMs": 57.29999995231629,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.599999904632568,
+            "matrixElapsedMs": 57.29999995231629,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.299999952316284,
+            "matrixElapsedMs": 100.20000004768372,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [],
+            "frameElapsedMs": 8.400000095367432,
+            "matrixElapsedMs": 100.29999995231628,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 8.400000095367432,
+            "matrixElapsedMs": 100.40000009536745,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 8.5,
+            "matrixElapsedMs": 100.40000009536745,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 47.20000004768371,
+            "matrixElapsedMs": 100.40000009536745,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 3,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "overflow",
+          "scrollWidth": 2313,
+          "width": 345
+        }
+      ],
+      "fixture": "/reminder-unknown-granted.html",
+      "minimumMeasuredContrast": 6.944590717243673,
+      "operationClass": "executed_control",
+      "primaryControls": 2,
+      "qualification": "measured",
+      "scrollWidth": 2313,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 18,
+      "theme": "gryphy-light",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "2-de8b29b3-3214-4d36-8d83-e3f89a6384a2",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 26,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.09999990463256836,
+            "matrixElapsedMs": 13.899999856948853,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4,
+            "matrixElapsedMs": 18.899999856948853,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4,
+            "matrixElapsedMs": 19,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 6.700000047683716,
+            "matrixElapsedMs": 25.700000047683716,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 6.799999952316284,
+            "matrixElapsedMs": 25.799999952316284,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 7.3999998569488525,
+            "matrixElapsedMs": 25.799999952316284,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [],
+            "frameElapsedMs": 7.5,
+            "matrixElapsedMs": 25.799999952316284,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 7.5,
+            "matrixElapsedMs": 25.799999952316284,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 7.5,
+            "matrixElapsedMs": 25.899999856948853,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 12.599999904632568,
+            "matrixElapsedMs": 25.899999856948853,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 3,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "overflow",
+          "scrollWidth": 4608,
+          "width": 345
+        }
+      ],
+      "fixture": "/reminder-unknown-granted.html",
+      "minimumMeasuredContrast": 6.944590717243673,
+      "operationClass": "executed_control",
+      "primaryControls": 2,
+      "qualification": "measured",
+      "scrollWidth": 4608,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 200,
+      "textSamples": 18,
+      "theme": "gryphy-light",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "3-111a1758-c9ea-44ae-a8e1-81b24f459862",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 22.09999990463257,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0,
+            "matrixElapsedMs": 12.399999856948853,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 2.8000001907348633,
+            "matrixElapsedMs": 15.700000047683716,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 2.8000001907348633,
+            "matrixElapsedMs": 15.700000047683716,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 2.9000000953674316,
+            "matrixElapsedMs": 15.799999952316284,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 2.9000000953674316,
+            "matrixElapsedMs": 15.799999952316284,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 5.900000095367432,
+            "matrixElapsedMs": 21.899999856948853,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 6.300000190734863,
+            "matrixElapsedMs": 22,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 6.400000095367432,
+            "matrixElapsedMs": 22.09999990463257,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 6.400000095367432,
+            "matrixElapsedMs": 22.09999990463257,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 9.600000143051147,
+            "matrixElapsedMs": 22.09999990463257,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 3,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "overflow",
+          "scrollWidth": 2313,
+          "width": 345
+        }
+      ],
+      "fixture": "/reminder-unknown-granted.html",
+      "minimumMeasuredContrast": 7.012741274813401,
+      "operationClass": "executed_control",
+      "primaryControls": 2,
+      "qualification": "measured",
+      "scrollWidth": 2313,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 100,
+      "textSamples": 18,
+      "theme": "gryphy-dark",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    },
+    {
+      "caseId": "4-6d2ce816-9a9c-41e4-870e-b98ba6bdf44a",
+      "clientWidth": 345,
+      "controllerDiagnostics": {
+        "caseLimitMs": 5000,
+        "ignoredMessages": 0,
+        "matrixElapsedMs": 33.5,
+        "measurementLimitMs": 5000,
+        "phases": [
+          {
+            "frameElapsedMs": 0.20000004768371585,
+            "matrixElapsedMs": 24.90000009536743,
+            "phase": "theme",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3,
+            "matrixElapsedMs": 26.59999990463257,
+            "phase": "theme",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 3,
+            "matrixElapsedMs": 26.700000047683716,
+            "phase": "fonts",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3.5,
+            "matrixElapsedMs": 26.700000047683716,
+            "phase": "fonts",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 3.5,
+            "matrixElapsedMs": 26.799999952316284,
+            "phase": "frame",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 3.900000095367432,
+            "matrixElapsedMs": 33.200000047683716,
+            "phase": "frame",
+            "status": "complete"
+          },
+          {
+            "details": [
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-primary mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-bottom-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-left-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-right-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              },
+              {
+                "classes": "mud-button-root mud-button mud-button-outlined mud-button-outlined-default mud-button-outlined-size-medium mud-ripple",
+                "endTime": 250,
+                "name": "border-top-color",
+                "pending": false,
+                "rate": 1,
+                "settlement": "css-transition-final-state",
+                "state": "finished",
+                "target": "BUTTON",
+                "time": 250
+              }
+            ],
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 33.40000009536743,
+            "phase": "animations",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 33.5,
+            "phase": "animations",
+            "status": "complete"
+          },
+          {
+            "frameElapsedMs": 4.1000001430511475,
+            "matrixElapsedMs": 33.5,
+            "phase": "measurement",
+            "status": "waiting"
+          },
+          {
+            "frameElapsedMs": 9.300000190734863,
+            "matrixElapsedMs": 33.5,
+            "phase": "measurement",
+            "status": "complete"
+          }
+        ],
+        "startupLimitMs": 5000
+      },
+      "controls": 3,
+      "disabledSkipped": 0,
+      "errors": [
+        {
+          "kind": "overflow",
+          "scrollWidth": 4608,
+          "width": 345
+        }
+      ],
+      "fixture": "/reminder-unknown-granted.html",
+      "minimumMeasuredContrast": 7.012741274813401,
+      "operationClass": "executed_control",
+      "primaryControls": 2,
+      "qualification": "measured",
+      "scrollWidth": 4608,
+      "scrollableControls": [],
+      "seed": null,
+      "textPercent": 200,
+      "textSamples": 18,
+      "theme": "gryphy-dark",
+      "unqualifiedSurfaces": [],
+      "width": 360
+    }
+  ],
+  "summary": "{\"cases\":1260,\"errors\":504,\"harnessErrors\":0,\"prerequisiteUnavailable\":0,\"measurementUnavailable\":0,\"unqualifiedSurfaces\":0,\"errorKinds\":[\"overflow\"]}"
+}

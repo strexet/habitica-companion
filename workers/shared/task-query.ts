@@ -41,7 +41,7 @@ export function queryTasks(document:WorkspaceDocument,input:unknown,eligible?:(t
    ||filter.priority!==undefined&&task.priority!==filter.priority||filter.projectId!==undefined&&task.projectId!==filter.projectId
    ||filter.labelId!==undefined&&!task.labelIds.includes(filter.labelId)
    ||!within(task.plannedDate,filter.plannedFrom,filter.plannedTo)||!within(task.deadline,filter.deadlineFrom,filter.deadlineTo))continue;
-  const category=task.categoryId??(task.projectId?projects.get(task.projectId)?.categoryId:null);
+  const category=task.categoryId??(task.projectId?(projects.get(task.projectId)?.isRemoved?null:projects.get(task.projectId)?.categoryId):null);
   if(filter.categoryId!==undefined&&category!==filter.categoryId||filter.projectionState!==undefined&&(mappings.get(task.id)??'unlinked')!==filter.projectionState
    ||query&&!fold(task.text).includes(query)&&!fold(task.notes??'').includes(query))continue;
   if(matchedCount++>=offset&&tasks.length<limit)tasks.push(task);

@@ -1,0 +1,21 @@
+{
+  "version": "ordinary-task-intent-v1",
+  "scope": "Expected guidance and synthetic workflow cases; real model activation and host prompts remain unmeasured.",
+  "cases": [
+    {"id":"create-todo","operation":"createTodo","intent":"Create a Todo to water the garden.","expected":"prepare-check-accept","extraAgentApprovalExpected":false},
+    {"id":"create-daily","operation":"createDaily","intent":"Create the selected Daily with the exact supplied UTC recurrence.","expected":"prepare-check-accept","extraAgentApprovalExpected":false},
+    {"id":"create-habit","operation":"createHabit","intent":"Create the specified Habit with the requested up/down fields.","expected":"prepare-check-accept","extraAgentApprovalExpected":false},
+    {"id":"exact-edit","operation":"updateTask","intent":"Rename the exact selected task to Water the garden.","expected":"prepare-check-accept","extraAgentApprovalExpected":false},
+    {"id":"ambiguous-name","operation":"updateTask","intent":"Rename the garden task; two exact candidates exist.","expected":"clarify-identity","extraAgentApprovalExpected":null},
+    {"id":"unexpected-effect","operation":"updateTask","intent":"Change only the exact task deadline; the preview includes an unrelated field or effect.","expected":"review-unexpected-change","extraAgentApprovalExpected":null},
+    {"id":"read-only","operation":null,"intent":"Show task details.","expected":"read-only","extraAgentApprovalExpected":null},
+    {"id":"missing-consent","operation":"createTodo","intent":"Create a Todo; task-write or account consent is unavailable.","expected":"normal-authorization-flow","extraAgentApprovalExpected":null},
+    {"id":"uncertain-write","operation":"updateTask","intent":"The exact accepted edit lost its acknowledgement.","expected":"recover-original-command","extraAgentApprovalExpected":false},
+    {"id":"stale-revision","operation":"updateTask","intent":"The server definitively rejects a stale preview.","expected":"reread-validate-same-intent","extraAgentApprovalExpected":null},
+    {"id":"delete","operation":"deleteTask","intent":"Archive the exact task.","expected":"existing-consequential-review","extraAgentApprovalExpected":null},
+    {"id":"complete","operation":"completeTask","intent":"Complete the selected task.","expected":"existing-consequential-review","extraAgentApprovalExpected":null},
+    {"id":"score","operation":"scoreHabit","intent":"Record a negative Habit score.","expected":"existing-consequential-review","extraAgentApprovalExpected":null},
+    {"id":"cron","operation":"cron","intent":"Start a new Habitica day.","expected":"existing-consequential-review","extraAgentApprovalExpected":null},
+    {"id":"bulk","operation":"bulk","intent":"Change all matching tasks.","expected":"existing-consequential-review","extraAgentApprovalExpected":null}
+  ]
+}

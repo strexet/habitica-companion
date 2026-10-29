@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-25",
+  "task_id": "T-94f00380-c668-4b87-8b6d-4a50f947d593",
+  "target": "https://habitica-companion.pages.dev",
+  "source_branch": "develop",
+  "source_head": "adbfcc55981444876c487a3bd50b0016b36bddaa",
+  "source_has_uncommitted_auth_changes": true,
+  "backend_build_hash": "7e9a058b68d5a56d65c7b3c7f196e91b029b88301637f9ad53711ee65a712957",
+  "worker_versions": {
+    "auth": "026015a0-e2d6-4f23-92eb-a1f427b6c6d9",
+    "workspace": "9319ee20-304d-4279-b73a-914922bfb504",
+    "mcp": "fabfa8f8-1321-4242-83d1-a0b546ca2e66"
+  },
+  "pages": {
+    "deployment_id": "a7851771-691d-4dc8-b177-5a58ca73a6d1",
+    "url": "https://a7851771.habitica-companion.pages.dev",
+    "production_branch": "main"
+  },
+  "local_checks": {
+    "auth_worker_tests_passed": 155,
+    "auth_worker_tests_failed": 0,
+    "settings_component_tests_passed": 13,
+    "settings_component_tests_failed": 0,
+    "auth_worker_build": "pass",
+    "frontend_production_build": "pass",
+    "three_production_worker_dry_runs": "pass",
+    "future_document_validation": "pass",
+    "diff_check": "pass",
+    "consent_visual_review": "synthetic dark and light desktop rendering; constrained 390px column and enlarged-text rendering"
+  },
+  "public_read_only_checks": {
+    "settings_status": 200,
+    "settings_heading": "Codex and ChatGPT",
+    "settings_css_status": 200,
+    "settings_code_card_styles_present": true,
+    "auth_health": "authorization enabled",
+    "mcp_health": "Auth service reachable",
+    "oauth_issuer": "https://habitica-companion-auth.strexet.workers.dev",
+    "oauth_supported_scope_count": 12,
+    "oauth_pkce": "S256",
+    "unauthenticated_authorize_error": "400 styled HTML with restart link"
+  },
+  "limitations": [
+    "No new real Codex or ChatGPT connection was approved after publication.",
+    "Synthetic screenshots approximate narrow and enlarged views; physical mobile browser and assistive-technology checks remain open.",
+    "A later automatic Git deployment from main can replace this manually published dirty develop artifact."
+  ]
+}

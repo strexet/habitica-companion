@@ -1,0 +1,8 @@
+{
+  "field": "list_companion_tasks.description",
+  "reason": "Identify connected-workspace task review and narrow project/agenda/history alternatives with a read-only boundary.",
+  "observedAt": "2026-10-26",
+  "corpusSha256": "73b9a680fd5598a1d06a358f5583870c38a449187c0f464c5d2721e732cc6401",
+  "liveSelectionResult": "unrun",
+  "otherFields": "Tool names, schemas, grants and annotations unchanged."
+}

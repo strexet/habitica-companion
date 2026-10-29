@@ -170,6 +170,14 @@ Required behavior:
 
 Do not implement fire-and-forget macro execution, bulk selling, gear switching, or skill casting.
 
+## Required task correspondence
+
+Task and organization changes must follow [required Habitica correspondence](companion-workspace-contract.md#required-habitica-correspondence). Every task and full subtask requires the correct Habitica task; task-bearing groups require native tag mappings. Missing mappings, unsupported task kinds, unavailable consent and paused execution remain explicit integration gaps. Native saves, parent links and project membership never prove Habitica presence or rewards. Agents must inspect actual command receipts and preserve unknown-outcome fences; ordinary reward-free task defaults are defects rather than a product exception.
+
+## Agent tool coverage
+
+When an action is part of an intended Codex or ChatGPT workflow but can only be completed in the Companion browser, record the missing MCP capability as a product bug. Add a scoped agent tool with the same identity checks, review, consent, authorization and original-receipt recovery as the application command. Audit the surrounding workflow for other missing steps and cover parity with contract tests. A one-off browser operation does not close the MCP gap or establish an acceptable permanent agent workflow. Do not expose arbitrary Habitica API passthrough or weaken existing approval boundaries to achieve parity.
+
 ## Optional integration approval boundary
 
 The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) defines the candidate server-side trust boundary. Current PWA sign-in and sync grant no remote credential-storage consent. The repository owner approved the backend/vault contract and selected development capability publication plus bounded own-account Codex live tests on 2026-10-19. Real enrollment retains explicit per-user consent. Party departure remains prohibited; agent party mutations, real Start New Day tests, key operations and independent-user/device qualification remain outside the selected sequence.

@@ -1,0 +1,18 @@
+{
+  "taskId": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+  "status": "implementation-design-under-selected-local-contract",
+  "completedRequiredUnits": ["T-0c8220b8-32cb-4146-a686-311ec22100d5", "T-585977fb-27b2-45fb-9923-058427da448d"],
+  "flow": [
+    "Read exact canonical task/completion and linked mapping from a valid cloud journal; reject archived tasks, unsupported kinds, restored/corrected sources and all unresolved cross-tool effects or active executor ownership.",
+    "Derive companion-completion-score-v1 from the original confirmed completeTask entry and exact scoreUp effect index; select the retained dispatched journal attempt token and verify Auth scoreReceipt against the full source binding and remote identity/fingerprint. Legacy or absent proof is unavailable.",
+    "Prepare an idempotent request-bound source/context review using Auth inspectRecovery. Bind current verified account, task/mapping/completion/source proof, expected revision and expiring Auth review. All resource estimates remain unknown.",
+    "Accept only the exact reviewed command ID under current scopes/consent/gates, epoch and native revision. Reserve a durable original Auth recoverTask request before send and hold a dedicated canonical document fence. Unknown state keeps the fence and permits receipt lookup only.",
+    "Only the original successful recoverTask receipt permits one native restoration/occurrence correction and a retained linked recovery receipt in the same canonical commit. No re-score, reward refund claim, schedule change, next occurrence or party management.",
+    "Get/recover reads preserve original arguments/attempt timestamp and never redispatch after uncertainty. Already known receipts remain readable; account/grant changes cannot authorize a replacement action. Native recovery finalization stays tied to the original approved source and known receipt."
+  ],
+  "plannedSurfaces": ["get_linked_task_recovery", "prepare_linked_task_recovery", "accept_linked_task_recovery", "get_linked_task_recovery_command"],
+  "plannedStorage": "Dedicated workspace_linked_recoveries action table and linked_recovery_fence with a document-update trigger; same original-ID commit can finalize. No remote migration or activation in this task.",
+  "plannedCanonicalExtension": "Optional LinkedTaskRecoveries receipt records with exact source proof, original down attempt and review. Existing TaskRestoration or OccurrenceCorrection stores the causal native transition; typed validators require the paired receipt and zero new projection effects.",
+  "limits": ["Local synthetic implementation only", "No live score/Cron, deployment, device operation or commit", "Legacy/expired/unknown original score proof stays unavailable", "Habitica has no cross-client conditional score transaction; final external race remains explicit"],
+  "remaining": ["Shared/C# canonical receipt and policy", "D1 action orchestration/fence and lifecycle integration", "Reviewed MCP and typed browser adapters", "Synthetic composition, neutral C# fixtures, failures/revocation/no-replay checks", "Documentation, individual acceptance evidence and controller continuation"]
+}

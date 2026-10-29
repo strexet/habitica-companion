@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "introduced_errors": [],
+  "inherited_error_count": 167,
+  "files": [
+    "plugin/skills/habitica-task-management/references/organization-management.md",
+    "skill-tree/documents/features.md",
+    "skill-tree/documents/future.md",
+    "skill-tree/documents/habitica-api.md",
+    "skill-tree/documents/technical.md",
+    "skill-tree/documents/testing.md",
+    "skill-tree/documents/ux-ui-manifest.md"
+  ]
+}

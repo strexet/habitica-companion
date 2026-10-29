@@ -1,0 +1,30 @@
+{
+  "created_ids": [
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d"
+  ],
+  "dispositions": {
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114": {
+      "reason": "Direct owner decisions resolve folder depth and membership. Current model/storage/API/tool/UI inspection supports four independently validated implementation units with explicit technical dependencies and coordination with the existing project Notes UI task.",
+      "status": "promoted"
+    },
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2": {
+      "reason": "Static reinspection confirms acknowledged-count, quota/cooldown, unknown-outcome and original gear recovery controls remain implemented; accepted outcomes T-b89fac23-3ac2-4c64-8560-be7a5d796a81 and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 already cover the feature scope. Fresh loaded PWA build identity and sanitized iPhone evidence remain unavailable; any live reproduction requires a bounded owner profile. No duplicate implementation or deployed incident closure follows. See skill-tree/history/processing/note-folders-2026-10-29/research.md.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+  ],
+  "task_keys": {
+    "folder-cloud": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "folder-mcp": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "folder-model": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "folder-ui": "T-23342106-269e-4cd6-992e-4ff95be3e62d"
+  }
+}

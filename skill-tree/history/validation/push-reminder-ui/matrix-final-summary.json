@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "uniqueCases": 3192,
+  "fixtures": 38,
+  "measuredAttempts": 3314,
+  "themes": [
+    "boss-battle",
+    "generated-calm",
+    "generated-moderate",
+    "gryphy-dark",
+    "gryphy-light",
+    "obsidian-glow",
+    "toxic-swamp"
+  ],
+  "widths": [
+    360,
+    390,
+    430,
+    768,
+    1024,
+    1200
+  ],
+  "textPercent": [
+    100,
+    200
+  ],
+  "errors": 0,
+  "unqualifiedSurfaces": 0,
+  "maximumCaseElapsedMs": 436.09999990463257,
+  "minimumMeasuredContrast": 4.279234284916437,
+  "deltaReplacedFixtures": [
+    "/push-reminders-route.html"
+  ],
+  "deltaAddedFixtures": [
+    "/push-reminders-cue-confirm.html"
+  ],
+  "accounting": "Measured union; the latest168-case delta replaces the84 earlier main-route cases and adds84 cue-confirmation cases. The original300-second run deadline is retained as unavailable, with every missing case independently measured in the remainder. No timing cap was increased."
+}

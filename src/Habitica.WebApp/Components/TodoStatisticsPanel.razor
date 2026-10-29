@@ -1,0 +1,59 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject IAppSessionController Session
+@inject TimeProvider Clock
+@implements IDisposable
+
+<div class="todo-statistics" data-testid="todo-statistics">
+<section class="card-surface todo-stat-section"><div class="task-group-header"><div><p class="section-label">Todo</p><h1>Statistics</h1></div><a href="/tasks" data-layout-primary="true">Open tasks</a></div>
+    <div class="todo-stat-filters"><label class="field-row">Period<select class="app-input" @bind="_period" @bind:after="ChangedFilter" data-testid="stats-period"><option value="Week">Last 7 days</option><option value="Month">Last 30 days</option><option value="Year">Last year</option></select></label><label class="field-row">Through UTC day<input class="app-input" type="date" value="@_day.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)" max="@Today.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)" @onchange="DayChanged" data-testid="stats-day" /></label>
+    <label class="field-row">Task type<select class="app-input" @bind="_kind" @bind:after="ChangedFilter" data-testid="stats-kind"><option value="">All task types</option><option value="Todo">Tasks</option><option value="Daily">Dailies</option><option value="Habit">Habits</option></select></label><label class="field-row">Search current titles or notes<input class="app-input" maxlength="256" @bind="_query" @bind:after="ChangedFilter" data-testid="stats-query" /></label></div>
+    <p>@Filter.FromDay.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) through @_day.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture), inclusive UTC dates.</p><p class="panel-copy">Retained history only. Missing history is unknown; zero retained records never proves zero activity. Daily charts use recorded completion time, separate from the scheduled civil date. No lifetime streak or reward total is inferred.</p>
+</section>
+@if(_error is not null){<p role="alert" class="card-surface todo-stat-section">@_error</p>}
+<section class="card-surface todo-stat-section" aria-label="Companion statistics"><h2>Companion accepted activity</h2><p>@(Todo.Selection is {} source ? $"Selected {source.Source} workspace · revision {Todo.Revision?.ToString()??"unavailable"}" : "No Companion workspace selected"). <a href="/todo/sync" data-layout-primary="true">Choose source or inspect sync</a></p>
+    <label class="field-row">Companion project (current membership)<select class="app-input" @bind="_project" @bind:after="ChangedFilter" data-testid="stats-project"><option value="">All projects</option>@foreach(var p in Todo.Snapshot?.Document.Projects??[]){<option value="@p.Id">@p.Name @(p.IsRemoved?"(removed)":p.IsArchived?"(archived)":"") · @p.Id</option>}</select></label>
+    @if(_canonical is {} c){
+        <p>@c.TaskCount current task(s) match these title, type and project filters.</p>
+        <dl class="todo-stat-metrics"><div><dt>Completion events</dt><dd>@c.Completions</dd></div><div><dt>Todo restorations</dt><dd>@c.Restorations</dd></div><div><dt>Positive Habit events</dt><dd>@c.HabitUp</dd></div><div><dt>Negative Habit events</dt><dd>@c.HabitDown</dd></div></dl>
+        <p>@c.ArchivedEvents retained events have archival flags. Restorations stay separate from recorded completions; neither reverses a claimed Habitica reward.</p>
+        @if(c.UnknownHistoricalTimes>0){<p role="status">@c.UnknownHistoricalTimes imported completion(s) have uncertain historical dates and are excluded from period counts and charts.</p>}
+        @if(c.Completions+c.HabitUp+c.HabitDown==0){<p role="status">No retained dated activity matches this period and current task filters.</p>}
+        <TodoStatisticsChart Title="Companion activity" Values="c.Activity" Description="Recorded completion and positive/negative Habit events; no Habitica cache points are mixed into this chart." />
+        <h3>Habitica effects requested by these commands</h3><p data-testid="stats-effects">@c.ConfirmedEffects confirmed of @c.RequestedEffects requested effects · @c.UnknownCommands unknown command(s) · @c.BlockedCommands blocked command(s).</p><p class="panel-copy">Retained commands accepted in the selected period; historical commands can be absent. Confirmation is the current observed state. Effects include create/update/score, not gold or experience totals. A Companion save alone confirms no game effect.</p>
+        <h3>Current project and goal progress</h3><p class="panel-copy">Current membership and status, not historical as-of progress. Only nonarchived, noncancelled Todos enter denominators. Archived historical tasks remain in activity counts. Search/type/project filters apply to current membership.</p>
+        @if(c.Projects.Count+c.Goals.Count==0){<p>No retained projects or goals.</p>}
+        <div class="todo-stat-progress">@foreach(var row in ProgressRows.Skip(_offset).Take(20)){<article><strong>@row.Name</strong><span>@row.Kind · @row.Done / @row.Total eligible Todos @(row.Archived?"· archived/removed":"")</span>@if(row.Total==0){<span>No eligible Todo denominator.</span>}</article>}</div>
+        @if(ProgressRows.Count>20){<div class="action-row"><span>@(_offset+1)–@Math.Min(_offset+20,ProgressRows.Count) of @ProgressRows.Count progress rows</span><MudButton data-layout-primary="true" Disabled="@(_offset==0)" OnClick="()=>_offset=Math.Max(0,_offset-20)">Previous progress</MudButton><MudButton data-layout-primary="true" Disabled="@(_offset+20>=ProgressRows.Count)" OnClick="()=>_offset+=20">Next progress</MudButton></div>}
+    }else{<p role="status" data-testid="stats-canonical-unavailable">Companion activity is unavailable. Choose and load a workspace in Todo Sync. Unavailable history is not an empty history.</p>}
+</section>
+<section class="card-surface todo-stat-section" aria-label="Habitica cache statistics"><h2>Separate Habitica cache</h2><p>Snapshot: @(Session.State.TaskSnapshot?.RetrievedAtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'",CultureInfo.InvariantCulture)??"unavailable") · @Session.State.TaskFreshness.</p><p class="panel-copy">This cache is separate from Companion. The project filter does not apply here. Current record counts are not historical as-of counts. Cached value changes are neither completion counts nor gold/experience.</p>
+    @if(_habitica is {} h){<dl class="todo-stat-metrics"><div><dt>Current cached tasks</dt><dd>@h.TaskCount</dd></div><div><dt>Current completed Todos</dt><dd>@h.CompletedTodos</dd></div><div><dt>Period history points</dt><dd>@h.HistoryPoints</dd></div><div><dt>Sum of per-task value movement</dt><dd>@(h.PerTaskValueMovement?.ToString("0.##",CultureInfo.InvariantCulture)??"Unavailable")</dd></div></dl><p>@h.TasksWithHistory tasks retain points in this period. Value movement uses first-to-last values within each of @h.TasksWithValueMovement tasks with at least two points; missing segments are unknown.</p>
+        <TodoStatisticsChart Title="Task-history histogram" Values="h.History" Description="Cached Habitica history points in the selected UTC period; retained points do not establish complete coverage." />
+        <TodoStatisticsChart Title="Month activity" Values="h.Months" Description="Six UTC calendar months ending on the selected day; the first month can have incomplete retained history." />
+    }else{<p role="status">Habitica cache unavailable. Sign in and load tasks; no zero totals are substituted.</p>}
+</section>
+</div>
+@code{
+    private StatisticsPeriod _period=StatisticsPeriod.Week;private DateOnly _day;private string _kind="",_query="",_project="";private int _offset;private string? _error,_account;private TodoWorkspaceSelection? _selection;private CanonicalStatistics? _canonical;private HabiticaStatistics? _habitica;
+    private DateOnly Today=>DateOnly.FromDateTime(Clock.GetUtcNow().UtcDateTime);
+    private StatisticsFilter Filter=>new(_day,_period,Enum.TryParse<CompanionTaskKind>(_kind,out var k)?k:null,_query,Guid.TryParse(_project,out var p)?p:null);
+    private IReadOnlyList<(string Name,string Kind,int Done,int Total,bool Archived)> ProgressRows=>(_canonical?.Projects.Select(p=>(p.Name,"Project",p.Completed,p.Eligible,p.Archived)).Concat(_canonical.Goals.Select(g=>(g.Name,"Goal",g.Completed,g.Eligible,g.Archived))).ToArray())??[];
+    protected override void OnInitialized(){_day=Today;_account=Session.State.UserId;_selection=Todo.Selection;Todo.Changed+=Changed;Session.Changed+=Changed;Compute();}
+    private void Changed()=>_ = InvokeAsync(()=>{if(_account!=Session.State.UserId||!Session.State.IsAuthenticated){_account=Session.State.UserId;_project="";_query="";_offset=0;}if(_selection!=Todo.Selection){_selection=Todo.Selection;_project="";_offset=0;}Compute();StateHasChanged();});
+    private void ChangedFilter(){_offset=0;Compute();}
+    private void DayChanged(ChangeEventArgs args){if(DateOnly.TryParseExact(args.Value?.ToString(),"yyyy-MM-dd",CultureInfo.InvariantCulture,DateTimeStyles.None,out var d)&&d.Year>=2&&d<=Today){_day=d;ChangedFilter();}else _error="Choose a valid UTC day through today.";}
+    private void Compute()
+    {
+        _error=null;_canonical=null;_habitica=null;var filter=Filter;
+        try{filter.Validate();}catch(ArgumentException){_error="The statistics filter is unavailable. Review the selected values.";return;}
+        try{if(Todo.Snapshot is {} snapshot)_canonical=TodoStatistics.Read(snapshot,filter);}
+        catch(InvalidOperationException){_error="The selected Companion project or retained history is unavailable. Reload the source before relying on totals.";}
+        try{if(Session.State.TaskSnapshot is {} cache)_habitica=TodoStatistics.Read(cache,filter);}
+        catch(InvalidOperationException){_error=(_error is null?"":_error+" ")+"The Habitica cache could not be read safely.";}
+        _offset=Math.Min(_offset,Math.Max(0,(ProgressRows.Count-1)/20*20));
+    }
+    public void Dispose(){Todo.Changed-=Changed;Session.Changed-=Changed;}
+}

@@ -47,6 +47,10 @@ Responsive review targets:
 
 UI change completion checklist:
 
+The repository rule in `AGENTS.md` requires both a readable light scheme and the dark `obsidian-glow` scheme for every changed UI route, at phone and desktop widths with normal and enlarged text. Keep primary actions and focus/disabled states visibly distinguishable in both variants; record a skipped scheme as unqualified rather than inferring parity.
+
+Task pages must distinguish saved canonical data, stored Habitica identity and confirmed game effects. The shared task panel reports incomplete correspondence across the selected workspace, including completed and archived tasks. Missing group tags remain explicit. The coverage message performs no automatic repair or connection activation; the normal task flow still exposes the tracked integration defects.
+
 - Primary action remains visible or easy to reach.
 - Disabled actions explain their cause when the cause is not obvious.
 - Data freshness remains visible when stale data can make an action unsafe.
@@ -80,6 +84,7 @@ Rules:
 - Disabled controls must keep visible text and borders after a scheme switch; do not express disabled state only through opacity.
 - Built-in scheme changes belong in `ColorSchemeCatalog`; user-created schemes belong in `preferences/colorSchemes`.
 - Keep custom token names stable because saved user schemes and cloud sync depend on them. When adding tokens, backfill old custom schemes from `Alpha` before validating.
+- Secondary filled-button text uses the painted gradient stops when present, rather than the separate accent color. The production release matrix caught and corrected unreadable secondary labels in `obsidian-glow` on Settings and Spells; flat-color buttons retain their existing contrast correction.
 
 Inspiration:
 
@@ -136,7 +141,7 @@ Responsive verification for image work:
 
 The Companion editor uses labelled search, task type, native state, urgency and active Todo stage controls above a bounded list. Filters combine through the canonical query engine. An incompatible type/state clears and disables the stage filter with an explanation. All-task reset and Previous/Next controls remain visible; results announce matching counts and the displayed range, including empty results.
 
-Saved-list selection evaluates the retained definition against the loaded workspace and shows the source, predicates and exact fixed dates. Fixed dates never acquire a Today label. Named lists preserve dependency eligibility and do not copy tasks. Missing, archived or invalid definitions show unavailable with a reset/reload action rather than unrelated fallback results. This surface reads definitions; authoring remains separate.
+Saved-list selection evaluates the retained definition against the loaded workspace and shows the source, predicates and exact fixed dates. Fixed dates never acquire a Today label. Named lists preserve dependency eligibility and do not copy tasks. Missing, archived or invalid definitions show unavailable with a reset/reload action rather than unrelated fallback results. The compact task surface reads definitions; /todo/lists supplies reviewed authoring.
 
 Workspace changes clear filters; revision/query changes return to the first twenty records. Pending command recovery disables list controls and keeps the original preview. Labels and long names wrap in responsive grids, native keyboard controls retain visible focus and list/form targets have a minimum forty-four-pixel height. Component and local layout checks remain separate from actual phone keyboard, assistive technology and human usability qualification.
 
@@ -172,6 +177,7 @@ Files: `src/Habitica.WebApp/Pages/SignIn.razor`
 Current pattern:
 
 - Two-column landing/sign-in layout.
+- Full-width expandable iPhone installation guidance below the sign-in panels, with explicit separate-storage and session-only caveats. Installation requests no notification permission.
 - Trust strip, explicit token handling notes, optional saved credentials, and direct Habitica API settings link.
 
 What works:
@@ -274,8 +280,8 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 Current pattern:
 
 - Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
-- Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions.
-- Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
+- Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions. Intelligence is the initial goal across classes and the invalid-input fallback. Explicit alternate goals survive page refresh notifications while mounted; equipment changes require the separate equip action.
+- Responsive `auto-fit` grids bound minimum tracks by the available width. Inventory headers wrap, gear identity text uses shrinkable tracks and stat pills remain within the identity column. Mobile preset inputs use an automatic flex basis to preserve input height in stacked rows. Long gear names wrap within recommendation cards.
 
 What works:
 
@@ -373,7 +379,7 @@ Current pattern after the latest UI pass:
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, Spend All Mana, cast button, card-local cancel/progress, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression and a collapsed due-Daily mini-list disclosure.
 - Blessing previews keep raw per-member healing as the primary line, show multi-cast totals per member instead of party-wide aggregate HP, and place limited-value or low-need healing warnings close to Cast without disabling normal casting.
-- Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
+- Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths. Spell card/status tracks use zero minimum sizing, narrow spell tracks remain shrinkable, and mana rows wrap when text expands. Cast, Spend All Mana and recommendation controls remain inside visible cards at200-percent text.
 
 What works:
 
@@ -447,6 +453,7 @@ Files: `src/Habitica.WebApp/Pages/SettingsPage.razor`
 Current pattern:
 
 - Action cards for sign out, checks, backup, restore, private sync, and clear local data.
+- Expandable iPhone installation guidance remains available without sign-in. Open Checks uses outlined secondary navigation for readable labels in Obsidian and light schemes; the existing /live-tests route remains unchanged.
 - Import conflict warning with merge, keep-local, use-remote, and section-by-section choices.
 - Per-section cloud sync status rows for succeeded, failed, skipped, excluded, and conflicting sections.
 
@@ -594,7 +601,9 @@ References:
 
 ## Optional ChatGPT Linking
 
-Settings displays a separate optional connection card with server credential-storage disclosure, code expiry, audit metadata limits and a Privacy link. Disabled configuration displays an unavailable message. Available configuration requires sign-in and a consent checkbox before enrollment. Active connection controls generate a linking code or open explicit disconnect/delete confirmation. A visible guide beside the code controls explains Codex `Authenticate`, the browser authorization page, the exact `One-time Companion code` field, `Verify code` and `Allow selected access`. The guide distinguishes the authorization form from MCP server settings and chat, covers the ChatGPT handoff and explains fresh-code recovery after expiry or reuse. Busy state disables duplicate requests; status messages distinguish unavailable codes and pending cleanup. Logout removes tab management state. The Auth page identifies Companion, displays the redirect destination and account label, and asks for selected scope consent. One approval or denial returns to the validated client callback; the form policy includes the validated callback origin alongside Auth without bypassing single-use cookie checks. Existing sign-in remains browser-only. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle requirements.
+Settings displays a separate optional connection card with server credential-storage disclosure, code expiry, audit metadata limits and a Privacy link. Disabled configuration displays an unavailable message. Available configuration requires sign-in and a consent checkbox before enrollment. Active connection controls generate a linking code or open explicit disconnect/delete confirmation. The connected card uses a short Codex/ChatGPT handoff list and a selectable one-time-code card with a copy action, local expiry and manual-copy fallback. The guide distinguishes the browser authorization form from MCP settings and chat and explains fresh-code recovery after expiry or lost browser binding. Busy state disables duplicate requests; logout removes tab management state.
+
+The standalone Auth page shares Companion light/dark visual language through self-contained CSS, identifies the requesting client, return host and Habitica account, and displays every supported permission in grouped rows. Code verification sits next to the code field; the full read-only permission preview follows the code form. After verification, app-requested permissions start checked, other permissions start unchecked and required profile identity stays selected. Concise permission titles keep consequence text visible beside each checkbox; selected-row shading follows the actual checked state while App requested and Available badges show the client's original request. Lost browser binding, invalid/expired code and temporary failure render a branded restart path without exposing untrusted request data. The Auth page follows browser color preference because browser-local Companion palettes do not cross origins. CSS adapts at narrow widths and uses visible keyboard focus. Approval or denial returns to the validated client callback; the form policy includes the validated callback origin without bypassing single-use cookie checks. Existing sign-in remains browser-only. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle requirements.
 
 ## Workspace privacy and portable data controls
 
@@ -606,7 +615,7 @@ Local canonical workspace backups have separate listing, export and confirmed re
 
 The Tasks page exposes the canonical editor through an explicit disclosure button. Browser and cloud sources remain visible, with independent workspace selection, a read-only explanation for frozen or stale copies and separate paused-execution status for restored copies. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
 
-The editor creates Todos, unscheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. Unsupported projection controls are absent for native Daily/Habit creation and archiving.
+The editor creates Todos, explicitly scheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. New Daily/Habit creation carries required game intent; unsupported projection controls remain absent for archiving.
 
 Every save opens a field-level review before confirmation. Native urgency and game difficulty have separate labels. Checklist replacement requires an explicit checkbox; empty replacement clears the list. Completion and Habit-score previews show the affected occurrence or bounded event count and explain possible game effects. Unknown acceptance preserves the original command ID and replaces ordinary cancellation with receipt checking or an original-command retry. Successful canonical saving and projection progress use separate text labels and a bounded recent-history disclosure.
 
@@ -639,7 +648,7 @@ Normal users see existing spell, party and manual Start New Day controls without
 
 ## Canonical lifecycle preview labels
 
-The existing command preview names scheduled occurrence skip, Companion pause and Companion resume explicitly. Occurrence dates and separate zero game-effect state remain visible. The basic action selector does not expose lifecycle controls; mobile lifecycle authoring remains gated separately. Application controller and cloud adapters retain original command identity and skipped-record counts without presenting local pause as a paused Habitica schedule.
+The existing command preview names scheduled occurrence skip, Companion pause and Companion resume explicitly. Occurrence dates and separate zero game-effect state remain visible. Visible recurring row actions open the local native schedule/occurrence/lifecycle editor; hosted and physical-device qualification remain separate. Application controller and cloud adapters retain original command identity and skipped-record counts without presenting local pause as a paused Habitica schedule.
 
 ## Native placement API availability
 
@@ -648,9 +657,9 @@ The command layer and optional MCP expose reviewed native planned-date and categ
 
 ## Native organization authorization disclosure
 
-The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Organization authoring controls remain absent from the production UI; local browser adapters require exact reviewed intent and preserve original receipt recovery after uncertain responses.
+The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Local Projects and Saved lists controls require exact reviewed intent and preserve original receipt recovery after uncertain responses. Hosted and device qualification remains separate.
 
-Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. Detailed saved-list controls remain behind the existing navigation qualification gate.
+Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. The dedicated local Saved lists page presents complete fixed filters and exact review; broader Todo navigation qualification remains separate.
 
 ## Appearance sync feedback and draft recovery
 
@@ -693,3 +702,227 @@ Recent app messages use a bounded scrolling list with single row separators, no 
 ### Explicit agent diagnostic sharing
 
 The collapsed Share diagnostics with Codex or ChatGPT disclosure keeps optional export guidance outside the normal log-reading path. Preview diagnostic bundle creates a bounded filtered snapshot in a selectable wrapping preview. Copy reviewed bundle and Download reviewed bundle appear only after preview. Guidance states the explicit attachment step, local-browser scope and separate server receipts. Filter or session-state changes remove the preview and export actions. Copy/download status uses the existing polite message region and fixed recoverable errors.
+
+## Direct task capture and primary rows
+
+TodoTaskPanel places title and Add together before task rows; Enter in the title submits the native form for review. Primary row Edit, Complete and Habit score actions stay outside disclosure sections. Long notes remain behind a native Notes disclosure; rows wrap and stack at phone widths. More details contains advanced fields, separate planned-date review and explicit archival. A loaded workspace keeps source controls collapsed; unavailable/unselected sources expose the source chooser and reason. Reviews and receipts appear above the editor and preserve a wrapping original-command reference. Review focus moves to the review heading; confirmation/cancellation requests focus back on the title. New Dailies require an explicit supported schedule; completion requires an explicit occurrence date. Shared semantic colors, focus treatment and 44-pixel primary targets apply. The complete Todo sidebar and Today/category navigation remain separate planned composition work.
+
+## Today day groups
+
+Today places the civil-day input, a device-date shortcut and Add task before a compact workspace/review panel. Ordinary scheduled and planned rows stay outside disclosures. Each row labels planned date, deadline, schedule zone and retained occurrence state as applicable; duplicate date reasons share one row. Scheduled Dailies, already recorded occurrences and inactive work have separate headings. Empty data and unavailable evaluation remain distinct. Revision-bound pagination uses visible Previous/Next day rows controls. Native date input and the shared review heading retain keyboard focus; a closed successful/cancelled review returns focus to the day input. All rows use the shared responsive grid and semantic theme tokens.
+
+
+## Inbox and accessible planning agenda
+
+Inbox and Plan expose a labelled native view selector, reference-day input and visible Add task link. Upcoming, Week and Month use chronological agenda rows and Previous/Next period buttons, with explicit inclusive range labels and Monday week boundaries. A manual date input provides keyboard navigation without dragging or a timed calendar. Inbox, Anytime and Overdue explain membership; overdue rows distinguish earlier planning from missed deadlines. Plan / move stays visible beside each row.
+
+The placement editor opens above results and receives heading focus. Planned day remains separate from deadline and recurrence. Existing category/project/section choices use bounded native selectors with visible page controls; selected off-page values remain visible. Labels use an optional disclosure with explicit add/remove controls. Review moves focus to the shared command heading; confirmation/cancellation returns focus to the placement heading. A stale editor retains the draft and offers explicit reload. Close returns focus to the view selector. Rows and placement fields share semantic colors, wrapping layouts and primary touch targets across themes.
+
+
+## Retained task activity
+
+Task history keeps activity type and retained-text search visible at the top. More filters contains labelled UTC-day bounds and the Habit direction filter; active filters keep the disclosure open. Rows show event kind, recorded UTC time, optional Daily civil date, historical/current detail provenance and archival flags in text. Notes and original event/task/command references use native disclosures with wrapping content. A supported Restore Todo action stays visible beside the event; unsupported rows explain the specific reason.
+
+Restoration opens the shared exact-command review and moves focus to the review heading. Confirmation or cancellation returns focus to retained-text search. Original uncertain acceptance remains visible with receipt recovery and blocks another restoration. Shared semantic tokens, responsive rows and primary touch targets apply across themes.
+
+## Removed project presentation
+
+Removed projects stay out of active placement choices. A retained assignment displays Unassigned with a removed-project reference notice; selected metadata retains the exact ID until explicit reassignment. Inbox includes otherwise eligible unscheduled Todos whose former project is removed. Logical removal never completes, moves or hides descendants through a cascading task change. The Projects manager exposes the reviewed native lifecycle with paged reference acknowledgment for removal.
+
+## Bounded descendant task navigation
+
+Tasks and subtasks presents roots or direct children with explicit Expand subtasks buttons. A focused branch exposes Collapse to parent and Expand entire branch; the complete branch remains paged. Rows show parent context, independent project assignment, status and optional notes/dates. Exact task and parent IDs remain in a native References disclosure; move choices and concrete reviews retain visible IDs. Deep levels use a level label without shrinking the content area. Branch actions wrap below task content so enlarged text cannot consume the text column. Archived parents remain navigable anchors with disabled write controls. Project task lists select one project, then preserve clearly labelled cross-project branch context.
+
+Edit, Add subtask, Move and Detach remain visible row actions. Move uses a native paged parent selector with IDs for repeated names and retained off-page selection. Create subtask first reviews an independent Todo and then an exact parent attachment; saved and attached states remain visibly separate. Failed attachment retains the saved Todo and offers explicit retention as independent work. Navigating away before attachment keeps the task independent. No drag gesture is required. Native forms, focusable headings, wrapping text, semantic theme colors and shared primary target sizes apply. Typing does not move focus to a heading.
+
+## Optional project and task organization
+
+Projects places optional metadata management before project task navigation. The kind selector switches flat categories, projects, sections, labels and goals. Create/edit fields remain focused on the selected kind; project category is optional, section project is immutable after creation, and goal membership uses paged Todo choices with the full selected set. Goal progress reports eligible completion counts and explicit unavailable progress for an empty set. Duplicate names show references when selection needs disambiguation. Exact IDs remain visible in concrete native reviews; ordinary row references stay in native disclosures.
+
+Project removal lists twenty affected references per page and requires acknowledgment of every page before fresh confirmation. Archive/removal consequences distinguish metadata visibility from retained tasks/history. Native reviews, original uncertainty/recovery and the selected source remain visible. Pending native work disables fresh task writes; failed refresh requires reloading. Task rows keep Plan / assign project and Organize visible. Workflow state, active stage and dependency replacement use separate reviews. Dormant stage copy explains inactive-state precedence. Native forms and list/keyboard controls supply the complete workflow without dragging or a board. Actions stack below content across readable themes and enlarged text.
+
+## Daily schedule and recurring lifecycle editor
+
+Daily rows expose Schedule / occurrences; Habit rows expose Pause / resume without Daily recurrence fields. Opening the editor moves keyboard focus to the heading. Typing preserves focus. Native labeled fields present only applicable weekly or monthly choices. Full schedule replacement, clearing, exact occurrence completion/skip and pause/resume have separate explicit reviews. New Dailies stay unscheduled until a saved-task schedule is reviewed.
+
+Loaded schedule and task state remain visible. Exact date readiness uses the loaded rule, shows the named rule timezone and distinguishes retained records, unscheduled work, unavailable timezone and inactive state. The schedule-zone current-day shortcut does not use the device timezone; unscheduled work has an explicitly labeled device-date shortcut. Retained history is paged and disclaims historical timezone provenance. Stale context disables fresh changes and offers explicit reload. Pending and uncertain operations retain original recovery controls above the editor. A retained game mapping explains the native-editor limit and points to the separate main completion/effect review. Companion pause copy explicitly disclaims pausing Habitica penalties. Shared theme colors, wrapping content, native keyboard controls and primary target dimensions apply.
+
+
+## Saved-list editor and current results
+
+The dedicated /todo/lists page has one primary heading, a compact explicit workspace/source selector and labelled full-definition fields. Direct task capture links to Saved lists. Results remain a selection of existing tasks, with separate definition and matching-task pagination. Empty matches, unavailable reads and archived definitions have distinct copy. Mapping state never establishes successful game effects. Fixed dates retain explicit fixed labels and never become relative Today filters.
+
+Changing to Unblocked active Todos clears and disables the redundant type/state fields with an explanation. Stage compatibility and exact organization references validate before review. The complete resulting query appears in the saved-list review and in cross-page Projects recovery. Name-only updates preserve prior filters; clearing filters is explicit. Unknown outcomes retain original recovery controls and prevent replacement edits. Confirmed saves retain the original receipt when refresh fails.
+
+Source/account changes clear private editing and selection; revised data requires explicit editor reload before replacement. Opening a definition, editing and reviewing request focus at the relevant heading. Long names, exact references and action rows wrap using shared theme tokens and forty-four-pixel primary targets. Expanded workspace controls use wrapping grid tracks so enlarged text cannot force the source picker across adjacent buttons. Synthetic responsive and keyboard observations remain separate from physical-device and assistive-technology qualification.
+
+## Todo correspondence review
+
+Normal Todo preparations show required game intent even when an older optional projection control supplied false. The concrete review and receipt disclose pending effects, explicit cloud execution prerequisites and confirmed-effect counts. Browser-only capture can save queued intent offline without credentials being uploaded. A saved/pending Todo must not be described as already present or rewarded in Habitica. Capture control simplification and full linking workflows remain separate Ready units; the correspondence boundary does not qualify the deferred UI changes.
+
+## Habit game-intent review
+
+Habit creation review shows Positive (+) and Negative (−) as Enabled/Disabled alongside independent native urgency and game details. Required pending game intent and executor prerequisites remain visible before confirmation. Known disabled scoring directions render disabled primary row actions; backend checks also refuse the corresponding score. Legacy native archive fixtures remain distinct from newly projected Habit capture. No creation-time score or automatic execution follows from the review.
+
+
+## Explicit Daily creation schedule
+
+New Daily capture shows frequency, interval, required start date, fixed timezone and applicable weekday/month-date inputs directly in the form. The initial start date is blank so no schedule is silently selected. Weekly and monthly controls retain draft values when switching frequency. Missing or unsupported rules show an error and prepare no command. The advanced Companion task panel uses the same fields.
+
+Review displays the complete recurrence and requested Habitica creation. The review states that fresh account timezone/day-start verification and separate executor access are required, that creation runs no Cron or historical scoring, and that future missed Dailies may have normal penalties. Fixed zones use UTC or Etc/GMT identifiers; UTC+7 is Etc/GMT-7. Account mismatch blocks projection rather than converting dates. Native historical Daily editing remains separate from linked schedule authoring.
+
+
+## Task linking and rejected preparation
+
+Tasks and retained History events expose a Habitica link action outside disclosure sections. The link editor names the exact current Companion task and separates counterpart creation/verification from existing-record adoption. Historical/archived tasks and existing Dailies do not offer automatic new-copy creation. An explicit cloud prerequisite replaces unavailable browser adoption controls. Review compares identities and states; optional details expose both notes and schedule/date differences without claiming synchronization.
+
+Definitively rejected preparation offers Return to editing and Cancel rejected request while retaining the draft. Uncertain preparation offers original-preview recovery and no cancellation. Uncertain command acceptance retains original receipt controls. Uncertain adoption keeps the original comparison, enables Recover original link receipt and disables cancellation and source/type switching. The advanced task panel keeps recovery outside disabled editing fields. A confirmed link with failed refresh requires reload before another edit. Link editor headings receive focus; known-preview cancellation returns to normal task controls.
+
+
+## Required game intent and visible readiness
+
+Normal capture and the advanced task panel omit optional Habitica projection checkboxes. Creation, field edits and activity request required correspondence by default. Readiness text appears after primary capture, preserving title/Add placement; compact task review surfaces also display source/execution prerequisites. Browser capture waits for separate cloud consent and execution. Unverified status, unavailable execution, paused execution and a verified enabled observation remain distinct. No observation alone confirms a game effect.
+
+New Habit capture offers positive/negative direction checkboxes in advanced game details; both default enabled and the review prints exact values. Native urgency and game difficulty retain independent fields. Incompatible Todo-only deadlines and Habit checklists are not offered for unrelated kinds. Activity review identifies the exact affected task and warns when counterpart creation/recovery precedes scoring. Explicit native schedule-only/lifecycle controls retain separate wording and never imply pausing Habitica penalties. Pending and unknown receipts remain unconfirmed; accepted canonical completion is not displayed as confirmed rewards.
+
+
+## Tag coverage data boundary
+
+Todo coverage now evaluates stored tag identities only against the signed-in account and keeps recorded membership confirmation separate. A missing/mismatched expected account, stale desired metadata or unknown result cannot display verified tag coverage. Existing missing-group counts include pending/review identities. The model milestone changes no visual layout or navigation. Dedicated tag review/recovery controls and full membership derivation remain the following tasks; stored identity never proves fresh upstream state or game rewards.
+
+
+## Tag permission disclosure and observation recovery
+
+The standalone Auth approval page presents tag access separately from native organization/task permissions. The disclosure explains the additional Companion consent, reviewed native tag metadata, preserved unrelated tags and absence of automatic tag deletion or gameplay permission. Workspace identity reports validated scope, but the following tag UI milestone owns account consent controls and canonical tag review/recovery entrypoints.
+
+A recovered metadata observation must be described as an original send with uncertain outcome and a matching current state. Approval records the reviewed observed state without repeating the write; missing identity, changed names, lost unrelated membership or expired/revoked review cannot be presented as confirmed original execution. The secure standalone Auth page retains browser-native colors rather than reading PWA theme preferences across origins. Font sizing follows relative units so increased root text size affects the disclosure and controls. Actual host/device authorization remains separate from synthetic page qualification.
+
+## Tag reconciliation review boundary
+
+Native organization and task previews can return tagProjection with the full changed group selection, removedTaskIds, archive retention and separate consent/scope readiness. Agent instructions require presenting the tag metadata with the original canonical preview. Native saved state and tag metadata confirmation remain separate from gameplay rewards. Missing authority or a changed review context preserves native capture with an explicit tag review gap.
+
+The backend milestone adds no browser controls or visual pages. The next tag UI milestone must expose separate consent, complete review, adoption and original unknown-result recovery before the backend is published. Existing portable coverage remains an audit of stored evidence; an older source revision can require review without scheduling another automatic write.
+
+
+## Group tag consent and recovery
+
+Settings and Todo Sync expose an unverified-per-tab consent state with explicit Check tag consent and Check tag coverage actions. Enabling tag metadata requires a separate disclosure checkbox; agent permission and background execution remain independent. Group rows show identity, membership and missing/retained task coverage. Exact native IDs distinguish duplicate-name candidates; candidate selection opens a review without acceptance.
+
+Membership previews expose complete twenty-reference pages and require every page before confirmation. Existing task/organization previews use the shared tag metadata review component. Review headings receive keyboard focus. Unknown acceptance retains the original ID and blocks replacement while offering original receipt lookup and explicit original acceptance retry. A proven terminal-unaccepted original displays the closed identity and permits a fresh complete review. Missing receipts, prepared records, generic refusals and unavailable evidence keep the uncertainty fence. Original native unknown work offers a separate observation review. Buttons and long references use shared theme/layout primitives; normal schemes require readable contrast and primary targets under the common matrix.
+
+
+## Checklist conversion review contract
+
+Conversion backend previews expose full source descriptions, explicit active/completedArchived mapping for every item, exact selected target snapshots, new capture count and complete tag metadata intent. Duplicate names require exact selection. Deferred historical matches remain visible gaps. Reviewed canonical capture, stored correspondence and actual native verification use separate labels. Missing receipt never means rejection; repeat only the original request/command identity. Projects and checklist Todos now open /todo/convert. The browser uses explicit per-item lifecycle/action choices, paginated exact target candidates and full source/target descriptions. Each ten-item review page requires acknowledgement; separate tag changes retain separate complete-page review. Review headings receive focus. Source status pages distinguish placement, stored counterpart coverage and original pending commands, including historical gaps. Navigation preserves the original review, and unknown acceptance offers original receipt lookup or explicit same-command retry. Current/frozen source descriptions remain visible after edits; accepted conversions refuse unsupported amendments. Source retirement opens a separate exact-impact page; conversion approval alone never deletes the source. Shared input/button/layout/theme primitives retain long-content wrapping and normal-scheme contrast.
+
+
+## Converted source cleanup review
+
+The conversion status links to /todo/retire/{ConversionId:guid}. The cleanup page shows exact source/native IDs, full source description, project, verified replacement progress and complete ten-item review pages. Every page requires acknowledgement, followed by a separate irreversible-deletion checkbox. The primary destructive button remains disabled until ready, unexpired and fully reviewed. Already-absent source archival uses a distinct label. Review headings receive focus; shared controls and surfaces inherit the active scheme.
+
+Unknown dispatch preserves the original command across navigation, disables another deletion and exposes original receipt lookup. Explicit observed-absence reconciliation requires a separate uncertainty acknowledgement. Confirmed outcomes show originalReceipt, alreadyAbsent or observedAbsentAfterUnknown and retain the source/history audit. Canonical refresh follows confirmed cleanup without losing the receipt. An original-ID recovery field supports page reload. Account/workspace changes discard private drafts and late responses. Source retirement history is not presented as an ordinary source edit; unrelated source amendments retain the existing refusal. No hosted or physical-device qualification follows from synthetic rendering.
+
+
+## Bulk-spell result presentation
+
+Spells renders the last spell operation in a persistent status surface above the cards. The result shows acknowledged/requested counts, readable failed stage, independent gear cleanup and snapshot refresh state, uncertainty and observed cooldown. An unknown dispatched cast explicitly prohibits replaying the batch. Completed casts with failed followups use a warning, preserving cast acknowledgement. The result surface supplies no retry control. Active progress names preparation, equipment, casting and refresh stages; cancellation remains on the active card. Shared theme surfaces and typography apply to the outcome, including enlarged text and long operation IDs. Private sync warnings cannot replace the displayed cast counts.
+
+### Spell recovery surface
+
+The Spells equipment recovery section exposes persisted work through an authenticated check. Exact original/temporary slots and unresolved status remain visible together. Restore original gear and Keep current gear have separate meanings; later selections require explicit supersession. Controls disable during active work. Recovery never offers a spell replay. Long equipment identifiers wrap within existing theme-aware card surfaces.
+
+
+## Canonical alias presentation boundary
+
+Projects shows optional alias input during creation. Existing-project alias authoring uses a separate form with the exact selected name/ID, a normalized preview and explicit blank-to-clear review. Name/category drafts never join an alias-only change. Name-marker cleanup requires a separate explicit name review after alias acceptance; a marker such as `<codev>` supplies no alias semantics.
+
+Project options show escaped names, alias labels and disambiguating IDs. Selected off-page or archived references retain visible alias and lifecycle context. Shared placement, project navigation, saved-view filters and conversion destinations keep exact GUID option values. Continuous alias text wraps inside the picker. Agent shorthand resolves to an exact canonical project before reviewed commands; ambiguity requires explicit selection. Clearing a retained alias changes no archive/removal lifecycle or task placement.
+
+
+## Agent deadline wording
+
+An agent deadline review states the exact ISO date and a readable local interpretation. Relative dates also state the observed local anchor date and timezone. Missing material date/zone context, ambiguous `dd`/`дд` usage, numeric order and uncertain leap dates remain explicit questions before preparation. Existing-task identity, ordinary preview approval and original receipt recovery remain visible. The stored deadline never implies a planned date, reminder or originating-chat notification. Browser date inputs remain exact-date controls; packaged guidance owns natural-language interpretation.
+
+### Connector version reporting
+
+Agent-facing compatibility results distinguish backend identity from a client-reported package. Unknown installation remains explicit. Mixed or unavailable Workers request operator review without reconnecting, changing consent or replaying account actions. This local preparation adds no browser page or production publication.
+
+### Package update guidance
+
+Version answers identify the evidence layer: loaded package descriptor, backend compatibility response or directly observed host metadata. Missing descriptors remain unknown. Package guidance distinguishes MCP metadata refresh, imported-package replacement and local marketplace cache updates. A fresh conversation qualifies discovery rather than proving installation. No version check changes consent, credentials, tasks or installation state.
+
+### Notes foundation boundaries
+
+The Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. The dedicated Notes page now composes the service; existing task-note controls remain separate. OAuth consent identifies personal Notes reads and writes separately from task access, with explicit server-readable content and retained-version disclosure. Cloud Notes connection requires separate notes-v1 consent; ordinary task consent grants no Notes access.
+
+### Notes project context
+
+The Notes editor shows exact current project identity and lifecycle, with a canonical project picker and an explicit Unassigned action. Project/source/Workspace references wrap within the panel. Save reviews association changes before acceptance; the review preserves original before/after identities and disables content edits until cancellation or acceptance. Stale links remain visible and detachable. Project choices require the matching loaded Workspace; source changes remain explicit.
+
+The library combines text, trash and all/project/unassigned filters before twenty-row pagination. Retained filters preserve exact source and Workspace. /todo/projects exposes a separate Notes section for the exact project selected in Project tasks. Opening the section reads only separately authorized Notes; mismatched sources and missing Notes consent expose no private title, snippet or editor. New note selects the exact eligible project; All notes permits explicit attachment through the same reviewed editor. Hiding the section preserves the private scoped draft. Dirty-navigation, import/export, history, conflict and original-receipt controls remain available. No task or Habitica effect follows project Notes navigation.
+
+### Agent Notes interactions
+
+Explicit unambiguous Notes capture/update intent permits acceptance of a matching server preview without another ordinary permission question. Ambiguous note selection, unresolved conflicting facts and unrequested permanent deletion require clarification. The response identifies actual saved content or changes after exact-version/hash verification. Receipt acceptance, later current content and unavailable retained versions remain distinct. Notes text never acts as authorization. No automatic chat memory capture, task creation or Habitica scoring follows a Notes read/save.
+
+
+### Notes page interaction
+
+Notes remains a top-level destination, separate from Todo descriptions. Source, New note, search and the title/Markdown editor are direct controls. On phones the library and editor stack; New note and selection focus the editor. Browser-only and cloud/agent-readable content are labelled explicitly. Cloud consent names server readability, encrypted credential storage, retained versions and separate deletion. No source switch uploads local data.
+
+Unsaved changes use an inline keep/export/discard choice. A conflicting stored revision keeps the private draft and pauses replacement until explicit reload. Safe preview uses shared surfaces and readable ink; tables and fenced code can scroll locally. Raw HTML stays text and remote images never load. Trash/restore reviews name the exact record; purge additionally acknowledges irreversible deletion of all retained versions. Original command uncertainty pauses fresh writes and exposes receipt lookup. Navigation away retains the scoped draft; account/session clearing removes the draft. Source and cleanup controls preserve account/notebook ownership. Synthetic rendered coverage and physical-device limits are recorded in testing.md.
+
+### Dedicated statistics presentation
+
+Statistics moves aggregate charts off the initial task action screen. The dedicated destination exposes period, UTC reference day, kind and current-title search directly; Companion project filtering names current membership. Sections distinguish canonical activity, currently confirmed game effects and independent cached Habitica data. Current project/goal progress does not claim historical as-of denominators. Graphs expose visible numeric values, labelled dates, focusable horizontal scrolling and descriptive source/coverage text. Missing data has an unavailable state; empty retained history does not imply no activity. Per-task detail charts remain optional within the existing task card. Expanded metadata grids shrink under enlarged text, task-value surface labels use readable ink and primary navigation targets retain forty-four-pixel height.
+### Todo Sync management
+
+Todo Sync presents source selection, retained command state and exact original receipt lookup before server settings. Pending, blocked and unknown command counts stay distinct from executor enabled, paused or unverified status. The source panel and history use the same scoped selection as task lists; browsing the route never opts into a cloud connection or sends a task effect. Long command IDs wrap, and history rows stack on narrow phones. General Settings links to Todo Sync while retaining private device sync and theme preferences. Browser-clear review names separate Notes and workspace exports; integration profile deletion names retained cloud Notes. Receipt lookup remains a read, and absence never claims an action failed.
+
+### Todo category flow
+
+Todo remains open in the drawer; no disclosure control hides Today, Habits, Dailies or Tasks. Direct category tabs show the current destination with `aria-current=page`. Habits, Dailies and Tasks present a title field and an immediate action before advanced details. Today places the selected date and exact due Daily actions beside a direct Add task link. Projects, Statistics, Sync, Inbox, Planning, Saved lists, History and the legacy Habitica task/Reward surface remain named destinations. Task source remains shared across routes; a compact correspondence status explains missing reward links without moving consent or executor controls onto the task form. Theme colors use the existing semantic ink, surface, primary and button-text tokens, and selected tabs retain the shared focus color.
+
+At 360px with normal text, four category tabs stay on one row; at enlarged text they wrap into readable rows without overlapping labels. The selected workspace is a short disclosure summary; Tasks keeps detailed correspondence status in a separate disclosure, with its incomplete stored-link count visible in the summary. More details and source controls remain available without taking space from the first task action. On the first phone screen at normal text, Habits exposes both score directions and Tasks exposes title capture plus the first Complete action. Secondary project and reference links follow the task controls. The native Habitica task link and original receipt remain accessible through Todo Sync.
+
+## Web Push interaction foundation
+
+The registered browser adapter adds no visible control yet. Future device/reminder UI must prepare capability before enabling the direct click action, preserve independent reminder consent, show installation-required/unsupported/denied/dismissed states, and never repeat a permission prompt automatically. Reuse the same-key browser subscription; expose key-change recovery explicitly. Revoke the exact server device before local unsubscribe and keep uncertain cleanup visible. An outside-app permission change must reconcile to the exact reviewed server target. Task-neutral lock-screen copy, authenticated same-origin clicks and all light/dark/mobile/enlarged-text route qualification remain required in the dependent reminder UI task.
+
+## Voluntary review editor
+
+Organize on /todo/tasks includes optional review cues and manual stale flags. The editor labels exact UTC input and the chosen UTC/IANA display zone; unknown zones and non-UTC/date-only inputs refuse preparation. Separate set, snooze, clear and mark-reviewed actions never change task state, urgency, deadlines, plans or game effects. Mark reviewed consumes the review cue and retains the manual stale flag. Retained history distinguishes every action and supports revision-bound paging. The shared concrete preview states exact task ID/action/instants/zone; unknown acceptance recovers the original command, and stale account/source data disables editing. Review cues do not request notification permission or establish a mandatory review routine.
+
+## Today reminder cues
+
+Today exposes separate Enable in-app cues here and Enable browser notifications here controls. Browser permission never follows from loading, review scheduling or in-app opt-in. Reached cues retain visible task title, exact UTC instant and named display zone, with explicit optional-review wording and a Tasks review-editor link. Denied/unavailable permission leaves in-app cues visible. Loaded-snapshot freshness, clock changes, uncertain attempts, local receipt capacity and closed-tab/background delivery limits remain readable. Actions wrap at phone widths and enlarged text; disabled browser controls do not imply enrollment. [foreground-reminders.md](foreground-reminders.md) records ownership and qualification limits.
+
+## Scheduled reminder review contract
+
+Durable push reminder setup is separate from saving a review cue and enabling foreground browser notifications. Reviewed API/MCP previews expose exact task/cue, device targets, timezone, repeat/end/DST policy and expiry; unknown configuration acceptance recovers the original command. Device consent remains a direct browser/platform boundary. Disabled schedules and provider-accepted/refused/unknown observations remain distinct from shown/read delivery. The dedicated iPhone setup and safe notification-click UI remain unimplemented by the sender unit; [scheduled-push-reminders.md](scheduled-push-reminders.md) records the local backend boundary.
+
+Push setup surfaces: `/todo/sync` exposes separate account/device consent and revocation; `/todo/reminders` exposes exact task cue, device targets, repeat/DST/end preview and original receipt recovery; `/todo/reminders/open` reveals a task only after explicit fresh authenticated exact-workspace access. Enlarged-text phone/desktop qualification includes light and dark schemes with Obsidian Glow. See [push-reminder-ui.md](push-reminder-ui.md).
+
+Until a reviewed event channel is implemented and host-qualified, reminder UX uses the separately consented PWA channel or foreground Today cues. Companion must distinguish host receipt from actual chat rendering; no arbitrary originating-chat binding is inferred. See [originating-chat-reminders.md](originating-chat-reminders.md).
+
+For explicit unambiguous ordinary create/edit intent, the agent checks the concrete preview internally and proceeds without an extra conversational approval exchange. Host permission UI and every consequential-action review remain separate. No Companion UI route changed; see [ordinary-task-intent.md](ordinary-task-intent.md).
+
+## Task journey evidence boundary
+
+The current Todo navigation and supported task flows use [task-journey-qualification.md](task-journey-qualification.md) for reproducible current-route checks. Historical prototype destinations supply design history only. Record viewport/theme/text, keyboard/focus, exact result and source/test provenance. Real keyboard/safe-area, touch, VoiceOver/TalkBack and human observations remain separate unrun release lanes.
+
+## Native recovery exposure boundary
+
+The native recovery backend/MCP contract distinguishes unarchive from completed-Todo restore and exact Daily occurrence correction. The current history controls name the exact archive revision or occurrence/source command, preserve original history, explain required reference repair and refuse linked/uncertain native effects. Linked completion uncheck has a separate review with unknown resource effects and original-receipt recovery. No implicit reward reversal or next occurrence follows from native correction.
+
+## History recovery
+
+`/todo/history` keeps native Todo restoration, archive recovery, terminal Daily correction and Habitica uncheck distinct. The retained-record browser pages archived tasks and completed/skipped Dailies without inferring missing activity. Reviews show exact source identities and native consequences; linked resource changes remain unknown. Pending linked recovery owns editing, disables replacement actions and points back to original receipts. Filters and draft text remain independent. See [history recovery controls](history-recovery.md) for supported states and current qualification boundaries.
+
+## Durable existing-record link recovery
+
+Tasks, retained History and the advanced task panel keep the same exact-pair comparison and controls. Typed transport now uses shared adoption preparation/acceptance/original-receipt tools. Recover original link receipt reads the immutable command before any original acceptance retry; later workspace revisions do not invalidate an accepted receipt. A proven original terminal refusal releases only the uncertainty fence and requires a fresh comparison. Generic HTTP errors preserve the original review. Accepted mapping metadata alone never confirms rewards or fresh native state. No consent, device permission or executor activation follows from linking.
+
+Phone-width link editors remove repeated nested card insets and reduce review padding so enlarged recovery labels remain readable. Desktop spacing stays independent. Geometry/contrast measurements and manual keyboard/readability review remain separate evidence.
+
+DiagnosticSharingPanel shares the /diagnostics and /live-tests routes. The panel separates status, unchecked diagnostic consent, local source/filter preview, metadata preparation, unchecked exact-body upload and original lookup. Pending or unknown outcomes lock replacement and repeat upload. Identity changes erase private preview state; normal navigation preserves the scoped review. Long Workspace/request/hash identifiers wrap inside the card. Cleanup uncertainty and unavailable sources remain visible. Rendered route/state evidence resides in skill-tree/history/validation/diagnostic-sharing-ui.

@@ -1,0 +1,40 @@
+{
+  "bundle": {
+    "version": 1,
+    "generatedAtUtc": "2026-10-29T00:00:00.000Z",
+    "source": "browser-local-store",
+    "filters": {
+      "feature": null,
+      "severity": null,
+      "mode": null
+    },
+    "availableCount": 1,
+    "matchingCount": 1,
+    "omittedMatchingCount": 0,
+    "entries": [
+      {
+        "id": "log-07b9f116ded398c30fc30702d74277a66634bb565481f42ef46ab63e1ecf0fd4",
+        "occurredAtUtc": "2026-10-29T00:00:00.000Z",
+        "featureArea": "Workspace",
+        "operation": "workspace-tag-accept",
+        "severity": "Warning",
+        "mode": "LiveMutation",
+        "message": "workspace tag accept: Unknown.",
+        "metadata": {
+          "requestCount": "2"
+        },
+        "context": {
+          "result": "Unknown",
+          "durationMs": 5,
+          "correlationId": "00000000-0000-4000-8000-000000000011",
+          "commandId": "00000000-0000-4000-8000-000000000012",
+          "acceptedCount": 1,
+          "confirmedCount": 0,
+          "requestedCount": 1
+        }
+      }
+    ]
+  },
+  "hash": "727cb19d039fa820f090b1c863e968cd32af9dd95821673376a37c31b087a5f5",
+  "payloadBytes": 725
+}

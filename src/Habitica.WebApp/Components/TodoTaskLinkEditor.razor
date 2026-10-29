@@ -1,0 +1,75 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+<section class="card-surface todo-task-panel todo-link-editor" aria-label="Habitica task link" data-testid="todo-link-editor">
+    <h2 tabindex="-1" @ref="_heading">Habitica link: @Task?.Text</h2>
+    @if (Task is { } task)
+    {
+        <p>Companion @task.Kind · @task.State · @task.Id. Canonical task fields and history remain unchanged.</p>
+        @if (Todo.Provenance(task.Id).HabiticaTaskId is { } mapped) { <p>Stored Habitica task: @mapped. A stored link does not confirm outstanding game effects.</p> }
+        @if (_error is not null) { <p role="alert">@_error</p> }
+        <fieldset disabled="@Disabled">
+            <h3>Create or verify a counterpart</h3>
+            <p>Request one new Habitica counterpart only when no corresponding record exists, or verify the stored mapping. No completion or score is requested. Separate account consent and executor setup still apply.</p>
+            @if (!CanCreate) { <p>New counterpart creation here supports active Todos and Habits. Historical tasks and existing Dailies use exact-record adoption below; nothing is reopened or scored.</p> }
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!CanCreate)" OnClick="CreateAsync" Variant="Variant.Outlined" data-testid="todo-link-create">Review counterpart creation / verification</MudButton>
+            <h3>Use an existing Habitica task</h3>
+            <p>Paste its exact Habitica task ID, not its title. Find the ID in the task details on the Habitica website, or ask your connected agent to read the Habitica task list. Adoption links the records without creating or scoring a task. Both records must have the same type; Todo completion state must also match.</p>
+            @if (!Todo.Commands.IsCloud) { <p>Adoption needs the connected cloud workspace. Open Todo Sync or Settings to connect; browser workspaces cannot read account records.</p><a href="/todo/sync">Open Todo Sync</a> }
+            <label class="field-row">Existing Habitica task ID<input class="app-input" maxlength="36" @bind="_remoteId" data-testid="todo-link-id" /></label>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Todo.Commands.IsCloud)" OnClick="PreviewAsync" Variant="Variant.Outlined" data-testid="todo-link-preview">Review existing record</MudButton>
+        </fieldset>
+        @if (Todo.Commands.LinkPreview is { } preview && preview.Task.Id == task.Id)
+        {
+            <section class="todo-command-review" aria-label="Review existing Habitica link" data-testid="todo-link-review">
+                <h3>Adopt these exact records</h3>
+                <p>Companion: @preview.Task.Text · @preview.Task.Kind · @preview.Task.State · @preview.Task.Id</p>
+                <p>Habitica: @preview.External.Text · @preview.External.Kind · @(preview.External.Completed ? "Completed" : "Active") · @preview.External.Id</p>
+                <details><summary>Compare fields before linking</summary><p>Companion notes: @preview.Task.Notes</p><p>Habitica notes: @preview.External.Notes</p><p>Companion deadline: @preview.Task.Deadline</p><p>Habitica date: @preview.External.Date</p>
+                    @if (preview.Task.Recurrence is { } recurrence) { <p>Companion schedule: @TodoRecurringEditor.RuleText(recurrence)</p> }
+                    @if (preview.External.Schedule is { } schedule) { <p>Habitica schedule: @schedule.Frequency · every @schedule.EveryX · starts @schedule.StartDate.ToString("u") · weekdays @string.Join(", ",schedule.Repeat.Where(day=>day.Value).Select(day=>day.Key)) · month dates @string.Join(", ",schedule.DaysOfMonth) · month weeks @string.Join(", ",schedule.WeeksOfMonth)</p> }
+                </details>
+                <p>No task content, schedule, completion or reward changes. Existing differences remain; linking does not synchronize the displayed fields. Pending game commands: @preview.PendingCommandCount.</p>
+                @if (Todo.Commands.LinkAcceptanceUnknown) { <p role="status">Link acceptance is uncertain. Recover only this original reviewed link; changing sources, cancelling or replacing the review remains paused.</p> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || preview.PendingCommandCount != 0)" OnClick="AdoptAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="todo-link-confirm">@(Todo.Commands.LinkAcceptanceUnknown ? "Recover original link receipt" : "Confirm exact link")</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || Todo.Commands.LinkAcceptanceUnknown)" OnClick="CancelPreview" Variant="Variant.Text" data-testid="todo-link-cancel">Cancel link review</MudButton></div>
+            </section>
+        }
+    }
+    else { <p role="status">The selected task is unavailable. Reload the exact workspace before linking.</p> }
+    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || Todo.Commands.HasPendingIntent)" OnClick="CloseAsync" Variant="Variant.Text">Close link editor</MudButton>
+</section>
+@code {
+    [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback Reviewed { get; set; }
+    [Parameter] public EventCallback Closed { get; set; }
+    private Guid _seenTask;
+    private string _remoteId = "";
+    private string? _error;
+    private bool _busy;
+    private bool _focus;
+    private ElementReference _heading;
+    private CompanionTask? Task => Todo.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == TaskId);
+    private bool Busy => _busy || Todo.IsBusy;
+    private bool Unavailable => Todo.IsReadOnly || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null;
+    private bool Disabled => Busy || Unavailable;
+    private bool CanCreate => Task is { IsArchived:false, State:CompanionTaskState.Active, Kind:CompanionTaskKind.Todo or CompanionTaskKind.Habit };
+    protected override void OnParametersSet() { if (_seenTask != TaskId) { _focus=true; _seenTask=TaskId; _remoteId=""; _error=null; } }
+    protected override async System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) { if(_focus){_focus=false;try{await _heading.FocusAsync();}catch(JSException){}} }
+    private async System.Threading.Tasks.Task RunAsync(Func<System.Threading.Tasks.Task> action)
+    { if(Busy)return;_busy=true;_error=null;try{await action();}catch(InvalidOperationException error){_error=error.Message;}catch{_error="Result unavailable. Keep the original request and review before another action.";}finally{_busy=false;} }
+    private System.Threading.Tasks.Task CreateAsync() => RunAsync(async()=>
+    {
+        if (Unavailable || !CanCreate || Task is not { } task) throw new InvalidOperationException("Choose an available active Todo or Habit.");
+        await Todo.PrepareAsync(new(WorkspaceOperation.EnsureProjection,task.Id,task.Text,task.Notes??"",task.Priority,task.Deadline,null,true,HabitScoreDirection.Up,1,null));
+        await Reviewed.InvokeAsync();
+    });
+    private System.Threading.Tasks.Task PreviewAsync() => RunAsync(async()=>
+    {
+        if (Unavailable || !Guid.TryParseExact(_remoteId,"D",out var id) || id==Guid.Empty) throw new InvalidOperationException("Enter an exact Habitica task UUID and resolve the current review first.");
+        await Todo.PreviewLinkAsync(TaskId,id);
+    });
+    private System.Threading.Tasks.Task AdoptAsync() => RunAsync(()=>Todo.AdoptLinkAsync());
+    private void CancelPreview() => Todo.CancelLinkPreview();
+    private async System.Threading.Tasks.Task CloseAsync(){Todo.CancelLinkPreview();await Closed.InvokeAsync();}
+}

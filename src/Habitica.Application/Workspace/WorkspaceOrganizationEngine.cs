@@ -28,9 +28,10 @@ public static class WorkspaceOrganizationEngine
         if(document.Revision>=WorkspaceDocument.MaxRevision||snapshot.StoreVersion>=WorkspaceDocument.MaxRevision)
             return Reject(SubmissionDisposition.Invalid,"revision_exhausted");
         var current=WorkspaceOrganizationSnapshot.From(document,command.Kind,command.EntityId);
-        if(command.Operation==WorkspaceOrganizationOperation.Create ? current is not null : current is null||current.IsArchived)
+        if(command.Operation==WorkspaceOrganizationOperation.Create ? current is not null : current is null||(current.IsRemoved||current.IsArchived&&command.Operation!=WorkspaceOrganizationOperation.Remove)&&!WorkspaceProjectAliases.IsRetainedClear(command))
             return Reject(SubmissionDisposition.Invalid,"organization_unavailable");
         var patch=command.Patch;
+        if(command.Operation==WorkspaceOrganizationOperation.Remove&&!patch!.Removal!.Matches(document,command.EntityId))return Reject(SubmissionDisposition.Invalid,"project_removal_impact_changed");
         if(patch?.CategoryId is {} category&&!document.Categories.Any(row=>row.Id==category&&!row.IsArchived)
             ||patch?.ProjectId is {} project&&!document.Projects.Any(row=>row.Id==project&&!row.IsArchived)
             ||patch?.Query is {} query&&(query.Filter.CategoryId is {} viewCategory&&!document.Categories.Any(row=>row.Id==viewCategory)
@@ -39,12 +40,14 @@ public static class WorkspaceOrganizationEngine
             ||patch?.TaskIds is {} tasks&&tasks.Any(id=>!document.Tasks.Any(task=>task.Id==id&&!task.IsArchived&&task.Kind==CompanionTaskKind.Todo)))
             return Reject(SubmissionDisposition.Invalid,"invalid_organization_reference");
         var accepted=WorkspaceOrganizationCommands.Apply(command,current);
+        if(accepted.Alias is {} alias&&document.Projects.Any(row=>row.Id!=accepted.Id&&string.Equals(row.Alias,alias,StringComparison.OrdinalIgnoreCase)))
+            return Reject(SubmissionDisposition.Invalid,"project_alias_in_use");
         static IReadOnlyList<T> Replace<T>(IReadOnlyList<T> rows,T value,bool create) where T:WorkspaceEntity => create ? rows.Append(value).ToArray() : rows.Select(row=>row.Id==value.Id?value:row).ToArray();
         var create=command.Operation==WorkspaceOrganizationOperation.Create;
         var result=command.Kind switch
         {
             WorkspaceOrganizationKind.Category=>document with { Categories=Replace(document.Categories,new WorkspaceCategory(accepted.Id,accepted.Revision,accepted.Name,accepted.IsArchived),create) },
-            WorkspaceOrganizationKind.Project=>document with { Projects=Replace(document.Projects,new WorkspaceProject(accepted.Id,accepted.Revision,accepted.Name,accepted.CategoryId,accepted.IsArchived),create) },
+            WorkspaceOrganizationKind.Project=>document with { Projects=Replace(document.Projects,new WorkspaceProject(accepted.Id,accepted.Revision,accepted.Name,accepted.CategoryId,accepted.IsArchived,accepted.IsRemoved,accepted.Alias),create) },
             WorkspaceOrganizationKind.Section=>document with { Sections=Replace(document.Sections,new WorkspaceSection(accepted.Id,accepted.Revision,accepted.Name,accepted.ProjectId!.Value,accepted.Position,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Label=>document with { Labels=Replace(document.Labels,new WorkspaceLabel(accepted.Id,accepted.Revision,accepted.Name,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Goal=>document with { Goals=Replace(document.Goals,new WorkspaceGoal(accepted.Id,accepted.Revision,accepted.Name,accepted.TaskIds!,accepted.IsArchived),create) },

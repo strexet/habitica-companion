@@ -1,0 +1,73 @@
+@using Habitica.Application.Diagnostics
+@using Habitica.Domain.Diagnostics
+@implements IDisposable
+@inject DiagnosticSharingController Sharing
+<section class="diagnostic-sharing diagnostics-bundle-content" aria-label="Shared diagnostics">
+    <h3>Agent access to shared diagnostics</h3>
+    <p class="panel-copy">Source: this exporting browser profile only. No device identifier is collected. Server operators and agents granted diagnostics.read can read an explicitly uploaded sanitized copy after separate consent. Other devices, raw provider logs and unshared history remain unavailable.</p>
+    <p class="panel-copy">Up to 100 entries per bundle; 2000 event rows and 1 MiB charged storage per profile. Metadata and indexed copies count toward the quota. Shared records expire within seven days of preparation. Revocation blocks reads immediately; scheduled physical cleanup and provider recovery history are separate.</p>
+    @if (!Sharing.Available)
+    {<p role="status">Connect the intended cloud Workspace in Settings to use this channel. Manual copy/download remains available.</p>}
+    else
+    {
+        <p class="diagnostic-identity">Workspace @Sharing.WorkspaceId</p>
+        <div class="action-row">
+            <MudButton HtmlTag="button" Variant="Variant.Outlined" data-testid="diagnostic-share-status" Disabled="@Sharing.Busy" OnClick="Sharing.RefreshAsync">Check sharing status</MudButton>
+            @if (Sharing.Status is {Enabled:false,CleanupPending:false})
+            {
+                <label class="checkbox-row"><input data-testid="diagnostic-share-consent-ack" type="checkbox" @bind="_consent" /><span>I consent to server-readable sanitized diagnostic sharing with seven-day retention.</span></label>
+                <MudButton HtmlTag="button" Variant="Variant.Outlined" data-testid="diagnostic-share-consent" Disabled="@(Sharing.Busy||!_consent)" OnClick="EnableConsent">Enable separate diagnostic consent</MudButton>
+            }
+            @if (Sharing.Status is not null)
+            {<MudButton HtmlTag="button" Variant="Variant.Outlined" data-testid="diagnostic-share-revoke" Disabled="@Sharing.Busy" OnClick="Revoke">Revoke access and clear shared records</MudButton>}
+        </div>
+        @if (Sharing.Status is {} status)
+        {
+            <p>Consent @(status.Enabled?"enabled":"disabled") · @status.EventCount event rows · @status.ChargedBytes charged bytes.</p>
+            @if (status.CleanupPending){<p role="alert">Physical cleanup is pending or failed. Deletion is not confirmed; new uploads are blocked.</p>}
+        }
+        <div class="diagnostics-filter-row">
+            <label class="field-row compact"><span>Cloud preview feature</span><select class="app-input" disabled="@(!Sharing.CanReplace)" value="@Sharing.Filters.Feature" @onchange="Feature"><option value="">All features</option>@foreach(var value in Enum.GetValues<DiagnosticsFeatureArea>()){<option value="@value">@value</option>}</select></label>
+            <label class="field-row compact"><span>Cloud preview severity</span><select class="app-input" disabled="@(!Sharing.CanReplace)" value="@Sharing.Filters.Severity" @onchange="Severity"><option value="">All severities</option>@foreach(var value in Enum.GetValues<DiagnosticsSeverity>()){<option value="@value">@value</option>}</select></label>
+            <label class="field-row compact"><span>Cloud preview mode</span><select class="app-input" disabled="@(!Sharing.CanReplace)" value="@Sharing.Filters.Mode" @onchange="Mode"><option value="">All modes</option>@foreach(var value in Enum.GetValues<DiagnosticsMode>()){<option value="@value">@value</option>}</select></label>
+        </div>
+        <MudButton HtmlTag="button" Variant="Variant.Outlined" data-layout-primary="true" data-testid="diagnostic-share-preview" Disabled="@(!Sharing.CanReplace)" OnClick="Preview">Preview local cloud bundle</MudButton>
+        @if (Sharing.Preview is {} preview)
+        {
+            <p>@preview.Entries.Count selected · @preview.MatchingCount matching · @preview.AvailableCount available · @preview.OmittedMatchingCount matching omitted. Filters: @(preview.Filters.Feature??"all features"), @(preview.Filters.Severity??"all severities"), @(preview.Filters.Mode??"all modes").</p>
+            <p>Generated @preview.GeneratedAtUtc.ToString("O") UTC. Event occurrence times are browser observations, not trusted server times. No complete device history or verified game effect is implied.</p>
+            <pre class="diagnostics-bundle-preview" tabindex="0" data-testid="diagnostic-cloud-preview">@DiagnosticSharing.Serialize(preview)</pre>
+            <MudButton HtmlTag="button" Variant="Variant.Outlined" data-layout-primary="true" data-testid="diagnostic-share-prepare" Disabled="@(Sharing.Busy||Sharing.Unresolved||Sharing.Status is not {Enabled:true,CleanupPending:false})" OnClick="Sharing.PrepareAsync">Prepare upload — send metadata only</MudButton>
+        }
+        @if (Sharing.RequestId is {} request)
+        {
+            <p class="diagnostic-identity">Original request @request</p>
+            <MudButton HtmlTag="button" Variant="Variant.Outlined" data-testid="diagnostic-share-recover" Disabled="@Sharing.Busy" OnClick="Sharing.RecoverAsync">Check original upload</MudButton>
+        }
+        @if (Sharing.Original is {State:"prepared"} original)
+        {
+            <p>Accept before @original.AcceptByUtc.ToString("O"); expires @original.ExpiresAtUtc.ToString("O").</p>
+            <label class="checkbox-row"><input data-testid="diagnostic-share-ack" type="checkbox" @bind="_reviewed" /><span>I reviewed this exact sanitized bundle and want to send it to this Workspace.</span></label>
+            <MudButton HtmlTag="button" Variant="Variant.Filled" Color="Color.Primary" data-layout-primary="true" data-testid="diagnostic-share-upload" Disabled="@(!Sharing.CanUpload||!_reviewed)" OnClick="Upload">Upload reviewed bundle</MudButton>
+        }
+        @if (Sharing.Original?.Receipt is {} receipt)
+        {
+            <div class="diagnostic-identity" data-testid="diagnostic-share-receipt"><strong>Original upload receipt</strong><p>Upload @receipt.UploadId · request @receipt.RequestId</p><p>Hash @receipt.BundleHash</p><p>Received by server @receipt.AcceptedAtUtc.ToString("O") UTC · expires @receipt.ExpiresAtUtc.ToString("O") UTC · @receipt.EventCount entries.</p></div>
+        }
+    }
+    @if (Sharing.Message is {} message){<p role="status" aria-live="polite">@message</p>}
+</section>
+@code {
+    private bool _consent,_reviewed;
+    protected override void OnInitialized(){Sharing.Changed+=Changed;Sharing.EnsureIdentity();}
+    private void Changed(){_reviewed=false;_consent=false;_ = InvokeAsync(StateHasChanged);}
+    private void Preview(){_reviewed=false;Sharing.PreviewLocal();}
+    private Task EnableConsent()=>Sharing.SetConsentAsync(true);
+    private Task Revoke()=>Sharing.SetConsentAsync(false);
+    private Task Upload(){_reviewed=false;return Sharing.UploadAsync();}
+    private static T? Parse<T>(ChangeEventArgs e) where T:struct,Enum=>Enum.TryParse<T>(e.Value?.ToString(),out var value)?value:null;
+    private void Feature(ChangeEventArgs e)=>Sharing.SetFilters(Sharing.Filters with {Feature=Parse<DiagnosticsFeatureArea>(e)});
+    private void Severity(ChangeEventArgs e)=>Sharing.SetFilters(Sharing.Filters with {Severity=Parse<DiagnosticsSeverity>(e)});
+    private void Mode(ChangeEventArgs e)=>Sharing.SetFilters(Sharing.Filters with {Mode=Parse<DiagnosticsMode>(e)});
+    public void Dispose()=>Sharing.Changed-=Changed;
+}

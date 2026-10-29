@@ -43,7 +43,7 @@ public sealed class WorkspaceLifecycleTests
     {
         var state = Empty(); var id = Guid.NewGuid();
         foreach (var operation in new[] { WorkspaceOperation.CreateDaily, WorkspaceOperation.CreateHabit })
-            Assert.Equal("unsupported_projection", WorkspaceCommandEngine.Accept(state, Command(state, operation, id, new(Text: "Unsupported")) with { ProjectToHabitica = true }, Now).ErrorCode);
+            Assert.Equal(operation == WorkspaceOperation.CreateHabit ? "unsupported_habit_fields" : "daily_schedule_required", WorkspaceCommandEngine.Accept(state, Command(state, operation, id, new(Text: "Unsupported")) with { ProjectToHabitica = true }, Now).ErrorCode);
         state = WorkspaceCommandEngine.Accept(state, Command(state, WorkspaceOperation.CreateTodo, id, new(Text: "Linked")) with { ProjectToHabitica = true }, Now).Snapshot!;
         Assert.Equal("unsupported_projection", WorkspaceCommandEngine.Accept(state, Command(state, WorkspaceOperation.DeleteTask, id), Now).ErrorCode);
         var unlinked = Empty(); var habit = Guid.NewGuid();

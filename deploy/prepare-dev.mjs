@@ -1,3 +1,4 @@
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -5,10 +6,11 @@ import {frontendSettings} from './frontend-settings.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),'utf8'));
 const pilotFlags=new Set(['OAUTH_ENABLED','ENROLLMENT_ENABLED','WORKSPACE_ENABLED']);
+const separatelyProvisionedFlags=new Set(['CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED']);
 const developmentFlags=new Set([...pilotFlags,'PROJECTION_ENABLED','PARTY_ENABLED','SPELLS_ENABLED','CRON_ENABLED','KEY_OPERATIONS_ENABLED','ADAPTIVE_PACING_ENABLED','EXECUTOR_ENABLED']);
 export function deploymentFlags(vars,profile='pilot'){
  if(!['pilot','development'].includes(profile))throw new Error('Unknown capability profile; use pilot or development.');
- const result={...vars};for(const flag of Object.keys(result).filter(key=>key.endsWith('_ENABLED'))){if(!developmentFlags.has(flag))throw new Error('Unrecognized capability flag requires an explicit profile mapping.');result[flag]=(profile==='development'?developmentFlags:pilotFlags).has(flag);}
+ const result={...vars};for(const flag of Object.keys(result).filter(key=>key.endsWith('_ENABLED'))){if(!developmentFlags.has(flag)&&!separatelyProvisionedFlags.has(flag))throw new Error('Unrecognized capability flag requires an explicit profile mapping.');result[flag]=(profile==='development'?developmentFlags:pilotFlags).has(flag);}
  return result;
 }
 const fields=['accountId','pagesProject','pwaOrigin','authOrigin','mcpOrigin','workspaceOrigin','pagesKvId','partyDatabaseId','authKvId','authDatabaseId','workspaceDatabaseId','creatorHeader'];
@@ -65,7 +67,10 @@ export function writeDev(input,target){
  const pages={...result.pages,pages_build_output_dir:path.relative(pagesRoot,path.join(root,'output/wwwroot')),d1_databases:result.pages.d1_databases.map(v=>({...v,migrations_dir:path.relative(pagesRoot,path.join(root,'migrations'))}))};
  fs.writeFileSync(path.join(pagesRoot,'wrangler.json'),JSON.stringify(pages,null,2)+'\n');fs.cpSync(path.join(root,'functions'),path.join(pagesRoot,'functions'),{recursive:true});
  fs.writeFileSync(path.join(target,'appsettings.json'),JSON.stringify(result.settings,null,2)+'\n');
- fs.cpSync(path.join(root,'plugin'),path.join(target,'plugin'),{recursive:true});const mcp=read('plugin/mcp.json');mcp.mcpServers['habitica-companion'].url=input.mcpOrigin+'/mcp';mcp.mcpServers['habitica-companion'].extensions={'com.openai':{auth:{type:'oauth',client:{mode:'cimd'}}}};fs.writeFileSync(path.join(target,'plugin/mcp.json'),JSON.stringify(mcp,null,2)+'\n');
+ fs.cpSync(path.join(root,'plugin'),path.join(target,'.plugin-source'),{recursive:true});const mcp=read('plugin/mcp.json');mcp.mcpServers['habitica-companion'].url=input.mcpOrigin+'/mcp';mcp.mcpServers['habitica-companion'].extensions={'com.openai':{auth:{type:'oauth',client:{mode:'cimd'}}}};fs.writeFileSync(path.join(target,'.plugin-source/mcp.json'),JSON.stringify(mcp,null,2)+'\n');
+ const sourceRevision=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8',timeout:5000}).trim();
+ execFileSync('python3',[path.join(root,'deploy/package-plugin.py'),'build','--source',path.join(target,'.plugin-source'),'--target',path.join(target,'plugin'),'--source-revision',sourceRevision,'--requirements',path.join(root,'deploy/plugin-requirements.json')],{cwd:root,timeout:15000});
+ fs.rmSync(path.join(target,'.plugin-source'),{recursive:true});
  fs.writeFileSync(path.join(target,'deployment-plan.json'),JSON.stringify({environment:input.existingPages?'production':'dev',websiteTarget:input.existingPages??{project:input.pagesProject,productionBranch:'develop',storage:'new-dev'},featureProfile:result.featureProfile,cloudGameEffectsEnabled:result.featureProfile==='development',liveCronEnabled:result.featureProfile==='development',perAccountExecutorConsentRequired:true,names:result.names,origins:result.configuration,resourceIds:{pagesKv:input.pagesKvId,partyD1:input.partyDatabaseId,oauthKv:input.authKvId,authD1:input.authDatabaseId,workspaceD1:input.workspaceDatabaseId},secretsRequired:['PROFILE_ID_KEY','CREDENTIAL_KEY_V1','CREDENTIAL_KEY_V2'],requiredClients:['ChatGPT','Codex desktop']},null,2)+'\n');return result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){

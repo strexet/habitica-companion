@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "evidenceKind": "expectation-only; no model routing or host qualification",
+  "chatVariants": [
+    "new",
+    "existing"
+  ],
+  "permissions": "Existing grants only; missing connection or scope is a separate authorization outcome.",
+  "cases": [
+    {
+      "id": "direct-tasks",
+      "category": "direct",
+      "prompt": "Show my open Habitica Companion Todos.",
+      "context": "Connected Companion workspace; no mutation requested.",
+      "tool": "list_companion_tasks",
+      "arguments": {
+        "kind": "todo",
+        "state": "active"
+      },
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "direct-projects",
+      "category": "direct",
+      "prompt": "List projects in Habitica Companion.",
+      "context": "Connected Companion workspace.",
+      "tool": "list_projects",
+      "arguments": {},
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "direct-account",
+      "category": "direct",
+      "prompt": "How much mana do I have in Habitica?",
+      "context": "Connected account; current account read requested.",
+      "tool": "get_account_status",
+      "arguments": {},
+      "scope": "account:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "indirect-tasks",
+      "category": "indirect",
+      "prompt": "Which of my open tasks mention the garden?",
+      "context": "Companion is the established task source.",
+      "tool": "list_companion_tasks",
+      "arguments": {
+        "state": "active",
+        "query": "garden"
+      },
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "indirect-deadline",
+      "category": "indirect",
+      "prompt": "Show tasks due on November 2, 2026.",
+      "context": "Companion is the established task source; all-day deadline requested.",
+      "tool": "list_companion_tasks",
+      "arguments": {
+        "deadlineFrom": "2026-11-02",
+        "deadlineTo": "2026-11-02"
+      },
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "indirect-prepare",
+      "category": "indirect",
+      "prompt": "Rename that task to Water the garden.",
+      "context": "Exact Companion task ID was returned and selected in the current chat; no reviewed preview exists.",
+      "tool": "prepare_task_command",
+      "arguments": {
+        "requestId": "40000000-0000-4000-8000-000000000001",
+        "operation": "updateTask",
+        "taskId": "40000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": "Water the garden"
+        }
+      },
+      "scope": "habitica.tasks.write",
+      "expectedAction": "prepare-then-accept-matching-intent",
+      "confirmation": "The initiating exact rename authorizes matching acceptance after internal server-preview checks; no extra agent approval question. Existing scopes, consent, host safeguards and unexpected-effect review remain mandatory."
+    },
+    {
+      "id": "followup-receipt",
+      "category": "followup",
+      "prompt": "Did the previous change succeed? The response was lost.",
+      "context": "The original command ID is retained; never create another intent.",
+      "tool": "get_task_command",
+      "arguments": {
+        "commandId": "40000000-0000-4000-8000-000000000003"
+      },
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "followup-exact",
+      "category": "followup",
+      "prompt": "Show the details of the task I selected.",
+      "context": "Exact Companion task ID retained from the prior list, without ambiguity.",
+      "tool": "get_companion_task",
+      "arguments": {
+        "taskId": "40000000-0000-4000-8000-000000000002"
+      },
+      "scope": "tasks:read",
+      "expectedAction": "read",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "negative-weather",
+      "category": "negative",
+      "prompt": "What is the weather in Paris?",
+      "context": "No Habitica data requested.",
+      "tool": null,
+      "arguments": null,
+      "scope": null,
+      "expectedAction": "no-companion-call",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "negative-math",
+      "category": "negative",
+      "prompt": "What is 17 times 23?",
+      "context": "No account context needed.",
+      "tool": null,
+      "arguments": null,
+      "scope": null,
+      "expectedAction": "no-companion-call",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "negative-reminder",
+      "category": "negative",
+      "prompt": "Remind me here tomorrow at 9.",
+      "context": "Originating-chat delivery requested; no supported Companion delivery contract selected.",
+      "tool": null,
+      "arguments": null,
+      "scope": null,
+      "expectedAction": "no-companion-call",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "negative-ambiguous",
+      "category": "negative",
+      "prompt": "Complete the report.",
+      "context": "Several matching task candidates exist; exact task and concrete preview not selected.",
+      "tool": null,
+      "arguments": null,
+      "scope": null,
+      "expectedAction": "no-companion-call",
+      "confirmation": "No mutation or new consent."
+    },
+    {
+      "id": "negative-document",
+      "category": "negative",
+      "prompt": "Explain what a project is in project management.",
+      "context": "General explanation; no private project read requested.",
+      "tool": null,
+      "arguments": null,
+      "scope": null,
+      "expectedAction": "no-companion-call",
+      "confirmation": "No mutation or new consent."
+    }
+  ]
+}

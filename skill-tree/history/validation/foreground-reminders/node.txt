@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: binding reads reviewed cues without asking permission; in-app opt-in and permission are separate direct actions
+ok 1 - binding reads reviewed cues without asking permission; in-app opt-in and permission are separate direct actions
+  ---
+  duration_ms: 12.182
+  ...
+# Subtest: fake-clock foreground delivery is deduplicated across tabs, reopening and unrelated snapshot revisions
+ok 2 - fake-clock foreground delivery is deduplicated across tabs, reopening and unrelated snapshot revisions
+  ---
+  duration_ms: 3.808708
+  ...
+# Subtest: snooze, removal, backward/forward clocks and hidden tabs preserve exact current-cue scheduling
+ok 3 - snooze, removal, backward/forward clocks and hidden tabs preserve exact current-cue scheduling
+  ---
+  duration_ms: 2.106791
+  ...
+# Subtest: denied, dismissed, unsupported, missing worker and revoked permission remain explicit without subscription or fetch
+ok 4 - denied, dismissed, unsupported, missing worker and revoked permission remain explicit without subscription or fetch
+  ---
+  duration_ms: 3.859166
+  ...
+# Subtest: unknown dispatch and lost claim acknowledgement consume original identity without retry
+ok 5 - unknown dispatch and lost claim acknowledgement consume original identity without retry
+  ---
+  duration_ms: 3.291
+  ...
+# Subtest: late permission and worker responses cannot cross account/source changes; disabled cues remain visible only as saved metadata
+ok 6 - late permission and worker responses cannot cross account/source changes; disabled cues remain visible only as saved metadata
+  ---
+  duration_ms: 1.569542
+  ...
+# Subtest: production storage transactions reserve once, retain receipts on disable and refuse full/corrupt storage
+ok 7 - production storage transactions reserve once, retain receipts on disable and refuse full/corrupt storage
+  ---
+  duration_ms: 4.251417
+  ...
+# Subtest: duplicate revision reserves a toggle once and account scopes stay separate
+ok 8 - duplicate revision reserves a toggle once and account scopes stay separate
+  ---
+  duration_ms: 5.921916
+  ...
+# Subtest: unresolved operation cannot be replaced and original slots remain immutable
+ok 9 - unresolved operation cannot be replaced and original slots remain immutable
+  ---
+  duration_ms: 5.354
+  ...
+# Subtest: lost acknowledgement stays reserved until observation and terminal slots cannot reopen
+ok 10 - lost acknowledgement stays reserved until observation and terminal slots cannot reopen
+  ---
+  duration_ms: 1.835042
+  ...
+# Subtest: invalid scope, slot and nonprepared initial records are rejected
+ok 11 - invalid scope, slot and nonprepared initial records are rejected
+  ---
+  duration_ms: 1.097875
+  ...
+# Subtest: import and capability inspection never request permission or touch a subscription
+ok 12 - import and capability inspection never request permission or touch a subscription
+  ---
+  duration_ms: 1.933209
+  ...
+# Subtest: consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+ok 13 - consent and direct user activation are mandatory before permission; denied and dismissed create nothing
+  ---
+  duration_ms: 0.469042
+  ...
+# Subtest: grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+ok 14 - grant uses userVisibleOnly and returns a transient upload; existing correct subscription is reused
+  ---
+  duration_ms: 6.28025
+  ...
+# Subtest: a different VAPID binding is refused without replacing the browser subscription
+ok 15 - a different VAPID binding is refused without replacing the browser subscription
+  ---
+  duration_ms: 0.25275
+  ...
+# Subtest: unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+ok 16 - unsubscribe requires gesture and exact local endpoint fingerprint; late replacement remains untouched
+  ---
+  duration_ms: 0.65275
+  ...
+# Subtest: outside-app permission revocation is observable without another prompt
+ok 17 - outside-app permission revocation is observable without another prompt
+  ---
+  duration_ms: 0.337625
+  ...
+# Subtest: missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+ok 18 - missing worker and platform exceptions are sanitized without leaking endpoint or provider details
+  ---
+  duration_ms: 0.223875
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 113.077542

@@ -1,0 +1,17 @@
+{
+  "workers/shared/recovery-records.ts": "bd57552d66807ba7a7a017de3be1c48d93f473e33b9e3d560128e6e3f5493c6d",
+  "workers/shared/task-tools.ts": "35294f18cc7df841554e4f1b523fd12344c37a360086c71d7456bdf8bfd75038",
+  "workers/shared/build-identity.generated.ts": "e045706dd9b87f1e386b48194f1e25edc73b21000890dfafe17d728f329bf7b4",
+  "workers/companion-workspace/src/recovery-records.ts": "5ed393c20572bbd1dd02f3fc99be7d80dc7379b1d2974fe6fad78a3f6cd147b2",
+  "workers/companion-workspace/src/task-api.ts": "b890331325247d6ec8602a134df875ccdc388a00b9074c38973beac4c6e8c29d",
+  "workers/companion-workspace/src/index.ts": "d1e73633d579fe7cfcdc6d2e7fa89c189c0db8d930f10702129526a9d07cf1f9",
+  "workers/chatgpt-mcp/src/task-tools.ts": "bdbcfd8667c3726c38ab0181dfd06b6edb3eb343b0b21899786c8e62b2851a69",
+  "workers/companion-workspace/test/recovery-records.test.mjs": "f649998e0dae4b95fd9ef8f9e5e3dcbab4e9796fffa99155fedb6777387e5016",
+  "workers/companion-workspace/test/recovery-records-api.test.mjs": "44b9aa45212cf2745ac492f0af3e93dc68bab804e6a42bfa4cb2b67500e197a5",
+  "skill-tree/documents/retained-recovery-discovery.md": "5a21f9fff6ef37f68937de3d93161648034de4668bda2c4535677c47b03b0bdf",
+  "skill-tree/documents/history-recovery.md": "09fd78b9d131232d771ce0c8eff635a91b73b3dc80c33b47a23f582d4d003d56",
+  "skill-tree/documents/features.md": "043bb23fecf9863cbf4769b2bb8fe4c49d01a39a0c54b0d666259566c7712f0c",
+  "skill-tree/documents/habitica-api.md": "534b843ceef092d432febd8b1acdb3404f86a66ee74aa037db0d7966ca8c22cb",
+  "skill-tree/documents/testing.md": "8db066aa55e79e4ceb4987285002465c1eb8630935b2c03ffe514e59c412d7a3",
+  "plugin/skills/habitica-task-management/SKILL.md": "88ab87672da49c94b268dd2c891e1d635064049dec151f34bc02cad63c5d14da"
+}

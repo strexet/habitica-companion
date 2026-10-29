@@ -1,0 +1,15 @@
+{
+  "taskId": "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+  "scope": "Always-open Todo navigation and category-first pages",
+  "checks": {
+    "component": "Navigation and Todo category component suites passed within 735 WebApp tests; all Habitica.sln suites passed",
+    "browser": "Nine Todo navigation, category, project, statistics and sync fixtures passed 756 rendered cases across six widths, seven themes and two text scales with zero reported geometry, contrast, harness or unqualified-surface errors",
+    "visual": "360px Gryphy Light and Obsidian Glow screenshots show direct capture, category tabs, source disclosure and first task actions at normal text. At 200-percent text the tabs wrap without overlap.",
+    "build": "Release WebApp publish succeeded",
+    "safety": "Navigation and category components reuse existing task, workspace and original-receipt controllers; route entry does not accept a task command or change game state"
+  },
+  "limitations": [
+    "Rendered fixtures use synthetic account and task data; hosted enrollment, real device interaction and assistive-technology behavior are unqualified.",
+    "No live account write or deployment was part of this route milestone."
+  ]
+}

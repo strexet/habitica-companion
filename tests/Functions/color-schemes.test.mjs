@@ -77,6 +77,14 @@ test('a qualifying authored foreground stays unchanged', () => {
   assert.equal(page.properties.get('--button-text'),'#fff7ff');
 });
 
+test('secondary button text follows its painted gradient instead of a bright accent', () => {
+  const page = browser();
+  page.api.applyColorScheme({id:'obsidian-gradient',tokens:{accent:'#b78cff',secondaryButtonText:'#e7ecf6',secondaryButtonGradient:{start:'#18233e',end:'#211a38'}}});
+  assert.equal(page.properties.get('--button-text-accent'),'#e7ecf6');
+  page.api.applyColorScheme({id:'light-gradient',tokens:{accent:'#18233e',secondaryButtonText:'#18233e',secondaryButtonGradient:{start:'#f8f4ff',end:'#e7ecf6'}}});
+  assert.equal(page.properties.get('--button-text-accent'),'#18233e');
+});
+
 
 test('surface text derives readable gold, status and muted colors without changing preferences', () => {
   const page = browser();

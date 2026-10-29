@@ -1,0 +1,69 @@
+{
+  "recordedAtUtc": "2026-10-21T11:42:39.143809+00:00",
+  "taskId": "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+  "qualification": "Final review verification supplements the earlier completion evidence without rewriting the earlier source verdict.",
+  "originalEvidence": "skill-tree/history/validation/todo-required-v1/result.json",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "bcef620c006439a7aa8d6c53d60af957e8252675b1eae16986840adfb13225f3",
+    "skill-tree/documents/ai-app-testing.md": "1b0d0ef6f67a6fe3c43a8b5f31b7fb196d1697875ca3293e5d0498172f935df3",
+    "skill-tree/documents/companion-workspace-contract.md": "cc69ea521eab9ad9e5b16d50c530d69224039d713a4d55d85de282012f676a39",
+    "skill-tree/documents/features.md": "c261bb36ba04b7e04ad6bc682d1f60fb47754d62ca0fe93c1716724d9a3046d2",
+    "skill-tree/documents/habitica-api.md": "6d65036a4655f159a8f67bc76bf41d8cd9e45a9b5057777b002c688a772d8232",
+    "skill-tree/documents/technical.md": "ee7214afc3818ed45c277360ed534a65ded7fa124a3574cedabf69bdf4e839ce",
+    "skill-tree/documents/ux-ui-manifest.md": "3a2502cee4c01a4994a2d321574c74702ac4dc7c12abc62dcf54272fc666ba97",
+    "src/Habitica.Application/Workspace/WorkspaceCommandService.cs": "b4dd12c8d517ff9f5b148af131b979b5878a8196e9a9a0c91cf7dc2c1c8b2488",
+    "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "dbeb6bc5a6e0c1e7fa59ff0edd8eb4d6cfc24fc442153ddf367c6f0bfbb4de48",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "be3757ad783fd70fff68e40dddc25b3508991eace2c32be32113d079b8f11fa8",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCommandTests.cs": "30b4ad0a1a10644ae192bb7b90088d2715e0d2f117c4cd1abca1b4e1999f3af5",
+    "tests/Habitica.WebApp.Tests/Workspace/CompanionTasksPanelTests.cs": "1b33889ce019d808d3451401cc35ed4c4fd8578fd6dbddf28eefa6b516750a2b",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "481228f80a699cd381538850271983e405e41e6f26e683e107314277b801ffeb",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "bd1aa144dcd947ebdcc6f2268a0869a423fffdeacceeeaf77b4b629fd67a3978",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "e804b8156d602ae53c2c0b21fc315da4aa22fb2fb8f033c4ad3ff93e37f6e062",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "a9b00548f5ff6c76ec0470d8bdb6ad061d2eaa9f4c2a8bd52d1ed380d03e06f6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "8ec0010989024e7bf16bd7aa029b15f956783f748e451b62bfb49bb122b0686e",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "4b8c8af7e6d40a73b41bc94029fa00f745aab7dfd122ceca1fdbb8529532d928",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceOrganizationControllerTests.cs": "d86cd445e5276959eb5699eb23a2fd86d88a714aa40394e8ce49b1f55c534516",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "9aafe6da9fbc3b8408149a3e6253155074b18ac7fb0d374ee1e86c39f3ccb6ba",
+    "workers/companion-workspace/src/index.ts": "b0797aad937929263d282e13120085fcfaec1c65b30eb4726f7ee86c2a34193e",
+    "workers/companion-workspace/src/task-api.ts": "a1710b215538b8923405b56b171a2c0ae616f5e37ed57f34324a7c728354568e",
+    "workers/companion-workspace/test/cron.test.mjs": "49bb9561e907e2704df2148df72fcb831e40ad01dd1dbe6ca2f5cdcadba1fe44",
+    "workers/companion-workspace/test/fixtures/legacy-todo.mjs": "f23b28ceb528e87ec7d9f18723585e86b5fa9e07bbd3adf45f2b68ca17acee96",
+    "workers/companion-workspace/test/plugin.test.mjs": "e5daed1bee4b18fa0779927d53c1fae87534ecb30e7486576c50e4c27474884d",
+    "workers/companion-workspace/test/task-api.test.mjs": "84d397cb78ff89a2fdd0f80fd74026e130d3b554b724eabefea465e5a819e768",
+    "workers/companion-workspace/test/task-details.test.mjs": "bc6d9707fbe07e68b4a73f1bdefad99dda116d8de5180f027e12cd8b5bf9d551",
+    "workers/companion-workspace/test/todo-restore.test.mjs": "b48e9d13dfb908edad2f48d243d56f02d1cc4b3959fbcadf83c52e8b3da5a7a7",
+    "workers/companion-workspace/test/todo-state.test.mjs": "cf4ba485b1a1e8418e34f5a1c7aca4dc6027a0156f33ad8f16e02eb6931bcee8",
+    "workers/companion-workspace/test/workspace.test.mjs": "dbe4492844a565bb4e03279d1898ce74cf4828f6df8955b20e5607e14a2e17ae",
+    "workers/shared/todo-projection-policy.ts": "f623edb5a0c197f84d446c9c3b00bbb069d45142bbc8cb1c4733bcc95f578b41"
+  },
+  "checks": {
+    "dotnetTests": 970,
+    "workspaceTests": 377,
+    "pluginTests": 2,
+    "browserCases": 216,
+    "browserErrors": 0,
+    "workspaceBuild": "typecheck and dry build pass",
+    "releasePublish": "pass",
+    "workerLogSha256": "2257329e67d3e5dc0fa51a36170eef47fd384e283d65c64efdff383cf9e7827a",
+    "workerTerminal": [
+      "--dry-run: exiting now.",
+      "# tests 377",
+      "# pass 377",
+      "# fail 0",
+      "# duration_ms 32490.643708"
+    ]
+  },
+  "finalReviewRepair": {
+    "observation": "A recovered accepted legacy preview derived game-effect disclosure from the current task mapping, rather than the immutable accepted effect list.",
+    "change": "Recovered accepted previews use the original entry effects; fresh previews retain effective current intent.",
+    "test": "accepted legacy preview uses original effects even after the task acquires a pending mapping",
+    "outcome": "The old false preview and receipt remain nonprojected after a later true completion queues create then score."
+  },
+  "limitations": [
+    "Production publication, physical devices and real-client reauthorization remain unqualified.",
+    "Browser fixtures qualify rendered geometry and themes; .NET component tests qualify Blazor handlers and original receipt recovery.",
+    "Existing full-document prose findings remain outside this task; changed prose receives separate lint coverage.",
+    "Controller time from the interrupted earlier segment is unavailable; test wall durations are preserved in terminal evidence."
+  ]
+}

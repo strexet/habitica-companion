@@ -1,0 +1,272 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "81dac4fa-2cd6-43b9-b388-3c12ea908050",
+    "revision": 5,
+    "categories": [],
+    "projects": [],
+    "sections": [],
+    "labels": [],
+    "goals": [],
+    "tasks": [
+      {
+        "id": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "revision": 5,
+        "isArchived": false,
+        "habiticaDetails": null,
+        "text": "Synthetic linked recovery",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:50.565Z",
+        "updatedAtUtc": "2026-10-27T17:36:50.970Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [
+      {
+        "id": "06f73a99-f553-44da-a431-42f4a9f4bd5b",
+        "revision": 3,
+        "isArchived": false,
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+        "completedAtUtc": "2026-10-27T17:36:50.596Z",
+        "occurrenceId": null
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "id": "cb6a6da1-1960-420d-b7fd-76dbf59b825e",
+        "revision": 4,
+        "isArchived": false,
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "state": "linked",
+        "habiticaTaskId": "f078dd65-4c8c-4f76-91de-ddb04324fe74",
+        "fingerprint": "bc6b0679e22cc32de56a3432102eb953141834aa73357b7c35455c591b96da5c",
+        "correlationAlias": null
+      }
+    ],
+    "restorations": [
+      {
+        "id": "8b41006d-1f1d-58b1-9679-741e47b5437c",
+        "revision": 5,
+        "isArchived": false,
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "completionId": "06f73a99-f553-44da-a431-42f4a9f4bd5b",
+        "commandId": "03cc7e8d-c027-43f1-99bf-dab295867423",
+        "restoredAtUtc": "2026-10-27T17:36:50.970Z"
+      }
+    ],
+    "linkedTaskRecoveries": [
+      {
+        "id": "03cc7e8d-c027-43f1-99bf-dab295867423",
+        "revision": 5,
+        "isArchived": false,
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "completionId": "06f73a99-f553-44da-a431-42f4a9f4bd5b",
+        "sourceAttemptId": "a1c7ca23-997e-4e12-bf56-c00d1047ef4f",
+        "recoveryAttemptId": "03cc7e8d-c027-43f1-99bf-dab295867423",
+        "habiticaTaskId": "f078dd65-4c8c-4f76-91de-ddb04324fe74",
+        "accountId": "00000000-0000-4000-8000-000000000011",
+        "reviewedRevision": 4,
+        "taskRevision": 3,
+        "mappingId": "cb6a6da1-1960-420d-b7fd-76dbf59b825e",
+        "mappingRevision": 4,
+        "mappingFingerprint": "bc6b0679e22cc32de56a3432102eb953141834aa73357b7c35455c591b96da5c",
+        "contextHash": "ef0fa3584cb78dab769c6719f85e1e0650e13f11e1f829a5b195c9d8e7cc9b38",
+        "upstreamReviewHash": "213e9488c9f61425aaa6139cae83ca7fb238919d320f0c4ad6b00abd3556f4c7",
+        "sourceContext": {
+          "contract": "companion-completion-score-v1",
+          "workspaceId": "81dac4fa-2cd6-43b9-b388-3c12ea908050",
+          "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+          "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+          "commandPayloadHash": "f3392cfba873ff1f6ca63c80d4046bec70612bc649dcce95410b7e6c23cc3c20",
+          "completionId": "06f73a99-f553-44da-a431-42f4a9f4bd5b",
+          "effectIndex": 0,
+          "taskKind": "todo",
+          "occurrenceDate": null
+        },
+        "recoveredAtUtc": "2026-10-27T17:36:50.970Z"
+      }
+    ]
+  },
+  "storeVersion": 9,
+  "authority": {
+    "mode": "cloud",
+    "transferId": null,
+    "cloudWorkspaceId": "81dac4fa-2cd6-43b9-b388-3c12ea908050"
+  },
+  "commands": [
+    {
+      "command": {
+        "id": "1258ab84-9ffd-4cdb-bb2f-8f539f4e3210",
+        "workspaceId": "81dac4fa-2cd6-43b9-b388-3c12ea908050",
+        "expectedRevision": 1,
+        "operation": "createTodo",
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "patch": {
+          "text": "Synthetic linked recovery",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": null
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "44a81ac578ea76b3d9d84aaa57e2b43d5cc6ecdc427cd4dd6dc4db6615f087c6",
+      "acceptedAtUtc": "2026-10-27T17:36:50.565Z",
+      "projectionState": "notRequested",
+      "effects": [],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "id": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "revision": 2,
+        "isArchived": false,
+        "text": "Synthetic linked recovery",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:50.565Z",
+        "updatedAtUtc": "2026-10-27T17:36:50.565Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "command": {
+        "id": "194332a1-3947-4259-9a38-34ac1e320eb9",
+        "workspaceId": "81dac4fa-2cd6-43b9-b388-3c12ea908050",
+        "expectedRevision": 2,
+        "operation": "completeTask",
+        "taskId": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "patch": null,
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "f3392cfba873ff1f6ca63c80d4046bec70612bc649dcce95410b7e6c23cc3c20",
+      "acceptedAtUtc": "2026-10-27T17:36:50.596Z",
+      "projectionState": "confirmed",
+      "effects": [
+        "scoreUp"
+      ],
+      "confirmedEffects": 1,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 1,
+      "taskSnapshot": {
+        "id": "807c42e0-26ce-43aa-bbee-46639ab2298b",
+        "revision": 3,
+        "isArchived": false,
+        "habiticaDetails": null,
+        "text": "Synthetic linked recovery",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-27T17:36:50.565Z",
+        "updatedAtUtc": "2026-10-27T17:36:50.596Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "4015eb88-5537-41a4-93c4-77675021d6b5",
+      "commandId": "1258ab84-9ffd-4cdb-bb2f-8f539f4e3210",
+      "kind": "accepted",
+      "atUtc": "2026-10-27T17:36:50.565Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "5cf0bb89-c45c-4013-ab2e-9609346c9281",
+      "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+      "kind": "accepted",
+      "atUtc": "2026-10-27T17:36:50.596Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "36c9466b-4711-484b-97d4-a2ce851d964a",
+      "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+      "kind": "leaseAcquired",
+      "atUtc": "2026-10-27T17:36:50.671Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": "a1c7ca23-997e-4e12-bf56-c00d1047ef4f",
+      "evidenceReference": null
+    },
+    {
+      "id": "df29ffa2-02d6-4db9-b7d2-06a63f88a4b2",
+      "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+      "kind": "dispatched",
+      "atUtc": "2026-10-27T17:36:50.763Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": "a1c7ca23-997e-4e12-bf56-c00d1047ef4f",
+      "evidenceReference": null
+    },
+    {
+      "id": "5b37a9d6-62a5-403e-9506-144088fa597b",
+      "commandId": "194332a1-3947-4259-9a38-34ac1e320eb9",
+      "kind": "resultKnown",
+      "atUtc": "2026-10-27T17:36:50.840Z",
+      "confirmedEffects": 1,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    }
+  ]
+}

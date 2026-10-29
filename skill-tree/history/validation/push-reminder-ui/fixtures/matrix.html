@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Page qualification matrix</title></head><body style="font:16px sans-serif;background:#eee;margin:16px"><h1>Local page qualification</h1><p>Synthetic Razor output and production styles. Component interactions, screenshots and physical-device checks remain separate evidence.</p><label>Fixture <select id="fixture" multiple size="5"></select></label> <button id="run">Run selected matrix</button> <button id="all">Run all captured fixtures</button> <button id="negative">Run seeded failures</button><p id="progress" role="status">Loading inventory</p><pre id="summary"></pre><iframe id="frame" title="Qualification viewport" style="width:390px;height:800px;border:1px solid #666"></iframe><details><summary>Raw measurements</summary><pre id="results"></pre></details><script type="module">
+import {QualificationCase,QualificationTimer,qualificationLimits} from './qualification-session.mjs';
+const inventory=await(await fetch('/coverage.json')).json();const schemes=Object.keys(await(await fetch('/schemes.json')).json());
+const select=document.querySelector('#fixture'),frame=document.querySelector('#frame'),progress=document.querySelector('#progress'),summary=document.querySelector('#summary'),output=document.querySelector('#results');
+for(const [name,item] of Object.entries(inventory)){const option=document.createElement('option');option.value=name;option.textContent=`${item.route} / ${item.state} / ${name}`;select.append(option);}
+select.options[0].selected=true;
+let queue=[],results=[],running=false,deadline,caseSerial=0,currentCase;
+const setBusy=busy=>document.querySelectorAll('button').forEach(button=>button.disabled=busy);
+const timer=new QualificationTimer((callback,delay)=>setTimeout(callback,delay),handle=>clearTimeout(handle),()=>performance.now(),result=>finish(result));
+function render(){output.textContent=JSON.stringify(results);const errors=results.flatMap(r=>r.errors||[]);summary.textContent=JSON.stringify({cases:results.length,errors:errors.length,harnessErrors:results.filter(r=>r.harnessError).length,prerequisiteUnavailable:results.filter(r=>r.harnessError&&r.operationClass==='prerequisite_wait').length,measurementUnavailable:results.filter(r=>r.harnessError&&r.operationClass==='executed_control').length,unqualifiedSurfaces:results.reduce((n,r)=>n+(r.unqualifiedSurfaces?.length||0),0),errorKinds:[...new Set(errors.map(e=>e.kind))]});}
+function finish(result){timer.clear();results.push(result);render();next();}
+function next(){
+ timer.clear();
+ if(performance.now()>deadline){queue=[];results.push({harnessError:'Matrix exceeded 300-second deadline',qualification:'unavailable',operationClass:'prerequisite_wait'});render();}
+ if(!queue.length){running=false;setBusy(false);progress.textContent=`Finished ${results.length} cases`;return;}
+ const q=queue.shift(),caseId=String(++caseSerial)+'-'+crypto.randomUUID();frame.style.width=q.width+'px';
+ currentCase=new QualificationCase({caseId,fixture:'/'+inventory[q.name].file,theme:q.theme,width:q.width,textPercent:q.text,seed:q.seed},performance.now());
+ timer.arm(currentCase);frame.src=inventory[q.name].file+`?theme=${q.theme}&text=${q.text}&case=${caseId}`+(q.seed?'&seed='+q.seed:'');progress.textContent=`Running ${results.length+1}: ${q.name}, ${q.width}px, ${q.theme}, ${q.text}% · navigation prerequisite`;
+}
+function start(names,negative=false){if(running)return;results=[];output.textContent='';summary.textContent='';queue=[];for(const name of names)for(const width of(negative?[390]:[360,390,430,768,1024,1200]))for(const theme of(negative?['gryphy-light']:schemes))for(const text of(negative?[100]:[100,200]))for(const seed of(negative?['geometry','contrast']:[null]))queue.push({name,width,theme,text,seed});running=true;setBusy(true);deadline=performance.now()+qualificationLimits.runMs;next();}
+addEventListener('message',e=>{
+ if(e.origin!==location.origin||e.source!==frame.contentWindow||!running||!currentCase||!e.data||typeof e.data!=='object')return;
+ const now=performance.now();
+ if(e.data.type==='qualification-phase'){
+  if(currentCase.phase(e.data.phase,now)){timer.arm(currentCase);progress.textContent=`Running ${results.length+1}: ${currentCase.identity.fixture} · ${e.data.phase.phase} ${e.data.phase.status} · ${Math.round(now-currentCase.startedAt)}ms`;}
+ }else if(e.data.type==='qualification-result'){
+  const result=currentCase.result(e.data.result,now);if(result)finish(result);
+ }
+});
+document.querySelector('#run').onclick=()=>start([...select.selectedOptions].map(option=>option.value));document.querySelector('#all').onclick=()=>start(Object.keys(inventory));document.querySelector('#negative').onclick=()=>start([select.value],true);
+progress.textContent=`Ready: ${Object.keys(inventory).length} captured fixtures; ${schemes.length} deterministic themes · case ${qualificationLimits.caseMs}ms including startup and measurement; total run ${qualificationLimits.runMs}ms`;
+</script></body></html>

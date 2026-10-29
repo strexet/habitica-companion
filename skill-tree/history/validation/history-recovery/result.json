@@ -1,0 +1,246 @@
+{
+  "taskId": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+  "status": "accepted-local-history-recovery",
+  "requiredChild": "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0",
+  "checks": {
+    "webSuite": 875,
+    "typedCloud": 73,
+    "extendedRecovery": 45,
+    "freshReleasePublish": true,
+    "renderedUniqueCases": 4284,
+    "renderedFixtures": 51,
+    "routes": 12,
+    "schemes": 7,
+    "widths": 6,
+    "textScales": 2,
+    "matrixErrors": 0,
+    "seededNegativeControls": 2,
+    "nativeKeyboardFocus": true,
+    "documentationConsistency": true,
+    "diffCheck": true
+  },
+  "delivered": [
+    "History offers distinct native Todo restoration, unarchive, exact zero-effect Daily correction and linked Habitica uncheck reviews. A bounded retained-record browser includes archived tasks without completions and terminal Daily skips.",
+    "Native previews bind exact archive/occurrence revision and original source; original receipts remain visible after acknowledgement loss. Linked reviews show the task/completion/account/day/native identity, unknown resource effects and original receipt identity.",
+    "Scoped recovery ownership blocks replacement task/organization preparation and source switching. Lost preparation retries the same request; attempted acceptance reads the original command only. Active original recovery can be rediscovered after reopening the same completion, and manual command-ID lookup never scores.",
+    "Filters, task drafts and exact source identity remain independent. Account changes clear private recovery data. Missing proof, explicit archive-reference repair, stale/expired reviews and bounded server refusal codes remain visible without unlinked copies or erased history.",
+    "Required reviewed MCP discovery exposes the same archived/terminal browse through existing scopes and bounded canonical reads; no permanent browser-automation workflow is introduced."
+  ],
+  "qualification": {
+    "cases": 4284,
+    "uniqueCases": 4284,
+    "fixtures": 51,
+    "routes": [
+      "/tasks",
+      "/todo/dailies",
+      "/todo/habits",
+      "/todo/history",
+      "/todo/inbox",
+      "/todo/lists",
+      "/todo/plan",
+      "/todo/projects",
+      "/todo/reminders",
+      "/todo/sync",
+      "/todo/tasks",
+      "/todo/today"
+    ],
+    "schemes": [
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate",
+      "gryphy-dark",
+      "gryphy-light",
+      "obsidian-glow",
+      "toxic-swamp"
+    ],
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "textPercent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0,
+    "seededDetectors": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "baselineCasesRetainedSeparately": 1260,
+    "scope": "Synthetic Razor and production assets; component dispatch and native HTML keyboard are separate; physical devices/AT/live accounts unqualified"
+  },
+  "repairs": [
+    "The Daily skip fixture requires an explicit valid schedule.",
+    "The canonical text-folding helper is public for the shared UI query; a focused full-width search test verifies parity without changing saved task text.",
+    "Shared-route fixture compilation used the current bUnit API and local page storage/browser fakes. An implicit conditional-constructor type inferred the linked fake for native cases; explicit base construction restored exact fixture identity. No production identity validation was weakened.",
+    "Unconfirmed acceptance now labels the original review as unconfirmed; the shared panel identifies recovery ownership instead of incorrectly suggesting a different cloud owner.",
+    "Server error messages expose only bounded code syntax; arbitrary response text remains hidden."
+  ],
+  "limitations": [
+    "Local synthetic sources, SDK/HTTP composition and Razor/native HTML controls only; no real account/provider score, Cron, host, device, notification permission, assistive-technology or publication operation.",
+    "Blazor dispatch is component-test evidence. Native keyboard and rendered geometry/contrast are separate browser evidence. Screenshots show visible desktop crops rather than full phone/device qualification.",
+    "Disabled text is excluded from the existing automated contrast sampler; disabled geometry/visibility and distinguishable states remain covered, with manual light/Obsidian inspection.",
+    "Archive reference repair requires an explicit repair patch through the existing contract; the history UI explains the prerequisite and never silently removes references.",
+    "The eighteen primary history fixtures have empty secondary archive queries. The later query-normalization change leaves the measured rendered branches unchanged; canonical full-width search behavior is separately tested.",
+    "The required MCP child retains the independent Miniflare proxy transport limitation and successful isolated lifecycle evidence."
+  ],
+  "timing": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "instrumentation": "Per-control tool wall time and deadlines are recorded; browser measurement and server waiting are not active controller-time estimates.",
+    "selectedTaskTotalBudget": null
+  },
+  "controls": [
+    {
+      "name": "first",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 14.15,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "components",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 5.53,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "components2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.82,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "final-components",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 12.73,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "shared-routes",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 12.26,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "shared-routes2",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 5.8,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "shared-routes3",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 7.47,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "web-suite",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 52.7,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "web-final",
+      "kind": "executed_control",
+      "exitCode": 1,
+      "toolWallSeconds": 7.2,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "web-final2",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 45.28,
+      "deadlineSeconds": 180,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "cloud-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 12.76,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "publish",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 21.69,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "final-publish",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 16.13,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "release-final",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 21.04,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "server",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 651.12,
+      "deadlineSeconds": 660,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "final-server",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 650.35,
+      "deadlineSeconds": 660,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "shared-server1",
+      "kind": "cleanup",
+      "exitCode": 130,
+      "toolWallSeconds": 469.9,
+      "deadlineSeconds": 660,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "shared-server2",
+      "kind": "cleanup",
+      "exitCode": 130,
+      "toolWallSeconds": 469.9,
+      "deadlineSeconds": 660,
+      "cleanupReserveSeconds": 5
+    }
+  ]
+}

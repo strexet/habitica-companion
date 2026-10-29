@@ -5,7 +5,7 @@ using Habitica.Domain.Auth;
 
 namespace Habitica.WebApp.Integration;
 
-public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
+public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
 {
     private readonly HttpClient _http;
     private readonly Uri? _baseUri;
@@ -30,6 +30,8 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
     public bool IsAvailable => _baseUri is not null && _linkingEnabled;
     internal bool IsVaultAvailable => _baseUri is not null;
     public bool HasConnection => _profileId is not null && _managementToken is not null;
+    internal string? ProfileId=>_profileId;
+    internal int SessionVersion=>_sessionVersion;
 
     public async Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
@@ -112,7 +114,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
             using var response = await _http.SendAsync(request, cancellationToken);
             if (!response.IsSuccessStatusCode) return new(false, "Integration status is unavailable. Revalidate credentials if access changed.");
             var status = await response.Content.ReadFromJsonAsync<StatusPayload>(cancellationToken);
-            if (version != _sessionVersion || status is null || status.DisplayName?.Length > 256 || status.Permissions is null || status.Permissions.Length > 8
+            if (version != _sessionVersion || status is null || status.DisplayName?.Length > 256 || status.Permissions is null || status.Permissions.Length > KnownPermissions.Length
                 || status.Permissions.Any(scope => !KnownPermissions.Contains(scope)) || status.CredentialStatus is not ("last_verified" or "repair_needed"))
                 return new(false, "Integration status is unavailable.");
             return new(true, "Integration status loaded.", status.DisplayName, status.Permissions, status.CredentialStatus, status.LastVerifiedAtUtc, status.LastUsedAtUtc, status.PermissionsTruncated);
@@ -168,7 +170,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         }
     }
 
-    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute"];
+    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute", "workspace.organization.write", "habitica.tags.write","notes.read","notes.write"];
     private sealed record StatusPayload(string? DisplayName, string[]? Permissions, string? CredentialStatus, DateTimeOffset? LastVerifiedAtUtc, DateTimeOffset? LastUsedAtUtc, bool PermissionsTruncated);
     private sealed record ManagementPayload(bool Rotated, string? ManagementToken, bool Revoked, bool PendingCleanup);
 
@@ -186,6 +188,20 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _managementToken);
         request.Content = JsonContent.Create(new { consentVersion = "workspace-v1" });
         return request;
+    }
+
+    internal HttpRequestMessage NotesHandshake(Uri uri)
+    {
+        if(!HasConnection)throw new InvalidOperationException("Credential verification is required.");
+        var request=new HttpRequestMessage(HttpMethod.Post,uri);request.Headers.Authorization=new AuthenticationHeaderValue("Bearer",_managementToken);
+        request.Content=JsonContent.Create(new{consentVersion="notes-v1"});return request;
+    }
+
+    internal HttpRequestMessage DiagnosticOwnerRequest(Uri uri,HttpMethod method,object? body)
+    {
+        if(!HasConnection||!uri.AbsolutePath.StartsWith("/diagnostics/",StringComparison.Ordinal)||method!=HttpMethod.Get&&method!=HttpMethod.Post)throw new InvalidOperationException("Diagnostic owner access is unavailable.");
+        var request=new HttpRequestMessage(method,uri);request.Headers.Authorization=new AuthenticationHeaderValue("Bearer",_managementToken);
+        if(body is not null)request.Content=new StringContent(System.Text.Json.JsonSerializer.Serialize(body,Habitica.Application.Diagnostics.DiagnosticSharing.Json),System.Text.Encoding.UTF8,"application/json");return request;
     }
 
     private HttpRequestMessage ManagementRequest(HttpMethod method, string suffix)

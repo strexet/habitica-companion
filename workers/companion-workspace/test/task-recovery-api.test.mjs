@@ -1,0 +1,33 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {fixture,enrolled,authorization,exchange,resource,accounts} from '../../chatgpt-auth/test/fixtures/oauth.mjs';
+import {Client} from '../../chatgpt-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js';
+import {StreamableHTTPClientTransport} from '../../chatgpt-mcp/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js';
+import {seedLegacyCommand} from './fixtures/legacy-todo.mjs';
+import {journal} from '../src/journal.ts';
+const origin='http://localhost:8789';
+async function connect(f,p){const r=await f.workspace.fetch(origin+'/connect',{method:'POST',headers:{authorization:'Bearer '+p.managementToken,'content-type':'application/json'},body:JSON.stringify({consentVersion:'workspace-v1'})});assert.equal(r.status,201);return r.json();}
+const call=(f,w,name,args)=>f.workspace.fetch(origin+'/task-api',{method:'POST',headers:{authorization:'Bearer '+w.sessionToken,'content-type':'application/json'},body:JSON.stringify({tool:name,arguments:args})});
+async function client(t,f,p,scope='profile:read tasks:read habitica.tasks.write'){const response=await exchange(f,await authorization(f,p,scope));assert.equal(response.status,200);const token=(await response.json()).access_token,c=new Client({name:'native-recovery-fixture',version:'1.0.0'});t.after(()=>c.close());await c.connect(new StreamableHTTPClientTransport(new URL(resource),{requestInit:{headers:{authorization:'Bearer '+token}},fetch:(url,init)=>f.mcp.fetch(String(url),init)}));return c;}
+test('reviewed MCP native recovery preserves original receipts, isolation and zero task/tag dispatch',async t=>{
+ let writes=0;const f=await fixture(t,{workspace:true,habitica:request=>{if(request.method!=='GET')writes++;return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture A'}}});}}),p=await enrolled(f),w=await connect(f,p),c=await client(t,f,p);
+ const invoke=async(name,args)=>{const r=await c.callTool({name,arguments:args});assert.notEqual(r.isError,true,JSON.stringify(r));return r.structuredContent;};
+ const tools=(await c.listTools()).tools;for(const name of ['unarchive_task','correct_occurrence']){const tool=tools.find(row=>row.name===name);assert.ok(tool);assert.equal(tool.annotations.destructiveHint,true);assert.equal(tool.annotations.readOnlyHint,false);assert.deepEqual(tool._meta.securitySchemes,[{type:'oauth2',scopes:['profile:read','habitica.tasks.write']}]);}
+ const patchSchema=tools.find(row=>row.name==='prepare_task_command').inputSchema.properties.patch.properties;
+ assert.deepEqual(patchSchema.unarchive.required,['archivedRevision']);assert.deepEqual(patchSchema.correctOccurrence.required,['occurrenceId','occurrenceRevision','targetCommandId']);
+ const taskId=crypto.randomUUID(),sourceId=crypto.randomUUID(),date='2026-10-27';
+ await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createDaily',taskId,patch:{text:'Synthetic native Daily',recurrence:{frequency:'daily',interval:1,startDate:date,timeZoneId:'UTC',weekdays:[],daysOfMonth:[]}}});
+ await seedLegacyCommand(f,{id:sourceId,workspaceId:w.workspaceId,expectedRevision:2,operation:'skipOccurrence',taskId,occurrenceDate:date});
+ const exportState=async()=>{const response=await f.workspace.fetch(origin+'/export',{headers:{authorization:'Bearer '+w.sessionToken}});assert.equal(response.status,200);return response.json();};
+ const before=await exportState(),occurrence=before.document.occurrences[0];
+ const context=await invoke('get_task_recovery',{taskId});assert.equal(context.items[0].canCorrect,true);assert.equal(context.items[0].targetCommandId,sourceId);assert.equal(context.items[0].occurrence.id,occurrence.id);
+ const args={requestId:crypto.randomUUID(),operation:'correctOccurrence',taskId,patch:{correctOccurrence:{occurrenceId:occurrence.id,occurrenceRevision:occurrence.revision,targetCommandId:sourceId}}};
+ const review=await invoke('prepare_task_command',args);assert.equal(review.mayAffectHabitica,false);assert.equal((await invoke('prepare_task_command',args)).preparedCommandId,review.preparedCommandId);
+ const corrected=await invoke('correct_occurrence',{commandId:review.preparedCommandId});assert.equal(corrected.acceptedEventCount,1);assert.equal(corrected.totalProjectionCount,0);assert.equal(corrected.habiticaProjectionStatus,'notRequested');
+ const archive=await invoke('prepare_task_command',{requestId:crypto.randomUUID(),operation:'deleteTask',taskId});await invoke('delete_task',{commandId:archive.preparedCommandId});const archived=await invoke('get_task_recovery',{taskId});assert.equal(archived.task.isArchived,true);assert.equal(archived.canUnarchive,true);
+ const unarchiveArgs={requestId:crypto.randomUUID(),operation:'unarchiveTask',taskId,patch:{unarchive:{archivedRevision:archived.task.revision}}},unarchiveReview=await invoke('prepare_task_command',unarchiveArgs);assert.equal(unarchiveReview.mayAffectHabitica,false);const unarchived=await invoke('unarchive_task',{commandId:unarchiveReview.preparedCommandId});assert.equal(unarchived.totalProjectionCount,0);assert.equal(unarchived.acceptedEventCount,1);assert.equal((await invoke('get_companion_task',{taskId})).task.state,'active');
+ assert.equal((await invoke('correct_occurrence',{commandId:review.preparedCommandId})).commandId,corrected.commandId);assert.equal((await invoke('get_task_command',{commandId:corrected.commandId})).commandId,corrected.commandId);assert.equal((await invoke('unarchive_task',{commandId:unarchiveReview.preparedCommandId})).commandId,unarchived.commandId);
+ const wrong=await c.callTool({name:'prepare_task_command',arguments:{...args,requestId:crypto.randomUUID()}});assert.equal(wrong.isError,true);
+ const final=await exportState();await journal(final);assert.equal(final.document.occurrenceCorrections.length,1);assert.equal(final.document.unarchives.length,1);assert.deepEqual(final.document.occurrenceCorrections[0].previousOccurrence,occurrence);assert.equal(final.document.occurrences[0].state,'pending');assert.ok(final.commands.every(row=>row.effects.length===0));assert.equal(writes,0);
+ const other=await connect(f,await enrolled(f,accounts[1]));for(const name of ['correct_occurrence','unarchive_task'])assert.equal((await call(f,other,name,{commandId:corrected.commandId})).status,409);
+ const readonly=await client(t,f,p,'profile:read tasks:read');for(const name of ['correct_occurrence','unarchive_task'])await assert.rejects(readonly.callTool({name,arguments:{commandId:corrected.commandId}}));
+});

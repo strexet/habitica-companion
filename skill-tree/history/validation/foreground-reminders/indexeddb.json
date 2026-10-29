@@ -1,0 +1,19 @@
+{
+  "status": "pass",
+  "checks": [
+    "atomic concurrent claim once",
+    "disable retains original receipt",
+    "two schedulers share durable delivery claim",
+    "reopen suppresses original delivery",
+    "reopen restores separate in-app opt-in",
+    "account switch never transfers opt-in",
+    "all fixture timers cleaned",
+    "browser clear removes opt-in and receipt namespace"
+  ],
+  "notificationAttempts": 1,
+  "browserPermissionPrompts": 0,
+  "realProviderTraffic": 0,
+  "limitations": [
+    "Synthetic platform APIs; real IndexedDB transaction behavior only. No operating-system delivery or closed-tab guarantee."
+  ]
+}

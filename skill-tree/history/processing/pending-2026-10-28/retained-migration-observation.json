@@ -1,0 +1,70 @@
+{
+  "provenance": "companion-canonical",
+  "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+  "revision": 164,
+  "source": {
+    "id": "c3765653-711e-4532-be37-0ba41f0954b3",
+    "revision": 141,
+    "isArchived": true
+  },
+  "conversionId": "4b4c0a84-9e99-4e5c-9b87-4d6de6e0ac19",
+  "archivedTargets": [
+    {
+      "taskId": "7e478750-8e70-455b-ad93-dbfbedfbe485",
+      "state": "completed",
+      "isArchived": true,
+      "mapping": {
+        "id": "fbf932ce-3da1-411a-98d7-111825f707e9",
+        "revision": 136,
+        "isArchived": false,
+        "taskId": "7e478750-8e70-455b-ad93-dbfbedfbe485",
+        "state": "linked",
+        "habiticaTaskId": "13af9394-3609-4040-b9e8-e51d0c4386f6",
+        "fingerprint": "abc8f2484e89e6b7c91ded80902ec1a816c312dfffae14f1f7ad9abf2e4f0159",
+        "correlationAlias": "companion_e5a46166614a4e1cb687c252e74409b1_7e4787508e70455bad93dbfbedfbe485"
+      },
+      "pendingCommandIds": [],
+      "storedCorrespondence": true,
+      "requiresHistoricalMatch": false
+    },
+    {
+      "taskId": "f75f429b-a1de-46b1-bbe7-c9d1d08423e7",
+      "state": "completed",
+      "isArchived": true,
+      "mapping": {
+        "id": "468b3a48-72e9-4b6f-9b53-22199df4a553",
+        "revision": 137,
+        "isArchived": false,
+        "taskId": "f75f429b-a1de-46b1-bbe7-c9d1d08423e7",
+        "state": "linked",
+        "habiticaTaskId": "bffb7311-d28f-4f35-9494-f6446b1ba673",
+        "fingerprint": "8dc09764177fa056d8d262b83b72402d9ec0608fbec89680dc32dcc456c95ad5",
+        "correlationAlias": "companion_e5a46166614a4e1cb687c252e74409b1_f75f429ba1de46b1bbe7c9d1d08423e7"
+      },
+      "pendingCommandIds": [],
+      "storedCorrespondence": true,
+      "requiresHistoricalMatch": false
+    }
+  ],
+  "projectTag": {
+    "entityId": "c5f8a175-2bee-484a-9b72-018737dc10fd",
+    "kind": "project",
+    "name": "Companion Development",
+    "archived": false,
+    "removed": false,
+    "identityState": "linked",
+    "membershipState": "needsReview",
+    "habiticaTagId": "6e22c449-1cab-4ae2-a73a-2d783988496a",
+    "desiredTaskCount": 12,
+    "confirmedMemberCount": 12,
+    "reason": "tag_membership_requires_review"
+  },
+  "nativeVerification": "notFreshlyVerified",
+  "currentConversionFlags": {
+    "sourceUnchanged": false,
+    "canonicalComplete": false,
+    "storedCorrespondenceComplete": false,
+    "retirementReady": false
+  },
+  "qualification": "Exact retained canonical correspondence only. No fresh native provider inspection, deletion, creation, scoring or replay. Later task completions differ from original active conversion placement; current aggregate conversion readiness is not asserted."
+}

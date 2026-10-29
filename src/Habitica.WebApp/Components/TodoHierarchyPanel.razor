@@ -1,0 +1,243 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@implements IDisposable
+
+@if (ProjectMode)
+{
+<section class="card-surface todo-task-panel" data-testid="hierarchy-panel">
+    <div class="task-group-header">@if (CompactHeading) { <h2 tabindex="-1" @ref="_heading">Project tasks</h2> } else { <h1 tabindex="-1" @ref="_heading">Projects</h1> } <a href="/todo/tasks" data-layout-primary="true">Add task</a></div>
+        <TodoPlacementPicker Kind="Project" Caption="Project" Value="_project" ValueChanged="SelectProject" Disabled="@Pending" EmptyLabel="Choose project" />
+        <p class="panel-copy">Subtasks can belong to different projects. Opening a task shows the full branch, including tasks assigned elsewhere.</p>
+</section>
+}
+else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1> }
+@if (ProjectMode) { <TodoProjectNotesPanel ProjectId="_project" /> }
+<TodoTaskPanel @ref="_review" Kind="CompanionTaskKind.Todo" ShowTaskList="false" ShowCapture="@(!ProjectMode || _editing)" CompactStatus="@(!ProjectMode)" ReviewClosed="ReviewClosedAsync" />
+@if (_error is not null) { <p role="alert" class="card-surface">@_error</p> }
+@if (_readError is not null) { <p role="alert" class="card-surface">@_readError</p> }
+@if (Todo.Snapshot is not null)
+{
+    @if (_placementTask is { } placement) { <TodoPlanEditor @ref="_placementEditor" TaskId="placement" Reviewed="ReviewPlacementAsync" Closed="CloseOptionalAsync" /> }
+    @if (_workflowTask is { } workflow) { <TodoTaskWorkflowEditor @ref="_workflowEditor" TaskId="workflow" Reviewed="ReviewWorkflowAsync" Closed="CloseOptionalAsync" /> }
+    @if (_childParent is { } parentId)
+    {
+        <section class="card-surface todo-task-panel" aria-label="Create subtask">
+            <h2 tabindex="-1" @ref="_editorHeading">Add subtask to @Name(parentId)</h2>
+            <p>Two reviewed steps: create an independent Todo, then attach the saved Todo to this exact parent. No project assignment is inherited. Leaving this page before attachment keeps the saved Todo independent; use Move to attach the existing task later.</p>
+            @if (_createdTask is { } created)
+            {
+                <p role="status" data-testid="child-created">Todo saved: @Name(created) · @created. Parent attachment is not confirmed until the second save succeeds. If attachment fails, keep this task and use Move; do not create another copy.</p>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="AttachAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="child-attach">Review parent attachment</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ClearDraft" Variant="Variant.Text">Keep as independent Todo</MudButton>
+            }
+            else
+            {
+                <form @onsubmit="CreateAsync" @onsubmit:preventDefault><fieldset disabled="@ActionsDisabled">
+                    <label class="field-row">Subtask title<input class="app-input" maxlength="2048" @bind="_childTitle" @bind:event="oninput" data-testid="child-title" /></label>
+                    <label class="field-row">Subtask notes<textarea class="app-input" maxlength="10000" @bind="_childNotes" @bind:event="oninput" data-testid="child-notes"></textarea></label>
+                    <label class="field-row">Subtask deadline<input class="app-input" type="date" value="@_childDeadline" @onchange="args => _childDeadline = args.Value?.ToString() ?? string.Empty" data-testid="child-deadline" /></label>
+                    <MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="child-create">Review independent Todo</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReloadDraftContext" Variant="Variant.Text">Reload current parent context</MudButton>
+                </fieldset></form>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ClearDraft" Variant="Variant.Text">Cancel subtask draft</MudButton>
+            }
+        </section>
+    }
+    @if (_moving is { } moving)
+    {
+        <section class="card-surface todo-task-panel" aria-label="Move task">
+            <h2 tabindex="-1" @ref="_editorHeading">Move @Name(moving)</h2>
+            <p>Choose the exact parent. Identical names have separate IDs. A parent cannot be the task itself or a descendant; dependency edges can also cause a cycle. Project assignments remain unchanged.</p>
+            <form @onsubmit="MoveAsync" @onsubmit:preventDefault><fieldset disabled="@ActionsDisabled">
+                <label class="field-row">New parent<select class="app-input" value="@_newParent" @onchange="PickParent" data-testid="move-parent"><option value="">Choose parent</option>
+                    @if (_newParent is { } selected && !_parents.Any(task => task.Id == selected)) { <option value="@selected">@Name(selected) · @selected (retained selection)</option> }
+                    @foreach (var task in _parents) { <option value="@task.Id">@task.Text · @task.Id</option> }
+                </select></label>
+                <div class="action-row"><span>@_parentTotal available Todo parents</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_parentOffset == 0)" OnClick="PreviousParents" Variant="Variant.Text">Previous parents</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_nextParents is null)" OnClick="NextParents" Variant="Variant.Text">Next parents</MudButton></div>
+                <MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled" data-testid="move-review">Review move</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReloadDraftContext" Variant="Variant.Text">Reload current relationship context</MudButton>
+            </fieldset></form>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ClearDraft" Variant="Variant.Text">Cancel move</MudButton>
+        </section>
+    }
+    <section class="card-surface todo-task-panel todo-hierarchy-branches" aria-label="Todo branches" data-testid="hierarchy-branches">
+        @if (_focus is not null)
+        {
+        <div class="action-row">
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="AllRoots" Variant="Variant.Text" data-testid="tree-roots">@(ProjectMode ? "Project tasks" : "All root tasks")</MudButton>
+            @if (_context is { ParentTaskId: { } contextParent }) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(contextParent)" Variant="Variant.Text" data-testid="tree-parent">Collapse to parent</MudButton> }
+            @if (_focus is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ToggleSubtree" Variant="Variant.Text" data-testid="tree-subtree">@(_subtree ? "Collapse to direct children" : "Expand entire branch")</MudButton> }
+        </div>
+        }
+        @if (_context is { } context)
+        {
+            <article class="todo-direct-row" data-testid="tree-context"><div class="todo-row-content"><h2>@context.Text</h2><span>@context.State @(context.IsArchived ? "· archived; retained context" : "")</span><span>Parent: @(context.ParentTaskId is { } p ? Name(p) : "Root task")</span><span>Project: @ProjectName(context)</span>@if (context.SectionId is { } contextSection) { <span>Section: @SectionName(contextSection)</span> }<details><summary>References</summary><p>Task: @context.Id · Parent: @context.ParentTaskId</p></details></div>
+                <div class="todo-row-actions">@if(context.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{context.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text">Edit task</MudButton></div>
+            </article>
+        }
+        @if (_rows.Count == 0) { <p data-testid="tree-empty">@(ProjectMode && _project is null && _focus is null ? "Choose a project." : "No tasks in this branch.")</p> }
+        @foreach (var row in _rows)
+        {
+            var task = row.Task;
+            <article class="todo-direct-row" @key="task.Id" data-testid="@($"tree-row-{task.Id:D}")">
+                <div class="todo-row-content"><strong>@task.Text</strong><span>@task.State @(task.IsArchived ? "· archived" : "") @(row.Depth is { } depth ? $"· level {depth}" : "")</span>
+                    @if (task.SectionId is { } taskSection) { <span>Section: @SectionName(taskSection)</span> }
+                    @if (task.ParentTaskId is { } parent) { <span>Parent: @Name(parent) @(Todo.Snapshot.Document.Tasks.FirstOrDefault(task => task.Id == parent)?.IsArchived == true ? "(archived)" : "") · @ParentContext(row.Coverage)</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(parent)" Variant="Variant.Text">Open parent</MudButton> }
+                    @if (task.Deadline is { } deadline) { <span>Deadline: @deadline.ToString("yyyy-MM-dd")</span> }
+                    @if (task.Notes is { Length: > 0 }) { <details><summary>Notes</summary><p>@task.Notes</p></details> }
+                </div>
+                <div class="todo-row-actions">
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived || task.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday))" OnClick="() => CompleteAsync(task.Id)" Variant="Variant.Text">Complete</MudButton>
+                    @if(task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(task.Id)" Variant="Variant.Outlined" data-testid="@($"tree-expand-{task.Id:D}")">Expand subtasks</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => ChildAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-add-{task.Id:D}")">Add subtask</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => EditAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-edit-{task.Id:D}")">Edit</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartPlacementAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-plan-{task.Id:D}")">Plan / assign project</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartWorkflowAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-workflow-{task.Id:D}")">Organize</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartMoveAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-move-{task.Id:D}")">Move</MudButton>
+                    @if (task.ParentTaskId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => DetachAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-detach-{task.Id:D}")">Detach</MudButton> }
+                </div>
+                <div class="todo-row-context"><span>Project: @ProjectName(task)</span><details><summary>References</summary><p>Task: @task.Id · Parent: @task.ParentTaskId</p></details></div>
+            </article>
+        }
+        @if (!ProjectMode) { <a href="/todo/projects" data-layout-primary="true">Browse project tasks</a> }
+        <p class="panel-copy">@(_focus is null ? ProjectMode ? "Tasks directly assigned to the selected project. Parent context remains available even outside this list." : "Root Todos. Expand a task to navigate one level at a time." : _subtree ? "All subtasks in order, shown in pages. Parent links stay available." : "Direct children. Each subtask has independent status, notes and dates.")</p>
+        <div class="action-row"><span>@_total tasks in selected view · revision @_revision</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Pending || _offset == 0)" OnClick="Previous" Variant="Variant.Text" data-testid="tree-previous">Previous branch rows</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Pending || _next is null)" OnClick="Next" Variant="Variant.Text" data-testid="tree-next">Next branch rows</MudButton></div>
+        <p class="panel-copy">Opening a branch never completes or moves descendants. Project membership and links to Habitica stay unchanged. Parent references stay available across pages; deep levels use labels instead of increasing indentation.</p>
+    </section>
+}
+
+@code {
+    [Parameter] public bool ProjectMode { get; set; }
+    [Parameter] public bool CompactHeading { get; set; }
+    [Parameter] public Guid? InitialTaskId { get; set; }
+    private Guid? _seenInitial;
+    protected override void OnParametersSet() { if (_seenInitial != InitialTaskId) { _seenInitial = InitialTaskId; _focus = InitialTaskId; _subtree = false; _offset = 0; Rebuild(); } }
+    private TodoTaskPanel? _review;
+    private TodoPlanEditor? _placementEditor;
+    private TodoTaskWorkflowEditor? _workflowEditor;
+    private Guid? _placementTask, _workflowTask;
+    private TodoWorkspaceSelection? _source;
+    private long? _revision, _draftRevision;
+    private Guid? _project, _focus, _moving, _newParent, _childParent, _createdTask, _createCommand, _attachCommand, _moveCommand, _createRequest, _attachRequest, _moveRequest, _editRequested;
+    private bool _subtree, _editing, _focusHeading, _focusEditor;
+    private int _offset, _total, _parentOffset, _parentTotal;
+    private int? _next, _nextParents;
+    private string? _error, _readError;
+    private string _childTitle = "", _childNotes = "", _childDeadline = "";
+    private CompanionTask? _context;
+    private IReadOnlyList<Row> _rows = [];
+    private IReadOnlyList<CompanionTask> _parents = [];
+    private ElementReference _heading, _editorHeading;
+    private bool Pending => Todo.IsBusy || Todo.Commands.HasPendingIntent;
+    private bool ActionsDisabled => Pending || Todo.IsReadOnly;
+    protected override void OnInitialized() { _source = Todo.Selection; _revision = Todo.Revision; Todo.Changed += Changed; Rebuild(); }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_editRequested is { } editId && _review is not null) { _editRequested = null; _focusHeading = false; await RunAsync(() => _review.EditExactAsync(editId)); return; }
+        try { if (_focusEditor) { _focusEditor = false; await _editorHeading.FocusAsync(); } else if (_focusHeading) { _focusHeading = false; await _heading.FocusAsync(); } } catch (JSException) { }
+    }
+    private void Changed()
+    {
+        if (_source != Todo.Selection) { _source = Todo.Selection; _focus = _project = null; _subtree = false; ClearDraft(); _error = null; }
+        if (_revision != Todo.Revision) { _revision = Todo.Revision; _offset = _parentOffset = 0; }
+        TrackStages(); Rebuild(); _ = InvokeAsync(StateHasChanged);
+    }
+    private void Rebuild()
+    {
+        _readError = null; _rows = []; _total = 0; _next = null; _context = null;
+        if (Todo.Snapshot is null || ProjectMode && _project is null && _focus is null) return;
+        try
+        {
+            if (ProjectMode && _focus is null)
+            {
+                var page = Todo.Tasks(new(Kind: CompanionTaskKind.Todo, ProjectId: _project, Limit: 20, Offset: _offset, ExpectedRevision: _revision));
+                _rows = page.Tasks.Select(task => new Row(task, null, null)).ToArray(); _total = page.MatchedCount; _next = page.NextOffset;
+            }
+            else
+            {
+                var page = Todo.Hierarchy(new(_focus, _subtree ? WorkspaceHierarchyMode.Subtree : WorkspaceHierarchyMode.Children, 20, _offset, _revision));
+                _context = page.ContextTask; _rows = page.Items.Select(node => new Row(node.Task, node.Depth, node.ParentCoverage)).ToArray(); _total = page.MatchedCount; _next = page.NextOffset;
+            }
+            ReadParents();
+        }
+        catch (InvalidOperationException) { _readError = "The branch is unavailable. Reload the workspace and select the exact task again."; }
+        catch (ArgumentException) { _readError = "The branch page is unavailable. Return to the first page."; }
+    }
+    private string Name(Guid id) => Todo.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == id)?.Text ?? "Unavailable task";
+    private static string ParentContext(WorkspaceHierarchyParentCoverage? coverage) => coverage switch { WorkspaceHierarchyParentCoverage.Page => "shown on this page", WorkspaceHierarchyParentCoverage.EarlierPage => "on an earlier branch page", WorkspaceHierarchyParentCoverage.OutsideSelection => "outside this branch page", _ => "outside this project list" };
+    private string SectionName(Guid id) { var row = Todo.Snapshot?.Document.Sections.FirstOrDefault(section => section.Id == id); return row is null ? "Retained section" : row.Name + (row.IsArchived ? " (archived)" : ""); }
+    private string ProjectName(CompanionTask task) => task.ProjectId is { } id && Todo.Snapshot?.Document.Projects.FirstOrDefault(project => project.Id == id) is { } project ? project.IsRemoved ? "Unassigned (removed project reference retained)" : project.Name + (project.IsArchived ? " (archived)" : "") : "Unassigned";
+    private Task SelectProject(Guid? id) { if (Pending) return Task.CompletedTask; _project = id; _focus = null; _subtree = false; _offset = 0; Rebuild(); return Task.CompletedTask; }
+    private void Open(Guid id) { if (Pending || Todo.Snapshot?.Document.Tasks.Any(task => task.Id == id && task.Kind == CompanionTaskKind.Todo) != true) return; _focus = id; _subtree = false; _offset = 0; _focusHeading = true; Rebuild(); }
+    private void AllRoots() { if (Pending) return; _focus = null; _subtree = false; _offset = 0; _focusHeading = true; Rebuild(); }
+    private void ToggleSubtree() { if (Pending) return; _subtree = !_subtree; _offset = 0; Rebuild(); }
+    private void Previous() { _offset = Math.Max(0, _offset - 20); Rebuild(); }
+    private void Next() { if (_next is { } next) { _offset = next; Rebuild(); } }
+    private bool Writable(Guid id) => !ActionsDisabled && _source == Todo.Selection && _revision == Todo.Revision && Todo.Snapshot!.Document.Tasks.Any(task => task.Id == id && !task.IsArchived && task.Kind == CompanionTaskKind.Todo);
+    private async Task RunAsync(Func<Task> action) { _error = null; try { await action(); } catch (InvalidOperationException error) { _error = error.Message; } catch { _error = "The result is unavailable. Keep the original command and recover the original receipt before another save."; } }
+    private Task EditAsync(Guid id) { if (!Writable(id) || _review is null || !CanReplaceDraft()) return Task.CompletedTask; ClearDraft(); _editing = true; _editRequested = id; _focusHeading = false; return Task.CompletedTask; }
+    private Task ChildAsync(Guid id) { if (!Writable(id) || !CanReplaceDraft()) return Task.CompletedTask; ClearDraft(); _childParent = id; _draftRevision = _revision; _focusEditor = true; _focusHeading = false; return Task.CompletedTask; }
+    private Task StartMoveAsync(Guid id) { if (!Writable(id) || !CanReplaceDraft()) return Task.CompletedTask; ClearDraft(); _moving = id; _newParent = Todo.Snapshot!.Document.Tasks.Single(task => task.Id == id).ParentTaskId; _draftRevision = _revision; _focusEditor = true; _focusHeading = false; ReadParents(); return Task.CompletedTask; }
+    private Task StartPlacementAsync(Guid id) { if (Writable(id) && CanReplaceDraft()) { ClearDraft(); _placementTask = id; _focusHeading = false; } return Task.CompletedTask; }
+    private Task StartWorkflowAsync(Guid id) { if (Writable(id) && CanReplaceDraft()) { ClearDraft(); _workflowTask = id; _focusHeading = false; } return Task.CompletedTask; }
+    private Task ReviewPlacementAsync(TodoPlacementReview review) { if (review.TaskId != _placementTask || review.Source != Todo.Selection || _review is null) throw new InvalidOperationException("Reload exact placement context."); return _review.ReviewPlacementAsync(review.TaskId, review.Revision, review.Planning); }
+    private Task ReviewWorkflowAsync(TodoWorkflowReview review) { if (review.Input.TaskId != _workflowTask || _review is null) throw new InvalidOperationException("Reload exact task workflow context."); return _review.ReviewWorkflowAsync(review); }
+    private Task CloseOptionalAsync() { ClearDraft(); return Task.CompletedTask; }
+    private bool CanReplaceDraft() { if (_createdTask is null) return true; _error = "Finish attachment or choose Keep as independent Todo before opening another draft."; return false; }
+    private void ClearDraft() { _placementTask = _workflowTask = null; _error = null; _editing = false; _moving = _newParent = _childParent = _createdTask = _createCommand = _attachCommand = _moveCommand = _createRequest = _attachRequest = _moveRequest = _editRequested = null; _childTitle = _childNotes = _childDeadline = ""; _parentOffset = 0; _parents = []; _focusHeading = true; }
+    private void ReloadDraftContext() { _draftRevision = _revision; _parentOffset = 0; ReadParents(); _error = null; }
+    private void ReadParents() { if (_moving is null || Todo.Snapshot is null) return; var page = Todo.Tasks(new(Kind: CompanionTaskKind.Todo, Limit: 20, Offset: _parentOffset, ExpectedRevision: _revision)); _parents = page.Tasks.Where(task => task.Id != _moving).ToArray(); _parentTotal = page.MatchedCount - 1; _nextParents = page.NextOffset; }
+    private void PickParent(ChangeEventArgs args) { if (Guid.TryParse(args.Value?.ToString(), out var id) && (_parents.Any(task => task.Id == id) || id == _newParent)) _newParent = id; else _newParent = null; }
+    private void PreviousParents() { _parentOffset = Math.Max(0, _parentOffset - 20); ReadParents(); }
+    private void NextParents() { if (_nextParents is { } next) { _parentOffset = next; ReadParents(); } }
+    private async Task MoveAsync() => await RunAsync(async () => { if (_moving is not { } id || !Writable(id) || _review is null || _draftRevision != _revision || _newParent is not { } parent) throw new InvalidOperationException("Choose an exact parent and reload stale relationship context before reviewing."); if (Todo.Snapshot!.Document.Tasks.Single(task => task.Id == id).ParentTaskId == parent) throw new InvalidOperationException("Choose a different parent before reviewing a move."); await _review.ReviewRelationshipsAsync(id, _revision!.Value, new(ParentTaskId: parent)); _moveRequest = Todo.Commands.OriginalRequestId; _moveCommand = Todo.Commands.Preview?.PreparedCommandId; TrackStages(); });
+    private async Task DetachAsync(Guid id) { if (Writable(id) && _review is not null) await RunAsync(() => _review.ReviewRelationshipsAsync(id, _revision!.Value, new(ClearParentTask: true))); }
+    private async Task CompleteAsync(Guid id) { if (Writable(id) && _review is not null) await RunAsync(() => _review.ReviewPrimaryAsync(id)); }
+    private async Task CreateAsync() => await RunAsync(async () =>
+    {
+        if (_childParent is not { } parent || !Writable(parent) || _draftRevision != _revision || _review is null || _createdTask is not null || _createCommand is not null) throw new InvalidOperationException("Reload current parent context before reviewing; recover an existing create command instead of creating another Todo.");
+        if (string.IsNullOrWhiteSpace(_childTitle) || _childTitle.Length > 2048 || _childNotes.Length > 10000) throw new InvalidOperationException("Enter a title and keep notes within the displayed limit.");
+        var deadline = TodoTaskDraft.Date(_childDeadline);
+        await _review.ReviewNewTodoAsync(new(WorkspaceOperation.CreateTodo, null, _childTitle, _childNotes, CompanionPriority.Normal, deadline, null, false, HabitScoreDirection.Up, 1, null), _revision!.Value);
+        _createRequest = Todo.Commands.OriginalRequestId; _createCommand = Todo.Commands.Preview?.PreparedCommandId; TrackStages();
+    });
+    private async Task AttachAsync() => await RunAsync(async () =>
+    {
+        if (_createdTask is not { } child || _childParent is not { } parent || !Writable(child) || !Writable(parent) || _review is null) throw new InvalidOperationException("The saved Todo remains independent. Reload the exact child and parent before attachment.");
+        await _review.ReviewRelationshipsAsync(child, _revision!.Value, new(ParentTaskId: parent)); _attachRequest = Todo.Commands.OriginalRequestId; _attachCommand = Todo.Commands.Preview?.PreparedCommandId; TrackStages();
+    });
+    private void TrackStages()
+    {
+        var request = Todo.Commands.OriginalRequestId;
+        if (request is null) return;
+        if (request == _createRequest)
+        {
+            if (Todo.Commands.Preview is { Command.Operation: WorkspaceOperation.CreateTodo } prepared) _createCommand = prepared.PreparedCommandId;
+            if (Todo.Commands.LastReceipt is { SavedInCompanion: true, Operation: "createTodo" } saved) { _createCommand = saved.CommandId; _createdTask = saved.TaskId; _focusEditor = true; }
+        }
+        if (request == _attachRequest)
+        {
+            if (Todo.Commands.Preview is { Command.Operation: WorkspaceOperation.RelateTodo } prepared) _attachCommand = prepared.PreparedCommandId;
+            if (Todo.Commands.LastReceipt is { SavedInCompanion: true, Operation: "relateTodo" }) { _focus = _childParent; ClearDraft(); }
+        }
+        if (request == _moveRequest)
+        {
+            if (Todo.Commands.Preview is { Command.Operation: WorkspaceOperation.RelateTodo } prepared) _moveCommand = prepared.PreparedCommandId;
+            if (Todo.Commands.LastReceipt is { SavedInCompanion: true, Operation: "relateTodo" }) ClearDraft();
+        }
+    }
+    private async Task ReviewClosedAsync()
+    {
+        if (Todo.Commands.LastReceipt is { SavedInCompanion: true } receipt && receipt.CommandId == _createCommand) { _createdTask = receipt.TaskId; _focusEditor = true; }
+        else if (Todo.Commands.LastReceipt is { SavedInCompanion: true } linked && linked.CommandId == _attachCommand) { _focus = _childParent; ClearDraft(); Rebuild(); }
+        else if (Todo.Commands.LastReceipt is { SavedInCompanion: true } moved && moved.CommandId == _moveCommand) { ClearDraft(); Rebuild(); }
+        else if (Todo.Commands.Preview is null && !Todo.Commands.HasPendingIntent) { if (_createdTask is null) _createCommand = null; _attachCommand = null; _focusHeading = true; }
+        if (_workflowTask is not null && _workflowEditor is not null) { _focusHeading = false; await _workflowEditor.FocusAsync(); }
+        else if (_placementTask is not null && _placementEditor is not null) { _focusHeading = false; await _placementEditor.FocusAsync(); }
+    }
+    public void Dispose() => Todo.Changed -= Changed;
+    private sealed record Row(CompanionTask Task, int? Depth, WorkspaceHierarchyParentCoverage? Coverage);
+}

@@ -1,0 +1,65 @@
+{
+  "taskId": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+  "status": "accepted",
+  "implementation": [
+    "Guidance-only operation category covers createTodo/createDaily/createHabit/updateTask. Exact initiating intent authorizes the matching internal-preview acceptance under existing consent; no redundant agent approval exchange is mandated.",
+    "Task descriptions, packaged skill, deadline reference and discovery corpus agree. Ambiguous identity/input, unexpected effects and consequential-action reviews remain separate.",
+    "MCP input schemas, honest write/destructive annotations, scopes, server authorization/revision/identity guards and original receipt recovery remain unchanged. No skip-confirmation argument or alternate acceptance path was introduced."
+  ],
+  "checks": {
+    "sdkApiAndPlugin": 21,
+    "packageIntegrity": 7,
+    "normativeGuidanceCases": 15,
+    "matchingWorkerDryRunBuilds": 3,
+    "documentationValidation": true,
+    "diffCheck": true
+  },
+  "controls": [
+    {
+      "name": "habitica-ordinary-focused",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 18.32,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-ordinary-package",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 0.37,
+      "deadlineSeconds": 60,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-ordinary-chatgpt-auth-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.22,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-ordinary-chatgpt-mcp-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 5.03,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    },
+    {
+      "name": "habitica-ordinary-companion-workspace-build",
+      "kind": "executed_control",
+      "exitCode": 0,
+      "toolWallSeconds": 6.89,
+      "deadlineSeconds": 120,
+      "cleanupReserveSeconds": 5
+    }
+  ],
+  "limitations": [
+    "Local synthetic services and metadata/package qualification only; real model activation, conversational question counts and native host permission prompts remain unmeasured.",
+    "No actual task/account mutation, new grant/consent, executor activation, package installation, deployment or commit was performed.",
+    "Host safeguards remain authoritative. Pending/unknown projection is never reported as confirmed Habitica presence or rewards.",
+    "Active controller time was not instrumented; per-control tool wall time is retained separately."
+  ]
+}

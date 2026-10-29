@@ -1,0 +1,21 @@
+{
+  "observed_summary": {
+    "cases": 1512,
+    "errors": 210,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0,
+    "errorKinds": [
+      "overflow"
+    ]
+  },
+  "observed_example": {
+    "fixture": "diagnostics-sharing-expired",
+    "theme": "gryphy-light",
+    "width": 360,
+    "textPercent": 200,
+    "clientWidth": 345,
+    "scrollWidth": 494
+  },
+  "capture_limit": "The initial bulk DOM export exceeded the tool text limit. The observed summary and one directly returned failure are retained; no full raw export is claimed.",
+  "repair": "Inherited overflow-wrap:anywhere wraps full UTC timestamps in the sharing section."
+}

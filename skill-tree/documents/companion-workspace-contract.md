@@ -22,13 +22,34 @@ The task-mutation contract requires the PWA and MCP to submit through the same a
 | Categories | Flat optional category membership | Nested categories remain deferred. |
 | Projects | One optional primary project per task; one optional section within the selected project | Labels support overlapping views without multiple project ownership. |
 | Goals | Progress derives from completed linked eligible Todos divided by eligible linked Todos; archived and cancelled Todos are excluded; zero eligible Todos means unknown progress | Daily/Habit occurrence metrics and manually entered custom metrics remain separate later choices. |
-| Task identity | Companion Todos, Dailies and Habits receive independent opaque IDs; Habitica projection is optional and has a separate mapping | Imported Habitica tasks require explicit adoption before Companion commands become authoritative. |
+| Task identity | Every Companion Todo, full subtask, Daily and Habit requires a separate verified Habitica task mapping | Account consent and execution availability remain prerequisites; missing correspondence is incomplete integration rather than a successful reward-free task workflow. Imported Habitica tasks require verified adoption. |
 | External Habitica deletion | Block projection and request review for a verified external deletion | No automatic resurrection of intentionally deleted tasks. Explicit repair can recreate only an adopted Companion projection. |
 | Completed history | Retain canonical completion events until explicit workspace/history deletion | Thirty-day operational audit retention does not silently delete user task history. Exports and deletion controls cover retained history. |
 | Unknown outcomes | Continue durable Companion saves and reads; pause profile game-effect execution until reconciliation resolves the unknown outcome | No automatic replay of ambiguous scoring or creation; pending status remains visible. |
 | Background executor | Separate per-profile opt-in; one persisted execution lease; bounded scheduled recovery from the D1 ledger | Browser and server cannot both own the same projection. Disabling the executor pauses new execution while preserving accepted records. |
 | Habitica pacing | Persist quota/cooldown state and use at least thirty seconds between automated background calls | Accepted commands may remain pending; transport retries never create duplicate game effects. |
 | Workspace disconnect/delete | Revoke cloud access and executor eligibility; explicit workspace deletion removes canonical cloud records and command history | Habitica records and local browser copies are separate. Already transmitted upstream effects cannot be undone by deleting the workspace. |
+
+## Required Habitica correspondence
+
+The product invariant applies to browser and agent workflows, conversion, existing records and retained history. Companion owns canonical identity, planning and command history; Habitica owns game effects and rewards.
+
+| Companion entity | Required Habitica representation |
+| --- | --- |
+| Todo and each full Todo subtask | Independent Habitica Todo; flattening the hierarchy is acceptable. A parent mapping never covers children. |
+| Daily | Habitica Daily with a supported corresponding schedule. Unsupported schedules require an explicit integration limitation. |
+| Habit | Habitica Habit with supported scoring directions. |
+| Project, category, section, label and goal | Native Habitica tag with a stable account-bound mapping; related tasks carry the corresponding tags. Metadata never creates an extra reward-bearing Todo. |
+| Saved task view | Native tag association for the saved selection; dynamic membership and retained-view lifecycle require the tag-coverage task contract. |
+| Inline checklist item | Checklist field of the mapped task. Conversion to a full subtask requires an independent task mapping. |
+| Completed or archived task | Retained task identity and confirmed command history. Completion or archive must not silently discard correspondence. |
+| Statistics, completion events and activity records | Derived data or retained history; no additional reward-bearing task. |
+
+Local capture without cloud consent or available execution remains visibly incomplete/pending. No implicit enrollment, credential upload, executor activation or reward claim follows from local capture. Existing account consent remains mandatory. Current ordinary task defaults and recurring creation do not satisfy the invariant; P0 tasks in future.md own remediation.
+
+Stable mappings, rather than matching names, establish task and tag identity. Tag changes must preserve unrelated user tags. A stored identity never proves a pending score succeeded: original command receipts establish confirmed effects. Unknown outcomes block replay. Historical completion imports and mapping repair never backfill rewards automatically. Conversion must verify replacement mappings and content/history before supported retirement of the exact legacy container. Separately approved source retirement retains the complete obsolete container as immutable audit history while removing the native source; only verified retired containers are excluded from current counterpart and desired tag membership gaps. Every full replacement Todo and ordinary completed/archived task retains the native correspondence requirement.
+
+Companion urgency uses Low, Normal, High and Urgent. Habitica game difficulty is separate; changing urgency must not silently change game difficulty or awards.
 
 ## Dependency decomposition
 
@@ -142,7 +163,7 @@ Prepared commands retain exact reviewed previews, stable command identities and 
 
 ## Native lifecycle testing extension
 
-The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies remain unscheduled until recurrence editing is implemented. Creation and archival remain Companion-only; no unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
+The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies require an explicit supported schedule and typed Habitica correspondence. Archival remains Companion-only; Habit creation uses the typed Habit correspondence contract. No unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
 
 Owner-provided Habitica test credentials may persist only in the ignored root `.dev.vars.owner-test` file with owner-only file permissions. Normal builds, CI, exports, logs and deployment must not consume or include that file. Live tests are explicit, opt-in own-account checks; test evidence stores outcomes without credentials.
 
@@ -156,7 +177,7 @@ Canonical recurrence uses civil dates in the selected UTC or supported IANA regi
 
 ## Reviewed recurrence authoring boundary
 
-Local application commands and MCP share reviewed createDaily/updateTask authoring for unlinked Companion Dailies. Explicit schedule clearing retains history. Recurrence intents cannot request Habitica projection or edit a linked/pending/uncertain mapping. Scheduled dates remain civil calendar facts and require separate server due-state/Cron verification before any existing game projection. Default request serialization and legacy command identities remain stable; extended recurrence intents use a distinct versioned hash. The basic PWA editor remains unscheduled until the separate UI gate is satisfied.
+Local application commands and MCP share reviewed createDaily/updateTask authoring for unlinked Companion Dailies. Explicit schedule clearing retains history. Recurrence edits cannot request Habitica projection or edit a linked/pending/uncertain mapping; new creation follows the supported Daily correspondence contract. Scheduled dates remain civil calendar facts and require separate server due-state/Cron verification before any existing game projection. Default request serialization and legacy command identities remain stable; extended recurrence intents use a distinct versioned hash. The PWA creation editor exposes the complete supported schedule before review.
 
 ## Companion-only occurrence lifecycle
 
@@ -267,3 +288,78 @@ Native v2 identity binds the full query and source while older unused native enc
 Standing local direction selects tasks:read for named-view listing and current-state evaluation. Caller arguments select only exact view ID and paging; definitions cannot be overridden. Current profile, connection and access epoch bind fresh reads. Missing/archived views and stale pages fail; malformed/unsupported data remains unavailable without fake empty results. View names and query text are untrusted data and grant no action permission.
 
 Reviewed savedTaskView creation/edit/archive uses separate workspace.organization.write. Full query previews, original server-issued identities and native request/correlation receipts remain mandatory across lost acknowledgements and later edits or grants. Browser read adapters discard changed sessions and validate exact provenance/identity/page shape. Existing task-write access does not grant view edits. Cloud disclosures name stored view definitions. No view read/edit dispatches task or game effects. Production list controls, relative dates, optional review/reminder policy and actual client/device qualification remain separate.
+
+## Prospective ordinary Todo correspondence
+
+Policy todo-required-v1 requires effective projection intent for newly prepared ordinary Todo create/update/complete commands, including independent full subtasks. Omitted/false inputs normalize at preparation; fresh raw submissions with false fail. The server preview names the effective intent before acceptance. Active unlinked completion queues original create before score; completed unlinked edits require separate historical review. Local capture remains pending without automatic consent, credential upload, ownership transfer or executor activation. Native planning/state/organization remain non-scoring. Accepted historical command hashes, effect lists and original receipts remain immutable and recoverable; rejected old unaccepted previews need a new review. Recurring creation, grouping tags, explicit unchanged-task linking and historical conversion remain separate work.
+
+## Unchanged-task repair contract
+
+Reviewed ensureProjection requires an exact active Todo, projectToHabitica true and no patch. Acceptance preserves task content and activity, records one Create effect and uses the original correlation identity. Unresolved original creation, uncertain mappings and retained archived mappings require original-command recovery or explicit review. Completed/archived missing counterparts are not recreated or scored. Typed adoption previews retain separate native/remote identities, kind and completion state; exact workspace/access epoch, revision and fingerprint bind approval. Repeated accepted adoption returns the retained original mapping result without a new write. Existing-state adoption remains available for matching retained Todos, Dailies and Habits.
+
+## Habit counterpart creation
+
+New Habit preparation carries required game intent and explicit up/down defaults true/true. All Boolean direction combinations remain supported; disabled directions refuse scoring. Creation contains no score event, reward, Todo deadline or checklist payload. Supported unchanged active Habits can use the original create-only repair ledger. Habit-owned response parsing accepts absent completed and requires Boolean direction flags. Kind, alias and requested-field verification protect mapping; uncertainty preserves the original private receipt and forbids replacement creation.
+
+
+## Supported Daily correspondence
+
+Ordinary new Dailies require an explicit complete supported schedule and one requested correct-kind Habitica counterpart. UTC or an explicitly fixed Etc/GMT zone must match the account observation; native parity currently requires midnight Habitica dayStart. Multiweek intervals require a Monday start. Unsupported zones, boundaries, yearly/weeks-of-month authoring and missing rules are unavailable rather than silently approximated. Canonical IDs, recurrence history and original command receipts remain durable. Creating the counterpart grants no rewards for past dates and invokes no Cron. Existing adopted records and linked schedule edits retain separate review contracts.
+
+
+## Shared task-default policy
+
+Ordinary task creation, field edits, completion and Habit scoring request supported Habitica correspondence for every task kind and full child. New omitted/false compatibility intent cannot select a reward-free ordinary workflow. Canonical acceptance remains available locally without implicit server credential consent or execution, but required game effects remain pending and unconfirmed. Unschedulable Daily activity and retained identity conflicts require schedule/adoption review. Explicit native planning, schedule preparation and lifecycle metadata remain separately disclosed non-scoring operations. Accepted historical commands retain original bytes, hashes and receipts; historical imports never auto-score.
+
+
+## Portable tag ledger contract
+
+An optional schema-1 tagLedger binds one exact Habitica account UUID to typed group mappings and separately identified ensureTag/setMembership intents. Every mapping keeps the desired canonical revision/name, internal workspace/kind/entity alias, correlation and optional remote identity/evidence. Membership intents retain the exact target tag and native/remote task identities with explicit present/remove intent. Confirmation requires an original receipt reference, UTC observation and fingerprint. Unknown or ambiguous outcomes remain distinct and grant no replay.
+
+Canonical storage/export preserves archived and removed metadata and accepted native command history. Upgrading or importing the model never generates tasks, scores, tag mutations, credential consent or executor permission. Account-scoped coverage refuses missing/foreign context and distinguishes tag identity from recorded membership receipts. Authenticated verification, complete derived membership and actual reconciliation belong to subsequent milestones.
+
+
+## Private native tag operation contract
+
+habitica-tags-v1 is a separate owner-managed account consent. habitica.tags.write is an additive agent scope; validated Workspace identity reports tagWriteAllowed, and future public canonical adapters must require that scope. Private Auth tag operations require the restricted binding, current consent epoch, credential connection, exact group context and recent single-use observation. Existing native organization/task permission never implicitly supplies tag consent or scoped agent authority.
+
+Tag creates bind one planned UUID and reviewed name; adoption binds an exact native tag. Renaming requires adopted identity. Membership adds/removes one adopted tag on one owned non-party/non-challenge task and preserves unrelated observed membership. Tag deletion, reward tasks, scores, spells and party effects are outside the tag allowlist. All mutations share original durable attempt identity and gameplay unknown fences.
+
+Unknown effects are not replayed. Original receipt lookup sends nothing. A separate explicit recovery may review matching current metadata against the original request/observation and record reviewed_observation on the original attempt. Observation review is distinct from proof of the original successful response and performs no second native mutation. Missing or conflicting evidence remains unknown. Canonical reconciliation, complete saved-selection membership, browser controls and actual accounts remain the following milestones.
+
+## Native archival and occurrence recovery
+
+unarchiveTask and correctOccurrence are separate reviewed commands. The existing request/preparation/acceptance/original-receipt contract, expected workspace revision and profile scopes remain authoritative. Both operations produce one causal native recovery event and zero projection effects. Current task order, schedules, deadline, review cues and accepted external commands remain unchanged. Retained game identities and nonunlinked mappings, including archived mappings, refuse recovery. Unresolved task effect journals also refuse before acceptance. Habit inverse events and upstream unchecking remain separate contracts.
+
+patch.unarchive requires archivedRevision matching the exact archived task revision. Unarchive preserves task state: an archived completed Todo remains completed. Retained inactive category/project/section/label/parent/dependency references refuse with unarchive_repair_required. Structurally missing references keep an imported document invalid before preparation. An explicit nested planning/relationships repair can replace or clear affected references in the same reviewed command; dates, task content and recurrence cannot be edited through repair. The complete resulting graph must validate. Acceptance appends TaskUnarchive with the prior archive revision. A second command cannot reuse the same archive cycle. A retained archive receipt supplies an additional exact before/after task-field check during journal import.
+
+patch.correctOccurrence requires occurrenceId, occurrenceRevision and targetCommandId. Only a current terminal completed/skipped native Daily occurrence with a matching retained zero-effect completeTask/skipOccurrence source receipt is eligible. Archived tasks require separate unarchive first. Missing source receipts remain unavailable, including imported snapshots without the source journal. Acceptance retains the original completion event and an immutable PreviousOccurrence snapshot in OccurrenceCorrection, then returns the same occurrence ID/date to Pending. No next occurrence is generated and no schedule is broadened. A later explicit completion or skip can start another terminal cycle; correction binds the new cycle rather than replaying an old target.
+
+New terminal occurrence writes carry optional TerminalCommandId; unused legacy occurrences keep the prior wire shape. Corrections retain exact source identity. Portable document validation checks task/date/revision, causal ordering, terminal source binding, unique correction targets, completion cycles and pending state. Full journal validation additionally verifies source operation/date/effects, recovery patch/hash and exact zero-effect receipt. Completion reads expose occurrenceCorrection alongside the original completion rather than erasing history. New optional Unarchives and OccurrenceCorrections collections remain absent for unused legacy documents. Strict older readers require coordinated client/Worker publication; schema version and database columns remain unchanged.
+
+get_task_recovery is a reviewed tasks:read capability for an exact canonical task, including archived tasks. The bounded revision-guarded response reports current task, unarchive repair reason and retained occurrence snapshots with original source IDs and explicit eligibility. Reads create no history or external dispatch. unarchive_task and correct_occurrence accept only the original reviewed server-issued commandId under habitica.tasks.write. Neither acceptance schedules tag reconciliation. Lost acknowledgements recover the original receipt after later revisions; a missing receipt never authorizes a replacement intent.
+
+The typed browser cloud adapter validates exact recovery intent and refuses game-bearing previews or receipts. The [history recovery controls](history-recovery.md) expose completed-Todo restoration, native archival/Daily recovery and a separate linked uncheck review. Local cross-runtime qualification supplies no real-account, physical-device, hosted-client or reward-reversal evidence.
+
+## Reviewed linked completion recovery
+
+Linked unchecking uses a separate expiring reviewed action and original native receipt. Linked recovery does not extend ordinary non-Habit score/down or native-only restore/correction commands. Canonical `LinkedTaskRecoveries` pairs with the retained Todo restoration or Daily occurrence correction, keeping the original completion/command/dispatch history. Both C# and Worker journals validate source hashes, original score attempt and causal pairing; a game-effect source cannot establish native recovery without the paired linked receipt.
+
+A profile lease and `linked_recovery_fence` hold canonical writes and competing game effects across dispatch or uncertainty. Only the original successful receipt can finish the canonical commit; current task state cannot prove a score, refund or recovery. Public MCP and typed browser adapters use the same preview/accept/receipt policy. The [history recovery controls](history-recovery.md) expose the supported native and linked reviews. See [linked task recovery](linked-task-recovery.md) for exact consent, scope, capacity, account/day, unknown-outcome and deployment boundaries.
+
+## Recovery presentation ownership
+
+The history route exposes exact reviewed recovery through the existing native task controller and a separate scoped linked recovery state. An exact task/completion eligibility read returns an active original recovery before attempting fresh eligibility; the response exposes public review/receipt fields only. Reopened history can recover the original identity without another dispatch. Source/account changes, stale reviews and unresolved effects preserve the established server boundaries. See [history recovery controls](history-recovery.md).
+
+## Canonical history completeness
+
+[Task activity coverage](task-activity-coverage.md) defines optional portable accepted-command witnesses and effective schedule/state intervals. Consumers require full-journal causal validation, preserve unknown legacy prefixes/gaps/tails and never infer completeness from task creation, current recurrence, paginated counts or query time. Canonical coverage does not prove Habitica history, rewards or streaks. Missing referenced sources invalidate a coverage assertion; unsupported special transitions remain unknown.
+
+## Durable exact task adoption
+
+Browser and MCP use the shared metadata-only prepare_task_adoption, accept_task_adoption and get_task_adoption_command contract. Reviews bind the exact owned canonical/native pair, fresh fingerprint, revision and connection/access/grant identity; original receipts survive later revisions. Retained completed/archived tasks keep content and history without scores or native writes. Old mutable-revision adoption routes refuse. [Exact adoption and migration parity](task-adoption.md) defines quotas, atomic persistence, uncertainty and intentional direct-user boundaries.
+
+
+## Scoped stored tag correspondence
+
+Status and source-retirement prerequisites share the complete desired-member comparison. Group identity/name/lifecycle, coherent mapping/intent scope, exact native tag/task IDs, unique latest intent and confirmed per-member evidence establish stored correspondence. Unrelated global revisions preserve matching evidence; workspace revision still binds coherent paging. Group revision beyond retained scope, uncertain intents, changed membership/remaps and missing receipts require review. Cloud reads additionally require durable confirmed work in the current connection/access epoch; imported or inaccessible provenance remains unverified. Portable prerequisite checks grant no live authority, deletion or fresh provider claim. Source retirement retains the separate current consent, ownership, unresolved-effect and fresh native verification gates.

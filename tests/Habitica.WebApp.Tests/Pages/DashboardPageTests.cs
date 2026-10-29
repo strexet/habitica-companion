@@ -122,7 +122,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Equal("app-input", cut.Find("[data-testid='armoire-open-count']").GetAttribute("class"));
         Assert.NotEmpty(cut.FindAll("[data-testid='buy-gems-with-gold']"));
         Assert.Contains("Companion links", cut.Markup);
-        Assert.Contains("href=\"/tasks\"", cut.Markup);
+        Assert.Contains("href=\"/todo/today\"", cut.Markup);
         Assert.Contains("href=\"/inventory\"", cut.Markup);
         Assert.Contains("Equipment", cut.Markup);
         Assert.Contains("href=\"/pets-mounts\"", cut.Markup);

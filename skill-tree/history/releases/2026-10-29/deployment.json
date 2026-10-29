@@ -1,0 +1,199 @@
+{
+  "date": "2026-10-29",
+  "status": "published",
+  "backend_build_hash": "57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77",
+  "worker_versions": {
+    "auth": "7fd550da-895b-4615-8eb5-93378ab0a4bc",
+    "workspace": "1ed64582-45eb-4004-9424-5f312705ca62",
+    "mcp": "0c6fdccc-2886-44f3-be61-785921c6340d"
+  },
+  "frontend": {
+    "url": "https://habitica-companion.pages.dev",
+    "deployment_id": "faf92ea3-e151-4bd2-9937-872bff4daa79",
+    "source_baseline": "117363f",
+    "source_dirty": true,
+    "method": "reviewed local release artifact, followed by matching main publication",
+    "browser_checks": {
+      "settings": "rendered new installation and Push local-clear disclosure",
+      "public_config": "production Auth and Workspace endpoints observed in ordinary browser"
+    }
+  },
+  "migrations": {
+    "auth": [
+      "0010-push-subscriptions.sql",
+      "0011-push-dispatches.sql"
+    ],
+    "workspace": [
+      "0013-scheduled-reminders.sql",
+      "0014-linked-task-recovery.sql",
+      "0015-task-adoption.sql",
+      "0016-diagnostics.sql",
+      "0017-note-project-links.sql"
+    ]
+  },
+  "checks": [
+    {
+      "label": "dotnet-final",
+      "command": [
+        "sh",
+        "-c",
+        "dotnet build Habitica.sln -m:1 -nodeReuse:false && dotnet test Habitica.sln --no-build -m:1 -nodeReuse:false"
+      ],
+      "exit_code": 0,
+      "seconds": 64.6
+    },
+    {
+      "label": "auth-tests-serial",
+      "command": [
+        "sh",
+        "-c",
+        "cd workers/chatgpt-auth && node --experimental-strip-types --test --test-concurrency=1 --test-timeout=30000 test/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "seconds": 166.3
+    },
+    {
+      "label": "workspace-tests-serial",
+      "command": [
+        "sh",
+        "-c",
+        "cd workers/companion-workspace && node --experimental-strip-types --test --test-concurrency=1 --test-timeout=30000 test/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "seconds": 381.2
+    },
+    {
+      "label": "functions-final",
+      "command": [
+        "sh",
+        "-c",
+        "node --experimental-strip-types --test tests/Functions/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "seconds": 3.3
+    },
+    {
+      "label": "callback-tests-correct",
+      "command": [
+        "npm",
+        "--prefix",
+        "deploy/callback-egress",
+        "test"
+      ],
+      "exit_code": 0,
+      "seconds": 1.0
+    },
+    {
+      "label": "checkpoint-tests",
+      "command": [
+        "python3",
+        "tests/skill-tree-checkpoint-tests.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.1
+    },
+    {
+      "label": "source-metadata",
+      "command": [
+        "sh",
+        "-c",
+        "python3 workers/scripts/test-build-identity.py && python3 .agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py . --format json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.5
+    },
+    {
+      "label": "production-dryrun",
+      "command": [
+        "sh",
+        "-c",
+        "workers/chatgpt-auth/node_modules/.bin/wrangler deploy --dry-run --config deploy/.production-release-20261029/chatgpt-auth.json --outdir skill-tree/artifacts/release-2026-10-29/bundles/auth && workers/chatgpt-auth/node_modules/.bin/wrangler deploy --dry-run --config deploy/.production-release-20261029/companion-workspace.json --outdir skill-tree/artifacts/release-2026-10-29/bundles/workspace && workers/chatgpt-auth/node_modules/.bin/wrangler deploy --dry-run --config deploy/.production-release-20261029/chatgpt-mcp.json --outdir skill-tree/artifacts/release-2026-10-29/bundles/mcp"
+      ],
+      "exit_code": 0,
+      "seconds": 2.7
+    },
+    {
+      "label": "publish-final",
+      "command": [
+        "sh",
+        "-c",
+        "HABITICA_FRONTEND_SETTINGS_FILE=\"$PWD/deploy/production.frontend.json\" ./build.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 10.8
+    },
+    {
+      "label": "migration-postflight",
+      "command": [
+        "sh",
+        "-c",
+        "workers/chatgpt-auth/node_modules/.bin/wrangler d1 migrations list HABITICA_INTEGRATION_DB --config deploy/.production-release-20261029/chatgpt-auth.json --remote && workers/chatgpt-auth/node_modules/.bin/wrangler d1 migrations list WORKSPACE_DB --config deploy/.production-release-20261029/companion-workspace.json --remote"
+      ],
+      "exit_code": 0,
+      "seconds": 3.6
+    }
+  ],
+  "counts": {
+    "dotnet": 1441,
+    "auth": 215,
+    "workspace": 713,
+    "javascript": 94,
+    "gateway": 17,
+    "checkpoint": 5
+  },
+  "ui": {
+    "cases": 2488,
+    "errors": 0,
+    "harnessErrors": 0,
+    "prerequisiteUnavailable": 0,
+    "measurementUnavailable": 0,
+    "unqualifiedSurfaces": 0,
+    "errorKinds": []
+  },
+  "negative_controls": {
+    "cases": 2,
+    "errors": 3,
+    "harnessErrors": 0,
+    "prerequisiteUnavailable": 0,
+    "measurementUnavailable": 0,
+    "unqualifiedSurfaces": 0,
+    "errorKinds": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ]
+  },
+  "activation": {
+    "web_push_subscriptions": true,
+    "web_push_dispatch": true,
+    "workspace_push_reminders": true,
+    "callback_egress": false
+  },
+  "privacy": {
+    "existing_profile_and_credential_keys_preserved": true,
+    "new_push_keys_in_ignored_0600_file": true,
+    "observability_unchanged": true
+  },
+  "limitations": [
+    "Physical devices and real push-provider receipt/display remain unqualified. Device enrollment requires browser permission and separate account consent.",
+    "Callback gateway hosted qualification and event subscriptions remain incomplete; callback egress stays disabled.",
+    "Loaded iPhone spell-incident reproduction remains unqualified.",
+    "Older installed plugin packages and host metadata caches are not refreshed by backend publication.",
+    "Direct terminal requests encounter provider browser filtering; browser checks and authenticated MCP reads are recorded separately."
+  ],
+  "rollback": {
+    "auth": "96a4d62f-9c14-4f68-924d-b46dd03e09f2",
+    "workspace": "4338cd63-10c1-46f0-98a9-6a4b4dcf43e0",
+    "mcp": "d0a90ca2-82cb-46fb-a0b7-414ecf2ee4f3",
+    "pages": "a7851771-691d-4dc8-b177-5a58ca73a6d1",
+    "database_policy": "Additive schemas and original uncertainty fences retained; code rollback does not roll back data or effects."
+  },
+  "live_workspace": {
+    "accepted_commands": 98,
+    "task_effects_confirmed": 42,
+    "pending": 0,
+    "unknown_outcome": 0,
+    "tag_work_needs_review": 15
+  },
+  "browser_results": "browser-results.json.gz"
+}

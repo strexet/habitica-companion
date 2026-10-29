@@ -1,0 +1,36 @@
+[
+  {
+    "body": "### Resolve mass spell rate limits and explicit gear recovery\n\n```yaml\nid: P-8e7323df-2f47-4e19-864d-821ed108e7f2\npriority: 106\nstatus: Pending\nparent_pending_ids: []\nprocessing_run_id: null\nroot_task_id: null\nrelated_task_id: null\nrelation: main\ndepends_on: []\n```\n\nDescription:\n- Capture the codev P0 incident involving acknowledged 17 of 40 casts, HTTP 429 and uncertain auto-equip cleanup. Preserve coordinated account pacing across casts, gear and background requests, safe structured diagnostics, confirmed progress and separately visible restoration outcomes. Full original incident details remain in the source artifact.\n\nExpected behavior:\n- Bound request admission by Retry-After and reset evidence; stop or pause safely on quota failures, never replay unknown casts, retain acknowledged partial counts, persist exact manual gear recovery and expose mobile phase/cooldown/cleanup state. Cover failures during cast, restore, refresh and cancellation without hidden errors or fabricated success.\n\nCurrent context:\n- Existing accepted work includes T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee for server pacing and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 for original gear recovery. Process Pending must compare retained source intent, current code and accepted evidence before defining residual work; local evidence does not establish deployed iPhone incident closure.\n\nSource:\n- Owner-requested transfer from Companion Development, alias codev, project c5f8a175-2bee-484a-9b72-018737dc10fd, task fe2403b8-ab96-489f-b6ac-5e72f9dee4a9, task revision 115, workspace revision 158. Complete original text: skill-tree/history/intake/codev-2026-10-28/source-tasks.json. Source completion acknowledges intake only.\n\nPriority rationale:\n- Preserve source urgent P0 ordering above the current highest open priority 105; no live spell execution or release authorization is implied.\n\nProcessing blocker:\n- Local implementations T-b89fac23-3ac2-4c64-8560-be7a5d796a81, T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 and existing foreground/server pacing cover the requested counters, quota handling and explicit gear recovery. No duplicate feature unit is needed. Closure of the reported deployed iPhone incident still requires the currently loaded PWA build and fresh sanitized device evidence; any live spell reproduction needs a separately bounded owner profile. Existing local evidence and release gate T-d76d2a9a-1318-4e63-9bb4-73f620b108cc do not establish that incident closure. See skill-tree/history/processing/pending-2026-10-28/research.md.\n\n",
+    "depends_on": [],
+    "end": 106,
+    "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+    "line": 75,
+    "parent_pending_ids": [],
+    "priority": 106,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "start": 74,
+    "status": "Pending",
+    "title": "Resolve mass spell rate limits and explicit gear recovery"
+  },
+  {
+    "body": "### Organize personal Notes into standalone and project folders\n\n```yaml\nid: P-51d5734b-82dc-4f91-82c6-d4eca50a3114\npriority: 100\nstatus: Pending\nparent_pending_ids: []\nprocessing_run_id: null\nroot_task_id: null\nrelated_task_id: null\nrelation: main\ndepends_on: []\n```\n\nDescription:\n- Add named thematic folders for personal Notes both outside any project and inside an exact Companion project. Each folder contains separate notes rather than a combined document. Example: an Altai trip project contains Interesting places and Hotels folders; each hotel note retains descriptions, reviews, host names and other details, and each place note retains attractions, activities and food information. Standalone folders must support the same thematic organization without creating a project.\n\nExpected behavior:\n- Users can create and rename folders, browse a folder, create notes in a folder and move existing notes into or out of folders. Project views expose project-scoped folders and contained notes; the general Notes view supports standalone folders and notes without a folder. Preserve exact note content, IDs, retained history and existing project associations. Provide reviewed MCP read/preview/accept/original-receipt workflows for the intended agent folder operations under existing Notes consent and ownership boundaries, without implicit task or Habitica effects.\n\nCurrent context:\n- The current Notes model supports one optional versioned project association but no folder entity. Existing Ready task T-a48aa46e-fd3c-43ff-b9b3-3becddb47599 covers Notes/project UI and excludes additional persistence schema. Folder work is distinct; Process Pending must coordinate overlap and research folder nesting, membership cardinality, cross-project moves, deletion behavior, source isolation, migration and validation before defining implementation units. No task dependency is asserted during intake.\n\nSource:\n- Direct repository-owner request in the current conversation on 2026-10-29, following the Montenegro thematic-notes example and the Altai trip project/folders example. Scope is Pending intake through skill-tree-add-pending-task; implementation and promotion are deferred.\n\n",
+    "depends_on": [],
+    "end": 132,
+    "id": "P-51d5734b-82dc-4f91-82c6-d4eca50a3114",
+    "line": 107,
+    "parent_pending_ids": [],
+    "priority": 100,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "start": 106,
+    "status": "Pending",
+    "title": "Organize personal Notes into standalone and project folders"
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "taskId": "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+  "recordedAtUtc": "2026-10-21T11:58:53.846397+00:00",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "19ff78a0c8b23c369627c8533da57404b93acf9dbcf2ad4feb9df6236ae2e6a6",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "a2ae619f42c0f830642c6d3a2de48a713a4345ead8bd375b2cd9b9fa04c98ccc",
+    "skill-tree/documents/companion-workspace-contract.md": "03517e87b9a327ea7ed041b9086e65523011e83758db5cf5d6b8dcf227a0bcf9",
+    "skill-tree/documents/features.md": "0ebc04aed98cb2d963aa77ee6782f0efde1f4dcecb6298cab5d5758fcced2f7f",
+    "skill-tree/documents/habitica-api.md": "590150e94e308d344bd673e45304008af08c84125d7f841c5c413cbf7202ee3a",
+    "skill-tree/documents/technical.md": "df1f4f27fab13d5beb295638f87f961ef3731eee91a0d81eef1d63b45d231a4c",
+    "skill-tree/documents/testing.md": "e9f837a4e43237c275223434c52c09a98db7417f383e8544075189bc63fa33a9",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "43e96abd9ba4a6e24feb7bc601546e6f28076112265d040e784d4c4c8edf385d",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "eea69f20733f3fbc3f6a2a150faef11f8e5e89ccfa930b2b31a3b756edf69ac0",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "578b57c9df48df31c23ec999499031d385c7f1f644c131a3fea054ce50ebd85c",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "661f81df147f9a53f26142d9a41d6db1c12a2946a1c4b4c5bcc90fba91201114",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCommandTests.cs": "927b393ecbebee36bfd51c95a51bee128a132bc62df8715ddffedbe065e010a2",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ProjectionTests.cs": "187e204e1fa8ae91709c6f1c7f73cc8b50565ba099e8fb6c980304bac286bbe0",
+    "tests/fixtures/workspace/projection-command-v1.json": "f7cc28c2db3fb6c221e09f6e492c87b57862892788c8bede9e6e6ac849588ee8",
+    "workers/chatgpt-mcp/src/task-tools.ts": "e7b59f5357b0aef73ac30fa620717ee45e25fcba9c558d08b4989e33f7cbaf7c",
+    "workers/companion-workspace/src/commands.ts": "247600bc3845a70754a48974602ba38937c6e908665be663e1727e47280a221c",
+    "workers/companion-workspace/src/index.ts": "c46c78ea45793a71ea5c38b0e550ee0041d97e4bb483b0372c25a8f980aaa234",
+    "workers/companion-workspace/src/journal.ts": "e80ab07cfe38330c323e0f1b13608cc4cab7927506753ba8c98dbe9d32dadacc",
+    "workers/companion-workspace/src/projection-adapter.ts": "63ceb91f2c5ae273840544524806ec91e378de5db2dff295eb9eb5ae58b60935",
+    "workers/companion-workspace/src/task-api.ts": "8f8b9933f6e02c45e631a3fb05ca934a6918794172ccf745b63e4a8dee14a26a",
+    "workers/companion-workspace/test/projection-repair.test.mjs": "ae3a986a2bf92b2786e976d3b74b097102c8bad924d608de72bf8318a9e833b9",
+    "workers/companion-workspace/test/task-api.test.mjs": "5d0fa6b082022080331cc678c7e3b3e4adeb79b85bb65396363d27764dde2c72",
+    "workers/companion-workspace/test/workspace.test.mjs": "1142840c08d7cb1ebe84dca3d45cc02186fcdc7de1f5d82b907286a32abffee8",
+    "workers/shared/task-tools.ts": "611804d115597611004e3db577cc8c10027c970c0d57e42054efce4bec8eb6b5",
+    "workers/shared/workspace-commands.ts": "f3b79f615f9ced5f7b1c945676aeb8c1d412a448625b5c38282c0bc1c8bb2f88"
+  },
+  "checks": {
+    "dotnet": {
+      "sha256": "242e87caaf0aa0924f8600f311cad3fcc8cbda380dbc32df6145b3982edd3742",
+      "terminalEvidence": [
+        "Passed!  - Failed:     0, Passed:    43, Skipped:     0, Total:    43, Duration: 60 ms - Habitica.Rules.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    33, Skipped:     0, Total:    33, Duration: 225 ms - Habitica.Domain.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    22, Skipped:     0, Total:    22, Duration: 155 ms - Habitica.Storage.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:   203, Skipped:     0, Total:   203, Duration: 1 s - Habitica.Application.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:    87, Skipped:     0, Total:    87, Duration: 4 s - Habitica.Api.Tests.dll (net8.0)",
+        "Passed!  - Failed:     0, Passed:   590, Skipped:     0, Total:   590, Duration: 7 s - Habitica.WebApp.Tests.dll (net8.0)"
+      ]
+    },
+    "currentFocusedAssertions": {
+      "sha256": "9bfcf07fe41499c4d367da7bcd81338a5032bc2e5f7523dfea7ff264e12645ac",
+      "terminalEvidence": [
+        "Passed!  - Failed:     0, Passed:     2, Skipped:     0, Total:     2, Duration: 61 ms - Habitica.Application.Tests.dll (net8.0)"
+      ]
+    },
+    "workspace": {
+      "sha256": "d5ddbb323c327a60cedaabcacff90e8cab05b4553088ab2fad84e9c57ac451fc",
+      "terminalEvidence": [
+        "# tests 382",
+        "# pass 382",
+        "# fail 0",
+        "# cancelled 0",
+        "# duration_ms 39115.443667"
+      ]
+    },
+    "workspaceBuild": {
+      "sha256": "2aaa6c8e774f0417e1400c5d8fac4178f62a5ef9b1935510ebaba055ada3da05",
+      "terminalEvidence": [
+        "--dry-run: exiting now."
+      ]
+    },
+    "mcpBuild": {
+      "sha256": "824eaa454ca58a19c5aac018b8a2565a46507f2ae160cd1f81f5416e235b07d8",
+      "terminalEvidence": [
+        "--dry-run: exiting now."
+      ]
+    },
+    "releasePublish": {
+      "sha256": "b67859e0f059a840abda2806130461a0902cdf6a5eff5b3bfac332ebff3c8954",
+      "terminalEvidence": [
+        "  Habitica.WebApp -> /tmp/habitica-projection-repair-publish/"
+      ]
+    }
+  },
+  "qualified": {
+    "dotnetTests": 978,
+    "workspaceTests": 382,
+    "currentAdditionalAssertions": 2,
+    "changedProseDiagnostics": []
+  },
+  "acceptanceEvidence": [
+    "Projection-only acceptance carries one original Create intent without a content patch, second native task, completion or score.",
+    "Retained authenticated adoption preserves native content/history and enforces kind, Todo completion, exact account/workspace/access epoch, revision and external fingerprint.",
+    "Identical accepted adoption recovers the retained mapping receipt without another remote read or write.",
+    "Original unresolved creates block replacement repair. Duplicate command acceptance preserves the original result, including unknown outcome.",
+    "Portable command fixture hashes match across C# and TypeScript; retained encodings remain unchanged."
+  ],
+  "validationControls": {
+    "initialFailures": "Two synthetic expected-value errors and one Worker file deadline during concurrent builds.",
+    "repairs": "Expected values account for accepted UTC time and normalized optional metadata. Worker suite passes at bounded concurrency four without increasing individual deadlines.",
+    "unchangedFailureStreak": 0,
+    "operationDeadlineSeconds": 240,
+    "prerequisiteWaitingSeconds": 0,
+    "activeControllerSeconds": null,
+    "timingLimitation": "Controller sampling time is unavailable; test wall durations remain in terminal evidence."
+  },
+  "limitations": [
+    "No live account mutation, deployment, physical-device or assistive-technology qualification.",
+    "No UI page or style change; existing typed browser API and synthetic SDK/HTTP contracts qualify the new command paths.",
+    "Recurring counterpart creation and browser linking controls remain separate snapshot tasks.",
+    "Existing full-document prose findings remain outside the changed sections."
+  ]
+}

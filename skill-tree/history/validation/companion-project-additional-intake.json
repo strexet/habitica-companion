@@ -1,0 +1,54 @@
+{
+  "source_task_id": "c3765653-711e-4532-be37-0ba41f0954b3",
+  "source_task_revision": 40,
+  "source_workspace_revision": 41,
+  "meaning": "Checklist completion acknowledges capture into the implementation plan, not feature completion.",
+  "new_pending": [
+    {
+      "id": "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+      "title": "Recover bulk spell casting and gear restoration under rate limits",
+      "priority": 101,
+      "status": "Pending"
+    },
+    {
+      "id": "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+      "title": "Interpret natural deadline shorthand in ChatGPT and Codex",
+      "priority": 100,
+      "status": "Pending"
+    },
+    {
+      "id": "P-c151f29d-1662-4e34-9316-b849c085681f",
+      "title": "Identify installed plugin versions and backend compatibility",
+      "priority": 100,
+      "status": "Pending"
+    },
+    {
+      "id": "P-762549ef-d24d-4caa-ab3a-573a8e60eb21",
+      "title": "Complete project-filtered completed-task history navigation",
+      "priority": 25,
+      "status": "Pending"
+    }
+  ],
+  "source_checklist_mapping": {
+    "50a8d2d0-c268-4b2c-aa5c-3e17d9bd01b5": "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+    "77d6674c-23ed-4a67-870e-a4260ed80f98": "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+    "8c126b81-0cdd-4cd4-a9a7-7a93b417d82f": "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+  },
+  "existing_seven_entries": "skill-tree/history/validation/recovered-companion-intake.json",
+  "prepared_command_id": "7a60e1d9-78cd-43d2-9ffb-1319237da1e2",
+  "server_preview_may_affect_habitica": true,
+  "service_acknowledgement": "accepted once and original Habitica projection receipt confirmed",
+  "parent_task_completion_requested": false,
+  "verification_date": "2026-10-21",
+  "confirmed_command_id": "7a60e1d9-78cd-43d2-9ffb-1319237da1e2",
+  "confirmed_effect_count": 1,
+  "requested_effect_count": 1,
+  "outcome_unknown": false,
+  "checklist_completed_count": 10,
+  "checklist_total_count": 10,
+  "previous_seven_entries_unchanged": true,
+  "parent_task_state": "active",
+  "description_unchanged": true,
+  "source_task_revision_after": 42,
+  "source_workspace_revision_after": 42
+}

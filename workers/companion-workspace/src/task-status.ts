@@ -1,3 +1,4 @@
+import {tagStatus} from './tag-reconciliation.ts';
 import { WorkspaceError } from '../../shared/workspace-http.ts';
 import type { WorkspaceRow } from './executor';
 
@@ -30,7 +31,7 @@ export async function taskSyncStatus(env:WorkspaceEnv,row:WorkspaceRow){
   ||Object.values(counts).reduce((sum,value)=>sum+value,0)!==total||!Number.isSafeInteger(requested)||requested<0||!Number.isSafeInteger(confirmed)||confirmed<0||confirmed>requested
   ||!Number.isSafeInteger(result.revision)||Number(result.revision)<1||!Number.isSafeInteger(result.store_version)||Number(result.store_version)<1)
   throw new WorkspaceError('task_status_unavailable',503);
- return {provenance:'companion-canonical',workspaceId:result.workspace_id,revision:result.revision,storeVersion:result.store_version,
+ return {tagProjection:await tagStatus(env,row),provenance:'companion-canonical',workspaceId:result.workspace_id,revision:result.revision,storeVersion:result.store_version,
   checkedAtUtc:new Date().toISOString(),executorEnabled:Boolean(result.executor_enabled),executorAvailable:Boolean(env.EXECUTOR_ENABLED),
   acceptedCommandCount:total,counts,requestedEffectCount:requested,confirmedEffectCount:confirmed,oldestPendingAtUtc:result.oldestPendingAtUtc??null};
 }

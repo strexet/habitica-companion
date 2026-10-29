@@ -12,7 +12,7 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
         if (diagnostics is null) return action();
         var account = session.State.UserId; var authenticated = session.State.IsAuthenticated;
         var mode = operation is "workspace-export-local" or "workspace-restore-local" ? DiagnosticsMode.Local
-            : operation is "workspace-status" or "workspace-operations" or "workspace-export-cloud" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation;
+            : operation is "workspace-status" or "workspace-operations" or "workspace-export-cloud" or "workspace-task-recover" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation;
         return diagnostics.ObserveAsync(DiagnosticsFeatureArea.Workspace, operation, action,
             value => new(success(value) ? DiagnosticsResult.Success : DiagnosticsResult.Unavailable),
             () => session.State.IsAuthenticated == authenticated && session.State.UserId == account, mode);
@@ -61,6 +61,31 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
     }
     private bool Current(string? user) => session.State.IsAuthenticated && session.State.UserId == user;
     public Task<WorkspaceActionResult> ExportCloudAsync(CancellationToken cancellationToken = default) => ObserveAsync("workspace-export-cloud", () => cloud.ExportAsync(cancellationToken), value => value.Succeeded);
+    public Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> ReadTaskReceiptAsync(bool fromCloud, Guid workspaceId, Guid commandId, CancellationToken cancellationToken = default)
+        => ObserveAsync("workspace-task-recover", () => ReadTaskReceiptCoreAsync(fromCloud, workspaceId, commandId, cancellationToken), value => value.Succeeded);
+    private async Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> ReadTaskReceiptCoreAsync(bool fromCloud, Guid workspaceId, Guid commandId, CancellationToken cancellationToken)
+    {
+        if (workspaceId == Guid.Empty || commandId == Guid.Empty || !session.State.IsAuthenticated)
+            return new(false, null, "Sign in and provide an exact workspace and original command ID.", true);
+        var account = Scope;
+        if (fromCloud)
+        {
+            if (cloud.WorkspaceId != workspaceId)
+                return new(false, null, "The selected cloud workspace is unavailable in this tab. Renew access before checking the original receipt.", true);
+            var result = await cloud.ReadCommandAsync(commandId, cancellationToken);
+            if (!SameAccount(account) || cloud.WorkspaceId != workspaceId)
+                return new(false, null, "The account or workspace changed; the receipt was discarded.", true);
+            return result.Succeeded && (result.Value is null || result.Value.CommandId != commandId)
+                ? new(false, null, "The server returned a different command. The original outcome remains unknown.", true) : result;
+        }
+        var snapshot = await database.ForScope(account).LoadAsync(workspaceId, cancellationToken);
+        if (!SameAccount(account)) return new(false, null, "The account changed; the receipt was discarded.", true);
+        var entry = snapshot?.Commands.FirstOrDefault(row => row.Command.Id == commandId);
+        return entry is null ? new(false, null, "No original receipt is visible in this browser workspace. The outcome remains unverified.", true)
+            : new(true, WorkspaceTaskController.Receipt(entry, Guid.Empty), "Original browser receipt found.");
+    }
+    private bool SameAccount(string account) => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var current)
+        && current.ToString("D") == account;
     public Task<WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken cancellationToken = default) => ObserveAsync(delete ? "workspace-delete" : "workspace-disconnect", () => cloud.DisconnectAsync(delete, cancellationToken), value => value.Succeeded);
     private string Scope => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var userId) ? userId.ToString("D") : throw new InvalidOperationException("Sign in to manage local workspaces.");
     public Task<IReadOnlyList<Guid>> ListLocalAsync(CancellationToken cancellationToken = default) => database.ListAsync(Scope, cancellationToken);

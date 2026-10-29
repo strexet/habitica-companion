@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-21",
+  "scope": "production qualification repair; no unrelated queue implementation",
+  "observation": "Opening a saved list with a Cyrillic search crashed browser rendering in WorkspaceTaskQuery.Fold with PlatformNotSupportedException from Normalization.ValidateArguments. Native definition creation was confirmed independently.",
+  "cause": "Pinned .NET 8 browser runtime explicitly rejects FormKC/FormKD compatibility normalization. Desktop tests did not exercise this platform branch.",
+  "official_runtime_source": "https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Globalization/Normalization.Icu.cs#L93-L97",
+  "repair": "Browser uses built-in JavaScript NFKC through generated synchronous interop; desktop BCL, persisted queries and payload hashes remain unchanged. No service requests are made for normalization.",
+  "checks": {
+    "desktop_affected_tests": 51,
+    "release_isolated_browser_app": "pass",
+    "browser_shared_task_query_cases": 30,
+    "browser_input_unchanged": true,
+    "original_worker_json_boundary_test": "pass",
+    "production_frontend_build": "pass; existing wasm-tools warning"
+  },
+  "source_fingerprints": {
+    "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs": "f2ebe0d1ec4a4c0ede58caceccd6ad63cd1b4536d71c072754191f11fab3b7e2",
+    "src/Habitica.Application/Habitica.Application.csproj": "8624aa1a36ec17fe16b0458238459937cc792f93820bf1e9b595cef0af55aa9f",
+    "tests/Habitica.BrowserChecks/Program.cs": "1c93384471c5d5136c6dbe444bf9bcea3f9b942d30e6110f94ba5835446d7b00",
+    "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj": "e76a831efc80eae479ae18cf3584e800a6885870730ba83d40003756c631c766",
+    "tests/Habitica.BrowserChecks/wwwroot/index.html": "993f2e3a104cc49c079237769dc1ff8396294a10920dfeee6f61a2b35f65d367",
+    "tests/fixtures/workspace/task-query-v1.json": "193e27286dc773155a84bccd79f8e22e1939dc9774cee60f8b451a223915c0e2",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceOrganizationClientTests.cs": "dd2d192e7a4f376444bcc90c1250a7001be6f046297895d6167086d1b8cb9f3f"
+  },
+  "production_recheck": {
+    "deployment_id": "e1cefdbc-74ac-4b29-88d5-c1737fa894e0",
+    "source_commit": "f66410c",
+    "origin": "https://habitica-companion.pages.dev",
+    "result": "Previously crashing Cyrillic saved search opens and returns one matching active Todo at revision 44.",
+    "native_view_id": "69d66ba3-6811-4430-b3f5-01d19344e859",
+    "create_command_id": "8267d01a-81f0-42c5-ba0f-98e7ff4645fb",
+    "task_and_game_mutations": 0,
+    "update_command_id": "79bbe561-47b5-476c-b98f-dc792fec62a4",
+    "updated_completed_query_matched_count": 0,
+    "update_revision": 45,
+    "archive_command_id": "020e6741-7aa8-48ad-8a8a-8a5e19fabc46",
+    "archive_receipt_confirmed": true,
+    "active_definition_count_after_archive": 0,
+    "archived_selection_is_explicitly_unavailable": true,
+    "all_task_fallback": false
+  },
+  "limits": [
+    "No mobile-device or assistive-technology qualification.",
+    "No unrelated gameplay or party tests."
+  ]
+}

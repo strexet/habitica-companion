@@ -1,0 +1,109 @@
+{
+  "task_id": "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+  "base_commit": "947f4564fa5d1a44bda743a448d500e7c983a9c2",
+  "scope": "Local synthetic browser/API/MCP qualification. No live calls, deployment, remote migration, consent activation or enrollment.",
+  "logs": {
+    "api": {
+      "sha256": "46c9212552a9d83f52478bc685e0dbfe9fb73404e3523f68f8dab713b63c7d4d",
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "workspace-full": {
+      "sha256": "94eb32a6722762ef6aacbe8475fe4307c0d33ee3e3f91bc3323cf0ff445aeb22",
+      "tests": 514,
+      "pass": 514,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "auth-full": {
+      "sha256": "662f7a0e25589a8364fceeada2befee0b1ed9a6cb1a52a0fd12aedfb8f64ee04",
+      "tests": 145,
+      "pass": 145,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "dotnet-focused": {
+      "sha256": "4c8854d1701b34e8301cdfc2b354f32a18ce7458ce245b919a15eb7a80e44c53",
+      "passed": 12
+    },
+    "dotnet-all": {
+      "sha256": "0bf9a7a4d7c98ae4c99c9534f3605d6000dfe87d8281e678e482e8dacea06e91",
+      "passed": 1030
+    },
+    "dotnet-build": {
+      "sha256": "41fee7d2ae044408a7301de5a97d74691bfac87f4bddf77be1e81a2c4e4b6331"
+    },
+    "dotnet-publish": {
+      "sha256": "bd5af8847c11ac540f0e9c5919005f3b9e203298971ad2112ae28e341f78eb47"
+    },
+    "chatgpt-auth-build": {
+      "sha256": "6f7c3cdedf1203bd6a177b9e28cbd6bbf8e27ca7fa50374b6197c27ccf09f7c3"
+    },
+    "companion-workspace-build": {
+      "sha256": "4f9dc592d95101001d24f29ff60abdc7816b164c87c4ea899289eee446b44123"
+    },
+    "chatgpt-mcp-build": {
+      "sha256": "bc52a2620eb93d9d82799402b76c9c6c9c37f64ce07569727398d11913506e67"
+    }
+  },
+  "checks": {
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "diff_check": true
+  },
+  "coverage": [
+    "Separate owner consent, old/new agent scopes and strict scoped MCP schemas",
+    "Complete retained task/group coverage and revision-bound pages",
+    "Exact duplicate-name native tag adoption without mutation",
+    "Unknown original native lookup while executor paused; reviewed observation never resends",
+    "Lost acceptance preserves original command and permits original-ID retry",
+    "Atomic storage rollback, expired unaccepted review cleanup and archive-byte refund",
+    "Late account/session responses discarded; full membership page acknowledgement resets for new command identity"
+  ],
+  "limits": [
+    "Hosted OAuth clients, physical devices, screen readers and live Habitica behavior remain unqualified.",
+    "Open task/organization editors require reload after explicit tag intent changes canonical revision.",
+    "Stored canonical evidence never proves current upstream presence or game rewards.",
+    "Full-strict inherited prose errors outside changed lines remain existing backlog."
+  ],
+  "browser": {
+    "cases": 936,
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "states": 13,
+    "themes": 6,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "seeded_controls": 2,
+    "seeded_detected": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "evidence": "browser-compact.json",
+    "note": "First full run also936/936 passed. Initial full-result extraction exceeded tool return size; compact final run retains every case. An intermediate artifact retry lost the900-second server prerequisite and is not passing evidence."
+  },
+  "artifacts": {
+    "browser-compact.json": "df55786b494d7fd65d3f3153c0bf775b56199d005bdb9d80499f6646e6ac6f9b",
+    "browser-negative-results.json": "d118d3ffcc16dbafe5e9e25bc259d01699f5fcd47134e732925a09f7dea7e8c9",
+    "tag-adoption-light.png": "9d9ebd28ca2f77a7ab1dd57df8887e7a7bd5149cfad77721b2d174cc8966a246",
+    "coverage.json": "ca59f9d0732fb67965a4eba11b604496f513d1084aaf8b30c7ad7689b4f550e1"
+  }
+}

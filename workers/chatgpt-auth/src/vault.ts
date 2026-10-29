@@ -1,6 +1,7 @@
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
+import {clearPushContext} from './push-subscriptions';
 
 export const consentVersion = "integration-v1";
 const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
@@ -91,6 +92,8 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
   await charge(env,"enrollment:profile:"+profileId,5);
   const envelope = await encryptCredential(profileId, credential, env.CREDENTIAL_CURRENT_KEY_VERSION, credentialKeys(env));
   const previous = await loadProfile(env, profileId);
+  // A blocked profile keeps the management credential until cross-service cleanup completes.
+  if(previous?.revoked_at_utc&&previous.management_token_hash)throw new VaultError('cleanup_pending',409);
   let connectionId = crypto.randomUUID();
   if (previous && !previous.revoked_at_utc && previous.credential_ciphertext && previous.credential_iv && previous.credential_key_version && previous.credential_schema_version === 1) {
     const stored = await decryptCredential(profileId, { ciphertext: previous.credential_ciphertext, iv: previous.credential_iv, keyVersion: previous.credential_key_version, schemaVersion: 1 }, credentialKeys(env));
@@ -119,6 +122,7 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     .bind(profileId, connectionId, profileId, hash));
   const results = await env.HABITICA_INTEGRATION_DB.batch(writes);
   if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
+  if(previous&&previous.connection_id!==connectionId)await clearPushContext(env,profileId,previous.connection_id,false);
   return Response.json({ profileId, managementToken }, { status: 201, headers });
 }
 export async function managedProfile(request: Request, env: AuthEnv, profileId: string, applyBudget = true): Promise<IntegrationProfile> {
@@ -128,7 +132,7 @@ export async function managedProfile(request: Request, env: AuthEnv, profileId: 
   if(applyBudget)await charge(env,"management:profile:"+profileId,30);
   return activeProfile(env, profileId);
 }
-async function manage(request: Request, env: AuthEnv, profileId: string, cleanup?: (id: string, connectionId: string) => Promise<void>): Promise<Response> {
+async function manage(request: Request, env: AuthEnv, profileId: string, cleanup?: (id: string, connectionId: string, deleteProfile:boolean) => Promise<void>): Promise<Response> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
   if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
@@ -136,10 +140,10 @@ async function manage(request: Request, env: AuthEnv, profileId: string, cleanup
   const now = new Date().toISOString();
   const blocked = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,
     credential_iv=NULL, credential_key_version=NULL, credential_schema_version=NULL,
-    revoked_at_utc=COALESCE(revoked_at_utc,?), updated_at_utc=? WHERE profile_id=? AND management_token_hash=?`)
+    revoked_at_utc=COALESCE(revoked_at_utc,?), updated_at_utc=?,generation=generation+1 WHERE profile_id=? AND management_token_hash=?`)
     .bind(now, now, profileId, profile.management_token_hash).run();
   if (!blocked.meta.changes) throw new VaultError("unauthorized", 401);
-  try { if (cleanup) await cleanup(profileId, profile.connection_id); }
+  try { if (cleanup) await cleanup(profileId, profile.connection_id,request.method==='DELETE'); }
   catch { return Response.json({ accessBlocked: true, pendingCleanup: true }, { status: 202, headers }); }
   if (request.method === "DELETE") {
     const result = await env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_profiles WHERE profile_id = ? AND management_token_hash = ?").bind(profileId, profile.management_token_hash).run();
@@ -153,7 +157,7 @@ async function manage(request: Request, env: AuthEnv, profileId: string, cleanup
   if (!result.meta.changes) throw new VaultError("unauthorized", 401);
   return Response.json({ disconnected: true }, { headers });
 }
-export async function vaultRoute(request: Request, env: AuthEnv, cleanup?: (id: string, connectionId: string) => Promise<void>): Promise<Response | null> {
+export async function vaultRoute(request: Request, env: AuthEnv, cleanup?: (id: string, connectionId: string, deleteProfile:boolean) => Promise<void>): Promise<Response | null> {
   const url = new URL(request.url);
   const management = url.pathname.match(/^\/profiles\/(prf_[A-Za-z0-9_-]+)(\/disconnect)?$/);
   if (!(url.pathname === "/enroll" && request.method === "POST") && !(management && ((!management[2] && request.method === "DELETE") || (management[2] && request.method === "POST")))) return null;

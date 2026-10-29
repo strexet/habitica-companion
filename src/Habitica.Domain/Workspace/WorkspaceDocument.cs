@@ -11,7 +11,9 @@ public enum HabitScoreDirection { Up, Down }
 public enum ProjectionState { Unlinked, Pending, Linked, ExternalConflict, UnknownOutcome }
 public enum HabiticaTaskAttribute { Str, Int, Per, Con }
 public sealed record TaskChecklistItem(Guid Id, string Text, bool Completed = false);
-public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTaskAttribute? Attribute = null, IReadOnlyList<TaskChecklistItem>? Checklist = null)
+public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTaskAttribute? Attribute = null, IReadOnlyList<TaskChecklistItem>? Checklist = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Up = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Down = null)
 {
     public static bool IsValid(HabiticaTaskDetails? value) => value is null ||
         (value.Difficulty is null or 0.1 or 1 or 1.5 or 2 && (value.Attribute is null || Enum.IsDefined(value.Attribute.Value))
@@ -19,12 +21,14 @@ public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTask
             && value.Checklist.Select(item => item.Id).Distinct().Count() == value.Checklist.Count));
 
     public static HabiticaTaskDetails? Merge(HabiticaTaskDetails? current, HabiticaTaskDetails? patch) => patch is null ? current :
-        new(patch.Difficulty ?? current?.Difficulty, patch.Attribute ?? current?.Attribute, patch.Checklist ?? current?.Checklist);
+        new(patch.Difficulty ?? current?.Difficulty, patch.Attribute ?? current?.Attribute, patch.Checklist ?? current?.Checklist, patch.Up ?? current?.Up, patch.Down ?? current?.Down);
 }
 
 public abstract record WorkspaceEntity(Guid Id, long Revision, bool IsArchived);
 public sealed record WorkspaceCategory(Guid Id, long Revision, string Name, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
-public sealed record WorkspaceProject(Guid Id, long Revision, string Name, Guid? CategoryId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
+public sealed record WorkspaceProject(Guid Id, long Revision, string Name, Guid? CategoryId = null, bool IsArchived = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool IsRemoved = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Alias = null) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceSection(Guid Id, long Revision, string Name, Guid ProjectId, int Position = 0, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceLabel(Guid Id, long Revision, string Name, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceGoal(Guid Id, long Revision, string Name, IReadOnlyList<Guid> TaskIds, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
@@ -62,7 +66,8 @@ public sealed record CompanionTask(
     HabiticaTaskDetails? HabiticaDetails = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
-public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
+public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] Guid? TerminalCommandId = null) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record CompletionEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset CompletedAtUtc, Guid? OccurrenceId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record TaskRestoration(Guid Id, long Revision, Guid TaskId, Guid CompletionId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record HabitScoreEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset RecordedAtUtc, HabitScoreDirection Direction, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
@@ -70,6 +75,8 @@ public sealed record HabiticaProjection(Guid Id, long Revision, Guid TaskId, Pro
 
 public sealed record WorkspaceDocument
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskActivityWitness>? ActivityCoverage { get; init; }
     public const int CurrentSchemaVersion = 1;
     public const long MaxRevision = 9007199254740991;
     public int SchemaVersion { get; init; } = CurrentSchemaVersion;
@@ -88,7 +95,21 @@ public sealed record WorkspaceDocument
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<TaskRestoration>? Restorations { get; init; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<LinkedTaskRecovery>? LinkedTaskRecoveries { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskUnarchive>? Unarchives { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<OccurrenceCorrection>? OccurrenceCorrections { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<WorkspaceOrganizationEntry>? OrganizationHistory { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskReviewEvent>? ReviewEvents { get; init; }
     public IReadOnlyList<HabitScoreEvent> HabitScores { get; init; } = Array.Empty<HabitScoreEvent>();
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public WorkspaceTagLedger? TagLedger { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceChecklistConversion>? ChecklistConversions { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceSourceRetirement>? SourceRetirements { get; init; }
 }

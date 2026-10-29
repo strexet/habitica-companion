@@ -1,0 +1,33 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+
+@if (Preview is {} tags && tags.Groups.Count>0)
+{
+    <section aria-label="Group tag changes" data-testid="tag-command-changes">
+        <h4>Group tag metadata</h4>
+        @if (!tags.ScopeAllowed || !tags.ConsentEnabled) { <p>Native changes can be saved. Tag metadata will require separate permission and a new review; saving does not grant tag access.</p> }
+        else { <p>Review the complete group membership below. Tag metadata gives no game rewards. Background execution has a separate opt-in.</p> }
+        @foreach (var group in tags.Groups) { <p><strong>@group.Name</strong> · @group.Kind · @(group.RetainMembership?"Keep archived tag membership":$"Ensure named tag; {group.TaskIds.Count} desired task links, {group.RemovedTaskIds.Count} managed removals")</p> }
+        @if (_rows.Count>0)
+        {
+            <ul>@foreach (var row in _rows.Skip(_offset).Take(20)) { <li><strong>@TaskName(row.TaskId)</strong> · @row.GroupName · @(row.Present?"Add or retain tag":"Remove managed tag") · @row.TaskId</li> }</ul>
+            @if (tags.RequestsMetadataChanges) { <label class="checkbox-row"><input type="checkbox" checked="@_pages.Contains(_offset)" disabled="@Disabled" @onchange="AcknowledgeAsync" data-testid="tag-command-ack" /><span>Reviewed references @(_offset+1)–@(Math.Min(_offset+20,_rows.Count)) of @_rows.Count</span></label> }
+            <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Disabled||_offset==0)" OnClick="Previous" Variant="Variant.Text">Previous tag references</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Disabled||_offset+20>=_rows.Count)" OnClick="Next" Variant="Variant.Text">Next tag references</MudButton></div>
+        }
+    </section>
+}
+@code {
+    [Parameter] public Guid CommandId {get;set;}
+    [Parameter] public WorkspaceTagChangePreview? Preview {get;set;}
+    [Parameter] public IReadOnlyList<CompanionTask> Tasks {get;set;}=[];
+    [Parameter] public bool Disabled {get;set;}
+    [Parameter] public EventCallback<bool> Reviewed {get;set;}
+    private sealed record Row(Guid TaskId,string GroupName,bool Present);
+    private IReadOnlyList<Row> _rows=[];private int _offset;private Guid _commandId;private readonly HashSet<int> _pages=[];
+    private bool AllReviewed=>Preview?.RequestsMetadataChanges!=true||Enumerable.Range(0,(_rows.Count+19)/20).All(page=>_pages.Contains(page*20));
+    protected override async Task OnParametersSetAsync(){if(CommandId==_commandId)return;_commandId=CommandId;_offset=0;_pages.Clear();_rows=Preview?.Groups.Where(group=>!group.RetainMembership).SelectMany(group=>group.TaskIds.Select(id=>new Row(id,group.Name,true)).Concat(group.RemovedTaskIds.Select(id=>new Row(id,group.Name,false)))).ToArray()??[];await Reviewed.InvokeAsync(AllReviewed);}
+    private string TaskName(Guid id)=>Tasks.FirstOrDefault(task=>task.Id==id)?.Text??"Task reference";
+    private async Task AcknowledgeAsync(ChangeEventArgs args){if(Disabled)return;if(args.Value is true)_pages.Add(_offset);else _pages.Remove(_offset);await Reviewed.InvokeAsync(AllReviewed);}
+    private void Previous()=>_offset=Math.Max(0,_offset-20);
+    private void Next(){if(_offset+20<_rows.Count)_offset+=20;}
+}

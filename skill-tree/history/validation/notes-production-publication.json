@@ -1,0 +1,106 @@
+{
+  "status": "published",
+  "release": "0.2.0",
+  "toolSchemaVersion": "1.1.0",
+  "recordedAtUtc": "2026-10-23T13:31:45.848684+00:00",
+  "target": "https://habitica-companion.pages.dev",
+  "predecessors": {
+    "pages": "e1cefdbc-74ac-4b29-88d5-c1737fa894e0",
+    "auth": [
+      {
+        "version_id": "23dd5ff7-9cc7-4ff8-b888-c2ee2bcf5819",
+        "percentage": 100
+      }
+    ],
+    "workspace": [
+      {
+        "version_id": "063c484b-eb00-4b5f-b789-7c77f3eb4829",
+        "percentage": 100
+      }
+    ],
+    "mcp": [
+      {
+        "version_id": "f52d8bf6-acf1-42a6-a641-9eccbb4a4e84",
+        "percentage": 100
+      }
+    ]
+  },
+  "bookmarks": {
+    "auth": "0000012c-00000000-0000510d-e6ce72c9ec0727459f2bb2cd7b1fbf13",
+    "workspace": "00000037-00000094-0000510d-a46c19a7e851f997802e4a4529e12744"
+  },
+  "migrationsApplied": {
+    "auth": [
+      "0009-tag-gateway.sql"
+    ],
+    "workspace": [
+      "0008-tag-reconciliation.sql",
+      "0009-group-tag-reviews.sql",
+      "0010-source-retirement.sql",
+      "0011-personal-notes.sql",
+      "0012-note-previews.sql"
+    ]
+  },
+  "checks": {
+    "solution": 1168,
+    "notesFinal": 35,
+    "renderedCases": 720,
+    "auth": 154,
+    "workspaceFinal": 572,
+    "identityAndPlugin": 9,
+    "packagePython": 7,
+    "buildIdentityPython": 1,
+    "workerTypechecksAndBuilds": 3,
+    "productionDryBuilds": 3,
+    "productionFrontend": "pass; prepared config and CSS match"
+  },
+  "preserved": {
+    "runtimeVariables": true,
+    "featureFlags": true,
+    "credentialKeySelection": true,
+    "existingSecrets": true,
+    "existingBindings": true,
+    "perAccountConsent": true
+  },
+  "limitations": [
+    "Terminal public HTTP probes were unavailable due403/DNS; ordinary browser inspection confirmed production settings, live OAuth Notes scopes, MCP-to-Auth health and the rendered WebAssembly Notes route. Direct manifest navigation was blocked by the browser and remains unqualified.",
+    "No hosted Notes enrollment, host-model exercise, live gameplay write, party mutation, new key or consent activation occurs in publication."
+  ],
+  "buildIdentitySourceSha256": "c9a053ee6a892713ecd730c30d095c259869cf554cbf3fc5fa7b83b6aaf3b478",
+  "sourceRevision": "ba5a96d073678e9908b2a32bfb665f61a7f46563",
+  "publishedAtUtc": "2026-10-23T13:36:55.770118+00:00",
+  "deployedWorkers": {
+    "auth": "01415777-f2a9-48b6-b9bf-c276106a6624",
+    "workspace": "732ba1a4-6a46-4697-8d7b-90436c42a311",
+    "mcp": "31f2b105-8268-49b1-a6ff-1563e9976467"
+  },
+  "pagesDeployment": "3699265e-b656-4f16-9836-35a8c2fbd942",
+  "package": {
+    "archiveSha256": "f68ca6ce3554ec91c67bc7d18778511834caaf299f8808bc987b1c5b25770ee7",
+    "contentHash": "9b96f3ba7913c253c0aec81743b0396aab62359a842ade97c058890ccb3b834d",
+    "packageVersion": "0.2.0",
+    "path": "output/habitica-companion-plugin-0.2.0.zip"
+  },
+  "browserSmoke": {
+    "mcpHealth": {
+      "service": "mcp",
+      "authService": "reachable",
+      "authorization": "unavailable"
+    },
+    "oauthNotesScopes": [
+      "notes.read",
+      "notes.write"
+    ],
+    "publicSettingsMatch": true,
+    "notesRoute": "Notes page rendered in WebAssembly; signed out; New note disabled",
+    "manifest": "Browser blocked direct navigation; not inspected",
+    "workspaceHealth": {
+      "service": "workspace",
+      "enabled": true
+    }
+  },
+  "migrationRemainder": {
+    "auth": "none",
+    "workspace": "none"
+  }
+}

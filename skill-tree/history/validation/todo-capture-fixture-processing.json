@@ -1,0 +1,30 @@
+{
+  "pending": {
+    "id": "P-2a780804-7b8b-4109-b462-3a9d152735f0",
+    "priority": 101,
+    "status": "Pending",
+    "parent_pending_ids": [],
+    "processing_run_id": null,
+    "root_task_id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+    "related_task_id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+    "relation": "subtask",
+    "depends_on": []
+  },
+  "processing": {
+    "id": "PR-20820d75-3a2d-41f6-8120-1769bab0ae81",
+    "selected_ids": [
+      "P-2a780804-7b8b-4109-b462-3a9d152735f0"
+    ],
+    "created_ids": [
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
+    ],
+    "reused_ids": [],
+    "task_keys": {},
+    "dispositions": {
+      "P-2a780804-7b8b-4109-b462-3a9d152735f0": {
+        "status": "promoted",
+        "reason": "A captured bound-value attribute establishes a reproducible qualification gap. Existing AngleSharp parsing can normalize synthetic textarea content without production changes."
+      }
+    }
+  }
+}

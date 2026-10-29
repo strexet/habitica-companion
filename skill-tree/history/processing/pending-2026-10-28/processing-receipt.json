@@ -1,0 +1,62 @@
+{
+  "created_ids": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
+  ],
+  "dispositions": {
+    "P-172ac0de-69a2-4bc3-bcd6-1117848875d6": {
+      "reason": "Source and tests conflate unaccepted stale/expired reviews with uncertain accepted effects, and the browser keeps uncertainty sticky. Create atomic terminal non-acceptance and typed original recovery without relaxing review conditions or replaying native work.",
+      "status": "promoted"
+    },
+    "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec": {
+      "reason": "Current browser bundles and original server receipts do not supply consented remote browser-log ingestion. Production storage location and retention remain an explicit owner choice: seven-day bounded Workspace storage after previewed upload, or a fifteen-minute temporary share. No answer has been received; no storage policy is inferred. See skill-tree/history/processing/pending-2026-10-28/decision-proposals.md. Browser sharing task T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b and diagnostic-name fix T-56a7a511-0ebf-41f8-8e1f-65ae87399459 remain separate existing work.",
+      "status": "retained"
+    },
+    "P-45cdf111-910f-455d-bbb5-89bc00de4bbe": {
+      "reason": "Browser-only exact adoption lacks a reviewed MCP preview/accept/original-receipt workflow. Create one bounded shared contract and migration parity inventory; existing migration controls remain independent.",
+      "status": "promoted"
+    },
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192": {
+      "reason": "Official MCP Events still requires MCP2.0 /2026-07-28, while installed SDK1.32.1 supports protocols only through2025-11-25. A separate callback URL/signing-secret ownership, consent, rotation and deletion selection remains unanswered; Web Push vault consent is not reused. Production protocol compatibility, connection-safe egress and actual host reply qualification remain unproven. See skill-tree/history/processing/pending-2026-10-28/decision-proposals.md and originating-chat-reminders.md.",
+      "status": "retained"
+    },
+    "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa": {
+      "reason": "The exact retained source read at workspace revision164 shows both named archived completed targets linked to distinct native IDs, storedCorrespondence true, no pending commands and requiresHistoricalMatch false; the obsolete source is already archived. The original missing-correspondence condition is resolved as retained canonical evidence. No fresh native verification or whole conversion readiness is claimed. Agent adoption parity remains P-45cdf111-910f-455d-bbb5-89bc00de4bbe and false tag invalidation remains P-8e196ade-395e-4737-a1eb-2172488bddc4. Evidence: skill-tree/history/processing/pending-2026-10-28/retained-migration-observation.json.",
+      "status": "resolved"
+    },
+    "P-8e196ade-395e-4737-a1eb-2172488bddc4": {
+      "reason": "Current Worker status and both retirement policies invalidate stored tag membership solely on global workspace revision changes. Replace the false invalidation with scoped complete desired-evidence validation.",
+      "status": "promoted"
+    },
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2": {
+      "reason": "Local implementations T-b89fac23-3ac2-4c64-8560-be7a5d796a81, T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 and existing foreground/server pacing cover the requested counters, quota handling and explicit gear recovery. No duplicate feature unit is needed. Closure of the reported deployed iPhone incident still requires the currently loaded PWA build and fresh sanitized device evidence; any live spell reproduction needs a separately bounded owner profile. Existing local evidence and release gate T-d76d2a9a-1318-4e63-9bb4-73f620b108cc do not establish that incident closure. See skill-tree/history/processing/pending-2026-10-28/research.md.",
+      "status": "retained"
+    },
+    "P-da73f47f-e30c-4174-9f46-b14984ce1bf9": {
+      "reason": "The current Notes model, storage, read filters and MCP commands have no project association. Split compatible versioned model/API/MCP work from dependent Notes/project UI work while preserving one Pending origin.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-cc5061a4-7801-422f-b5c3-9cdb86d4c235",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+    "P-45cdf111-910f-455d-bbb5-89bc00de4bbe",
+    "P-8e196ade-395e-4737-a1eb-2172488bddc4",
+    "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+    "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+    "P-da73f47f-e30c-4174-9f46-b14984ce1bf9",
+    "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+  ],
+  "task_keys": {
+    "notes-project-contract": "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "notes-project-ui": "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "reviewed-task-adoption": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+    "scoped-tag-evidence": "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "tag-review-outcomes": "T-ee09583d-26dc-4291-880a-0b7a4801842e"
+  }
+}

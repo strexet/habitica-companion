@@ -1,0 +1,54 @@
+{
+  "task_id": "T-6706aad6-b870-484b-80c3-e56c29431556",
+  "status": "pass",
+  "recorded_at_utc": "2026-10-23T10:42:09.094446+00:00",
+  "checks": {
+    "pythonPackaging": 7,
+    "deploymentPreparation": 10,
+    "sdkAndSchemas": 9,
+    "skillValidators": 5,
+    "prose": "pass",
+    "references": "pass",
+    "diff": "pass"
+  },
+  "source_fingerprints": {
+    "deploy/README.md": "c07705b01155c8fbb06d6f7b7cdfadd7dd3455bb5144a56812445acc30ff3dc9",
+    "deploy/package-plugin.py": "290252984b05630fa4dee0a9487a52118447c1ef5064af1d78b45cffc9ecc92e",
+    "deploy/plugin-requirements.json": "40ec5e277914a268e0b5fd9edce7aa7e918946c781ad70230faa3f1d01ffb6a0",
+    "deploy/prepare-dev.mjs": "4a9c35afaa711c7c47cf8418977b69d1524d1784794d7373003f105e60ee94f4",
+    "plugin/README.md": "1f887c463a06b6b1d26a6baef8838770703c8e2ed1a5c74cc3565a166fb386a2",
+    "plugin/mcp.json": "c566ed638a68dd62edf09a8b8456a73dc91e60b2c5821659fd4b0f4f9a7b9689",
+    "plugin/plugin.json": "db563cf9be70e64003312c0229c82b7a8b3895bd0773795abac9f88120eb0a1f",
+    "plugin/skills/habitica-account-review/SKILL.md": "e018e99619f4187cd92ded5eb55052c059152b88d3f5a098a59b05a37c55818c",
+    "plugin/skills/habitica-account-review/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "plugin/skills/habitica-activity-review/SKILL.md": "59837183dce6a45b18e5ffda4a0224b58241fe16af19b1e4417392a4ef44353b",
+    "plugin/skills/habitica-activity-review/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "plugin/skills/habitica-daily-review/SKILL.md": "dc53e260b5006dc0bc2e6cf20da4935a9f285a15144ee9a4df64b281facda691",
+    "plugin/skills/habitica-daily-review/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "plugin/skills/habitica-diagnostics/SKILL.md": "27a32ce950c2c528217e1d16f031adec4e8120a8ed4b235f75ee10dc581add6a",
+    "plugin/skills/habitica-diagnostics/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "plugin/skills/habitica-task-management/SKILL.md": "a17697f180ec40fc66b748b114a8b403c938c7e6264ddedcf4aba90c5103eaf1",
+    "plugin/skills/habitica-task-management/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "skill-tree/documents/features.md": "e0ef7e8e375fe37c9869e5f5c3fa7a9ad8685d8cf5f1c7ef9da1fcce08dd6be3",
+    "skill-tree/documents/technical.md": "37598ac25fb12b9ca8545b1dbeaaad139a9c913b0f163289d5c6ab8885961770",
+    "skill-tree/documents/testing.md": "0d6893d913813fc6ccc29ec2932b6ab115e0d526ace0ac62d7fb174e94ea32dd",
+    "skill-tree/documents/ux-ui-manifest.md": "850575506562ad0b91e1673c06ba13f16bc0378d21e79aa5c6ffecce5d4807e6",
+    "tests/Functions/dev-preparation.test.mjs": "4c38d3de1937faacf30926a9e950107e3d38b85d9a88a51dfe531f5c617590e9",
+    "tests/Functions/test_plugin_package.py": "8ae40c9dfe9ca67ebba6e2d5478e573f95f406f25192d5a1f6f05b845e805fe5",
+    "workers/companion-workspace/test/plugin.test.mjs": "4b2deb3e16bcde3a85a28352d9b04424351ed0ef2dc5a507bee2d7223bbf7b4c"
+  },
+  "limitations": [
+    "Local synthetic preparation only; no plugin installation, publication, production package bump or deployment.",
+    "Fresh-chat loaded skills and marketplace/imported cache updates remain unqualified in real ChatGPT and Codex hosts.",
+    "Unsigned hashes establish consistency against reviewed receipts, not publisher authenticity.",
+    "Source revision is labelled operator-supplied; actual staged files are bound independently by content hashes."
+  ],
+  "officialSources": [
+    "https://developers.openai.com/plugins/build/plugins",
+    "https://developers.openai.com/api/docs/guides/custom-mcp-server"
+  ],
+  "notes": [
+    "Initial preparation test invocation omitted the existing Node TypeScript-strip flag; corrected invocation passed without production repairs.",
+    "Initial manual source revision sample was invalid length; qualified preparation uses the actual reviewed parent commit with explicit operator-provenance labelling."
+  ]
+}

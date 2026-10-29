@@ -22,10 +22,14 @@ public static class WorkspaceRules
         }
         var all = document.Categories.Cast<WorkspaceEntity>().Concat(document.Projects).Concat(document.Sections)
             .Concat(document.Labels).Concat(document.Goals).Concat(document.Tasks).Concat(document.Occurrences)
-            .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
-            .Concat(document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>()).ToArray();
+            .Concat(document.LinkedTaskRecoveries ?? Array.Empty<LinkedTaskRecovery>()).Concat(document.Unarchives ?? Array.Empty<TaskUnarchive>()).Concat(document.OccurrenceCorrections ?? Array.Empty<OccurrenceCorrection>()).Concat(document.Completions).Concat(document.ReviewEvents ?? Array.Empty<TaskReviewEvent>()).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
+            .Concat(document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>())
+            .Concat(document.ChecklistConversions ?? Array.Empty<WorkspaceChecklistConversion>())
+            .Concat(document.SourceRetirements ?? Array.Empty<WorkspaceSourceRetirement>())
+            .Concat(document.TagLedger?.Mappings ?? Array.Empty<WorkspaceTagMapping>()).Concat(document.TagLedger?.Intents ?? Array.Empty<WorkspaceTagIntent>()).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
-        if (all.Length + (document.OrganizationHistory?.Count ?? 0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
+        if (all.Length + (document.OrganizationHistory?.Count ?? 0) + (document.ChecklistConversions?.Sum(row=>row?.Receipts?.Count??0)??0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
+        if (!WorkspaceActivityCoverage.ValidDocument(document)) errors.Add(new("invalid_activity_coverage"));
         var identities = new HashSet<Guid> { document.Id };
         foreach (var entity in all)
         {
@@ -41,7 +45,15 @@ public static class WorkspaceRules
         void Name(string? name, Guid id) { if (string.IsNullOrWhiteSpace(name) || name.Length > 256) errors.Add(new("invalid_name", id)); }
         void Reference(Guid? id, bool exists, Guid owner) { if (id is not null && !exists) errors.Add(new("missing_reference", owner)); }
         foreach (var category in document.Categories) Name(category.Name, category.Id);
-        foreach (var project in document.Projects) { Name(project.Name, project.Id); Reference(project.CategoryId, project.CategoryId is { } id && categories.Contains(id), project.Id); }
+        var projectAliases=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var project in document.Projects)
+        {
+            Name(project.Name, project.Id); Reference(project.CategoryId, project.CategoryId is { } id && categories.Contains(id), project.Id);
+            if(project.Alias is {} alias&&(!WorkspaceProjectAliases.IsCanonical(alias)||!projectAliases.Add(alias)))
+                errors.Add(new("invalid_project_alias",project.Id));
+            if(project.IsRemoved&&(!project.IsArchived||document.OrganizationHistory?.Any(row=>row is { Command: { Operation: WorkspaceOrganizationOperation.Remove } command, Snapshot: { IsRemoved: true } }&&command.EntityId==project.Id)!=true))
+                errors.Add(new("invalid_project_removal",project.Id));
+        }
         foreach (var section in document.Sections)
         {
             Name(section.Name, section.Id); Reference(section.ProjectId, projects.ContainsKey(section.ProjectId), section.Id);
@@ -65,7 +77,7 @@ public static class WorkspaceRules
         foreach (var task in document.Tasks)
         {
             if (task.ExecutionStage is {} stage && (task.Kind != CompanionTaskKind.Todo || !Enum.IsDefined(stage))) errors.Add(new("invalid_execution_stage",task.Id));
-            if (!HabiticaTaskDetails.IsValid(task.HabiticaDetails)) errors.Add(new("invalid_habitica_details", task.Id));
+            if (!HabiticaTaskDetails.IsValid(task.HabiticaDetails) || task.Kind != CompanionTaskKind.Habit && (task.HabiticaDetails?.Up is not null || task.HabiticaDetails?.Down is not null)) errors.Add(new("invalid_habitica_details", task.Id));
             if (string.IsNullOrWhiteSpace(task.Text) || task.Text.Length > 2048 || task.Notes?.Length > 10000) errors.Add(new("invalid_task_text", task.Id));
             if (!Enum.IsDefined(task.Kind) || !Enum.IsDefined(task.State) || !Enum.IsDefined(task.Priority)) errors.Add(new("invalid_task_enum", task.Id));
             if (task.CreatedAtUtc == default || task.CreatedAtUtc.Offset != TimeSpan.Zero || task.UpdatedAtUtc.Offset != TimeSpan.Zero || task.CreatedAtUtc > task.UpdatedAtUtc
@@ -102,15 +114,39 @@ public static class WorkspaceRules
         foreach (var occurrence in document.Occurrences)
         {
             if (!tasks.TryGetValue(occurrence.TaskId, out var task) || task.Kind != CompanionTaskKind.Daily || !Enum.IsDefined(occurrence.State)
+                || occurrence.TerminalCommandId == Guid.Empty || occurrence.State == OccurrenceState.Pending && occurrence.TerminalCommandId is not null
                 || occurrence.Date == default || !occurrenceKeys.Add((occurrence.TaskId, occurrence.Date))) errors.Add(new("invalid_occurrence", occurrence.Id));
         }
+        var activityCommands = document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??[]).Select(row=>row.CommandId)).ToHashSet();
+        var activityRevisions = document.Completions.Select(row=>row.Revision).Concat(document.HabitScores.Select(row=>row.Revision)).Concat((document.Restorations??[]).Select(row=>row.Revision)).ToHashSet();
+        var reviewCommands = new HashSet<Guid>();
+        var reviewRevisions = new HashSet<long>();
+        foreach (var review in document.ReviewEvents ?? [])
+        {
+            if (!tasks.ContainsKey(review.TaskId) || review.CommandId == Guid.Empty || !reviewCommands.Add(review.CommandId) || activityCommands.Contains(review.CommandId) || !reviewRevisions.Add(review.Revision) || activityRevisions.Contains(review.Revision) || !Enum.IsDefined(review.Action)
+                || review.RecordedAtUtc == default || review.RecordedAtUtc.Offset != TimeSpan.Zero || !WorkspaceTaskReview.ValidZone(review.TimeZoneId)
+                || review.ReviewAfterUtc is {} reviewTime && (reviewTime == default || reviewTime.Offset != TimeSpan.Zero)
+                || review.StaleSinceUtc is {} staleTime && (staleTime == default || staleTime.Offset != TimeSpan.Zero)
+                || review.Action is TaskReviewAction.Clear or TaskReviewAction.MarkReviewed && review.ReviewAfterUtc is not null
+                || review.Action == TaskReviewAction.ClearStale && review.StaleSinceUtc is not null
+                || review.Action is TaskReviewAction.Set or TaskReviewAction.Snooze && review.ReviewAfterUtc is null
+                || review.Action == TaskReviewAction.SetStale && (review.StaleSinceUtc is null || review.StaleSinceUtc > review.RecordedAtUtc)) errors.Add(new("invalid_review_event",review.Id));
+        }
+        foreach (var group in (document.ReviewEvents ?? []).GroupBy(value => value.TaskId))
+        {
+            var latest = group.OrderByDescending(value => value.Revision).First();
+            if (group.Select(value => value.Revision).Distinct().Count() != group.Count() || tasks.TryGetValue(group.Key,out var reviewedTask)
+                && (reviewedTask.Revision < latest.Revision || reviewedTask.ReviewAfterUtc != latest.ReviewAfterUtc || reviewedTask.StaleSinceUtc != latest.StaleSinceUtc)) errors.Add(new("invalid_review_state",group.Key));
+        }
+        if (!WorkspaceLinkedRecovery.ValidHistory(document)) errors.Add(new("invalid_linked_recovery"));
+        if (!WorkspaceTaskRecovery.ValidHistory(document)) errors.Add(new("invalid_recovery_history"));
         var completionKeys = new HashSet<(Guid, Guid?)>();
         foreach (var completion in document.Completions)
         {
             if (!tasks.TryGetValue(completion.TaskId, out var task) || task.Kind == CompanionTaskKind.Habit || completion.CommandId == Guid.Empty
                 || completion.CompletedAtUtc == default || completion.CompletedAtUtc.Offset != TimeSpan.Zero
-                || task.Kind == CompanionTaskKind.Daily && (completion.OccurrenceId is not { } occurrenceId || !occurrences.TryGetValue(occurrenceId, out var occurrence) || occurrence.TaskId != task.Id || occurrence.State != OccurrenceState.Completed)
-                || task.Kind == CompanionTaskKind.Daily && !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
+                || task.Kind == CompanionTaskKind.Daily && (completion.OccurrenceId is not { } occurrenceId || !occurrences.TryGetValue(occurrenceId, out var occurrence) || occurrence.TaskId != task.Id || !WorkspaceTaskRecovery.IsCorrected(document, completion) && (occurrence.State != OccurrenceState.Completed || (document.OccurrenceCorrections?.Any(row => row.PreviousOccurrence.Id == occurrence.Id) == true && occurrence.Revision != completion.Revision)))
+                || task.Kind == CompanionTaskKind.Daily && !WorkspaceTaskRecovery.IsCorrected(document, completion) && !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
                 || task.Kind == CompanionTaskKind.Todo && completion.OccurrenceId is not null) errors.Add(new("invalid_completion", completion.Id));
         }
         var completionMap = document.Completions.GroupBy(value => value.Id).ToDictionary(group => group.Key, group => group.First());
@@ -135,7 +171,7 @@ public static class WorkspaceRules
                 errors.Add(new("invalid_completion",group.Key));
         }
         var completedTodos = document.Completions.Where(completion => completion.OccurrenceId is null && !restoredIds.Contains(completion.Id)).Select(completion => completion.TaskId).ToHashSet();
-        var completedOccurrences = document.Completions.Where(completion => completion.OccurrenceId is not null).Select(completion => completion.OccurrenceId!.Value).ToHashSet();
+        var completedOccurrences = document.Completions.Where(completion => completion.OccurrenceId is not null && !WorkspaceTaskRecovery.IsCorrected(document, completion)).Select(completion => completion.OccurrenceId!.Value).ToHashSet();
         foreach (var task in document.Tasks.Where(task => task.Kind == CompanionTaskKind.Todo && task.State == CompanionTaskState.Completed))
             if (!completedTodos.Contains(task.Id)) errors.Add(new("missing_completion_event", task.Id));
         foreach (var occurrence in document.Occurrences.Where(occurrence => occurrence.State == OccurrenceState.Completed))
@@ -152,7 +188,10 @@ public static class WorkspaceRules
                 || projection.Fingerprint is not null && !System.Text.RegularExpressions.Regex.IsMatch(projection.Fingerprint, "^[a-f0-9]{64}$")
                 || projection.CorrelationAlias is not null && projection.CorrelationAlias != $"companion_{document.Id:N}_{projection.TaskId:N}") errors.Add(new("invalid_projection", projection.Id));
         }
+        if (errors.Count == 0 && !WorkspaceTagProjection.IsValid(document)) errors.Add(new("invalid_tag_ledger"));
         if (errors.Count == 0 && !WorkspaceOrganizationHistory.IsValid(document)) errors.Add(new("invalid_organization_history"));
+        if (errors.Count == 0 && !WorkspaceChecklistConversions.IsValid(document)) errors.Add(new("invalid_checklist_conversion"));
+        if (errors.Count == 0 && !WorkspaceSourceRetirements.IsValid(document)) errors.Add(new("invalid_source_retirement"));
         return errors;
     }
 

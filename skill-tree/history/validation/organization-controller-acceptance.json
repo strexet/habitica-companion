@@ -1,0 +1,31 @@
+{
+  "task_id": "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+  "date": "2026-10-20",
+  "checks": {
+    "release_publish": "pass; optional wasm-tools absent",
+    "dotnet_suite": {
+      "passed": 892,
+      "web": 520,
+      "failed": 0
+    },
+    "new_controller_cases": 16,
+    "native_kinds": "Local and synthetic cloud create/update/archive for category, project, section, label, goal and saved task view",
+    "preservation": "Exact task journal serialization and native relationships retained; organization history separate; zero game effects",
+    "recovery": "Original request after lost preview, original receipt after unknown acceptance, accepted-preview retry without another acceptance, exact stale/expiry references",
+    "isolation": "Account/sign-out re-entry retains only owner pending state; late preview/acceptance and changed-cloud responses discarded; original access required",
+    "failure_controls": "No-op and invalid refs refused; frozen/cloud-owned browser writes refused; failed refresh blocks editing; forged effect receipts refused; transport and caller cancellation preserve uncertain original",
+    "diagnostics": "Correct cloud-read mode and unknown missing receipt; exact safe saved context; no private names, raw transport messages or account selector",
+    "operation_deadline_seconds": 15,
+    "documentation": "Changed prose and index/navigation pass; historical audit warning only"
+  },
+  "sources": {
+    "src/Habitica.WebApp/State/WorkspaceOrganizationController.cs": "9123728c407638ba67dcc80e254c132c28632268c6fe6d16fd1a692fc500c4fb",
+    "src/Habitica.WebApp/Program.cs": "985ae76160cbfee5bc565e89f499ecbd1124ea72705dc8e1e9cbd77adfeb968f",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceOrganizationControllerTests.cs": "d4b486d5e6fc57d4fb0d8cf746b1e945673be2266464d0ea3050c94be9f6451b"
+  },
+  "limitations": [
+    "No new organization editor markup or rendered UI qualification in this controller unit. Consumer page integration is a separate required task.",
+    "No deployment, real enrollment, live organization mutation, party mutation or device qualification.",
+    "Deadline/caller fencing is implemented at the controller wait boundary; a truly noncooperative external transport cannot be forcibly stopped by browser code. Existing HTTP cancellation remains separate from confirmed server outcome."
+  ]
+}

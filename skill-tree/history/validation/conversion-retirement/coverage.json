@@ -1,0 +1,142 @@
+{
+  "retirement-draft": {
+    "file": "retirement-draft.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-draft",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-verifying": {
+    "file": "retirement-verifying.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-verifying",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-ready-long": {
+    "file": "retirement-ready-long.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-ready-long",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-unknown": {
+    "file": "retirement-unknown.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-unknown",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-confirmed-original": {
+    "file": "retirement-confirmed-original.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-confirmed-original",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-unresolved-preparation": {
+    "file": "retirement-unresolved-preparation.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-unresolved-preparation",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-verification-refused": {
+    "file": "retirement-verification-refused.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-verification-refused",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-ready-already-absent": {
+    "file": "retirement-ready-already-absent.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-ready-already-absent",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-expired": {
+    "file": "retirement-expired.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-expired",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "retirement-confirmed-already-absent": {
+    "file": "retirement-confirmed-already-absent.html",
+    "route": "/todo/retire/{ConversionId:guid}",
+    "state": "retirement-confirmed-already-absent",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceSourceRetirementTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

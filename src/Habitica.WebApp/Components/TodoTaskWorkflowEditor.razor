@@ -1,0 +1,82 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+
+<section class="card-surface todo-task-panel" aria-label="Task workflow" data-testid="workflow-editor">
+    <h2 tabindex="-1" @ref="_heading">Organize: @_original?.Text</h2>
+    <p>Optional task state, active stage and dependencies. Project placement, parent links and Habitica rewards stay separate.</p>
+    @if (Stale) { <p role="status">Task data changed. Reload before replacing saved fields.</p> }
+    @if (_error is not null) { <p role="alert">@_error</p> }
+    @if (_original is { } original)
+    {
+        <fieldset disabled="@Disabled">
+            <label class="field-row">Task state<select class="app-input" @bind="_state" disabled="@(original.State==CompanionTaskState.Completed)" data-testid="workflow-state">@if (original.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday or CompanionTaskState.Cancelled)) { <option value="@original.State" disabled>Current: @original.State</option> }<option value="Active">Active</option><option value="Waiting">Waiting</option><option value="Someday">Someday</option><option value="Cancelled">Cancelled</option></select></label>
+            @if (original.State==CompanionTaskState.Completed) { <p>Completed Todos use exact restoration in History. State changes here cannot undo a completion.</p> }
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(original.State==CompanionTaskState.Completed)" OnClick="ReviewStateAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="workflow-review-state">Review state only</MudButton>
+            <label class="field-row">Active stage<select class="app-input" @bind="_stage" disabled="@(original.State!=CompanionTaskState.Active)" data-testid="workflow-stage"><option value="">Default Inbox</option><option value="Inbox">Inbox</option><option value="Next">Next</option><option value="InProgress">In progress</option></select></label>
+            <p>Waiting, Someday, Paused, Cancelled and Completed states take precedence over a saved stage. Saved stage: @(original.ExecutionStage==TodoExecutionStage.InProgress?"In progress":original.ExecutionStage?.ToString()??"Default Inbox"). An inactive Todo does not enter an active stage list.</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(original.State!=CompanionTaskState.Active)" OnClick="ReviewStageAsync" Variant="Variant.Outlined" data-testid="workflow-review-stage">Review stage only</MudButton>
+            <details open="true"><summary>Dependencies (@_dependencies.Count of 100 maximum)</summary>
+                <p>Review replaces the full dependency set. Parent links remain unchanged. New dependencies must be nonarchived Todos; remove incompatible retained references before replacement.</p>
+                @foreach (var id in _dependencies.ToArray()) { <div class="action-row"><span>@Name(id) · @id</span><MudButton HtmlTag="button" data-layout-primary="true" OnClick="() => _dependencies.Remove(id)" Variant="Variant.Text" aria-label="@($"Remove dependency {id:D}")">Remove</MudButton></div> }
+                @foreach (var task in _choices) { <label class="checkbox-row"><input type="checkbox" checked="@_dependencies.Contains(task.Id)" @onchange="args=>Choose(task.Id,args.Value is true)" data-testid="@($"workflow-dependency-{task.Id:D}")" /><span>@ChoiceName(task) · @task.State</span></label> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset==0)" OnClick="Previous" Variant="Variant.Text">Previous dependencies</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_next is null)" OnClick="Next" Variant="Variant.Text">Next dependencies</MudButton></div>
+                <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReviewDependenciesAsync" Variant="Variant.Outlined" data-testid="workflow-review-dependencies">Review full dependency replacement</MudButton>
+            </details>
+        </fieldset>
+        <p><a href="@($"/todo/reminders?taskId={TaskId:D}")">Review push delivery for this exact task</a></p>
+    <TodoReviewEditor TaskId="TaskId" Reviewed="Reviewed" />
+    }
+    <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Reload" Variant="Variant.Text" data-testid="workflow-reload">Reload current task</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="() => Closed.InvokeAsync()" Variant="Variant.Text">Close workflow editor</MudButton></div>
+</section>
+
+@code {
+    [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback<TodoWorkflowReview> Reviewed { get; set; }
+    [Parameter] public EventCallback Closed { get; set; }
+    private CompanionTask? _original;
+    private TodoWorkspaceSelection? _source;
+    private long? _revision;
+    private CompanionTaskState _state;
+    private string _stage="";
+    private List<Guid> _dependencies=[];
+    private IReadOnlyList<CompanionTask> _choices=[];
+    private int _offset;
+    private int? _next;
+    private string? _error;
+    private bool _focus;
+    private ElementReference _heading;
+    private bool Stale=>_source!=Todo.Selection||_revision!=Todo.Revision||Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==TaskId)!=_original;
+    private bool Disabled=>_original is null||Stale||Todo.IsReadOnly||Todo.IsBusy||Todo.Commands.HasPendingIntent;
+    protected override void OnParametersSet(){if(_original?.Id!=TaskId)Reload();}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;await FocusAsync();}}
+    public async Task FocusAsync(){try{await _heading.FocusAsync();}catch(JSException){}}
+    private void Reload()
+    {
+        _source=Todo.Selection;_revision=Todo.Revision;_original=Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==TaskId&&!task.IsArchived&&task.Kind==CompanionTaskKind.Todo);
+        _state=_original?.State??CompanionTaskState.Active;_stage=_original?.ExecutionStage?.ToString()??"";_dependencies=_original?.DependsOn?.ToList()??[];_offset=0;_error=null;_focus=true;ReadChoices();
+    }
+    private void ReadChoices(){if(Stale||Todo.Snapshot is null){_choices=[];_next=null;return;}var page=Todo.Tasks(new(Kind:CompanionTaskKind.Todo,Limit:20,Offset:_offset,ExpectedRevision:_revision));_choices=page.Tasks.Where(task=>task.Id!=TaskId).ToArray();_next=page.NextOffset;}
+    private string ChoiceName(CompanionTask task)=>Todo.Snapshot?.Document.Tasks.Count(row=>row.Kind==CompanionTaskKind.Todo&&!row.IsArchived&&row.Text==task.Text)>1?$"{task.Text} · {task.Id}":task.Text;
+    private string Name(Guid id)=>Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==id)?.Text??"Retained reference";
+    private void Choose(Guid id,bool value){if(value&&!_dependencies.Contains(id)){if(_dependencies.Count>=100){_error="At most 100 dependencies can be selected.";return;}_dependencies.Add(id);}else if(!value)_dependencies.Remove(id);}
+    private void Previous(){_offset=Math.Max(0,_offset-20);ReadChoices();}
+    private void Next(){if(_next is {} next){_offset=next;ReadChoices();}}
+    private async Task ReviewAsync(WorkspaceOperation operation,WorkspaceTaskRelationships? relationships=null,WorkspaceTodoState? state=null,WorkspaceTodoStage? stage=null)
+    {
+        _error=null;try
+        {
+            if(Disabled||_original is null||_source is null||_revision is null)throw new InvalidOperationException("Reload the current source and task before reviewing.");
+            var input=new WorkspaceTaskInput(operation,TaskId,_original.Text,_original.Notes??"",_original.Priority,_original.Deadline,null,false,HabitScoreDirection.Up,1,null,Relationships:relationships,TodoState:state,TodoStage:stage);
+            await Reviewed.InvokeAsync(new(_source,_revision.Value,input));
+        }catch(InvalidOperationException error){_error=error.Message;}
+    }
+    private Task ReviewStateAsync(){if(_original?.State==_state){_error="Choose a different task state.";return Task.CompletedTask;}return ReviewAsync(WorkspaceOperation.SetTodoState,state:new(_state));}
+    private Task ReviewStageAsync()
+    {
+        TodoExecutionStage? stage=null;
+        if(_stage.Length!=0){if(!Enum.TryParse<TodoExecutionStage>(_stage,out var parsed)||!Enum.IsDefined(parsed)){_error="Choose a supported active stage.";return Task.CompletedTask;}stage=parsed;}
+        if(_original?.ExecutionStage==stage){_error="Choose a different stage.";return Task.CompletedTask;}return ReviewAsync(WorkspaceOperation.SetTodoStage,stage:new(stage,stage is null));
+    }
+    private Task ReviewDependenciesAsync(){if(_dependencies.SequenceEqual(_original?.DependsOn??[])){_error="Change the dependency set before reviewing.";return Task.CompletedTask;}return ReviewAsync(WorkspaceOperation.RelateTodo,relationships:new(DependsOn:_dependencies.ToArray()));}
+}

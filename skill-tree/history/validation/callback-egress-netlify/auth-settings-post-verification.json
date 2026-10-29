@@ -1,0 +1,15 @@
+{
+  "verified": true,
+  "callback_enabled": false,
+  "retained_settings": [
+    "original vars",
+    "compatibility_date",
+    "compatibility_flags",
+    "triggers",
+    "observability",
+    "workers_dev",
+    "preview_urls",
+    "kv_namespaces",
+    "d1_databases"
+  ]
+}

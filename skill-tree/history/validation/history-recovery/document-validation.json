@@ -1,0 +1,7 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Latest recorded audit is stale; historical verdicts remain unchanged"
+  ]
+}

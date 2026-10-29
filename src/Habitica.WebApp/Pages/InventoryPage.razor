@@ -346,7 +346,7 @@
     private string? _renamingPresetId;
     private string _renamePresetName = string.Empty;
     private string _optimizerPresetName = string.Empty;
-    private EquipmentOptimizationGoal _optimizationGoal = EquipmentOptimizationGoal.Balanced;
+    private EquipmentOptimizationGoal _optimizationGoal = EquipmentOptimizationGoal.Intelligence;
     private bool _nonBattleEquipmentExpanded;
     private readonly HashSet<string> _expandedOtherItemGroups = new(StringComparer.Ordinal);
 
@@ -417,9 +417,9 @@
 
     private void SetOptimizationGoal(string? rawValue)
     {
-        _optimizationGoal = Enum.TryParse<EquipmentOptimizationGoal>(rawValue, out var goal)
+        _optimizationGoal = Enum.TryParse<EquipmentOptimizationGoal>(rawValue, out var goal) && Enum.IsDefined(goal)
             ? goal
-            : EquipmentOptimizationGoal.Balanced;
+            : EquipmentOptimizationGoal.Intelligence;
     }
 
     private async Task EquipItemAsync(EquipmentSetKind kind, string key)

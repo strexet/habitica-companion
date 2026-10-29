@@ -1,0 +1,117 @@
+{
+  "taskId": "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+  "recordedAtUtc": "2026-10-21T14:44:23.737310+00:00",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "f63c3fa63da70a08caad8db302a865da4d675ca34278134c60cef4736abdc2b9",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "6fcd572bf0a78cd2ecf4dd69440fd90acb90a8aa46f5625883cc80243ccddec3",
+    "skill-tree/documents/companion-workspace-contract.md": "b1cf898d7c729b521ac1ce6f9cff725e969cd207c606682cb434656c57af9a92",
+    "skill-tree/documents/features.md": "31282f57b359bbea5466b64933ee0c12b619ea7125467a09086b6865083f4e4b",
+    "skill-tree/documents/habitica-api.md": "20f8ab578e69c82a17bf10543ef8e4f407aae4310146e3d931d36b26e268dbc9",
+    "skill-tree/documents/technical.md": "358690305c3cdfcf5e7937fc167ce0a74edbed6ad92a7f3de467da740d48d8cb",
+    "skill-tree/documents/testing.md": "01cd70d1e1e2c391aba1e88074be2604681b10787b52d8f72bdb1fb1dd1d53f6",
+    "skill-tree/documents/ux-ui-manifest.md": "a0a0659c746c08da655e39ca28d2dabdfb980d5e900595b011236cd0de866ddd",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "bbe63d5fabc9f7c2f8232cab0d77d2713722b50576d7854f7e2fdf75df39562c",
+    "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "54a9d0ff84ec7b0cf09f4388c6b38375079168ece1bb1a4cbcc4125291c59604",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "db16af14519063f33dad63fa3e86d3cdada82b395aa94e79633bc3fdc463c2af",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "b840f7f0c2ca4e1a23a1f789108f2aca673653c665612a623c07ec860104b4ac",
+    "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "c2f9427dd84102597d19d22afb6f3f2d7690f827c9ad4a65112ba69491cfc104",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "7793d001fcabd4b07916c6fe6fa2b1eaa377a663ad3caa899279aae5c80e95da",
+    "src/Habitica.WebApp/State/DailyCreationDraft.cs": "c2647fa90441784e2688e56baa21f4653d03aacdf6caee30ecaf8d0b624f8b2a",
+    "src/Habitica.WebApp/State/TodoTaskDraftStore.cs": "d283274b303abe51957a0448c48b82b21724891bb8e3576c56362ca32969a166",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceLifecycleTests.cs": "005ab4a5cd06e5d5cd43c051886ff7952cbf58cf58e62d9de2f239dc5da154b7",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceRecurrenceCommandsTests.cs": "0adbabdd0e48af020d548b4ae4f552484cdf497579eae8c145a6f7f138df6b3c",
+    "tests/Habitica.Domain.Tests/Workspace/DailyProjectionScheduleTests.cs": "c5b44eee18299c9f07d93dc88c3e12a97b9b1310700dfc33c54706a7b2bf65ee",
+    "tests/Habitica.WebApp.Tests/Workspace/CompanionTasksPanelTests.cs": "facb560600c989ea38e76b807ac3203dafd1beb68702b4b38186a5bd9c6aa4f3",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "7b549d895bc12d278f0f78196e1ccb5ced0c9bbcd43666b92bc1065c43cb626c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "7f3d63689bee4afa7475da236aff01b0f9ceab0e99a0da24684fbe760fadd602",
+    "tests/fixtures/workspace/daily-projection-v1.json": "8fc7db26d574db01d13111db628710094469415c4bfba76a51f4663984ed1528",
+    "workers/chatgpt-auth/src/projection.ts": "f5f118dea5baa53820f4d83759e73c542d6f5750c9220ce392936b1afa95cc3f",
+    "workers/chatgpt-mcp/src/task-tools.ts": "25880592bd3c15496db105b5844977041f46c540eaa75649cda1bc4275dcba7e",
+    "workers/companion-workspace/src/commands.ts": "ce64cd2db5cd0202ca9e74e5d881b1ce1b1638272e1b6033930bacfbc7acfe74",
+    "workers/companion-workspace/src/journal.ts": "2426d0bf476d2f92213abe17b1770d395bd2d95728fdc949aeb94555b97908bc",
+    "workers/companion-workspace/src/projection-adapter.ts": "6ed11e9e3424b0419faa80494ec4d2c9c1efab89e63cee99b9c3a940bd253a51",
+    "workers/companion-workspace/test/daily-create-api.test.mjs": "39eaa32b0a5c5663c3afcd6275181c96da0b62020a7cb4c02cb376aa4bdadca6",
+    "workers/companion-workspace/test/daily-create.test.mjs": "f420633d1417f9d27aec567e17e89f70d389fa69b2eae657f5c26304ea7c3afc",
+    "workers/companion-workspace/test/occurrence-lifecycle.test.mjs": "86236f9b25199927273cba859b48775c69d0cb08458fe6b70aa1e7e9d7ee9cde",
+    "workers/companion-workspace/test/recurrence-commands.test.mjs": "bfe777e46ce31ac69377c027a3eb11a1878a9b3b98f81962ed8e397466775e5d",
+    "workers/companion-workspace/test/task-api.test.mjs": "04e46d9a46fdcbd9becb1cecf1b8513fcf88c12aece858f739c2d0aa0f0f9912",
+    "workers/shared/daily-projection.ts": "851dc2e82ce86154fdbb49d8d839a257d789d704e33e85b3e7b615a083670a2d",
+    "workers/shared/projection.ts": "6416d0034bbb59fc26fc56ed2e35a7868885013348e12cf618695f387a30459b",
+    "workers/shared/todo-projection-policy.ts": "cb4dfcc203cd670a4df587348db236dab5df07c5658c28f7b0fd1bd7728eae81"
+  },
+  "checks": {
+    "dotnet": {
+      "log": "/tmp/habitica-daily-qualified-dotnet.log",
+      "sha256": "0fcfbd1cbe9c504bbe54313d7aec338f5a101f71655b299905c8deb9d06a3ddb",
+      "result": "pass",
+      "total": 985
+    },
+    "releasePublish": {
+      "log": "/tmp/habitica-daily-qualified-publish.log",
+      "sha256": "e02733119e6be35d79570aa872059696130d2fd6b512ea006bcb8221e9d73368",
+      "result": "pass"
+    },
+    "workers": {
+      "log": "/tmp/habitica-daily-workers-final.log",
+      "sha256": "e25721c2ec65daaa809930a34ac20f0007e40be7f9a283c9df20f6d5e106f1ee",
+      "result": "pass",
+      "total": 413
+    },
+    "workerBuilds": {
+      "log": "/tmp/habitica-daily-worker-builds-final.log",
+      "sha256": "004370fbc6d7c11f01110f90b530e6782ca11edcefec04d02807417b1f3a493d",
+      "result": "pass"
+    },
+    "rendered": {
+      "result": "pass",
+      "cases": 360,
+      "errors": 0,
+      "unqualifiedSurfaces": 0,
+      "evidence": "browser-results.json"
+    },
+    "negativeControls": {
+      "cases": 2,
+      "detected": [
+        "overflow",
+        "overlap",
+        "contrast"
+      ],
+      "evidence": "browser-negative-results.json"
+    },
+    "documentation": {
+      "changedLineProse": "pass",
+      "strictFuture": "pass",
+      "navigationAndCheckpoint": "pass",
+      "fullStrictProse": "existing baseline errors outside changed lines; not a pass",
+      "audit": "existing stale recorded audit warning"
+    }
+  },
+  "sources": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/common/script/cron.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js"
+  ],
+  "supportedContract": [
+    "Explicit complete rule; UTC/fixed Etc-GMT matching observed account offset; midnight dayStart; Monday multiweek anchor.",
+    "Daily create sends correct type and full normalized fields; no historical activity or Cron.",
+    "Short-lived account and alias checks; original attempt/receipt recovery; changed schedule cannot prove uncertain create success."
+  ],
+  "limits": [
+    "No real account mutation, deployment, host refresh, physical device or assistive-technology qualification.",
+    "Region/DST zones, custom day starts, yearly and weeks-of-month authoring are explicitly unavailable.",
+    "Account observations expire after ninety seconds; other clients can still change account preferences after an observation.",
+    "Earlier native journal behavior remains readable; linked-schedule authoring remains a separate queued task."
+  ],
+  "operationEvidence": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "note": "No aggregate controller timer available; tests retain their own wall durations. Each executed build/test has a 180 or 240 second deadline.",
+    "repairs": [
+      "Date input binding changed to explicit string value/change handlers.",
+      "Former native-only creation tests updated; legacy lifecycle/archive tests now seed explicit retained commands.",
+      "Stale pre-build fixture bundles were rebuilt before current integration qualification.",
+      "New-task/account reset clears the complete Daily schedule draft."
+    ]
+  }
+}

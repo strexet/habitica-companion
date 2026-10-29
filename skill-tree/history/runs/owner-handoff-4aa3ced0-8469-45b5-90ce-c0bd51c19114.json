@@ -1,0 +1,528 @@
+{
+  "format": "skill-tree-owner-handoff-v1",
+  "reason": "Owner explicitly selected Work Through Next for T-210471d2-f432-43b3-8fc7-bbfd74f93e29 after standalone Pending processing. Suspend the former All controller without claiming completion.",
+  "recorded_at": "2026-10-21T11:20:18.922084+00:00",
+  "selected_task_id": "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+  "suspended_run": {
+    "completed_ids": [
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1",
+      "T-4b82019b-e1fa-4238-8629-05111e9dcc88",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07",
+      "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
+    ],
+    "completion_refs": {
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07": "O-0290ffdb-d797-48bc-81ae-80e396e7493e",
+      "T-264e3162-adc3-45f0-943e-a55feccc9d8e": "O-995a53af-c96a-447e-ac62-76f498fbaec3",
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445": "O-d3ff5efb-3d67-4f1d-a36d-12d6df027654",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e": "O-446d6827-c20f-4198-9509-1f70226eb683",
+      "T-4b82019b-e1fa-4238-8629-05111e9dcc88": "O-3dd34583-87c7-446a-8b44-713130030d3a",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55": "O-69cfc171-e332-4df2-a3c9-f97c0a4f75bc",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d": "O-c3e28793-f778-4f57-853a-48800e74b505",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0": "O-a40ddd03-4464-4cb1-a190-4b68fff66367",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769": "O-bec56539-2fe0-4b31-84a7-48b577022ca8",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30": "O-cbfc23cb-122a-4185-b804-25d7ec3d716c",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b": "O-ccd1b48a-a109-4f80-8c10-6a173295f80c",
+      "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856": "O-5a28649b-7726-4f2f-913d-6f27e4f33f72",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae": "O-feaed7a6-06f9-4506-9339-01c2c6821af7",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d": "O-73ecc5ed-95dc-422d-96ce-6361c996e2ef",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0": "O-0c2c426a-74a8-4dc4-86c6-de2a07b0bf66",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946": "O-fcd25003-7874-4052-8032-02817fd17438",
+      "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1": "O-1d1d6944-6f01-4383-8ee5-95116e6b6275",
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a": "O-e8032833-ce3f-4caf-b55e-b52811839a4a",
+      "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed": "O-c4e174e9-3c2a-43c6-853c-1f9a97357717",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831": "O-4d7de679-01bf-4608-85d1-2b5898fddbdc",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7": "O-44cae1ad-5351-4f4d-b51f-2bc886cd16c6"
+    },
+    "current_task_id": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+    "cycle_signature": "eca726d78f3414e99fe3ab9e231f034f4a266992b5382f58dcefc751fc5be5c9",
+    "deferred_ids": [
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+      "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed",
+      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "T-6b956777-ed98-4783-a353-5e490de79444",
+      "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "T-fed75824-e410-4bca-8664-5039742424da",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985"
+    ],
+    "history_refs": [
+      "skill-tree/history/validation/recovered-companion-intake.json",
+      "skill-tree/history/validation/recovered-companion-checklist.json",
+      "skill-tree/history/validation/recovered-companion-processing.json",
+      "skill-tree/history/validation/recovered-companion-research.md",
+      "skill-tree/history/validation/todo-saved-list-ui-acceptance.json",
+      "skill-tree/history/validation/todo-saved-list-ui-layout.json"
+    ],
+    "id": "WR-a15f65d2-715f-4df3-94ef-500448f93f24",
+    "limits": {
+      "operation_deadline_seconds": 300
+    },
+    "mode": "all",
+    "next_action": "Wait for an owner-selected task or another action after the refreshed prioritized queue.",
+    "partial_work": [
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769 completed with acceptance evidence and commit f085af7.",
+      "Next snapshot unit is selected for handoff only; no implementation of the next root has started.",
+      "Original All snapshot remains preserved. New Notes Pending and other deferred work remain outside the snapshot.",
+      "Standalone owner-requested Pending intake captures plugin compatibility and three remaining service checklist items; no implementation resumption.",
+      "Standalone processing PR-662bd939-3fbc-401b-ba37-204067e17989 promotes all 12 Pending entries into 26 new units and 3 compatible reused units; no new implementation starts."
+    ],
+    "pending_ids": [
+      "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",
+      "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f",
+      "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+      "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+      "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+      "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+      "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+      "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+      "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85",
+      "P-15da69d1-68cb-47d2-b8ae-2edca2436137",
+      "P-2a780804-7b8b-4109-b462-3a9d152735f0",
+      "P-232f91e7-9704-411d-9342-c51444115de8",
+      "P-9abc8d93-7bd8-4d8e-944d-698892fe7f11",
+      "P-b38ebae7-6756-4941-a3af-dad37e3c7666",
+      "P-314450c7-4cb3-4604-a872-27d0f2d189b9",
+      "P-c151f29d-1662-4e34-9316-b849c085681f",
+      "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+      "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+      "P-762549ef-d24d-4caa-ab3a-573a8e60eb21",
+      "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+      "P-7414291b-9448-4d98-884c-97b582cd2d67",
+      "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+      "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+      "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+      "P-505551fa-3ca7-4415-b19e-b64585bf8f9f"
+    ],
+    "phase": "stopped-at-owner-boundary",
+    "processing_results": [
+      {
+        "created_ids": [
+          "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1"
+        ],
+        "dispositions": {
+          "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e": {
+            "reason": "Rendered evidence and source identify a minimal shared fallback correction required for normal-theme qualification.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-cb9b75ad-e3db-4d68-9db3-5ec891905782",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-4b82019b-e1fa-4238-8629-05111e9dcc88"
+        ],
+        "dispositions": {
+          "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f": {
+            "reason": "Shared source and rendered measurements establish a bounded required contrast/geometry repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-2ec772f6-125e-4180-9ac0-c92f9cc8c8f4",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+          "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+          "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+          "T-51ce8719-0131-46d3-882a-4219d1bef929",
+          "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+          "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+          "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+          "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+          "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+          "T-264e3162-adc3-45f0-943e-a55feccc9d8e"
+        ],
+        "dispositions": {
+          "P-02b78b3e-3fe9-4871-b019-c6baebafe810": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-203bd87e-c49c-447b-913d-b322d6bdf0b2": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-c565f05b-622d-450d-8b0f-6c5917163d7e": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+        "reused_ids": [
+          "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+        ],
+        "selected_ids": [
+          "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+          "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+          "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+          "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+          "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+          "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+          "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
+        ],
+        "task_keys": {
+          "agent-task-intent": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+          "automatic-discovery": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+          "chat-delivery-research": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+          "hierarchy-read": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+          "hierarchy-ui": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+          "iphone-pwa": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+          "project-browser": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+          "project-retirement": "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+          "push-dispatch": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+          "push-subscription": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+          "push-ui": "T-1f1eb5fd-febd-44fc-b475-69121e11400a"
+        }
+      },
+      {
+        "created_ids": [
+          "T-13c008e0-2062-4846-ab4b-0f331a280f0b"
+        ],
+        "dispositions": {
+          "P-15da69d1-68cb-47d2-b8ae-2edca2436137": {
+            "reason": "Scoped store registration and awaited read/modify/write establish independent local coordination work; cross-tab transaction guarantees remain outside the bounded correction.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-aa6ec1c6-4a91-4619-8193-5ef4f8d8a54a",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
+        ],
+        "dispositions": {
+          "P-2a780804-7b8b-4109-b462-3a9d152735f0": {
+            "reason": "A captured bound-value attribute establishes a reproducible qualification gap. Existing AngleSharp parsing can normalize synthetic textarea content without production changes.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-20820d75-3a2d-41f6-8120-1769bab0ae81",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-2a780804-7b8b-4109-b462-3a9d152735f0"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed"
+        ],
+        "dispositions": {
+          "P-232f91e7-9704-411d-9342-c51444115de8": {
+            "reason": "Inspected Pages handler, deployed migration inventory, aggregate pool size and official D1 query/transaction/JSON contracts; bounded local reproduction available.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-ab100cd5-5a0d-4d59-8905-f47de3a75d65",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-232f91e7-9704-411d-9342-c51444115de8"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-9abc8d93-7bd8-4d8e-944d-698892fe7f11": {
+            "reason": "Owner directly confirmed that the production error no longer appears after deployment ccfd1384. Evidence: skill-tree/history/validation/party-quest-pool-owner-confirmation.json. Historical root cause remains unverified; no agent party write was performed.",
+            "status": "resolved"
+          }
+        },
+        "id": "PR-7ca65569-c7de-4fd9-b37d-d98ffcd3e29f",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-9abc8d93-7bd8-4d8e-944d-698892fe7f11"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25"
+        ],
+        "dispositions": {
+          "P-b38ebae7-6756-4941-a3af-dad37e3c7666": {
+            "reason": "Local harness source and planning/history controls establish an independent bounded diagnostics task. Required product cases pass separately; the new task is nonblocking and deferred outside the frozen All snapshot.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-6faedfa1-fb43-418b-a355-7cc03d2af9f9",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-b38ebae7-6756-4941-a3af-dad37e3c7666"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+          "T-f362faf0-4d48-4ed3-b586-843c47345510",
+          "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+          "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+          "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+          "T-6b956777-ed98-4783-a353-5e490de79444",
+          "T-6706aad6-b870-484b-80c3-e56c29431556",
+          "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+          "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+          "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+          "T-fed75824-e410-4bca-8664-5039742424da",
+          "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+          "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+          "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+          "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+          "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+          "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+          "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+          "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+          "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+          "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+          "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+          "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+          "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+          "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+          "T-210471d2-f432-43b3-8fc7-bbfd74f93e29"
+        ],
+        "dispositions": {
+          "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e": {
+            "reason": "Promote canonical alias identity/uniqueness and separate browser/agent journeys using an explicit workspace-local normalization policy.",
+            "status": "promoted"
+          },
+          "P-314450c7-4cb3-4604-a872-27d0f2d189b9": {
+            "reason": "Promote four bounded Notes units for local model/storage, separately consented cloud service, agent tools and safe browser authoring. Personal notes remain separate from task projections and old grants.",
+            "status": "promoted"
+          },
+          "P-3736aa26-c58b-402d-a736-ff6ce23907bd": {
+            "reason": "Promote separate Habit and lossless Daily creation units. Reuse the existing linked-Daily schedule task and make shared creation normalization a prerequisite instead of duplicating schedule authoring.",
+            "status": "promoted"
+          },
+          "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e": {
+            "reason": "Promote the targeted Intelligence preference change; current defaults remain Balanced, all alternate goals remain available and opening the optimizer must not equip gear.",
+            "status": "promoted"
+          },
+          "P-505551fa-3ca7-4415-b19e-b64585bf8f9f": {
+            "reason": "Promote four bounded units for persistent tag identity, separately scoped gateway operations, complete membership reconciliation and browser/agent recovery; native tag deletion and score effects are excluded.",
+            "status": "promoted"
+          },
+          "P-7414291b-9448-4d98-884c-97b582cd2d67": {
+            "reason": "Promote resumable source-item identity conversion, browser/agent conversion journeys and separately reviewed linked-source retirement. Retain the legacy source until every replacement and historical-state decision is verified.",
+            "status": "promoted"
+          },
+          "P-762549ef-d24d-4caa-ab3a-573a8e60eb21": {
+            "reason": "Promote only missing project-filtered retained history/navigation, and reuse existing dedicated statistics and extended-recovery tasks. Existing search/date/history behavior is not reimplemented.",
+            "status": "promoted"
+          },
+          "P-9cc8f051-8a18-46e0-b1fa-959c362efa54": {
+            "reason": "Promote a typed unchanged-task repair command and a separate UI/recovery unit. Historical completion repair requires verified identity or explicit review rather than synthetic completed fields or automatic reward backfill.",
+            "status": "promoted"
+          },
+          "P-c151f29d-1662-4e34-9316-b849c085681f": {
+            "reason": "Promote backend compatibility discovery and traceable later package releases. Installed host identity remains unknown without actual package/host evidence; no current production publication follows.",
+            "status": "promoted"
+          },
+          "P-e19b7c0e-af23-4983-908f-d2e0acde668e": {
+            "reason": "Promote multilingual deadline shorthand/date interpretation over existing exact fields, with explicit timezone/year rules and separate host qualification; no notification delivery or duplicate parser is implied.",
+            "status": "promoted"
+          },
+          "P-f0b54e18-9d9f-4528-8383-db7de5542c63": {
+            "reason": "Promote authoritative prospective Todo policy and coordinated browser/agent defaults. Existing immutable journals, local capture, consent and uncertain-outcome fences remain explicit.",
+            "status": "promoted"
+          },
+          "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0": {
+            "reason": "Existing adaptive pacing already covers serialized API dispatch. Promote truthful stage/outcome reporting and durable bounded equipment recovery for missing cancellation cleanup and swallowed restoration failure; do not rebuild pacing.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
+        "reused_ids": [
+          "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+          "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+          "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985"
+        ],
+        "selected_ids": [
+          "P-505551fa-3ca7-4415-b19e-b64585bf8f9f",
+          "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+          "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+          "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+          "P-7414291b-9448-4d98-884c-97b582cd2d67",
+          "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+          "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+          "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+          "P-c151f29d-1662-4e34-9316-b849c085681f",
+          "P-314450c7-4cb3-4604-a872-27d0f2d189b9",
+          "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e",
+          "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+        ],
+        "task_keys": {
+          "backend-compatibility": "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+          "daily-creation": "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+          "default-task-browser-agent": "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+          "existing-task-link-command": "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+          "habit-creation": "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+          "history-project-filter": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+          "int-default": "T-f362faf0-4d48-4ed3-b586-843c47345510",
+          "link-editor-recovery": "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+          "linked-source-retirement": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+          "mandatory-todo-policy": "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+          "natural-deadlines": "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+          "notes-agent-tools": "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+          "notes-browser": "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+          "notes-cloud-api": "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+          "notes-domain-storage": "T-6b956777-ed98-4783-a353-5e490de79444",
+          "package-version-guidance": "T-6706aad6-b870-484b-80c3-e56c29431556",
+          "project-alias-journeys": "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+          "project-alias-model": "T-fed75824-e410-4bca-8664-5039742424da",
+          "project-conversion": "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+          "project-conversion-journey": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+          "reuse-history-recovery": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+          "reuse-linked-schedule": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+          "reuse-statistics": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+          "spell-gear-recovery": "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+          "spell-stage-outcomes": "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+          "tag-controls": "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+          "tag-gateway": "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+          "tag-ledger-model": "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+          "tag-membership-executor": "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"
+        }
+      }
+    ],
+    "required_ids": [
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1",
+      "T-4b82019b-e1fa-4238-8629-05111e9dcc88",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
+    ],
+    "root_task_id": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+    "snapshot": [
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+    ],
+    "started_at": "2026-10-19T09:34:44.454742+00:00",
+    "stop_reason": "Standalone Process Pending research completed. Implementation requires an actual owner selection; the previous All snapshot remains preserved."
+  }
+}

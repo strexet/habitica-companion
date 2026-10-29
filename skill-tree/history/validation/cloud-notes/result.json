@@ -1,0 +1,61 @@
+{
+  "task_id": "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+  "status": "pass",
+  "recorded_at_utc": "2026-10-23T12:07:12.358524+00:00",
+  "checks": {
+    "workspace": 564,
+    "auth": 154,
+    "application": 248,
+    "browserClient": 9,
+    "release": "0 warnings/errors",
+    "renderedConsent": 12,
+    "workerDryBuilds": 3,
+    "solutionBaseline": 1142,
+    "metadata": "pass with inherited stale audit warning",
+    "prose": "no introduced errors",
+    "diffCheck": "pass"
+  },
+  "source_fingerprints": {
+    "skill-tree/documents/deploy-cloudflare-pages.md": "17add4f29ad40b3230456de4b83fcdbeea2eeb24616217d3626b054a10fa5e73",
+    "skill-tree/documents/features.md": "7024f8021907a7f201ca523ee9fb27fae5ede77549dd11535c56b60b8d3e654e",
+    "skill-tree/documents/technical.md": "29f68675fb4356fbb100ef26b03b20baaa2f4a0967ab338fe1a9e7f6f9f325c2",
+    "skill-tree/documents/testing.md": "425e482d0964b451ad43e89f52b0079a725ebed1b55cef5c3e01dfe52bac2dbd",
+    "skill-tree/documents/ux-ui-manifest.md": "8358ef0f68df06e0e5de0954cee68826e8bd912c5771455c4e4ce63bc607981f",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "1b6db91da4e08da64689eec9eca9240e122c6d8839131a4444f567ce0081ac37",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.cs": "9126d84c2a7e1eee0bde72dfe02910939ff2f9dcc3fe6b13c93be47d64440181",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "f64ddd20abdf96ba0123ca3544d336c909a6de63d68932ee5ad7d2ba85d3de38",
+    "src/Habitica.WebApp/Program.cs": "410f5e42933e439650e9b12bfcced44d7baced65dab965fcbd219342724cd780",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "b8caae5c59507ce06bb893999bbaa0285c3bee6ba160a84f82b04bd5f56ad6b8",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "470658a51b62459b9c9c7a0fea7a4c3d7a12ec39abadc2fd561375259fbd81b6",
+    "tests/fixtures/notes/notes-wire-v1.json": "6ef86cfdf69989f3794c57b2a49439a7ba3d4e2fa9ae629f280e1af04490c0d4",
+    "workers/chatgpt-auth/src/index.ts": "47f475b6c2df65da347a8dab3be84dac423f14c49d0ccc06654c441525b914a0",
+    "workers/chatgpt-auth/src/oauth.ts": "ba503ce7e92586ea0add8dd62218b4b4dd4e58ff70301f4e00eb2fd434064f8e",
+    "workers/chatgpt-auth/src/vault.ts": "1f52234467d9d487795bbec4e22ad1895ecfb5b9cfa2cbb29f4e673fcf1861b1",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "a91582a8ce8b7dd6b64326a56be02321be2a73e2f7b63f64b2eb766241cda56c",
+    "workers/chatgpt-auth/worker-configuration.d.ts": "e79ad263daf497b34fcfc08d7617b325b422edad41dc42f300ddac848c2433de",
+    "workers/chatgpt-auth/wrangler.jsonc": "57cadaa2565f2bcbadbf2504df6e4288493ff23d055b634bf8cd4d4250a86865",
+    "workers/companion-workspace/migrations/0011-personal-notes.sql": "fc80399c0cbba9f4328090379100a159b55a1acf4fe1ebe3377acc4c2f37a4ea",
+    "workers/companion-workspace/src/index.ts": "0aca48a74906c28fd18a3808cde35fe0930a66fea8b217b59731d141926cda19",
+    "workers/companion-workspace/src/notes-api.ts": "3b863bb096d7eb0f827218ea827578b36410e6419a6bf9626a5b22a488786e82",
+    "workers/companion-workspace/test/notes.test.mjs": "3744e3464ea72de65e570f8a30363d66c0ff37ffdae8bc87a75698ce50bd01c5",
+    "workers/shared/build-identity.generated.ts": "e0d2006a2299c8861b7b0a0e7f25778d5bf67a5bdf2550a19c59f8e0496a5171",
+    "workers/shared/notes.ts": "c1ece2e0eae6541f6d09fa8eefcefb53dc5a53fb98b86f53144df0587b8cc640"
+  },
+  "limitations": [
+    "Local synthetic qualification only; no remote migration, deployment or live account changes.",
+    "Public agent Notes tools and Notes page remain separate scoped tasks.",
+    "The first final full Worker retry reached per-file and outer deadlines during concurrent Android build load; a bounded larger-deadline repeat passed564 controls.",
+    "Notes deletion removes active-service content and versions; provider backups retain the provider lifecycle."
+  ],
+  "observations": [
+    "Initial focused fixture failures used a nonzero initial note revision and an OAuth token replaced by later authorization; corrected fixtures pass.",
+    "The reviewed notebook ID guards command acceptance and receipt lookup after deletion/recreation.",
+    "C# portable fixtures qualify all ASCII code points, Unicode, Markdown, CRLF and trailing backslash hashes."
+  ],
+  "external_sources": [
+    "https://developers.cloudflare.com/d1/worker-api/d1-database/",
+    "https://developers.cloudflare.com/d1/platform/limits/",
+    "https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/http/"
+  ]
+}

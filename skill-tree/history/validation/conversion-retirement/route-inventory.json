@@ -1,0 +1,188 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [
+        "retirement-draft",
+        "retirement-verifying",
+        "retirement-ready-long",
+        "retirement-unknown",
+        "retirement-confirmed-original",
+        "retirement-unresolved-preparation",
+        "retirement-verification-refused",
+        "retirement-ready-already-absent",
+        "retirement-expired",
+        "retirement-confirmed-already-absent"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "retirement-confirmed-already-absent",
+      "retirement-confirmed-original",
+      "retirement-draft",
+      "retirement-expired",
+      "retirement-ready-already-absent",
+      "retirement-ready-long",
+      "retirement-unknown",
+      "retirement-unresolved-preparation",
+      "retirement-verification-refused",
+      "retirement-verifying"
+    ],
+    "navigation": [
+      "retirement-confirmed-already-absent",
+      "retirement-confirmed-original",
+      "retirement-draft",
+      "retirement-expired",
+      "retirement-ready-already-absent",
+      "retirement-ready-long",
+      "retirement-unknown",
+      "retirement-unresolved-preparation",
+      "retirement-verification-refused",
+      "retirement-verifying"
+    ],
+    "confirmation": [
+      "retirement-confirmed-already-absent",
+      "retirement-confirmed-original",
+      "retirement-draft",
+      "retirement-expired",
+      "retirement-ready-already-absent",
+      "retirement-ready-long",
+      "retirement-unknown",
+      "retirement-unresolved-preparation",
+      "retirement-verification-refused",
+      "retirement-verifying"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "retirement-confirmed-already-absent",
+      "retirement-confirmed-original",
+      "retirement-draft",
+      "retirement-expired",
+      "retirement-ready-already-absent",
+      "retirement-ready-long",
+      "retirement-unknown",
+      "retirement-unresolved-preparation",
+      "retirement-verification-refused",
+      "retirement-verifying"
+    ],
+    "error": [
+      "retirement-confirmed-already-absent",
+      "retirement-confirmed-original",
+      "retirement-draft",
+      "retirement-expired",
+      "retirement-ready-already-absent",
+      "retirement-ready-long",
+      "retirement-unknown",
+      "retirement-unresolved-preparation",
+      "retirement-verification-refused",
+      "retirement-verifying"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

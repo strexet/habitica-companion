@@ -1,0 +1,11 @@
+@page "/todo/sync"
+
+<PageTitle>Todo Sync</PageTitle>
+<div class="settings-shell">
+    <section class="card-surface settings-card"><h1>Todo Sync</h1><p>Choose the task source, inspect original command outcomes, manage cloud execution and back up workspaces. Saved tasks and confirmed Habitica rewards are shown separately.</p><p>Theme and private device sync preferences remain in <a href="/settings">account Settings</a>; browser task order stays with the selected task list.</p></section>
+    <TodoTaskPanel ShowCapture="false" ShowTaskList="false" ExpandSourcePicker="true" ShowSyncLink="false" />
+    <PushDevicePanel />
+    <TodoCommandHistoryPanel />
+    <WorkspaceSettingsPanel />
+    <WorkspaceTagPanel />
+</div>

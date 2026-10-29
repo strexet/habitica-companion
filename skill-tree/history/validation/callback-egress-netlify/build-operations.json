@@ -1,0 +1,23 @@
+[
+  {
+    "operation": "chatgpt-auth type/dry build",
+    "classification": "executed-control",
+    "wall_seconds": 4.991,
+    "exit_code": 0,
+    "deadline_seconds": 120
+  },
+  {
+    "operation": "chatgpt-mcp type/dry build",
+    "classification": "executed-control",
+    "wall_seconds": 3.193,
+    "exit_code": 0,
+    "deadline_seconds": 120
+  },
+  {
+    "operation": "companion-workspace type/dry build",
+    "classification": "executed-control",
+    "wall_seconds": 3.328,
+    "exit_code": 0,
+    "deadline_seconds": 120
+  }
+]

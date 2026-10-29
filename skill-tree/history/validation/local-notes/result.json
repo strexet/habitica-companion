@@ -1,0 +1,53 @@
+{
+  "task_id": "T-6b956777-ed98-4783-a353-5e490de79444",
+  "status": "pass",
+  "recorded_at_utc": "2026-10-23T11:07:59.838935+00:00",
+  "checks": {
+    "solution": 1131,
+    "finalApplication": 246,
+    "newSessionLifecycle": 1,
+    "release": "0 warnings/errors",
+    "realBrowser": [
+      "version1 upgrade preserves kv",
+      "no invented notes",
+      "first write",
+      "CAS exclusion",
+      "owner isolation",
+      "immutable receipts",
+      "exact Unicode/CRLF/history reload",
+      "Notes clear preserves kv"
+    ],
+    "metadata": "pass with inherited stale-audit warning",
+    "changedProse": "pass",
+    "diffCheck": "pass"
+  },
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "53ab45e39e3814958d0a037f90e36bea26cb2970cdc954a22b9a20d0f9dcd60d",
+    "skill-tree/documents/technical.md": "c9a84510569463f3bd19786eacea8ce2ed765721bd719244a82a4a72d7d043b1",
+    "skill-tree/documents/testing.md": "223e9ae4660c1c05269b888ca670409a1f40d6fa0a06993da34b75aba93f8969",
+    "skill-tree/documents/ux-ui-manifest.md": "29c94c53d251ccc3fe4811cf1e6ed882a15e5a2230fe232b21c1ccbbc258d688",
+    "src/Habitica.Application/Notes/NotesEngine.cs": "3fc2af172d4f3476341d74675f298a7e71eefca87f94ad3662881cff66320a27",
+    "src/Habitica.Application/Notes/NotesService.cs": "e8456bb4bf1486e9c976961fbeb9241fd01fd3e5f3111d7684810b89354992ab",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "20434b02d3a2f260dccc365e629e1821a89a0fd6ba99c72bb4294cba29956aed",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "8b2e5875ce2c2f224b57cc7f882c3c9acf87a4231bbfddceba63ab2ee376832d",
+    "src/Habitica.WebApp/Program.cs": "393eecf4fb016ead162bb334e44f35f86ce336093ee11868803da66121cc7499",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "7853b24778ff8363111b78e30c173a58dad4818f89bf4ca91f18402649382118",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "a98ee1e9e50e98354d0a31045c61ab7e4c3a3e53c915ec615f3c9a0b47e56657",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "c516ddf163d6ae7084d10e442b99c97746de765038128475f9cfaac491156e0b",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "4504af332cb1b97fb071faa0faf325479a1a4cb7cf112ca1297c0d6b8e63d1b2",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "abefc505d3c677ef84a6cf544eb988bacd4369b960dfe1e944beca493b04dc4d",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "6c494dcb1870846295bc78bc69607fb9956614b56cb6f644f8846637601a5a4b",
+    "tests/browser/notes-storage.html": "b5a0c3f92912ecfadc0b5c558f18549b463820c6f8f1a7ac2897920bf5cfbb01"
+  },
+  "limitations": [
+    "Local synthetic qualification only; no live account, upload, deployment or remote operation.",
+    "Notes UI, agent tools and separately consented Notes cloud storage remain subsequent tasks.",
+    "Exports contain readable Markdown and pseudonymous account scope, not encrypted private sync.",
+    "Capacity is bounded; 16 prior content versions and finite command receipts are explicit limits."
+  ],
+  "notes": [
+    "Initial backup-conflict fixture used a later real creation time with an earlier fixed update time; corrected to one deterministic clock.",
+    "Reserved lifecycle command/byte capacity keeps explicit trash/purge available after ordinary write quota exhaustion.",
+    "Lost storage acknowledgement retains original command identity; duplicate recovery confirms existing receipt without repeating append."
+  ]
+}

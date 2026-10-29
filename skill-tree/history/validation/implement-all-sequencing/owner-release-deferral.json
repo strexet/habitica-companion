@@ -1,0 +1,15 @@
+{
+  "deferredIds": [
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+  ],
+  "originalPriorities": {
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c": 97,
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc": 100
+  },
+  "ownerInstruction": "Отложить release-gate и продолжить остальные доступные исходные задачи (рекомендуется)",
+  "recordedAt": "2026-10-27T16:10:11.951076+00:00",
+  "runId": "WR-db3533db-230a-4c61-a88b-0db609cb6ff5",
+  "scope": "Existing frozen snapshot remains50. Gate/dependent root remain unresolved. No live operations, new grants or completion inferred. Restore original priorities after other available snapshot work.",
+  "temporaryPriority": 24
+}

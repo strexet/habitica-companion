@@ -1,0 +1,134 @@
+@using Habitica.Application.Notifications
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TaskReminderController Reminders
+@inject TodoWorkspacePresentation Todo
+@implements IDisposable
+
+<section class="card-surface settings-card" aria-label="Task push schedule" data-testid="push-schedule">
+    <h2 tabindex="-1" @ref="_heading">Task push schedule</h2>
+    <p>Save a review cue first, then review a separate push schedule for this exact cloud task. Repeat schedules do not create tasks, complete work or change task recurrence. End dates and daylight-saving policies are explicit.</p>
+    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Reminders.IsBusy" OnClick="Load" Variant="Variant.Outlined" data-testid="schedule-load">Load current schedule and devices</MudButton>
+    @if(Reminders.Message is {} message){<p role="status">@message</p>}
+    @if(_error is {} error){<p role="alert">@error</p>}
+    @if(Reminders.State is {} state&&state.TaskId==TaskId)
+    {
+        <p>Workspace @state.WorkspaceId · revision @state.WorkspaceRevision · Task @state.TaskId</p>
+        <p>Scheduling service: @(state.Available?"available":"disabled or unconfigured") · Account push: @(state.Push?.Enabled==true?"enabled":"off") · Delivery service: @(state.Push?.DispatchAvailable==true?"available":"disabled or unconfigured"). Refresh after enabling devices in Todo Sync.</p>
+        <fieldset disabled="@(!Reminders.CanPrepare)">
+            <label class="field-row">Schedule type<select class="app-input" @bind="_mode" data-testid="schedule-mode"><option value="once">One time at saved review cue</option><option value="daily">Repeat daily</option><option value="weekly">Repeat weekly</option><option value="monthly">Repeat monthly</option></select></label>
+            <label class="field-row">Display and civil timezone<input class="app-input" maxlength="128" @bind="_zone" data-testid="schedule-zone" /></label>
+            @if(_mode!="once")
+            {
+                <p>The first repeat occurrence must match the saved UTC review cue exactly, on a whole minute. Change the saved cue first if seconds or an overlap choice differ.</p>
+                <MudButton HtmlTag="button" data-layout-primary="true" OnClick="DraftFromCue" Variant="Variant.Text" data-testid="schedule-use-cue">Use saved cue for civil draft</MudButton>
+                <label class="field-row">First civil date<input class="app-input" type="date" @bind="_start" data-testid="schedule-start" /></label>
+                <label class="field-row">Local time (HH:mm)<input class="app-input" maxlength="5" @bind="_time" data-testid="schedule-time" /></label>
+                <label class="field-row">Repeat interval<input class="app-input" type="number" min="1" max="365" @bind="_interval" /></label>
+                @if(_mode=="weekly"){<label class="field-row">Weekdays (0 Sunday … 6 Saturday, comma separated)<input class="app-input" maxlength="20" @bind="_days" data-testid="schedule-days" /></label>}
+                @if(_mode=="monthly"){<label class="field-row">Days of month (1 … 31, comma separated)<input class="app-input" maxlength="90" @bind="_monthDays" data-testid="schedule-month-days" /></label>}
+                <label class="field-row">Last civil date (maximum 366 days)<input class="app-input" type="date" @bind="_through" data-testid="schedule-through" /></label>
+                <p>Missing local time during a daylight-saving gap: skip that occurrence.</p>
+                <label class="field-row">Repeated local time during overlap<select class="app-input" @bind="_overlap" data-testid="schedule-overlap"><option value="">Choose explicitly</option><option value="earlier">Earlier instant</option><option value="later">Later instant</option><option value="skip">Skip occurrence</option></select></label>
+            }
+            <p>Choose exact active devices. Revoked, expired and changed subscriptions cannot receive this schedule.</p>
+            @foreach(var device in state.Push?.Devices??[])
+            {
+                <label class="checkbox-row"><input type="checkbox" checked="@_targets.Contains(device.DeviceId)" disabled="@(device.State!="active")" @onchange="args => Target(device.DeviceId,args)" /> Device @device.DeviceId · revision @device.Revision · @device.State</label>
+            }
+            <p>Editing schedule: @(_editing?.ToString()??"current active schedule or a new schedule")</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" OnClick="Prepare" Variant="Variant.Outlined" data-testid="schedule-prepare">Review exact push schedule</MudButton>
+        </fieldset>
+        @foreach(var schedule in state.Schedules)
+        {
+            <article class="todo-direct-row"><div class="todo-row-content"><strong>@schedule.State · @schedule.Reason</strong><span>Schedule @schedule.ScheduleId · revision @schedule.Revision</span><span>Next UTC: @(schedule.NextAtUtc?.ToString("O")??"none") · zone @schedule.Intent.TimeZoneId</span></div><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Reminders.CanPrepare)" OnClick="() => Edit(schedule)" Variant="Variant.Outlined">Edit this schedule</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Reminders.CanChange||schedule.State=="cancelled")" OnClick="() => Cancel(schedule)" Variant="Variant.Outlined">Review cancellation</MudButton></article>
+        }
+        <h3>Delivery observations</h3>
+        <p>Saved configuration, scheduled, dispatched and accepted by a push service are separate states. Shown and read are unknown. Unknown delivery never retries automatically.</p>
+        @foreach(var delivery in state.Deliveries){<p>@delivery.AtUtc.ToString("O") · device @delivery.DeviceId · @delivery.State / @delivery.Code · attempt @delivery.Attempt. Shown: unknown · Read: unknown.</p>}
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Reminders.IsBusy||state.Offset==0)" OnClick="() => Reminders.LoadAsync(TaskId,Math.Max(0,state.Offset-50))" Variant="Variant.Text">Previous deliveries</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Reminders.IsBusy||state.NextOffset is null)" OnClick="() => Reminders.LoadAsync(TaskId,state.NextOffset??0)" Variant="Variant.Text">Next deliveries</MudButton></div>
+    }
+    @if(Reminders.Preview is {Intent:{} intent} preview)
+    {
+        <div class="todo-command-review" data-testid="schedule-preview" tabindex="-1" @ref="_previewElement">
+            <h3>Review @intent.Operation</h3><p>Task @intent.TaskId · workspace @preview.WorkspaceId · document revision @preview.ExpectedWorkspaceRevision · schedule @preview.ScheduleId · expected schedule revision @intent.ExpectedRevision</p>
+            <p>First cue: @intent.ReviewAfterUtc?.ToString("O") · zone @intent.TimeZoneId · consent @intent.ConsentVersion</p>
+            @if(intent.Repeat is {} repeat){<p>@repeat.Rule.Frequency every @repeat.Rule.Interval · start @repeat.Rule.StartDate · local time @repeat.Time · through @repeat.Through · gap @repeat.Gap · overlap @repeat.Overlap · weekdays @string.Join(", ",repeat.Rule.Weekdays) · month days @string.Join(", ",repeat.Rule.DaysOfMonth)</p>}
+            else{<p>@(intent.Operation=="cancel"?"Cancel schedule; keep task and review cue.":"One time at the exact saved cue.")</p>}
+            @foreach(var target in intent.Targets){<p>Device @target.DeviceId · revision @target.Revision · subscription @target.SubscriptionId</p>}
+            <p>@preview.Warning · Preview expires @preview.ExpiresAtUtc?.ToString("O")</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Reminders.CanAccept)" OnClick="Accept" Color="Color.Primary" Variant="Variant.Filled" data-testid="schedule-accept">@(intent.Operation=="cancel"?"Confirm cancellation":"Accept schedule")</MudButton>
+        </div>
+    }
+    @if(Reminders.Pending is {} pending)
+    {
+        <p>Original request @pending.Preparation.RequestId · command @(pending.CommandId?.ToString()??"not recovered"). Resolve this command before another schedule in this workspace.</p>
+        @if(!pending.AcceptanceAttempted){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Reminders.IsBusy" OnClick="Reminders.DiscardUnsubmittedAsync" Variant="Variant.Text" data-testid="schedule-discard">Discard unsubmitted preview</MudButton>}
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Reminders.IsBusy" OnClick="Retry" Variant="Variant.Outlined" data-testid="schedule-retry">Retry original preview</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Reminders.IsBusy||pending.CommandId is null)" OnClick="Reminders.RecoverAsync" Variant="Variant.Outlined" data-testid="schedule-recover">Check original schedule receipt</MudButton></div>
+    }
+    @if(Reminders.Receipt is {} receipt){<p data-testid="schedule-receipt">Configuration @receipt.State · saved @receipt.Saved · scheduled @receipt.Scheduled · dispatched @receipt.Dispatched · accepted by push service @receipt.AcceptedByPushService · shown unknown · read unknown.</p>}
+</section>
+@code {
+    [Parameter] public Guid TaskId {get;set;}
+    private string _mode="once",_zone="UTC",_time="09:00",_overlap="",_days="1",_monthDays="1";
+    private int _interval=1;
+    private DateTime _start=DateTime.UtcNow.Date,_through=DateTime.UtcNow.Date.AddDays(30);
+    private readonly HashSet<Guid> _targets=[];
+    private string? _error;
+    private ElementReference _previewElement,_heading;
+    private Guid? _editing;
+    private bool _returnFocus,_hadPending;
+    private bool _focus;
+    protected override void OnInitialized(){_hadPending=Reminders.Pending is not null;Reminders.Changed+=Changed;}
+    private void Changed(){if(_hadPending&&Reminders.Pending is null)_returnFocus=true;_hadPending=Reminders.Pending is not null;_=InvokeAsync(StateHasChanged);}
+    private async Task Load(){_targets.Clear();_editing=null;_error=null;await Reminders.LoadAsync(TaskId);}
+    private void Target(Guid id,ChangeEventArgs args){if(args.Value is true)_targets.Add(id);else _targets.Remove(id);}
+    private async Task Prepare()
+    {
+        _error=null;
+        try
+        {
+            var task=Todo.Snapshot?.Document.Tasks.SingleOrDefault(t=>t.Id==TaskId&&!t.IsArchived)??throw new InvalidOperationException("Reload the exact task.");
+            if(task.ReviewAfterUtc is null)throw new InvalidOperationException("Save an explicit review cue before scheduling push.");
+            ReminderRepeat? repeat=null;
+            if(_mode!="once")
+            {
+                var weekdays=_mode=="weekly"?_days.Split(',').Select(s=>(DayOfWeek)int.Parse(s.Trim(),CultureInfo.InvariantCulture)).ToArray():Array.Empty<DayOfWeek>();
+                var months=_mode=="monthly"?_monthDays.Split(',').Select(s=>int.Parse(s.Trim(),CultureInfo.InvariantCulture)).ToArray():Array.Empty<int>();
+                var frequency=_mode switch{"daily"=>RecurrenceFrequency.Daily,"weekly"=>RecurrenceFrequency.Weekly,"monthly"=>RecurrenceFrequency.Monthly,_=>throw new InvalidOperationException("Choose a supported repeat type.")};
+                repeat=new(new(frequency,_interval,DateOnly.FromDateTime(_start),_zone,weekdays,months),_time,DateOnly.FromDateTime(_through),"skip",_overlap);
+            }
+            var active=Reminders.State?.Schedules.SingleOrDefault(s=>_editing is {} edit?s.ScheduleId==edit:s.State=="active");
+            var targets=(Reminders.State?.Push?.Devices??[]).Where(d=>d.State=="active"&&_targets.Contains(d.DeviceId)).Select(d=>new ReminderTarget(d.DeviceId,d.Revision,d.SubscriptionId)).ToArray();
+            var intent=new ReminderIntent("set",active?.ScheduleId,active?.Revision??0,TaskId,task.ReviewAfterUtc,_zone,repeat,targets);
+            if(!ReminderIdentity.Valid(intent))throw new InvalidOperationException("Choose one to four active devices and valid explicit timezone, dates, time, repeat and overlap policy.");
+            await Reminders.PrepareAsync(intent);_focus=Reminders.Preview is not null;
+        }
+        catch(Exception error) when(error is InvalidOperationException or FormatException or OverflowException){_error=error.Message;}
+    }
+    private void DraftFromCue()
+    {
+        _error=null;
+        try
+        {
+            var cue=Todo.Snapshot?.Document.Tasks.SingleOrDefault(task=>task.Id==TaskId)?.ReviewAfterUtc??throw new InvalidOperationException("Save an exact review cue first.");
+            if(!WorkspaceTaskReview.ValidZone(_zone))throw new InvalidOperationException("Choose a supported explicit civil timezone first.");
+            var civil=TimeZoneInfo.ConvertTime(cue,TimeZoneInfo.FindSystemTimeZoneById(_zone));
+            _start=civil.Date;_time=civil.ToString("HH:mm",CultureInfo.InvariantCulture);_days=((int)civil.DayOfWeek).ToString(CultureInfo.InvariantCulture);_monthDays=civil.Day.ToString(CultureInfo.InvariantCulture);_through=civil.Date.AddDays(30);
+            if(cue.Ticks%TimeSpan.TicksPerMinute!=0)_error="The saved cue includes seconds or fractions. Save a whole-minute cue before creating a repeat schedule.";
+        }
+        catch(Exception error) when(error is InvalidOperationException or ArgumentException){_error=error.Message;}
+    }
+    private void Edit(ReminderSchedule schedule)
+    {
+        _editing=schedule.ScheduleId;var intent=schedule.Intent;_zone=intent.TimeZoneId;_targets.Clear();foreach(var target in intent.Targets)_targets.Add(target.DeviceId);
+        if(intent.Repeat is {} repeat){_mode=repeat.Rule.Frequency.ToString().ToLowerInvariant();_start=repeat.Rule.StartDate.ToDateTime(TimeOnly.MinValue);_through=repeat.Through.ToDateTime(TimeOnly.MinValue);_time=repeat.Time;_interval=repeat.Rule.Interval;_days=string.Join(",",repeat.Rule.Weekdays.Select(day=>(int)day));_monthDays=string.Join(",",repeat.Rule.DaysOfMonth);_overlap=repeat.Overlap;}
+        else _mode="once";
+        _error="Editing the selected schedule requires the current saved review cue. Review exact devices and civil time again.";
+    }
+    private async Task Cancel(ReminderSchedule schedule){await Reminders.PrepareAsync(new("cancel",schedule.ScheduleId,schedule.Revision,TaskId,null,schedule.Intent.TimeZoneId,null,[]));_focus=Reminders.Preview is not null;}
+    private async Task Retry(){await Reminders.RetryPreviewAsync();_focus=Reminders.Preview is not null;}
+    private async Task Accept(){await Reminders.AcceptAsync();_returnFocus=Reminders.Preview is null;}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;await _previewElement.FocusAsync();}else if(_returnFocus){_returnFocus=false;await _heading.FocusAsync();}}
+    public void Dispose()=>Reminders.Changed-=Changed;
+}

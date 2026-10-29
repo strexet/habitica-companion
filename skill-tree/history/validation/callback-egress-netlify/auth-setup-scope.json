@@ -1,0 +1,21 @@
+{
+  "request": "Owner asks the agent to perform the described Auth backend setup after the Netlify deployment.",
+  "worker": "habitica-companion-auth",
+  "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+  "database": "habitica-companion-auth",
+  "gateway": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+  "allowed": [
+    "Preserve the selected live Auth base code/settings and add only the reviewed claim endpoint.",
+    "Provision the two service secrets from the owner-imported ignored Netlify environment file.",
+    "Apply only0012-callback-egress.sql to the exact existing integration database.",
+    "Publish the disabled Auth candidate and perform read-only public boundary checks."
+  ],
+  "excluded": [
+    "Callback/event dispatch activation",
+    "Real subscriptions or chat messages",
+    "Habitica/game/account actions",
+    "Unrelated local features, migrations, new resources or commits"
+  ],
+  "base_version": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+  "rollback": "Redeploy the recorded base Worker version; retain the additive table and any claim fences."
+}

@@ -7,8 +7,27 @@
             Dashboard
         </MudNavLink>
 
-        <MudNavLink Href="/tasks" Icon="@Icons.Material.Outlined.TaskAlt">
-            Tasks
+        <section class="todo-nav-section" aria-label="Todo navigation" data-testid="todo-nav-section">
+            <div class="todo-nav-heading"><MudIcon Icon="@Icons.Material.Outlined.TaskAlt" /> <span>Todo</span></div>
+            <div class="todo-nav-links">
+                <MudNavLink Href="/todo/today" Match="NavLinkMatch.All">Today</MudNavLink>
+                <MudNavLink Href="/todo/habits" Match="NavLinkMatch.All">Habits</MudNavLink>
+                <MudNavLink Href="/todo/dailies" Match="NavLinkMatch.All">Dailies</MudNavLink>
+                <MudNavLink Href="/todo/tasks" Match="NavLinkMatch.All">Tasks</MudNavLink>
+                <MudNavLink Href="/todo/projects" Match="NavLinkMatch.All">Projects</MudNavLink>
+                <MudNavLink Href="/todo/statistics" Match="NavLinkMatch.All">Statistics</MudNavLink>
+                <MudNavLink Href="/todo/sync" Match="NavLinkMatch.All">Sync</MudNavLink>
+                <div class="todo-nav-subheading">More planning</div>
+                <MudNavLink Href="/todo/inbox" Match="NavLinkMatch.All">Inbox</MudNavLink>
+                <MudNavLink Href="/todo/plan" Match="NavLinkMatch.All">Planning</MudNavLink>
+                <MudNavLink Href="/todo/lists" Match="NavLinkMatch.All">Saved lists</MudNavLink>
+                <MudNavLink Href="/todo/history" Match="NavLinkMatch.All">History</MudNavLink>
+                <MudNavLink Href="/tasks" Match="NavLinkMatch.All">Habitica tasks &amp; Rewards</MudNavLink>
+            </div>
+        </section>
+
+        <MudNavLink Href="/notes" Icon="@Icons.Material.Outlined.Description">
+            Notes
         </MudNavLink>
 
         <MudNavLink Href="/inventory" Icon="@Icons.Material.Outlined.Shield">
