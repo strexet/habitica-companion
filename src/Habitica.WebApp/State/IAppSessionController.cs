@@ -27,6 +27,8 @@ public interface IAppSessionController
     Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default);
     Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default);
     Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> RestoreExistingConnectionsAsync(bool legacyAcknowledged, CancellationToken cancellationToken = default)
+        => Task.FromResult(new IntegrationLinkResult(false, "Existing account recovery is unavailable."));
     Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default);
 
     Task<GearRecoveryReview> ReviewSpellGearRecoveryAsync(bool restore = false, bool keepCurrent = false, Guid? expectedOperationId = null, CancellationToken token = default)

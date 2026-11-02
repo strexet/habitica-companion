@@ -44,6 +44,51 @@ export async function remove(key) {
   await kv.delete(key);
 }
 
+export async function commitCompanionPreferences(expectedJson, json) {
+  if ((expectedJson !== null && typeof expectedJson !== 'string') || typeof json !== 'string'
+      || new TextEncoder().encode(json).length > 65536) throw new Error('Invalid account preferences.');
+  const value = JSON.parse(json);
+  if (value?.version !== 1 || !value.accounts || Array.isArray(value.accounts) || Object.keys(value.accounts).length > 16
+      || Object.keys(value).some(key => !['version', 'accounts'].includes(key))) throw new Error('Invalid preference schema.');
+  const forbidden = new Set(['apiToken', 'managementToken', 'sessionToken', 'accessToken', 'refreshToken', 'acceptToken', 'password', 'credential', 'draft']);
+  const stack = [value];
+  while (stack.length) {
+    const item = stack.pop();
+    if (item && typeof item === 'object') for (const [name, child] of Object.entries(item)) {
+      if (forbidden.has(name)) throw new Error('Capabilities and private drafts cannot enter account preferences.');
+      if (child && typeof child === 'object') stack.push(child);
+    }
+  }
+  return database.transaction('rw', kv, async () => {
+    const old = await kv.get('preferences/companionAccounts');
+    if ((old?.jsonText ?? null) !== expectedJson) return false;
+    await kv.put({key: 'preferences/companionAccounts', jsonText: json, updatedAtUtc: new Date().toISOString()});
+    return true;
+  });
+}
+
+export async function ensureDefaultWorkspace(scope, emptyJson) {
+  workspaceScope(scope);
+  const empty = JSON.parse(emptyJson);
+  workspaceId(empty?.document?.id);
+  if (empty.storeVersion !== 1 || empty.commands?.length !== 0 || (empty.events ?? []).length !== 0
+      || empty.authority && empty.authority.mode !== 'local') throw new Error('An empty local journal is required.');
+  return database.transaction('rw', kv, workspaces, async () => {
+    const rows = await workspaces.where('scope').equals(scope).toArray();
+    if (rows.some(row => ['frozen', 'cloud'].includes(JSON.parse(row.authorityJson ?? 'null')?.mode)))
+      return {workspaceId: null, requiresConsolidation: rows.length > 1, requiresRecovery: true};
+    if (rows.length > 1) return {workspaceId: null, requiresConsolidation: true, requiresRecovery: false};
+    let id = rows[0]?.id;
+    if (!id) {
+      id = empty.document.id;
+      await workspaces.put({scope, id, storeVersion: 1, documentJson: JSON.stringify(empty.document), authorityJson: JSON.stringify(empty.authority ?? null), updatedAtUtc: new Date().toISOString()});
+    }
+    // The browser binding is device-local, outside the portable/synchronized account section.
+    await kv.put({key: 'companion-browser-v1:' + scope, jsonText: JSON.stringify({version: 1, workspaceId: id}), updatedAtUtc: new Date().toISOString()});
+    return {workspaceId: id, requiresConsolidation: false, requiresRecovery: false};
+  });
+}
+
 const notificationPrefix='notification-state-v1:';
 function notificationKey(key) {
   if(typeof key!=='string'||!/^notification-state-v1:[0-9a-f-]{36}:prf_[A-Za-z0-9_-]{43}:[0-9a-f-]{36}:(device|[0-9a-f-]{36})$/.test(key))throw new Error('Invalid notification state context.');
@@ -191,8 +236,9 @@ export async function commitWorkspace(scope, expectedStoreVersion, json) {
   });
 }
 export async function clearWorkspaces() {
-  await database.transaction("rw", workspaces, commands, events, async () => {
+  await database.transaction("rw", kv, workspaces, commands, events, async () => {
     await workspaces.clear(); await commands.clear(); await events.clear();
+    await kv.where('key').startsWith('companion-browser-v1:').delete();
   });
 }
 

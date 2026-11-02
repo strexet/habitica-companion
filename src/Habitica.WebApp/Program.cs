@@ -41,6 +41,9 @@ builder.Services.AddScoped<ITaskSnapshotStore, TaskSnapshotStore>();
 builder.Services.AddScoped<IUserSnapshotStore, UserSnapshotStore>();
 builder.Services.AddScoped<SnapshotFreshnessPolicy>();
 builder.Services.AddScoped<LocalUserDataPortabilityService>();
+builder.Services.AddScoped<LocalPreferenceMutationGate>();
+builder.Services.AddScoped<CompanionPreferencesStore>();
+builder.Services.AddScoped<CompanionConnectionCoordinator>();
 builder.Services.AddScoped<DiagnosticsLogWriter>();
 builder.Services.AddScoped<DiagnosticsPresetWorkflow>();
 builder.Services.AddScoped<PendingDamageEstimateFactory>();
@@ -58,6 +61,7 @@ builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncPr
 builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<AppFeatureOptions>() ?? new AppFeatureOptions());
 builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
+builder.Services.AddScoped<IBrowserWorkspaceSource>(sp => sp.GetRequiredService<IndexedDbWorkspaceDatabase>());
 builder.Services.AddScoped<WorkspaceDataController>();
 builder.Services.AddScoped<WorkspaceTaskController>();
 builder.Services.AddScoped<WorkspaceConversionController>();

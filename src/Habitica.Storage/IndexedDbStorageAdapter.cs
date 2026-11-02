@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace Habitica.Storage;
 
-public sealed class IndexedDbStorageAdapter : IKeyValueStorage, IAsyncDisposable
+public sealed class IndexedDbStorageAdapter : IKeyValueStorage, ICompanionPreferencesStorage, IAsyncDisposable
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
@@ -22,6 +22,9 @@ public sealed class IndexedDbStorageAdapter : IKeyValueStorage, IAsyncDisposable
         var json = await module.InvokeAsync<string?>("getJson", cancellationToken, key);
         return json is null ? default : JsonSerializer.Deserialize<TValue>(json, JsonOptions);
     }
+
+    public async Task<bool> TryCommitCompanionPreferencesAsync(string? expectedJson, string json, CancellationToken token)
+        => await (await _moduleTask.Value).InvokeAsync<bool>("commitCompanionPreferences", token, expectedJson, json);
 
     public async Task SetAsync<TValue>(string key, TValue value, CancellationToken cancellationToken)
     {
