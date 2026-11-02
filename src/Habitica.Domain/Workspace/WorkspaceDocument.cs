@@ -73,12 +73,16 @@ public sealed record TaskRestoration(Guid Id, long Revision, Guid TaskId, Guid C
 public sealed record HabitScoreEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset RecordedAtUtc, HabitScoreDirection Direction, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record HabiticaProjection(Guid Id, long Revision, Guid TaskId, ProjectionState State, string? HabiticaTaskId = null, bool IsArchived = false, string? Fingerprint = null, string? CorrelationAlias = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
+public sealed record WorkspaceSourceImport(Guid TransferId, Guid SourceWorkspaceId, long SourceRevision, long RevisionOffset, IReadOnlyList<Guid> RecordIds);
+
 public sealed record WorkspaceDocument
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<TaskActivityWitness>? ActivityCoverage { get; init; }
     public const int CurrentSchemaVersion = 1;
     public const long MaxRevision = 9007199254740991;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceSourceImport>? SourceImports { get; init; }
     public int SchemaVersion { get; init; } = CurrentSchemaVersion;
     public required Guid Id { get; init; }
     public long Revision { get; init; } = 1;

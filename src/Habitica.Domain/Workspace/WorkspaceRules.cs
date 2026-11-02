@@ -36,6 +36,15 @@ public static class WorkspaceRules
             if (entity.Id == Guid.Empty || !identities.Add(entity.Id)) errors.Add(new("invalid_or_duplicate_id", entity.Id));
             if (entity.Revision < 1 || entity.Revision > document.Revision) errors.Add(new("invalid_revision", entity.Id));
         }
+        var importedIds=new HashSet<Guid>();var importKeys=new HashSet<(Guid,Guid)>();
+        if(document.SourceImports is {Count:>1024})errors.Add(new("invalid_source_import"));
+        foreach(var origin in document.SourceImports??[])
+        {
+            if(origin is null||origin.TransferId==Guid.Empty||origin.SourceWorkspaceId==Guid.Empty||origin.SourceRevision<1||origin.RevisionOffset<1
+                ||origin.SourceRevision>document.Revision-origin.RevisionOffset||!importKeys.Add((origin.TransferId,origin.SourceWorkspaceId))||origin.RecordIds is null)
+            {errors.Add(new("invalid_source_import"));continue;}
+            foreach(var id in origin.RecordIds)if(!identities.Contains(id)||id==document.Id||!importedIds.Add(id))errors.Add(new("invalid_source_import",id));
+        }
         var categories = document.Categories.Select(value => value.Id).ToHashSet();
         var projects = document.Projects.GroupBy(value => value.Id).ToDictionary(group => group.Key, group => group.First());
         var sections = document.Sections.GroupBy(value => value.Id).ToDictionary(group => group.Key, group => group.First());
@@ -51,7 +60,7 @@ public static class WorkspaceRules
             Name(project.Name, project.Id); Reference(project.CategoryId, project.CategoryId is { } id && categories.Contains(id), project.Id);
             if(project.Alias is {} alias&&(!WorkspaceProjectAliases.IsCanonical(alias)||!projectAliases.Add(alias)))
                 errors.Add(new("invalid_project_alias",project.Id));
-            if(project.IsRemoved&&(!project.IsArchived||document.OrganizationHistory?.Any(row=>row is { Command: { Operation: WorkspaceOrganizationOperation.Remove } command, Snapshot: { IsRemoved: true } }&&command.EntityId==project.Id)!=true))
+            if(project.IsRemoved&&(!project.IsArchived||document.OrganizationHistory?.Any(row=>row is { Command: { Operation: WorkspaceOrganizationOperation.Remove } command, Snapshot: { IsRemoved: true } }&&command.EntityId==project.Id)!=true&&!importedIds.Contains(project.Id)))
                 errors.Add(new("invalid_project_removal",project.Id));
         }
         foreach (var section in document.Sections)

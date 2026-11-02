@@ -1,3 +1,4 @@
+import {stageWorkspaceTransfer,workspaceTransferApi,exportWorkspaceTransfer,transferContainsNotes,type TransferTool} from './workspace-transfer-api.ts';
 import {diagnosticOwnerApi,diagnosticAgentApi,cleanupDiagnostics} from './diagnostic-api';
 import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
 import {adoptionApi} from './adoption-api.ts';
@@ -119,6 +120,10 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
+ if(input.projectToHabitica||input.operation==='ensureProjection'){
+  const fence=await env.WORKSPACE_DB.prepare('SELECT transfer_id FROM workspace_transfer_fences WHERE profile_id=? AND task_id=?').bind(row.profile_id,input.taskId).first();
+  if(fence)throw new WorkspaceError('imported_effect_review_required',409);
+ }
  requireTodoProjection(JSON.parse(row.document_json),input);
  if(input.operation==='ensureProjection'){
   const pending=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
@@ -237,6 +242,15 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
   return json(await taskApi(env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),env,row,true)));
  }
+ if(path==='/workspace-transfer/stage'&&request.method==='POST'){
+  const input=workspaceObject(await workspaceJson(request,16*1024*1024),['artifact']);if(typeof input.artifact!=='string')throw new WorkspaceError('invalid_transfer',422);
+  return json(await stageWorkspaceTransfer(env,row,input.artifact));
+ }
+ if(path==='/workspace-transfer/api'&&request.method==='POST'){
+  const input=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);if(!['list_workspace_transfers','get_workspace_transfer_status','preview_workspace_transfer','accept_workspace_transfer','get_workspace_transfer_receipt','get_workspace_transfer_record'].includes(String(input.tool)))throw new WorkspaceError('invalid_tool',422);
+  return json(await workspaceTransferApi(env,row,input.tool as TransferTool,input.arguments));
+ }
+ if(path.startsWith('/workspace-transfer/export/')&&request.method==='GET')return json(await exportWorkspaceTransfer(env,row,path.slice('/workspace-transfer/export/'.length)));
  if (path === "/handoff" && request.method === "POST") return handoff(request,env,row);
  if (path === "/executor" && request.method === "POST") {
   const body=workspaceObject(await workspaceJson(request),["enabled","consentVersion"]);
@@ -261,6 +275,8 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   return json({ disconnected: true, retained: true });
  }
  if (path === "/workspace" && request.method === "DELETE") {
+  const retainedNotes=await env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_transfers WHERE profile_id=? AND state='accepted' AND json_extract(manifest_json,'$.includesNotes')=1 LIMIT 1").bind(row.profile_id).first();
+  if(retainedNotes)throw new WorkspaceError('transfer_notes_archive_retention_required',409);
   const body = workspaceObject(await workspaceJson(request), ["confirmWorkspaceId"]);
   if (uuid(body.confirmWorkspaceId) !== row.workspace_id) throw new WorkspaceError("confirmation_required", 409);
   const deleted = await env.WORKSPACE_DB.prepare("DELETE FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch).run();

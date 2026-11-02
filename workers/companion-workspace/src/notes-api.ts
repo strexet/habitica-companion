@@ -65,6 +65,7 @@ export async function loadNotes(env:WorkspaceEnv,row:NotesRow):Promise<NotesNote
   env.WORKSPACE_DB.prepare('SELECT * FROM personal_notes WHERE profile_id=? ORDER BY rowid').bind(row.profile_id),
   env.WORKSPACE_DB.prepare('SELECT note_id,version_json FROM personal_note_versions WHERE profile_id=? ORDER BY note_id,revision').bind(row.profile_id),
   env.WORKSPACE_DB.prepare('SELECT receipt_json FROM personal_note_receipts WHERE profile_id=? ORDER BY sequence').bind(row.profile_id),
+  env.WORKSPACE_DB.prepare('SELECT marker_json FROM notes_transfer_markers WHERE profile_id=? ORDER BY notebook_revision').bind(row.profile_id),
  ]);
  const current=results[0].results[0] as {revision:number}|undefined;if(!current)throw new WorkspaceError('unauthorized',401);
  const book=emptyNotes(row.owner_scope);book.revision=current.revision;
@@ -76,6 +77,7 @@ export async function loadNotes(env:WorkspaceEnv,row:NotesRow):Promise<NotesNote
  }
  for(const note of book.notes)for(const version of [note.current,...note.history])if(version.project){version.project=noteProject(version.project);if(version.project.ownerScope!==row.owner_scope)throw new WorkspaceError('notes_project_ownership_invalid',503);}
  book.receipts=results[3].results.map(value=>JSON.parse(String(value.receipt_json)) as NoteReceipt);
+ if(results[4].results.length)book.transfers=results[4].results.map(value=>JSON.parse(String(value.marker_json)));
  return book;
 }
 export async function projectAuthority(env:WorkspaceEnv,row:NotesRow,link:NoteProjectLink){
@@ -104,6 +106,7 @@ export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,pre
  const writes=[env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET revision=?,commit_tag=? WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND revision=?'+previewGuard+projectGuard).bind(...parameters)];
  const previous=before.notes.find(note=>note.id===command.noteId);
  if(command.operation==='purge'){
+  writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part=? AND ${guard}`).bind(row.profile_id,'note:'+command.noteId,row.profile_id,tag));
   writes.push(env.WORKSPACE_DB.prepare(`UPDATE personal_notes SET title=NULL,markdown=NULL,project_json=NULL,revision=?,is_purged=1,at_utc=? WHERE profile_id=? AND note_id=? AND ${guard}`).bind(result.receipt.noteRevision,new Date().toISOString(),row.profile_id,command.noteId,row.profile_id,tag));
   writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM personal_note_versions WHERE profile_id=? AND note_id=? AND ${guard}`).bind(row.profile_id,command.noteId,row.profile_id,tag));
  }else{
@@ -167,7 +170,10 @@ export async function notesRoute(request:Request,env:WorkspaceEnv):Promise<Respo
  }
  if(path==='/notes'&&request.method==='DELETE'){
   const args=workspaceObject(await workspaceJson(request),['confirmNotebookId']);if(uuid(args.confirmNotebookId)!==row.notebook_id)throw new WorkspaceError('confirmation_required',409);
-  const result=await env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(row.profile_id,row.notebook_id,row.access_epoch).run();if(!result.meta.changes)throw new WorkspaceError('unauthorized',401);return json({deleted:true});
+  const results=await env.WORKSPACE_DB.batch([
+   env.WORKSPACE_DB.prepare('DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part<>? AND EXISTS(SELECT 1 FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1)').bind(row.profile_id,'tasks',row.profile_id,row.notebook_id,row.access_epoch),
+   env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(row.profile_id,row.notebook_id,row.access_epoch),
+  ]);if(!results[1].meta.changes)throw new WorkspaceError('unauthorized',401);return json({deleted:true});
  }
  const operation=path.slice('/notes/'.length);
  if(request.method==='GET'&&operation==='export')return notesOperation(env,row,'export',{});
@@ -195,7 +201,7 @@ export class NotesLifecycleService extends WorkerEntrypoint<WorkspaceEnv>{
    const input=workspaceObject(await workspaceJson(request),['profileId','connectionId','deleteProfile']);
    if(!profileId(input.profileId)||typeof input.deleteProfile!=='boolean')throw new WorkspaceError('invalid_request',400);uuid(input.connectionId);
    if(!await purgeDiagnosticProfile(this.env,String(input.profileId)))throw new WorkspaceError('diagnostic_cleanup_pending',503);
-   if(input.deleteProfile)await this.env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=?').bind(input.profileId).run();
+   if(input.deleteProfile)await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare("DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part<>'tasks'").bind(input.profileId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=?').bind(input.profileId)]);
    else await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND connection_id=?').bind(crypto.randomUUID(),input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND connection_id=?').bind(input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=?').bind(input.profileId)]);
    if(input.deleteProfile)await this.env.WORKSPACE_DB.batch(['workspace_reminder_deliveries','workspace_reminder_commands','workspace_reminder_schedules','workspace_reminder_runtime'].map(table=>this.env.WORKSPACE_DB.prepare(`DELETE FROM ${table} WHERE profile_id=?`).bind(input.profileId)));
    else await this.env.WORKSPACE_DB.batch([

@@ -47,7 +47,7 @@ async function fixture(t, options = {}) {
   let workspace, workspaceDb, workspaceIdentity, projection;
   if (options.workspace) {
     workspace = await mf.getWorker("workspace"); workspaceDb = await mf.getD1Database("WORKSPACE_DB", "workspace");
-    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql","0007-mcp-grant-epoch.sql","0008-tag-reconciliation.sql","0009-group-tag-reviews.sql","0010-source-retirement.sql","0011-personal-notes.sql","0012-note-previews.sql","0013-scheduled-reminders.sql","0014-linked-task-recovery.sql","0015-task-adoption.sql","0016-diagnostics.sql","0017-note-project-links.sql"]) {
+    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql","0007-mcp-grant-epoch.sql","0008-tag-reconciliation.sql","0009-group-tag-reviews.sql","0010-source-retirement.sql","0011-personal-notes.sql","0012-note-previews.sql","0013-scheduled-reminders.sql","0014-linked-task-recovery.sql","0015-task-adoption.sql","0016-diagnostics.sql","0017-note-project-links.sql","0018-workspace-transfers.sql"]) {
       const sqlText = await readFile(new URL("../companion-workspace/migrations/"+migration, authRoot), "utf8");
       for (const sql of sqlText.split(/;\s*(?=(?:CREATE|ALTER|INSERT|UPDATE|DELETE)\b|$)/)) if (sql.trim()) await workspaceDb.prepare(sql).run();
     }

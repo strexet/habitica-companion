@@ -12,8 +12,11 @@ public sealed record NoteVersion(long Revision, string Title, string Markdown, b
 public sealed record PersonalNote(Guid Id, NoteVersion Current, DateTimeOffset CreatedAtUtc, IReadOnlyList<NoteVersion> History);
 public sealed record NoteReceipt(Guid CommandId, string PayloadHash, Guid NoteId, long NoteRevision, long NotebookRevision);
 public sealed record PurgedNote(Guid Id, long Revision);
+public sealed record ImportedNoteRevision(Guid Id, long Revision);
+public sealed record NotesTransferMarker(Guid TransferId, long NotebookRevision, IReadOnlyList<ImportedNoteRevision> Notes);
 public sealed record NotesNotebook(int SchemaVersion, string OwnerScope, long Revision, IReadOnlyList<PersonalNote> Notes,
-    IReadOnlyList<NoteReceipt> Receipts, IReadOnlyList<PurgedNote> Purged);
+    IReadOnlyList<NoteReceipt> Receipts, IReadOnlyList<PurgedNote> Purged,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<NotesTransferMarker>? Transfers=null);
 public sealed record NoteCommand(Guid Id, Guid NoteId, long ExpectedNotebookRevision, long ExpectedNoteRevision,
     NoteOperation Operation, string? Title = null, string? Markdown = null,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null,
@@ -54,10 +57,25 @@ public static class NotesModel
         foreach(var item in book.Purged)
             if(item is null||item.Id==Guid.Empty||!ids.Add(item.Id)||item.Revision<2||item.Revision>MaxRevision)throw new JsonException("Invalid purged identity.");
         var commands=new HashSet<Guid>();var revisions=new Dictionary<Guid,long>();long notebookRevision=0;
-        foreach(var receipt in book.Receipts)
+        var transfers=book.Transfers??[];
+        if(transfers.Count>32||transfers.Any(marker=>marker is null||marker.TransferId==Guid.Empty||marker.Notes is null)
+            ||transfers.Select(marker=>marker.TransferId).Distinct().Count()!=transfers.Count)throw new JsonException("Invalid transfer markers.");
+        var changes=book.Receipts.Select(receipt=>(Revision:receipt.NotebookRevision,Receipt:(NoteReceipt?)receipt,Marker:(NotesTransferMarker?)null))
+            .Concat(transfers.Select(marker=>(Revision:marker.NotebookRevision,Receipt:(NoteReceipt?)null,Marker:(NotesTransferMarker?)marker))).OrderBy(change=>change.Revision);
+        foreach(var change in changes)
         {
-            if(receipt is null||receipt.CommandId==Guid.Empty||!commands.Add(receipt.CommandId)||!ValidScope(receipt.PayloadHash)||!ids.Contains(receipt.NoteId)
-                ||receipt.NoteRevision!=revisions.GetValueOrDefault(receipt.NoteId)+1||receipt.NoteRevision>MaxRevision||receipt.NotebookRevision!=++notebookRevision)throw new JsonException("Invalid note receipt.");
+            if(change.Revision!=++notebookRevision)throw new JsonException("Missing notebook change.");
+            if(change.Marker is {} marker)
+            {
+                foreach(var imported in marker.Notes)
+                {
+                    if(imported is null||imported.Id==Guid.Empty||!ids.Contains(imported.Id)||imported.Revision is <1 or >MaxRevision||!revisions.TryAdd(imported.Id,imported.Revision))throw new JsonException("Invalid imported note baseline.");
+                }
+                continue;
+            }
+            var receipt=change.Receipt!;
+            if(receipt.CommandId==Guid.Empty||!commands.Add(receipt.CommandId)||!ValidScope(receipt.PayloadHash)||!ids.Contains(receipt.NoteId)
+                ||receipt.NoteRevision!=revisions.GetValueOrDefault(receipt.NoteId)+1||receipt.NoteRevision>MaxRevision)throw new JsonException("Invalid note receipt.");
             revisions[receipt.NoteId]=receipt.NoteRevision;
         }
         if(book.Notes.Any(note=>note.Current.Revision!=revisions.GetValueOrDefault(note.Id))||book.Purged.Any(note=>note.Revision!=revisions.GetValueOrDefault(note.Id)))throw new JsonException("Note receipt revision mismatch.");

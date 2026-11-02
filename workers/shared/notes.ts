@@ -8,7 +8,8 @@ export interface NoteProjectAuthority {ownerScope:string;source:'browser'|'cloud
 export interface NoteVersion {revision:number;title:string;markdown:string;isTrashed:boolean;atUtc:string;project?:NoteProjectLink}
 export interface PersonalNote {id:string;current:NoteVersion;createdAtUtc:string;history:NoteVersion[]}
 export interface NoteReceipt {commandId:string;payloadHash:string;noteId:string;noteRevision:number;notebookRevision:number}
-export interface NotesNotebook {schemaVersion:1;ownerScope:string;revision:number;notes:PersonalNote[];receipts:NoteReceipt[];purged:{id:string;revision:number}[]}
+export interface NotesTransferMarker {transferId:string;notebookRevision:number;notes:{id:string;revision:number}[]}
+export interface NotesNotebook {transfers?:NotesTransferMarker[];schemaVersion:1;ownerScope:string;revision:number;notes:PersonalNote[];receipts:NoteReceipt[];purged:{id:string;revision:number}[]}
 export type NoteOperation='create'|'update'|'append'|'trash'|'restore'|'purge';
 export interface NoteCommand {id:string;noteId:string;expectedNotebookRevision:number;expectedNoteRevision:number;operation:NoteOperation;title:string|null;markdown:string|null;project?:NoteProjectLink;clearProject?:true}
 const size=(value:string)=>new TextEncoder().encode(value).length;

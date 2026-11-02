@@ -35,6 +35,36 @@ try{
   const original=IDBObjectStore.prototype.put;IDBObjectStore.prototype.put=function(...args){if(this.name==='kv')throw new DOMException('Synthetic quota failure','QuotaExceededError');return original.apply(this,args);};
   let failed=false;try{await api.commitCompanionPreferences(pref,JSON.stringify({version:1,accounts:{changed:true}}));}catch{failed=true;}finally{IDBObjectStore.prototype.put=original;}
   check(failed&&await api.getJson('preferences/companionAccounts')===pref,'Aborted preference transaction preserves the previous record');
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(a));const owner=Array.from(new Uint8Array(digest),v=>v.toString(16).padStart(2,'0')).join('');
+  const noteId=crypto.randomUUID(),receiptId=crypto.randomUUID(),created='2026-10-01T00:00:00Z';
+  const book={schemaVersion:1,ownerScope:owner,revision:1,notes:[{id:noteId,createdAtUtc:created,current:{revision:1,title:'Заметка 😀',markdown:'Preserve original body',isTrashed:false,atUtc:created},history:[]}],receipts:[{commandId:receiptId,noteId,payloadHash:'a'.repeat(64),noteRevision:1,notebookRevision:1}],purged:[]};
+  check(await api.commitNotes(owner,0,JSON.stringify(book)),'Synthetic Notes fixture commits before transfer');
+  const inventory=await api.getWorkspaceTransferInventory(a,owner),transferId=crypto.randomUUID(),target=crypto.randomUUID();
+  const plans=inventory.journals.map(beforeJson=>{const journal=JSON.parse(beforeJson);journal.storeVersion++;journal.authority={mode:'frozen',transferId,cloudWorkspaceId:null};return{beforeJson,frozenJson:JSON.stringify(journal)};});
+  const originalPut=IDBObjectStore.prototype.put;let quotaInjected=false;
+  IDBObjectStore.prototype.put=function(...args){if(this.name==='kv'&&args[0]?.key?.startsWith('companion-adoption-v1:')){quotaInjected=true;throw new DOMException('Synthetic freeze failure','QuotaExceededError');}return originalPut.apply(this,args);};
+  let aborted=false;try{await api.freezeWorkspaceTransfer(a,owner,transferId,target,plans);}catch{aborted=true;}finally{IDBObjectStore.prototype.put=originalPut;}
+  const rolled=await api.getWorkspaceTransferInventory(a,owner);
+  check(aborted&&quotaInjected&&rolled.pendingJson===null&&JSON.stringify(rolled.journals)===JSON.stringify(inventory.journals)&&rolled.notesJson===inventory.notesJson,'Two-store freeze rolls back every task, journal, Notes and authority write on quota failure');
+  const frozenState=await api.freezeWorkspaceTransfer(a,owner,transferId,target,plans),frozenData=JSON.parse(frozenState),artifact=JSON.parse(frozenData.artifact);
+  check(artifact.transferId===transferId&&artifact.notes===inventory.notesJson&&artifact.workspaces.length===2,'Atomic freeze captures both legacy Workspaces and exact Notes bytes');
+  check(await api.freezeWorkspaceTransfer(a,owner,crypto.randomUUID(),target,[])===frozenState,'Lost capture acknowledgement recovers the original immutable transfer');
+  let workspaceDenied=false,notesDenied=false;const next=JSON.parse(plans[0].frozenJson);next.storeVersion++;
+  try{await api.commitWorkspace(a,next.storeVersion-1,JSON.stringify(next));}catch{workspaceDenied=true;}
+  try{await api.commitNotes(owner,1,JSON.stringify({...book,revision:2,receipts:[...book.receipts,{...book.receipts[0],commandId:crypto.randomUUID(),noteRevision:2,notebookRevision:2}]}));}catch{notesDenied=true;}
+  check(workspaceDenied&&notesDenied,'Frozen task journals and Notes cannot acquire writable authority');
+  const artifactDigest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(frozenData.artifact));const artifactHash=Array.from(new Uint8Array(artifactDigest),v=>v.toString(16).padStart(2,'0')).join('');
+  const receipt={state:'accepted',transferId,workspaceId:target,artifactHash};let wrongDenied=false;
+  try{await api.acknowledgeWorkspaceTransfer(a,owner,transferId,'b'.repeat(64),JSON.stringify(receipt));}catch{wrongDenied=true;}
+  check(wrongDenied&&JSON.parse((await api.getWorkspaceTransferInventory(a,owner)).pendingJson).acknowledged===false,'A mismatched receipt cannot acknowledge another source');
+  check(await api.acknowledgeWorkspaceTransfer(a,owner,transferId,artifactHash,JSON.stringify(receipt)),'Exact original receipt acknowledges local recovery evidence');
+  const acknowledged=JSON.parse((await api.getWorkspaceTransferInventory(a,owner)).pendingJson);
+  check(acknowledged.acknowledged&&acknowledged.artifact===frozenData.artifact&&(await api.ensureDefaultWorkspace(a,empty(crypto.randomUUID()))).workspaceId===null,'Acknowledgement retains exact archives and cannot reveal a writable Browser option');
+  const c='00000000-0000-4000-8000-000000000013',cloudId=crypto.randomUUID(),oldTransfer=crypto.randomUUID();
+  const cDigest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(c)),cOwner=Array.from(new Uint8Array(cDigest),v=>v.toString(16).padStart(2,'0')).join('');
+  const owned=JSON.parse(empty(cloudId));owned.authority={mode:'cloud',transferId:oldTransfer,cloudWorkspaceId:cloudId};const ownedJson=JSON.stringify(owned);await api.commitWorkspace(c,0,ownedJson);
+  const retained=await api.getWorkspace(c,cloudId);const notesOnly=JSON.parse(await api.freezeWorkspaceTransfer(c,cOwner,crypto.randomUUID(),cloudId,[{beforeJson:retained,frozenJson:retained,retainCloud:true}]));
+  check(JSON.parse(notesOnly.artifact).workspaces.length===0&&await api.getWorkspace(c,cloudId)===retained,'Legacy cloud-owned task recovery bytes remain unchanged during remaining Notes adoption');
   return checks;
  });
  console.log(JSON.stringify({checks:results.length,results}));
