@@ -1,6 +1,5 @@
 # Technical Architecture
 
-Last updated: 2026-06-09
 Primary audience: AI agents and senior developers
 Project type: third-party Habitica companion client
 Primary Habitica integration reference: `.skill-tree/documents/habitica-api.md`
@@ -22,7 +21,7 @@ The application must:
 - run on as many devices as possible;
 - work as an installable browser-based client where possible;
 - use local-first data storage;
-- avoid storing Habitica credentials outside the user's device unless explicitly required by a future architecture decision;
+- keep browser credentials local unless the user explicitly consents to the separate Auth vault;
 - expose rich data views for Habitica user, task, inventory, party, quest, and skill data;
 - support deterministic calculations and explainable recommendations;
 - execute mutating Habitica actions conservatively and sequentially.
@@ -282,7 +281,7 @@ Native shell work must not fork domain logic or Habitica API behavior.
 
 ### 4.8 Backend
 
-The initial local-only architecture has been extended by documented Cloudflare backend surfaces. Do not add another backend surface unless a documented feature requires it.
+The client uses the documented Cloudflare backend surfaces below. Additional backend surfaces require a documented feature and architecture decision.
 
 The baseline read/write Habitica architecture is:
 
@@ -308,6 +307,9 @@ Current optional backend surfaces:
 ```text
 Browser PWA -> Cloudflare Pages Function -> Cloudflare KV
 Browser PWA -> Cloudflare Pages Function -> Cloudflare D1
+Browser PWA -> Auth Worker -> encrypted integration vault / Habitica API v3
+Codex or ChatGPT -> MCP Worker -> private Auth and Workspace bindings
+Browser PWA -> Workspace Worker -> canonical task and Notes D1 stores
 ```
 
 The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts each section payload independently, and uploads only encrypted JSON.
@@ -324,7 +326,7 @@ Both provider boundaries must stay abstract so another remote sync provider can 
 
 ## 5. Repository ownership
 
-[repository-map.md](repository-map.md) owns physical paths and module responsibilities. Application source remains under `src/`, tests under `tests/`, Pages Functions under `functions/`, and canonical documentation under `.skill-tree/documents/`. The manifest indexes documentation and workflow state; dedicated Auth/MCP Worker scaffolds reside under `workers/`. Protected operations remain denied until authorization is implemented.
+[repository-map.md](repository-map.md) owns physical paths and module responsibilities. Application source remains under `src/`, tests under `tests/`, Pages Functions under `functions/`, and canonical documentation under `.skill-tree/documents/`. The manifest indexes documentation and workflow state; dedicated Auth, MCP and Workspace Workers reside under `workers/`. Protected operations require configured feature flags, validated identity, applicable scopes and separate product consent.
 
 `src/Habitica.WebApp/package.json` and `package-lock.json` pin browser dependencies. Dependency versions reside in [dependencies.md](dependencies.md); build/release steps reside in [build-and-release.md](build-and-release.md).
 
@@ -535,9 +537,9 @@ Native credential policy, if native shell is added:
 - Windows: platform credential store or DPAPI-backed storage;
 - Linux: platform-supported secret service where available, otherwise clearly document limitations.
 
-## Optional ChatGPT integration proposal
+## Optional Codex and ChatGPT integration
 
-Separate Auth/MCP Workers and a disabled-by-default Auth credential vault are implemented; OAuth linking and protected resource validation are implemented but disabled in shipped configurations. Local integration implementation follows the owner-approved [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. The owner approved local implementation and tests. Enrollment and deployment remain disabled; current browser behavior sends no credentials to the integration backend.
+Auth, MCP and Workspace Workers implement separately consented enrollment, OAuth linking, protected reads and reviewed commands. Checked-in Worker defaults disable optional integration, and source PWA settings leave Auth/Workspace URLs empty. `deploy/production.frontend.json` selects enabled frontend integration endpoints; deployment preparation supplies separate backend flags. [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md) owns rollout configuration. Recorded release evidence remains build-specific and supplies no new authorization or current live-service observation. Browser credential persistence and Auth vault consent are separate; MCP never receives raw Habitica credentials.
 
 ## 10. Sync strategy
 
@@ -742,14 +744,14 @@ Target framework: .NET 8 LTS (`net8.0`)
 Primary UI library: MudBlazor
 Primary local browser storage: IndexedDB through a pinned Dexie.js interop boundary
 Primary API target: Habitica API v3
-Backend: Cloudflare Pages Functions with KV for encrypted app-data sync and D1 for shared party sync
+Backend: Pages Functions/KV/D1 for legacy sync; separate Auth/MCP/Workspace Workers for optional integration
 Native shell: optional future .NET MAUI Blazor Hybrid
 Domain logic: pure C# class libraries
 Workflow orchestration: application/use-case layer, not UI components
 Mutation model: validated, sequential, dry-run-first for multi-step actions
 Sync model: user-initiated Habitica refresh plus automatic encrypted app-data and party-sync attempts after supported refreshes, mutations, and local preference saves
 Freshness model: fresh/stale/expired/missing with mutation gating
-Credential model: local-only, password-equivalent, session-only by default with explicit persistent opt-in
+Credential model: browser session-only default, explicit persistent opt-in; separately consented encrypted Auth vault
 ```
 
 ## Integration credential vault
@@ -758,7 +760,7 @@ The Auth Worker owns a dedicated `integration_profiles` table. Profile IDs deriv
 
 `POST /enroll` requires explicit `integration-v1` consent, validates Habitica credentials before persistence, and rotates a 256-bit management credential whose hash alone is stored. Re-enrollment rotates the management credential and encrypted envelope while preserving the profile ID. Identical active credentials preserve the connection epoch only after fresh Habitica validation and constant-time credential comparison. Changed credentials, revoked profiles and deleted/recreated profiles receive a new epoch. Enrollment generation checks reject stale concurrent updates. Successful revalidation clears credential-repair state while retaining quota cooldown. The random connection epoch prevents obsolete authorization contexts from becoming valid after deletion and re-enrollment. Management authorization is scoped to one profile and uses constant-time hash comparison. Disconnect removes ciphertext and management credentials and marks the profile revoked. Profile deletion removes the row. OAuth validation enforces the current connection epoch and active profile on every request and refresh. Cleanup revokes grants for the disconnected epoch and deletes associated linking records. Access remains blocked when cleanup returns a retryable pending result.
 
-Enrollment is disabled in every shipped Worker configuration. Local fixtures enable the route with synthetic credentials and mocked Habitica validation. Real enrollment requires separate authorization and user consent. The optional Settings enrollment surface requires a configured Auth URL and explicit consent. Shipped PWA configuration leaves the Auth URL empty. Integration management state remains tab-local and separate from portable app data.
+Checked-in Worker configurations disable enrollment; synthetic fixtures enable enrollment with controlled credentials and provider responses. The selected production bundle uses separate enabled overrides under the deployment contract. Settings enrollment requires a configured Auth URL and explicit consent. Source PWA defaults leave the Auth URL empty; `deploy/production.frontend.json` supplies the production URL. Existing-only recovery and account preference restoration follow [session-recovery.md](session-recovery.md) and [unified-workspace.md](unified-workspace.md); management secrets remain separate from portable preferences.
 
 ## OAuth linking boundary
 

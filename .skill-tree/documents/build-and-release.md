@@ -21,4 +21,21 @@ dotnet build Habitica.sln -m:1 -nodeReuse:false
 
 `build.sh` installs the selected SDK into the local `dotnet/` directory, prepares vendored Dexie, merges public frontend overrides through `deploy/frontend-settings.mjs`, preserves unrelated settings and restores source configuration after publish success/failure, and publishes the web application into `output/`. `wrangler.toml` identifies Pages output as `output/wwwroot`.
 
-[deploy-cloudflare-pages.md](deploy-cloudflare-pages.md) owns Pages, KV, D1, migration and operational instructions. Current bindings are `HABITICA_SYNC_KV` and `HABITICA_PARTY_DB`. Dedicated MCP/Auth Worker scaffolds reside under `workers/`; [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md#dedicated-worker-local-validation) owns local dry-run and binding fixture commands. Deployment, real-service checks and publication require an applicable developer request.
+[deploy-cloudflare-pages.md](deploy-cloudflare-pages.md) owns Pages, KV, D1, migration and operational instructions. Current bindings are `HABITICA_SYNC_KV` and `HABITICA_PARTY_DB`. Dedicated Auth, MCP and Workspace Workers reside under `workers/`; [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md#dedicated-worker-local-validation) owns local dry-run and binding fixture commands. Deployment, real-service checks and publication require an applicable developer request.
+
+## Configuration selection
+
+Source PWA settings disable optional integration and leave backend URLs empty. `HABITICA_FRONTEND_SETTINGS_FILE` selects a public override merged during `build.sh`; `deploy/production.frontend.json` supplies the selected production endpoints. `HABITICA_X_CLIENT_HEADER` overrides the public creator header. Neither public configuration file contains credentials. Worker defaults remain disabled independently of frontend settings; [deployment preparation](../../deploy/README.md) owns reviewed backend configuration.
+
+## Worker build identity and local dry bundles
+
+`workers/release-inputs.json` and bounded Worker source/package/config inputs feed `workers/scripts/generate-build-identity.py`. After a reviewed change to the bounded inputs, regenerate the shared identity, then build matching bundles before composed service fixtures:
+
+```sh
+python3 workers/scripts/generate-build-identity.py
+npm --prefix workers/chatgpt-auth run build
+npm --prefix workers/chatgpt-mcp run build
+npm --prefix workers/companion-workspace run build
+```
+
+Each build checks the generated identity, types and TypeScript before the default-environment Wrangler dry run. Source documentation changes outside the bounded inputs require no identity regeneration. Dry bundles establish no publication, remote migration, host discovery or live-account behavior. Exact release identities and check results belong in structured release evidence under `.skill-tree/history/releases/`.

@@ -34,7 +34,7 @@ Required owner-pilot clients: ChatGPT and Codex desktop. Both clients use the sa
 
 - [x] Publish the release build to the selected website and verify HTTPS, routed-page refresh, signed-out Settings, static configuration and disabled cloud effect flags. Existing browser bindings are retained; real legacy-data continuity still requires the owner browser session.
 - [ ] Verify OAuth discovery, exact audience, PKCE, consent cookies and Origin/CORS separately for ChatGPT and Codex desktop against deployed addresses. Verify Codex loopback callbacks, selected ports and issuer validation for the actual client registration flow. Complete explicit account enrollment through the consent UI; never import credentials from chat or test fixtures.
-- [ ] Qualify the private plugin and all three bundled skills in both clients, using explicit invocation and matching natural-language requests in fresh chats. Record actual host availability and any failed installation or activation gate.
+- [ ] Qualify the private plugin and all six bundled skills in both clients, using explicit invocation and matching natural-language requests in fresh chats. Record actual host availability and any failed installation or activation gate.
 - [ ] Save and read a canonical task, recover the original command receipt after an interrupted response, export/restore a backup and exercise revoke/disconnect/delete controls. Verify rejected cross-profile access and retained uncertainty without duplicate effects. Exercise real effects only in selected lanes.
 - [ ] Confirm safe 429/backoff behavior, stalled/unknown status, secret-free logs and the stop/rollback procedure. Record unresolved hosted limitations for the owner test session.
 

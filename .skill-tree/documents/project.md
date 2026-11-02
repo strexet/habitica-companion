@@ -1,6 +1,6 @@
 # Habitica Companion Client
 
-Status: current product vision, not an implementation source of truth. Use `.skill-tree/documents/features.md` for current implemented behavior and `.skill-tree/documents/future.md` for active planned work.
+Status: product scope and constraints. [features.md](features.md) owns detailed implemented behavior; [future.md](future.md) owns remaining planned work. The current client includes canonical task planning, personal Notes and optional Auth/MCP/Workspace services alongside Habitica analysis and guarded actions.
 
 ## 1. Project Summary
 
@@ -182,9 +182,7 @@ Habitica data should be synchronized into a local cache or snapshot, and the UI 
 
 ## 6.6 User-Controlled Credentials
 
-The user must remain in control of their Habitica credentials.
-
-The application should not send the Habitica API token anywhere except the official Habitica API. The application should provide clear controls for clearing local data and credentials.
+The user controls browser credential persistence and separate integration consent. Browser sign-in defaults to session-only storage. Explicit integration enrollment sends credentials to the configured Auth Worker for encrypted vault storage and narrow authenticated operations. MCP tools receive sanitized models and original receipts, never the token. Encrypted app-data sync excludes credentials. [technical.md](technical.md#integration-credential-vault) owns the vault boundary and deletion controls.
 
 ## 7. Expected User Flow
 
@@ -205,16 +203,16 @@ A typical user flow:
 
 The project should not initially focus on:
 
-- replacing the official Habitica task UI;
+- replacing Habitica game mechanics;
 - rebuilding social features;
 - chat replacement;
 - full quest management replacement;
 - real-time multiplayer interaction;
 - complex game-like 3D or 2D presentation;
-- server-side storage of user API tokens;
+- credential storage beyond the separately consented Auth vault;
 - automatic background automation without user visibility.
 
-These areas may be reconsidered later, but they are not part of the initial product direction.
+Canonical task planning and Notes are current client capabilities. Additional product proposals belong in `future.md`.
 
 ## 9. Target Audience
 
