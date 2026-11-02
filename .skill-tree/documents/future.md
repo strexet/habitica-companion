@@ -110,11 +110,40 @@ Processing blocker:
 Processing blocker:
 - Fresh static inspection confirms serialized adaptive pacing, acknowledged17of40/429 controls and account-bound explicit gear recovery. The release report excludes live spell reproduction; affected-client build/controller identity and sanitized post-update iPhone evidence remain unavailable. No residual source defect or duplicate implementation is established. Obtain affected-client observations before a separately scoped live reproduction; research: .skill-tree/history/processing/session-workspace-2026-10-30/research.md.
 
+### Qualify hosted callback DNS and TLS failure injection
+
+```yaml
+id: P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Exercise owner-controlled DNS answer changes, private and mixed address rejection, invalid TLS certificates and stalled TLS handshakes against the deployed callback gateway. Independent authoritative DNS and a raw public TLS fixture are unavailable on the current provider-managed project hostnames.
+
+Expected behavior:
+- Retain source-bound hosted refusal and receiver counters for every DNS/TLS scenario when an owned fixture becomes available. Keep the production destination and certificate guards enforced; report unavailable hosted coverage explicitly. Dedicated DNS/TLS infrastructure is not a prerequisite for the owner-selected normal-delivery smoke task.
+
+Current context:
+- Independent fixture qualification deferred from selected task T-ec421773-5864-4bc5-b17f-ce04e0d818c2, with inherited completed root T-6a8db6be-b721-4b88-b62b-c6566d759080. The installed intake helper requires an open prioritized root for a structural followup; no inherited identity is rewritten. The normal-delivery revision preserves local DNS/TLS tests and production guards. No passing hosted evidence is implied.
+
+Source:
+- Direct repository-owner request in the current chat to defer unavailable hosted failure tests and check normal operation first.
+
+Priority rationale:
+- Nonblocking work deferred from the selected priority101 hosted task; the repository owner selects normal HTTPS delivery before dedicated DNS/TLS failure infrastructure.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Qualify the selected Netlify callback gateway deployment
+### Verify normal delivery through the selected Netlify callback gateway
 
 ```yaml
 id: T-ec421773-5864-4bc5-b17f-ce04e0d818c2
@@ -130,32 +159,33 @@ boundary_validation: before-dependent-work
 ```
 
 Goal:
-- Provide the owner-selected Netlify Functions Free callback egress boundary without changing callback-secret custody or activating subscriptions.
+- Verify normal synthetic callback delivery through the owner-selected Netlify Functions Free gateway and matching Auth claim endpoint, without activating subscriptions.
 
 Current behavior:
-- Auth has no callback egress grant fence. The retained protocol prototype uses fake network adapters. The owner selected Netlify Functions Free; deployment and real callback execution require a concrete account and explicit scope.
+- The gateway/Auth candidate implements public-address and TLS-hostname guards plus one-use Auth claims. Publication records identify the disabled candidates; normal hosted delivery remains unverified. The selected Netlify project belongs to Flying Monolith, team slug strexet. Owner authorization covers temporary gateway/claim activation, synthetic owned-fixture requests and subsequent disable/rollback.
 
 Desired behavior:
-- Qualify the exact candidate on a selected owner Netlify Free account/site and matching Auth deployment using a bounded operator-approved profile. Record runtime, deployment/rollback identity, Free-plan hard limit, environment secret names, redacted provider logging configuration and permitted test destinations.
-- Verify actual signed challenge bytes, public IPv4/IPv6 connection policy, controlled DNS changes, original-host TLS, redirect/private/mixed-address rejection, concurrency/replay, cold-start deadline and unavailable/quota behavior. Keep subscription activation unavailable until evidence passes.
+- Verify the exact candidate on the selected Netlify Free project and matching Auth deployment using a bounded normal-delivery profile. Record actual runtime, deployed source/configuration, quota, logging and current rollback identity.
+- Send a synthetic signed challenge to an isolated HTTP receiver on existing owner-controlled HTTPS hosting. Verify exact received bytes and signature, original claim identity, one receiver delivery, bounded successful response and refusal of replay. Disable the selected lanes and verify shutdown.
+- Dedicated DNS manipulation, invalid-certificate and stalled TLS-handshake injection reside in Pending P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b. The owner selects normal-delivery evidence before the separate fixture qualification. Preserve destination/certificate guards and local negative tests; unavailable hosted failure evidence remains explicit.
 
 Touch:
-- Operator setup, selected Netlify/Auth deployment configuration and hosted evidence only; scoped repairs return to the existing implementation checkpoint.
+- Operator setup, selected Netlify/Auth configuration, an isolated synthetic HTTP receiver on existing owned hosting and reduced hosted evidence; scoped repairs remain in the existing implementation checkpoint.
 
 Discovery allowance:
-- Inspect connected provider access without exposing credentials. Obtain missing exact account/site, controlled fixture destinations and publication scope from the owner after the local candidate is reviewable.
+- Inspect the selected Netlify project and existing owned HTTPS hosting without exposing credentials. Bind the receiver route, deployed identities, grant/claim authority and cleanup before execution. Dedicated DNS zones and raw TLS servers are unnecessary for the selected normal-delivery boundary.
 
 Out of scope:
-- Paid resources, automatic upgrades, provider fallback, real user callback enrollment, ChatGPT messages, subscriptions and gameplay.
+- Dedicated DNS/TLS failure injection, paid resources, automatic upgrades, provider fallback, real user callback enrollment, ChatGPT messages, subscriptions and gameplay.
 
 Implementation constraints:
-- Account creation, secret entry, remote migration and publication require explicit operator scope. No provider documentation or local TLS fixture substitutes for hosted acceptance. Do not probe unowned private services.
+- Preserve HTTPS-only transport, public-address checks, original-host certificate validation, no redirects, deadlines and original claim fences. Deferring a hosted test grants no permission to weaken a production guard or report a skipped test as passing. Account creation, new secret provisioning, remote migration and publication retain applicable operator scope. No provider documentation, local TLS fixture or health response substitutes for observed hosted delivery.
 
 Questions and required clarifications:
-- [Resolved - execution prerequisite] Netlify Functions Free is selected. The owner supplies the concrete account/site and hosted execution scope when the local implementation and profile are ready. No live access is inferred from the planning decision.
+- [Resolved - validation boundary] The owner selects normal hosted delivery before dedicated DNS/TLS failure injection. Accepted execution scope and verified provider identity reside in .skill-tree/history/validation/implement-all-2026-11-02/owner-scope.json and provider-inspection.json. The selected task remains incomplete until actual normal-delivery controls pass.
 
 Validation:
-- Execute the bounded hosted profile against owned fixtures after explicit scope; retain sanitized original receipts, negative controls, runtime/configuration and rollback evidence. Failed or unavailable controls leave the dependency incomplete.
+- Execute the bounded normal-delivery profile against the exact owned HTTPS receiver. Retain reduced runtime/configuration, signed-byte, claim/replay, response-deadline and disable/rollback observations. Missing normal-delivery evidence blocks completion; dedicated hosted DNS/TLS failure scenarios remain deferred and unverified.
 ```json
 {
   "checks": [
@@ -163,14 +193,19 @@ Validation:
       "id": "hosted-gateway",
       "recipe_id": "netlify-hosted-controls",
       "criteria": [
-        "The exact deployed gateway and Auth claim endpoint pass the approved hosted DNS/TLS, signed-byte, replay, deadline and unavailable/quota controls with sanitized evidence and a verified rollback path."
+        "The selected gateway and Auth endpoint have verified deployed source/runtime/configuration, available Free quota, reviewed provider logging and a current rollback identity.",
+        "A synthetic signed challenge reaches the exact owned HTTPS receiver with matching bytes and signature, the original claim identity and one observed delivery; replay produces no additional delivery and the successful response meets the shared deadline.",
+        "Disabling the selected gateway/claim lanes and scoped shutdown or rollback are observed; reduced receipts retain original fences and explicitly list deferred hosted DNS/TLS failure coverage."
       ],
       "sources": [
         ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
+        ".skill-tree/documents/technical.md",
+        "deploy/callback-egress/src/gateway.mjs",
+        "deploy/callback-egress/src/transport.mjs",
+        "workers/chatgpt-auth/src/callback-egress.ts"
       ],
       "parameters": {},
-      "assertion": "- Execute the bounded hosted profile against owned fixtures after explicit scope; retain sanitized original receipts, negative controls, runtime/configuration and rollback evidence. Failed or unavailable controls leave the dependency incomplete.",
+      "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
       "timing": "before-dependent-work"
     }
   ]
@@ -178,13 +213,15 @@ Validation:
 ```
 
 Acceptance:
-- The exact deployed gateway and Auth claim endpoint pass the approved hosted DNS/TLS, signed-byte, replay, deadline and unavailable/quota controls with sanitized evidence and a verified rollback path.
+- The selected gateway and Auth endpoint have verified deployed source/runtime/configuration, available Free quota, reviewed provider logging and a current rollback identity.
+- A synthetic signed challenge reaches the exact owned HTTPS receiver with matching bytes and signature, the original claim identity and one observed delivery; replay produces no additional delivery and the successful response meets the shared deadline.
+- Disabling the selected gateway/claim lanes and scoped shutdown or rollback are observed; reduced receipts retain original fences and explicitly list deferred hosted DNS/TLS failure coverage.
 
 Documentation updates:
-- Record actual hosted coverage and remaining host/device limitations; retain no real callback URL, signing material or account credentials.
+- Record the normal-delivery boundary and deferred hosted failure scenarios explicitly. Retain no real callback URL, signing material or account credentials. Normal delivery proves only the exercised destination and flow; complete security qualification and actual chat rendering require separate evidence.
 
 Risks:
-- Missing owner account, publication authority or controlled fixtures blocks execution. Free quota exhaustion must preserve undelivered state without paid fallback.
+- A successful request or absence of reported errors cannot prove every production path or unexecuted DNS/TLS refusal. Missing actual receiver/deployment evidence still blocks the selected task. Free quota exhaustion must preserve undelivered state without paid fallback.
 
 ### Browse and manage standalone and project Notes folders
 

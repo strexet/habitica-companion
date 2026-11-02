@@ -1,8 +1,156 @@
 {
-  "active_run": null,
+  "active_run": {
+    "admission": {
+      "environment_id": "690677f58887ed320d877e6081902c4b718c7b80729e3a780d8095d1e713428a",
+      "flavor": "web",
+      "identity": "5d9fae3400d9a9df3596ec55c11d3986d7bc6b38b4df99e617565376bc90e578",
+      "project_root": "/Users/petr/Projects/habitica-tool"
+    },
+    "admitted_groups": {},
+    "admitted_task_ids": [
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+      "T-34491faa-090e-4d97-b496-1fe947770688",
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+      "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33",
+      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "T-65810da7-9524-45ce-b280-668d04c86441",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32",
+      "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+    ],
+    "completed_ids": [],
+    "current_task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "deferred_ids": [],
+    "history_refs": [
+      ".skill-tree/history/validation/implement-all-2026-11-02/hosted-prerequisite.json",
+      ".skill-tree/history/validation/callback-egress-netlify/hosted-profile.json",
+      ".skill-tree/history/validation/callback-egress-netlify/auth-setup-scope.json",
+      ".skill-tree/history/validation/callback-egress-netlify/auth-setup-result.json",
+      ".skill-tree/history/validation/implement-all-2026-11-02/owner-scope.json",
+      ".skill-tree/history/validation/implement-all-2026-11-02/operator-setup.md",
+      ".skill-tree/history/validation/implement-all-2026-11-02/provider-inspection.json",
+      ".skill-tree/history/validation/implement-all-2026-11-02/dns-tls-followup-intake.json",
+      ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json",
+      ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json"
+    ],
+    "id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+    "limits": {},
+    "mode": "all",
+    "next_action": "implement",
+    "partial_work": [
+      "Initial snapshot frozen: 14 prioritized roots; no active run existed at invocation.",
+      "Gateway entry, transport and gateway/TLS test hashes match retained local qualification; prepare-source.mjs and package.test.mjs differ. Historical packaging evidence is not current qualification.",
+      "Existing Auth setup receipt identifies the gateway and disabled claim candidate; current live state remains unverified.",
+      "Hosted execution authorization is supplied by the direct owner reply and retained in owner-scope.json; accepted gateway/claim scope requires no repeated confirmation.",
+      "Owner sign-in and selected Netlify team/project are verified. Team Flying Monolith (strexet), project 04629462-d0c6-4a72-bf02-6170cb1c39f8 uses Free with 258 of 300 credits available at observation.",
+      "The owner identifies the existing habitica-companion public project. Provider-managed HTTPS permits an HTTP receiver subset; independently controlled authoritative DNS and raw public TLS fixtures remain unavailable.",
+      "Detailed platform coverage and operator handoff reside in operator-setup.md. No receiver deployment, hosted control, callback or provider mutation executed.",
+      "The repository owner selects normal hosted delivery before unavailable dedicated DNS/TLS failure injection. The current task specification is revised before acceptance; no missing hosted scenario is reported as passing.",
+      "Pending P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b, priority100, retains dedicated hosted DNS/TLS fixture qualification outside the initial snapshot.",
+      "The selected normal-delivery stage needs an isolated owned HTTPS receiver and a concrete hosted recipe; separate DNS zones/raw TLS servers are no longer prerequisites for the selected contract. Production destination/certificate guards and local negative tests remain unchanged.",
+      "The owner requests a commit of the reviewed task-owned planning/checkpoint changes. Actual hosted delivery and task acceptance remain unexecuted."
+    ],
+    "pending_ids": [
+      "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b"
+    ],
+    "phase": "implement",
+    "processing_results": [],
+    "required_ids": [
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+      "T-34491faa-090e-4d97-b496-1fe947770688",
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+      "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33",
+      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "T-65810da7-9524-45ce-b280-668d04c86441",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32",
+      "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+    ],
+    "root_task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "snapshot": [
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+    ],
+    "started_at": "2026-11-02T11:21:03.761538+00:00",
+    "stop_reason": null
+  },
   "format": "skill-tree-future",
   "schema": 2,
-  "source_hash": "7bbede7cff34dc6a4493376095f676e6f6f9f23b0210594f536479839c30c316",
+  "source_hash": "f2e8136b767b6c3a775801b799695fc6e90b550c91d542568d73651d0c32d4e4",
   "task_progress": {},
   "tasks": [
     {
@@ -20,12 +168,26 @@
       "title": "Resolve mass spell rate limits and explicit gear recovery"
     },
     {
+      "depends_on": [],
+      "id": "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+      "line": 113,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "Qualify hosted callback DNS and TLS failure injection"
+    },
+    {
       "boundary_validation": "before-dependent-work",
       "depends_on": [
         "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
       ],
       "id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
-      "line": 117,
+      "line": 146,
       "parent_pending_ids": [
         "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
       ],
@@ -36,7 +198,7 @@
       "relation": "blocker",
       "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
       "status": "Ready",
-      "title": "Qualify the selected Netlify callback gateway deployment"
+      "title": "Verify normal delivery through the selected Netlify callback gateway"
     },
     {
       "boundary_validation": "before-dependent-work",
@@ -45,7 +207,7 @@
         "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
       ],
       "id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
-      "line": 189,
+      "line": 226,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -63,7 +225,7 @@
         "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
       ],
       "id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
-      "line": 296,
+      "line": 333,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -81,7 +243,7 @@
         "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
       ],
       "id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
-      "line": 374,
+      "line": 411,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -98,7 +260,7 @@
       "boundary_validation": "before-dependent-work",
       "depends_on": [],
       "id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
-      "line": 475,
+      "line": 512,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -116,7 +278,7 @@
         "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
       ],
       "id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
-      "line": 600,
+      "line": 637,
       "parent_pending_ids": [
         "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
       ],
@@ -137,7 +299,7 @@
         "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
       ],
       "id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
-      "line": 679,
+      "line": 716,
       "parent_pending_ids": [
         "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
       ],
@@ -166,7 +328,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 776,
+      "line": 813,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -186,7 +348,7 @@
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 875,
+      "line": 912,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -206,7 +368,7 @@
         "T-07d27408-3019-423f-a5de-4cda1f9e2818"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 983,
+      "line": 1020,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31",
         "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
@@ -226,7 +388,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 1069,
+      "line": 1106,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -244,7 +406,7 @@
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 1182,
+      "line": 1219,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -269,7 +431,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1270,
+      "line": 1307,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -285,7 +447,7 @@
     {
       "depends_on": [],
       "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
-      "line": 1484,
+      "line": 1521,
       "parent_pending_ids": [
         "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
       ],
@@ -301,7 +463,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1571,
+      "line": 1608,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -315,7 +477,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1608,
+      "line": 1645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -329,7 +491,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1645,
+      "line": 1682,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -343,7 +505,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1778,
+      "line": 1815,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -357,7 +519,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1816,
+      "line": 1853,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -371,7 +533,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1850,
+      "line": 1887,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -385,7 +547,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1885,
+      "line": 1922,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -399,7 +561,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1919,
+      "line": 1956,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -413,7 +575,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1957,
+      "line": 1994,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -427,7 +589,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1984,
+      "line": 2021,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -441,7 +603,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 2006,
+      "line": 2043,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

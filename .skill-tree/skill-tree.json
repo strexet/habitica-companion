@@ -71,7 +71,7 @@
       "scope": "repository-documentation-current-contracts-static-sample"
     },
     {
-      "fresh": true,
+      "fresh": false,
       "id": "A-7de96b98-761d-4a93-b250-3cca1b85c42c",
       "path": ".skill-tree/history/audits/audit-a-7de96b98-761d-4a93-b250-3cca1b85c42c.json",
       "recorded_at": "2026-11-02T11:10:57.851158+00:00",
@@ -471,7 +471,7 @@
     "task_outcomes": ".skill-tree/history/task-outcomes.jsonl"
   },
   "latest_audit": {
-    "fresh": true,
+    "fresh": false,
     "id": "A-7de96b98-761d-4a93-b250-3cca1b85c42c",
     "path": ".skill-tree/history/audits/audit-a-7de96b98-761d-4a93-b250-3cca1b85c42c.json",
     "recorded_at": "2026-11-02T11:10:57.851158+00:00",
@@ -491,7 +491,7 @@
   "source_digests": {
     ".skill-tree/documents/ai-app-testing.md": "5cb10944c63d18f1209328e00b66a7a62b2acb218cdb4498fb0272f676827c7f",
     ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
-    ".skill-tree/documents/callback-egress.md": "5793dc3df4da1bad74ac498e86f0f9227a1e90eaa44292b4ea2fd9e2651ddcc2",
+    ".skill-tree/documents/callback-egress.md": "671656a31205838067d0be7fcee84fe5e627d3830dc002e39cf501bd5c0711ec",
     ".skill-tree/documents/companion-discovery.md": "cb5a5b3a22a106f96ac86243c9a101b1dadfd88ca406f78091c08e80647535b1",
     ".skill-tree/documents/companion-first-mcp-research.md": "ee152cd23df0d62cbb6ace69c522d5ed5e4d73628d486267f5207ad068b122e6",
     ".skill-tree/documents/companion-workspace-contract.md": "be59df47bb341135ca41dfd7d2975541e6f431df0af2c5a33da89c52bc4f2315",
@@ -501,7 +501,7 @@
     ".skill-tree/documents/documents-snapshot.md": "41d65a176f332b83fd1ff5c72ab69f3e84eb8ada9c40a0f67e80b248ea0b84b6",
     ".skill-tree/documents/features.md": "07e834be6c376487d836660001b4d67a131788a0de025fa15eeb9412ef653f10",
     ".skill-tree/documents/foreground-reminders.md": "951fcb6b17441ab4e80fdac68ee49a98e517f5763148316c948dcfd4c50ca5b3",
-    ".skill-tree/documents/future.md": "7bbede7cff34dc6a4493376095f676e6f6f9f23b0210594f536479839c30c316",
+    ".skill-tree/documents/future.md": "f2e8136b767b6c3a775801b799695fc6e90b550c91d542568d73651d0c32d4e4",
     ".skill-tree/documents/habitica-api.md": "a482cbf3b5573d72ff376ca50845de888c5a5f10d58e01c5482c74d7e53948a4",
     ".skill-tree/documents/habitica-deeplinks.md": "d9ba678490f7f897903b570429a5025c5e6ca67c1da38c579545109dc1d17228",
     ".skill-tree/documents/habitica-tool-references.md": "705a4d2534a6a66e867ea3af48e39650b33f35f79d30a0ce4ae2c59ad00ea54d",

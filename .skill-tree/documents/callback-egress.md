@@ -1,6 +1,6 @@
 # Callback HTTPS egress candidate
 
-Status: the candidate Netlify gateway and matching disabled Auth claim endpoint are deployed. Hosted DNS/TLS enforcement, provider logging, cold starts and subscription activation require the separate hosted qualification task. The gateway creates no subscription, consent, scheduler, message or Habitica operation.
+Status: the candidate Netlify gateway and matching disabled Auth claim endpoint are deployed. Normal hosted delivery, deployed identity, provider logging and shutdown require the selected normal-delivery qualification task. Dedicated hosted DNS/TLS failure injection resides in Pending `P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b`. Destination and certificate guards remain enforced; deferred tests have no passing hosted evidence. The gateway creates no subscription, consent, scheduler, message or Habitica operation.
 
 ## Ownership and authentication
 
@@ -47,7 +47,7 @@ Public browser checks establish Auth health, OAuth discovery, MCP-to-Auth reacha
 
 ## Hosted profile and rollback
 
-`.skill-tree/history/validation/callback-egress-netlify/hosted-profile.json` specifies the required operator selections and bounded controls. The profile grants no execution authority. Initial publication remains disabled; successful qualification can establish only the selected gateway transport. Real ChatGPT subscription/challenge/event/unsubscribe and observed rendering belong to the subsequent host workflow. Codex local chat wake-up remains unverified.
+`.skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json` specifies the owner-selected normal-delivery boundary, owned HTTPS receiver, original claim/replay checks and disable/rollback evidence. The profile references the accepted operator scope; a profile alone grants no execution authority. Dedicated DNS manipulation, invalid certificates and stalled TLS handshakes remain unverified followup coverage, without requiring a separate DNS/TLS fixture for the selected normal-delivery stage. The broader retained profile at `.skill-tree/history/validation/callback-egress-netlify/hosted-profile.json` describes the deferred controls. A successful normal request proves only the exercised destination and flow. Real ChatGPT subscription/challenge/event/unsubscribe and observed rendering belong to the subsequent host workflow. Codex local chat wake-up remains unverified.
 
 Stop new sends by disabling the gateway and Auth claim flags through the selected provider configuration; redeploy where required. Retain Workspace unknown attempts and Auth fences. Restore the recorded prior deployment or remove the new route/function after verifying no other application uses the selected site. Do not delete/recreate the D1 table to escape a fence or infer a failed delivery from rollback. Deprovision service keys through protected provider controls after shutdown. Database migrations and accepted effects do not roll back with function code.
 
