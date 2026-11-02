@@ -17,7 +17,7 @@ The executable pack is [task-journeys.json](../../tests/browser-qualification/ta
 | Sync | Inspect current source and exact original command; unknown/missing receipts never enable replacement dispatch. | TodoSyncPageTests |
 | Diagnostic recovery | Preview sanitized attachment before copy/download; failed local reads retain explicit unavailability. | LiveTestsPageTests and AppSessionControllerTests |
 
-Current native restoration supports eligible completed, nonarchived, unlinked Todos only. Archived restoration and Daily occurrence correction have separate backend/MCP contracts; History UI exposure and reviewed Habitica unchecking retain separate task contracts. A fixture restore establishes neither a separate recovery workflow nor an inverse reward.
+The pack native-restore fixture covers eligible completed, nonarchived, unlinked Todos. Current [History recovery controls](history-recovery.md) separately expose native unarchive, Daily occurrence correction and [reviewed linked recovery](linked-task-recovery.md). The pack fixture establishes no broader recovery acceptance or inverse reward; each recovery contract requires matching source-bound evidence.
 
 ## Reproduction
 
