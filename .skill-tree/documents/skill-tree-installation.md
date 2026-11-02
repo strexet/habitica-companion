@@ -4,7 +4,7 @@ The covered root uses the web flavor from the Skill Tree source checkout at comm
 
 Queue/index schema 2 retains every original task ID, priority, provenance, status, dependency and acceptance criterion. Original Validation prose remains intact; structured checks add required executable mappings without recording any pass. Missing hosted/browser/device or future-fixture recipes remain explicit validation blockers until the selected task supplies the exact qualified fixture. No project task is implemented or resumed during installation.
 
-The committed checkpoint retains the recorded run identity, scope, stop reason and next action. Installation leaves the run stopped and requires explicit profile re-admission before continuation. Original history bytes remain unchanged at the relocated paths. Existing historical evidence retains original paths and verdicts; relocating history supplies no fresh product qualification.
+The current `active_run` remains null. Parked checkpoint and original history bytes remain unchanged at the relocated paths. Existing historical evidence retains original paths and verdicts; relocating history supplies no fresh product qualification.
 
 The project uses pinned .NET 8, C# 12, xUnit and bUnit plus Node/Worker fixtures. Installation reads declarations and existing restored package metadata as data, without a build, test runner, browser, server, deployment or live-service call. Foundational tests exist; no setup Pending is created.
 

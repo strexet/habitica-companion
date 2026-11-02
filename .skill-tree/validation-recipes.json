@@ -114,6 +114,20 @@
         "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution."
       },
       "execution_notes": "Local build only; no deployment. Build authorization and isolated output remain task-specific."
+    },
+    "pwa-shell-browser": {
+      "lane": "browser",
+      "argv": [
+        "node",
+        "tests/browser/pwa-shell.mjs"
+      ],
+      "input_paths": [
+        "tests/browser/pwa-shell.mjs",
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+        "src/Habitica.WebApp/package.json",
+        "src/Habitica.WebApp/package-lock.json"
+      ],
+      "execution_notes": "Requires documented current Release fixture, pinned PLAYWRIGHT_MODULE, exact owned loopback session, isolated persistent browser profiles and cleanup. No browser execution during installation."
     }
   }
 }

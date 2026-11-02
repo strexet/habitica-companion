@@ -19,7 +19,7 @@ Flavor: web. Static compatibility only; execution remains unqualified.
     "ui": []
   },
   "gaps": [],
-  "instruction_profile_id": "5f4d751258f7b082643e12b2d2f4b764366ff64a302ae3aa5d40bb053ad063e4",
+  "instruction_profile_id": "6649b74b72640933413f267215c730b460736299d2de6143ab2b16884bfbbbdd",
   "recipes": {
     "dotnet-focused-tests": {
       "argv": [
@@ -82,6 +82,22 @@ Flavor: web. Static compatibility only; execution remains unqualified.
       "toolchain": {
         "node_declaration": "22.x"
       }
+    },
+    "pwa-shell-browser": {
+      "argv": [
+        "node",
+        "tests/browser/pwa-shell.mjs"
+      ],
+      "execution_notes": "Requires documented current Release fixture, pinned PLAYWRIGHT_MODULE, exact owned loopback session, isolated persistent browser profiles and cleanup. No browser execution during installation.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/pwa-shell.mjs",
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+        "src/Habitica.WebApp/package.json",
+        "src/Habitica.WebApp/package-lock.json"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified"
     },
     "webapp-release-build": {
       "argv": [
