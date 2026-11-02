@@ -1,0 +1,8 @@
+{
+  "source_sha256": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+  "published_sha256": "6c8d7027ea31d54fb491ff9a71ef1af8286cd787b8e0e23055737a39f0789ec3",
+  "published_matches_source_plus_sdk_manifest_comment": true,
+  "sdk_suffix": "/* Manifest version: f7SPt1U3 */",
+  "bootstrap_sha256": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+  "manifest_sha256": "af5bea2c71c22281f07a6e2e7994b73219ed1d94da3546821ca6981ec2e381e2"
+}

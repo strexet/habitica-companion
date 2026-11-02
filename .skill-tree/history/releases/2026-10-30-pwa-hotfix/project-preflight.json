@@ -1,0 +1,7 @@
+{
+  "name": "habitica-companion",
+  "subdomain": "habitica-companion.pages.dev",
+  "production_branch": "main",
+  "canonical_deployment_id": "ddf7814a-ba73-4988-9033-a69ba7f882f9",
+  "deployment_config_sha256": "9151d65f3a789fe5d3723575bfd0e3818eb4ec797b21b3e71804b23986c36b63"
+}

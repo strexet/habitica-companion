@@ -1,0 +1,133 @@
+{
+  "acceptance": [
+    {
+      "criterion": "A retained pre-fix control demonstrates the redirected cached-shell defect; fixed-worker controls supply navigation-compatible shell responses without losing body, required headers or asset integrity.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/result.json",
+          "sha256": "abdb45055c209e54a45db03edb6793a6f135492f088b3b5ec7dd8abbed40d5cc"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/browser-results.json",
+          "sha256": "06d4dbd0ff418f82f1eed9eb51706b7d698d84a48a39d0e893bd8c016f34ce50"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Fresh and existing-cache browser controls load allowlisted app routes online and after offline preparation, preserve non-shell routing boundaries and avoid an update/reload loop.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/result.json",
+          "sha256": "abdb45055c209e54a45db03edb6793a6f135492f088b3b5ec7dd8abbed40d5cc"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/browser-results.json",
+          "sha256": "06d4dbd0ff418f82f1eed9eb51706b7d698d84a48a39d0e893bd8c016f34ce50"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "A worker-only update recovers an already redirected cached shell while synthetic durable-data and subscription canaries remain unchanged. Failed repair/install cannot activate a partial new build or destroy the working prior cache.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/result.json",
+          "sha256": "abdb45055c209e54a45db03edb6793a6f135492f088b3b5ec7dd8abbed40d5cc"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/browser-results.json",
+          "sha256": "06d4dbd0ff418f82f1eed9eb51706b7d698d84a48a39d0e893bd8c016f34ce50"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Published frontend packaging and relevant synthetic/browser checks pass with exact source/artifact identities, named engine versions and explicit limitations. Required browser evidence unavailable in the execution environment prevents local acceptance until the missing check is supplied.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/result.json",
+          "sha256": "abdb45055c209e54a45db03edb6793a6f135492f088b3b5ec7dd8abbed40d5cc"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/browser-results.json",
+          "sha256": "06d4dbd0ff418f82f1eed9eb51706b7d698d84a48a39d0e893bd8c016f34ce50"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Report local repair acceptance separately from production publication and affected-iPhone validation. Retain both original screenshots and the missing device/build observations; local acceptance does not close the physical incident.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/result.json",
+          "sha256": "abdb45055c209e54a45db03edb6793a6f135492f088b3b5ec7dd8abbed40d5cc"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/pwa-shell-redirect/browser-results.json",
+          "sha256": "06d4dbd0ff418f82f1eed9eb51706b7d698d84a48a39d0e893bd8c016f34ce50"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/pwa-shell-redirect/readme.md",
+      "sha256": "735b79884002cf05b1e2d0c515614adba04dab2d4b76823ac7a0e8af5ac51b08"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/pwa-shell-redirect/artifact-identity.json",
+      "sha256": "e97eb46d91cefb45dae26593723c175020bba0938d90f11f1a787dfb3c8325ea"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-f8655298-0f86-4439-a03e-c4eacc3fce6f",
+  "limitations": [
+    "No production publication, affected-iPhone controller observation or physical Safari/standalone qualification.",
+    "The browser fixture runs the actual emitted worker with a synthetic integrity manifest and shell; full Blazor startup is not established by the fixture.",
+    "Private/ephemeral WebKit storage behavior is not qualified by the passing persistent-profile controls.",
+    "Synthetic subscription marker only; no actual push subscription, permission, inspection or delivery.",
+    "Release publication retains the existing optional wasm-tools optimization warning.",
+    "The initial shared-build-server publish timed out; serial builds pass."
+  ],
+  "outcome": "The Release worker safely reconstructs validated public shell responses and separates repaired caches; local Chromium and WebKit controls reproduce the old defect and pass update, offline, integrity-failure and data-preservation checks.",
+  "parent_pending_ids": [
+    "P-7b77deae-d804-4dba-af99-262264884301"
+  ],
+  "recorded_at": "2026-10-30T03:08:05.087127+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-c913de5b-0eff-4973-be07-089ea4391c1b",
+  "source_fingerprints": {
+    "skill-tree/documents/deploy-cloudflare-pages.md": "4f4012f498408d9372b15fdb5578a2cfe3cf2fd1aa4084915914d6c15851e384",
+    "skill-tree/documents/features.md": "b070e6daa99ae4c567bde36468c22e2dc585676ee43c3f2f9ad146896af87b9c",
+    "skill-tree/documents/pwa-installation.md": "f55d712627f849de854520233575288e018105e3ad6e501571028ca5b2978a83",
+    "skill-tree/documents/technical.md": "c61fb9bd4dc55da50e9eac8a89aaba65cc22c896d3bfb56a43d68da5432f53fc",
+    "skill-tree/documents/testing.md": "f697813089cd641f8d4f2fd7b631443738724403ed02ec5872ec8033d330109e",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+    "tests/Functions/pwa.test.mjs": "4d7c982c5f9176a1be2384a3d99b23598d4f9bbdad55ecca5d684b85f402d316",
+    "tests/browser/pwa-shell.mjs": "df211da0683bef1b921b706d693cb02007b5f471355ce4aa3f991fb53f1f2473"
+  },
+  "task_id": "T-c913de5b-0eff-4973-be07-089ea4391c1b",
+  "title": "Correct redirect-bearing PWA shell responses and recover existing caches"
+}

@@ -5,16 +5,27 @@ import vm from 'node:vm';
 const root=new URL('../../',import.meta.url),web=new URL('src/Habitica.WebApp/wwwroot/',root);
 const read=path=>readFile(new URL(path,web),'utf8');
 
-async function worker(){
+function shellResponse({redirected=false,url='https://companion.invalid/',type='basic',status=200,body='<html>fixture shell</html>',headers={}}={}) {
+ const response=new Response(body,{status,headers:{'Content-Type':'text/html; charset=utf-8','X-Shell':'retained',...headers}});
+ Object.defineProperties(response,{redirected:{value:redirected},url:{value:url},type:{value:type}});
+ return response;
+}
+
+async function worker(options={}){
  const cacheReads=[],network=[],cachedAssets=[],events={};
  const assets=[{url:'index.html'},{url:'css/app.css'},{url:'js/pwa.js'},{url:'manifest.webmanifest'},{url:'api/private.json'},{url:'https://other.invalid/foreign.js'},{url:'service-worker.js'}];
- const context={URL,console:{info(){}},Request:class extends Request{constructor(url,options){super(new URL(url,'https://companion.invalid/'),options);}},
+ const stored=[],requests=[];
+ const context={URL,Response,Headers,console:{info(){}},Request:class extends Request{constructor(url,options){super(new URL(url,'https://companion.invalid/'),options);}},
   self:{origin:'https://companion.invalid',assetsManifest:{version:'fixture',assets},importScripts(){},addEventListener(name,handler){events[name]=handler;}},
-  caches:{async open(){return {async match(request){cacheReads.push(request);return {kind:'cached',request};},async addAll(requests){cachedAssets.push(...requests.map(r=>r.url));}};},async keys(){return [];},async delete(){return true;}},
+  caches:{async open(name){if(options.cacheFailure)throw new Error('Cache refused');return {
+   async match(request){cacheReads.push(request);if(options.missing)return undefined;const response=shellResponse(options.shell);response.kind='cached';return response;},
+   async addAll(items){requests.push(...items);cachedAssets.push(...items.map(r=>r.url));if(options.installFailure)throw new Error('Integrity failure');},
+   async put(key,response){stored.push({name,key,response});}
+  };},async keys(){return [];},async delete(){return true;}},
   async fetch(request){network.push(request);return {kind:'network',request};}};
  vm.createContext(context);vm.runInContext(await read('js/pushNotifications.js'),context);vm.runInContext(await read('service-worker.published.js'),context);
  const fetch=async(path,mode='navigate',method='GET')=>{let result;events.fetch({request:{url:new URL(path,'https://companion.invalid').href,mode,method},respondWith(value){result=value;}});return result;};
- return {context,fetch,cacheReads,network,cachedAssets};
+ return {context,fetch,cacheReads,network,cachedAssets,stored,requests};
 }
 
 test('PWA identity, actual PNG dimensions and startup registration agree',async()=>{
@@ -56,4 +67,36 @@ test('installation caches only same-origin public build assets and includes the 
  const w=await worker();await w.context.onInstall({});
  assert.ok(w.cachedAssets.includes('https://companion.invalid/manifest.webmanifest'));
  for(const path of ['api/private.json','other.invalid','service-worker.js'])assert.ok(w.cachedAssets.every(url=>!url.includes(path)));
+});
+
+
+test('redirected public shell becomes navigation-compatible without losing content or security headers',async()=>{
+ const w=await worker({shell:{redirected:true,headers:{'Content-Security-Policy':"default-src 'self'",'Content-Encoding':'gzip','Content-Length':'99'}}});
+ const response=await w.fetch('/todo/tasks?q=retained');
+ assert.equal(response.redirected,false);assert.equal(response.type,'default');assert.equal(response.url,'');
+ assert.equal(response.status,200);assert.equal(await response.text(),'<html>fixture shell</html>');
+ assert.equal(response.headers.get('Content-Security-Policy'),"default-src 'self'");assert.equal(response.headers.get('X-Shell'),'retained');
+ assert.equal(response.headers.get('Content-Encoding'),null);assert.equal(response.headers.get('Content-Length'),null);assert.equal(w.network.length,0);
+});
+
+test('invalid or foreign cached shells fall back to the unchanged navigation request',async()=>{
+ for(const shell of [{url:'https://foreign.invalid/',redirected:true},{url:'https://companion.invalid/auth/callback',redirected:true},{type:'cors',redirected:true},{type:'opaque'},{type:'opaqueredirect'},{status:404},{headers:{'Content-Type':'application/json'}},{type:'default',redirected:true}]){
+  const w=await worker({shell});assert.equal((await w.fetch('/dashboard')).kind,'network');assert.equal(w.network.length,1);assert.equal(w.network[0].mode,'navigate');
+ }
+ for(const options of [{missing:true},{cacheFailure:true}]){
+  const w=await worker(options);assert.equal((await w.fetch('/')).kind,'network');assert.equal(w.network.length,1);
+ }
+});
+
+test('install isolates the repaired cache and stores a compatible shell with same-origin integrity requests',async()=>{
+ const w=await worker({shell:{redirected:true}});await w.context.onInstall({});
+ assert.equal(w.stored.length,1);assert.equal(w.stored[0].name,'offline-cache-fixture-shell-v2');assert.equal(w.stored[0].key,'index.html');
+ assert.equal(w.stored[0].response.redirected,false);assert.equal(await w.stored[0].response.text(),'<html>fixture shell</html>');
+ assert.ok(w.requests.every(r=>r.mode==='same-origin'&&r.cache==='no-cache'));
+});
+
+test('failed installation or invalid shell cannot complete installation',async()=>{
+ for(const options of [{installFailure:true},{shell:{url:'https://foreign.invalid/',redirected:true}},{missing:true}]){
+  const w=await worker(options);await assert.rejects(w.context.onInstall({}));assert.equal(w.stored.length,0);
+ }
 });

@@ -1,0 +1,36 @@
+[
+  {
+    "body": "### Fix critical iOS Safari and installed PWA startup failure from service-worker redirects\n\n```yaml\nid: P-7b77deae-d804-4dba-af99-262264884301\npriority: 107\nstatus: Pending\nparent_pending_ids: []\nprocessing_run_id: null\nroot_task_id: null\nrelated_task_id: null\nrelation: main\ndepends_on: []\n```\n\nDescription:\n- Critical owner-reported startup failure at https://habitica-companion.pages.dev on iOS in Safari and the installed application. Both supplied screenshots show an unavailable page with the exact error \"Response served by service worker has redirections\". Investigate and fix the service-worker/navigation response failure so the application opens.\n\nExpected behavior:\n- The affected iOS Safari and installed PWA launch successfully without the reported service-worker redirect error. Preserve existing local data and offline-shell/security boundaries; verify Chrome regression behavior. Report physical-device results and any unverified paths explicitly.\n\nCurrent context:\n- Chrome appears to work according to the owner; the Chrome platform/version and iOS/Safari versions are unspecified. The exact failing route, cache/install state and root cause remain unverified. The release worker is src/Habitica.WebApp/wwwroot/service-worker.published.js; existing coverage includes tests/Functions/pwa.test.mjs. The broader mobile release gate T-d76d2a9a-1318-4e63-9bb4-73f620b108cc is related context, not a duplicate of the concrete startup incident or an implicit dependency.\n\nSource:\n- Owner request on 2026-10-30 with two iPhone screenshots, retained as skill-tree/history/intake/2026-10-30-ios-service-worker-redirect/photo-1.jpg and skill-tree/history/intake/2026-10-30-ios-service-worker-redirect/photo-2.jpg.\n\nPriority rationale:\n- The owner explicitly classified the incident as critical and requested the highest priority. Startup is blocked in both reported iOS entry points. Priority 107 exceeds the inspected queue maximum of 106.\n\n",
+    "depends_on": [],
+    "end": 103,
+    "id": "P-7b77deae-d804-4dba-af99-262264884301",
+    "line": 75,
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "start": 74,
+    "status": "Pending",
+    "title": "Fix critical iOS Safari and installed PWA startup failure from service-worker redirects"
+  },
+  {
+    "body": "### Resolve mass spell rate limits and explicit gear recovery\n\n```yaml\nid: P-8e7323df-2f47-4e19-864d-821ed108e7f2\npriority: 106\nstatus: Pending\nparent_pending_ids: []\nprocessing_run_id: null\nroot_task_id: null\nrelated_task_id: null\nrelation: main\ndepends_on: []\n```\n\nDescription:\n- Capture the codev P0 incident involving acknowledged 17 of 40 casts, HTTP 429 and uncertain auto-equip cleanup. Preserve coordinated account pacing across casts, gear and background requests, safe structured diagnostics, confirmed progress and separately visible restoration outcomes. Full original incident details remain in the source artifact.\n\nExpected behavior:\n- Bound request admission by Retry-After and reset evidence; stop or pause safely on quota failures, never replay unknown casts, retain acknowledged partial counts, persist exact manual gear recovery and expose mobile phase/cooldown/cleanup state. Cover failures during cast, restore, refresh and cancellation without hidden errors or fabricated success.\n\nCurrent context:\n- Existing accepted work includes T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee for server pacing and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 for original gear recovery. Process Pending must compare retained source intent, current code and accepted evidence before defining residual work; local evidence does not establish deployed iPhone incident closure.\n\nSource:\n- Owner-requested transfer from Companion Development, alias codev, project c5f8a175-2bee-484a-9b72-018737dc10fd, task fe2403b8-ab96-489f-b6ac-5e72f9dee4a9, task revision 115, workspace revision 158. Complete original text: skill-tree/history/intake/codev-2026-10-28/source-tasks.json. Source completion acknowledges intake only.\n\nPriority rationale:\n- Preserve source urgent P0 ordering above the current highest open priority 105; no live spell execution or release authorization is implied.\n\nProcessing blocker:\n- Static reinspection confirms acknowledged-count, quota/cooldown, unknown-outcome and original gear recovery controls remain implemented; accepted outcomes T-b89fac23-3ac2-4c64-8560-be7a5d796a81 and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 already cover the feature scope. Fresh loaded PWA build identity and sanitized iPhone evidence remain unavailable; any live reproduction requires a bounded owner profile. No duplicate implementation or deployed incident closure follows. See skill-tree/history/processing/note-folders-2026-10-29/research.md.\n\n",
+    "depends_on": [],
+    "end": 135,
+    "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+    "line": 104,
+    "parent_pending_ids": [],
+    "priority": 106,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "start": 103,
+    "status": "Pending",
+    "title": "Resolve mass spell rate limits and explicit gear recovery"
+  }
+]
