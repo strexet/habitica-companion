@@ -11,6 +11,7 @@ import {purgePacing} from './upstream-pacing';
 import {networkBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
 import {keyOperation,purgeKeyJobs} from './key-operations';
+import {recoveryRoute} from './recovery';
 import {managementRoute} from './management';
 import {cronOperation} from './cron';
 import {spellOperation} from './spells';
@@ -97,6 +98,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
       }else if(env.WORKSPACE_ENABLED)throw new Error('Notes cleanup binding unavailable.');
     });
     if (vault) return vault;
+    const recovered=await recoveryRoute(request,env);if(recovered)return recovered;
     const push=await pushRoute(request,env);if(push)return push;
     const tagConsent=await tagConsentRoute(request,env);if(tagConsent)return tagConsent;
     const management=await managementRoute(request,env);if(management)return management;
@@ -127,11 +129,11 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await expirePush(env);await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
+  async scheduled(_event, env): Promise<void> { await expirePush(env);await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_recovery_sessions WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT, env);
-    const isManagement = url.pathname === "/enroll" || url.pathname.startsWith("/profiles/");
+    const isManagement = url.pathname === "/enroll" || url.pathname === "/recover" || url.pathname.startsWith("/profiles/");
     const origin = request.headers.get("origin");
     if (isManagement && url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) return Response.json({ error: "invalid_transport" }, { status: 403, headers });
     if (isManagement && origin && origin !== config.pwaOrigin && origin !== config.issuer) return Response.json({ error: "invalid_origin" }, { status: 403, headers });

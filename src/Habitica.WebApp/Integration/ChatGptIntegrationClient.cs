@@ -57,6 +57,7 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
             if (enrollment is null || !System.Text.RegularExpressions.Regex.IsMatch(enrollment.ProfileId ?? "", "^prf_[A-Za-z0-9_-]{43}$")
                 || !System.Text.RegularExpressions.Regex.IsMatch(enrollment.ManagementToken ?? "", "^[A-Za-z0-9_-]{43}$")) return Unavailable();
             if (_sessionVersion != sessionVersion) return new(false, "Enrollment may have completed. Revalidate the account to manage the connection.");
+            RecoveryDescriptor = enrollment.Descriptor?.IsValid == true && enrollment.Descriptor.ProfileId == enrollment.ProfileId ? enrollment.Descriptor : null;
             _profileId = enrollment.ProfileId;
             _managementToken = enrollment.ManagementToken;
             _sessionVersion++;
@@ -177,6 +178,7 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
     public void ForgetSession()
     {
         _sessionVersion++;
+        RecoveryDescriptor = null;
         _profileId = null;
         _managementToken = null;
     }
@@ -214,6 +216,6 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
 
     private static IntegrationLinkResult Unavailable() => new(false, "Management access is unavailable in this tab. Verify the account to check server connection status.");
     private sealed record CleanupResult(bool PendingCleanup, bool? Deleted, bool? Disconnected);
-    private sealed record Enrollment(string? ProfileId, string? ManagementToken);
+    private sealed record Enrollment(string? ProfileId, string? ManagementToken, IntegrationRecoveryDescriptor? Descriptor = null);
     private sealed record LinkTicket(string? Code, DateTimeOffset ExpiresAtUtc);
 }

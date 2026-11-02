@@ -18,26 +18,40 @@ async function identify(env:WorkspaceEnv,path:string,authorization?:string,value
  if(!response.ok)throw new WorkspaceError('unauthorized',401);
  const who=await response.json<NotesIdentity>();if(!profileId(who.profileId))throw new WorkspaceError('unauthorized',401);uuid(who.connectionId);return who;
 }
-async function connect(request:Request,env:WorkspaceEnv):Promise<Response>{
- const body=workspaceObject(await workspaceJson(request),['consentVersion']);if(body.consentVersion!==notesConsentVersion)throw new WorkspaceError('notes_consent_required',403);
+async function connect(request:Request,env:WorkspaceEnv,recover=false):Promise<Response>{
+ const body=workspaceObject(await workspaceJson(request),recover?['expectedNotebookId']:['consentVersion']);if(!recover&&body.consentVersion!==notesConsentVersion)throw new WorkspaceError('notes_consent_required',403);
  const who=await identify(env,'management',`Bearer ${bearer(request)}`),now=new Date().toISOString();
- const scope=await workspaceTokenHash(who.profileId);
- await env.WORKSPACE_DB.prepare(`INSERT INTO notes_notebooks(profile_id,notebook_id,owner_scope,connection_id,access_epoch,consent_version,active,commit_tag,consented_at_utc)
- VALUES(?,?,?,?,?,?,1,?,?) ON CONFLICT(profile_id) DO UPDATE SET access_epoch=CASE WHEN notes_notebooks.connection_id=excluded.connection_id AND notes_notebooks.active=1 THEN notes_notebooks.access_epoch ELSE excluded.access_epoch END,
- connection_id=excluded.connection_id,consent_version=excluded.consent_version,active=1,consented_at_utc=excluded.consented_at_utc`)
- .bind(who.profileId,crypto.randomUUID(),scope,who.connectionId,crypto.randomUUID(),notesConsentVersion,crypto.randomUUID(),now).run();
- const row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND active=1').bind(who.profileId,who.connectionId).first<NotesRow>();
- if(!row)throw new WorkspaceError('connection_changed',409);
+ let row:NotesRow|null;
+ if(recover){
+  row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=?').bind(who.profileId).first<NotesRow>();
+  if(!row)throw new WorkspaceError('notes_missing',404);
+  if(!row.active)throw new WorkspaceError('notes_disconnected',403);
+  if(row.connection_id!==who.connectionId)throw new WorkspaceError('notes_connection_changed',409);
+  if(row.consent_version!==notesConsentVersion)throw new WorkspaceError('notes_consent_unsupported',403);
+  if(body.expectedNotebookId!==undefined&&uuid(body.expectedNotebookId)!==row.notebook_id)throw new WorkspaceError('notebook_mismatch',409);
+ }else{
+  const scope=await workspaceTokenHash(who.profileId);
+  await env.WORKSPACE_DB.prepare(`INSERT INTO notes_notebooks(profile_id,notebook_id,owner_scope,connection_id,access_epoch,consent_version,active,commit_tag,consented_at_utc)
+  VALUES(?,?,?,?,?,?,1,?,?) ON CONFLICT(profile_id) DO UPDATE SET access_epoch=CASE WHEN notes_notebooks.connection_id=excluded.connection_id AND notes_notebooks.active=1 THEN notes_notebooks.access_epoch ELSE excluded.access_epoch END,
+  connection_id=excluded.connection_id,consent_version=excluded.consent_version,active=1,consented_at_utc=excluded.consented_at_utc`)
+  .bind(who.profileId,crypto.randomUUID(),scope,who.connectionId,crypto.randomUUID(),notesConsentVersion,crypto.randomUUID(),now).run();
+  row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND active=1').bind(who.profileId,who.connectionId).first<NotesRow>();
+  if(!row)throw new WorkspaceError('connection_changed',409);
+ }
  // Recheck connection identity before issuing a new tab credential.
  await identify(env,'epoch',undefined,who);
  const token=workspaceSessionToken(),hash=await workspaceTokenHash(token),expires=new Date(Date.now()+8*60*60*1000).toISOString();
  const result=await env.WORKSPACE_DB.batch([
   env.WORKSPACE_DB.prepare(`INSERT INTO notes_sessions(token_hash,profile_id,connection_id,access_epoch,created_at_utc,expires_at_utc)
    SELECT ?,profile_id,connection_id,access_epoch,?,? FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1`).bind(hash,now,expires,who.profileId,who.connectionId,row.access_epoch),
-  env.WORKSPACE_DB.prepare(`DELETE FROM notes_sessions WHERE profile_id=? AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN (SELECT token_hash FROM notes_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId,row.access_epoch,now,who.profileId)
+  env.WORKSPACE_DB.prepare(`DELETE FROM notes_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM notes_sessions WHERE token_hash=?) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN (SELECT token_hash FROM notes_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId,hash,row.access_epoch,now,who.profileId)
  ]);
  if(!result[0].meta.changes)throw new WorkspaceError('connection_changed',409);
- return json({notebookId:row.notebook_id,ownerScope:row.owner_scope,accessEpoch:row.access_epoch,consentVersion:notesConsentVersion,sessionToken:token,expiresAtUtc:expires},201);
+ await identify(env,'epoch',undefined,who);
+ const current=await env.WORKSPACE_DB.prepare(`SELECT s.token_hash FROM notes_sessions s JOIN notes_notebooks n ON n.profile_id=s.profile_id
+  WHERE s.token_hash=? AND n.active=1 AND n.connection_id=s.connection_id AND n.access_epoch=s.access_epoch AND n.consent_version=?`).bind(hash,notesConsentVersion).first();
+ if(!current)throw new WorkspaceError('connection_changed',409);
+ return json({notebookId:row.notebook_id,ownerScope:row.owner_scope,accessEpoch:row.access_epoch,consentVersion:notesConsentVersion,sessionToken:token,expiresAtUtc:expires,...(recover?{recovered:true}:{})},201);
 }
 async function session(request:Request,env:WorkspaceEnv):Promise<NotesRow>{
  const hash=await workspaceTokenHash(bearer(request));
@@ -143,6 +157,7 @@ export async function notesOperation(env:WorkspaceEnv,row:NotesRow,operation:str
 export async function notesRoute(request:Request,env:WorkspaceEnv):Promise<Response>{
  const path=new URL(request.url).pathname;
  if(path==='/notes/connect'&&request.method==='POST')return connect(request,env);
+ if(path==='/notes/recover'&&request.method==='POST')return connect(request,env,true);
  const row=await session(request,env);
  await quota(env,{profileId:row.profile_id,connectionId:row.connection_id},path==='/notes/receipt');
  if(path==='/notes/disconnect'&&request.method==='POST'){

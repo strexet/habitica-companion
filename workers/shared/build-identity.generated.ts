@@ -6,5 +6,5 @@ export const buildIdentity = {
     "minimum": "0.2.0",
     "maximumExclusive": "0.3.0"
   },
-  "buildHash": "57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77"
+  "buildHash": "712eac73cbb572057b12499e77d7729f1e616813c784f9be402910dc3c3939a1"
 } as const;

@@ -10,7 +10,7 @@ using Habitica.Domain.Auth;
 using Habitica.Domain.Notes;
 namespace Habitica.WebApp.Integration;
 
-public sealed class NotesCloudClient(HttpClient http,ChatGptIntegrationClient vault,string? baseUrl):INotesCloudClient
+public sealed partial class NotesCloudClient(HttpClient http,ChatGptIntegrationClient vault,string? baseUrl):INotesCloudClient
 {
     private readonly Uri? _baseUri=BaseUri(baseUrl);
     private string? _token,_profileId;

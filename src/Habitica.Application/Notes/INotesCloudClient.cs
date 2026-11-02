@@ -9,6 +9,8 @@ public sealed record NotesSearchPage(Guid NotebookId,string OwnerScope,long Revi
 public sealed record CloudNote(Guid NotebookId,string OwnerScope,long Revision,PersonalNote Note,string ContentHash,int HistoryLimit,bool HistoryTruncated);
 public interface INotesCloudClient
 {
+    Task<NotesCloudResult<bool>> RecoverConnectionAsync(Guid? expectedNotebookId,CancellationToken token)
+        =>Task.FromResult(new NotesCloudResult<bool>(false,false,"recovery_unavailable"));
     bool IsAvailable {get;}
     bool IsConnected {get;}
     Guid? NotebookId {get;}

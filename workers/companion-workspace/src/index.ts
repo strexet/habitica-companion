@@ -52,7 +52,7 @@ const consentVersion = "workspace-v1";
 const bytes = (value: string) => new TextEncoder().encode(value).length;
 const json = (value: unknown, status = 200) => Response.json(value, { status, headers });
 async function identity(env: WorkspaceEnv, path: string, authorization?: string, value?: Identity): Promise<Identity> {
- const response = await env.AUTH_IDENTITY.fetch("https://identity.internal/" + path, { method: "POST", headers: { "content-type": "application/json", ...(authorization ? { authorization } : {}) }, body: value ? JSON.stringify(value) : undefined });
+ const response = await env.AUTH_IDENTITY.fetch("https://identity.internal/" + path, { method: "POST", headers: { "content-type": "application/json", ...(authorization ? { authorization } : {}) }, body: value ? JSON.stringify(value) : undefined, signal:AbortSignal.timeout(5000) });
  if (!response.ok) throw new WorkspaceError("unauthorized", 401);
  const result = await response.json<Identity>();
  if (!/^prf_[A-Za-z0-9_-]{43}$/.test(result.profileId)) throw new WorkspaceError("unauthorized", 401);
@@ -68,32 +68,46 @@ async function session(request: Request, env: WorkspaceEnv): Promise<WorkspaceRo
  WHERE s.token_hash=? AND s.expires_at_utc>? AND s.access_epoch=? AND w.access_epoch=s.access_epoch AND w.active=1`).bind(hash,new Date().toISOString(),row.access_epoch).first<WorkspaceRow>();
  if (!current) throw new WorkspaceError("unauthorized", 401); return current;
 }
-async function connect(request: Request, env: WorkspaceEnv): Promise<Response> {
- const body = workspaceObject(await workspaceJson(request), ["consentVersion", "workspaceId"]);
- if (body.consentVersion !== consentVersion) throw new WorkspaceError("consent_required", 403);
+async function connect(request: Request, env: WorkspaceEnv, recover = false): Promise<Response> {
+ const body = workspaceObject(await workspaceJson(request), recover ? ["expectedWorkspaceId"] : ["consentVersion", "workspaceId"]);
+ if (!recover && body.consentVersion !== consentVersion) throw new WorkspaceError("consent_required", 403);
  const who = await identity(env, "management", `Bearer ${bearer(request)}`);
- const workspaceId = body.workspaceId === undefined ? crypto.randomUUID() : uuid(body.workspaceId);
- const existing = await env.WORKSPACE_DB.prepare("SELECT workspace_id FROM workspaces WHERE profile_id=?").bind(who.profileId).first<{ workspace_id: string }>();
- if (body.workspaceId !== undefined && existing && existing.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
- const now = new Date().toISOString(); const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
- // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
- await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
- VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET mcp_grant_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id THEN workspaces.mcp_grant_epoch ELSE NULL END,connection_id=excluded.connection_id,consent_version=excluded.consent_version,
- consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
- .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
- const row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
- if (!row || row.connection_id !== who.connectionId) throw new WorkspaceError("connection_changed", 409);
- if (body.workspaceId !== undefined && row.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ const now = new Date().toISOString();
+ let row:WorkspaceRow|null;
+ if (recover) {
+  row=await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
+  if (!row) throw new WorkspaceError("workspace_missing",404);
+  if (!row.active) throw new WorkspaceError("workspace_disconnected",403);
+  if (row.connection_id!==who.connectionId) throw new WorkspaceError("workspace_connection_changed",409);
+  if (row.consent_version!==consentVersion) throw new WorkspaceError("workspace_consent_unsupported",403);
+  if (body.expectedWorkspaceId!==undefined && uuid(body.expectedWorkspaceId)!==row.workspace_id) throw new WorkspaceError("workspace_mismatch",409);
+ } else {
+  const workspaceId = body.workspaceId === undefined ? crypto.randomUUID() : uuid(body.workspaceId);
+  const existing = await env.WORKSPACE_DB.prepare("SELECT workspace_id FROM workspaces WHERE profile_id=?").bind(who.profileId).first<{ workspace_id: string }>();
+  if (body.workspaceId !== undefined && existing && existing.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+  const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
+  // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
+  await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
+  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET mcp_grant_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id THEN workspaces.mcp_grant_epoch ELSE NULL END,connection_id=excluded.connection_id,consent_version=excluded.consent_version,
+  consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
+  .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
+  row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
+  if (!row || row.connection_id !== who.connectionId) throw new WorkspaceError("connection_changed", 409);
+  if (body.workspaceId !== undefined && row.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ }
+ if(recover)await identity(env,"epoch",undefined,who);
  const token = workspaceSessionToken(); const hash = await workspaceTokenHash(token); const expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
  await env.WORKSPACE_DB.batch([
   env.WORKSPACE_DB.prepare(`INSERT INTO workspace_sessions(token_hash,profile_id,connection_id,access_epoch,created_at_utc,expires_at_utc)
    SELECT ?,profile_id,connection_id,access_epoch,?,? FROM workspaces WHERE profile_id=? AND active=1 AND connection_id=? AND access_epoch=?`).bind(hash, now, expires, who.profileId, who.connectionId, row.access_epoch),
-  env.WORKSPACE_DB.prepare(`DELETE FROM workspace_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND access_epoch=? AND active=1) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN
-   (SELECT token_hash FROM workspace_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId, who.profileId, row.access_epoch, row.access_epoch, now, who.profileId),
+  env.WORKSPACE_DB.prepare(`DELETE FROM workspace_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM workspace_sessions WHERE token_hash=?) AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND access_epoch=? AND active=1) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN
+   (SELECT token_hash FROM workspace_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId, hash, who.profileId, row.access_epoch, row.access_epoch, now, who.profileId),
  ]);
- const check = await env.WORKSPACE_DB.prepare("SELECT token_hash FROM workspace_sessions WHERE token_hash=?").bind(hash).first();
+ await identity(env,"epoch",undefined,who);
+ const check = await env.WORKSPACE_DB.prepare(`SELECT w.* FROM workspace_sessions s JOIN workspaces w ON w.profile_id=s.profile_id
+  WHERE s.token_hash=? AND w.active=1 AND s.access_epoch=w.access_epoch AND s.connection_id=w.connection_id AND w.consent_version=?`).bind(hash,consentVersion).first<WorkspaceRow>();
  if (!check) throw new WorkspaceError("connection_changed", 409);
- return json({ workspaceId: row.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) }, 201);
+ return json({ workspaceId: check.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(check.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED), ...(recover?{recovered:true}:{}) }, 201);
 }
 async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash: string): Promise<Response | null> {
  const receipt = await env.WORKSPACE_DB.prepare("SELECT c.payload_hash,c.entry_json FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1").bind(row.profile_id, id, row.access_epoch).first<{ payload_hash: string; entry_json: string }>();
@@ -156,6 +170,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if(path.startsWith('/diagnostics/'))return diagnosticOwnerApi(request,env);
  if(path==='/notes'||path.startsWith('/notes/'))return notesRoute(request,env);
  if (path === "/connect" && request.method === "POST") return connect(request, env);
+ if (path === "/recover" && request.method === "POST") return connect(request, env, true);
  if(path==='/cron/history'&&request.method==='GET'){
   const who=await identity(env,'management',`Bearer ${bearer(request)}`);await identity(env,'epoch',undefined,who);
   return json(await cronHistory(env,who.profileId));
