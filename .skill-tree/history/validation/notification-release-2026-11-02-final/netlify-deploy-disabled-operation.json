@@ -1,0 +1,8 @@
+{
+  "operation": "netlify-deploy-disabled",
+  "classification": "executed-control",
+  "exit_code": 0,
+  "tool_wall_seconds": 7.037,
+  "deadline_seconds": 140,
+  "cleanup_reserve_seconds": 10
+}

@@ -1,0 +1,12 @@
+{
+  "deployment_id": "a061255b-d21c-4195-9366-219422259497",
+  "status": "success",
+  "production_and_preview_runtime_preserved": true,
+  "public_frontend_build_override_restored": true,
+  "git_build_and_source_settings_restored": true,
+  "expected_metadata_change": "wrangler_config_hash reflects the new reviewed direct-upload configuration",
+  "fail_open": {
+    "production": true,
+    "preview": true
+  }
+}

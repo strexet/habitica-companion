@@ -1,9 +1,9 @@
 {
   "active_run": {
     "admission": {
-      "environment_id": "74a41d63688c527f89d3bab69d6b7cdfef734d23c58302b46b3afa0bb513ca2f",
+      "environment_id": "54a2d4310e6cf77084f356a70becb82b24e18f7b8bf68694cbc8c67a6c24c87f",
       "flavor": "web",
-      "identity": "1c28e900daa125e7826eaedaf974d2ec34e14efac71de81c14bda6bdda9f2c8d",
+      "identity": "91edd86f6fdadc390fdc939da0a6083bafedda74bec667e1b0376c63c1c22254",
       "project_root": "/Users/petr/Projects/habitica-tool"
     },
     "admitted_groups": {},
@@ -72,12 +72,25 @@
       ".skill-tree/history/validation/implement-all-2026-11-02/dns-tls-followup-intake.json",
       ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json",
       ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json",
-      ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json"
+      ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json",
+      ".skill-tree/history/releases/2026-11-02-notifications/deployment.json",
+      ".skill-tree/history/releases/2026-11-02-notifications/README.md",
+      ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-ttl/reminder-events-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-docs/reminder-events-retry-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-recovery/reminder-events-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-receipt.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02-recovery/callback-authorization-receipt.json",
+      ".skill-tree/history/releases/2026-11-02-notifications/recovery-mcp.json",
+      ".skill-tree/history/releases/2026-11-02-notifications/recovery-workspace.json",
+      ".skill-tree/history/releases/2026-11-02-notifications/recovery-auth.json"
     ],
     "id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
     "limits": {},
     "mode": "all",
-    "next_action": "Commit the reviewed notification implementation, apply the four additive migrations, publish disabled matching Worker code, revalidate normal hosted egress, then activate the owner-selected production channel and retain release evidence.",
+    "next_action": "Wait for a new owner continuation; actual subscribed-chat/device qualification follows the retained owner checklist, with no implicit subscription or message.",
     "partial_work": [
       "Initial snapshot frozen: 14 prioritized roots; no active run existed at invocation.",
       "Gateway entry, transport and gateway/TLS test hashes match retained local qualification; prepare-source.mjs and package.test.mjs differ. Historical packaging evidence is not current qualification.",
@@ -97,12 +110,21 @@
       "Auth encrypted callback vault, separate reviewed exact-task Events consent, durable Workspace subscription lifecycle and authenticated MCP Events extension implemented. Nine focused tests and an eight-case OAuth rendered HTML light/obsidian/phone/desktop/text matrix are ready for final qualification. Normal hosted gateway predecessor completed; application reminder dispatch remains selected next.",
       "T-280cb859 completed with43 local composition checks and the OAuth render matrix. T-569ff3a0 now implements a durable generic exact-cue outbox, Auth-only signer and original dispatch receipts, bounded known-transient retries, permanent410/413 stop and read-only MCP original recovery. Eight synthetic application tests and19 combined push/Events regressions pass.",
       "Auth broad regression:237/238 pass; the sole stale OAuth catalogue-count assertion was updated for the independent fifteenth permission. All23 current OAuth/vault/management checks pass. The source-matched subscription composition and exact reminder check remain to be recorded.",
-      "Existing Worker versions and D1 recovery bookmarks were captured read-only in the notification release baseline. Publication uses a disabled bootstrap to establish the two private cyclic service bindings, then separately activates the validated channel."
+      "Existing Worker versions and D1 recovery bookmarks were captured read-only in the notification release baseline. Publication uses a disabled bootstrap to establish the two private cyclic service bindings, then separately activates the validated channel.",
+      "Final review found a shorter TTL refresh could reuse a longer cached expiration. A runnable one-test Red reproduces it; the bounded cache condition is repaired. Global MCP Events remain disabled until source-matched revalidation and corrected bundles are active.",
+      "All three selected notification implementation tasks are completed with current local and hosted revalidation. Production0.3.1 is active across Auth, Workspace, MCP, Pages and the existing gateway. Shared backend hash19860e05a1a1b7a55c64857ec264bfa2f800c8ad8b911f0528bc7e8a9d6afd39 is coherent through native authenticated MCP.",
+      "Auth0014/0015 and Workspace0019/0020 applied; no pending migrations. Separate callback vault key/private bindings provisioned without changing existing credentials or grants. Production availability enabled, ordinary defaults remain off, and no user consent/subscription/chat event was created.",
+      "Hosted run ce61acec-f284-4580-b984-c3ddd9e844dd delivered once in2489ms, refused replay and verified disabled lanes before explicit release activation. The isolated receiver/table are removed; original claim fences remain. Netlify Free retains152.9/300 credits.",
+      "The source-reviewed shorter-refresh TTL defect has runnable Red/Green and current10/44/8 local controls. Source commits cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77 and7779697 retain the implementation/repair. Publication tooling and reduced release evidence receive the final authorized commit.",
+      "Pages success and public asset/package hashes are verified; runtime/storage and Git/frontend settings are retained. IAB rendering remains unqualified after ERR_FAILED and Browser Use URL-policy rejection of its internal data error page; no bypass or rendered-success claim. Actual ChatGPT chat response, local Codex delivery, physical devices and deferred hosted DNS/TLS controls remain explicit limits.",
+      "Final recovery review found unknown subscription errors retained IDs only in storage, and server-created unknown event IDs needed a public discovery path. Error responses now expose only original opaque IDs; get_event_subscription exposes latestEvent.eventId under current owner/resource/consent guards. Exact-ID read recovery needs no server database access or replacement send.",
+      "Final original-identity recovery repair4cd4835 is locally qualified by10 callback,44 composed and8 reminder controls without skips. The three production Workers are coherent at buildb2c02b0bb823dc81e7f12d89dc8e46ef4098e48d750698685ee924170237d03b; native MCP confirms Events enabled and schema1.3.0. Runtime postflight retains zero production callback/consent/subscription/outbox/dispatch records and no pending migrations.",
+      "Pages releasea061255b-d21c-4195-9366-219422259497 succeeds and Netlify release6ae89d0cebb45b34d03869a8 remains enabled. No user subscription, real chat message, device enrollment or Git push occurred. The owner host checklist and deferred DNS/TLS failure coverage remain explicit."
     ],
     "pending_ids": [
       "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b"
     ],
-    "phase": "release-qualification",
+    "phase": "owner-topic-completed",
     "processing_results": [],
     "required_ids": [
       "T-07d27408-3019-423f-a5de-4cda1f9e2818",
@@ -168,14 +190,14 @@
           },
           "result": {
             "actual_lane": "integration",
-            "attempt_id": "C-2bf25d6d-8000-45b6-9241-0b360c96f1b4",
+            "attempt_id": "C-51369518-0be0-49b3-a4aa-b1d04f7f743d",
             "classification": "executed-control",
-            "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+            "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
             "counts": {
-              "discovered": 9,
-              "expected": 9,
+              "discovered": 10,
+              "expected": 10,
               "failed": 0,
-              "passed": 9,
+              "passed": 10,
               "skipped": 0
             },
             "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
@@ -183,26 +205,21 @@
             "evidence": [
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-execution.log",
-                "sha256": "2be4383524d21a74d45816a42386d40f139d173d74930fa48d5b9c3e1d202366"
-              },
-              {
-                "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-operation.json",
-                "sha256": "9ca401cb4bbe9324b3d7f945eea56bf1536f9c23e6daa819505b726019722308"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/callback-authorization-execution.log",
+                "sha256": "8ce4d7e32bfb189c7cc10d986e0d20301b1c3dce5d813e5c204307f9233b7793"
               }
             ],
             "execution_sessions": {},
-            "key": "03954f2e35ddbef8fd23cd575b5451f7a940efd49a812e8259b54281348b253f",
-            "payload_hash": "736957762bd54014fffbbbe754567839b338b4b971af3b55d102e82e5d08323d",
-            "recorded_at": "2026-11-02T13:55:18.071047+00:00",
+            "key": "8c4bcda231b2af3802d8e75de7cbe0448268abef13c06df67622144ddaf90e02",
+            "payload_hash": "353c4ac691495a56e42bc344e8cfe52d9cd66e31086d4da31175d0ea80841ff9",
+            "recorded_at": "2026-11-02T15:34:42.647156+00:00",
             "result": "pass",
             "sources": {
               "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
-              "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073"
+              "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c"
             },
             "timing": {
-              "tool_wall_seconds": 9.876698500011116
+              "tool_wall_seconds": 12.216597124934196
             }
           }
         },
@@ -230,80 +247,306 @@
           },
           "result": {
             "actual_lane": "integration",
-            "attempt_id": "C-9796bc3f-54e7-441f-8b84-c30495faaca5",
+            "attempt_id": "C-d0046a58-c2f8-49cf-98be-d84e411c9582",
             "classification": "executed-control",
-            "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+            "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
             "counts": {
-              "discovered": 43,
-              "expected": 43,
+              "discovered": 44,
+              "expected": 44,
               "failed": 0,
-              "passed": 43,
+              "passed": 44,
               "skipped": 0
             },
             "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
-            "environment_identity": "365c064f31787db4e4a6714a3bd8ee3d592a9e35d1e65cbf59ce6822b4642290",
+            "environment_identity": "a1800d7754f4bdf14e5e5f3ef1876da94e417191620d14029196c5f59ef58786",
             "evidence": [
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts.json",
-                "sha256": "ec4495be7447c487470f5b860aebdbd68184be3531d51c83f4a081e546c643e3"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts.json",
+                "sha256": "23ebec0270fdb7073fd6de20544ae066e0ead275b90eeee83b784bcdaa719e6e"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-workspace.log",
-                "sha256": "56a4019e648999c4902384e117a1b85a842fd1d2b3b7fb447bbc5a4b50f9d7de"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-workspace.log",
+                "sha256": "b7b590ccef808608d00c9b51c9d8a471dac11d5616ce7d7a0badb7b779cfbbb7"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-auth.log",
-                "sha256": "9b035e3bc50c788c1714cecbeafcab983c502731d9304fb7513a945cd38c50d6"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-auth.log",
+                "sha256": "a4f9e053cb0868757f69463a9811e9324386866db52c7c31f718acc435a56a78"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-mcp.log",
-                "sha256": "946f47214ca4f63660ba29d8c4a53328fa1b4dd42e6dc1e3db62b41d4ecd4d50"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-mcp.log",
+                "sha256": "056d292937fdc6e0a6a07e4ce300d8fbd8d0d4c161e98d411962170870841335"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-subscription-worker-composition.log",
-                "sha256": "e45ed419e765a342c5f000705a7bb53009291738e5d048d1ad1427529fae414d"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-subscription-worker-composition.log",
+                "sha256": "b9522c1e388e05bd79ac2ef5bfbf1d3890c04e8e679ed8d238f6529a4f456a22"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-gateway-native-tls.log",
-                "sha256": "ec685d59e3896ada04254b04e3eb1eb4988d5f932b2e283b4842308eeed7a7f1"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-gateway-native-tls.log",
+                "sha256": "41f3edf07b76553e283f24cf7fa5cc0a08486c1e8819782a5f8c7b62b0a4fa06"
               },
               {
                 "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-independent-receiver.log",
-                "sha256": "3e0b8b27322244576fd01093819127cc9999523fa738464ac90088b868f3bdad"
-              },
-              {
-                "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
-                "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
-              },
-              {
-                "available": true,
-                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-operation.json",
-                "sha256": "9d5d788524756d79001b3df8c68be5c4df80383d8f6f5ad419a13a5951e95462"
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-independent-receiver.log",
+                "sha256": "0cbdabe474a38a7d1abb932de4d9cfe6f89ad683ba4ae6411ec23d940c49bf98"
               }
             ],
             "execution_sessions": {},
-            "key": "adb86ca0e02ce3adbcda9f3f2b119bf8a2b9d08bdfb91e9143de1aa92504d5f4",
-            "payload_hash": "7c7730fdf122b1189c849af627485034ddef0da435c96175fac9329d454b96f1",
-            "recorded_at": "2026-11-02T13:55:18.300293+00:00",
+            "key": "1f83382f3d421ad9b78bc3b9a44fcd1ffd29c03d57848bc10248d182f45e0f3e",
+            "payload_hash": "d2e95b78686f7fdc13135d877bd07ba3bdca7c55ec0116865a31d5a48540a554",
+            "recorded_at": "2026-11-02T15:34:30.158850+00:00",
             "result": "pass",
             "sources": {
-              ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+              ".skill-tree/documents/event-subscriptions.md": "4d63fbc179d54363db405a96151df454d159063421d752d80b6034dd0e0db35f",
               "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
-              "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
-              "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073",
-              "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+              "workers/chatgpt-auth/src/events.ts": "001874cffb186ddcf2553bc9bf36a77fde5c832126f6203bf887a416f8987525",
+              "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c",
+              "workers/companion-workspace/src/events.ts": "cbd826bc6f75574f13d9a2e992a5e71fc62a1e06af5fa40c7c84b687fe1f65ee",
               "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
             },
             "timing": {
-              "tool_wall_seconds": 20.65722420811653
+              "tool_wall_seconds": 24.141006791964173
+            }
+          }
+        }
+      ],
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae": [
+        {
+          "check": {
+            "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
+            "criteria": [
+              "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
+              "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification."
+            ],
+            "id": "reminder-events",
+            "parameters": {
+              "test_file": "workers/companion-workspace/test/reminder-events.test.mjs"
+            },
+            "recipe_id": "worker-focused-tests",
+            "sources": [
+              "workers/companion-workspace/test/reminder-events.test.mjs",
+              "workers/companion-workspace/package.json",
+              "workers/companion-workspace/src/event-scheduler.ts",
+              "workers/chatgpt-auth/src/event-dispatch.ts",
+              "workers/chatgpt-auth/test/fixtures/events.mjs",
+              ".skill-tree/documents/reminder-events.md",
+              "workers/shared/events.ts",
+              "workers/companion-workspace/src/events.ts",
+              "workers/chatgpt-auth/src/events.ts",
+              "workers/chatgpt-auth/migrations/0015-event-dispatches.sql",
+              "workers/companion-workspace/migrations/0020-event-outbox.sql",
+              "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+              "deploy/prepare-dev.mjs",
+              "plugin/skills/habitica-task-management/references/event-reminders.md"
+            ],
+            "timing": "immediate"
+          },
+          "result": {
+            "actual_lane": "integration",
+            "attempt_id": "C-74a9c99d-8cf1-4f57-9fa4-4a3f69afefd0",
+            "classification": "executed-control",
+            "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
+            "counts": {
+              "discovered": 8,
+              "expected": 8,
+              "failed": 0,
+              "passed": 8,
+              "skipped": 0
+            },
+            "definition": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c",
+            "environment_identity": "8b445ba6d15d17999fd091c78a0b48b3111e75c9cf8aa6ffee623896e9478740",
+            "evidence": [
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/reminder-events-execution.log",
+                "sha256": "8dc6b034cbce9289e3bbe6fb5e22f48c4ac23ab6c1aff424e5213f2dea65bbdd"
+              }
+            ],
+            "execution_sessions": {},
+            "key": "e9504edd5571e49c8eeaebbbc5c2d4608ff4f90232b3712c30a2797663fd4db7",
+            "payload_hash": "c7826d9e53456de80f7be24c7e3264434352dc632606f78597dd2b95831e221c",
+            "recorded_at": "2026-11-02T15:35:01.778173+00:00",
+            "result": "pass",
+            "sources": {
+              ".skill-tree/documents/reminder-events.md": "b9cbc82f124a153acc67a69b235d61d92a97eca8e0744b8dff4932c784a0ce64",
+              "deploy/prepare-dev.mjs": "bc6ab6338036850ef6042baa647ce5b37d2d4ca11127737dc30624615ebd2124",
+              "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+              "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+              "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+              "workers/chatgpt-auth/src/events.ts": "001874cffb186ddcf2553bc9bf36a77fde5c832126f6203bf887a416f8987525",
+              "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+              "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+              "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+              "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+              "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+              "workers/companion-workspace/src/events.ts": "cbd826bc6f75574f13d9a2e992a5e71fc62a1e06af5fa40c7c84b687fe1f65ee",
+              "workers/companion-workspace/test/reminder-events.test.mjs": "070764ba23603e0f1c47decb626c929fbc3c7c213cb1956b45a41beaf0d7516b",
+              "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+            },
+            "timing": {
+              "tool_wall_seconds": 18.90219970815815
+            }
+          }
+        }
+      ],
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2": [
+        {
+          "check": {
+            "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
+            "criteria": [
+              "The selected gateway and Auth endpoint have verified deployed source/runtime/configuration, available Free quota, reviewed provider logging and a current rollback identity.",
+              "A synthetic signed challenge reaches the exact owned HTTPS receiver with matching bytes and signature, the original claim identity and one observed delivery; replay produces no additional delivery and the successful response meets the shared deadline.",
+              "Disabling the selected gateway/claim lanes and scoped shutdown or rollback are observed; reduced receipts retain original fences and explicitly list deferred hosted DNS/TLS failure coverage."
+            ],
+            "id": "hosted-gateway",
+            "parameters": {
+              "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/hosted-normal-delivery.json",
+              "session_file": ".skill-tree/artifacts/notification-release-2026-11-02/session.json"
+            },
+            "recipe_id": "netlify-hosted-controls",
+            "sources": [
+              ".skill-tree/documents/testing.md",
+              ".skill-tree/documents/technical.md",
+              "deploy/callback-egress/src/gateway.mjs",
+              "deploy/callback-egress/src/transport.mjs",
+              "workers/chatgpt-auth/src/callback-egress.ts",
+              "tests/hosted/callback-receiver.mjs",
+              "tests/hosted/normal-delivery.mjs",
+              "tests/Functions/callback-receiver.test.mjs"
+            ],
+            "timing": "before-dependent-work"
+          },
+          "result": {
+            "actual_lane": "server",
+            "assertions": [
+              {
+                "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
+                "evidence": [
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-normal-delivery.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-cleanup.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-enabled.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-disabled.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-enabled.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-disabled.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/provider-logging-review.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/public-preflight.json",
+                  ".skill-tree/history/releases/2026-11-02-notifications/node-public-health.json",
+                  ".skill-tree/history/releases/2026-11-02-notifications/auth-bind.json"
+                ],
+                "result": "pass"
+              }
+            ],
+            "attempt_id": "C-98b33709-7e64-40a2-995f-26920b79aeaf",
+            "classification": "executed-control",
+            "cleanup": "Actual gateway and Auth claim disabled after one exact signed synthetic delivery; replay refused and receiver count remains1. Auth40d245ba-4921-4d8f-adf7-419dc3da5c2a restored; Netlify disabled deploy6ae89b301cb86293e93589a8 ready. Ephemeral receiver Worker and its synthetic table removed; original Auth claim fences retained. Final production activation is a later separately recorded release action.",
+            "definition": "98c4f43b158832e4a635b0f8bdfb2c29044b3ca352c06e55f9b681faffbfc511",
+            "environment_identity": "0b31949be066b690da98240aa3c152e248afe78eef92ac7ba5f0476843224981",
+            "evidence": [
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-normal-delivery.json",
+                "sha256": "3ca129a639bde9ebec68270379c8f7bc2a98f4193ba3fa23c5159033b4f5358e"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+                "sha256": "b7fd8217737a3ed197db8b83b2b6b5387f8498c6285cca7b3d2ab66c29216319"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-cleanup.json",
+                "sha256": "cf27cb242fd509a4433ae8db422da3db94608e554f3c2576d746af371f893369"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+                "sha256": "c52de7434d706a768b496078de532da5a68765e7841143113d471657de072f3a"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-enabled.json",
+                "sha256": "8cf7ae7600756e89f78d6d6962736bb70d15ade18adbb838a9c5aed773f33693"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-disabled.json",
+                "sha256": "aac451d8d99396cc6c2ecfe72f884527a28009db515679a7f815108faaf11c17"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-enabled.json",
+                "sha256": "2eb3b05b772d458f4000c5b7bc68c1854c26c5e98191049170c009dcf2903ae6"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-disabled.json",
+                "sha256": "d6341808e902a842eea3dfc97f69d0d298f7e1a684584a03637c794e4e65a4d8"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/provider-logging-review.json",
+                "sha256": "95d16150ae615081823f950213781da0c59a72af547ccca60a40b4f993533157"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json",
+                "sha256": "1a2fb4a02f0d3d7a0157c854f82a082390ca9293bf94d950ec75c877e4e04afb"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/public-preflight.json",
+                "sha256": "5e6b0ca43c8e50ef8c07976883d104beae6640516f1406214ea6a41432f39662"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/releases/2026-11-02-notifications/node-public-health.json",
+                "sha256": "d8757115d6610c9f7139c295985b2f6b8f2c4cf6e8fbc87b8a4e996b7373a890"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/releases/2026-11-02-notifications/auth-bind.json",
+                "sha256": "0696fcaa3b68388ec73796c4cceaf93e46e861dddb429fbeded6e8175d42cc12"
+              }
+            ],
+            "execution_sessions": {
+              "8f7965551a652408198d19e4e3402b1cca28bda5d0bae7bf080bca13af82261e": {
+                "authorization": "Direct owner publication request and retained synthetic gateway/claim/receiver scope, including Netlify CLI authorization. Same existing account/site/Auth and isolated synthetic receiver only.",
+                "build_identity": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+                "cleanup_seconds": 45,
+                "deadline_utc": "2026-11-02T14:23:34.000051+00:00",
+                "fixture_identity": "Final source-matched isolated receiver https://habitica-companion-callback-qualification.strexet.workers.dev/callback-qualification/ce61acec-f284-4580-b984-c3ddd9e844dd/receive; new protected final session/report paths preserve the original completed qualification artifacts.",
+                "identity_evidence": [
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+                  ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json"
+                ],
+                "profile_id": "notification-final-hosted-normal-v1",
+                "project_root": "/Users/petr/Projects/habitica-tool",
+                "session_identity": "ce61acec-f284-4580-b984-c3ddd9e844dd",
+                "tool_identity": "Netlify CLI26.0.1; actual native Node22 gateway; Cloudflare actual Auth/D1 and isolated receiver"
+              }
+            },
+            "key": "85619f98335e9d3187af7cb3779aae21c4ddf1a86006fc7b4c5f5493b0fa2195",
+            "payload_hash": "e1c28b8b599855bdcaa48b638337b4f93a992e0dbf18c02f1f368a5e324ee8a8",
+            "recorded_at": "2026-11-02T14:21:37.232340+00:00",
+            "result": "pass",
+            "sources": {
+              ".skill-tree/documents/technical.md": "2465437862f216edd3dc9edece26593ce0db7f0d56d8472465f9ec3fc4b60712",
+              ".skill-tree/documents/testing.md": "97ac1a8aa9446b080fabcb1150d4afec3c619af7febb59f4b2354e5d4954c914",
+              "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+              "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+              "tests/Functions/callback-receiver.test.mjs": "e8fc2401efd82c8d68bd9cbaf7abb56b56dbe35f52b1138ac479864b9cc1edf7",
+              "tests/hosted/callback-receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+              "tests/hosted/normal-delivery.mjs": "4b40ce3da580f21097554799eb501004996f87e4f96fc855dc4a31f55ca77216",
+              "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93"
             }
           }
         }
@@ -327,7 +570,7 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-11-02T11:21:03.761538+00:00",
-    "stop_reason": null
+    "stop_reason": "The owner-selected notification implementation and publication topic is complete. Unrelated original snapshot work remains preserved and unselected."
   },
   "format": "skill-tree-future",
   "schema": 2,

@@ -51,8 +51,21 @@ def snapshot():
     save(EVIDENCE/'baseline.json',{'workers':{p:{k:v[k] for k in ['name','version','source_hashes']} for p,v in state['workers'].items()},'bookmarks':state['bookmarks']})
     print(json.dumps({'stage':'snapshot','workers':{p:v['version'] for p,v in state['workers'].items()},'recovery_bookmarks':list(state['bookmarks'])}))
 
+def verified_source(name, modules):
+    remote=provider.source(name)
+    expected={n:d for n,_,d in modules};observed={n:d for n,_,d in remote}
+    if set(expected)!=set(observed):raise RuntimeError('published_module_set_changed')
+    for module,data in expected.items():
+        if module.endswith('.map'):
+            local_map,remote_map=json.loads(data),json.loads(observed[module])
+            # Cloudflare normalizes map JSON and replaces sourceRoot with sourcesRoot.
+            # Runtime bytes and every mapping/name/embedded source remain exact.
+            if any(local_map.get(k)!=remote_map.get(k) for k in ['version','sources','sourcesContent','mappings','names']):raise RuntimeError('published_source_map_payload_changed')
+        elif observed[module]!=data:raise RuntimeError('published_runtime_bytes_changed')
+    return provider.hashes(remote)
+
 def publish(action):
-    part = {'auth-bootstrap':'chatgpt-auth','workspace':'companion-workspace','auth-bind':'chatgpt-auth','mcp':'chatgpt-mcp','activate-auth':'chatgpt-auth','activate-workspace':'companion-workspace','activate-mcp':'chatgpt-mcp'}[action]
+    part = {'auth-bootstrap':'chatgpt-auth','workspace':'companion-workspace','auth-bind':'chatgpt-auth','mcp':'chatgpt-mcp','activate-auth':'chatgpt-auth','activate-workspace':'companion-workspace','activate-mcp':'chatgpt-mcp','repair-auth':'chatgpt-auth','repair-workspace':'companion-workspace','repair-mcp':'chatgpt-mcp','recovery-auth':'chatgpt-auth','recovery-workspace':'companion-workspace','recovery-mcp':'chatgpt-mcp'}[action]
     baseline = json.loads((PRIVATE/'release-baseline.json').read_text())
     state_path = PRIVATE/'release-state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'actions':{},'current':{p:v['version'] for p,v in baseline['workers'].items()}}
@@ -71,7 +84,7 @@ def publish(action):
     def binding(value):
         nonlocal bindings
         bindings = [b for b in bindings if b['name']!=value['name']]+[value]
-    active = action.startswith('activate-')
+    active = action.startswith(('activate-','repair-','recovery-'))
     binding({'name':'EVENTS_ENABLED','type':'json','json':active})
     if part=='chatgpt-auth':
         binding({'name':'CALLBACK_VAULT_CURRENT_KEY_VERSION','type':'plain_text','text':'1'})
@@ -89,7 +102,7 @@ def publish(action):
     metadata = {k:settings[k] for k in ['compatibility_date','compatibility_flags','usage_model','placement','tags','observability','logpush','tail_consumers','limits'] if settings.get(k) is not None}
     metadata.update({'main_module':'index.js','bindings':bindings,'keep_bindings':['secret_text']})
     folder=ROOT/'workers'/part/'dist'
-    modules=[(p.name,'application/javascript+module' if p.name.endswith('.js') else 'application/json',p.read_bytes()) for p in sorted(folder.iterdir()) if p.name in ['index.js','index.js.map']]
+    modules=[(p.name,'application/javascript+module' if p.name.endswith('.js') else 'application/source-map',p.read_bytes()) for p in sorted(folder.iterdir()) if p.name in ['index.js','index.js.map']]
     if not any(p[0]=='index.js' for p in modules):raise RuntimeError('missing_reviewed_bundle')
     identity=(ROOT/'workers/shared/build-identity.generated.ts').read_text().split(' = ',1)[1].removesuffix(' as const;\n')
     identity=json.loads(identity)
@@ -105,9 +118,9 @@ def publish(action):
     final=api('/workers/scripts/'+name+'/versions/'+target)['resources']['bindings']
     def reduced(values):return {b['name']:b for b in values if b['name'] not in ['EVENTS_ENABLED','CALLBACK_VAULT_CURRENT_KEY_VERSION','CALLBACK_EGRESS_ENABLED','CALLBACK_VAULT_KEY_V1','EVENTS_WORKSPACE','AUTH_EVENTS']}
     if reduced(original)!=reduced(final):raise RuntimeError('unrelated_runtime_binding_changed')
-    if provider.hashes(provider.source(name))!=provider.hashes(modules):raise RuntimeError('published_source_changed')
+    observed_hashes=verified_source(name,modules)
     state['actions'][action]['stage']='active';state['current'][part]=target;save(state_path,state,True)
-    receipt={'action':action,'worker':name,'previous_version':current,'version':target,'state':'active','events_enabled':active,'source_hashes':provider.hashes(modules),'backend_release':identity['backendRelease'],'tool_schema':identity['toolSchemaVersion'],'build_hash':identity['buildHash'],'unrelated_bindings_preserved':True,'new_secret_material_logged':False}
+    receipt={'action':action,'worker':name,'previous_version':current,'version':target,'state':'active','events_enabled':active,'source_hashes':provider.hashes(modules),'provider_source_hashes':observed_hashes,'source_map_core_payload_equal':True,'backend_release':identity['backendRelease'],'tool_schema':identity['toolSchemaVersion'],'build_hash':identity['buildHash'],'unrelated_bindings_preserved':True,'new_secret_material_logged':False}
     save(EVIDENCE/(action+'.json'),receipt);print(json.dumps(receipt))
 
 def rollback():

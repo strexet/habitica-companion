@@ -1,0 +1,8 @@
+{
+  "operation": "netlify-gate-release-enabled",
+  "classification": "executed-control",
+  "exit_code": 0,
+  "tool_wall_seconds": 3.946,
+  "deadline_seconds": 35,
+  "cleanup_reserve_seconds": 10
+}

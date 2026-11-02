@@ -248,7 +248,7 @@
       ]
     }
   },
-  "environment_id": "74a41d63688c527f89d3bab69d6b7cdfef734d23c58302b46b3afa0bb513ca2f",
+  "environment_id": "54a2d4310e6cf77084f356a70becb82b24e18f7b8bf68694cbc8c67a6c24c87f",
   "facts": {
     "capabilities": {
       "playwright-test": {
@@ -266,7 +266,7 @@
   "flavor": "web",
   "format": "skill-tree-profile",
   "gaps": [],
-  "identity": "1c28e900daa125e7826eaedaf974d2ec34e14efac71de81c14bda6bdda9f2c8d",
+  "identity": "91edd86f6fdadc390fdc939da0a6083bafedda74bec667e1b0376c63c1c22254",
   "inputs": {
     ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
     ".nvmrc": null,
@@ -310,8 +310,8 @@
     "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
     "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
     "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
-    "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
-    "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073",
+    "workers/chatgpt-auth/src/events.ts": "001874cffb186ddcf2553bc9bf36a77fde5c832126f6203bf887a416f8987525",
+    "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c",
     "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
     "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
     "workers/chatgpt-auth/wrangler.jsonc": "cdb2aed5c960d85ea5da73683a373a957741b69b2919ab0726a4c927bd2c0c66",
@@ -321,7 +321,7 @@
     "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37",
     "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
     "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
-    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/companion-workspace/src/events.ts": "cbd826bc6f75574f13d9a2e992a5e71fc62a1e06af5fa40c7c84b687fe1f65ee",
     "workers/companion-workspace/wrangler.jsonc": "b5992b0d75520ae33bd2dfa04347fd268f9cb01fefd763bdf8c381237aca0f76",
     "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba",
     "yarn.lock": null

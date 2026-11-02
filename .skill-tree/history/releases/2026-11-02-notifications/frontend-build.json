@@ -1,0 +1,29 @@
+{
+  "operations": [
+    {
+      "name": "dotnet-version",
+      "exit_code": 0,
+      "seconds": 0.2740641669370234,
+      "deadline_seconds": 30
+    },
+    {
+      "name": "vendor",
+      "exit_code": 0,
+      "seconds": 0.4405390419997275,
+      "deadline_seconds": 60
+    },
+    {
+      "name": "frontend-settings",
+      "exit_code": 0,
+      "seconds": 0.0552519999910146,
+      "deadline_seconds": 30
+    },
+    {
+      "name": "frontend-publish",
+      "exit_code": 0,
+      "seconds": 22.822350916918367,
+      "deadline_seconds": 600
+    }
+  ],
+  "source_settings_restored": true
+}

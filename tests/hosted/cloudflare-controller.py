@@ -39,7 +39,12 @@ def api(path, method='GET', payload=None, content_type='application/json', binar
             if binary:
                 return raw, response.headers['content-type']
     except urllib.error.HTTPError as error:
-        raise RuntimeError('provider_http_' + str(error.code)) from None
+        try:
+            details=json.loads(error.read(65536))
+            codes='_'.join(str(e.get('code')) for e in details.get('errors',[]))
+        except Exception:
+            codes=''
+        raise RuntimeError('provider_http_' + str(error.code)+(('_codes_'+codes) if codes else '')) from None
     value = json.loads(raw)
     if not value.get('success'):
         raise RuntimeError('provider_refused_' + '_'.join(str(e.get('code')) for e in value.get('errors', [])))
@@ -102,7 +107,7 @@ def setup():
     try:
         api('/workers/scripts/' + FIXTURE + '/settings')
     except RuntimeError as error:
-        if str(error) != 'provider_http_404':
+        if not str(error).startswith('provider_http_404'):
             raise
     else:
         raise RuntimeError('existing_fixture_has_no_current_ownership_receipt')

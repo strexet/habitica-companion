@@ -1,0 +1,11 @@
+{
+  "observed_at_utc": "2026-11-02T14:58:53.130082+00:00",
+  "source": "Authenticated Netlify billing UI after refresh",
+  "plan": "Free",
+  "remaining_credits": 152.9,
+  "rounded_available_card": 153,
+  "monthly_credits": 300,
+  "deploy_count": 9,
+  "deploy_credits": 135,
+  "paid_upgrade": false
+}

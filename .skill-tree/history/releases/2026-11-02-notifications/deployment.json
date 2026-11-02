@@ -1,0 +1,50 @@
+{
+  "version": "0.3.1",
+  "tool_schema": "1.3.0",
+  "build_hash": "b2c02b0bb823dc81e7f12d89dc8e46ef4098e48d750698685ee924170237d03b",
+  "worker_versions": {
+    "chatgpt-auth": "148f5324-fa99-413a-b477-bafd5b833574",
+    "companion-workspace": "45c6d965-cbf7-4fb3-9e64-3a08ddb7afe5",
+    "chatgpt-mcp": "d8fb17bc-8400-4e5a-9541-a63fab609b82"
+  },
+  "pages_id": "a061255b-d21c-4195-9366-219422259497",
+  "pages_status": "success",
+  "gateway_deploy": "6ae89d0cebb45b34d03869a8",
+  "events_enabled_production": true,
+  "ordinary_profiles_default_off": true,
+  "migrations": [
+    "Auth0014",
+    "Auth0015",
+    "Workspace0019",
+    "Workspace0020"
+  ],
+  "pending_migrations": [],
+  "implicit_user_consents_or_subscriptions": false,
+  "real_chat_messages_sent": false,
+  "hosted_synthetic_delivery_ms": 2489,
+  "hosted_replay_refused": true,
+  "ephemeral_receiver_removed": true,
+  "package": {
+    "archiveSha256": "c6df4283986a347a026e410c317cef3f8a29c02a798a2871f0e651dc80987858",
+    "contentHash": "17c76c44c9736b537103c90194d517b5230148143151f987be28b9698e6799ab",
+    "packageVersion": "0.3.1"
+  },
+  "package_host_installation": "unknown",
+  "implementation_commit": "cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77",
+  "ttl_repair_commit": "7779697a2407da0cb8144416e16a7eccc5d3f2c7",
+  "git_push": false,
+  "remaining_future": {
+    "Pending Queue": 2,
+    "Prioritized Next Changes": 11,
+    "Backlog": 11
+  },
+  "unqualified": [
+    "Actual ChatGPT Work Cloud subscribed-chat response",
+    "Local Codex originating-chat delivery",
+    "Physical-device push behavior",
+    "Dedicated hosted DNS/TLS failure injection",
+    "Production browser rendering: IAB ERR_FAILED; error-page inspection was blocked by Browser Use URL policy. HTTP artifact and native MCP checks pass."
+  ],
+  "netlify_remaining_credits": 152.9,
+  "recovery_repair_commit": "4cd483557c175001094405fb9b8413a0fab5828e"
+}

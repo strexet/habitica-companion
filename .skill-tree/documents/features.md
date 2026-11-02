@@ -3536,3 +3536,5 @@ The gated Auth/Workspace/MCP lifecycle now supports independent exact-task conse
 ## Exact-task reminder Events
 
 A default-off Workspace outbox and Auth signer dispatch generic due-cue events through verified separately consented callbacks. Original IDs, pre-send durable intents, current authorization, bounded known-transient retries and unknown-outcome fences prevent blind duplicate sends. Genuine MCP status reads distinguish host receipt from actual chat response. [reminder-events.md](reminder-events.md) owns payload, expiry, queues, cleanup and qualification limits.
+
+The owner-selected production0.3.1 notification release enables the gated Events implementation with separate user consent still required. [Notification release evidence](../history/releases/2026-11-02-notifications/README.md) records the published components, actual normal gateway delivery, original receipts and remaining host/device qualification.

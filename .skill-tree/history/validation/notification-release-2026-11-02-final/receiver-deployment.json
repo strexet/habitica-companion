@@ -1,0 +1,18 @@
+{
+  "runId": "ce61acec-f284-4580-b984-c3ddd9e844dd",
+  "worker": "habitica-companion-callback-qualification",
+  "accountId": "8c962c94f28f5bdd298024365e0dea40",
+  "databaseId": "ada5184c-865d-4c6a-864a-88618f19c06f",
+  "sourceHashes": {
+    "receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f"
+  },
+  "deploymentId": "40c28a4d05c745cc81e18acc49dab766",
+  "versionId": null,
+  "baselineAuthVersion": "40d245ba-4921-4d8f-adf7-419dc3da5c2a",
+  "baselineAuthSourceHashes": {
+    "index.js": "adfe4d56e55615f0f40220f140e44e9892b19a0ae71c61877ff71032a483fb7c",
+    "index.js.map": "b95676a4bed316002809a413b733101a7754cbfd891c7eb102df501d96a33fcc"
+  },
+  "expiryUtc": "2026-11-02T15:09:26.570000+00:00",
+  "syntheticOnly": true
+}

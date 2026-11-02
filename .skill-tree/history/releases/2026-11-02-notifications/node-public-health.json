@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": "{\"service\":\"auth\",\"authorization\":\"enabled\"}"
+  },
+  "workspace": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": "{\"service\":\"workspace\",\"enabled\":true}"
+  },
+  "mcp": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": "{\"service\":\"mcp\",\"authService\":\"reachable\",\"authorization\":\"unavailable\"}"
+  }
+}
