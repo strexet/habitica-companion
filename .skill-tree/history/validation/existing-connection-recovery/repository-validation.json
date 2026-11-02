@@ -1,0 +1,62 @@
+[
+  {
+    "check": "prose",
+    "path": "skill-tree/documents/session-recovery.md",
+    "errors": []
+  },
+  {
+    "check": "prose",
+    "path": "skill-tree/history/validation/existing-connection-recovery/readme.md",
+    "errors": []
+  },
+  {
+    "command": [
+      "python3",
+      ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+      "skill-tree/documents/future.md",
+      "--strict",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "result": {
+      "ok": true,
+      "errors": []
+    }
+  },
+  {
+    "command": [
+      "python3",
+      ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+      ".",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "result": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    }
+  },
+  {
+    "command": [
+      "python3",
+      "workers/scripts/generate-build-identity.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

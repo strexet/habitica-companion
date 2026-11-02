@@ -1,0 +1,24 @@
+{
+  "temporary_source_snapshot": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/companion-unified-baseline-e1xgwexv",
+  "source_hashes": {
+    "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs": "58a9ebabce8f199c801d03e5999ebefba5dc13a5307df0778dac26a0b6237278",
+    "src/Habitica.Application/Sync/CloudSyncSection.cs": "bc424677f766d3c3735f92d5415a77496b75e114666ccade9079166953194a48",
+    "src/Habitica.Application/Sync/CloudSyncSectionMapping.cs": "637f220c1d963affe9169620d2af01b8f14459c9c6140e27e91e0d29fe0e6099",
+    "src/Habitica.Storage/StorageKeys.cs": "0d7573bfe765a2d1204e6589fcb77c54e3fcb6f6eddddad03175c01ab7d104b7",
+    "src/Habitica.Storage/IKeyValueStorage.cs": "6f5659ee9fca43d226d906314e5c0086a0186fa0136670bfaeea6fc6fce6e072",
+    "src/Habitica.Storage/IndexedDbStorageAdapter.cs": "a04d9bdc4fb42104fa2628632151d2bc05237135cb98b92b1340c2e4f748b54a",
+    "src/Habitica.Storage/IndexedDbWorkspaceDatabase.cs": "bab676a1dd233a2af7b0ff4d97b65ec22a68c4750fd8e85020dcdbb60242a962",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "79f56066d2e7743cf5959496554ddf325aa8b21d69f11280df2910660daded24",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "57681cba485b1134fa4934892b973613586c6d91b0bf8c09a83a4ccef8c51321",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "20afbef4c3a484016287149c6e5434cd5ba38a2977baa8d3ed1e22b4e86f1d94",
+    "src/Habitica.WebApp/State/NotesController.cs": "f5e89b0f6a25e91a7ca0beed1b94dcd73f69ed0c8bad132cd4ad225a64a4a784",
+    "src/Habitica.WebApp/Program.cs": "06cc0541f9b3f0ebea8d295cb6bee2efc2bb2a457fc635930f90ee3fe8301e67",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "f5306dcfce7da31942aaa6822a6c24b0ce864b78432191011fb2ef1c5b072917"
+  },
+  "selected_ids": [
+    "T-be29adc1-276c-417d-8f3d-434e34d17a0d",
+    "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723",
+    "T-fcb3bef0-1d46-433f-bf15-d90b7f359048",
+    "T-726f81ba-4130-4b59-b793-686298251e6c"
+  ]
+}

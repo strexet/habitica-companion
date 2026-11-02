@@ -1,0 +1,75 @@
+{
+  "id": "0c6fdccc-2886-44f3-be61-785921c6340d",
+  "number": 9,
+  "metadata": {
+    "created_on": "2026-10-29T13:27:26.145519Z",
+    "source": "wrangler",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/message": "Checked recent features and reviewed MCP contracts",
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "d03bfd9c7252df1e40e551c485e98a9b5d5c38c378f8cd75d50a748d5530d9d4",
+      "handlers": [
+        "fetch"
+      ],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "compatibility_date": "2026-10-12",
+      "compatibility_flags": [
+        "nodejs_compat"
+      ],
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "name": "AUTH_ISSUER",
+        "text": "https://habitica-companion-auth.strexet.workers.dev",
+        "type": "plain_text"
+      },
+      {
+        "entrypoint": "AuthService",
+        "environment": "production",
+        "name": "AUTH_SERVER",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "production",
+        "type": "plain_text"
+      },
+      {
+        "name": "MCP_RESOURCE",
+        "text": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "type": "plain_text"
+      },
+      {
+        "json": true,
+        "name": "OAUTH_ENABLED",
+        "type": "json"
+      },
+      {
+        "name": "PWA_ORIGIN",
+        "text": "https://habitica-companion.pages.dev",
+        "type": "plain_text"
+      },
+      {
+        "name": "WORKSPACE_ORIGIN",
+        "text": "https://habitica-companion-workspace.strexet.workers.dev",
+        "type": "plain_text"
+      },
+      {
+        "entrypoint": "WorkspaceCommandService",
+        "environment": "production",
+        "name": "WORKSPACE_SERVER",
+        "service": "habitica-companion-workspace",
+        "type": "service"
+      }
+    ]
+  }
+}

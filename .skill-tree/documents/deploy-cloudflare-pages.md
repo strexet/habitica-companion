@@ -4,7 +4,7 @@ This app is a Blazor WebAssembly app with Cloudflare Pages Functions for persona
 
 ## Owner-first launch readiness
 
-The owner development rollout is published directly to [habitica-companion.pages.dev](https://habitica-companion.pages.dev). The selected environment is production, with no separate dev website or backend names. The current manual Pages publication uses dirty local `develop` source at `adbfcc5` in the existing `main` production slot; no Git push occurred. Git deployment settings remain unchanged. [Plugin authorization publication evidence](../history/validation/plugin-authorization-prod-20261025.json) records the current Auth, Workspace, MCP and Pages versions and public checks. Template defaults and earlier rollout observations remain historical.
+The existing production website is [habitica-companion.pages.dev](https://habitica-companion.pages.dev), with no separate dev website or backend names. The current direct Pages artifact contains the scoped PWA shell hotfix over baseline `f9f71b51` in the existing `main` production slot. Git integration and dashboard runtime settings remain configured; the hotfix source is recorded in commit `a040993146343fb461676d571a1cd79b0f625c3f`. [PWA hotfix publication evidence](../history/releases/2026-10-30-pwa-hotfix/readme.md) records the canonical deployment, exact asset package, rollback predecessor and public-check limitations. The Auth, Workspace and MCP release identities remain in the [coordinated release record](../history/releases/2026-10-29/deployment.json).
 
 Auth, Workspace and MCP Workers are published. Production integration OAuth KV and Auth/Workspace D1 resources are separate from the retained browser-sync KV and party database. [Publication evidence](../history/validation/production-publication.json) records the deployed versions, bindings, build and public boundary checks. [The operator guide](../../deploy/README.md#current-owner-action-sign-in-and-connect) provides exact owner sign-in, consent and client setup steps.
 
@@ -150,7 +150,9 @@ Create local KV/D1 resources or override the placeholder IDs in `wrangler.toml` 
 
 ## Existing browser migration
 
-Older deployments registered a service worker and used a `_redirects` file. Current deployments rely on Cloudflare Pages native SPA behavior and do not register a service worker. Existing users should unregister the old service worker, clear site data, and hard refresh once after redeploy.
+Pages uses native SPA routing. The PWA registers service-worker.js on secure page load; Release publication supplies the public offline cache worker. Pages HTML canonicalization can give the cached index response redirect history. The worker validates and reconstructs only the public shell before serving navigation, retaining same-origin integrity and private-route exclusions. The shell-v2 cache namespace permits a worker-only update without reusing the redirected shell cache. See [PWA installation and relaunch](pwa-installation.md#redirect-safe-shell-and-updates).
+
+Verify the published worker/asset identities and successful installation, close all controlled app tabs/windows, then reopen to permit ordinary activation. Activation removes obsolete public build caches only. A failed install preserves the active build. Do not require site-data clearing or unregister the worker as the normal migration: local records and push subscriptions must survive. Deployment success alone does not establish activation on an affected iPhone.
 
 ## Updates
 
@@ -162,7 +164,7 @@ Push to the production branch and Cloudflare Pages will rebuild automatically.
 - The app must be served from the site root with `base href="/"`. Subpath hosting is not the baseline deployment target.
 - Personal sync keeps Habitica credentials in the browser and stores only encrypted KV blobs.
 - Shared party sync sends browser-local claims or optional tokenized invite proofs to the Pages Function and stores shared party data, roles, settings, kick records, and hashed proof metadata in D1.
-- `service-worker*.js` files may remain in the repo, but `index.html` does not register them.
+- `index.html` loads js/pwa.js, which registers the published worker for secure app loads. Development retains the network-only worker.
 
 ## Dedicated Worker local validation
 
@@ -435,3 +437,9 @@ The owner-selected Netlify Functions Free callback gateway has separate source/c
 
 
 The selected Auth callback setup is provisioned with dispatch disabled. Exact initial deployment/base-module identities, the applied `0012` migration and pending hosted qualification are recorded in [callback-egress.md](callback-egress.md#published-auth-setup). The subsequent [2026-10-29 coordinated release](../history/releases/2026-10-29/README.md) publishes full repository Auth/Workspace/MCP source after the remaining migrations and lifecycle bindings. Web Push availability is enabled with dedicated keys and separate device/account consent; callback delivery remains disabled.
+
+## Existing connection recovery migration
+
+Apply Auth `0013-recovery-sessions.sql` to the exact selected integration D1 database before publishing Auth code using existing-only session recovery or scheduled recovery-session cleanup. Workspace needs matching existing-only recovery handlers but no new Workspace migration. Existing resources, keys, feature gates and public origins remain unchanged. Publish compatible Auth/Workspace/client code through the separately authorized release process; rollback retains the additive session table and must not restore old bearer credentials. [session-recovery.md](session-recovery.md) owns session expiry, revocation and legacy-bootstrap semantics. Local tests/dry builds neither apply the migration remotely nor publish code. Automatic sign-in/private-sync restoration and the single-Workspace UI remain separate prioritized units.
+
+The recovery foundation is published to the existing production site with Auth0013 applied and no pending Auth/Workspace migrations. [The release record](../history/releases/2026-10-30-session-recovery/readme.md) contains component identities, retained settings, the corrected complete Pages Functions upload and content-free MCP data checks. Browser migration completeness and automatic new-session setup remain outside the published foundation.

@@ -1,0 +1,21 @@
+{
+  "label": "transfer-final-runtime",
+  "started_at_utc": "2026-10-30T15:35:33.215516+00:00",
+  "classification": "executed_control",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-timeout=30000",
+    "test/workspace-transfer.test.mjs",
+    "test/notes.test.mjs",
+    "test/recovery.test.mjs"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/companion-workspace",
+  "deadline_seconds": 180.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 13.898,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

@@ -363,3 +363,9 @@ Browser and MCP use the shared metadata-only prepare_task_adoption, accept_task_
 ## Scoped stored tag correspondence
 
 Status and source-retirement prerequisites share the complete desired-member comparison. Group identity/name/lifecycle, coherent mapping/intent scope, exact native tag/task IDs, unique latest intent and confirmed per-member evidence establish stored correspondence. Unrelated global revisions preserve matching evidence; workspace revision still binds coherent paging. Group revision beyond retained scope, uncertain intents, changed membership/remaps and missing receipts require review. Cloud reads additionally require durable confirmed work in the current connection/access epoch; imported or inaccessible provenance remains unverified. Portable prerequisite checks grant no live authority, deletion or fresh provider claim. Source retirement retains the separate current consent, ownership, unresolved-effect and fresh native verification gates.
+
+## Existing-only Workspace and Notes access
+
+The [session recovery contract](session-recovery.md) adds management-authenticated existing-only session issuance for active Workspace/Notes consent. Recovery neither creates/reactivates stores nor transfers browser records. Exact optional target IDs, current connection/access epochs and independent consent remain mandatory; existing records, receipts and executor settings remain unchanged. Ordinary browser selection, synced account preferences and reviewed cloud adoption are separate prioritized units.
+
+Reviewed multi-store adoption uses `companion-adoption-v1`, exact source archives, existing target identity, revision-offset provenance, independent Notes consent, imported-effect fences and original receipt recovery. [Unified Workspace](unified-workspace.md) owns staging, acceptance, export and deletion semantics.

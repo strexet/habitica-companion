@@ -1,0 +1,17 @@
+{
+  "label": "transfer-types",
+  "started_at_utc": "2026-10-30T15:11:17.075853+00:00",
+  "classification": "executed_control",
+  "command": [
+    "npm",
+    "run",
+    "check"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/companion-workspace",
+  "deadline_seconds": 100.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 3.215,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 1,
+  "timed_out": false
+}

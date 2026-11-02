@@ -1455,6 +1455,20 @@ NotesModel/NotesEngine and shared notes.ts preserve legacy encodings while optio
 
 The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace remains the later subscription/outbox/receipt owner. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.
 
+## Public PWA shell response ownership
+
+service-worker.published.js owns Release cache installation, navigation shell validation and public-cache activation. The cache identity combines the generated manifest version and shell-v2 worker format. Same-origin integrity requests populate public assets; a validated root/index HTML response loses followed-redirect history through Response reconstruction before installation succeeds. Navigation repeats the guard for cached shells and preserves the original network request on cache refusal. Reconstruction retains decoded bytes and security headers while removing wire encoding/length. Worker activation remains browser-managed; storage, account consent and push subscriptions have no migration operation. pwa-installation.md owns update/relaunch instructions and the separate physical-device gate.
+
+## Existing-only connection recovery
+
+Auth, Workspace and Notes expose separate existing-only recovery boundaries under [session-recovery.md](session-recovery.md). Auth0013-recovery-sessions.sql stores hashed eight-hour tab management sessions bound to the current profile connection and root management-token hash; issuance preserves profile ciphertext, consent and OAuth state. Workspace/Notes recovery requires existing active independent consent and conditionally issues current-epoch sessions without upserting stores. Typed clients expose recovery descriptors and methods without persisting bearers or automatically invoking enrollment. Sign-in/private-sync orchestration and a shared active Workspace remain separate prioritized work.
+
+## Shared account source restoration
+
+[Unified Workspace](unified-workspace.md) owns account-scoped preference merge, IndexedDB default selection, capability exclusions and existing-only bootstrap. `CompanionConnectionCoordinator` supplies the shared task/Notes source; unavailable cloud access cannot create a writable browser fallback.
+
+Workspace migration `0018-workspace-transfers.sql` supports atomic task/Notes adoption and independently erasable Note archive fragments. `WorkspaceTransferService` and `WorkspaceTransferController` retain the original browser intent through capture, staging, acceptance and acknowledgement; [Unified Workspace](unified-workspace.md) defines the state boundaries.
+
 ## Skill Tree installation scope
 
 Repository workflow uses the project-scoped web flavor. [Installation state](skill-tree-installation.md) records profile ownership, schema adaptation and preserved checkpoint boundaries; product stack and package pins remain unchanged.

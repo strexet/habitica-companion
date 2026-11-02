@@ -1,0 +1,155 @@
+[
+  {
+    "id": "f4842080-b749-464e-8a35-da3650f1a444",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "a486e487-3860-462f-843e-751fbecb6fb8",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T11:44:40.60259Z"
+  },
+  {
+    "id": "b1cc416c-f169-4d81-92d8-d0c1563b5b21",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "0131fa19-a146-4095-8047-e2282bcd7891",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T13:07:37.445855Z"
+  },
+  {
+    "id": "e590e577-e00d-4fee-868e-74cc78450d98",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T16:37:22.160017Z"
+  },
+  {
+    "id": "907acd8a-5378-41e5-8bf2-84d8474300b8",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Owner development capability rollout aab2b87",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "a7fd180f-3feb-40dd-8440-66ef9fc34ad1",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-19T03:26:45.857715Z"
+  },
+  {
+    "id": "04db1785-0ebc-4a61-b470-299a90370697",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "23dd5ff7-9cc7-4ff8-b888-c2ee2bcf5819",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-20T13:55:47.186132Z"
+  },
+  {
+    "id": "8fd763f3-cfbe-4dcc-8177-ab55a051804c",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "01415777-f2a9-48b6-b9bf-c276106a6624",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-23T13:32:52.300685Z"
+  },
+  {
+    "id": "5975ce96-47b2-40e3-80cd-f221472d0467",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "026015a0-e2d6-4f23-92eb-a1f427b6c6d9",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T17:47:32.4025Z"
+  },
+  {
+    "id": "f890a46d-a38b-4a57-b4aa-1adff9e757f4",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T23:38:46.605635Z"
+  },
+  {
+    "id": "def67bf9-5f1a-42fc-8b10-e884fe0d01d9",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Scoped callback claim setup; dispatch disabled",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "96a4d62f-9c14-4f68-924d-b46dd03e09f2",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-29T12:58:17.196051Z"
+  },
+  {
+    "id": "8475fb78-3269-4633-b4f3-f015e5afe245",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Publish checked recent features with consent-gated Web Push and callback disabled",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "7fd550da-895b-4615-8eb5-93378ab0a4bc",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-29T13:26:56.734517Z"
+  }
+]

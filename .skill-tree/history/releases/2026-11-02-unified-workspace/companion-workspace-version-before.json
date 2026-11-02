@@ -1,0 +1,148 @@
+{
+  "id": "c352b2cf-4a01-48c3-ada1-44c8b74b1c70",
+  "number": 9,
+  "metadata": {
+    "created_on": "2026-10-30T08:10:51.756777Z",
+    "source": "wrangler",
+    "has_preview": true
+  },
+  "annotations": {
+    "workers/triggered_by": "version_upload"
+  },
+  "resources": {
+    "script": {
+      "etag": "9927f23099f8820860053db5e8668c0e6907640efdf4c99eb50708471b26dafa",
+      "handlers": [
+        "fetch",
+        "scheduled"
+      ],
+      "named_handlers": [
+        {
+          "name": "NotesLifecycleService",
+          "handlers": [
+            "fetch"
+          ]
+        },
+        {
+          "name": "WorkspaceCommandService",
+          "handlers": [
+            "fetch"
+          ]
+        }
+      ],
+      "last_deployed_from": "wrangler"
+    },
+    "script_runtime": {
+      "compatibility_date": "2026-10-12",
+      "compatibility_flags": [
+        "nodejs_compat"
+      ],
+      "usage_model": "standard"
+    },
+    "bindings": [
+      {
+        "entrypoint": "CronService",
+        "environment": "production",
+        "name": "AUTH_CRON",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "entrypoint": "WorkspaceIdentityService",
+        "environment": "production",
+        "name": "AUTH_IDENTITY",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "name": "AUTH_ISSUER",
+        "text": "https://habitica-companion-auth.strexet.workers.dev",
+        "type": "plain_text"
+      },
+      {
+        "entrypoint": "PartyService",
+        "environment": "production",
+        "name": "AUTH_PARTY",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "entrypoint": "ProjectionService",
+        "environment": "production",
+        "name": "AUTH_PROJECTION",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "entrypoint": "PushService",
+        "environment": "production",
+        "name": "AUTH_PUSH",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "entrypoint": "SpellService",
+        "environment": "production",
+        "name": "AUTH_SPELL",
+        "service": "habitica-companion-auth",
+        "type": "service"
+      },
+      {
+        "json": true,
+        "name": "CRON_ENABLED",
+        "type": "json"
+      },
+      {
+        "name": "ENVIRONMENT",
+        "text": "production",
+        "type": "plain_text"
+      },
+      {
+        "json": true,
+        "name": "EXECUTOR_ENABLED",
+        "type": "json"
+      },
+      {
+        "name": "MCP_RESOURCE",
+        "text": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "type": "plain_text"
+      },
+      {
+        "json": true,
+        "name": "PARTY_ENABLED",
+        "type": "json"
+      },
+      {
+        "json": true,
+        "name": "PUSH_REMINDERS_ENABLED",
+        "type": "json"
+      },
+      {
+        "name": "PWA_ORIGIN",
+        "text": "https://habitica-companion.pages.dev",
+        "type": "plain_text"
+      },
+      {
+        "json": true,
+        "name": "SPELLS_ENABLED",
+        "type": "json"
+      },
+      {
+        "database_id": "383e0502-7be4-42f9-b818-ee9710f3fa4d",
+        "id": "383e0502-7be4-42f9-b818-ee9710f3fa4d",
+        "name": "WORKSPACE_DB",
+        "type": "d1"
+      },
+      {
+        "json": true,
+        "name": "WORKSPACE_ENABLED",
+        "type": "json"
+      },
+      {
+        "name": "WORKSPACE_ORIGIN",
+        "text": "https://habitica-companion-workspace.strexet.workers.dev",
+        "type": "plain_text"
+      }
+    ]
+  }
+}

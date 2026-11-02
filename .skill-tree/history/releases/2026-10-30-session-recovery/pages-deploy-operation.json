@@ -1,0 +1,24 @@
+{
+  "started_at_utc": "2026-10-30T08:11:13.581953+00:00",
+  "deadline_seconds": 240,
+  "cleanup_reserve_seconds": 5,
+  "wall_seconds": 16.9,
+  "command": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "pages",
+    "deploy",
+    "/Users/petr/Projects/habitica-tool/output/session-recovery/wwwroot",
+    "--project-name",
+    "habitica-companion",
+    "--branch",
+    "main",
+    "--commit-hash",
+    "f9f71b5190086d17192642545ea3dc55610eed07",
+    "--commit-message",
+    "Existing-only session recovery; approved dirty working tree",
+    "--commit-dirty",
+    "true"
+  ],
+  "cwd": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/companion-session-upload-4ozh3opb",
+  "exit_code": 0
+}

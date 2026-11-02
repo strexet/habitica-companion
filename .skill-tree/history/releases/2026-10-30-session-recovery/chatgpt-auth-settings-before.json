@@ -1,0 +1,196 @@
+{
+  "placement": {},
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "usage_model": "standard",
+  "tags": [],
+  "tail_consumers": [],
+  "logpush": false,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "redact_query_string": false,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": false
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  },
+  "annotations": {
+    "workers/message": "Coordinated recent features release; separate push consent; callback off",
+    "workers/tag": "recent-features",
+    "workers/triggered_by": "version_upload"
+  },
+  "bindings": [
+    {
+      "json": true,
+      "name": "ADAPTIVE_PACING_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "AUTH_ISSUER",
+      "text": "https://habitica-companion-auth.strexet.workers.dev",
+      "type": "plain_text"
+    },
+    {
+      "name": "CALLBACK_EGRESS_AUDIENCE",
+      "text": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+      "type": "plain_text"
+    },
+    {
+      "name": "CALLBACK_EGRESS_CLAIM_KEY",
+      "type": "secret_text"
+    },
+    {
+      "json": false,
+      "name": "CALLBACK_EGRESS_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "CALLBACK_EGRESS_GRANT_KEY",
+      "type": "secret_text"
+    },
+    {
+      "name": "CREDENTIAL_CURRENT_KEY_VERSION",
+      "text": "1",
+      "type": "plain_text"
+    },
+    {
+      "name": "CREDENTIAL_KEY_V1",
+      "type": "secret_text"
+    },
+    {
+      "name": "CREDENTIAL_KEY_V2",
+      "type": "secret_text"
+    },
+    {
+      "json": true,
+      "name": "CRON_ENABLED",
+      "type": "json"
+    },
+    {
+      "json": true,
+      "name": "ENROLLMENT_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "ENVIRONMENT",
+      "text": "production",
+      "type": "plain_text"
+    },
+    {
+      "database_id": "ada5184c-865d-4c6a-864a-88618f19c06f",
+      "id": "ada5184c-865d-4c6a-864a-88618f19c06f",
+      "name": "HABITICA_INTEGRATION_DB",
+      "type": "d1"
+    },
+    {
+      "name": "HABITICA_X_CLIENT_HEADER",
+      "text": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
+      "type": "plain_text"
+    },
+    {
+      "json": true,
+      "name": "KEY_OPERATIONS_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "MCP_RESOURCE",
+      "text": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+      "type": "plain_text"
+    },
+    {
+      "entrypoint": "NotesLifecycleService",
+      "environment": "production",
+      "name": "NOTES_LIFECYCLE",
+      "service": "habitica-companion-workspace",
+      "type": "service"
+    },
+    {
+      "json": true,
+      "name": "OAUTH_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "OAUTH_KV",
+      "namespace_id": "cd15636d00ac4be584ef7854a9a98fba",
+      "type": "kv_namespace"
+    },
+    {
+      "json": true,
+      "name": "PARTY_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "PROFILE_ID_KEY",
+      "type": "secret_text"
+    },
+    {
+      "json": true,
+      "name": "PROJECTION_ENABLED",
+      "type": "json"
+    },
+    {
+      "json": true,
+      "name": "PUSH_DISPATCH_ENABLED",
+      "type": "json"
+    },
+    {
+      "json": true,
+      "name": "PUSH_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "PUSH_VAPID_PRIVATE_JWK",
+      "type": "secret_text"
+    },
+    {
+      "name": "PUSH_VAPID_PUBLIC_KEY",
+      "text": "BMR1OrVGjhtCN2gT1rYrmA9xjTFC1odPRauLEc-uq8457b33iTNP6hQeFqxDqrZ5RDtM3VR0Ac_VmRluAiDfNMU",
+      "type": "plain_text"
+    },
+    {
+      "name": "PUSH_VAPID_SUBJECT",
+      "text": "mailto:strexet@gmail.com",
+      "type": "plain_text"
+    },
+    {
+      "name": "PUSH_VAULT_CURRENT_KEY_VERSION",
+      "text": "1",
+      "type": "plain_text"
+    },
+    {
+      "name": "PUSH_VAULT_KEY_V1",
+      "type": "secret_text"
+    },
+    {
+      "name": "PWA_ORIGIN",
+      "text": "https://habitica-companion.pages.dev",
+      "type": "plain_text"
+    },
+    {
+      "json": true,
+      "name": "SPELLS_ENABLED",
+      "type": "json"
+    },
+    {
+      "json": true,
+      "name": "WORKSPACE_ENABLED",
+      "type": "json"
+    },
+    {
+      "name": "WORKSPACE_ORIGIN",
+      "text": "https://habitica-companion-workspace.strexet.workers.dev",
+      "type": "plain_text"
+    }
+  ]
+}

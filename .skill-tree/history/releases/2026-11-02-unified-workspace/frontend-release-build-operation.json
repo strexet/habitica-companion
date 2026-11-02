@@ -1,0 +1,18 @@
+{
+  "started_at_utc": "2026-11-02T04:32:02.443979+00:00",
+  "deadline_seconds": 240,
+  "cleanup_reserve_seconds": 5,
+  "wall_seconds": 26.507,
+  "command": [
+    "dotnet",
+    "publish",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj",
+    "-c",
+    "Release",
+    "--no-restore",
+    "-o",
+    "output/unified-workspace"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool",
+  "exit_code": 0
+}

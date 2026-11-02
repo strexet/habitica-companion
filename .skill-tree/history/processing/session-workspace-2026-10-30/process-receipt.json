@@ -1,0 +1,32 @@
+{
+  "created_ids": [
+    "T-726f81ba-4130-4b59-b793-686298251e6c",
+    "T-fcb3bef0-1d46-433f-bf15-d90b7f359048",
+    "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723",
+    "T-be29adc1-276c-417d-8f3d-434e34d17a0d",
+    "T-1481b473-244b-4918-b498-775fd1efcaf4"
+  ],
+  "dispositions": {
+    "P-66d0b256-307b-4a9d-babd-13d6e7edd9f6": {
+      "reason": "Current code confirms volatile connections, missing synced source metadata and independent task/Notes storage. Promote five researched priority107 units for existing-only recovery, shared settings/source state, lossless adoption, MCP parity and final UI qualification. Optional reverse transfer needs a separate ownership protocol and is deferred; research: skill-tree/history/processing/session-workspace-2026-10-30/research.md.",
+      "status": "promoted"
+    },
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2": {
+      "reason": "Fresh static inspection confirms serialized adaptive pacing, acknowledged17of40/429 controls and account-bound explicit gear recovery. The release report excludes live spell reproduction; affected-client build/controller identity and sanitized post-update iPhone evidence remain unavailable. No residual source defect or duplicate implementation is established. Obtain affected-client observations before a separately scoped live reproduction; research: skill-tree/history/processing/session-workspace-2026-10-30/research.md.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-d654b0d9-9a00-421a-a7e4-362cb9968176",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-66d0b256-307b-4a9d-babd-13d6e7edd9f6",
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2"
+  ],
+  "task_keys": {
+    "adoption-mcp-parity": "T-fcb3bef0-1d46-433f-bf15-d90b7f359048",
+    "existing-connection-recovery": "T-1481b473-244b-4918-b498-775fd1efcaf4",
+    "lossless-cloud-adoption": "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723",
+    "shared-workspace-state": "T-be29adc1-276c-417d-8f3d-434e34d17a0d",
+    "single-workspace-journey": "T-726f81ba-4130-4b59-b793-686298251e6c"
+  }
+}

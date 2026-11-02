@@ -1,0 +1,23 @@
+{
+  "label": "workspace-regression-tests",
+  "classification": "executed_control",
+  "command": [
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=30000",
+    "test/workspace.test.mjs",
+    "test/notes.test.mjs",
+    "test/executor.test.mjs",
+    "test/note-projects.test.mjs",
+    "test/operations.test.mjs"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/companion-workspace",
+  "deadline_seconds": 240.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 36.608,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

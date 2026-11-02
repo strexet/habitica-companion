@@ -29,6 +29,8 @@ InventoryPageTests checks Intelligence defaults for warrior, wizard, rogue, heal
 
 PWA packaging and navigation checks run with node --test tests/Functions/pwa.test.mjs. The fixture checks actual icon dimensions, secure registration, every current Razor app route, network-only sensitive paths and public cache installation. AppSessionController PWA tests reconstruct sessions with shared synthetic credential storage to distinguish explicit persistence, session-only sign-in, unavailable storage and cancellation. Sign-in/Settings tests export collapsed/expanded installation steps and check disclosure interactions without browser permission requests. The [physical iPhone gate](pwa-installation.md) records unrun device checks separately from desktop and synthetic evidence.
 
+Redirect controls exercise Response bodies/headers, final URL/type restrictions, same-origin integrity requests, invalid shells and cache refusal. After a Release publish to output/pwa-shell-redirect, run node tests/browser/pwa-shell.mjs with PLAYWRIGHT_MODULE pointing to an available pinned Playwright package. The disposable loopback fixture uses persistent temporary browser profiles, the emitted worker, a synthetic integrity manifest and Pages-style index redirect. Chromium and WebKit controls demonstrate the pre-fix failure, same-manifest worker update/activation, fresh install, offline routes, failed integrity update and missing-shell behavior. Synthetic IndexedDB, local storage and an unrelated-cache subscription marker qualify preservation without platform Push API calls, notification permission or actual push enrollment. The fixture simulates unavailable network responses by closing server connections, avoiding engine-specific offline emulation. The fixture closes owned browser contexts/server and removes temporary profiles under a hard deadline. Full Blazor startup, production activation and physical iPhone behavior remain separate checks.
+
 ## Planning validation
 
 ```sh
@@ -677,6 +679,23 @@ Compatibility discovery reports the modern revision explicitly because the SDK p
 Build Auth through its existing npm build script before running `node --experimental-strip-types --test --test-concurrency=1 --test-timeout=30000 workers/chatgpt-auth/test/callback-egress.test.mjs`. Run `npm test` from deploy/callback-egress on Node22. The gateway controls cover public/special/mixed address refusal, exact-byte grants, actual local TLS chain/hostname/address checks, redirects, byte limits, deadlines, one-use concurrency, acknowledgement loss and secret-free output. The Worker controls use actual synthetic Miniflare/D1 reservations and compose the production gateway with the claim route. Dev preparation must retain CALLBACK_EGRESS_ENABLED=false in both ordinary profiles.
 
 Retain function bundling, Auth type/dry build, negative controls, source fingerprints and profile results under .skill-tree/history/validation/callback-egress-netlify. The [callback egress contract](callback-egress.md) and hosted profile require separate selected-account publication and owned DNS/TLS fixtures. Local loopback TLS and service documentation never establish Netlify DNS/TLS behavior, provider logging, cold starts or a rendered chat reply.
+
+## Existing connection recovery controls
+
+ConnectionRecoveryTests and the WebApp integration suite cover typed existing-only Auth/Workspace/Notes recovery, no-request consent defaults, safe errors, exact identities, expiry bounds and delayed response rejection. Auth recovery.test.mjs covers isolated D1/runtime preservation, independent sessions, legacy bootstrap, missing/revoked/unsupported stores, origin/descriptor/credential refusal, quota, expiry/rotation, OAuth grant observations, outage and concurrent access changes. Vault/management and Workspace/Notes regression suites retain initial-consent, revocation, original-receipt and record-preservation checks. [The recovery contract](session-recovery.md) defines validation scope; detailed results and operation deadlines reside in .skill-tree/history/validation/existing-connection-recovery/. No changed UI route, real account, hosted migration or device test is implied.
+
+## Account preference restoration
+
+`CompanionPreferencesTests` covers account isolation, secret rejection, merge conflicts, tombstones, legacy overrides, coalesced existing-only recovery, offline/revoked access, explicit legacy recovery, account switches and disconnect suppression. `tests/browser/companion-preferences.mjs` exercises real isolated IndexedDB concurrency, ambiguous/frozen stores, quota rollback and reload persistence. Evidence resides in `.skill-tree/history/validation/unified-workspace/`.
+
+`workspace-transfer.test.mjs` exercises populated targets, multiple sources, Notes project rebinding/history, removed projects, trash/purge, identity and alias conflicts, stale versions/epochs, capacity, atomic rollback, original receipts, imported effect fences and retained Note erasure. D1-produced synthetic journals/Notes under `tests/fixtures/workspace-transfer/` pass application deserialization in `WorkspaceTransferTests`. The real IndexedDB fixture covers atomic two-store freeze/rollback and exact acknowledgement.
+
+`workspace-transfer-mcp.test.mjs` uses the MCP SDK for discovery, independent migration/Notes scopes, owner capture prerequisites, cross-profile isolation, modified archive bytes, expiry, grant/consent changes and lost acceptance acknowledgement. OAuth catalogue tests disclose migration separately and retain only owner-selected scopes. Package build/verification checks actual source payload hashes without installing a host package.
+
+
+### Unified Workspace consumer checks
+
+The coordinated `UnifiedWorkspaceFlowTests` journey verifies browser capture, populated-target review, preserved task/Notes identities, conflict acknowledgement, dirty drafts, response loss, local acknowledgement loss and new-session recovery. `unified-webapp-acceptance.log` records 969 passing WebApp tests. `unified-built-runtime-controls.log` records 46 D1/MCP/Notes/build-identity checks; `unified-auth-controls.log` records 30 OAuth/vault/recovery checks. Final built-in light/dark phone/desktop normal/enlarged text measurements and screenshots reside alongside `rendered-matrix-summary.json`. Rendered checks do not establish a live private browser migration or physical-device qualification.
 
 ## Skill Tree Web profile
 

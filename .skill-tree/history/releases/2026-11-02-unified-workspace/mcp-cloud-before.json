@@ -1,0 +1,41 @@
+{
+  "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+  "revision": 168,
+  "storeVersion": 502,
+  "nonarchivedTasks": 25,
+  "activeTasks": 13,
+  "completedNonarchivedTasks": 12,
+  "archivedTasks": 9,
+  "totalTasks": 34,
+  "projects": 3,
+  "notes": 1,
+  "trashedNotes": 0,
+  "notebookId": "56f214dc-9e2d-4a22-9257-ffea7ed8b355",
+  "notesRevision": 3,
+  "retainedCompletions": 18,
+  "requestedEffects": 44,
+  "confirmedEffects": 44,
+  "commandStates": {
+    "notRequested": 56,
+    "pending": 0,
+    "leased": 0,
+    "executing": 0,
+    "confirmed": 44,
+    "blocked": 0,
+    "unknownOutcome": 0,
+    "cancelled": 0
+  },
+  "tagReviewStates": [
+    {
+      "state": "confirmed",
+      "count": 5
+    },
+    {
+      "state": "needsReview",
+      "count": 15
+    }
+  ],
+  "allPagesComplete": true,
+  "browserInventory": "unverified; owner browser capture is required",
+  "privateContentPersisted": false
+}

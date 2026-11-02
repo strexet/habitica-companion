@@ -1,0 +1,20 @@
+{
+  "label": "transfer-webapp-regression",
+  "started_at_utc": "2026-10-30T15:33:16.769004+00:00",
+  "classification": "executed_control",
+  "command": [
+    "dotnet",
+    "test",
+    "tests/Habitica.WebApp.Tests",
+    "--no-restore",
+    "--logger",
+    "console;verbosity=minimal"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool",
+  "deadline_seconds": 180.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 53.72,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

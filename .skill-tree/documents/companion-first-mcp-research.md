@@ -971,3 +971,9 @@ PWA UI / ChatGPT MCP
 ## Navigation prototype evidence boundary
 
 The local research prototype resides in `.skill-tree/prototypes/mobile-navigation.html`; `navigation-review.html` supplies phone/tablet/desktop frame widths, enlarged text and a short-screen approximation. All records are synthetic and in memory. The prototype has no network or credential integration and supplies no application acceptance evidence. The [navigation study](navigation-study.md) adopts the checked baseline under the standing local contract direction and records default/advanced behavior and future production acceptance. Documented competitor workflows remain distinct from hands-on competitor testing, local prototype checks and owner usability feedback. Detailed production UI promotion still requires the remaining hands-on E01 gate in future.md; local design adoption does not claim that qualification.
+
+## Existing connection recovery authority
+
+[Existing connection recovery](session-recovery.md) provides a separate existing-only owner-authentication path. Expiring management sessions remain bound to current enrollment/root management authority; recovering a tab changes no credential-storage consent, OAuth grant or Workspace executor setting. Persisted descriptors are non-authorizing references. Initial enrollment and explicit revalidation retain separate consent/repair paths, while automatic browser sign-in/sync restoration remains separate prioritized work.
+
+Reviewed Workspace adoption uses six scoped transfer tools under tool schema `1.2.0`. Owner browser capture remains an explicit prerequisite; `workspace.migrate` and independent Notes grants protect preview/acceptance. [Unified Workspace](unified-workspace.md) owns source evidence, original receipt recovery and installed-host limits.

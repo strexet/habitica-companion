@@ -104,6 +104,12 @@ Priority rationale:
 Processing blocker:
 - Static reinspection confirms acknowledged-count, quota/cooldown, unknown-outcome and original gear recovery controls remain implemented; accepted outcomes T-b89fac23-3ac2-4c64-8560-be7a5d796a81 and T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 already cover the feature scope. Fresh loaded PWA build identity and sanitized iPhone evidence remain unavailable; any live reproduction requires a bounded owner profile. No duplicate implementation or deployed incident closure follows. See .skill-tree/history/processing/note-folders-2026-10-29/research.md.
 
+Processing blocker:
+- Current controller, adaptive pacing, recovery journal and accepted synthetic outcomes already cover acknowledged counts, 429/cooldown, unknown dispatch and exact gear recovery. The 2026-10-29 release record reports publication but no live spell reproduction; fresh loaded iPhone build/controller identity and sanitized post-update incident evidence remain missing. Obtain the affected-client observations and a concrete bounded owner profile before any real spell/equipment reproduction. No duplicate implementation or incident closure follows; research: .skill-tree/history/processing/ios-startup-2026-10-30/research.md.
+
+Processing blocker:
+- Fresh static inspection confirms serialized adaptive pacing, acknowledged17of40/429 controls and account-bound explicit gear recovery. The release report excludes live spell reproduction; affected-client build/controller identity and sanitized post-update iPhone evidence remain unavailable. No residual source defect or duplicate implementation is established. Obtain affected-client observations before a separately scoped live reproduction; research: .skill-tree/history/processing/session-workspace-2026-10-30/research.md.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.

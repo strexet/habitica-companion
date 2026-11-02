@@ -1,0 +1,29 @@
+{
+  "completed_ids": [
+    "T-c913de5b-0eff-4973-be07-089ea4391c1b"
+  ],
+  "completion_refs": {
+    "T-c913de5b-0eff-4973-be07-089ea4391c1b": "O-f8655298-0f86-4439-a03e-c4eacc3fce6f"
+  },
+  "current_task_id": null,
+  "cycle_signature": "c41172671d6cd990b73c9ba99ab9b5f92fddfb2dfdc33c6c723eef5e584358cf",
+  "deferred_ids": [],
+  "finished_at": "2026-10-30T03:08:05.312368+00:00",
+  "id": "WR-134bb673-21a3-4041-ac89-9c898c972b34",
+  "limits": {},
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-c913de5b-0eff-4973-be07-089ea4391c1b"
+  ],
+  "root_task_id": "T-c913de5b-0eff-4973-be07-089ea4391c1b",
+  "snapshot": [
+    "T-c913de5b-0eff-4973-be07-089ea4391c1b"
+  ],
+  "started_at": "2026-10-30T02:43:19.599505+00:00",
+  "stop_reason": null
+}

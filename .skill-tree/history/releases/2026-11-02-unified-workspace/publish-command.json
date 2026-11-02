@@ -1,0 +1,10 @@
+{
+  "production": true,
+  "source_commit": "f9f71b5190086d17192642545ea3dc55610eed07",
+  "source_dirty": true,
+  "backend_build_hash": "5974025f3cdcb8e563cffca239ffb6746d4a111e6efb3a180f8cd493f58fd83b",
+  "pages_config_free_upload_cwd": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/companion-unified-upload-55phyhd3",
+  "functions_count": 4,
+  "migration": "Workspace0018-workspace-transfers.sql",
+  "git_commit_or_push": false
+}

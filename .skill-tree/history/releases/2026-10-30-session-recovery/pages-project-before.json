@@ -1,0 +1,286 @@
+{
+  "id": "7a5fb237-7458-4e08-bda3-758ddf78d97b",
+  "name": "habitica-companion",
+  "subdomain": "habitica-companion.pages.dev",
+  "domains": [
+    "habitica-companion.pages.dev"
+  ],
+  "source": {
+    "type": "github",
+    "config": {
+      "owner": "strexet",
+      "owner_id": "5337404",
+      "repo_name": "habitica-companion",
+      "repo_id": "1219684338",
+      "production_branch": "main",
+      "pr_comments_enabled": true,
+      "deployments_enabled": true,
+      "production_deployments_enabled": true,
+      "preview_deployment_setting": "all",
+      "preview_branch_includes": [
+        "*"
+      ],
+      "preview_branch_excludes": [],
+      "path_includes": [
+        "*"
+      ],
+      "path_excludes": []
+    }
+  },
+  "build_config": {
+    "build_command": "./build.sh",
+    "destination_dir": "../../../output/wwwroot",
+    "root_dir": "",
+    "web_analytics_tag": null,
+    "web_analytics_token": null
+  },
+  "deployment_configs": {
+    "preview": {
+      "env_vars": {},
+      "kv_namespaces": {
+        "HABITICA_SYNC_KV": {
+          "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+        }
+      },
+      "d1_databases": {
+        "HABITICA_PARTY_DB": {
+          "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+        }
+      },
+      "fail_open": true,
+      "always_use_latest_compatibility_date": false,
+      "compatibility_date": "2026-05-13",
+      "compatibility_flags": [],
+      "build_image_major_version": 3,
+      "usage_model": "standard",
+      "wrangler_config_hash": "fbfd9d2381800c930e9b9a42d575ee35f7b5e984bda1c2a3427a2b637205e8e6"
+    },
+    "production": {
+      "env_vars": {
+        "HABITICA_FRONTEND_SETTINGS_FILE": {
+          "type": "plain_text",
+          "value": "../../deploy/production.frontend.json"
+        }
+      },
+      "kv_namespaces": {
+        "HABITICA_SYNC_KV": {
+          "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+        }
+      },
+      "d1_databases": {
+        "HABITICA_PARTY_DB": {
+          "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+        }
+      },
+      "fail_open": true,
+      "always_use_latest_compatibility_date": false,
+      "compatibility_date": "2026-10-12",
+      "compatibility_flags": [],
+      "build_image_major_version": 3,
+      "usage_model": "standard"
+    }
+  },
+  "latest_deployment": {
+    "id": "0ca73607-0b0d-400b-b517-43255dfeadef",
+    "short_id": "0ca73607",
+    "project_id": "7a5fb237-7458-4e08-bda3-758ddf78d97b",
+    "project_name": "habitica-companion",
+    "environment": "production",
+    "url": "https://0ca73607.habitica-companion.pages.dev",
+    "created_on": "2026-10-30T04:20:04.093724Z",
+    "modified_on": "2026-10-30T04:20:06.454105Z",
+    "latest_stage": {
+      "name": "deploy",
+      "started_on": null,
+      "ended_on": "2026-10-30T04:20:06.454105Z",
+      "status": "success"
+    },
+    "deployment_trigger": {
+      "type": "ad_hoc",
+      "metadata": {
+        "branch": "main",
+        "commit_hash": "f9f71b5190086d17192642545ea3dc55610eed07",
+        "commit_message": "Critical PWA shell redirect recovery hotfix",
+        "commit_dirty": true
+      }
+    },
+    "stages": [
+      {
+        "name": "queued",
+        "started_on": "2026-10-30T04:20:04.093724Z",
+        "ended_on": null,
+        "status": "active"
+      },
+      {
+        "name": "initialize",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "clone_repo",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "build",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "deploy",
+        "started_on": null,
+        "ended_on": "2026-10-30T04:20:06.454105Z",
+        "status": "success"
+      }
+    ],
+    "build_config": {
+      "build_command": "./build.sh",
+      "destination_dir": "../../../output/wwwroot",
+      "build_caching": null,
+      "root_dir": "",
+      "web_analytics_tag": null,
+      "web_analytics_token": null
+    },
+    "source": {
+      "type": "github",
+      "config": {
+        "owner": "strexet",
+        "repo_name": "habitica-companion",
+        "production_branch": "main",
+        "pr_comments_enabled": false
+      }
+    },
+    "env_vars": {
+      "HABITICA_FRONTEND_SETTINGS_FILE": {
+        "type": "plain_text",
+        "value": "../../deploy/production.frontend.json"
+      }
+    },
+    "kv_namespaces": {
+      "HABITICA_SYNC_KV": {
+        "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+      }
+    },
+    "d1_databases": {
+      "HABITICA_PARTY_DB": {
+        "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+      }
+    },
+    "compatibility_date": "2026-10-12",
+    "compatibility_flags": [],
+    "build_image_major_version": 3,
+    "usage_model": "bundled",
+    "aliases": null,
+    "is_skipped": false,
+    "production_branch": "main",
+    "uses_functions": true
+  },
+  "canonical_deployment": {
+    "id": "0ca73607-0b0d-400b-b517-43255dfeadef",
+    "short_id": "0ca73607",
+    "project_id": "7a5fb237-7458-4e08-bda3-758ddf78d97b",
+    "project_name": "habitica-companion",
+    "environment": "production",
+    "url": "https://0ca73607.habitica-companion.pages.dev",
+    "created_on": "2026-10-30T04:20:04.093724Z",
+    "modified_on": "2026-10-30T04:20:06.454105Z",
+    "latest_stage": {
+      "name": "deploy",
+      "started_on": null,
+      "ended_on": "2026-10-30T04:20:06.454105Z",
+      "status": "success"
+    },
+    "deployment_trigger": {
+      "type": "ad_hoc",
+      "metadata": {
+        "branch": "main",
+        "commit_hash": "f9f71b5190086d17192642545ea3dc55610eed07",
+        "commit_message": "Critical PWA shell redirect recovery hotfix",
+        "commit_dirty": true
+      }
+    },
+    "stages": [
+      {
+        "name": "queued",
+        "started_on": "2026-10-30T04:20:04.093724Z",
+        "ended_on": null,
+        "status": "active"
+      },
+      {
+        "name": "initialize",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "clone_repo",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "build",
+        "started_on": null,
+        "ended_on": null,
+        "status": "idle"
+      },
+      {
+        "name": "deploy",
+        "started_on": null,
+        "ended_on": "2026-10-30T04:20:06.454105Z",
+        "status": "success"
+      }
+    ],
+    "build_config": {
+      "build_command": "./build.sh",
+      "destination_dir": "../../../output/wwwroot",
+      "build_caching": null,
+      "root_dir": "",
+      "web_analytics_tag": null,
+      "web_analytics_token": null
+    },
+    "source": {
+      "type": "github",
+      "config": {
+        "owner": "strexet",
+        "repo_name": "habitica-companion",
+        "production_branch": "main",
+        "pr_comments_enabled": false
+      }
+    },
+    "env_vars": {
+      "HABITICA_FRONTEND_SETTINGS_FILE": {
+        "type": "plain_text",
+        "value": "../../deploy/production.frontend.json"
+      }
+    },
+    "kv_namespaces": {
+      "HABITICA_SYNC_KV": {
+        "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+      }
+    },
+    "d1_databases": {
+      "HABITICA_PARTY_DB": {
+        "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+      }
+    },
+    "compatibility_date": "2026-10-12",
+    "compatibility_flags": [],
+    "build_image_major_version": 3,
+    "usage_model": "bundled",
+    "aliases": null,
+    "is_skipped": false,
+    "production_branch": "main",
+    "uses_functions": true
+  },
+  "created_on": "2026-05-13T04:06:21.277113Z",
+  "production_branch": "main",
+  "production_script_name": "pages-worker--13751432-production",
+  "preview_script_name": "pages-worker--13751432-preview",
+  "uses_functions": true,
+  "framework": "",
+  "framework_version": ""
+}

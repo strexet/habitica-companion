@@ -1,0 +1,17 @@
+[
+  {
+    "path": "appsettings.json",
+    "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+    "matches_package": true
+  },
+  {
+    "path": "service-worker.js",
+    "sha256": "2cf20a638506179a697b03bd4dc85165506ad0e3d6c42827001e30aff1c0a69e",
+    "matches_package": true
+  },
+  {
+    "path": "service-worker-assets.js",
+    "sha256": "c554b784962cb09ebd1fda1bbcfd617be2538cc5b78468b9e6ef40ea02ce01c1",
+    "matches_package": true
+  }
+]

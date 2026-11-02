@@ -1,0 +1,18 @@
+{
+  "pages_id": "0021196b-b5c0-4cf6-98da-2b551488394d",
+  "pages_status": "success",
+  "worker_versions": {
+    "chatgpt-auth": "c7b56b8d-f4c7-4927-aff4-fb1f07578567",
+    "companion-workspace": "c352b2cf-4a01-48c3-ada1-44c8b74b1c70",
+    "chatgpt-mcp": "450abcfa-f983-4644-9af2-04a18f2be27e"
+  },
+  "backend_build_hash": "814af366208757d981e73db053e7bfb6def10773934ad9279a41c7537cddb677",
+  "migration_applied": "Auth0013-recovery-sessions.sql",
+  "pending_migrations": [],
+  "worker_runtime_settings_unchanged": true,
+  "pages_runtime_build_and_git_settings_unchanged": true,
+  "native_mcp_coherent": true,
+  "cloud_records_unchanged": true,
+  "initial_pages_upload_missing_functions": "3796d44f; superseded by corrected full Functions upload",
+  "browser_transfer_completeness": "unverified by available MCP boundary"
+}

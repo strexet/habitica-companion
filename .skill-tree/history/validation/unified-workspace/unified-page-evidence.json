@@ -1,0 +1,22 @@
+{
+  "label": "unified-page-evidence",
+  "started_at_utc": "2026-10-30T16:21:35.075893+00:00",
+  "classification": "executed_control",
+  "command": [
+    "env",
+    "HABITICA_BROWSER_EVIDENCE=/Users/petr/Projects/habitica-tool/output/unified-workspace-razor",
+    "dotnet",
+    "test",
+    "tests/Habitica.WebApp.Tests",
+    "--no-restore",
+    "--logger",
+    "console;verbosity=minimal"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool",
+  "deadline_seconds": 180.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 51.641,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

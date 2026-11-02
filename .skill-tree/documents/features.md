@@ -3506,3 +3506,24 @@ Status: implemented and qualified locally. The MCP Worker serves modern2026-07-2
 ## Protected callback transport candidate
 
 Status: locally implemented, disabled pending hosted qualification. The Node22 Netlify function and Auth single-use claim route bind exact dispatch bytes, identity, audience and expiry; the TLS connection pins an approved public address while verifying the original hostname. Auth retains opaque replay fences; the gateway persists no callback URL, body or webhook key. Unsupported configuration, DNS/TLS refusal, quota exhaustion and missing acknowledgements fail closed without a paid fallback or automatic resend. The feature performs no Habitica request, changes no task and supplies no subscription, scheduler or chat reply. Offline dispatch is unavailable; Workspace must retain original undelivered/unknown state. Local TLS and synthetic Worker/D1 controls remain distinct from hosted checks. [callback-egress.md](callback-egress.md) owns detailed privacy, failure, validation and operator setup.
+
+## Redirect-safe PWA launch
+
+Status: implemented and published in the [production PWA hotfix](../history/releases/2026-10-30-pwa-hotfix/readme.md). The published service worker validates the public HTML shell and removes compatible same-origin redirect history before cached navigation. Fresh installation retains asset integrity and same-origin request mode; a separate shell-v2 cache permits worker-only recovery with the same asset manifest. Invalid or unavailable cached shells use the original network path; offline cache misses remain explicit failures. Activation removes obsolete public build caches without clearing application storage or push enrollment. No Habitica API, credential, task or game mutation occurs.
+
+Validation uses worker Response fixtures and the isolated published-worker lifecycle in tests/browser/pwa-shell.mjs. Production publication, affected-device worker activation and iPhone Safari/installed-app relaunch remain separate observations under pwa-installation.md.
+
+## Existing connection recovery foundation
+
+Status: implemented and published in Auth recovery.ts, existing-only Workspace/Notes session issuance and typed integration clients. [Production release evidence](../history/releases/2026-10-30-session-recovery/readme.md) records the matching deployed components and applied Auth0013 migration. [The recovery contract](session-recovery.md) owns descriptor/legacy-bootstrap behavior, current credential verification, epoch checks and eight-hour management access. Recovery preserves actual consent, retained records and executor settings, creates no OAuth grants or linking tickets and dispatches no task/game effect. Credential verification uses the existing bounded Habitica v3 user read; offline or unavailable verification refuses recovery. No automatic sync/bootstrap or UI behavior changes belong to the foundation. Synthetic tests qualify protocol/client behavior only; actual credential-based recovery and device/host behavior remain unverified.
+
+## Restored account source
+
+Existing account connections and exact task/Notes store references restore from the optional encrypted Companion preferences section. One eligible browser Workspace becomes the default. Conflicting or frozen local sources require recovery. [Unified Workspace](unified-workspace.md) defines the settings inventory and explicit consent boundaries.
+
+Reviewed cloud adoption includes all selected-account browser Workspaces and personal Notes, populated targets, retained original journals, exact conflict review and acknowledgement recovery. Imported pending effects remain paused. Explicit Note deletion removes matching retained personal Note fragments without erasing source task receipts.
+
+
+### One Workspace for tasks and Notes
+
+The active browser Workspace needs no first-use setup. Explicit cloud adoption captures and freezes browser records, reviews exact sources and conflicts, then publishes cloud selection only after verified acceptance and local acknowledgement. Tasks and Notes share the selection; ordinary browser/cloud pickers no longer appear. New sessions restore approved access from encrypted account metadata without repeating enrollment consent. Unknown/offline cloud access preserves the source and offers existing-connection recovery. Original transfer receipts and frozen backup copies remain available. Reverse cloud-to-browser ownership transfer remains deferred.
