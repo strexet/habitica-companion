@@ -1,3 +1,5 @@
+import {scheduledEvents} from './event-scheduler';
+import {eventService} from './events';
 import {workspaceTransferScopes,workspaceTransferInput,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
 import {stageWorkspaceTransfer,workspaceTransferApi,exportWorkspaceTransfer,transferContainsNotes,type TransferTool} from './workspace-transfer-api.ts';
 import {diagnosticOwnerApi,diagnosticAgentApi,cleanupDiagnostics} from './diagnostic-api';
@@ -273,7 +275,8 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
    env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_deliveries SET state=CASE WHEN state='dispatched' THEN 'unknown' ELSE 'cancelled' END,code='workspace_disconnected' WHERE profile_id=? AND state IN ('scheduled','retryable','dispatched') AND EXISTS(SELECT 1 FROM workspace_reminder_schedules s WHERE s.profile_id=workspace_reminder_deliveries.profile_id AND s.schedule_id=workspace_reminder_deliveries.schedule_id AND s.connection_id=? AND s.access_epoch=?)").bind(row.profile_id,row.connection_id,row.access_epoch),
   ]);
   if (!stopped[0].meta.changes) throw new WorkspaceError("unauthorized", 401);
-  return json({ disconnected: true, retained: true });
+  const cleanup=await env.AUTH_EVENTS.fetch('https://events.internal/cleanup',{method:'POST',body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id}),signal:AbortSignal.timeout(5000)}).catch(()=>null);
+  return json({ disconnected: true, retained: true,eventsCleanupPending:cleanup?.ok!==true });
  }
  if (path === "/workspace" && request.method === "DELETE") {
   const retainedNotes=await env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_transfers WHERE profile_id=? AND state='accepted' AND json_extract(manifest_json,'$.includesNotes')=1 LIMIT 1").bind(row.profile_id).first();
@@ -353,5 +356,10 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { try{await cleanupDiagnostics(env);}catch{/* Diagnostic reads enforce logical expiry; a cleanup outage cannot dispatch or stop task work. */} await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await scheduledReminders(env); await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { try{await cleanupDiagnostics(env);}catch{/* Diagnostic reads enforce logical expiry; a cleanup outage cannot dispatch or stop task work. */} await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await scheduledReminders(env);try{await scheduledEvents(env);}catch{console.warn('events_scheduler_unavailable');} await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;
+
+// Auth-only binding: no public routing to subscription metadata.
+export class EventSubscriptionService extends WorkerEntrypoint<WorkspaceEnv> {
+ async fetch(request:Request):Promise<Response>{return eventService(request,this.env);}
+}

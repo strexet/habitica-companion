@@ -128,6 +128,57 @@
         "src/Habitica.WebApp/package-lock.json"
       ],
       "execution_notes": "Requires documented current Release fixture, pinned PLAYWRIGHT_MODULE, exact owned loopback session, isolated persistent browser profiles and cleanup. No browser execution during installation."
+    },
+    "netlify-hosted-controls": {
+      "lane": "server",
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "tests/hosted/normal-delivery.mjs",
+        "{session_file}",
+        "{report_file}"
+      ],
+      "input_paths": [
+        "tests/hosted/normal-delivery.mjs",
+        "tests/hosted/callback-receiver.mjs",
+        "deploy/callback-egress/src/gateway.mjs",
+        "deploy/callback-egress/src/transport.mjs",
+        "workers/chatgpt-auth/src/callback-egress-protocol.ts"
+      ],
+      "toolchain": {
+        "node_declaration": "22.x",
+        "qualification": "Exact deployed gateway/Auth and ephemeral owned receiver; original request ID survives interruptions."
+      },
+      "execution_notes": "The owner-approved controller snapshots and enables the exact provider lanes before delivery. The command persists original authority before sending, verifies exact signed bytes and replay, then resumes the same report after controller shutdown to verify refusals and an unchanged receiver count. Complete only with deployed-identity/configuration/logging evidence and a final pass report. No real subscription or user payload is permitted."
+    },
+    "subscription-contracts-execution-profile": {
+      "lane": "integration",
+      "argv": [
+        "python3",
+        "tests/Functions/subscription-contracts.py",
+        "{report_file}"
+      ],
+      "input_paths": [
+        "tests/Functions/subscription-contracts.py",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/shared/events.ts",
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/chatgpt-auth/wrangler.jsonc",
+        "workers/companion-workspace/wrangler.jsonc",
+        "workers/chatgpt-mcp/wrangler.jsonc",
+        "deploy/callback-egress/src/gateway.mjs",
+        "workers/chatgpt-auth/test/fixtures/events.mjs",
+        "workers/chatgpt-auth/src/event-dispatch.ts",
+        "workers/companion-workspace/src/event-scheduler.ts"
+      ],
+      "toolchain": {
+        "node": "22.x",
+        "python": "3.x",
+        "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+      },
+      "execution_notes": "Serial dry builds then nonzero synthetic Worker/MCP/D1, independent receiver and native local TLS tests. No hosted callbacks or user subscription."
     }
   }
 }

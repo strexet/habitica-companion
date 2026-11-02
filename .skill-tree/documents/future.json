@@ -1,9 +1,9 @@
 {
   "active_run": {
     "admission": {
-      "environment_id": "690677f58887ed320d877e6081902c4b718c7b80729e3a780d8095d1e713428a",
+      "environment_id": "74a41d63688c527f89d3bab69d6b7cdfef734d23c58302b46b3afa0bb513ca2f",
       "flavor": "web",
-      "identity": "5d9fae3400d9a9df3596ec55c11d3986d7bc6b38b4df99e617565376bc90e578",
+      "identity": "1c28e900daa125e7826eaedaf974d2ec34e14efac71de81c14bda6bdda9f2c8d",
       "project_root": "/Users/petr/Projects/habitica-tool"
     },
     "admitted_groups": {},
@@ -49,8 +49,17 @@
       "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
     ],
-    "completed_ids": [],
-    "current_task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "completed_ids": [
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+    ],
+    "completion_refs": {
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a": "O-35d232e0-34ca-4ea1-ba69-f45cc20570c9",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae": "O-477dcb28-6c15-422a-8082-b620f9ddd6d4",
+      "T-ec421773-5864-4bc5-b17f-ce04e0d818c2": "O-41ccfdf9-5fc4-4ecd-812c-1db654ef06e2"
+    },
+    "current_task_id": null,
     "deferred_ids": [],
     "history_refs": [
       ".skill-tree/history/validation/implement-all-2026-11-02/hosted-prerequisite.json",
@@ -62,12 +71,13 @@
       ".skill-tree/history/validation/implement-all-2026-11-02/provider-inspection.json",
       ".skill-tree/history/validation/implement-all-2026-11-02/dns-tls-followup-intake.json",
       ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json",
-      ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json"
+      ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json",
+      ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json"
     ],
     "id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Commit the reviewed notification implementation, apply the four additive migrations, publish disabled matching Worker code, revalidate normal hosted egress, then activate the owner-selected production channel and retain release evidence.",
     "partial_work": [
       "Initial snapshot frozen: 14 prioritized roots; no active run existed at invocation.",
       "Gateway entry, transport and gateway/TLS test hashes match retained local qualification; prepare-source.mjs and package.test.mjs differ. Historical packaging evidence is not current qualification.",
@@ -79,12 +89,20 @@
       "The repository owner selects normal hosted delivery before unavailable dedicated DNS/TLS failure injection. The current task specification is revised before acceptance; no missing hosted scenario is reported as passing.",
       "Pending P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b, priority100, retains dedicated hosted DNS/TLS fixture qualification outside the initial snapshot.",
       "The selected normal-delivery stage needs an isolated owned HTTPS receiver and a concrete hosted recipe; separate DNS zones/raw TLS servers are no longer prerequisites for the selected contract. Production destination/certificate guards and local negative tests remain unchanged.",
-      "The owner requests a commit of the reviewed task-owned planning/checkpoint changes. Actual hosted delivery and task acceptance remain unexecuted."
+      "The owner requests a commit of the reviewed task-owned planning/checkpoint changes. Actual hosted delivery and task acceptance remain unexecuted.",
+      "The owner selects notification tasks T-ec421773-5864-4bc5-b17f-ce04e0d818c2, T-280cb859-c0f7-46e5-97db-bbd41dc6a99a and T-569ff3a0-8765-49b6-9b37-a62e091617ae plus required predecessors, then publication. The original snapshot/run remain preserved.",
+      "An isolated signed synthetic receiver and real Miniflare/D1 tests are implemented; four receiver controls pass. No user data or production notification has been sent.",
+      "The ephemeral signed synthetic receiver is deployed with a one-hour cutoff and reduced D1 counters. Auth remains disabled.",
+      "Gateway subscription-ID and short two-key rotation headers are grant-bound and supported; all18 gateway/package/TLS controls pass. Compatible Netlify CLI26.0.1 is installed only in an ignored task cache.",
+      "Auth encrypted callback vault, separate reviewed exact-task Events consent, durable Workspace subscription lifecycle and authenticated MCP Events extension implemented. Nine focused tests and an eight-case OAuth rendered HTML light/obsidian/phone/desktop/text matrix are ready for final qualification. Normal hosted gateway predecessor completed; application reminder dispatch remains selected next.",
+      "T-280cb859 completed with43 local composition checks and the OAuth render matrix. T-569ff3a0 now implements a durable generic exact-cue outbox, Auth-only signer and original dispatch receipts, bounded known-transient retries, permanent410/413 stop and read-only MCP original recovery. Eight synthetic application tests and19 combined push/Events regressions pass.",
+      "Auth broad regression:237/238 pass; the sole stale OAuth catalogue-count assertion was updated for the independent fifteenth permission. All23 current OAuth/vault/management checks pass. The source-matched subscription composition and exact reminder check remain to be recorded.",
+      "Existing Worker versions and D1 recovery bookmarks were captured read-only in the notification release baseline. Publication uses a disabled bootstrap to establish the two private cyclic service bindings, then separately activates the validated channel."
     ],
     "pending_ids": [
       "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b"
     ],
-    "phase": "implement",
+    "phase": "release-qualification",
     "processing_results": [],
     "required_ids": [
       "T-07d27408-3019-423f-a5de-4cda1f9e2818",
@@ -128,6 +146,169 @@
       "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
     ],
+    "revalidated_checks": {
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a": [
+        {
+          "check": {
+            "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+            "criteria": [
+              "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+              "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+            ],
+            "id": "callback-authorization",
+            "parameters": {
+              "test_file": "workers/chatgpt-auth/test/events.test.mjs"
+            },
+            "recipe_id": "worker-focused-tests",
+            "sources": [
+              "workers/chatgpt-auth/test/events.test.mjs",
+              "workers/chatgpt-auth/package.json"
+            ],
+            "timing": "immediate"
+          },
+          "result": {
+            "actual_lane": "integration",
+            "attempt_id": "C-2bf25d6d-8000-45b6-9241-0b360c96f1b4",
+            "classification": "executed-control",
+            "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+            "counts": {
+              "discovered": 9,
+              "expected": 9,
+              "failed": 0,
+              "passed": 9,
+              "skipped": 0
+            },
+            "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+            "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+            "evidence": [
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-execution.log",
+                "sha256": "2be4383524d21a74d45816a42386d40f139d173d74930fa48d5b9c3e1d202366"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-operation.json",
+                "sha256": "9ca401cb4bbe9324b3d7f945eea56bf1536f9c23e6daa819505b726019722308"
+              }
+            ],
+            "execution_sessions": {},
+            "key": "03954f2e35ddbef8fd23cd575b5451f7a940efd49a812e8259b54281348b253f",
+            "payload_hash": "736957762bd54014fffbbbe754567839b338b4b971af3b55d102e82e5d08323d",
+            "recorded_at": "2026-11-02T13:55:18.071047+00:00",
+            "result": "pass",
+            "sources": {
+              "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+              "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073"
+            },
+            "timing": {
+              "tool_wall_seconds": 9.876698500011116
+            }
+          }
+        },
+        {
+          "check": {
+            "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+            "criteria": [
+              "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+              "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+            ],
+            "id": "subscription-contracts",
+            "parameters": {
+              "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json"
+            },
+            "recipe_id": "subscription-contracts-execution-profile",
+            "sources": [
+              "workers/shared/events.ts",
+              "workers/chatgpt-auth/src/events.ts",
+              "workers/companion-workspace/src/events.ts",
+              "workers/chatgpt-auth/test/events.test.mjs",
+              "tests/Functions/subscription-contracts.py",
+              ".skill-tree/documents/event-subscriptions.md"
+            ],
+            "timing": "before-dependent-work"
+          },
+          "result": {
+            "actual_lane": "integration",
+            "attempt_id": "C-9796bc3f-54e7-441f-8b84-c30495faaca5",
+            "classification": "executed-control",
+            "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+            "counts": {
+              "discovered": 43,
+              "expected": 43,
+              "failed": 0,
+              "passed": 43,
+              "skipped": 0
+            },
+            "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+            "environment_identity": "365c064f31787db4e4a6714a3bd8ee3d592a9e35d1e65cbf59ce6822b4642290",
+            "evidence": [
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts.json",
+                "sha256": "ec4495be7447c487470f5b860aebdbd68184be3531d51c83f4a081e546c643e3"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-workspace.log",
+                "sha256": "56a4019e648999c4902384e117a1b85a842fd1d2b3b7fb447bbc5a4b50f9d7de"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-auth.log",
+                "sha256": "9b035e3bc50c788c1714cecbeafcab983c502731d9304fb7513a945cd38c50d6"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-mcp.log",
+                "sha256": "946f47214ca4f63660ba29d8c4a53328fa1b4dd42e6dc1e3db62b41d4ecd4d50"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-subscription-worker-composition.log",
+                "sha256": "e45ed419e765a342c5f000705a7bb53009291738e5d048d1ad1427529fae414d"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-gateway-native-tls.log",
+                "sha256": "ec685d59e3896ada04254b04e3eb1eb4988d5f932b2e283b4842308eeed7a7f1"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-independent-receiver.log",
+                "sha256": "3e0b8b27322244576fd01093819127cc9999523fa738464ac90088b868f3bdad"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+                "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+              },
+              {
+                "available": true,
+                "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-operation.json",
+                "sha256": "9d5d788524756d79001b3df8c68be5c4df80383d8f6f5ad419a13a5951e95462"
+              }
+            ],
+            "execution_sessions": {},
+            "key": "adb86ca0e02ce3adbcda9f3f2b119bf8a2b9d08bdfb91e9143de1aa92504d5f4",
+            "payload_hash": "7c7730fdf122b1189c849af627485034ddef0da435c96175fac9329d454b96f1",
+            "recorded_at": "2026-11-02T13:55:18.300293+00:00",
+            "result": "pass",
+            "sources": {
+              ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+              "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
+              "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
+              "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073",
+              "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+              "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+            },
+            "timing": {
+              "tool_wall_seconds": 20.65722420811653
+            }
+          }
+        }
+      ]
+    },
     "root_task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
     "snapshot": [
       "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
@@ -150,7 +331,7 @@
   },
   "format": "skill-tree-future",
   "schema": 2,
-  "source_hash": "f2e8136b767b6c3a775801b799695fc6e90b550c91d542568d73651d0c32d4e4",
+  "source_hash": "e8247ed6ece9905d43eac17a93f2be17934af25811bd7d80141bff6f92fc3a11",
   "task_progress": {},
   "tasks": [
     {
@@ -184,30 +365,11 @@
     {
       "boundary_validation": "before-dependent-work",
       "depends_on": [
-        "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"
-      ],
-      "id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
-      "line": 146,
-      "parent_pending_ids": [
-        "P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"
-      ],
-      "priority": 101,
-      "processing_run_id": "PR-0397ff3e-5942-44c8-8fbf-32966ad290af",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
-      "relation": "blocker",
-      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "status": "Ready",
-      "title": "Verify normal delivery through the selected Netlify callback gateway"
-    },
-    {
-      "boundary_validation": "before-dependent-work",
-      "depends_on": [
         "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
         "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
       ],
       "id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
-      "line": 226,
+      "line": 146,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -225,7 +387,7 @@
         "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
       ],
       "id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
-      "line": 333,
+      "line": 253,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -243,7 +405,7 @@
         "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
       ],
       "id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
-      "line": 411,
+      "line": 331,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -260,7 +422,7 @@
       "boundary_validation": "before-dependent-work",
       "depends_on": [],
       "id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
-      "line": 512,
+      "line": 432,
       "parent_pending_ids": [
         "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
       ],
@@ -272,45 +434,6 @@
       "root_task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
       "status": "Ready",
       "title": "Add versioned Notes folders and local persistence"
-    },
-    {
-      "depends_on": [
-        "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
-      ],
-      "id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
-      "line": 637,
-      "parent_pending_ids": [
-        "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-9722057b-0549-4478-8c12-6ee286276060",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "relation": "followup",
-      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "status": "Ready",
-      "title": "Deliver due task reminder events with durable original receipts"
-    },
-    {
-      "boundary_validation": "before-dependent-work",
-      "depends_on": [
-        "T-273899d8-6f17-43ee-b82f-41013e1021b9",
-        "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
-        "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
-      ],
-      "id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
-      "line": 716,
-      "parent_pending_ids": [
-        "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
-      ],
-      "priority": 99,
-      "processing_run_id": "PR-9722057b-0549-4478-8c12-6ee286276060",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "relation": "followup",
-      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "status": "Ready",
-      "title": "Implement Auth-owned callback secrets and reviewed event subscriptions"
     },
     {
       "boundary_validation": "before-dependent-work",
@@ -328,7 +451,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 813,
+      "line": 557,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -348,7 +471,7 @@
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 912,
+      "line": 656,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -368,7 +491,7 @@
         "T-07d27408-3019-423f-a5de-4cda1f9e2818"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 1020,
+      "line": 764,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31",
         "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
@@ -388,7 +511,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 1106,
+      "line": 850,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -406,7 +529,7 @@
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 1219,
+      "line": 963,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -431,7 +554,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1307,
+      "line": 1051,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -447,7 +570,7 @@
     {
       "depends_on": [],
       "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
-      "line": 1521,
+      "line": 1265,
       "parent_pending_ids": [
         "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
       ],
@@ -463,7 +586,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1608,
+      "line": 1352,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -477,7 +600,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1645,
+      "line": 1389,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -491,7 +614,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1682,
+      "line": 1426,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -505,7 +628,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1815,
+      "line": 1559,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -519,7 +642,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1853,
+      "line": 1597,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -533,7 +656,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1887,
+      "line": 1631,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -547,7 +670,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1922,
+      "line": 1666,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -561,7 +684,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1956,
+      "line": 1700,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -575,7 +698,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1994,
+      "line": 1738,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -589,7 +712,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 2021,
+      "line": 1765,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -603,7 +726,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 2043,
+      "line": 1787,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

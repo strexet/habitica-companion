@@ -1,0 +1,10 @@
+{
+  "exit_code": 0,
+  "record_count": 1,
+  "callback_or_payload_or_credential_strings_found": false,
+  "application_logs": "The reviewed gateway emits no console logs and reduces exceptions to generic states.",
+  "actual_plan": "Free",
+  "documented_retention": "At least24 hours under the current function log contract.",
+  "log_drains": "Enterprise-only; unavailable under the selected Free plan.",
+  "source": "https://docs.netlify.com/build/functions/logs/"
+}

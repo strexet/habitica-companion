@@ -1457,7 +1457,7 @@ NotesModel/NotesEngine and shared notes.ts preserve legacy encodings while optio
 
 ## Protected callback egress candidate
 
-The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace remains the later subscription/outbox/receipt owner. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.
+The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace owns opaque subscription/outbox/receipt metadata. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.
 
 ## Public PWA shell response ownership
 
@@ -1476,3 +1476,9 @@ Workspace migration `0018-workspace-transfers.sql` supports atomic task/Notes ad
 ## Skill Tree installation scope
 
 Repository workflow uses the project-scoped web flavor. [Installation state](skill-tree-installation.md) records profile ownership, schema adaptation and preserved checkpoint boundaries; product stack and package pins remain unchanged.
+
+## Auth-owned Events subscriptions
+
+The default-off Events extension uses a separate OAuth permission and reviewed exact-task consent. Auth migration0014 owns encrypted callback material and reduced verification receipts; Workspace migration0019 owns opaque resource-bound subscriptions and consent commands. The private EventSubscriptionService/EventDeliveryService bindings expose no callback secrets. [event-subscriptions.md](event-subscriptions.md) records authority generations, verification, rotation, cleanup, quotas and local/hosted limits.
+
+Workspace migration0020 and Auth migration0015 add independent Events outbox/dispatch receipts. The Workspace scheduler uses bounded D1 leases; Auth signs only the current verified callback after fresh resource/consent checks. Public MCP status reports original reduced outcomes without callback material. [reminder-events.md](reminder-events.md) defines retry/unknown/retention boundaries.

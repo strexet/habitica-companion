@@ -295,6 +295,11 @@
     },
     {
       "owner": "skill-tree",
+      "path": ".skill-tree/documents/event-subscriptions.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
       "path": ".skill-tree/documents/features.md",
       "role": "canonical"
     },
@@ -381,6 +386,11 @@
     {
       "owner": "skill-tree",
       "path": ".skill-tree/documents/pwa-installation.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": ".skill-tree/documents/reminder-events.md",
       "role": "canonical"
     },
     {
@@ -491,7 +501,7 @@
   "source_digests": {
     ".skill-tree/documents/ai-app-testing.md": "5cb10944c63d18f1209328e00b66a7a62b2acb218cdb4498fb0272f676827c7f",
     ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
-    ".skill-tree/documents/callback-egress.md": "671656a31205838067d0be7fcee84fe5e627d3830dc002e39cf501bd5c0711ec",
+    ".skill-tree/documents/callback-egress.md": "f46b07969d5d24834b224adf2ec05e3a0cc09f705e783b4c5a1347f6e124466c",
     ".skill-tree/documents/companion-discovery.md": "cb5a5b3a22a106f96ac86243c9a101b1dadfd88ca406f78091c08e80647535b1",
     ".skill-tree/documents/companion-first-mcp-research.md": "ee152cd23df0d62cbb6ace69c522d5ed5e4d73628d486267f5207ad068b122e6",
     ".skill-tree/documents/companion-workspace-contract.md": "be59df47bb341135ca41dfd7d2975541e6f431df0af2c5a33da89c52bc4f2315",
@@ -499,23 +509,25 @@
     ".skill-tree/documents/dependencies.md": "ea099e9f7ef40b472e6ded3f858fb0927c6673c06b9d5167941608678a28ef0c",
     ".skill-tree/documents/deploy-cloudflare-pages.md": "9a5306383b48c7bf96c85dbe166ea8e143f1f491ce98c0437c0696787c047bf1",
     ".skill-tree/documents/documents-snapshot.md": "41d65a176f332b83fd1ff5c72ab69f3e84eb8ada9c40a0f67e80b248ea0b84b6",
-    ".skill-tree/documents/features.md": "07e834be6c376487d836660001b4d67a131788a0de025fa15eeb9412ef653f10",
+    ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+    ".skill-tree/documents/features.md": "ff9922db976f7ad012ada290d076f74e6177732541eba1ed2248bf21b5fbe709",
     ".skill-tree/documents/foreground-reminders.md": "951fcb6b17441ab4e80fdac68ee49a98e517f5763148316c948dcfd4c50ca5b3",
-    ".skill-tree/documents/future.md": "f2e8136b767b6c3a775801b799695fc6e90b550c91d542568d73651d0c32d4e4",
+    ".skill-tree/documents/future.md": "e8247ed6ece9905d43eac17a93f2be17934af25811bd7d80141bff6f92fc3a11",
     ".skill-tree/documents/habitica-api.md": "a482cbf3b5573d72ff376ca50845de888c5a5f10d58e01c5482c74d7e53948a4",
     ".skill-tree/documents/habitica-deeplinks.md": "d9ba678490f7f897903b570429a5025c5e6ca67c1da38c579545109dc1d17228",
     ".skill-tree/documents/habitica-tool-references.md": "705a4d2534a6a66e867ea3af48e39650b33f35f79d30a0ce4ae2c59ad00ea54d",
     ".skill-tree/documents/history-recovery.md": "1ae3b015b079baeb19737c88f38c31a8288459582001af9f80866f9f24187a53",
     ".skill-tree/documents/linked-task-recovery.md": "08c40c7a6957acba4ff435f5051b7f2d028c1ade06df058664bda1413eae1c6f",
-    ".skill-tree/documents/mcp-protocol-compatibility.md": "86a771502d5ecbc1801b9fd9db40bd5751c04cf94294dc2933f6f8eb279edc0e",
+    ".skill-tree/documents/mcp-protocol-compatibility.md": "e42e738dbed6b52349e40e54503aadbda598972fcefd9d8f9c0cc1ee4ad7ba51",
     ".skill-tree/documents/navigation-study.md": "d48e79f4f4f448ceb39084aacf28ab67c1f08293e5a3e476d2dee6f5ad3c34d5",
     ".skill-tree/documents/notes-project-links.md": "1a1515c491f02b805c977cd1149ee9e2ea37153906a79142bdfc5fd24b20ef41",
     ".skill-tree/documents/ordinary-task-intent.md": "b781bda71b6513aadc0356a6133c7e22185f5ec0b49b160f6d6565d97b6a62e4",
-    ".skill-tree/documents/originating-chat-reminders.md": "cba6bb50e224ab5b368ae1d279fb31a7bd90e96e859d7534f6dfdfc240d0b529",
+    ".skill-tree/documents/originating-chat-reminders.md": "f1e447e34aac9525bb47d078fe84e5e73f4879bcafef3b0dee04e3afe3ce727d",
     ".skill-tree/documents/project.md": "0c7505fff3489192e21dd90e9bf601b6b058efc954e814c8e285b092175f536a",
     ".skill-tree/documents/push-reminder-ui.md": "0c77d60628869861334aa4a2e6bbb807423050d892eacebed4f1309f1e612733",
     ".skill-tree/documents/push-subscriptions.md": "6a7bb8f2bea8de610677683f352fab0b0d262bb54f4b116245ce32ea7e8b8206",
     ".skill-tree/documents/pwa-installation.md": "173acf712f221007acc24eb6e2d4ce16f6be762475e6b7bbee017fef82a2ab58",
+    ".skill-tree/documents/reminder-events.md": "90c940ddb95847b1fb4b95c23b5b48ce1a534d992d11c521469729fb2476ac1e",
     ".skill-tree/documents/repository-map.md": "3b5fec402477e833016f93f12baba7d7dd5425cef1383c66e3cb35787a2083c3",
     ".skill-tree/documents/retained-recovery-discovery.md": "5a21f9fff6ef37f68937de3d93161648034de4668bda2c4535677c47b03b0bdf",
     ".skill-tree/documents/rules.md": "2b1b0e17c42440f6572da02342a9e7e04faacf3a869a4c502162ca4f40b7f30c",
@@ -528,8 +540,8 @@
     ".skill-tree/documents/task-adoption.md": "3e1a25418d4d66e8a61aed949666cfad7753b28c910e9c43dc1511a47a464620",
     ".skill-tree/documents/task-journey-qualification.md": "0c108410652f08a8a59ae120d66de02dda9b1225d348530a79bb8bceffbee0f8",
     ".skill-tree/documents/task-reviews.md": "44dce20b4d559a7f7e14987d20859f144f22b5aa5c9504f0e002bf43836163ec",
-    ".skill-tree/documents/technical.md": "5c8108e11ba33376539b2a621b6ffe7ece8ae7050fc7574213e9258a1ade5188",
-    ".skill-tree/documents/testing.md": "c9628ea1882bbb19d13f9e20880e62f2b51e81b33a39da256e37c1ed5ae8fdd8",
+    ".skill-tree/documents/technical.md": "2465437862f216edd3dc9edece26593ce0db7f0d56d8472465f9ec3fc4b60712",
+    ".skill-tree/documents/testing.md": "97ac1a8aa9446b080fabcb1150d4afec3c619af7febb59f4b2354e5d4954c914",
     ".skill-tree/documents/unified-workspace.md": "beba0244ff8b6b24c4fc47be06e29fee81727fde9fb38881afa83a199d2eccca",
     ".skill-tree/documents/ux-ui-manifest.md": "2e414b46fdebdfa1dcdec38baf7fa15095d04b1818e67810244f91f13b4f9756"
   },

@@ -19,7 +19,7 @@ Flavor: web. Static compatibility only; execution remains unqualified.
     "ui": []
   },
   "gaps": [],
-  "instruction_profile_id": "6649b74b72640933413f267215c730b460736299d2de6143ab2b16884bfbbbdd",
+  "instruction_profile_id": "bb326012f921b283552737895372f53475376596a98322fdf551cdd009713122",
   "recipes": {
     "dotnet-focused-tests": {
       "argv": [
@@ -63,6 +63,30 @@ Flavor: web. Static compatibility only; execution remains unqualified.
         }
       }
     },
+    "netlify-hosted-controls": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "tests/hosted/normal-delivery.mjs",
+        "{session_file}",
+        "{report_file}"
+      ],
+      "execution_notes": "The owner-approved controller snapshots and enables the exact provider lanes before delivery. The command persists original authority before sending, verifies exact signed bytes and replay, then resumes the same report after controller shutdown to verify refusals and an unchanged receiver count. Complete only with deployed-identity/configuration/logging evidence and a final pass report. No real subscription or user payload is permitted.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/hosted/normal-delivery.mjs",
+        "tests/hosted/callback-receiver.mjs",
+        "deploy/callback-egress/src/gateway.mjs",
+        "deploy/callback-egress/src/transport.mjs",
+        "workers/chatgpt-auth/src/callback-egress-protocol.ts"
+      ],
+      "lane": "server",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node_declaration": "22.x",
+        "qualification": "Exact deployed gateway/Auth and ephemeral owned receiver; original request ID survives interruptions."
+      }
+    },
     "node-focused-tests": {
       "argv": [
         "node",
@@ -98,6 +122,37 @@ Flavor: web. Static compatibility only; execution remains unqualified.
       ],
       "lane": "browser",
       "qualification": "owner-declared static recipe; runner unqualified"
+    },
+    "subscription-contracts-execution-profile": {
+      "argv": [
+        "python3",
+        "tests/Functions/subscription-contracts.py",
+        "{report_file}"
+      ],
+      "execution_notes": "Serial dry builds then nonzero synthetic Worker/MCP/D1, independent receiver and native local TLS tests. No hosted callbacks or user subscription.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/Functions/subscription-contracts.py",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/shared/events.ts",
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/chatgpt-auth/wrangler.jsonc",
+        "workers/companion-workspace/wrangler.jsonc",
+        "workers/chatgpt-mcp/wrangler.jsonc",
+        "deploy/callback-egress/src/gateway.mjs",
+        "workers/chatgpt-auth/test/fixtures/events.mjs",
+        "workers/chatgpt-auth/src/event-dispatch.ts",
+        "workers/companion-workspace/src/event-scheduler.ts"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node": "22.x",
+        "python": "3.x",
+        "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+      }
     },
     "webapp-release-build": {
       "argv": [

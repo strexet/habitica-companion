@@ -1,3 +1,4 @@
+import {eventsScope} from '../../shared/events';
 import {migrationWriteScope} from '../../shared/workspace-transfer-tools.ts';
 import {diagnosticReadScope} from '../../shared/diagnostics';
 import {tagWriteScope} from '../../shared/tag-gateway';
@@ -9,7 +10,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", migrationWriteScope, tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope,diagnosticReadScope];
+export const scopes = [eventsScope,"profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", migrationWriteScope, tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope,diagnosticReadScope];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT, env);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -65,6 +66,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   const details = await oauth.describeConsent(request);
   const consent = await oauth.beginConsent(request);
   const labels: Record<string,string>={
+    [eventsScope]:"Manage separately approved reminder subscriptions",
     "profile:read":"Identify the linked account",
     "account:read":"Read Habitica account",
     "tasks:read":"Read tasks",
@@ -87,6 +89,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   const spellNotice=details.scope.includes('habitica.spells.execute')?'<p>Spell access can spend mana and affect the verified current party after explicit preview approval. Habitica may post an automatic spell notice in party chat. Unknown outcomes pause new gameplay effects; no automatic replay or scheduled spell casting is permitted.</p>':'';
   const partyNotice=details.scope.some(scope=>scope.startsWith('party'))?'<p>Authenticated Companion planning is separate from legacy party sync. Shared quest selections and contributor labels are readable by opted-in current party members. Enable separate planning consent in Companion Settings before using shared records. Planning access does not start quests or cast spells.</p>':'';
   const descriptions: Record<string,string>={
+    [eventsScope]:"Can create and stop signed callbacks only for separately reviewed exact-task Events consent. Does not grant Web Push, Notes or game actions. Callback receipt is not a rendered chat response.",
     "profile:read":"Required for every MCP connection; identifies the linked Habitica account.",
     "account:read":"Reads stats and day status without changing gameplay.",
     "tasks:read":"Reads task titles, details and completion state.",
@@ -104,6 +107,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   };
   const notesNotice=details.scope.some(scope=>[notesReadScope,notesWriteScope].includes(scope))?'<p>Personal Notes can contain sensitive personal facts and documents. Notes access requires separate Notes cloud consent in Companion. Existing task access does not grant Notes access. The server can read stored titles, Markdown and retained revisions until permanent deletion. Notes do not create Habitica tasks or game effects.</p>':'';
   const groups = [
+    { title: "Reminder events", items: [eventsScope] },
     { title: "Account and tasks", items: ["profile:read","account:read","tasks:read","habitica.tasks.write","workspace.organization.write",migrationWriteScope,tagWriteScope] },
     { title: "Party and gameplay", items: ["party:read","party.planning.write","habitica.spells.execute","habitica.cron.execute"] },
     { title: "Personal notes", items: [notesReadScope,notesWriteScope] },

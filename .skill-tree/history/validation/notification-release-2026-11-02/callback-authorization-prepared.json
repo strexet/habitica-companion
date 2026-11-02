@@ -1,0 +1,41 @@
+{
+  "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+  "attempt_id": "C-8031de5e-250e-488c-a512-7ac2c7f5a85a",
+  "check_id": "callback-authorization",
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "007151c21dba4eecdc7394bd29184e3c6053b939f3dac64215b183f78d9aee39",
+  "key": "51bb14b9210f02f56a8a77d247dd5415035d8482bfcf8b80edcbaab1ffff8876",
+  "launch": null,
+  "prepared_at": "2026-11-02T13:14:33.377766+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/chatgpt-auth/test/events.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "ea4d9348dec68f16ff55a8879d94f2c7c73f46cd4a89b6079632f9e4062d99c2"
+  },
+  "task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
+}

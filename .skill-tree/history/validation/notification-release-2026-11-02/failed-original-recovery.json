@@ -1,0 +1,11 @@
+{
+  "authVersion": "736020af-860e-40f3-9679-1715bd25da5e",
+  "baselineVersion": "736020af-860e-40f3-9679-1715bd25da5e",
+  "enabledVersion": "0fd4138a-c408-4aff-9353-59b9fdca084a",
+  "authSourceMatchesBaseline": true,
+  "claimsForOriginalRequest": [],
+  "receiverObservations": [],
+  "latestUploadedAuthGate": true,
+  "activeAuthGate": false,
+  "interpretation": "The settings endpoint reports latest-uploaded bindings; the active baseline version resource has CALLBACK_EGRESS_ENABLED=false."
+}

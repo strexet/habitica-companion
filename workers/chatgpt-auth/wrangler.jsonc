@@ -34,7 +34,9 @@
     "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
     "PUSH_VAPID_PUBLIC_KEY": "",
     "PUSH_DISPATCH_ENABLED": false,
-    "PUSH_VAPID_SUBJECT": ""
+    "PUSH_VAPID_SUBJECT": "",
+    "EVENTS_ENABLED": false,
+    "CALLBACK_VAULT_CURRENT_KEY_VERSION": "1"
   },
   "env": {
     "preview": {
@@ -58,7 +60,9 @@
         "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
         "PUSH_VAPID_PUBLIC_KEY": "",
         "PUSH_DISPATCH_ENABLED": false,
-        "PUSH_VAPID_SUBJECT": ""
+        "PUSH_VAPID_SUBJECT": "",
+        "EVENTS_ENABLED": false,
+        "CALLBACK_VAULT_CURRENT_KEY_VERSION": "1"
       },
       "kv_namespaces": [
         {
@@ -91,6 +95,11 @@
           "binding": "NOTES_LIFECYCLE",
           "service": "habitica-companion-workspace-preview",
           "entrypoint": "NotesLifecycleService"
+        },
+        {
+          "binding": "EVENTS_WORKSPACE",
+          "service": "habitica-companion-workspace-preview",
+          "entrypoint": "EventSubscriptionService"
         }
       ]
     },
@@ -115,7 +124,9 @@
         "PUSH_VAULT_CURRENT_KEY_VERSION": "1",
         "PUSH_VAPID_PUBLIC_KEY": "",
         "PUSH_DISPATCH_ENABLED": false,
-        "PUSH_VAPID_SUBJECT": ""
+        "PUSH_VAPID_SUBJECT": "",
+        "EVENTS_ENABLED": false,
+        "CALLBACK_VAULT_CURRENT_KEY_VERSION": "1"
       },
       "kv_namespaces": [
         {
@@ -148,6 +159,11 @@
           "binding": "NOTES_LIFECYCLE",
           "service": "habitica-companion-workspace-production",
           "entrypoint": "NotesLifecycleService"
+        },
+        {
+          "binding": "EVENTS_WORKSPACE",
+          "service": "habitica-companion-workspace-production",
+          "entrypoint": "EventSubscriptionService"
         }
       ]
     }
@@ -184,6 +200,11 @@
       "binding": "NOTES_LIFECYCLE",
       "service": "habitica-companion-workspace-local",
       "entrypoint": "NotesLifecycleService"
+    },
+    {
+      "binding": "EVENTS_WORKSPACE",
+      "service": "habitica-companion-workspace-local",
+      "entrypoint": "EventSubscriptionService"
     }
   ]
 }

@@ -75,3 +75,5 @@ For archived tasks or terminal Daily recovery records without known task IDs, ca
 For explicitly requested binding to an existing owned Habitica record, including retained completed/archived tasks, use prepare_task_adoption, review the exact pair with the user, accept_task_adoption with the original commandId/reviewHash and recover get_task_adoption_command. Adoption changes only correspondence and creates no rewards. Read the [exact correspondence guidance](references/habitica-correspondence.md) before adoption. Unknown results never authorize a replacement or new historical task.
 
 For an explicitly requested browser-to-cloud Workspace move, follow [reviewed Workspace transfer](references/workspace-transfer.md). Require owner-staged capture and exact review; ordinary task commands never recreate migrated records or replace uncertain transfer intent.
+
+For explicitly requested Events reminders in a supported ChatGPT Work Cloud chat, follow [separate Events consent and original receipts](references/event-reminders.md). Never infer subscription, Web Push permission, actual chat rendering or local Codex delivery from a saved task cue or HTTP acknowledgment.

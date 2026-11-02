@@ -58,6 +58,18 @@ test('exact signed bytes and challenge response survive; concurrent/restarted re
   const ok=await results.find(r=>r.status===200).json();assert.equal(ok.requestId,x.grant.requestId);assert.equal(ok.state,'response');assert.equal(Buffer.from(ok.responseBody,'base64').toString(),'{"challenge":"synthetic €"}');
   assert.equal((await handleGateway(request(x),env,{post:n.post,now:()=>now})).status,503);assert.equal(n.calls.length,1);
 });
+test('Events subscription identity and two-key rotation headers are grant-bound and forwarded exactly',async()=>{
+  const x=envelope(),n=network();
+  x.payload.headers['x-mcp-subscription-id']='sub_synthetic_123';
+  x.payload.headers['webhook-signature']+=' '+x.payload.headers['webhook-signature'];
+  x.grant.payloadHash=egressHash(JSON.stringify(x.payload));x.mac=egressMac(env.CALLBACK_EGRESS_GRANT_KEY,'grant',x.grant);
+  assert.equal((await handleGateway(request(x),env,{post:n.post,now:()=>now})).status,200);
+  assert.deepEqual(n.calls[0].headers,x.payload.headers);
+  const changed=structuredClone(x);changed.grant.requestId=randomUUID();changed.mac=egressMac(env.CALLBACK_EGRESS_GRANT_KEY,'grant',changed.grant);changed.payload.headers['x-mcp-subscription-id']='sub_other';
+  const other=network();assert.equal((await handleGateway(request(changed),env,{post:other.post,now:()=>now})).status,503);assert.equal(other.claims.size,0);
+  for(const value of ['','bad\r\nheader','x'.repeat(129),32])assert.throws(()=>dispatchPayload({...x.payload,headers:{...x.payload.headers,'x-mcp-subscription-id':value}}));
+  assert.throws(()=>dispatchPayload({...x.payload,headers:{...x.payload.headers,'webhook-signature':x.payload.headers['webhook-signature']+' '+x.payload.headers['webhook-signature']}}));
+});
 test('tampered payload/destination/signature/operation/audience/expiry never reaches claim',async()=>{
   for(const mutate of [x=>x.payload.url='https://other.example.org/',x=>x.payload.body=Buffer.from('changed').toString('base64'),x=>x.mac='0'.repeat(64),x=>x.grant.operation='event',x=>x.grant.audience='https://other.example.org/callback-egress',x=>x.grant.expiresAt=epoch-1,x=>x.grant.issuedAt=epoch+20,x=>x.grant.unexpected=true,x=>x.extra=true]) {
     const x=envelope(),n=network();mutate(x);

@@ -1,0 +1,20 @@
+[
+  {
+    "operation": "normal_delivery_and_original_replay_corrected_context",
+    "exit_code": 0,
+    "tool_wall_seconds": 4.626,
+    "deadline_seconds": 45,
+    "cleanup_reserve_seconds": 30,
+    "stdout": "{\"runId\":\"d6e008ec-fb83-48c0-9ee7-64467342f9e5\",\"stage\":\"awaiting_shutdown\",\"requestId\":\"3edd30a4-99c6-459c-bd88-d313eb815ba8\"}",
+    "stderr": "(node:73275) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "operation": "restore_auth_disabled_baseline",
+    "exit_code": 0,
+    "tool_wall_seconds": 12.349,
+    "deadline_seconds": 120,
+    "cleanup_reserve_seconds": 30,
+    "stdout": "{\"stage\": \"auth_restored\", \"versionId\": \"736020af-860e-40f3-9679-1715bd25da5e\"}",
+    "stderr": ""
+  }
+]

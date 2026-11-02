@@ -1,6 +1,6 @@
 {
-  "backendRelease": "0.3.0",
-  "toolSchemaVersion": "1.2.0",
+  "backendRelease": "0.3.1",
+  "toolSchemaVersion": "1.3.0",
   "supportedPackage": {
     "minimum": "0.2.0",
     "maximumExclusive": "0.4.0"

@@ -53,7 +53,7 @@
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
         "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
@@ -61,7 +61,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "e5a80ba3e9d43e66c28bb07850c72c53e101c6ae85e9c6ef6545cf800957917c",
+      "identity": "1026e76ca4de3225ad0424ec37d33742f74e96520efe4964ff6692f9ad27d156",
       "name": "skill-tree-add-pending-task",
       "provider": "codex",
       "providers": [
@@ -74,14 +74,14 @@
         "agents/openai.yaml": "870ad8c1d5c0644618f1b1082212c2a9c09dafcd58a21c532d876f723f7dd77a",
         "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741"
       },
       "flavor": "web",
-      "identity": "29c261e200dba39b27579f4b63e364ed4dba6348182722654335ef3d68d89de6",
+      "identity": "457576d6d31e5f29c91289fd6616a710d254b87b45a47eca4dc81f249d9b8cd0",
       "name": "skill-tree-create-documents-snapshot",
       "provider": "codex",
       "providers": [
@@ -100,7 +100,7 @@
         "references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
         "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
@@ -108,7 +108,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "61efbc3945e541bd11f72852e0e104b7007ec386fa63d90299623cc08490130d",
+      "identity": "1c077234558d250562dd56f7731b278d29990d8c8fdf1c28beb23d27a940011d",
       "name": "skill-tree-implement-all",
       "provider": "codex",
       "providers": [
@@ -125,7 +125,7 @@
         "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
@@ -134,7 +134,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "9ec79a6c43b85b540d912b02613fb202852eb7abe2745e8c00cef751477e1f70",
+      "identity": "a9428c33cb9ce8005c2f2d0af1133fbf85e1dfc6d424713d1f4fd3ab0e936d55",
       "name": "skill-tree-implement-next-future-task",
       "provider": "codex",
       "providers": [
@@ -150,7 +150,7 @@
         "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
@@ -159,7 +159,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "0f2767ed9488f0a444eec1b66511c8b2e16a1d6fefd785ecef69f2a6e8889271",
+      "identity": "711199f0622ea6b3ee841889057ef541b2b802cc9c54963e49412a652e1301fc",
       "name": "skill-tree-process-future-pending",
       "provider": "codex",
       "providers": [
@@ -175,7 +175,7 @@
         "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
@@ -186,7 +186,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "2c56fe8fd144b5ada47e547aa719910d48ccf387870bd1fa7bbcb81fb4b82264",
+      "identity": "d60a81518ddc8c8ca8dd817400547523ede17d7120c8a0f235e3dd361cdcf243",
       "name": "skill-tree-repo-documentation",
       "provider": "codex",
       "providers": [
@@ -202,7 +202,7 @@
         "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
         "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
@@ -213,7 +213,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "55611fc16d65762dce2127be24e8661cc052755a1538cd982888ea27d24a3cb0",
+      "identity": "11e6cffef52eb33dc2f043f641686d361d1a2ee3129ca860e7f55402e41b8186",
       "name": "skill-tree-repo-documentation-audit",
       "provider": "codex",
       "providers": [
@@ -232,7 +232,7 @@
         "references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
         "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
         "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
-        "references/project-profile.md": "9f91d31247c9183771709c17369595423b36dd909cf24e8acd6c2068d4cf1268",
+        "references/project-profile.md": "53e5c0b15704960baf4fe52b9879165a2fc7be74aa3c031568cf18bf61d13b1c",
         "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
         "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
         "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
@@ -240,7 +240,7 @@
         "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
       },
       "flavor": "web",
-      "identity": "311d6b388ba28a4244d82e236e9d40d228fe6d7cd10214e93db68b32dded555c",
+      "identity": "3912712159aeceb223dd9ea9373965cd194973d7c3d42f4defb95ccd4c02ff99",
       "name": "skill-tree-work-through-next",
       "provider": "codex",
       "providers": [
@@ -248,7 +248,7 @@
       ]
     }
   },
-  "environment_id": "690677f58887ed320d877e6081902c4b718c7b80729e3a780d8095d1e713428a",
+  "environment_id": "74a41d63688c527f89d3bab69d6b7cdfef734d23c58302b46b3afa0bb513ca2f",
   "facts": {
     "capabilities": {
       "playwright-test": {
@@ -266,11 +266,11 @@
   "flavor": "web",
   "format": "skill-tree-profile",
   "gaps": [],
-  "identity": "5d9fae3400d9a9df3596ec55c11d3986d7bc6b38b4df99e617565376bc90e578",
+  "identity": "1c28e900daa125e7826eaedaf974d2ec34e14efac71de81c14bda6bdda9f2c8d",
   "inputs": {
     ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
     ".nvmrc": null,
-    ".skill-tree/validation-recipes.json": "b0487649cc4b7ac1d266c645e1b74d340daa0b9e4546fd05d1b822730171f14d",
+    ".skill-tree/validation-recipes.json": "8167b7bc1ced5ea19339523f577f33519a06379d864f1e6c6b0ddc055c9ca819",
     "Cargo.toml": null,
     "Directory.Build.props": "efc75c2ec58a3644f8d66d0749108ef9361ffff26c109feedbf4235b9dd24885",
     "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
@@ -282,6 +282,8 @@
     "bun.lock": null,
     "bun.lockb": null,
     "deploy/callback-egress/package.json": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+    "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
     "global.json": "9fd12b1529d47d4b26921fc36fc85fe821f2ab83149b5c52994d97e41d117d6c",
     "npm-shrinkwrap.json": null,
     "package-lock.json": null,
@@ -293,6 +295,7 @@
     "src/Habitica.WebApp/package-lock.json": "5aa1533f6dfb042df98b0e435b2a40d7d22aa5a33bcb81666a57d6f30a8137e0",
     "src/Habitica.WebApp/package.json": "214cc3d44c28eebc447028224fef5d4387cb922397fcb87b773f97524b7ea0ad",
     "src/Habitica.WebApp/wwwroot/service-worker.published.js": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+    "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
     "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj": "04701b12ecf14d03108f7c38cd2d221b0ba665a79ac720a70c5636fa9372a20b",
     "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
     "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj": "e76a831efc80eae479ae18cf3584e800a6885870730ba83d40003756c631c766",
@@ -301,12 +304,26 @@
     "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
     "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
     "tests/browser/pwa-shell.mjs": "44abe8f31f3f13659771af088b7fbef7c0f9a788b3d1f8b6f81c69a74fbc6cc5",
+    "tests/hosted/callback-receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+    "tests/hosted/normal-delivery.mjs": "4b40ce3da580f21097554799eb501004996f87e4f96fc855dc4a31f55ca77216",
     "workers/chatgpt-auth/package-lock.json": "fc3d5e89b1e6391bfe2acbf688c8ece7d0e2cb6ac098179512bc0875d489d792",
     "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
+    "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+    "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
+    "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073",
+    "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+    "workers/chatgpt-auth/wrangler.jsonc": "cdb2aed5c960d85ea5da73683a373a957741b69b2919ab0726a4c927bd2c0c66",
     "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
     "workers/chatgpt-mcp/package.json": "87aa23dd438efcfef334b03bdd8197b6b2b77d873f9e75dfbcd9685c97fc2bab",
+    "workers/chatgpt-mcp/wrangler.jsonc": "84610a247d0389cb28f63230b5ba58bb25b72abd6cde9b9e31af715b18cbe45f",
     "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37",
     "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/companion-workspace/wrangler.jsonc": "b5992b0d75520ae33bd2dfa04347fd268f9cb01fefd763bdf8c381237aca0f76",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba",
     "yarn.lock": null
   },
   "inventory": [],
@@ -355,6 +372,30 @@
         }
       }
     },
+    "netlify-hosted-controls": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "tests/hosted/normal-delivery.mjs",
+        "{session_file}",
+        "{report_file}"
+      ],
+      "execution_notes": "The owner-approved controller snapshots and enables the exact provider lanes before delivery. The command persists original authority before sending, verifies exact signed bytes and replay, then resumes the same report after controller shutdown to verify refusals and an unchanged receiver count. Complete only with deployed-identity/configuration/logging evidence and a final pass report. No real subscription or user payload is permitted.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/hosted/normal-delivery.mjs",
+        "tests/hosted/callback-receiver.mjs",
+        "deploy/callback-egress/src/gateway.mjs",
+        "deploy/callback-egress/src/transport.mjs",
+        "workers/chatgpt-auth/src/callback-egress-protocol.ts"
+      ],
+      "lane": "server",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node_declaration": "22.x",
+        "qualification": "Exact deployed gateway/Auth and ephemeral owned receiver; original request ID survives interruptions."
+      }
+    },
     "node-focused-tests": {
       "argv": [
         "node",
@@ -390,6 +431,37 @@
       ],
       "lane": "browser",
       "qualification": "owner-declared static recipe; runner unqualified"
+    },
+    "subscription-contracts-execution-profile": {
+      "argv": [
+        "python3",
+        "tests/Functions/subscription-contracts.py",
+        "{report_file}"
+      ],
+      "execution_notes": "Serial dry builds then nonzero synthetic Worker/MCP/D1, independent receiver and native local TLS tests. No hosted callbacks or user subscription.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/Functions/subscription-contracts.py",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/shared/events.ts",
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/chatgpt-auth/wrangler.jsonc",
+        "workers/companion-workspace/wrangler.jsonc",
+        "workers/chatgpt-mcp/wrangler.jsonc",
+        "deploy/callback-egress/src/gateway.mjs",
+        "workers/chatgpt-auth/test/fixtures/events.mjs",
+        "workers/chatgpt-auth/src/event-dispatch.ts",
+        "workers/companion-workspace/src/event-scheduler.ts"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node": "22.x",
+        "python": "3.x",
+        "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+      }
     },
     "webapp-release-build": {
       "argv": [
@@ -478,16 +550,7 @@
     "config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
     "config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
     "config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
-    "config/repository.json": "cdc6218cb1003e00d1e3d703de079a476d283ab6a27132a581078c8228c1eef7",
     "config/resource-map.json": "bc7f451af9eae6845327445e5b6f1b26fe382ea1fcb3a2a25701eb517e65d889",
-    "domains/general/sections.json": "936bf430802a7ff38ac83413b25162a079bdb81734388420336291b00d2136f6",
-    "domains/unity/development.md": "f65dc5e0e69df84d3204fe70339a7dfa53fcd0d57a2b97f8e57d34a399e5f640",
-    "domains/unity/input-testing.md": "0dec57b1321db917d8e3b06036e4824df94757be0ab49ee959ec84c2688e2347",
-    "domains/unity/panel-simulator.md": "0848b6da7ace415a90aeeca8bc771bc22320a746460f64dadff3396d78576433",
-    "domains/unity/performance-testing.md": "200b28a0305715ff9cb23f4d416fa05a6a30643c146775ceecdc3a0b9bc2f5ea",
-    "domains/unity/sections.json": "e95700a599c6048e3ee9b32b1428c452707297e7425f48349bd8cacd58e9bdc6",
-    "domains/unity/ugui-testing.md": "873c236f793ff3c9ece8f0d0346c5c48513e8220406fce216751571c58b79073",
-    "domains/unity/uitk-testing.md": "c817eb7700e4082ed46557088535ac10e39c928c866ee3b99b343e626b9e449e",
     "domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
     "domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
     "domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",
