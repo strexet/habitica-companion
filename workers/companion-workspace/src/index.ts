@@ -1,3 +1,4 @@
+import {workspaceTransferScopes,workspaceTransferInput,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
 import {stageWorkspaceTransfer,workspaceTransferApi,exportWorkspaceTransfer,transferContainsNotes,type TransferTool} from './workspace-transfer-api.ts';
 import {diagnosticOwnerApi,diagnosticAgentApi,cleanupDiagnostics} from './diagnostic-api';
 import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
@@ -293,6 +294,16 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(new URL(request.url).pathname==='/diagnostic-tools'){
     const body=workspaceObject(await workspaceJson(request),['tool','arguments']);if(typeof body.tool!=='string'||!(diagnosticToolNames as readonly string[]).includes(body.tool))throw new WorkspaceError('invalid_tool',422);
     return json(await diagnosticAgentApi(request,this.env,body.tool as DiagnosticTool,body.arguments));
+   }
+   if(new URL(request.url).pathname==='/workspace-transfer-tools'){
+    const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(workspaceTransferScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
+    const tool=body.tool as WorkspaceTransferTool,args=workspaceTransferInput(tool,body.arguments),verified=await this.env.AUTH_IDENTITY.fetch('https://identity.internal/mcp',{method:'POST',headers:{authorization:request.headers.get('authorization')??''},signal:AbortSignal.timeout(5000)});
+    if(!verified.ok)throw new WorkspaceError('unauthorized',401);const who=await verified.json<Identity&{scopes:string[];grantEpoch:string}>();
+    if(!Array.isArray(who.scopes)||workspaceTransferScopes[tool].some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
+    let row=await this.env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1 AND consent_version=?').bind(who.profileId,who.connectionId,'workspace-v1').first<WorkspaceRow>();if(!row)throw new WorkspaceError('workspace_consent_required',403);row=await mcpEpoch(this.env,row,who.grantEpoch);
+    const notesIncluded=tool!=='list_workspace_transfers'&&!(tool==='get_workspace_transfer_record'&&args.kind!=='noteReceipt')&&await transferContainsNotes(this.env,row,String(args.transferId));
+    if(notesIncluded){const required=['notes.read',...(['preview_workspace_transfer','accept_workspace_transfer'].includes(tool)?['notes.write']:[])];if(required.some(scope=>!who.scopes.includes(scope)))return json({error:'independent_notes_scope_required',requiredScopes:required,outcomeUnknown:false},403);}
+    return json(await workspaceTransferApi(this.env,row,tool,args,who.grantEpoch));
    }
    if(new URL(request.url).pathname==='/note-tools'){
     const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(noteToolScopes,body.tool))throw new WorkspaceError('invalid_tool',422);

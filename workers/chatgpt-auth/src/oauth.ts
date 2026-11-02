@@ -1,3 +1,4 @@
+import {migrationWriteScope} from '../../shared/workspace-transfer-tools.ts';
 import {diagnosticReadScope} from '../../shared/diagnostics';
 import {tagWriteScope} from '../../shared/tag-gateway';
 import {notesReadScope,notesWriteScope} from '../../shared/notes';
@@ -8,7 +9,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope,diagnosticReadScope];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", migrationWriteScope, tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope,diagnosticReadScope];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT, env);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -69,6 +70,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
     "tasks:read":"Read tasks",
     "habitica.tasks.write":"Change and complete tasks",
     "workspace.organization.write":"Organize Companion workspace",
+    [migrationWriteScope]:"Move reviewed browser records into cloud",
     [tagWriteScope]:"Manage Habitica tags",
     "party:read":"Read party and quests",
     "party.planning.write":"Plan party quests",
@@ -90,6 +92,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
     "tasks:read":"Reads task titles, details and completion state.",
     "habitica.tasks.write":"Can change tasks and trigger reviewed scoring with Habitica rewards or penalties.",
     "workspace.organization.write":"Can organize projects, categories and views after review; does not score tasks.",
+    [migrationWriteScope]:"Can accept an owner-staged browser-to-cloud task and Notes transfer after exact review. Personal Notes additionally require independent Notes permissions and consent. Does not grant browser capture, enrollment, deletion or game execution.",
     [tagWriteScope]:"Can change owned Habitica tags and reviewed task membership after separate Companion consent.",
     "party:read":"Reads current party and consented shared planning.",
     "party.planning.write":"Can queue owned quests and cast a personal vote; cannot leave the party.",
@@ -101,7 +104,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   };
   const notesNotice=details.scope.some(scope=>[notesReadScope,notesWriteScope].includes(scope))?'<p>Personal Notes can contain sensitive personal facts and documents. Notes access requires separate Notes cloud consent in Companion. Existing task access does not grant Notes access. The server can read stored titles, Markdown and retained revisions until permanent deletion. Notes do not create Habitica tasks or game effects.</p>':'';
   const groups = [
-    { title: "Account and tasks", items: ["profile:read","account:read","tasks:read","habitica.tasks.write","workspace.organization.write",tagWriteScope] },
+    { title: "Account and tasks", items: ["profile:read","account:read","tasks:read","habitica.tasks.write","workspace.organization.write",migrationWriteScope,tagWriteScope] },
     { title: "Party and gameplay", items: ["party:read","party.planning.write","habitica.spells.execute","habitica.cron.execute"] },
     { title: "Personal notes", items: [notesReadScope,notesWriteScope] },
     { title: "Shared diagnostics", items: [diagnosticReadScope] },
@@ -114,7 +117,8 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   const origin = details.clientDomain ? `Published by ${escape(details.clientDomain)}.` : "Client name is self-declared.";
   const identity = profileLabel ? `<div class="identity"><p>Habitica account: <strong>${escape(profileLabel)}</strong></p></div>` : `<p>Start <strong>Authenticate</strong> in Codex or <strong>Connect</strong> in ChatGPT. Generate a code in <a href="${escape(pwaOrigin)}/settings">Companion Settings</a>, then paste it here. Never put the code in MCP settings or chat.</p><label class="code-field"><strong>One-time Companion code</strong><input name="code" maxlength="16" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" required></label><p class="fineprint">Codes last ten minutes and work once. If verification fails, generate a fresh code in Companion Settings.</p>`;
   const warning = details.redirectIsLoopback ? "<p class=\"note\">The return address belongs to a local app on this computer. Continue only if you just started that connection.</p>" : "";
-  const notices = [writeNotice,organizationNotice,tagNotice,partyNotice,spellNotice,cronNotice,notesNotice].filter(Boolean).join("");
+  const migrationNotice=details.scope.includes(migrationWriteScope)?'<p>Migration access accepts only browser records already captured and frozen by the owner in Companion. Review exact source/target identities, counts and conflicts before moving records into the selected cloud Workspace. Personal Notes require independent Notes permissions and consent. Migration cannot capture browser data, enroll credentials, activate execution or create game effects.</p>':'';
+  const notices = [migrationNotice,writeNotice,organizationNotice,tagNotice,partyNotice,spellNotice,cronNotice,notesNotice].filter(Boolean).join("");
   const permissionReview = profileLabel
     ? `<h2>Choose permissions</h2><p>App-requested permissions start selected. Other permissions start off. Only checked permissions will be granted.</p>${scopeInputs}${notices?`<div class="note">${notices}</div>`:""}`
     : `<section class="permission-preview" aria-labelledby="permission-preview-title"><h2 id="permission-preview-title">Permissions available after verification</h2><p>This preview shows requested access. Verify your code to choose permissions on the next screen.</p>${scopeInputs}</section>`;

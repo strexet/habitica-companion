@@ -1,6 +1,6 @@
 ---
 name: habitica-task-management
-description: Create, edit, relate Todo parents/dependencies, plan native task placement, schedule Daily recurrence, skip occurrences, pause/resume recurring work, complete, restore completed unlinked Todos or archive Companion tasks, set native Todo state or optional active-work stage, record Habit up/down events, or create/edit/archive native organization and saved task views and logically remove projects through reviewed commands. Use for task or organization changes, not read-only reviews, spells or Cron.
+description: Create, edit, relate Todo parents/dependencies, plan native task placement, schedule Daily recurrence, skip occurrences, pause/resume recurring work, complete, restore completed unlinked Todos or archive Companion tasks, set native Todo state or optional active-work stage, record Habit up/down events, or create/edit/archive native organization and saved task views and logically remove projects through reviewed commands. Use for task or organization changes and explicitly requested owner-staged Workspace adoption, not ordinary read-only reviews, spells or Cron.
 ---
 
 Use only the Habitica Companion MCP tools; never construct Habitica HTTP requests. Discover the connected tool names and schemas before tool calls. The server enforces authorization and validation independently of this skill.
@@ -73,3 +73,5 @@ For archived tasks or terminal Daily recovery records without known task IDs, ca
 
 
 For explicitly requested binding to an existing owned Habitica record, including retained completed/archived tasks, use prepare_task_adoption, review the exact pair with the user, accept_task_adoption with the original commandId/reviewHash and recover get_task_adoption_command. Adoption changes only correspondence and creates no rewards. Read the [exact correspondence guidance](references/habitica-correspondence.md) before adoption. Unknown results never authorize a replacement or new historical task.
+
+For an explicitly requested browser-to-cloud Workspace move, follow [reviewed Workspace transfer](references/workspace-transfer.md). Require owner-staged capture and exact review; ordinary task commands never recreate migrated records or replace uncertain transfer intent.

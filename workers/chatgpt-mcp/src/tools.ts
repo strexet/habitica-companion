@@ -1,3 +1,5 @@
+import {workspaceTransferTools,handleWorkspaceTransferTool} from './workspace-transfer-tools.ts';
+import {workspaceTransferScopes,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
 import {diagnosticTools,handleDiagnosticTool} from './diagnostic-tools';
 import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
 import {adoptionScopes,adoptionInput} from '../../shared/adoption-tools.ts';
@@ -50,7 +52,7 @@ const descriptions: Record<ReadTool, string> = {
 const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
 
 const compatibilityTool={name:'get_connector_compatibility',description:'Read actual backend release/build and tool compatibility. An optional package version/hash is a client report, never proof of installed skills. No Habitica requests or account changes.',inputSchema:{type:'object',additionalProperties:false,properties:{packageVersion:{type:'string',pattern:'^[0-9]{1,6}\\.[0-9]{1,6}\\.[0-9]{1,6}$'},packageHash:{type:'string',pattern:'^[a-f0-9]{64}$'},toolSchemaVersion:{type:'string',pattern:'^[0-9]{1,6}\\.[0-9]{1,6}\\.[0-9]{1,6}$'}}},annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false},securitySchemes:[{type:'oauth2',scopes:['profile:read']}] ,_meta:{securitySchemes:[{type:'oauth2',scopes:['profile:read']}]}} as Tool;
-export const toolDefinitions=[compatibilityTool,...bootstrapTools,...diagnosticTools,...noteTools,...reminderTools,...adoptionTools,...linkedRecoveryTools,...retirementTools,...conversionTools,...groupTagTools,...canonicalTaskTools,...organizationWriteTools,...partyTools,...spellTools,...cronTools];
+export const toolDefinitions=[compatibilityTool,...workspaceTransferTools,...bootstrapTools,...diagnosticTools,...noteTools,...reminderTools,...adoptionTools,...linkedRecoveryTools,...retirementTools,...conversionTools,...groupTagTools,...canonicalTaskTools,...organizationWriteTools,...partyTools,...spellTools,...cronTools];
 const canonicalReadNames=new Set([...canonicalTaskTools,...organizationWriteTools,...groupTagTools,...conversionTools].filter(tool=>tool.annotations?.readOnlyHint===true).map(tool=>tool.name));
 function canonicalReadFailure(result?:Record<string,unknown>){
   return {isError:true,content:[{type:'text' as const,text:'Companion read is unavailable. Check the connection and respect any returned retry delay. No new action was requested.'}],
@@ -72,6 +74,7 @@ function createServer(request: Request, env: McpEnv): Server {
       const result={...compatibilityDiscovery(report,auth,workspace),transport:{sdk:{server:"2.4.0",core:"2.4.0"},protocolVersions:["2026-07-28",...SUPPORTED_PROTOCOL_VERSIONS],legacyMode:"stateless",events:false}};
       return {content:[{type:'text',text:JSON.stringify(result)}],structuredContent:result};
     }
+    if(Object.hasOwn(workspaceTransferScopes,name))return handleWorkspaceTransferTool(request,env,name as WorkspaceTransferTool,call.params.arguments??{});
     if(Object.hasOwn(cronToolScopes,name))return handleCronTool(request,env,name as CronTool,call.params.arguments??{});
     if(Object.hasOwn(spellToolScopes,name))return handleSpellTool(request,env,name as SpellTool,call.params.arguments??{});
     if(Object.hasOwn(adoptionScopes,name)||Object.hasOwn(linkedRecoveryScopes,name)||Object.hasOwn(retirementToolScopes,name)||Object.hasOwn(conversionToolScopes,name)||Object.hasOwn(groupTagScopes,name)||Object.hasOwn(organizationToolScopes,name)||Object.hasOwn(taskToolScopes,name)||Object.hasOwn(partyToolScopes,name)){
