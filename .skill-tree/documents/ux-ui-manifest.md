@@ -4,7 +4,7 @@ The [adopted navigation study](navigation-study.md) defines the local design bas
 
 Last reviewed: 2026-06-09
 
-This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
+`ux-ui-manifest.md` records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat the manifest as product guidance for future UI work, not as a pixel spec.
 
 ## Product Posture
 
@@ -12,7 +12,7 @@ Habitica Tool is a dense companion app for power users. The UI should feel like 
 
 Core principles:
 
-- Keep mutation controls explicit and close to the state they change.
+- Keep mutation controls explicit and close to the state affected by each control.
 - Prefer readable summaries first, deeper detail second.
 - Keep resource state visible when the user is making resource-spending decisions.
 - Use cards for repeated records and bounded tools, not for every page section.
@@ -24,18 +24,18 @@ Core principles:
 
 Before changing UI or UX:
 
-1. Read the relevant page section in this manifest.
+1. Read the relevant page section in `ux-ui-manifest.md`.
 2. Inspect the affected Razor and CSS before choosing a design.
-3. Preserve established shared primitives unless they are the source of the problem.
+3. Preserve established shared primitives unless the shared primitives are the source of the problem.
 4. Check whether the change affects readability, interaction safety, responsiveness, or user-facing copy.
-5. If the change creates or changes a reusable pattern, update this manifest in the same change set.
+5. If the change creates or changes a reusable pattern, update `ux-ui-manifest.md` in the same change set.
 
 When reviewing UI changes:
 
 - Look for overlap, clipping, hidden overflow, cramped action rows, text that cannot wrap, and controls that move unpredictably across breakpoints.
 - Check long real-world Habitica data: translated task names, long gear names, long party names, unknown quest names, large numeric values, and disabled states.
 - Prefer evidence from current code and known product workflows over generic UI taste.
-- Use outside examples only to clarify a pattern. Do not copy another app if its workflow optimizes for a different job.
+- Use outside examples only to clarify a pattern. Do not copy another app when the referenced app workflow optimizes for a different job.
 
 Responsive review targets:
 
@@ -52,7 +52,7 @@ The repository rule in `AGENTS.md` requires both a readable light scheme and the
 Task pages must distinguish saved canonical data, stored Habitica identity and confirmed game effects. The shared task panel reports incomplete correspondence across the selected workspace, including completed and archived tasks. Missing group tags remain explicit. The coverage message performs no automatic repair or connection activation; the normal task flow still exposes the tracked integration defects.
 
 - Primary action remains visible or easy to reach.
-- Disabled actions explain their cause when the cause is not obvious.
+- Disabled actions explain the disabled cause when the cause is not obvious.
 - Data freshness remains visible when stale data can make an action unsafe.
 - Any progress indicator is determinate when the app knows total work.
 - Touch targets and form controls are usable on phone widths.
@@ -67,9 +67,9 @@ Current pattern:
 - Built-in schemes live in `ColorSchemeCatalog`, carry explicit light/dark metadata, and render as grouped picker sections: Default, Built-in Light, Built-in Dark, Custom, Generated.
 - `Gryphy Light` and `Gryphy Dark` are the defaults. `Forest Legacy` preserves the original app palette. The other presets cover low-contrast, dark, bright, colorful, and intentionally chaotic moods with names that fit the Habitica companion context.
 - The app applies semantic CSS variables such as background, card, surface, text, muted text, primary, accent, danger, success, focus, chart, task-value min/base/max, app header, navigation drawer, input, button text, and disabled-state tokens.
-- Settings exposes a scheme picker and a custom scheme builder. Fully custom palettes are built with "Copy preset"/"Paste preset" — copy the readable preset, edit colors, optional gradients, text shadows, and the dark-theme flag in any text editor, paste it back — plus collapsible advanced gradient controls for direct edits. Avoid "JSON" in user-facing copy even though the clipboard format is JSON. Custom schemes are user data, not developer config.
-- The picker is a shared `ColorSchemePanel` component reused by Settings and Sign-in (full) and the Dashboard (`Compact`). Compact mode is a single dense bar — select, small swatch strip, Random Preset, Random Theme — with create/copy/preset-editor/random-save controls collapsed behind a "Customize" disclosure that auto-expands when a save or edit flow is active; the disclosure toggle reads "Done" while a save/edit flow is open and closes the surface without reverting the current draft or generated theme. The Dashboard appearance section sits near the top of the page, collapsed by default behind a "Customize theme"/"Done" fold toggle. The Settings appearance section uses the same collapsed-by-default fold toggle but reveals the full panel. This follows the collapsible-disclosure and compact-swatch-row patterns and keeps the Dashboard section a small operational band rather than a second settings page.
-- Random controls: Random Preset selects an existing scheme; Random Theme generates a transient in-memory theme applied without persisting, saveable into custom schemes with a name. A chaos slider (Calm to Madness) scales hue/saturation divergence before each reroll and relaxes readability guards as it approaches Madness. Calm and moderate output must keep body/card text plus primary/secondary filled-button labels readable across generated gradients; high chaos can be wilder, but button labels should not collapse into their backgrounds until the extreme end.
+- Settings exposes a scheme picker and a custom scheme builder. Fully custom palettes are built with "Copy preset"/"Paste preset" — copy the readable preset, edit colors, optional gradients, text shadows, and the dark-theme flag in any text editor, paste the edited preset back — plus collapsible advanced gradient controls for direct edits. Avoid "JSON" in user-facing copy even though the clipboard format is JSON. Custom schemes are user data, not developer config.
+- The picker is a shared `ColorSchemePanel` component reused by Settings and Sign-in (full) and the Dashboard (`Compact`). Compact mode is a single dense bar — select, small swatch strip, Random Preset, Random Theme — with create/copy/preset-editor/random-save controls collapsed behind a "Customize" disclosure that auto-expands when a save or edit flow is active; the disclosure toggle reads "Done" while a save/edit flow is open and closes the surface without reverting the current draft or generated theme. The Dashboard appearance section sits near the top of the page, collapsed by default behind a "Customize theme"/"Done" fold toggle. The Settings appearance section uses the same collapsed-by-default fold toggle but reveals the full panel. The compact panel follows the collapsible-disclosure and compact-swatch-row patterns and keeps the Dashboard section a small operational band rather than a second settings page.
+- Random controls: Random Preset selects an existing scheme; Random Theme generates a transient in-memory theme applied without persisting, saveable into custom schemes with a name. A chaos slider (Calm to Madness) scales hue/saturation divergence before each reroll and relaxes readability guards as chaos approaches Madness. Calm and moderate output must keep body/card text plus primary/secondary filled-button labels readable across generated gradients; high chaos can be wilder, but button labels should not collapse into the button backgrounds until the extreme end.
 - `colorSchemes.js` keeps a localStorage active-scheme and preference fallback so mobile browsers can apply the scheme before Blazor and recover if IndexedDB is delayed during navigation. Optional multi-corner gradients are painted into tiny canvas images once per scheme switch; solid schemes keep the normal token fallback.
 
 Rules:
@@ -79,12 +79,12 @@ Rules:
 - Keep enough contrast between `background`, `card background`, `surface`, `strong surface`, `text`, and `muted text` in every built-in scheme. Dark schemes must not use pale surfaces with pale text.
 - Sign-in hero content uses the app-bar background/text token pair even though the element also carries `card-surface`; the generic card-gradient override must not turn the hero into pale card text on light themes. Hero feature chips should stay shell chips, not accent-filled chips with inherited shell text.
 - Preserve meaning across schemes: danger remains danger, success remains success, stale/conflict states keep text labels, and task-value colors must retain min/base/max progression without switching to unrelated semantic state colors.
-- Task value backgrounds use `Task min`, `Task base`, and `Task max` as one same-hue ramp. Values near zero stay close to base; negative values move toward min; positive values move toward max. Do not implement this as a visible CSS gradient background or as separate red/green/orange status colors.
+- Task value backgrounds use `Task min`, `Task base`, and `Task max` as one same-hue ramp. Values near zero stay close to base; negative values move toward min; positive values move toward max. Do not implement the task-value ramp as a visible CSS gradient background or as separate red/green/orange status colors.
 - Do not rely on color alone. Pair important state colors with copy, labels, icons, layout, or disabled reasons.
 - Disabled controls must keep visible text and borders after a scheme switch; do not express disabled state only through opacity.
 - Built-in scheme changes belong in `ColorSchemeCatalog`; user-created schemes belong in `preferences/colorSchemes`.
-- Keep custom token names stable because saved user schemes and cloud sync depend on them. When adding tokens, backfill old custom schemes from `Alpha` before validating.
-- Secondary filled-button text uses the painted gradient stops when present, rather than the separate accent color. The production release matrix caught and corrected unreadable secondary labels in `obsidian-glow` on Settings and Spells; flat-color buttons retain their existing contrast correction.
+- Keep custom token names stable because saved user schemes and cloud sync depend on token names. When adding tokens, backfill old custom schemes from `Alpha` before validating.
+- Secondary filled-button text uses the painted gradient stops when present, rather than the separate accent color. Settings and Spells secondary labels require readable gradient contrast in `obsidian-glow`; flat-color buttons retain the existing contrast correction.
 
 Inspiration:
 
@@ -103,7 +103,7 @@ Asset parity rule:
 
 - Use dedicated Habitica artwork when the official app presents the same entity visually: gear, quests, quest bosses or collection items, eggs, hatching potions, food, pets, mounts, spells, achievements, and reward items.
 - Do not add generic fantasy icons as stand-ins for missing Habitica assets. Missing assets should render a fixed-size fallback with the item name or key and be tracked as follow-up work.
-- Keep text labels beside or below images. Images improve recognition, but they must not replace names, costs, status, disabled reasons, or action labels.
+- Keep text labels beside or below images. Images improve recognition, but images must not replace names, costs, status, disabled reasons, or action labels.
 - Resolve artwork through one app-level image asset resolver. Components should pass stable Habitica keys and receive source path, alt text, fallback label, image kind, and preferred size.
 - Follow `.skill-tree/documents/habitica-api.md` for content key lookup and static asset sourcing. Do not guess image URLs inside Razor pages.
 
@@ -119,14 +119,14 @@ Layout rules:
 
 Current placement:
 
-- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage and Health Potion recovery remain compact inside the Start New Day panel so they do not crowd stat allocation action rows or duplicate cards elsewhere on the page.
+- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage and Health Potion recovery remain compact inside the Start New Day panel so the damage/recovery summaries do not crowd stat allocation action rows or duplicate cards elsewhere on the page.
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes. `Open Habitica` stays in the Companion links header on desktop and moves to the bottom of that section on phone widths so the top of the Dashboard remains compact.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
-- Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows.
+- Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in separate control rows.
 - Spells: spell cards show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows show gear thumbnails without moving cast controls or competing with mana previews.
 - Diagnostics: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
-- Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless it represents a specific game entity.
+- Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless the artwork represents a specific game entity.
 
 Responsive verification for image work:
 
@@ -154,7 +154,7 @@ Current pattern:
 - MudBlazor app bar with drawer navigation for authenticated sessions.
 - The signed-out header exposes a visible `Sign in` link to `/sign-in`, including Settings and cached-data pages. The sign-in action occupies the existing header action slot.
 - The authenticated top bar keeps identity, compact sync freshness, and Refresh/status action in one flex row; active page refresh replaces Refresh with a same-size `Syncing ...` chip.
-- On narrow phones, the top bar remains a single compact row: the identity subtitle hides, the sync chip ellipsizes inside a capped slot, and Refresh/status stays inside the app-bar chrome instead of wrapping below it.
+- On narrow phones, the top bar remains a single compact row: the identity subtitle hides, the sync chip ellipsizes inside a capped slot, and Refresh/status stays inside the app-bar chrome instead of wrapping below the top bar.
 - Centered `.shell-content` with a `1200px` max width.
 - Reusable `card-surface`, `ui-pill`, `section-label`, `panel-copy`, `field-row`, `checkbox-row`, `app-input`, and responsive grid classes.
 
@@ -166,9 +166,9 @@ What works:
 
 Drift:
 
-- The visual language leans heavily on beige/teal/gold. It is coherent, but the app can become one-note across long pages.
+- Long pages require distinct section hierarchy within the selected scheme.
 - Many sections use card-like surfaces. Repeated records are appropriate as cards; top-level sections should remain plain bands or single surfaces.
-- The top app bar consumes vertical space on small screens; sticky page controls must account for it.
+- The top app bar consumes vertical space on small screens; sticky page controls must account for app-bar height.
 
 ### Sign In
 
@@ -222,7 +222,7 @@ Drift:
 Improvement:
 
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
-- Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
+- Keep Start New Day as a small operational panel, not a hero or persistent global warning, because Start New Day is relevant only when Cron is due.
 - Keep CRON gear optimization inside the Start New Day panel, with compact current/recommended/delta stat chips and recommended item rows rather than a separate inventory-style workspace.
 - Keep CRON damage and recovery inside the Start New Day panel. The default damage view should show total estimated damage, HP after CRON, risk or confidence, and compact Dailies/Boss breakdown, using the active theme's surface, border, text, warning, danger, and muted tokens. Formulas, missing due-state Dailies, unavailable checklist/stat inputs, and unavailable sources belong in collapsed details. Health Potion recovery should stay secondary and row-like, showing current HP, HP after CRON, 15 HP healing, 25 GP cost, gold, concise recommendation text, and a single-purchase action only when recovery is useful.
 
@@ -235,7 +235,7 @@ Current pattern:
 - Cached task groups with search, type filters, sort control, collapse controls, completed toggle, and compact task cards. Cards keep title, description, scoring/checkoff controls, disabled reasons, progress, and a Details toggle visible; status, metadata, and charts expand in place.
 - Week/month/year task statistics with aggregate history and month-activity charts.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
-- Task mutation controls stay inline with the affected card without requiring detail expansion, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring. Their task-scoped action row wraps compact controls within the card at phone widths instead of stretching each button across the full card.
+- Task mutation controls stay inline with the affected card without requiring detail expansion, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring. The task-scoped action row wraps compact controls within the card at phone widths instead of stretching each button across the full card.
 - Task details expand inside the card and show cached metadata without navigating away from the current scan position.
 
 What works:
@@ -259,7 +259,7 @@ Comparable apps:
 
 Assessment:
 
-- Our task cards are better for showing Habitica-specific value and notes in a local data browser.
+- Companion task cards show Habitica-specific value and notes in a local data browser.
 - Todoist/Linear are better at fast filter composition and view switching.
 
 Improvement:
@@ -268,7 +268,7 @@ Improvement:
 - Add exact due timestamps as secondary detail only where precision matters.
 - Keep task history charts compact, aggregate by default, and render per-task charts only inside expanded details.
 - For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
-- Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
+- Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like accidental drag targets while selecting text, expanding details, or pressing score controls.
 - Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle supports arrow-key reordering, and each task card exposes compact move-to-top, move-up, move-down, and move-to-bottom buttons.
 - Keep task-card reorder affordances hidden until the user enables the section-level Rearrange mode. Keep all four move buttons in one horizontal row.
 - Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
@@ -293,7 +293,7 @@ Drift:
 
 - Repeated gear info appears in some cards, increasing visual noise.
 - Preset saving uses a text input plus action button, which is clear but can feel detached from the current loadout state.
-- Gear stat pills are dense; users may need stronger highlighting of what changes if they equip an item.
+- Gear stat pills are dense; users may need stronger highlighting of what changes when equipping an item.
 
 Improvement:
 
@@ -313,22 +313,22 @@ Current pattern:
 - Missing pet cards show cached-inventory hatch readiness or the specific missing egg and/or potion. Group hints summarize cached hatch availability without live price or gem-cost claims.
 - Hatch planning uses per-pet queue cards before any mutation. Each row shows pet identity, ownership state, egg and hatching potion keys, available/reserved counts, planned consumption, local warnings, and a remove action; execution requires inline confirmation, runs queued hatches in order, and shows bottom block-local progress while active.
 - Feed planning uses per-pet queue cards. Each card shows growth progress, selected normal food, available/reserved counts, expected progress after feeding, warnings, remove action, Transform to Mount, and separate Use Saddle confirmation. Bulk feed execution shows bottom block-local progress while active.
-- Missing mount cards can add their corresponding owned growable pet to the same feed queue with Plan to grow. Unavailable missing mounts show a short cached-data reason instead of a dead action.
+- Missing mount cards can add the corresponding owned growable pet to the same feed queue with Plan to grow. Unavailable missing mounts show a short cached-data reason instead of a dead action.
 - Companion group headers keep bulk hatch and feed planning beside the fold toggle. `Add All to Hatching Queue` appends only valid missing pets with cached eggs and hatching potions, shows `No hatchable pets` when disabled, and leaves mutation execution inside the Hatch Planner controls. `Add All to Feeding Queue` appends only valid growable missing mounts from the currently visible group/filter set, shows `No growable mounts` when disabled, and leaves mutation execution inside the Feed Planner controls.
 - Queue-add interactions preserve the clicked card or group header position when planner blocks above the collection expand. Scroll correction is immediate, local to add-to-queue actions, and not used for remove, clear, equip, fold, filter, or execution actions.
 - Pet and mount sections have creature type filters that compose with search and expand matching folded groups. Filter labels use readable catalog names and keep the existing group organization.
-- The bulk sell planner lives at the bottom with its existing keep-count preview and confirmation flow.
+- The bulk sell planner lives at the bottom with the existing keep-count preview and confirmation flow.
 
 What works:
 
 - Companion collection management no longer competes with gear optimization for space.
 - Default folds keep large quest and premium catalogs usable on phone widths.
-- Missing-state copy remains local and auditable because it comes only from the snapshot and checked-in catalog.
+- Missing-state copy remains local and auditable because missing-state copy comes only from the snapshot and checked-in catalog.
 
 Improvement:
 
-- Keep special-event companions visible through the fallback group when the checked-in catalog does not describe their hatch path.
-- Keep release-pet and release-mount actions out of this page until a separately reviewed destructive flow exists.
+- Keep special-event companions visible through the fallback group when the checked-in catalog does not describe the companion hatch path.
+- Keep release-pet and release-mount actions out of Pets & Mounts until a separately reviewed destructive flow exists.
 - Keep saddles separate from normal food selectors. Use the saddle count/info block for unavailable saddle guidance until a purchase flow is separately reviewed.
 
 ### Party And Quests
@@ -338,13 +338,13 @@ Files: `src/Habitica.WebApp/Pages/PartyPage.razor`, `src/Habitica.WebApp/Pages/Q
 Current pattern:
 
 - Party owns one combined party-name-and-notes summary, a compact quest-summary link, member summaries, CRON rhythm/timeline visualization, and bottom-grouped roles, settings, and moderation.
-- Quests owns active quest details, progress metrics, queue, pool search, voting, recent completions, and quest refresh actions. The quest pool starts expanded on this dedicated workspace and keeps an in-memory hide/show control for queue-focused scanning.
+- Quests owns active quest details, progress metrics, queue, pool search, voting, recent completions, and quest refresh actions. The quest pool starts expanded on the dedicated Quests workspace and keeps an in-memory hide/show control for queue-focused scanning.
 - Party-sync role strip and owner/app-admin settings stay near the bottom directly before moderation so administration does not interrupt member review.
 - Owner/app-admin party-sync settings are a compact operational panel, and kick records stay last so moderation history does not interrupt member review.
 - Officer assignment and kick/unkick controls live in expanded member details, close to the affected member identity.
 - Member cards show subtle HP/MP chips near display name/class.
 - Member status includes local display-name search near class and sort controls; no-match search states stay clearable without leaving the section.
-- Member sorting includes Low HP and Low MP modes; those sort current values ascending so the lowest member appears first, with unknown values last.
+- Member sorting includes Low HP and Low MP modes; Low HP/Low MP sorts order current values ascending so the lowest member appears first, with unknown values last.
 
 What works:
 
@@ -360,7 +360,7 @@ Drift:
 
 - The Quests page remains dense because active state, planning state, and history are intentionally visible together.
 - Quest queue actions and read-only quest state share similar visual weight.
-- Management controls add more density; keep them compact and avoid turning the page into a generic admin console.
+- Management controls add more density; keep management controls compact and avoid turning the page into a generic admin console.
 - Some table-style member/stat areas still depend on horizontal scrolling.
 
 Improvement:
@@ -401,19 +401,19 @@ Drift:
 
 - Spell cards are still information-heavy. The page is good for precise bulk casting, but less close to Habitica's original fast "skill drawer" interaction.
 - Target selection is explicit and safe, but less spatial than selecting a task directly from a task list.
-- Equipment recommendations increase confidence, but they lengthen every spell card.
+- Equipment recommendations increase confidence, but recommendations lengthen every spell card.
 
 Comparable apps and games:
 
 - Habitica's web flow puts skills in a drawer on the Tasks page; task-targeting skills are selected first, then applied to a task. Habitica mobile shows skill name, description, and mana cost, and greys out unaffordable skills.
 - Habitica confirms skill use and mana deduction after applying a skill.
-- RPG UIs such as World of Warcraft make the resource bar persistent and show casting/progress near the action; this makes resource state and action state hard to miss.
+- RPG UIs such as World of Warcraft make the resource bar persistent and show casting/progress near the action; persistent feedback makes resource state and action state hard to miss.
 
 Assessment:
 
-- Our implementation is better for planning because it supports count, target choice, effect estimates, auto-equip, and after-cast mana before mutation.
-- Habitica's official UI is better for lightweight direct manipulation because it keeps skills close to tasks and uses task highlighting.
-- RPG resource bars are better for immediate combat readability, but our denser operational layout is appropriate because this app optimizes deliberate batch actions rather than real-time play.
+- Companion planning supports count, target choice, effect estimates, auto-equip, and after-cast mana before mutation.
+- The referenced Habitica direct-manipulation pattern keeps skills close to tasks and uses task highlighting.
+- RPG resource bars are better for immediate combat readability, while the Companion operational layout supports deliberate batch actions rather than real-time play.
 
 Improvement:
 
@@ -466,8 +466,8 @@ What works:
 
 Drift:
 
-- Clear local data is visually marked as danger, but it sits in the same grid pattern as safe actions.
-- Upload/download sync actions have equal visual weight, though their risks differ by context.
+- Clear local data is visually marked as danger, but the danger action sits in the same grid pattern as safe actions.
+- Upload/download sync actions have equal visual weight, with different upload/download risks by context.
 
 Improvement:
 
@@ -477,17 +477,17 @@ Improvement:
 
 ### Status and Progress
 
-Apple's Human Interface Guidelines frame feedback as a way to show current status, success/failure, warnings, and next steps. They also recommend putting status feedback near the thing it describes when possible.
+Apple's Human Interface Guidelines frame feedback as a way to show current status, success/failure, warnings, and next steps. The referenced guidelines also recommend placing status feedback near the affected entity when possible.
 
 Android/Material progress guidance separates determinate progress, which shows exact completion, from indeterminate progress, which only signals that work is ongoing.
 
 Application rule:
 
-- Use determinate progress when the app knows `completed` and `total`, as it does for spell casting, equipment slot changes, Pets & Mounts feed/hatch queues, and multi-step diagnostics.
+- Use determinate progress when the app knows `completed` and `total`, as in spell casting, equipment slot changes, Pets & Mounts feed/hatch queues, and multi-step diagnostics.
 - Use passive inline status for freshness, sync, mana, and cached data.
 - Reserve interrupting warnings for destructive local data actions, credential handling, and irreversible Habitica mutations.
 - Keep cached data interactive during background refresh and cloud sync. Disable only the action that would conflict with the active operation.
-- Page-level refresh indicators belong in the app bar and the page's refresh strip. Use them for manual refresh, sign-in background refresh, and visible-domain loading.
+- Page-level refresh indicators belong in the app bar and the page's refresh strip. Use page-level refresh indicators for manual refresh, sign-in background refresh, and visible-domain loading.
 - Card-level refresh indicators belong inside the card whose data is stale or being refreshed, such as the Dashboard Start New Day CRON summary when tasks or party data are refreshing.
 - Field-level status belongs beside the specific value or control when a mutation affects one item, such as equipment slot progress, spell count progress, cloud sync section status, or import-conflict choices.
 - Global busy states are reserved for blocking mutations and first-load surfaces with no usable cached data.
@@ -502,7 +502,7 @@ Application rule:
 
 - Keep MP visible on every spell decision surface.
 - Show cost, availability, and after-cast state before mutation.
-- Keep spend-all controls non-mutating; they may change only local count/preview state.
+- Keep spend-all controls non-mutating; spend-all controls may change only local count/preview state.
 - For sequential spell runs, show a local preparation/progress surface and put Cancel on the active card only.
 - Disable unaffordable actions and explain why near the disabled control.
 - Preserve Habitica's terminology in user-facing text: use "skills" when describing the game concept, but `spell` remains acceptable in code.
@@ -557,7 +557,7 @@ References:
 
 ### Readability Drift
 
-- Several pages use uppercase labels, muted notes, pills, cards, and panels at the same time. This can flatten hierarchy.
+- Several pages use uppercase labels, muted notes, pills, cards, and panels at the same time. Excess simultaneous decoration can flatten hierarchy.
 - Long pages often start with explanatory copy that is useful once but less useful on repeat visits.
 - Technical values leak into user display in remaining developer-oriented areas, especially raw-ish diagnostic previews.
 - Some controls are word-heavy where a compact segmented control, menu, or icon button would scan better.
@@ -845,7 +845,7 @@ An agent deadline review states the exact ISO date and a readable local interpre
 
 ### Connector version reporting
 
-Agent-facing compatibility results distinguish backend identity from a client-reported package. Unknown installation remains explicit. Mixed or unavailable Workers request operator review without reconnecting, changing consent or replaying account actions. This local preparation adds no browser page or production publication.
+Agent-facing compatibility results distinguish backend identity from a client-reported package. Unknown installation remains explicit. Mixed or unavailable Workers request operator review without reconnecting, changing consent or replaying account actions. Compatibility discovery establishes no browser rendering or production publication.
 
 ### Package update guidance
 
@@ -883,7 +883,7 @@ Todo Sync presents source selection, retained command state and exact original r
 
 Todo remains open in the drawer; no disclosure control hides Today, Habits, Dailies or Tasks. Direct category tabs show the current destination with `aria-current=page`. Habits, Dailies and Tasks present a title field and an immediate action before advanced details. Today places the selected date and exact due Daily actions beside a direct Add task link. Projects, Statistics, Sync, Inbox, Planning, Saved lists, History and the legacy Habitica task/Reward surface remain named destinations. Task source remains shared across routes; a compact correspondence status explains missing reward links without moving consent or executor controls onto the task form. Theme colors use the existing semantic ink, surface, primary and button-text tokens, and selected tabs retain the shared focus color.
 
-At 360px with normal text, four category tabs stay on one row; at enlarged text they wrap into readable rows without overlapping labels. The selected workspace is a short disclosure summary; Tasks keeps detailed correspondence status in a separate disclosure, with its incomplete stored-link count visible in the summary. More details and source controls remain available without taking space from the first task action. On the first phone screen at normal text, Habits exposes both score directions and Tasks exposes title capture plus the first Complete action. Secondary project and reference links follow the task controls. The native Habitica task link and original receipt remain accessible through Todo Sync.
+At 360px with normal text, four category tabs stay on one row; at enlarged text the tabs wrap into readable rows without overlapping labels. The selected workspace is a short disclosure summary; Tasks keeps detailed correspondence status in a separate disclosure, with the incomplete stored-link count visible in the summary. More details and source controls remain available without taking space from the first task action. On the first phone screen at normal text, Habits exposes both score directions and Tasks exposes title capture plus the first Complete action. Secondary project and reference links follow the task controls. The native Habitica task link and original receipt remain accessible through Todo Sync.
 
 ## Web Push interaction foundation
 

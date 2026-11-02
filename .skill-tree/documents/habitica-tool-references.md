@@ -1,9 +1,9 @@
 # Habitica Tool References
 
-Last updated: 2026-04-27
+Evidence scope: reference-only source observations; verify current third-party behavior before changing integration contracts.
 Primary audience: AI agents and developers implementing Habitica data features
 
-This document records practical data-fetching patterns from stable third-party Habitica tools. Use it as supporting evidence after `.skill-tree/documents/habitica-api.md`; do not treat it as higher priority than official API behavior or current verified responses.
+The reference document records practical data-fetching patterns from stable third-party Habitica tools. Use the recorded observations as supporting evidence after `.skill-tree/documents/habitica-api.md`; do not give reference observations higher priority than official API behavior or current verified responses.
 
 ## Sources
 
@@ -30,9 +30,9 @@ Request behavior:
 
 - Uses Habitica API v3 at `https://habitica.com/api/v3`.
 - Sends `x-client`, `x-api-user`, and `x-api-key` for authenticated user, task, tavern, and party calls.
-- Sends `x-client` for content calls. This is a third-party tool observation, not local app behavior; the local app currently fetches content through the authenticated API client and sends auth headers too.
+- Sends `x-client` for content calls. The content-call pattern is a third-party tool observation, not local app behavior; the local app currently fetches content through the authenticated API client and sends auth headers too.
 - Fetches full `/user` for the main account snapshot instead of relying on narrow `userFields`.
-- Keeps the tool read-only. Its source explicitly warns against adding account-mutating features.
+- Keeps the tool read-only. The referenced tool source explicitly warns against adding account-mutating features.
 - Handles `TooManyRequests` and `NotAuthorized` with user-facing messages, including a retry-after-wait recommendation for rate limits.
 
 Quest progress behavior:
@@ -43,7 +43,7 @@ Quest progress behavior:
 - Uses `content.quests[party.quest.key].boss` for quest boss metadata and total HP.
 - Rounds displayed pending boss damage down so users do not overestimate progress.
 - Rounds displayed boss HP remaining up so users do not underestimate remaining HP.
-- Explains that boss HP from the party page does not include damage caused since the last party member CRON applied it.
+- Explains that boss HP from the party page does not include damage caused since the last party member Cron applied the pending damage.
 
 Useful design takeaways:
 
@@ -74,7 +74,7 @@ Request behavior:
 - Uses `/groups/:groupId` for guild-like group reads.
 - Reads member lists with `limit=60` and `includeAllPublicFields=true`.
 - Paginates member lists by passing the last returned member ID as `lastId`.
-- Adds leader and quest leader IDs to the member fetch list if they were not present in the paged member list.
+- Adds leader and quest leader IDs to the member fetch list when the leader IDs are absent in the paged member list.
 - Falls back to `GET /members/:memberId` for specific missing members.
 - Warns that large member fetches take longer and should be limited by the user.
 
@@ -95,22 +95,22 @@ Quest progress behavior:
 - Uses each member's `party.quest.progress.collectedItems` as that member's pending collection quest item count.
 - For active quests, counts pending member damage only for members marked true in `group.quest.members`.
 - For pending quests, counts pending progress from all fetched members with returned quest progress.
-- Sums member pending boss damage or collection item counts into a party total and displays it against current quest progress.
+- Sums member pending boss damage or collection item counts into a party total and displays the total against current quest progress.
 - Sorts member pending damage by member last CRON to estimate which member's next CRON could complete a quest.
-- Marks users as ignored in completion estimates when they are resting in the inn or have not checked in for more than 24 hours.
-- Notes that chat-derived quest progress can be inaccurate if a player changed their display name recently.
+- Marks users as ignored in completion estimates when the users are resting in the inn or have not checked in for more than 24 hours.
+- Notes that chat-derived quest progress can be inaccurate if a player changed the player display name recently.
 
 Useful design takeaways:
 
-- `includeAllPublicFields=true` can expose useful member-side party quest progress, including `party.quest.progress.up`, when Habitica returns it.
+- `includeAllPublicFields=true` can expose useful member-side party quest progress, including `party.quest.progress.up`, when Habitica returns the field.
 - Total party pending boss damage/items should be computed from member progress values, not guessed from the party group's top-level progress.
 - Member list pagination must handle inaccurate group `memberCount` values before the app supports large group/guild scans; the current app party snapshot path is a single unpaginated party-member request.
 - Avoid unbounded member detail fetches; prefer the paged public member list and fetch individual member profiles only when a needed member is missing.
 - Rate-limit handling should use both remaining/reset headers and `Retry-After`.
 
-## Applicability To This App
+## Applicability to Habitica Companion
 
-Rules for this repository:
+Rules for the target repository:
 
 - Keep read-only pages read-only unless a feature explicitly requires mutation and follows `.skill-tree/documents/rules.md` mutation constraints.
 - Prefer the API client layer for every Habitica call.

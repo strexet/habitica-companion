@@ -4,30 +4,30 @@
 
 Last reviewed: 2026-06-09
 
-This document describes Habitica's **Cron** concept for third-party client development and AI agents.
+The Cron guide describes Habitica's **Cron** concept for third-party client development and AI agents.
 
 The scope is intentionally limited to Cron-related behavior: daily reset timing, server-side effects, API implications, and party-member state detection for features such as better group buff timing.
 
 ## Before editing Cron behavior
 
-Read `.skill-tree/documents/rules.md`, `.skill-tree/documents/habitica-api.md`, this file, current Cron-related rules/application code, and focused tests before changing Start New Day, Daily due-state handling, pending damage, quest progress at Cron, or party buff timing. If local docs and tests do not fully establish behavior, inspect the current official Habitica Cron implementation before editing. Do not simulate server Cron locally beyond explicit documented estimates.
+Read `.skill-tree/documents/rules.md`, `.skill-tree/documents/habitica-api.md`, `cron.md`, current Cron-related rules/application code, and focused tests before changing Start New Day, Daily due-state handling, pending damage, quest progress at Cron, or party buff timing. If local docs and tests do not fully establish behavior, inspect the current official Habitica Cron implementation before editing. Do not simulate server Cron locally beyond explicit documented estimates.
 
 ## 1. Short Definition
 
 In Habitica, **Cron** is the beginning-of-day processing step for a user account.
 
-Cron is **not** a global scheduled job that runs for every user at midnight. Instead, it is user-specific and request-triggered:
+Cron is **not** a global scheduled job that runs for every user at midnight. Cron is user-specific and request-triggered:
 
-- each user has their own Habitica day boundary;
+- each user has an independent Habitica day boundary;
 - the boundary is controlled by the user's Custom Day Start setting;
 - Cron runs when the user's account interacts with Habitica for the first time after that boundary;
-- if the user does not interact with Habitica, their Cron does not run at that time.
+- if the user does not interact with Habitica, the user's Cron does not run at that time.
 
 For client development, the practical meaning is:
 
-> A user has "started today's Habitica day" only after their Cron has run for the current Habitica day.
+> A user has "started today's Habitica day" only after the user's Cron has run for the current Habitica day.
 
-This matters for party buffing because buffs expire for each user when that user's next Cron runs.
+Per-user Cron matters for party buffing because buffs expire for each user when the affected user's next Cron runs.
 
 ## 2. Core Mental Model
 
@@ -40,11 +40,11 @@ Habitica Cron behaves like a per-user daily latch:
 5. The user's `lastCron` is updated.
 6. The user is now considered to be in the new Habitica day.
 
-This means two party members can be in different Cron states at the same real-world time:
+Two party members can be in different Cron states at the same real-world time:
 
 - Member A may have already triggered today's Cron.
 - Member B may still be in "yesterday" from Habitica's perspective.
-- Buffing Member B before their Cron is usually wasteful, because the buff can disappear as soon as they next open/sync Habitica.
+- Buffing Member B before Member B's Cron is usually wasteful, because the buff can disappear as soon as Member B next opens/syncs Habitica.
 
 ## 3. Triggering Cron
 
@@ -70,7 +70,7 @@ Important details:
 
 - The default Custom Day Start is midnight in the user's timezone.
 - Habitica treats Custom Day Start as an offset from midnight.
-- A Custom Day Start after midnight delays the reset; it does not make the day reset earlier.
+- A Custom Day Start after midnight delays the reset; Custom Day Start does not make the day reset earlier.
 - Example: if Custom Day Start is `2`, then the user's previous Habitica day continues until 02:00 local time.
 - Example: if Custom Day Start is `23`, the user's previous Habitica day continues almost the entire next real-world day and only resets at 23:00.
 
@@ -82,11 +82,11 @@ Habitica has a "Record Yesterday's Activity" flow, also called the "Check off an
 
 When a user interacts with Habitica after Custom Day Start:
 
-- if there are incomplete Dailies that require confirmation before damage, Habitica may show this screen first;
+- if there are incomplete Dailies that require confirmation before damage, Habitica may show the confirmation screen first;
 - Cron should run only after the user confirms yesterday's activity;
 - once the user chooses to start the new day, Cron applies the relevant missed-Daily consequences.
 
-A third-party client that runs Cron directly can bypass this UX and immediately apply missed-Daily damage. This is dangerous and should not be done silently.
+A third-party client that runs Cron directly can bypass the confirmation UX and immediately apply missed-Daily damage. Immediate missed-Daily damage is dangerous and should not be done silently.
 
 ## 6. API Endpoint: Manual Cron
 
@@ -96,18 +96,18 @@ Habitica exposes:
 POST /api/v3/cron
 ```
 
-Server-side API documentation in the Habitica source describes this route as "Run cron" and explicitly says it assumes the user has already been shown the Record Yesterday's Activity screen. It immediately applies damage for incomplete due Dailies.
+Server-side API documentation in the Habitica source describes the Cron route as "Run cron" and explicitly states the assumption that the user has already been shown the Record Yesterday's Activity screen. The Cron route immediately applies damage for incomplete due Dailies.
 
 Development guidance:
 
-- Do **not** call this endpoint automatically just to check state.
-- Do **not** call it as a harmless "sync" operation.
-- Only call it when the client intentionally starts the user's new Habitica day and has handled any required "yesterday" confirmation UX.
+- Do **not** call the Cron endpoint automatically just to check state.
+- Do **not** call the Cron endpoint as a harmless "sync" operation.
+- Only call the Cron endpoint when the client intentionally starts the user's new Habitica day and has handled any required "yesterday" confirmation UX.
 - Prefer ordinary authenticated data-fetching/sync flows for reading state.
 
 ## 7. Main Cron Effects
 
-When Cron runs normally, it performs beginning-of-day processing.
+When Cron runs normally, Cron performs beginning-of-day processing.
 
 Important effects include:
 
@@ -126,7 +126,7 @@ Important effects include:
 - increments internal Cron counters;
 - updates `lastCron`.
 
-For client development, the most important consequence is that Cron is a destructive state transition. It is not just a timestamp update.
+For client development, the most important consequence is that Cron is a destructive state transition. Cron is not just a timestamp update.
 
 ## 8. Resting in the Inn
 
@@ -140,7 +140,7 @@ When resting:
 - Mana gain is handled differently;
 - other Cron actions can still occur.
 
-Do not treat "resting in the Inn" as "Cron disabled". It is better understood as a modified Cron mode.
+Do not treat "resting in the Inn" as "Cron disabled". Inn rest is better understood as a modified Cron mode.
 
 ## 9. Multiple Missed Days
 
@@ -156,7 +156,7 @@ Instead:
 For third-party clients and AI agents:
 
 - do not infer that one inactive user has had multiple separate Cron events;
-- do not assume quest progress or boss damage was applied daily while they were away;
+- do not assume quest progress or boss damage was applied daily during the member absence;
 - use actual user fields and server state, not a local "days passed" simulation.
 
 ## 10. Timezones and Daylight Saving Time
@@ -174,7 +174,7 @@ Client guidance:
 
 - preserve and display Habitica's server-provided user state whenever possible;
 - avoid local-only Cron calculations as a source of truth;
-- if showing "expected next Cron", clearly label it as an estimate;
+- if showing "expected next Cron", clearly label the next-Cron prediction as an estimate;
 - expect edge cases around timezone travel and DST.
 
 ## 11. Party Effects
@@ -185,17 +185,17 @@ Cron is especially important in parties.
 
 When a user misses Dailies during a boss quest:
 
-- Cron applies damage to that user from their missed Dailies;
+- Cron applies damage to that user from the affected user's missed Dailies;
 - the boss can also damage the user;
 - the boss can also damage other quest participants.
 
-This happens when the missing user's Cron runs, not necessarily when the real-world day changes.
+Damage application occurs when the missing user's Cron runs, not necessarily when the real-world day changes.
 
 ### 11.2 Quest Progress
 
 Quest progress accumulated by a user is applied during that user's Cron.
 
-This means:
+Party buff implications:
 
 - group quest state can lag behind actions performed during the current Habitica day;
 - the party may not see final progress from a member until that member's next Cron;
@@ -207,11 +207,11 @@ Party buffs expire for each member when that member's next Cron runs.
 
 Therefore:
 
-- casting buffs before a member has started their current Habitica day may waste the buff on that member;
-- the member may lose the buff almost immediately when they next trigger Cron;
-- the best buff timing is usually after all relevant party members have triggered Cron for the current Habitica day, but before they complete many tasks.
+- casting buffs before a member has started the member's current Habitica day may waste the buff on that member;
+- the member may lose the buff almost immediately when the member next triggers Cron;
+- the best buff timing is usually after all relevant party members have triggered Cron for the current Habitica day, but before the members complete many tasks.
 
-This is the key reason a third-party client may need Cron information for party members.
+Per-member buff expiry is the key reason a third-party client may need Cron information for party members.
 
 ## 12. Determining Whether a Party Member Has Logged In / Croned Today
 
@@ -219,9 +219,9 @@ For group buffing, the useful question is not literally "has the user logged in 
 
 The better question is:
 
-> Has this party member triggered Cron for their current Habitica day?
+> Has the selected party member triggered Cron for the member's current Habitica day?
 
-A member can open Habitica before their Custom Day Start and still remain in the previous Habitica day. Conversely, a member can trigger Cron through many interactions, not only login.
+A member can open Habitica before the member's Custom Day Start and still remain in the previous Habitica day. Conversely, a member can trigger Cron through many interactions, not only login.
 
 ### 12.1 Preferred State Label
 
@@ -244,7 +244,7 @@ To determine state accurately, a client needs at least:
 - member timezone or UTC offset information used by Habitica;
 - current server time or a trusted current timestamp.
 
-Depending on API permissions and returned public fields, some of this data may not be available for other party members. If the CRON timestamp itself is missing, mark the result as `Unknown`. If a public member timestamp is available but Custom Day Start or timezone data is hidden, the current app classifies from a UTC-day fallback and marks persisted history as low confidence.
+Depending on API permissions and returned public fields, some required member data may not be available for other party members. If the Cron timestamp is missing, mark the result as `Unknown`. If a public member timestamp is available but Custom Day Start or timezone data is hidden, the current app classifies from a UTC-day fallback and marks persisted history as low confidence.
 
 ### 12.3 Practical Algorithm
 
@@ -298,8 +298,8 @@ Suggested member states:
 
 | State | Meaning | Buffing Advice |
 | --- | --- | --- |
-| `Croned today` | Member has already crossed today's Cron boundary and triggered Cron. | Safe to buff, assuming they have not already completed most tasks. |
-| `Not croned yet` | Member's current Habitica day has started by time, but their Cron has not run yet. | Buff may be wasted; wait if possible. |
+| `Croned today` | Member has already crossed today's Cron boundary and triggered Cron. | Safe to buff, assuming the member has not already completed most tasks. |
+| `Not croned yet` | Member's current Habitica day has started by time, but the member's Cron has not run yet. | Buff may be wasted; wait if possible. |
 | `Unknown` | Client lacks required fields or confidence. | Do not block buffing, but show uncertainty. |
 | `Possibly stale` | Data is old or fetched before a likely Cron boundary. | Refresh before recommending. |
 
@@ -333,7 +333,7 @@ includeTasks=true
 Implementation guidance:
 
 - request the minimum data needed;
-- avoid fetching tasks unless a feature truly needs them;
+- avoid fetching tasks unless a feature requires task data;
 - treat API tokens as passwords;
 - do not expose or log another user's private task data;
 - gracefully handle missing fields for party members.
@@ -375,7 +375,7 @@ When an AI agent works with Habitica Cron:
 4. Prefer `lastCron` and server-provided state over local guesses.
 5. For party buffing, ask: "Has each member already croned for the current Habitica day?"
 6. If required member fields are missing, return `Unknown`, not a confident answer.
-7. Do not recommend calling `POST /api/v3/cron` unless the user explicitly wants to start their new day and understands the consequences.
+7. Do not recommend calling `POST /api/v3/cron` unless the user explicitly wants to start the user's new day and understands the consequences.
 8. Do not trigger Cron as a background automation without a clear user opt-in.
 9. Be careful with Resting in the Inn; Cron still runs but has modified effects.
 10. Keep party UX non-punitive: use Cron state to improve timing, not to shame users.
@@ -405,7 +405,7 @@ Before implementing Cron-aware party buffing:
 
 ## 18. Source Notes
 
-Primary references used for this document:
+Primary references used for the Cron guide:
 
 - Habitica API documentation: https://habitica.com/apidoc/
 - Habitica Wiki — Cron: https://habitica.fandom.com/wiki/Cron
@@ -414,7 +414,7 @@ Primary references used for this document:
 - Habitica source — `website/server/controllers/api-v3/cron.js`: https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/cron.js
 - Habitica API usage notes: https://habitica.fandom.com/wiki/Application_Programming_Interface
 
-The implementation details in Habitica source may change. Treat this document as a development guide and re-check official API/source behavior before building destructive Cron actions.
+The implementation details in Habitica source may change. Treat the Cron guide as a development guide and re-check official API/source behavior before building destructive Cron actions.
 
 ## Authoritative Cron readiness response
 

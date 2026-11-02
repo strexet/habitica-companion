@@ -1,262 +1,54 @@
 # Habitica Companion Client
 
-Status: product scope and constraints. [features.md](features.md) owns detailed implemented behavior; [future.md](future.md) owns remaining planned work. The current client includes canonical task planning, personal Notes and optional Auth/MCP/Workspace services alongside Habitica analysis and guarded actions.
+## Purpose and users
 
-## 1. Project Summary
+Habitica Companion is a third-party client for Habitica planning, local analysis, explainable recommendations and guarded actions. Primary users are experienced Habitica users, party coordinators and users managing tasks, projects, personal Notes and optimization workflows. Developers and users inspecting cached account/task data are additional audiences.
 
-Habitica Companion Client is a third-party companion application for Habitica users who want deeper planning, analysis, automation, and visibility over their Habitica data.
+The official Habitica client remains the authority for Habitica social and game systems. Companion provides canonical task planning and personal knowledge workflows alongside Habitica snapshots and assisted actions. [features.md](features.md) owns detailed implemented behavior and limitations; [future.md](future.md) owns proposed work and unfinished acceptance.
 
-The project is not intended to replace the official Habitica client. The official client remains the primary place for everyday task management, social interaction, and normal gameplay. This project focuses on advanced helper workflows that are difficult to perform manually inside the official application.
+## Current scope
 
-The application reads Habitica data through the public Habitica API, stores relevant data locally on the user's device, and uses that data to provide recommendations, calculations, presets, and assisted actions.
+- Blazor WebAssembly PWA with responsive desktop, tablet and phone routes, explicit sign-in and offline cached views.
+- Habitica account, task, inventory, equipment, party and quest snapshots with freshness-aware analysis.
+- Gear recommendations/presets, spell target/effect estimates, pet/mount planning and previewed inventory actions.
+- Canonical Todo, Daily and Habit workspaces with projects, relationships, recurrence, saved lists, retained activity and original command receipts.
+- Personal Markdown Notes with exact identities, project associations, retained versions and separate export/erasure controls.
+- Optional consented Auth/MCP/Workspace services for guarded agent reads/commands, canonical cloud storage and owner-reviewed browser-to-cloud adoption.
+- Foreground reminders, voluntary reviews and independently gated Push subscription/scheduling/dispatch.
+- Diagnostics and local/encrypted-cloud portability with explicit privacy boundaries.
 
-## 2. Product Positioning
+Source availability, configured feature flags, current deployment, installed packages and host/device qualification remain independent facts. [technical.md](technical.md), [deployment policy](deploy-cloudflare-pages.md) and source-bound history define the corresponding boundaries.
 
-Habitica is a habit-building and productivity application that turns real-life tasks into a role-playing game experience. Users manage habits, dailies, to-dos, rewards, characters, equipment, parties, quests, pets, mounts, and other game systems.
+## Product principles
 
-Habitica Companion Client is designed for users who enjoy the game mechanics and want more control over optimization-heavy actions, such as equipment selection, skill usage, party coordination, and inventory cleanup.
+### Explain recommendations
 
-The project should be treated as a power-user tool.
+Recommendations expose input snapshots, selected factors, assumptions, uncertainty and calculation versions. Equipment comparisons distinguish stat changes from gameplay estimates. Spell and quest estimates distinguish local approximations from provider-returned values. Missing or stale inputs require visible limitations rather than invented precision.
 
-It should be useful for regular users, but its main audience is users who already understand Habitica mechanics and want better support for planning and decision-making.
+### Guard mutations
 
-## 3. Core Idea
+Habitica changes require current preconditions and explicit intent. Multi-step, destructive and batch operations require reviewed previews, applicable confirmation, sequential execution, partial-success reporting and durable logs. Unknown outcomes require original receipt recovery; an uncertain result never authorizes blind replay. The application must not secretly execute macros, sell inventory or change gameplay.
 
-The application helps users answer questions such as:
+### Prefer local reads
 
-- When is the best time to cast a party buff?
-- Which equipment should I wear before casting a specific skill?
-- Which task is the best target for a given skill?
-- Can I switch to a prepared battle setup with one action?
-- Can I execute a safe sequence of skill casts without manually changing equipment between every step?
-- Which items can probably be sold without blocking pet or mount progress?
-- How much damage, gold, or other effect should I approximately expect from an action?
-- How much damage can a boss or player receive under the current conditions?
+Cached Habitica snapshots support responsive analysis with fewer network requests. Canonical local journals and Notes retain explicit ownership; cloud-owned or frozen browser copies cannot become independent writable sources. Offline screens establish neither fresh Habitica state nor remote execution authority.
 
-The project should make these answers visible, understandable, and actionable.
+### Keep credential choices explicit
 
-## 4. Main User Value
+Browser sign-in defaults to session-only credentials. Persistent browser storage requires opt-in. Separate integration enrollment sends credentials to the configured Auth Worker only with explicit consent and stores an encrypted vault envelope. MCP receives sanitized models and receipts; encrypted app-data sync and debug exports exclude raw credentials. [The credential contract](technical.md#integration-credential-vault) owns storage, recovery, rotation and deletion.
 
-The application should reduce repetitive manual work in Habitica.
+### Respect provider and account boundaries
 
-Instead of repeatedly checking character stats, equipment bonuses, task values, party activity, inventory state, and skill effects, the user should be able to open the companion client and see clear recommendations.
+Habitica API v3 requests require the configured creator header, rate-limit handling and conservative retries under [habitica-api.md](habitica-api.md). The application distinguishes canonical data saves, retained mapping evidence and confirmed Habitica effects. Task/group correspondence, scopes, consent and original receipt fences remain mandatory.
 
-The application should not blindly perform actions without explanation. Whenever it recommends an action, it should explain why the recommendation was made and which data was used.
+## User flows and UX
 
-Examples:
+The browser user signs in, reviews cached data and freshness, selects an analysis/planning feature and inspects the resulting explanation. A supported mutation presents applicable review and confirmation before execution, then updates local state or reports partial/unknown outcomes. Optional cloud enrollment, Workspace/Notes consent, executor activation, package installation and notification permission require distinct user choices.
 
-- A gear recommendation should show which stats improved and why those stats matter.
-- A sell recommendation should show why the item appears safe to sell.
-- A party buff recommendation should show which member activity data was used.
-- A macro preview should show the planned steps before anything is executed.
+The interface uses clear dashboards, readable tables, compact explanations, visible warnings, source/sync status and reviewable configuration. [ux-ui-manifest.md](ux-ui-manifest.md) owns current routes, interaction patterns, theme/reflow and accessibility requirements. Companion exposes no hidden destructive behavior.
 
-## 5. Product Feature Areas
+## Constraints and non-goals
 
-This section describes product direction. Some areas are already implemented partially or fully; check `.skill-tree/documents/features.md` and `.skill-tree/documents/future.md` for current status.
+Habitica social replacement, chat replacement, real-time multiplayer and complex game-like rendering remain outside current product scope. Credential storage outside the separately consented Auth vault and invisible background automation are unsupported. Native shells require a separate architecture decision; the current client remains a browser PWA.
 
-## 5.1 Party Buff Timing
-
-The application should help calculate a good time to cast party-wide buffs.
-
-The initial idea is to estimate the median login or activity time of party members and suggest a time when the buff is likely to benefit the largest number of users.
-
-The feature should be conservative when data is incomplete. If the API does not provide enough reliable activity data, the application should clearly show that the recommendation is approximate.
-
-## 5.2 Gear Sets
-
-Users should be able to create named equipment presets.
-
-Examples:
-
-- Maximum Perception
-- Maximum Strength
-- Boss Damage
-- Pickpocket Setup
-- Backstab Setup
-- General Daily Setup
-
-A gear set should be easy to preview, edit, compare, and apply.
-
-## 5.3 Skill Macros
-
-Users should be able to create predefined skill sequences.
-
-A macro may include:
-
-- switching equipment;
-- selecting the best target;
-- casting one or more skills;
-- switching equipment again;
-- stopping if validation fails.
-
-The macro system should be safe by default. Before execution, the application should show a dry-run preview with expected actions, costs, warnings, and possible API requests.
-
-## 5.4 Skill Target Recommendations
-
-The application should help find the best task target for a skill.
-
-Examples:
-
-- Best task for Pickpocket.
-- Best task for Backstab.
-- Best habit, daily, or to-do for a specific effect.
-- Best target under current equipment and stats.
-
-The recommendation should include a short explanation.
-
-## 5.5 Equipment Optimization
-
-The application should recommend equipment for specific goals.
-
-Examples:
-
-- maximize Perception for Pickpocket;
-- maximize Strength for Backstab;
-- balance stats for general use;
-- prepare an outfit for boss damage;
-- prepare an outfit for survival or reduced damage.
-
-The user should be able to save the recommendation as a gear set.
-
-## 5.6 Bulk Sell Helper
-
-The application should help identify items that are likely safe to sell.
-
-The feature should account for the user's current pet and mount progress where possible.
-
-The application should not silently sell items only because they appear unused. Selling should require a preview and explicit confirmation.
-
-## 5.7 Action Result Estimates
-
-The application should show approximate results for selected actions.
-
-Examples:
-
-- expected damage;
-- expected gold;
-- expected benefit from a skill;
-- expected boss progress;
-- expected player damage risk.
-
-The application should clearly distinguish between exact values, API-returned values, and local estimates.
-
-## 6. Product Principles
-
-## 6.1 Companion, Not Replacement
-
-The project should not try to duplicate every official Habitica feature.
-
-It should focus on advanced planning, calculations, automation helpers, and local data analysis.
-
-## 6.2 Explain Recommendations
-
-Recommendations must be explainable.
-
-A user should be able to understand why the application suggests a specific item, task, time, skill, or macro step.
-
-## 6.3 Prefer Safe Defaults
-
-The application should avoid destructive or irreversible actions by default.
-
-Potentially risky actions should use:
-
-- preview;
-- validation;
-- warnings;
-- explicit confirmation;
-- execution logs.
-
-## 6.4 Respect Habitica API Rules
-
-The project must follow Habitica API rules and third-party tool expectations.
-
-The application should use the supported public API, include required headers, respect rate limits, and avoid aggressive polling.
-
-For technical API details, developers and agents must use `.skill-tree/documents/habitica-api.md`.
-
-## 6.5 Local-First Data
-
-The application should prefer local-first behavior.
-
-Habitica data should be synchronized into a local cache or snapshot, and the UI should primarily work from local data. This improves responsiveness and reduces unnecessary API calls.
-
-## 6.6 User-Controlled Credentials
-
-The user controls browser credential persistence and separate integration consent. Browser sign-in defaults to session-only storage. Explicit integration enrollment sends credentials to the configured Auth Worker for encrypted vault storage and narrow authenticated operations. MCP tools receive sanitized models and original receipts, never the token. Encrypted app-data sync excludes credentials. [technical.md](technical.md#integration-credential-vault) owns the vault boundary and deletion controls.
-
-## 7. Expected User Flow
-
-A typical user flow:
-
-1. The user opens the companion client.
-2. The user enters their Habitica User ID and API Token.
-3. The application validates access to Habitica.
-4. The application synchronizes the user's profile, tasks, party data, equipment, inventory, and other relevant data.
-5. The data is stored locally.
-6. The user opens a feature area, such as gear optimization or party buff timing.
-7. The application calculates recommendations from local data.
-8. The user reviews the explanation.
-9. The user may apply a gear set, run a macro, sell selected items, or perform another assisted action.
-10. The application updates local state after each successful API operation.
-
-## 8. Non-Goals
-
-The project should not initially focus on:
-
-- replacing Habitica game mechanics;
-- rebuilding social features;
-- chat replacement;
-- full quest management replacement;
-- real-time multiplayer interaction;
-- complex game-like 3D or 2D presentation;
-- credential storage beyond the separately consented Auth vault;
-- automatic background automation without user visibility.
-
-Canonical task planning and Notes are current client capabilities. Additional product proposals belong in `future.md`.
-
-## 9. Target Audience
-
-Primary audience:
-
-- experienced Habitica users;
-- party members who coordinate quests and buffs;
-- users who optimize gear and skills;
-- users who want better visibility into character and task data;
-- users who are comfortable using a third-party tool with their own API credentials.
-
-Secondary audience:
-
-- developers building Habitica-related tools;
-- users who want to inspect their Habitica data in a clearer format;
-- party leaders who want better coordination support.
-
-## 10. Tone and UX Direction
-
-The product should feel helpful, calm, and trustworthy.
-
-It should not feel like a bot that secretly plays the game for the user. It should feel like a planner, dashboard, and assistant that helps the user make better decisions.
-
-Recommended UX direction:
-
-- clear dashboards;
-- readable tables;
-- compact explanations;
-- dry-run previews;
-- visible warnings;
-- local sync status;
-- reversible configuration;
-- no hidden destructive behavior.
-
-## 11. Relationship to Technical Documentation
-
-This document describes the project from a user-friendly product perspective.
-
-More technical details are stored in:
-
-- `.skill-tree/documents/habitica-api.md` — Habitica API behavior and usage rules.
-- `.skill-tree/documents/technical.md` — technical stack and architecture.
-- `.skill-tree/documents/features.md` — detailed feature behavior.
-- `.skill-tree/documents/future.md` — active implementation queue and validated backlog.
-- `.skill-tree/documents/rules.md` — repository and AI-agent collaboration rules.
-
-When this project vision changes, this file should be updated together with the relevant technical documents.
+[repository-map.md](repository-map.md) owns physical modules; [rules.md](rules.md) owns agent collaboration and authorization. Product-scope changes require matching technical and feature documentation without duplicating the active task queue.

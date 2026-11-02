@@ -1,0 +1,97 @@
+{
+  "format": "documentation-milestone-provenance-v1",
+  "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+  "purpose": "Locate removed historical qualification/rollout prose without rewriting original result records. Current canonical documents own policy and source prerequisites.",
+  "sections": [
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Owner-first launch readiness",
+      "source_section_sha256": "a738ca12d726e90a6310dd0a5d3c553b9795064b03ba7afe2b6514c3acf1a455",
+      "evidence_references": [
+        "../history/releases/2026-10-29/deployment.json",
+        "../history/releases/2026-10-30-pwa-hotfix/readme.md",
+        "../history/validation/codex-native-owner-pilot.json",
+        "../history/validation/e14-local-qualification.json",
+        "../history/validation/production-publication.json"
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Optional Auth/MCP deployment proposal",
+      "source_section_sha256": "c561b5a07fd5e918ca33210b24b4a9fbdf93ad42b505973c95429507bcdc38e7",
+      "evidence_references": [],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Production user-action correction",
+      "source_section_sha256": "7425bcd6e63aad05bb385bdf9f95c29dbf3c0d4ed9846f09694991abd52bebf9",
+      "evidence_references": [
+        ".skill-tree/history/validation/production-user-actions.json."
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Selected owner development activation \u2014 2026-10-19",
+      "source_section_sha256": "b7ba2f2f5fc197fc3c3b327528051e39c7707aca53f11082fe017697bfe135c8",
+      "evidence_references": [
+        "../history/validation/development-owner-checks.json"
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Party quest pool hotfix qualification",
+      "source_section_sha256": "a446b51449d96bdc28ebb5e0c7af3861888243570cf3c6058b0e3b3f909fb3cc",
+      "evidence_references": [
+        ".skill-tree/history/validation/party-quest-pool-publication.json"
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Ready-feature production publication",
+      "source_section_sha256": "c70261ec8b46ebb8fd22b43fd9298b9cfc563b339d36d900702a9f34d76e5bde",
+      "evidence_references": [],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/deploy-cloudflare-pages.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Notes release candidate 0.2.0",
+      "source_section_sha256": "e0dbf89547d78ddc5a287340c1b04dd50492d7bfcfc8d0360d113f922bffa1f8",
+      "evidence_references": [
+        ".skill-tree/history/validation/notes-production-publication.json."
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/testing.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "E14 local dev qualification matrix",
+      "source_section_sha256": "802fbd5eb48e396c7390fbb3cc52cbf07919a50b6a63493b9aca21102b6fa075",
+      "evidence_references": [
+        "../history/validation/e14-local-qualification.json"
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    },
+    {
+      "source_path": ".skill-tree/documents/testing.md",
+      "source_commit": "7bd8a3b7a4cbd3c182a04a27a19a5b5636ea5398",
+      "section": "Native Codex owner pilot",
+      "source_section_sha256": "9f88ee79ba1dff2754dc17cbef16e43113821469fc8d17b58f78d85ceaecde74",
+      "evidence_references": [
+        "../history/validation/codex-native-owner-pilot.json"
+      ],
+      "disposition": "Historical outcomes remain in original source-bound evidence and Git. Canonical prose retains current contracts and explicit qualification limits."
+    }
+  ]
+}

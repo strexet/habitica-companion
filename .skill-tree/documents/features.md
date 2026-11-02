@@ -6,17 +6,19 @@ Related technical reference: `.skill-tree/documents/technical.md`
 
 ## 1. Purpose
 
-This document describes project features at a technical level.
+`features.md` describes project features at a technical level.
 
-AI agents must update this file when adding, materially changing, or removing a feature. Feature descriptions must be implementation-oriented and useful for future agents that need to continue the work without rediscovering domain intent.
+AI agents must update `features.md` when adding, materially changing, or removing a feature. Feature descriptions must be implementation-oriented and useful for future agents that need to continue the work without rediscovering domain intent.
 
-Do not use this document for marketing copy. Keep it dry, technical, and explicit.
+Do not use `features.md` for marketing copy. Keep feature prose dry, technical, and explicit.
 
-`.skill-tree/documents/future.md` owns proposed, planned, and not-yet-implemented work. This file should describe implemented or partial current behavior only. Do not keep proposed-only feature specs here.
+`.skill-tree/documents/future.md` owns proposed, planned, and not-yet-implemented work. `features.md` describes implemented or partial current behavior only. Do not keep proposed-only feature specs here.
+
+Validation descriptions identify fixture assertions and evidence boundaries. Current acceptance requires matching source/test/build/environment evidence under [testing.md](testing.md); historical results and deployment records do not qualify changed sources or current live state.
 
 ## 2. Feature documentation format
 
-Each feature should use this structure:
+Each feature should use the following structure:
 
 ```text
 ## Feature name
@@ -114,7 +116,7 @@ Habitica game entities that official Habitica represents visually now flow throu
 
 Current placements:
 
-- Dashboard uses official gear thumbnails in the Start New Day equipment preview; companion and inventory summaries live on their dedicated pages instead of the Dashboard.
+- Dashboard uses official gear thumbnails in the Start New Day equipment preview; companion and inventory summaries live on dedicated companion/inventory pages instead of the Dashboard.
 - Equipment shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Equipment summary also shows companion and item-count icon chips.
 - Quests shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
 - Spells shows official skill icons in spell card headers and gear thumbnails for equipment recommendations.
@@ -134,7 +136,7 @@ Rate-limit sensitivity: medium; party data should not be polled aggressively
 
 ### Goal
 
-Track party-member CRON rhythm from read-only party data. The Party page shows member-level CRON state, average member CRON time, and the viewer-local CRON graph when stored history exists, but it does not show a dedicated overview CRON summary or buff-timing recommendation block.
+Track party-member CRON rhythm from read-only party data. The Party page shows member-level CRON state, average member CRON time, and the viewer-local CRON graph when stored history exists, but the Party page does not show a dedicated overview CRON summary or buff-timing recommendation block.
 
 ### Inputs
 
@@ -182,7 +184,7 @@ GET /groups/party
 GET /groups/party/members?includeAllPublicFields=true
 ```
 
-Do not scrape Habitica pages. Do not call `POST /api/v3/cron` for this feature.
+Do not scrape Habitica pages. Do not call `POST /api/v3/cron` for party Cron observation.
 
 ### Algorithm / rules
 
@@ -218,7 +220,7 @@ Warn when:
 
 ### Error handling
 
-If party data cannot be fetched, use the latest local snapshot and mark the result stale. Unknown members do not block recommendations, but their count must be visible.
+If party data cannot be fetched, use the latest local snapshot and mark the result stale. Unknown members do not block recommendations, but the unknown-member count must be visible.
 
 ### Security / privacy
 
@@ -282,7 +284,7 @@ Rate-limit sensitivity: medium for multi-slot changes
 
 ### Goal
 
-Allow users to create named combat/utility gear sets from owned equipment and equip them with one action.
+Allow users to create named combat/utility gear sets from owned equipment and equip the saved gear set with one action.
 
 Current implementation supports local battle presets on Equipment: save current battle gear, save optimizer recommendations as presets, rename/remove presets, show stable preset ids, and equip changed preset slots sequentially. Broader macro-oriented gear-set references remain future work.
 
@@ -318,7 +320,7 @@ gear_set_preview_cache
 gear_set_execution_log
 ```
 
-Gear sets are app-specific local data. They should not be assumed to exist in Habitica.
+Gear sets are app-specific local data. App gear sets must not be assumed to exist in Habitica.
 
 ### API interaction
 
@@ -386,7 +388,7 @@ Status: Partial
 Owner module: `Habitica.Rules.Equipment`, `Habitica.Rules.Spells`, `Habitica.Application.Inventory`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`, `Habitica.WebApp.Pages.SpellsPage`
 Primary Habitica data: owned gear, gear stats, user class, user stats, skill formulas
-Mutates Habitica state: no by itself
+Mutates Habitica state: no direct mutation
 Requires confirmation: no
 Offline behavior: available from latest inventory/equipment snapshot
 Rate-limit sensitivity: low
@@ -566,15 +568,15 @@ rogue: pickPocket, backStab, toolsOfTrade, stealth
 healer: heal, brightness, protectAura, healAll
 ```
 
-Unlock levels are 11, 12, 13, and 14 within each class. Locked spells render with their required level and disabled Cast button.
+Unlock levels are 11, 12, 13, and 14 within each class. Locked spells render with the required unlock level and disabled Cast button.
 
-Task-targeting spells default to the eligible non-reward, non-challenge task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Checked-off Dailies remain eligible because they can still receive task-targeted skills for the day. Completed To-Dos are excluded to avoid surfacing finished one-time work. Reward tasks are not valid skill targets, and challenge tasks are excluded because Habitica does not allow casting skills on challenge tasks. Spells that target self, party, or all tasks do not show a target selector.
+Task-targeting spells default to the eligible non-reward, non-challenge task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Checked-off Dailies remain eligible because checked-off Dailies can still receive task-targeted skills for the day. Completed To-Dos are excluded to avoid surfacing finished one-time work. Reward tasks are not valid skill targets, and challenge tasks are excluded because Habitica does not allow casting skills on challenge tasks. Spells that target self, party, or all tasks do not show a target selector.
 
-Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus the Habitica level bonus plus buffs; unbuffed buff spells use base stats plus current battle gear plus the Habitica level bonus. When Auto equip is enabled, the preview uses the selected dynamic recommendation's battle gear slots as though they were already equipped. Healing Light caps its preview by the current user's missing HP when fresh user health is available. Blessing shows the raw source-backed HP restored per party member as the primary preview, shows a per-member total when multiple casts are selected, caps each known party member's effective value by that member's missing HP when fresh party health is available, and keeps aggregate party HP restored out of the default copy. If most covered members are already near full HP, Blessing shows a non-fatal limited-value or low-need warning near Cast; if all covered members are full, it says no meaningful healing is needed. Missing or stale party HP produces a short uncertainty note without inventing effective healing. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
+Effect estimates are approximation-based. Spell estimate formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus the Habitica level bonus plus buffs; unbuffed buff spells use base stats plus current battle gear plus the Habitica level bonus. When Auto equip is enabled, the preview uses the selected dynamic recommendation's battle gear slots as though the recommended slots were already equipped. Healing Light caps the preview by the current user's missing HP when fresh user health is available. Blessing shows the raw source-backed HP restored per party member as the primary preview, shows a per-member total when multiple casts are selected, caps each known party member's effective value by that member's missing HP when fresh party health is available, and keeps aggregate party HP restored out of the default copy. If most covered members are already near full HP, Blessing shows a non-fatal limited-value or low-need warning near Cast; if all covered members are full, the card states no meaningful healing is needed. Missing or stale party HP produces a short uncertainty note without inventing effective healing. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
 
-The page renders a sticky current-mana bar above the spell cards, showing available MP, max MP, and current class while the user scrolls. Per-card mana previews show the selected cast count's total cost and after-cast MP. `Spend All Mana` sets the count to the maximum affordable count, clamped to the page's 99-cast maximum, and never starts casting or sends a Habitica request. It is disabled for locked spells, stale/missing account data, unaffordable spells, and invalid mana costs. Active boss quest progress and party pending damage render only inside spell cards whose estimate includes boss damage, such as Burst of Flames and Brutal Smash. Unspent stat points render only inside spell cards with stat-sensitive estimates and only when stat allocation is unlocked.
+The page renders a sticky current-mana bar above the spell cards, showing available MP, max MP, and current class while the user scrolls. Per-card mana previews show the selected cast count's total cost and after-cast MP. `Spend All Mana` sets the count to the maximum affordable count, clamped to the page's 99-cast maximum, and never starts casting or sends a Habitica request. `Spend All Mana` is disabled for locked spells, stale/missing account data, unaffordable spells, and invalid mana costs. Active boss quest progress and party pending damage render only inside spell cards whose estimate includes boss damage, such as Burst of Flames and Brutal Smash. Unspent stat points render only inside spell cards with stat-sensitive estimates and only when stat allocation is unlocked.
 
-Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. Options are ordered by estimated gained spell output from highest to lowest, making the first option the default when Auto equip is enabled. When multiple options exist, show an `Auto equip option` selector so choosing another option updates the preview and cast equip plan; hide the selector for a single option. Recommendations include stat-bearing battle accessories such as Head Accessory, Eyewear, Body, and Back. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`. Weapon and shield are selected as a pair that honors the catalog `twoHanded` flag: a two-handed weapon is recommended only when its score exceeds the combined score of the best one-handed weapon and the best shield for the same stat priority, and the shield slot is left empty when the two-handed weapon wins. Ties keep the one-handed weapon plus shield.
+Each spell card owns separate dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. Options are ordered by estimated gained spell output from highest to lowest, making the first option the default when Auto equip is enabled. When multiple options exist, show an `Auto equip option` selector so choosing another option updates the preview and cast equip plan; hide the selector for a single option. Recommendations include stat-bearing battle accessories such as Head Accessory, Eyewear, Body, and Back. If every non-empty recommended gear slot is already equipped in battle gear, the recommendation button is disabled and labeled `Equipped`. Weapon and shield are selected as a pair that honors the catalog `twoHanded` flag: a two-handed weapon is recommended only when the two-handed weapon score exceeds the combined score of the best one-handed weapon and the best shield for the same stat priority, and the shield slot is left empty when the two-handed weapon wins. Ties keep the one-handed weapon plus shield.
 
 Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs. Stat allocation is treated as locked before level 10; below that level the Dashboard shows unlock copy instead of an unspent-points prompt, the allocation controls are disabled, and Spells hides stat-point context.
 
@@ -589,7 +591,7 @@ rogue: toolsOfTrade
 healer: protectAura
 ```
 
-The warning is rendered inside the affected spell card to keep the decision close to the Cast button. It explains that the current user's buffs can expire on that user's CRON and that party buffs expire separately for each member on that member's next CRON. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. When due unfinished Dailies exist, a collapsed due-count disclosure reveals the shared compact checkoff list without leaving the pending cast context. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
+The warning is rendered inside the affected spell card to keep the decision close to the Cast button. The warning explains buff expiry at the current user's Cron and separate expiry at each party member's next Cron. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. When due unfinished Dailies exist, a collapsed due-count disclosure reveals the shared compact checkoff list without leaving the pending cast context. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
 
 ### Validation
 
@@ -645,7 +647,7 @@ Status: Partial
 Owner module: `Habitica.Rules.Spells`; generic future home may be `Habitica.Rules.Tasks`
 Application entry point: `Habitica.Rules.Spells.SpellViewModelFactory`
 Primary Habitica data: tasks, task values, task types, task tags, user stats, selected skill
-Mutates Habitica state: no by itself
+Mutates Habitica state: no direct mutation
 Requires confirmation: no
 Offline behavior: available from latest task snapshot
 Rate-limit sensitivity: low
@@ -995,13 +997,13 @@ GET /groups/party
 
 ### Algorithm / rules
 
-Dashboard must not contain business formulas. It displays state computed by rules/application factories and invokes use-case services.
+Dashboard must not contain business formulas. Dashboard displays state computed by rules/application factories and invokes use-case services.
 
 Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, current-user temporary buff expiry, and party buffs per member's next CRON. After confirmed CRON, refresh account/tasks/party state through the session controller and show an inline success or error result in addition to the snackbar.
 
 Start New Day offers recommended temporary battle gear before CRON and enables that option by default. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the compact summary-first preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, whether the recommended gear is already equipped, and expandable recommended-item rows. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, captures the current battle slots, equips changed recommended slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, restores the captured battle slots sequentially, then refreshes account/tasks/party state. If temporary equip or CRON fails after a gear change, the controller attempts to restore the changed slots before reporting the failure. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, post-CRON restore, and completed-but-refresh-failed states.
 
-The Start New Day panel renders a compact CRON damage summary between gear optimization and confirmation, then renders contextual health-potion recovery when it can improve the immediate CRON outcome, followed by `CronUnfinishedDailiesMiniList` when confirmed due unfinished Dailies exist. Each compact Daily row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
+The Start New Day panel renders a compact CRON damage summary between gear optimization and confirmation, then renders contextual health-potion recovery when health-potion recovery can improve the immediate Cron outcome, followed by `CronUnfinishedDailiesMiniList` when confirmed due unfinished Dailies exist. Each compact Daily row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps the selected cast context.
 
 `PendingDamageEstimateFactory` builds the Start New Day damage summary from confirmed due unfinished Dailies and saved active boss quest pending damage. Task refresh asks Habitica to recompute Daily due state through `/tasks/user?dueDate=<current UTC timestamp>`, then preserves returned `isDue` in cached task data. `PendingDamageEstimateFactory.GetIncompleteDailies` is the shared Daily selector for the Dashboard CRON mini list, the CRON damage estimate, and Spells CRON warnings: Daily, incomplete, and `isDue == true`. Explicit `isDue: false` Dailies and missing/unknown `isDue` Dailies are excluded from the numeric estimate; unknown due-state Dailies appear only in collapsed estimate details. Daily damage uses the current official source-backed CRON scoring shape from cached task value, task priority, computed Constitution, buffs, level bonus, and battle gear when the gear catalog is available. Missing task value, missing computed stat inputs, unavailable checklist partial-completion data, unavailable negative Habit damage, and incomplete Inn/pause state lower estimate readiness instead of being hidden. Current-user Inn/resting damage exemption is only typed when party member data exposes the current user as resting; otherwise the summary remains an estimate and does not claim exact final CRON damage. The standard Dashboard no longer renders a standalone pending-damage card; detailed source and unavailable-source copy is available only inside the Start New Day section.
 
@@ -1013,11 +1015,11 @@ Warning: estimatedDamage >= current HP * 0.75
 Info: estimatedDamage > 0
 ```
 
-Health-potion purchase is manual only and appears on Dashboard only inside the Start New Day panel. `HealthPotionRecoveryEstimateFactory` uses the Start New Day damage estimate, current HP, maximum HP, and saved gold to show current HP, HP after CRON, 15 HP healing, 25 GP cost, maximum useful potion count, affordable count, and the minimum recommendation that can remove knockout risk when the estimate is complete. It never recommends more potions than are useful or affordable, does not show recovery at full health, and avoids a guaranteed-safe claim for incomplete damage estimates. The button buys one Health Potion through the existing `POST /user/buy/potion` client route, is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP, and refreshes `/user` after purchase so HP, gold, and the CRON recovery estimate recalculate from server state. The standard Dashboard no longer renders a standalone Manual Recovery card.
+Health-potion purchase is manual only and appears on Dashboard only inside the Start New Day panel. `HealthPotionRecoveryEstimateFactory` uses the Start New Day damage estimate, current HP, maximum HP, and saved gold to show current HP, HP after CRON, 15 HP healing, 25 GP cost, maximum useful potion count, affordable count, and the minimum recommendation that can remove knockout risk when the estimate is complete. The recovery estimate never recommends more potions than are useful or affordable, does not show recovery at full health, and avoids a guaranteed-safe claim for incomplete damage estimates. The button buys one Health Potion through the existing `POST /user/buy/potion` client route, is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP, and refreshes `/user` after purchase so HP, gold, and the CRON recovery estimate recalculate from server state. The standard Dashboard no longer renders a standalone Manual Recovery card.
 
-Bulk armoire purchase is manual only. The Dashboard shows this spend-gold card before the gem-for-gold card. Its requested opening count defaults to the maximum available from current gold, capped by the app's guarded bulk limit, then lets the user reduce it before purchase.
+Bulk armoire purchase is manual only. The Dashboard shows the armoire spend-gold card before the gem-for-gold card. The armoire requested opening count defaults to the maximum available from current gold, capped by the app's guarded bulk limit, then lets the user reduce the opening count before purchase.
 
-Gem-for-gold purchase is manual only. Signed-in users with a cached account snapshot see the Dashboard card even when purchase is unavailable; the card explains stale account data, insufficient gold, reached monthly limit, missing subscription-plan data, or the no-subscription state in plain app language. When the cached plan has no active subscription signal, the card includes a `Subscribe` link to Habitica's subscription settings. The Dashboard defaults requested quantity to the maximum available from current gold and the remaining monthly limit, then lets the user reduce it before confirming. The action requires explicit confirmation, executes sequential one-gem requests with stop-on-failure, refreshes `/user` after success, and reports updated gem balance when the refreshed snapshot includes it.
+Gem-for-gold purchase is manual only. Signed-in users with a cached account snapshot see the Dashboard card even when purchase is unavailable; the card explains stale account data, insufficient gold, reached monthly limit, missing subscription-plan data, or the no-subscription state in plain app language. When the cached plan has no active subscription signal, the card includes a `Subscribe` link to Habitica's subscription settings. The Dashboard defaults requested quantity to the maximum available from current gold and the remaining monthly limit, then lets the user reduce the gem quantity before confirming. The action requires explicit confirmation, executes sequential one-gem requests with stop-on-failure, refreshes `/user` after success, and reports updated gem balance when the refreshed snapshot includes the gem balance.
 
 ### Validation
 
@@ -1047,7 +1049,7 @@ Test:
 - Start New Day damage summary, source details, unknown due-state handling, and risk state.
 - CRON health-potion recovery visibility, recommendation, confirmation, and session-controller call.
 - gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
-- dashboard companion navigation uses local `Open` actions for app pages, keeps `Open Habitica` as the only external Habitica web destination, shows it in the Companion links header on desktop, and moves it below the local companion cards on phone widths.
+- dashboard companion navigation uses local `Open` actions for app pages, keeps `Open Habitica` as the only external Habitica web destination, shows the external link in the Companion links header on desktop, and moves the external link below the local companion cards on phone widths.
 
 ### Open questions
 
@@ -1067,7 +1069,7 @@ Rate-limit sensitivity: low
 
 ### Goal
 
-Allow the user to enter Habitica credentials, validate them, store them locally, and clear them.
+Allow the user to enter Habitica credentials, validate credentials, store credentials locally, and clear credentials.
 
 ### Inputs
 
@@ -1139,7 +1141,7 @@ Do not leak token in error messages.
 
 ### Security / privacy
 
-Token is password-equivalent. Never log it.
+Token is password-equivalent. Never log the token.
 
 The sign-in page must say that session-only sign-in is the default, persistent credential storage is optional and device-local, and credentials are not sent to Cloudflare sync, exports, diagnostics, or logs.
 
@@ -1265,13 +1267,13 @@ Merge keeps local records and merges known append-only collections:
 - diagnostics log entries by `id`;
 - party CRON history events by `partyId`, `memberId`, and `lastCronUtc`;
 - latest snapshots by newer `retrievedAtUtc`;
-- color-scheme preferences: custom schemes union by `id` with newer `updatedAtUtc` winning, and `selectedSchemeId` follows the side with the newer `selectedAtUtc` (a built-in selection is just the id; custom schemes ship their full token bundles).
+- color-scheme preferences: custom schemes union by `id` with newer `updatedAtUtc` winning, and `selectedSchemeId` follows the side with the newer `selectedAtUtc` (a built-in selection is just the id; custom schemes include the full token bundles).
 
 Use remote imports incoming records with override behavior for the chosen import scope. Keep local skips the incoming record. Apply section choices lets conflicting sections choose merge, keep local, or use remote independently.
 
 Cloud sync derives both the sync identifier and AES-GCM key locally from the active Habitica User ID and API Token. The Cloudflare Pages Function stores only encrypted payloads.
 
-Cloud sync uses per-section encrypted records in Cloudflare KV. Each section maps to one `StorageKeys` portable data key and is uploaded/downloaded independently with its own 2MB limit. Section mapping is defined in `CloudSyncSectionMapping`:
+Cloud sync uses per-section encrypted records in Cloudflare KV. Each section maps to one `StorageKeys` portable data key and is uploaded/downloaded independently with a separate 2MB limit. Section mapping is defined in `CloudSyncSectionMapping`:
 
 ```text
 Section             StorageKey                   KV suffix
@@ -1289,11 +1291,11 @@ SyncMetadata        (metadata only)              sync-metadata
 
 The `SyncMetadata` section stores `schemaVersion: 2`, upload timestamp, succeeded/failed section keys.
 
-After successful refreshes and app data mutations, the WebApp attempts automatic encrypted sync when Habitica credentials are available. Automatic sync lists remote sections, downloads and merges each into local data, then uploads each local section back to Cloudflare. Narrow preference saves such as manual task order and color-scheme preference changes can request a single-section upload for their mapped encrypted cloud-sync section after local persistence. If no remote sections exist, the system falls back to downloading the legacy single-blob format, imports it via merge, and re-uploads as individual sections (one-time migration). Sections that exceed the 2MB per-section limit are skipped with a diagnostic warning; critical sections (UserProfile, SavedPresets, SyncMetadata) produce error-level diagnostics on failure. Cloud sync failures are logged as warnings and must not fail the original Habitica refresh, equipment/stat/spell action, or local preference save.
+After successful refreshes and app data mutations, the WebApp attempts automatic encrypted sync when Habitica credentials are available. Automatic sync lists remote sections, downloads and merges each into local data, then uploads each local section back to Cloudflare. Narrow preference saves such as manual task order and color-scheme preference changes can request a single-section upload for the mapped encrypted cloud-sync section after local persistence. If no remote sections exist, the system falls back to downloading the legacy single-blob format, imports the legacy blob via merge, and re-uploads as individual sections (one-time migration). Sections that exceed the 2MB per-section limit are skipped with a diagnostic warning; critical sections (UserProfile, SavedPresets, SyncMetadata) produce error-level diagnostics on failure. Cloud sync failures are logged as warnings and must not fail the original Habitica refresh, equipment/stat/spell action, or local preference save.
 
 Cloud sync section status is kept in session state with section key, direction, status, update time, payload size, and message. Settings shows each syncable section, including skipped, failed, excluded, and conflict states. `Features:CloudSyncExcludedSections` configures sections that should not upload; diagnostics is excluded by default so app logs do not inflate encrypted sync payloads unless explicitly enabled.
 
-Cloud sync work updates the `CloudSync` refresh domain and records the reason (`AppBoot`, `ManualRefresh`, or `MutationCompleted`). These sync states do not use the global busy flag and should surface in Settings or the app bar rather than blanking cached pages.
+Cloud sync work updates the `CloudSync` refresh domain and records the reason (`AppBoot`, `ManualRefresh`, or `MutationCompleted`). The sync states do not use the global busy flag and should surface in Settings or the app bar rather than blanking cached pages.
 
 ### Validation
 
@@ -1311,7 +1313,7 @@ Surface import parse errors, unsupported schema errors, missing cloud data, and 
 
 ### Security / privacy
 
-Habitica API tokens are not exported and are not sent to Cloudflare sync endpoints. The API token is used only inside the browser to derive the sync identifier and encryption key. Cloudflare KV stores encrypted JSON and cannot decrypt it without the user's Habitica credentials.
+Habitica API tokens are not exported and are not sent to Cloudflare sync endpoints. Encrypted app-data sync derives the sync identifier and encryption key inside the browser; separate Auth vault enrollment retains an independent consent boundary. Cloudflare KV stores encrypted JSON and cannot decrypt the stored JSON without the user's Habitica credentials.
 
 Plain JSON export files are not encrypted. The UI must tell users to keep export files private because snapshots and party history may contain personal or party data.
 
@@ -1331,7 +1333,7 @@ Test:
 
 - Token rotation breaks access to data encrypted with the previous API token unless a future migration/export path is added.
 - A future provider can replace Cloudflare by implementing the remote sync provider boundary.
-- Legacy single-blob data (`sync:{syncId}`) is not automatically cleaned up after section-based migration. It remains readable but is no longer updated. A future cleanup step could delete it once section-based sync is stable.
+- Legacy single-blob data (`sync:{syncId}`) is not automatically cleaned up after section-based migration. The legacy blob remains readable and receives no new writes; cleanup is not automatic.
 
 ## 12.2 Color scheme system
 
@@ -1414,28 +1416,28 @@ Mana Spring
 Stonewatch Sanctuary
 ```
 
-`Gryphy (Light)` and `Gryphy (Dark)` are the light/dark defaults. Every scheme carries explicit light/dark variant metadata, and the picker groups defaults, built-in light schemes, built-in dark schemes, custom schemes, and the session-only generated scheme in that order. `Forest Legacy` preserves the former `alpha` palette. Stored selections migrate removed built-in IDs to their replacement or the matching Gryphy default.
+`Gryphy (Light)` and `Gryphy (Dark)` are the light/dark defaults. Every scheme carries explicit light/dark variant metadata, and the picker groups defaults, built-in light schemes, built-in dark schemes, custom schemes, and the session-only generated scheme in the listed order. `Forest Legacy` preserves the former `alpha` palette. Stored selections migrate removed built-in IDs to the replacement or the matching Gryphy default.
 
-`Obsidian Glow` keeps the existing `obsidian-glow` built-in ID and dark variant. The owner-supplied atmosphere palette now defines the solid tokens, nine/eight/six/four/two-stop page, card, shell and button gradients, and heading/shell text shadows. Existing selections of the built-in ID resolve to the refreshed palette; saved custom copies retain their separately stored colors.
+`Obsidian Glow` keeps the existing `obsidian-glow` built-in ID and dark variant. The built-in atmosphere palette defines the solid tokens, nine/eight/six/four/two-stop page, card, shell and button gradients, and heading/shell text shadows. Existing selections of the built-in ID resolve to the built-in palette; saved custom copies retain independently stored colors.
 
 Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value min/base/max colors, app header, navigation drawer, input, filled-button text, and disabled-state colors. Optional gradient tokens cover page, card, app bar, drawer, primary button, secondary button, and accent chip surfaces. Optional heading, app-bar, and drawer text shadows remain null unless a scheme opts in.
 
-`ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload. After persisted appearance changes, `ColorSchemePanel` awaits best-effort encrypted sync of only the `ColorSchemes` section and displays local-save success separately from cloud failure or skipped sync. Appearance sync downloads and timestamp-merges the remote section before upload. Whole-data and narrow uploads share a serialized session lane; account replacement or sign-out cancels obsolete work before remote results can import or upload. Imports and local appearance saves share a storage mutation lock. Timestamp ties retain local selection under the existing merge contract; server KV supplies no globally atomic cross-device convergence guarantee. Transient random themes, rerolls, chaos changes, paste previews and cancelled edits do not upload.
+`ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies the resolved scheme through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload. After persisted appearance changes, `ColorSchemePanel` awaits best-effort encrypted sync of only the `ColorSchemes` section and displays local-save success separately from cloud failure or skipped sync. Appearance sync downloads and timestamp-merges the remote section before upload. Whole-data and narrow uploads share a serialized session lane; account replacement or sign-out cancels obsolete work before remote results can import or upload. Imports and local appearance saves share a storage mutation lock. Timestamp ties retain local selection under the existing merge contract; server KV supplies no globally atomic cross-device convergence guarantee. Transient random themes, rerolls, chaos changes, paste previews and cancelled edits do not upload.
 
 Imported saved appearance updates the active CSS, mounted selectors and fast reload cache without creating a new selection timestamp. Imported preferences update the cache while a transient random/pasted preview retains the current rendered colors. Dirty editor fields remain intact; an inline conflict offers explicit synced-theme selection or continued editing before saving. Theme listeners unsubscribe when panels unmount. Manual bundle/section imports and automatic private sync use the same appearance refresh path.
 
 Preference ownership: saved color selections/custom schemes and manual task ordering are portable encrypted sections. Task filters/page preferences, Pets & Mounts folds, spell-warning suppression, appearance disclosure state and session-only previews remain device-local. Tab management credentials, server enrollment, background-executor consent and cloud-section exclusion state do not become portable appearance preferences. Connection status recovery has a separate task contract.
 
-The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text, filled-button text, app-bar text, and native form-control `color-scheme` values from active tokens so drawer links, buttons, shell text, and number-input steppers remain readable across light and dark schemes. Native checkboxes and radios use the scheme primary via a global `accent-color` rule. The sign-in hero deliberately keeps the app-bar background/text pairing even though it is also a card surface, and its feature chips use translucent shell styling instead of filled accent surfaces. Multi-corner gradients are painted into tiny canvas images once per scheme application and exposed as composed CSS variables; two-stop gradients use CSS `linear-gradient`. New built-in or custom schemes must keep shell/control tokens readable, not only page-card colors.
+The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text, filled-button text, app-bar text, and native form-control `color-scheme` values from active tokens so drawer links, buttons, shell text, and number-input steppers remain readable across light and dark schemes. Native checkboxes and radios use the scheme primary via a global `accent-color` rule. The sign-in hero deliberately keeps the app-bar background/text pairing despite the hero card surface, and the hero feature chips use translucent shell styling instead of filled accent surfaces. Multi-corner gradients are painted into tiny canvas images once per scheme application and exposed as composed CSS variables; two-stop gradients use CSS `linear-gradient`. New built-in or custom schemes must keep shell/control tokens readable, not only page-card colors.
 
 Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
-The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save flow is active. When that compact customization surface is open, its close action reads `Done` and hides the surface without reverting the current draft or generated theme. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Done" fold toggle so it is visible without dominating the page. The Settings appearance section uses the same collapsed-by-default fold toggle, but reveals the full (non-compact) panel with advanced controls always visible. Sign-in renders the full panel directly. Opening the advanced panel always reveals the custom-scheme editor directly: a saved custom scheme edits in place, and a built-in active scheme opens as an unsaved draft copy ready to tweak (no intermediate "Create Custom Copy" step). The panel lets users:
+The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save flow is active. When the compact customization surface is open, the close action reads `Done` and hides the surface without reverting the current draft or generated theme. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Done" fold toggle so the appearance section remains visible without dominating the page. The Settings appearance section uses the same collapsed-by-default fold toggle, but reveals the full (non-compact) panel with advanced controls always visible. Sign-in renders the full panel directly. Opening the advanced panel always reveals the custom-scheme editor directly: a saved custom scheme edits in place, and a built-in active scheme opens as an unsaved draft copy ready to tweak (no intermediate "Create Custom Copy" step). The panel lets users:
 
 - choose a built-in scheme;
-- build a fully custom palette by copying the active preset to the clipboard as readable v2 JSON, editing colors, optional gradients, text shadows, and the light/dark variant in any text editor, and pasting it back. Paste also accepts the legacy flat token shape. Pasting applies the colors to the live theme immediately as a transient preview; Save Scheme persists them and Cancel reverts the preview to the previously applied scheme;
+- build a fully custom palette by copying the active preset to the clipboard as readable v2 JSON, editing colors, optional gradients, text shadows, and the light/dark variant in any text editor, and pasting the edited JSON back. Paste also accepts the legacy flat token shape. Pasting applies the colors to the live theme immediately as a transient preview; Save Scheme persists the selected colors and Cancel reverts the preview to the previously applied scheme;
 - paste manually into an inline text box when the browser blocks `navigator.clipboard.readText` (iOS Safari and non-secure origins) — the panel reveals a JSON textarea with Apply/Cancel buttons and shows a specific error reason when the pasted text is empty, not valid JSON, not a JSON object, or carries no recognized color tokens;
-- rename custom schemes and set their light/dark variant;
+- rename custom schemes and set the custom-scheme light/dark variant;
 - delete custom schemes;
 - reset by choosing any built-in scheme;
 - roll a random preset (a random pick from built-in plus custom schemes), which is selected and persisted like any other scheme;
@@ -1444,7 +1446,7 @@ The color-scheme controls live in a shared `ColorSchemePanel` component embedded
 - switch to other schemes and return to the last random theme through a "Generated" entry in the scheme dropdown;
 - name and save the last random theme into the custom schemes list.
 
-The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, valid CSS color/shadow values, and deterministic gradients for every gradient-capable surface. The chaos level (0..1, surfaced as the slider) scales solid and per-corner hue/saturation divergence, from subtle directional shading at 0 to deliberately clashing gradients and a heading glow at high chaos. It also relaxes readability guards: calm and moderate themes enforce stronger contrast for card/body text, shell text, and primary/secondary filled-button labels across generated gradient stops, while high chaos allows wilder combinations without dropping button labels to same-luminance collapse except at the extreme Madness end. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
+The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, valid CSS color/shadow values, and deterministic gradients for every gradient-capable surface. The chaos level (0..1, surfaced as the slider) scales solid and per-corner hue/saturation divergence, from subtle directional shading at 0 to deliberately clashing gradients and a heading glow at high chaos. The chaos level also relaxes readability guards: calm and moderate themes enforce stronger contrast for card/body text, shell text, and primary/secondary filled-button labels across generated gradient stops, while high chaos allows wilder combinations without dropping button labels to same-luminance collapse except at the extreme Madness end. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves the random theme with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
 
 User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
 
@@ -1475,7 +1477,7 @@ Test:
 - Settings renders scheme controls and saves custom scheme preferences;
 - a generated random theme passes token validation across many seeds at low, moderate, and maximum chaos, with direct contrast checks for calm/moderate button labels and card text;
 - random preset selection excludes the active scheme and the transient random id;
-- the panel exposes random preset and random theme controls, generating a random theme does not persist the `random-theme` id, and saving a named random theme stores it as a custom scheme;
+- the panel exposes random preset and random theme controls, generating a random theme does not persist the `random-theme` id, and saving a named random theme stores the generated theme as a custom scheme;
 - compact mode hides advanced controls behind a disclosure toggle but auto-reveals random-save controls, and a high-chaos theme remains saveable as a valid custom scheme.
 
 ## 13. App shell and navigation
@@ -1487,7 +1489,7 @@ Primary Habitica data: local session state, task snapshot freshness, sync timest
 Mutates Habitica state: no
 Requires confirmation: no
 Offline behavior: public app shell after successful service-worker installation; saved local session, snapshots and diagnostics remain subject to browser storage availability. Auth, privacy and API routes remain network-only.
-Rate-limit sensitivity: none by itself
+Rate-limit sensitivity: none for local shell behavior
 
 ### Goal
 
@@ -1553,7 +1555,7 @@ Navigation rules:
 
 ### Validation
 
-Handle these states explicitly:
+Handle the following states explicitly:
 
 - no local data;
 - cached data but no active authenticated session with the drawer still hidden;
@@ -1564,7 +1566,7 @@ Handle these states explicitly:
 
 ### Error handling
 
-Do not hide controller-level errors inside route components. Surface them once in the shell.
+Do not hide controller-level errors inside route components. Surface controller-level errors once in the shell.
 
 ### Security / privacy
 
@@ -1673,7 +1675,7 @@ GET /content?language=en when an active boss quest needs total boss HP
 GET /tasks/user
 ```
 
-The full user response is used for account/dashboard refreshes because Habitica adds computed stat helpers such as `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` only to the full `/user` response. The app still stores only the parsed local projections it needs.
+The full user response is used for account/dashboard refreshes because Habitica adds computed stat helpers such as `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` only to the full `/user` response. The app still stores only the parsed local projections required by the application.
 
 ### Algorithm / rules
 
@@ -1854,11 +1856,11 @@ Current view-model rules:
 11. Include stat-bearing accessory slots in the equipped battle display and battle preset item views/execution.
 12. For each actionable gear group, compute a `Best in Category` subset by removing items dominated by another item in every stat.
 13. A stat value of zero is worse than a positive modifier when another item has equal-or-better values for the remaining stats; exact stat ties remain visible.
-14. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
-15. Disable Best in Category equip buttons for already equipped battle items and label them as equipped.
-16. Keep the bottom non-battle/accessory equipment section folded by default; users can expand it only when they need cosmetic, back-slot, or no-stat details.
+14. Show `Best in Category` by default and keep the full per-category item list folded until the user expands the category.
+15. Disable Best in Category equip buttons for already equipped battle items and label already-equipped buttons as equipped.
+16. Keep the bottom non-battle/accessory equipment section folded by default; users can expand the non-battle section for cosmetic, back-slot, or no-stat details.
 17. Sum battle preset stat totals from the resolved item totals.
-18. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+18. Render each battle preset with the preset ID, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 19. Stack battle preset cards vertically at full content width.
 20. Highlight the highest positive visible stat values on battle gear, best-in-category items, normal equipment cards, and saved preset item cards; tied highest stats are highlighted together.
 21. For individual battle equip candidates, show the stat delta compared with the current battle loadout after applying that item. Two-handed weapons clear the shield slot for the comparison.
@@ -2014,18 +2016,18 @@ GET /user
 7. Sort available normal food for a queued pet by growth value for that pet, highest first, and show the per-item growth value in the queue card. Saddle is excluded from normal food selectors and handled by a separate saddle action.
 8. Model pet-to-mount growth locally from cached pet progress, mount ownership, food counts, and checked-in catalog data. Habitica hatches pets at 5 stored progress points, preferred food adds 5 points, premium pets gain 5 points from any normal food, non-preferred food adds 2 points, and mount conversion happens at 50 points; the UI maps that to 10%, +10%, +4%, and 100%.
 9. Build deterministic feed-plan rows by consuming highest-value normal food first, then lower-value food without mutating cached inventory counts.
-10. Show mount-growth progress in the feed planner and on every owned pet card. Growable pets with cached progress show their current percent, remaining progress, and concise food-needed copy; unavailable or unowned pets keep an empty bar for consistent scanning.
-11. Preview per-pet feed queue cards before sending them. Queue allocation reserves food for earlier pets first, warns when later pets exhaust shared food, and recalculates after food changes or removals. Execute queue requests sequentially with block-local determinate progress such as `Feeding 2 of 5`, and stop on the first failure.
+10. Show mount-growth progress in the feed planner and on every owned pet card. Growable pets with cached progress show the current growth percent, remaining progress, and concise food-needed copy; unavailable or unowned pets keep an empty bar for consistent scanning.
+11. Preview per-pet feed queue cards before sending feed requests. Queue allocation reserves food for earlier pets first, warns when later pets exhaust shared food, and recalculates after food changes or removals. Execute queue requests sequentially with block-local determinate progress such as `Feeding 2 of 5`, and stop on the first failure.
 12. Feed and hatch planner progress bars sit at the bottom of the relevant planner block, use active color-scheme progress tokens, and guard matching queue edits/actions until execution finishes.
 13. Validate cached ownership before hatch, feed, fast equip, or bulk sell mutations.
 14. Refresh `/user`, save the refreshed snapshot, and write `Inventory` diagnostics after companion mutations.
 15. Keep bulk sell planning limited to eggs, food, and hatching potions. Preserve the keep-count preview and explicit confirmation flow.
-16. Missing mount cards can add their matching owned growable pet to the same feed queue with `Plan to grow`; unavailable missing mounts show a concise cached-data reason.
+16. Missing mount cards can add the matching owned growable pet to the same feed queue with `Plan to grow`; unavailable missing mounts show a concise cached-data reason.
 17. Companion group headers expose `Add All to Feeding Queue`, which appends valid owned growable pets for missing mounts in the currently visible group/filter set without sending any Habitica feed request. Already-owned mounts, missing pets, unknown/special/non-growable catalog entries, and already queued pets are skipped. Newly queued items use the same default food selection as single-card planning, including a no-food warning preview when no normal food is available.
 18. Companion group headers expose `Add All to Hatching Queue`, which appends valid missing hatchable pets in the currently visible group/filter set without sending any Habitica hatch request. Owned pets, missing eggs, missing hatching potions, unknown/special/unhatchable catalog entries, and already queued pets are skipped. Hatch queue allocation then recalculates shared egg and potion reservations in queue order.
 19. Queue-add actions preserve the clicked card or companion-group header position after the Feed Planner or Hatch Planner grows above the collection. The behavior applies to single feed, missing-mount growth planning, group feed planning, single hatch planning, and group hatch planning; remove, clear, equip, and fold actions do not run scroll correction.
 20. Pet and mount sections expose creature type filters built from catalog egg keys, using readable names such as Wolf, Tiger Cub, and Flying Pig. Filters compose with search and temporarily expand folded companion groups.
-21. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in this app until shop behavior is verified.
+21. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in Habitica Companion until shop behavior is verified.
 ```
 
 ### Tests
@@ -2125,7 +2127,7 @@ Current display rules:
 1. If the cached user snapshot has no party id, render a no-party state.
 2. If a party id exists but no party snapshot exists, render a refresh-required state.
 3. Show the latest cached party name and summary together. Keep member-count context in the member-list visible-count pill and keep one compact Party-page Quests summary link.
-4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals. Show owner or starter and started-at metadata when the quest snapshot or matching active shared queue entry preserves it; otherwise render concise unavailable states. Keep description/rewards and participant names behind in-memory details and participants controls. Participant names use the same Party member-detail focus behavior as other member links.
+4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals. Show owner or starter and started-at metadata when the quest snapshot or matching active shared queue entry preserves owner/starter and start metadata; otherwise render concise unavailable states. Keep description/rewards and participant names behind in-memory details and participants controls. Participant names use the same Party member-detail focus behavior as other member links.
 5. Do not show a dedicated Party overview CRON summary or buff-timing recommendation block.
 6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
@@ -2136,7 +2138,7 @@ Current display rules:
 12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
 13. Allow one vote per party member per queued quest; clicking again removes the vote.
 14. Sort visible queue cards by lifecycle state, manual pin rank, vote count, queue age, and recently completed penalty. Selected entries render above the queue as the separate Next Quest card instead of occupying a normal queue position.
-15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
+15. Let the quest owner remove the owner queue item unless owner/admin settings restrict queue edits to management roles.
 16. Let app admins assign the explicit companion-app party owner from expanded member details; when no explicit owner exists, the Habitica party leader remains the automatic party-sync owner.
 17. Let owner/app admins assign and remove Officers from expanded member details.
 18. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
@@ -2148,16 +2150,16 @@ Current display rules:
 24. Show `Invite party` on the Next Quest card. The button is enabled only when fresh party data shows no Habitica quest or invitation and the current user owns the selected item; disabled buttons explain Habitica quest, ownership, queue-state, or refresh requirements. Success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`; invite-sent items leave the Next Quest and normal queue views because Habitica now owns the invitation flow.
 25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 26. When a previously active companion-app quest disappears and recent party chat contains a reliable structured completion signal, mark the active shared queue item completed automatically and store an idempotent detection key.
-27. When a previously active collection quest disappears and recent party chat contains `info.type = "all_items_found"`, record it as an automatic recently completed quest even if it was never in the shared queue. Boss completions require `info.type = "boss_defeated"` and a matching `info.quest`.
-28. Label recently completed entries as `Marked manually` or `Auto-detected`, including the local detecting user when available. Party-sync owner, app admins, and Officers can remove completed entries from this history.
+27. When a previously active collection quest disappears and recent party chat contains `info.type = "all_items_found"`, record the collection quest as automatically completed even when the collection quest was never in the shared queue. Boss completions require `info.type = "boss_defeated"` and a matching `info.quest`.
+28. Label recently completed entries as `Marked manually` or `Auto-detected`, including the local detecting user when available. Party-sync owner, app admins, and Officers can remove completed entries from recently completed quest history.
 29. Let party-sync owner/admin/authorized Officers pin and unpin queue entries; pinned entries sort ahead of unpinned entries inside the same queue state.
 30. Let party-sync owner/admin/authorized Officers select a queued, skipped, or expired entry as Next Quest. If another entry is already selected, selecting a different entry first returns the previous Next Quest to the top of the normal queue, then shows the newly selected entry in the Next Quest card.
-31. Keep queue additions, votes, and removals available while Next Quest is selected. The selected item is removed from the normal queue list and shown in its own card above the queue.
-32. Show Next Quest entries with their expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
+31. Keep queue additions, votes, and removals available while Next Quest is selected. The selected item is removed from the normal queue list and shown in a separate card above the queue.
+32. Show Next Quest entries with the recorded expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
 33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
 34. Keep the quest pool expanded by default on `/quests`, with an in-memory `Hide quest pool` / `Show quest pool` control that does not reopen after later component rerenders. Let members search the expanded quest pool by quest name, public reward display name, type, or visible owner. Compose the in-memory search with the owned-only filter and show a distinct no-match state.
 35. Keep Party focused on summary, roles, settings, member review, and member-level CRON rhythm. Render active quest details, queue, pool, votes, controls, and recent completions on the dedicated `/quests` route.
-36. Keep browser-only `local-claim-v1` as the default and owner/app-admin recovery path. Let owner/app admins optionally enable hashed `tokenized-invite-v1` proofs, issue labeled proof tokens, rotate/revoke/remove them, activate a shared proof in the current browser, and return that browser to local-claim fallback. Do not send Habitica credentials to Cloudflare.
+36. Keep browser-only `local-claim-v1` as the default and owner/app-admin recovery path. Let owner/app admins optionally enable hashed `tokenized-invite-v1` proofs, issue labeled proof tokens, rotate/revoke/remove proof tokens, activate a shared proof in the current browser, and return the selected browser to local-claim fallback. Do not send Habitica credentials to the party-sync Function.
 ```
 
 ### Validation
@@ -2300,14 +2302,14 @@ Current workflow rules:
 1. Run safe checks sequentially and never in parallel.
 2. Reuse the same live `/user` response for account and inventory assertions.
 3. Fetch `/groups/party` only when the account snapshot shows an active party.
-4. Expose only curated diagnostics presets; do not allow arbitrary request paths from this workspace.
+4. Expose only curated diagnostics presets; do not allow arbitrary request paths from Diagnostics.
 5. Append successful and failed auth, preset, and diagnostics-check workflow events into the same redacted diagnostics journal.
 6. Skip the reversible gear test when no alternate owned supported battle item exists.
 7. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
 8. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
-9. Keep normal user-facing mutations on their dedicated feature pages; Diagnostics is for verification, inspection, and operator tooling.
+9. Keep normal user-facing mutations on dedicated feature pages; Diagnostics is for verification, inspection, and operator tooling.
 10. The diagnostics console filters by feature, severity, and mode.
-11. Copy and download actions export the currently filtered entries as JSONL. With no filters, they export all stored entries.
+11. Copy and download actions export the currently filtered entries as JSONL. With no filters, copy/download actions export all stored entries.
 12. The selected entry detail renders structured JSON instead of loose key/value text.
 13. Diagnostics log rows force `minmax(0, 1fr)` grid tracks and `min-width: 0` descendants so long metadata wraps inside the console instead of creating internal horizontal scrolling on tablet or phone widths.
 ```
@@ -2447,7 +2449,7 @@ Current view-model rules:
 1. Read the latest local task snapshot.
 2. Filter by search text over task text and notes.
 3. Hide completed tasks by default.
-4. Group visible tasks in this order: To-Dos, Dailies, Habits, Rewards.
+4. Group visible tasks in the following order: To-Dos, Dailies, Habits, Rewards.
 5. Sort items within each group by completion state, then the selected sort mode: Habitica snapshot order, name, highest value, lowest value, or due soon. Habitica snapshot order is the default.
 6. Keep group fold state and completed visibility separately for each task type.
 7. Persist task-page preferences by user id on the current device.
@@ -2462,7 +2464,7 @@ Current view-model rules:
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
 17. Keep rearrange controls hidden by default. Each task group exposes an in-memory `Rearrange` toggle that reveals the drag handle plus one horizontal row of move-to-top, move-up, move-down, and move-to-bottom buttons. The buttons use the same local ordering path and disable edge moves that would not change the visible order.
 18. Each task group with live custom order data exposes `Reset to Habitica`. Reset removes only that task type from `preferences/taskOrder`, leaves other task types unchanged, switches the task view back to Habitica snapshot order, and syncs the `task-order-preferences` section. Resetting the last custom section uploads an empty task-order section for cloud sync, then removes the local `preferences/taskOrder` record so opening the page does not create a blank placeholder. Importing an empty task-order section removes the local record.
-19. Parse cached task history points when Habitica returns them and keep them attached to task snapshots.
+19. Parse cached task history points when Habitica returns history points and keep the parsed points attached to task snapshots.
 20. Let users switch task statistics between week, month, and year periods.
 21. Render aggregate task-history and month-activity charts from cached history without requiring a live refresh.
 22. Render smaller history and month-activity charts inside expanded task details only, so task cards remain scannable by default.
@@ -2647,7 +2649,7 @@ The named Auth service independently validates bearer tokens and required tool s
 
 Habitica 401/403 marks the connection for credential repair; 429 and exhausted quota persist a cooldown using Retry-After and remaining/reset headers. Later reads respect the cooldown without automatic retry. Upstream redirects are rejected without forwarding credentials. Reads use ten-second upstream timeouts and bounded response bodies. Diagnostics contain correlation IDs, hashed profile references, tool/category, duration, status and rate metadata; task text, credentials and raw responses remain excluded. Persistent read state contains only cooldown and repair state for the connection epoch.
 
-Local validation includes SDK client initialization/output-schema validation, Inspector 1.0.2 CLI initialization/tool listing/profile read, two-profile fixtures, strict input/output contracts, due-state filtering, completed coverage, scope/origin denial, safe 401/429/5xx handling and redirect rejection. Inspector 1.0.2 is the maintained v1 security-fix line compatible with the installed Node runtime; Inspector v2 and real ChatGPT remain rollout checks. PWA build and browser behavior remain qualified. The four bootstrap read tools perform no Habitica mutations; separately reviewed command tools retain independent scope, consent and execution boundaries.
+Bootstrap fixture coverage includes SDK initialization/output schemas, two-profile isolation, strict contracts, due-state filtering, completed coverage, scope/Origin denial, safe 401/429/5xx handling and redirect rejection. Current CLI/Inspector compatibility, matching PWA build/browser behavior and real host activation require independent source-bound evidence. The four bootstrap read tools perform no Habitica mutations; separately reviewed command tools retain independent scope, consent and execution boundaries.
 
 ## Canonical Companion domain
 
@@ -2755,7 +2757,7 @@ Settings names readable shared data and retention, binds consent to the displaye
 
 ## Private spell safety gateway
 
-Status: implemented locally and disabled by default. Owner: Auth `SpellService`, shared `spells.ts`, OAuth grant validation and the existing gameplay attempt/lease store. Workspace exposes reviewed MCP actions through this private boundary as described below. The private service requires an active enrolled connection and independent profile, account and party read grants; casting additionally requires `habitica.spells.execute`.
+Status: implemented locally and disabled by default. Owner: Auth `SpellService`, shared `spells.ts`, OAuth grant validation and the existing gameplay attempt/lease store. Workspace exposes reviewed MCP actions through the private `SpellService` boundary as described below. The private service requires an active enrolled connection and independent profile, account and party read grants; casting additionally requires `habitica.spells.execute`.
 
 The initial allowlist contains Blessing (`healAll`): healer, level fourteen, twenty-five mana, current verified party, one-to-three reviewed foreground casts. Each private dispatch sends quantity one. Fresh actor, class, level, mana, health, equipped gear, buffs, Cron flags and verified party/quest facts form the exact precondition hash. The gateway rejects changed facts, unavailable verification, inadequate aggregate mana, disabled classes, dead actors, expired attempts and active quota cooldowns. The gateway does not start a new day, swap gear or predict exact party healing. Habitica can post an automatic party-chat spell notice; the OAuth approval warns about that effect.
 
@@ -3054,7 +3056,7 @@ Status: Implemented in shared app.css and colorSchemes.js. Transient text-primar
 
 ## Safe correlated application diagnostics
 
-Local diagnostic append and clear operations share one asynchronous mutation gate per scoped DiagnosticsLogStore. Overlapping successful appends preserve committed entries in newest-first order and retain the configured capacity (250 by default); clear executes after the active mutation finishes. Cancellation and storage failures release ownership without changing canonical commands or permitting replay. Independent scopes and browser tabs remain uncoordinated; this does not provide cross-tab atomicity. Reads can observe the last committed storage value while a mutation waits.
+Local diagnostic append and clear operations share one asynchronous mutation gate per scoped DiagnosticsLogStore. Overlapping successful appends preserve committed entries in newest-first order and retain the configured capacity (250 by default); clear executes after the active mutation finishes. Cancellation and storage failures release ownership without changing canonical commands or permitting replay. Independent scopes and browser tabs remain uncoordinated; the scoped gate does not provide cross-tab atomicity. Reads can observe the last committed storage value while a mutation waits.
 
 Status: Implemented locally through DiagnosticsLogWriter, DiagnosticsLogSanitizer and bounded browser log storage. Diagnostic events remain supplementary observations; canonical command receipts remain authoritative for accepted tasks and confirmed Habitica effects. Missing or failed logs never authorize command replay. Local recording never uploads logs. Explicit diagnostic sharing uses separate consent and diagnostics.read under [shared-diagnostics.md](shared-diagnostics.md). Diagnostics remain excluded from private device sync by default.
 
@@ -3102,15 +3104,15 @@ The [required correspondence contract](companion-workspace-contract.md#required-
 
 Status: Implemented locally in TodoTaskPanel at the top of /tasks, using TodoWorkspacePresentation and the existing WorkspaceTaskController review/acceptance contract. The separate cached Habitica task controls remain below and are labeled Habitica tasks; section navigation is a later unit. A title-only form creates a Companion Todo, Daily or Habit without requesting game projection. Existing rows expose Edit and Todo completion, Daily occurrence completion or Habit +1/−1 directly. Advanced notes, urgency, deadline, game difficulty/attribute and checklist replacement use More details. Planned date changes are separate reviewed Companion-only commands after creation, distinct from deadlines and unsaved basic edits. New Dailies are explicitly unscheduled.
 
-Account-scoped in-memory drafts retain workspace/source, task kind, task revision, selected editor and Daily occurrence dates across component navigation. They clear on account replacement/sign-out and do not persist to browser storage. Stale task revisions require explicit reload before replacing fields. Task text and notes render as escaped content. Concrete reviews and original receipts appear before the form/list; saved Companion state and projection status remain separate. Requested Habitica effects and archival/history consequences require their existing concrete review. No implicit remote execution, enrollment or ownership transfer occurs. Original preparation IDs and accepted receipt recovery remain available after transport uncertainty; a 5xx/unknown result never creates a fresh command automatically.
+Account-scoped in-memory drafts retain workspace/source, task kind, task revision, selected editor and Daily occurrence dates across component navigation. Drafts clear on account replacement/sign-out and do not persist to browser storage. Stale task revisions require explicit reload before replacing fields. Task text and notes render as escaped content. Concrete reviews and original receipts appear before the form/list; saved Companion state and projection status remain separate. Requested Habitica effects and archival/history consequences require the applicable concrete review. No implicit remote execution, enrollment or ownership transfer occurs. Original preparation IDs and accepted receipt recovery remain available after transport uncertainty; a 5xx/unknown result never creates a fresh command automatically.
 
 Validation: TodoTaskPanelTests exercises native form submission, category actions, advanced fields, invalid dates, cancellation, stale edits, retained drafts, source/account changes, focus requests, original-command recovery and explicit game projection. Local synthetic rendered qualification covers capture, review, advanced edit, Daily rows and uncertain acceptance separately from physical-device and hosted integration checks.
 
 ## Schedule-aware Today
 
-Status: Implemented locally at /todo/today through TodoTodayPanel and TodoTodayProjection. The selected civil date defaults once to the device date through TimeProvider and remains explicitly editable. Each canonical Daily expands in its recorded rule time zone; weekly/monthly schedules do not become everyday schedules. Planned date and deadline reasons share one task/date row. Scheduled pending Dailies, already recorded Daily occurrences and inactive planned work have distinct groups. Unscheduled Dailies appear only for an explicit planned date/deadline or retained occurrence and cannot acquire a completion action from a date label alone. Completed/cancelled Todos and archived tasks stay outside the active agenda; retained Daily completions/skips remain visible with disabled actions.
+Status: Implemented locally at /todo/today through TodoTodayPanel and TodoTodayProjection. The selected civil date defaults once to the device date through TimeProvider and remains explicitly editable. Each canonical Daily expands in the recorded Daily rule time zone; weekly/monthly schedules do not become everyday schedules. Planned date and deadline reasons share one task/date row. Scheduled pending Dailies, already recorded Daily occurrences and inactive planned work have distinct groups. Unscheduled Dailies appear only for an explicit planned date/deadline or retained occurrence and cannot acquire a completion action from a date label alone. Completed/cancelled Todos and archived tasks stay outside the active agenda; retained Daily completions/skips remain visible with disabled actions.
 
-The page reads validated selected-source snapshots through the existing WorkspaceAgenda with revision-bound twenty-row pagination. Viewing creates no occurrence, command or game effect. Invalid dates, unavailable zones and agenda capacity failures show an unavailable view without partial rows; an available empty day has its own message. Legacy Habitica freshness remains a separate labeled context, linked to Habitica tasks rather than merged or inferred.
+The page reads validated selected-source snapshots through the existing WorkspaceAgenda with revision-bound twenty-row pagination. Viewing creates no occurrence, command or game effect. Invalid dates, unavailable zones and agenda capacity failures show an unavailable view without partial rows; an available empty day has a distinct empty-state message. Legacy Habitica freshness remains a separate labeled context, linked to Habitica tasks rather than merged or inferred.
 
 Primary Todo/Daily completion and Habit scores use the shared task review, exact workspace/task/date identity and original receipt recovery. Read-only, inactive, recorded and pending-command states disable actions. The compact review/source panel keeps task rows near the top; Add task links to direct capture. Review receives focus and completion/cancellation returns focus to the day input. New navigation composition and broader history/schedule editing remain separate units. Actions use existing workspace preparation/acceptance/recovery diagnostics; passive agenda evaluation adds no repeated log entry. Synthetic tests cover date/DST boundaries, weekly/monthly rules, deduplication, retained overrides, uncertainty, unavailable zones and account clearing; physical devices and real effects remain unqualified.
 
@@ -3206,7 +3208,7 @@ Ten component cases cover query replacement, validation, exact reference retenti
 
 Status: Implemented locally by WorkspaceTodoProjectionPolicy and the matching Worker todo-required-v1 boundary. Ordinary Todo creation, full independent subtask creation, task edits and completion prepare projectToHabitica=true even when the caller omits or supplies false. WorkspaceCommandService and the public Worker /commands path refuse fresh false Todo intent. Both PWA and MCP preparations expose the resulting game intent before acceptance. Saved in Companion and pending/confirmed game effects remain distinct receipt fields; an unverified mapping never implies earned rewards.
 
-An active legacy unlinked Todo can queue the original create-then-score completion in that order. An edit of a completed unlinked Todo is refused as historical_projection_requires_review, preventing an active remote duplicate or retrospective rewards. Browser capture stores required pending effects offline; upload, account consent, ownership transfer and executor enablement remain explicit. The policy makes no network call and creates no credential or remote identity. Execution remains behind the existing consent, lease, per-task ordering and unknown-outcome fences.
+An active legacy unlinked Todo can queue the original create-then-score completion in the listed order. An edit of a completed unlinked Todo is refused as historical_projection_requires_review, preventing an active remote duplicate or retrospective rewards. Browser capture stores required pending effects offline; upload, account consent, ownership transfer and executor enablement remain explicit. The policy makes no network call and creates no credential or remote identity. Execution remains behind the existing consent, lease, per-task ordering and unknown-outcome fences.
 
 Accepted older command bytes, hashes, receipts and effect lists retain the original meaning. Replaying an accepted legacy false command recovers the original receipt; reusing the accepted command identity with true is a conflict. An old unaccepted false preview must be reviewed again. Pure journal engines retain legacy semantics for validation and replay; fresh authoritative ingress enforces the prospective policy. Native planning, relationships, state, stages, restoration and organization remain non-scoring. Daily creation, existing-task linking controls, tag correspondence, capture-control wording and historical conversion remain separate Ready tasks. No general all-entity correspondence completion is claimed.
 
@@ -3262,7 +3264,7 @@ An unaccepted stored preview superseded by current required-projection policy re
 
 ## Portable organization tag ledger
 
-Status: implemented locally as a data and audit contract. Owners: WorkspaceTagProjection, WorkspaceRules, WorkspaceHabiticaCoveragePolicy and shared/tag-projection.ts. Optional tagLedger in WorkspaceDocument binds one Habitica account to exact project/category/section/label/goal/saved-view identities. Mapping IDs, stable internal correlation aliases, desired names/revisions and original receipt evidence remain distinct from task projections. The alias is internal evidence; the model milestone adds no field to the Habitica tag API.
+Status: implemented locally as a data and audit contract. Owners: WorkspaceTagProjection, WorkspaceRules, WorkspaceHabiticaCoveragePolicy and shared/tag-projection.ts. Optional tagLedger in WorkspaceDocument binds one Habitica account to exact project/category/section/label/goal/saved-view identities. Mapping IDs, stable internal correlation aliases, desired names/revisions and original receipt evidence remain distinct from task projections. The alias is internal evidence; the optional ledger adds no field to the Habitica tag API.
 
 Tag identity and membership intents use pending, confirmed, unknownOutcome and needsReview. Membership intents retain exact target tag IDs, native task IDs, optional observed remote task IDs and explicit presence/removal. Each member keeps a separate outcome and original receipt, so partial progress cannot confirm the remaining work. Confirmation requires original receipt identity, UTC observation and a fingerprint. Historical target IDs remain retained even if current mapping differs; the audit refuses to treat historical target IDs as current membership. Same-name groups never share a fabricated mapping.
 
@@ -3287,7 +3289,7 @@ Fresh changes retain trusted D1 work atomically with the canonical save. Importe
 
 The executor shares task projection ownership, pacing and unknown-outcome fences. Each wake confirms at most one tag or member effect. Complete changed groups receive fresh per-member observations; partial receipts survive restart. Tag acknowledgements change storeVersion without increasing the canonical source revision. Missing task counterparts, stale selections, changed identity and lost registry ownership require review. Exact original receipt lookup recovers lost acknowledgements; unknown sends are never replayed and pause subsequent gameplay projection. Archives retain native identities and membership. Logical removal changes only previously managed active membership; native tags and unrelated user tags remain.
 
-GET /tag-projection in the authenticated Workspace session and tagProjection in get_task_sync_status expose separate metadata work and review gaps. Status includes full durable state counts and an explicitly bounded 100-row detail sample; the complete membership plan is retained separately. Game effect counters remain separate. Canonical game-mapping acknowledgements that change saved-selection membership record tag_membership_changed_after_projection; acknowledgements do not silently grant a new tag intent. Matching browser consent, adoption and repair controls are implemented locally; the reconciliation changes have not been deployed or qualified against live accounts.
+GET /tag-projection in the authenticated Workspace session and tagProjection in get_task_sync_status expose separate metadata work and review gaps. Status includes full durable state counts and an explicitly bounded 100-row detail sample; the complete membership plan is retained separately. Game effect counters remain separate. Canonical game-mapping acknowledgements that change saved-selection membership record tag_membership_changed_after_projection; acknowledgements do not silently grant a new tag intent. Matching browser consent, adoption and repair controls are implemented. Current remote availability and live-account qualification require source-bound deployment evidence.
 
 
 ## Reviewed group tag controls
@@ -3420,7 +3422,7 @@ The Habitica view retains period histograms and a separate six-calendar-month ch
 
 Status: implemented locally. `/todo/sync` composes the shared task source controller, retained task command history, cloud workspace settings and group tag controls. Source selection and original active command recovery remain owned by `TodoWorkspacePresentation` and `WorkspaceTaskController`; the route creates no connection or executor opt-in on entry. A selected validated snapshot lists retained command states with twenty-row pagination. Exact original command lookup reads the selected account-bound browser journal or the existing cloud `get_task_command` boundary without preparing or accepting another command. Missing receipts remain unverified. Account or source changes clear the displayed lookup and discard late results.
 
-Global Settings links to Todo Sync for task consent, execution, tags, backup and transfer. The existing `WorkspaceSettingsPanel` remains the only owner of these controls. General app-data export and encrypted private sync remain in Settings; personal Notes require a Notes export, and canonical workspace journals require a workspace export. Clearing browser data now has a cancelable review naming browser Notes and workspaces. Integration profile deletion review names cloud Notes and retained versions; disconnect retains cloud content while removing access.
+Global Settings links to Todo Sync for task consent, execution, tags, backup and transfer. The existing `WorkspaceSettingsPanel` remains the only owner of the task/sync controls. General app-data export and encrypted private sync remain in Settings; personal Notes require a Notes export, and canonical workspace journals require a workspace export. Clearing browser data has a cancelable review naming browser Notes and workspaces. Integration profile deletion review names cloud Notes and retained versions; disconnect retains cloud content while removing access.
 
 ### Always-open Todo navigation
 
@@ -3444,7 +3446,7 @@ Locally implemented reviewTask commands manage independent review cues and manua
 
 ## Optional foreground review reminders
 
-Locally implemented on Today. An explicit per-account/source/workspace browser opt-in displays reached saved review cues, independently of browser notification permission. A separate user gesture enables generic service-worker notifications only while this app is open and visible. Exact cue/event identities and atomic local receipts suppress duplicate attempts across tabs and reopen; uncertain delivery is never replayed. No Habitica polling, automatic task/game change or Web Push enrollment occurs. Loaded-snapshot freshness, clock changes, permission failure, storage/receipt limits and closed-app/background unavailability stay visible. [foreground-reminders.md](foreground-reminders.md) owns lifecycle, privacy and local qualification boundaries.
+Locally implemented on Today. An explicit per-account/source/workspace browser opt-in displays reached saved review cues, independently of browser notification permission. A separate user gesture enables generic service-worker notifications only while Habitica Companion is open and visible. Exact cue/event identities and atomic local receipts suppress duplicate attempts across tabs and reopen; uncertain delivery is never replayed. No Habitica polling, automatic task/game change or Web Push enrollment occurs. Loaded-snapshot freshness, clock changes, permission failure, storage/receipt limits and closed-app/background unavailability stay visible. [foreground-reminders.md](foreground-reminders.md) owns lifecycle, privacy and local qualification boundaries.
 
 ## Durable scheduled push reminders
 
@@ -3466,7 +3468,7 @@ Archived native tasks can be unarchived through reviewed unarchiveTask, preservi
 
 ## Private recovery preparation primitive
 
-The private Auth gateway can review an exact completed own Todo or eligible current-day Daily and retain one original down-score outcome under existing grants, gates and quotas. Shared/challenge tasks, stale reviews, unknown day state, revoked authority and unresolved game effects refuse. Dispatched uncertainty never replays or becomes an inferred refund. The private primitive does not expose a public linked-uncheck action or mutate native history; the selected linked-recovery orchestration remains incomplete until canonical/public integration passes acceptance.
+The private Auth gateway can review an exact completed own Todo or eligible current-day Daily and retain one original down-score outcome under existing grants, gates and quotas. Shared/challenge tasks, stale reviews, unknown day state, revoked authority and unresolved game effects refuse. Dispatched uncertainty never replays or becomes an inferred refund. The private primitive does not expose a public linked-uncheck action or mutate native history; canonical/public linked recovery uses the separate reviewed orchestration described in [linked-task-recovery.md](linked-task-recovery.md), with current acceptance requiring matching source evidence.
 
 ## Reviewed linked task recovery
 
@@ -3499,7 +3501,7 @@ Notes retain one optional versioned project association under the existing priva
 
 ## MCP protocol compatibility
 
-Status: implemented and qualified locally. The MCP Worker serves modern2026-07-28 discovery and per-request tools alongside legacy initialize/tools clients using exact server/core SDK2.4.0 pins. The request-local factory preserves the existing OAuth, Origin, quota, tool-scope and original command/receipt boundaries. The interpreter-backed Worker validator requires no unsafe-eval permission. get_connector_compatibility reports qualified transport versions separately from backend identity, tool schemas and caller-reported package installation. No Events capability, subscription, callback or game effect follows protocol discovery. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns package, offline behavior, failure, privacy, rollback and validation boundaries; actual hosts and deployments remain unqualified.
+Status: implemented and qualified locally. The MCP Worker serves modern2026-07-28 discovery and per-request tools alongside legacy initialize/tools clients using exact server/core SDK2.4.0 pins. The request-local factory preserves the existing OAuth, Origin, quota, tool-scope and original command/receipt boundaries. The interpreter-backed Worker validator requires no unsafe-eval permission. get_connector_compatibility reports qualified transport versions separately from backend identity, tool schemas and caller-reported package installation. No Events capability, subscription, callback or game effect follows protocol discovery. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns package, offline behavior, failure, privacy, rollback and validation boundaries; current host behavior and deployed protocol identity require separate observations.
 
 
 ## Protected callback transport candidate

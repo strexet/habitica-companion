@@ -1,16 +1,16 @@
 # Repository Rules
 
-Primary audience: AI agents working in this repository
+Primary audience: AI agents working in the target repository
 
 ## 1. Purpose
 
-This file defines how AI agents must interact with the repository, project documentation, technical stack, and Habitica integration.
+`rules.md` defines how AI agents must interact with the repository, project documentation, technical stack, and Habitica integration.
 
-Agents must read this file before making non-trivial changes.
+Agents must read `rules.md` before making non-trivial changes.
 
 ## 2. Documentation responsibility map
 
-Use these files as the current documentation source map:
+Use the following files as the current documentation source map:
 
 ```text
 .skill-tree/documents/rules.md                         repository workflow, AI-agent rules, required research
@@ -29,7 +29,7 @@ Current code and tests are the final verification source for what is actually im
 
 ## 3. Required reading order
 
-Before implementing changes, read the relevant documents in this order:
+Before implementing changes, read the relevant documents in the following order:
 
 1. `.skill-tree/documents/rules.md`
 2. `.skill-tree/documents/habitica-api.md`
@@ -71,7 +71,7 @@ The current baseline stack is documented in `.skill-tree/documents/technical.md`
 
 Agents should avoid changing the technical stack unless there is a strong technical reason.
 
-Do not replace or bypass the selected stack casually. Do not introduce alternative frameworks, storage systems, backend services, or architectural patterns just because they are convenient for one task.
+Do not replace or bypass the selected stack casually. Do not introduce alternative frameworks, storage systems, backend services, or architectural patterns just for convenience for one task.
 
 If a problem suggests the current stack is insufficient, the agent may propose a change, but should not silently implement a foundational stack change.
 
@@ -98,7 +98,7 @@ When adding a new feature, update `.skill-tree/documents/features.md`.
 
 When materially changing how an existing feature works, update the corresponding section in `.skill-tree/documents/features.md`.
 
-When removing or deprecating a feature, update its status in `.skill-tree/documents/features.md` and explain the reason.
+When removing or deprecating a feature, update the feature status in `.skill-tree/documents/features.md` and explain the reason.
 
 Feature documentation must include:
 
@@ -106,7 +106,7 @@ Feature documentation must include:
 - owner module;
 - application entry point when UI/application orchestration is involved;
 - primary Habitica data;
-- whether it mutates Habitica state;
+- whether the feature mutates Habitica state;
 - offline behavior;
 - API interaction;
 - algorithm or rules;
@@ -235,7 +235,7 @@ Required external checks:
 - Cloudflare, Wrangler, D1, KV, Pages Functions, or deployment changes: current official Cloudflare documentation when command syntax, bindings, or platform behavior is not obvious from current repo docs.
 - Security-sensitive or credential-handling changes: current official platform/API guidance plus existing project tests and docs.
 
-Do not rely on memory or old implementation plans for third-party service behavior. Record uncertainty as an assumption or follow-up instead of presenting it as verified behavior.
+Do not rely on memory or old implementation plans for third-party service behavior. Record uncertainty as an assumption or follow-up instead of presenting uncertain behavior as verified.
 
 ## 13. AI-agent change workflow
 
@@ -251,7 +251,7 @@ For a requested change:
 8. Inspect affected code and tests.
 9. Gather required external-source context under section 12 when local project sources are insufficient.
 10. Make the smallest technically correct change.
-11. Update documentation when required by these rules.
+11. Update documentation when required by `rules.md`.
 12. Add or update tests when logic changes.
 13. Review changed files for real issues.
 14. Report changed files and any remaining risks.
@@ -260,16 +260,16 @@ Do not invent issues. If no issues are found during final review, state that the
 
 ## 14. When to propose instead of implement
 
-Propose a change instead of directly implementing it when:
+Propose a change instead of directly implementing a change when:
 
-- it changes the baseline technical stack;
-- it adds a backend;
-- it changes credential storage policy;
-- it changes Habitica API version;
-- it requires unverified Habitica formulas for mutating actions;
-- it creates background automation that may hit Habitica API repeatedly;
-- it changes security assumptions;
-- it creates irreversible or destructive user actions.
+- the change alters the baseline technical stack;
+- the change adds a backend;
+- the change alters credential storage policy;
+- the change alters Habitica API version;
+- the change requires unverified Habitica formulas for mutating actions;
+- the change creates background automation that may hit Habitica API repeatedly;
+- the change alters security assumptions;
+- the change creates irreversible or destructive user actions.
 
 For small, reversible, well-scoped implementation work, proceed without unnecessary discussion.
 
@@ -301,7 +301,7 @@ Before making non-trivial changes, read and follow `.skill-tree/documents/rules.
 
 When the user explicitly asks for a document, documentation, markdown, or `.md` snapshot archive, follow `.skill-tree/documents/documents-snapshot.md`.
 
-This rule is conditional. Do not create or update snapshot archives during ordinary documentation or code changes unless the user asks for a snapshot.
+The snapshot rule is conditional. Do not create or update snapshot archives during ordinary documentation or code changes unless the user asks for a snapshot.
 
 Default behavior for snapshot requests:
 

@@ -2,11 +2,11 @@
 
 Last researched: 2026-06-08
 
-This document records whether Habitica browser links can open the official mobile apps directly to party or quest views.
+The deep-link contract records whether Habitica browser links can open the official mobile apps directly to party or quest views.
 
 ## Summary
 
-Habitica mobile app deep-linking to the party or quest view is not currently a supported integration target for this project.
+Habitica mobile app deep-linking to the party or quest view is not currently a supported integration target for Habitica Companion.
 
 Use `https://habitica.com/party` as a plain web fallback. Do not emit `habitica://` URLs, Android `intent://` URLs, or mobile-app-specific party/quest links unless the official apps and `habitica.com` association files change.
 
@@ -15,7 +15,7 @@ Use `https://habitica.com/party` as a plain web fallback. Do not emit `habitica:
 ### Public store listings
 
 - iOS App Store: [Habitica: Gamified Taskmanager](https://apps.apple.com/us/app/habitica-gamified-taskmanager/id994882113)
-- Google Play: [Habitica: Gamify Your Tasks](https://play.google.com/store/apps/details?id=com.habitrpg.android.habitica)
+- Google Play: [`Habitica: Gamify Your Tasks`](https://play.google.com/store/apps/details?id=com.habitrpg.android.habitica)
 
 The public store listings identify the official apps, but neither listing documents a party or quest deep-link URL.
 
@@ -27,7 +27,7 @@ Checked:
 - `https://habitica.com/apple-app-site-association`
 - `https://habitica.com/.well-known/assetlinks.json`
 
-On 2026-06-08, the `.well-known` association URLs returned `404` JSON responses, not the JSON association documents required for iOS Universal Links or Android App Links. That means `https://habitica.com/party` must be treated as a web URL, not as a verified app-opening link.
+Current association-file availability is unverified. Treat `https://habitica.com/party` as a web URL until selected-device evidence establishes app opening; a historical HTTP response cannot qualify current iOS Universal Links or Android App Links.
 
 ### Android app source
 
@@ -41,7 +41,7 @@ The Android manifest on `main` declares verified HTTPS handlers for:
 
 Source: [`Habitica/AndroidManifest.xml`](https://raw.githubusercontent.com/HabitRPG/habitica-android/main/Habitica/AndroidManifest.xml)
 
-The manifest does not declare a `/party` or quest-view handler, and it does not declare a `habitica://` scheme.
+The manifest does not declare a `/party` or quest-view handler, and the referenced manifest does not declare a `habitica://` scheme.
 
 ### iOS app source
 

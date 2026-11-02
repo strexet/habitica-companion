@@ -1,48 +1,43 @@
 # Deploy to Cloudflare Pages
 
-This app is a Blazor WebAssembly app with Cloudflare Pages Functions for personal encrypted user-data sync and shared party CRON sync. Cloudflare Pages can build the app from GitHub and serve the published static files from the `*.pages.dev` domain.
+Habitica Companion is a Blazor WebAssembly app with Cloudflare Pages Functions for personal encrypted user-data sync and shared party CRON sync. Cloudflare Pages can build the app from GitHub and serve the published static files from the `*.pages.dev` domain.
 
-## Owner-first launch readiness
+## Deployment configuration and evidence
 
-The existing production website is [habitica-companion.pages.dev](https://habitica-companion.pages.dev), with no separate dev website or backend names. The current direct Pages artifact contains the scoped PWA shell hotfix over baseline `f9f71b51` in the existing `main` production slot. Git integration and dashboard runtime settings remain configured; the hotfix source is recorded in commit `a040993146343fb461676d571a1cd79b0f625c3f`. [PWA hotfix publication evidence](../history/releases/2026-10-30-pwa-hotfix/readme.md) records the canonical deployment, exact asset package, rollback predecessor and public-check limitations. The Auth, Workspace and MCP release identities remain in the [coordinated release record](../history/releases/2026-10-29/deployment.json).
+The configured production target is [habitica-companion.pages.dev](https://habitica-companion.pages.dev), with separate Auth, MCP and Workspace Workers. Production integration OAuth KV and Auth/Workspace D1 resources remain separate from browser-sync KV and party D1. [The operator guide](../../deploy/README.md) owns endpoint preparation and owner sign-in/consent steps.
 
-Auth, Workspace and MCP Workers are published. Production integration OAuth KV and Auth/Workspace D1 resources are separate from the retained browser-sync KV and party database. [Publication evidence](../history/validation/production-publication.json) records the deployed versions, bindings, build and public boundary checks. [The operator guide](../../deploy/README.md#current-owner-action-sign-in-and-connect) provides exact owner sign-in, consent and client setup steps.
+Checked-in Worker configurations disable optional capabilities. Source PWA settings disable integration and leave backend URLs empty; `deploy/production.frontend.json` supplies enabled production frontend endpoints. `deploy/prepare-dev.mjs` selects `pilot` or `development` backend availability independently. Development generation enables recognized projection, party, spell, Cron, key-operation, pacing and executor flags. Push and callback egress require separate explicit provisioning and activation. Generated availability grants no user consent, OAuth scope, operation approval or live-test authorization. Party departure remains prohibited; real Start New Day, key operations, agent party mutations and independent-user/device checks require separate applicable scope.
 
-Hosted public checks establish HTTPS, routed-page refresh, production frontend settings, backend health, OAuth discovery, anonymous-access denial and exact-origin CORS. The signed-out Settings page renders integration disclosures and sign-in requirements. The owner reports initial OAuth completion in ChatGPT and Codex, ChatGPT discovery of 25 tools and two successful reads. ChatGPT requests reconnection on the next request within one minute. Repeat-request and refresh continuity, private packaged skills, multi-user isolation and mobile-device checks remain unqualified.
+Current source prerequisites include every numbered migration in the selected store:
 
-The [native Codex pilot](../history/validation/codex-native-owner-pilot.json) qualifies all six account/task read tools, immediate account/task/account reuse, a successful read after 617 seconds with stable profile identity and one explicitly approved Companion-only Todo creation with readback, search and original receipt lookup. The live Auth read-log sample contains only the expected operational field schema; raw tail transport envelopes and request headers are discarded before persistence. Live gameplay flags remain disabled. ChatGPT retesting, complete token lifecycle/revocation, interrupted acknowledgement recovery, packaged skills and multi-user/mobile gates remain open.
+| Store | Migration source | Required source sequence |
+| --- | --- | --- |
+| Auth integration D1 | `workers/chatgpt-auth/migrations/` | `0001` through `0013-recovery-sessions.sql` |
+| Workspace D1 | `workers/companion-workspace/migrations/` | `0001` through `0018-workspace-transfers.sql` |
+| Pages party D1 | `migrations/` | Numbered party migrations through `0008_party_sync_invite_proofs.sql` |
 
-### Completed publication prerequisites
+Inspect exact migration filenames and remote applied state before an authorized publication; a historical applied range never proves current schema readiness. Preserve profile identity/encryption keys, original command receipts, uncertainty fences and unrelated browser KV/party bindings. Provision only secret names required by selected capabilities. Keep credential write-version selection and retained decryption keys explicit; credential rotation requires the separate key-operation contract.
 
-- [x] Local traffic/operational protection and E14 adoption/recovery controls pass; [local evidence](../history/validation/e14-local-qualification.json) remains separate from real account qualification.
-- [x] The owner-selected project, service origins, production slot, source commit and rollback identity are recorded. Existing browser KV and party D1 bindings are retained; no existing browser records were changed during publication.
-- [x] Auth and Workspace migrations `0001`–`0007` are applied. The retained party database has no pending migrations.
-- [x] All three required secret names are present on Auth; no values appear in public settings or evidence. The current credential write version is `1`; version `2` is provisioned for future guarded rotation.
-- [x] The release app build passes and deployed frontend settings match the reviewed production bundle. Pages account selection uses `CLOUDFLARE_ACCOUNT_ID`; Pages configuration omits the unsupported `account_id` field. Worker configuration retains the account field.
-- [x] Deployed logging settings disable invocation logs and traces; no Logpush destination or tail consumer is configured. Application read handlers emit structured correlation/tool/route/status/duration/rate metadata. Read-log payloads exclude credentials, account identifiers, task text and raw bodies; production log inspection remains a release gate. Provider retention has conservative upper bounds of seven days for logs and thirty days for D1 recovery; exact plan lookup is unavailable with the current OAuth scope. Application operational metadata has a separate thirty-day cleanup policy.
-- [x] Deployment identities and rollback instructions are recorded. Website rollback cannot reverse database changes or confirmed Habitica actions. The operator can stop new enrollment or cloud access by disabling flags and redeploying the reviewed backend configuration without deleting accepted history.
+Publication preflight records selected account/site/services, exact source/build identity, public overrides, migrations, binding/secret names, logging/retention settings, current feature flags and rollback predecessors. Compare the published public configuration and assets with the reviewed artifact. Keep production/preview `fail_open` values consistent with the selected deployment contract. Code rollback cannot undo schema, user data or confirmed Habitica effects; disable new work through reviewed flags without deleting original history.
 
-### Initial capability selection
+[Release records](../history/releases/2026-10-29/deployment.json), [PWA publication evidence](../history/releases/2026-10-30-pwa-hotfix/readme.md) and [the native-client pilot receipt](../history/validation/codex-native-owner-pilot.json) identify recorded builds and observations. Current live deployment state requires a fresh authorized observation. Older counts, migration snapshots and pilot-only effect restrictions supply no current acceptance.
 
-Enrollment, OAuth and Workspace are enabled in the selected production bundle, behind separate per-user consent. Enable authenticated party planning separately after membership and consent checks. Keep `CRON_ENABLED` false in Auth and Workspace. Keep private key operations disabled. Start with projection, spells and the background executor disabled; activate selected real-effect lanes only with explicit test scope and reviewed actions. Separate Cloudflare storage does not create a separate Habitica account: enabled scoring, projection and spells affect the enrolled real account.
+## Hosted and client release gates
 
-The first owner pilot covers account/task reads and Companion-only canonical task saves. Existing browser scoring, equipment and spell controls still affect the real Habitica account; browser gameplay actions remain outside the initial pilot.
+Required clients are ChatGPT and Codex desktop, with independent registrations/grants against the selected backend. Record client/version, loaded package or direct MCP identity, selected permissions, callback mode, source/build and sanitized results in the [client qualification matrix](../../plugin/README.md#client-qualification-matrix).
 
-### Hosted smoke checks before owner handoff
+- Verify HTTPS, routing, public configuration, backend health, OAuth discovery, exact audience, PKCE, consent and actual Origin/CORS. Codex loopback callbacks require the observed host/path/port and issuer.
+- Verify repeat requests, refresh/reconnect, denied writes, cross-profile isolation and real grant revocation. A successful long-interval read establishes only the observed continuity; hidden refresh exchanges require separate evidence.
+- Qualify installation/discovery and explicit/natural invocation of all six packaged skills in fresh chats. Backend publication never updates an installed package or host metadata cache.
+- Exercise reviewed canonical commands, acknowledgement loss and original receipt recovery only within the selected own-account scope. Preserve unknown outcomes without replaying effects.
+- Verify backup/export, consent removal, disconnect/deletion, quota/backoff, secret-free log boundaries and rollback. Provider logging/backup retention requires evidence for the selected account and plan.
+- Obtain a second consenting account and separately selected mobile/device, assistive-technology and human usability observations for the broader release gate. Local fixtures and owner-pilot records cannot satisfy the broader release gates.
 
-Required owner-pilot clients: ChatGPT and Codex desktop. Both clients use the same production MCP backend with independent OAuth client registrations and grants. Record each client/version, transport, selected scopes, callback mode and sanitized result in the [client qualification matrix](../../plugin/README.md#client-qualification-matrix). Codex CLI can provide additional diagnostics; CLI success does not replace the desktop check. Account enrollment in one client does not qualify another client. Private plugin installation and skill activation require separate observations from direct MCP connectivity.
-
-- [x] Publish the release build to the selected website and verify HTTPS, routed-page refresh, signed-out Settings, static configuration and disabled cloud effect flags. Existing browser bindings are retained; real legacy-data continuity still requires the owner browser session.
-- [ ] Verify OAuth discovery, exact audience, PKCE, consent cookies and Origin/CORS separately for ChatGPT and Codex desktop against deployed addresses. Verify Codex loopback callbacks, selected ports and issuer validation for the actual client registration flow. Complete explicit account enrollment through the consent UI; never import credentials from chat or test fixtures.
-- [ ] Qualify the private plugin and all six bundled skills in both clients, using explicit invocation and matching natural-language requests in fresh chats. Record actual host availability and any failed installation or activation gate.
-- [ ] Save and read a canonical task, recover the original command receipt after an interrupted response, export/restore a backup and exercise revoke/disconnect/delete controls. Verify rejected cross-profile access and retained uncertainty without duplicate effects. Exercise real effects only in selected lanes.
-- [ ] Confirm safe 429/backoff behavior, stalled/unknown status, secret-free logs and the stop/rollback procedure. Record unresolved hosted limitations for the owner test session.
-
-Real multi-user isolation and mobile-device qualification require a second consenting tester and selected browser/device lanes. The selected production pilot supplies the venue for explicitly scoped multi-user and mobile release checks; the broader release gate remains open until evidence satisfies the corresponding task. Pilot preparation does not require completion of unselected planner/UX epics or the nonblocking parallel Miniflare investigation.
+Browser scoring, equipment and spells affect the signed-in real Habitica account. A separate Cloudflare store supplies no independent game account. Cron, key operations, gameplay and party mutations remain subject to applicable explicit authorization regardless of configuration.
 
 ## Before editing deployment behavior
 
-Read `.skill-tree/documents/rules.md`, `.skill-tree/documents/technical.md`, this document, `wrangler.toml`, `build.sh`, current Functions under `functions/api`, and migrations under `migrations`. If Cloudflare Pages, KV, D1, Wrangler, or Pages Functions behavior is unclear from this repo, verify current official Cloudflare documentation before editing commands or operational steps.
+Read `.skill-tree/documents/rules.md`, `.skill-tree/documents/technical.md`, `deploy-cloudflare-pages.md`, `wrangler.toml`, `build.sh`, current Functions under `functions/api`, and migrations under `migrations`. If Cloudflare Pages, KV, D1, Wrangler, or Pages Functions behavior is unclear from the target repository, verify current official Cloudflare documentation before editing commands or operational steps.
 
 ## Repository files
 
@@ -57,7 +52,7 @@ Read `.skill-tree/documents/rules.md`, `.skill-tree/documents/technical.md`, thi
 
 ## Cloudflare Pages settings
 
-Use these settings when creating the Pages project:
+Use the following settings when creating the Pages project:
 
 ```text
 Framework preset: None
@@ -68,9 +63,9 @@ Production branch: main
 Deploy command: leave empty
 ```
 
-The build script installs .NET SDK `8.0.125` by default to match `global.json`. Override it only if `global.json` is updated in the same change.
+The build script installs .NET SDK `8.0.125` by default to match `global.json`. Override the SDK version only if `global.json` is updated in the same change.
 
-Do not set `npx wrangler deploy` as the deploy command for the Git-connected Pages project. That command deploys a Worker and does not know which static output directory to publish. Cloudflare Pages should publish the configured `output/wwwroot` directory after `build.sh` finishes.
+Do not set `npx wrangler deploy` as the deploy command for the Git-connected Pages project. The Worker deploy command deploys a Worker and does not know which static output directory to publish. Cloudflare Pages should publish the configured `output/wwwroot` directory after `build.sh` finishes.
 
 ## Cloudflare sync storage
 
@@ -88,13 +83,13 @@ Personal encrypted sync requires a KV namespace bound to the Pages project.
    KV namespace: habitica_companion_sync
    ```
 
-7. Add the same binding for preview and production environments if you use both.
+7. Add the same binding for preview and production environments when both environments are selected.
 
-The personal sync Pages Functions store only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; they are not sent to the personal sync endpoints.
+The personal sync Pages Functions store only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; raw credentials are not sent to the personal sync endpoints.
 
-Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`). Each section is encrypted and uploaded independently, staying within the 2MB per-key KV limit. When the app refreshes Habitica data or completes supported local data changes, it automatically lists remote sections, downloads and merges each section into local data, then uploads each local section back to this KV namespace.
+Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`). Each section is encrypted and uploaded independently, staying within the 2MB per-key KV limit. When the app refreshes Habitica data or completes supported local data changes, the app automatically lists remote sections, downloads and merges each section into local data, then uploads each local section back to the bound KV namespace.
 
-Legacy single-blob records (`sync:{syncId}`) from older deployments are automatically migrated: the app detects no sections exist, downloads the legacy blob, imports it locally, and re-uploads as individual sections. The legacy blob remains in KV but is no longer updated. No manual migration is required.
+Legacy single-blob records (`sync:{syncId}`) from older deployments are automatically migrated: the app detects no sections exist, downloads the legacy blob, imports the legacy blob locally, and re-uploads as individual sections. The legacy blob remains in KV but is no longer updated. No manual migration is required.
 
 Shared party sync requires a D1 database bound to the Pages project.
 
@@ -115,13 +110,13 @@ Shared party sync requires a D1 database bound to the Pages project.
 
 The party sync Function must not receive Habitica API tokens. Browser-only `local-claim-v1` remains the default and owner/app-admin recovery path. Migration `0008` adds optional hashed `tokenized-invite-v1` proofs: owner/app admins can issue, rotate, revoke, remove, enable, and disable proofs from Party settings. D1 stores SHA-256 token hashes, labels, issuer metadata, and lifecycle timestamps, never raw reusable proof tokens. Apply migrations through `0008` before deploying Function code that reads invite-proof settings or tables.
 
-## Optional Auth/MCP deployment proposal
+## Optional Auth/MCP deployment boundary
 
-The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) proposes separate Auth/MCP Workers, OAuth KV and integration D1 resources. Existing Pages resources remain dedicated to private and party sync. The selected production integration resources and Workers are provisioned and published; real account enrollment remains unrun. Local implementation approval and live deployment scope are separate. Provider log/backup retention must be verified before activation.
+Auth, MCP and Workspace use separate integration resources under the [enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Existing Pages resources remain dedicated to encrypted app-data and party sync. Source configuration, generated deployment availability, per-user consent and observed hosted state remain separate. Local fixture results grant no publication, enrollment or provider-retention qualification.
 
 ## First deployment
 
-1. Push this repository to GitHub.
+1. Push the target repository to GitHub.
 2. In Cloudflare, open `Workers & Pages`.
 3. Create a Pages application and import the GitHub repository.
 4. Use the build settings listed above.
@@ -131,7 +126,7 @@ The [proposed ChatGPT enrollment, privacy and retention contract](companion-firs
    HABITICA_X_CLIENT_HEADER=your-habitica-user-id-habitica-tool
    ```
 
-   `build.sh` applies the override to the static frontend configuration. The API client rejects missing or blank configuration before network access. The header never derives from the signed-in user. The value is public in the deployed frontend. Do not put Habitica API tokens, passwords, or private keys in Cloudflare Pages environment variables for this static app.
+   `build.sh` applies the override to the static frontend configuration. The API client rejects missing or blank configuration before network access. The header never derives from the signed-in user. The value is public in the deployed frontend. Do not put Habitica API tokens, passwords, or private keys in Cloudflare Pages environment variables for the static frontend.
 
 6. Save and deploy.
 7. Open the generated `https://<project>.pages.dev` URL.
@@ -199,13 +194,13 @@ The Auth consent page uses `Referrer-Policy: same-origin` so browser form naviga
 
 ## Optional linking configuration
 
-`0002-linking.sql` initializes ticket, consent-link and attempt-limit tables in the dedicated integration D1. Both Workers require explicit `OAUTH_ENABLED`; Auth enrollment additionally requires `ENROLLMENT_ENABLED`. The PWA requires a root Auth URL in `ChatGptIntegration:AuthBaseUrl`. Public PWA origin, issuer and resource are exact environment-specific entries in `workers/shared/resources.ts`; management CORS admits the configured PWA origin only. Committed default templates retain inactive placeholder addresses. The reviewed ignored production bundle supplies deployed HTTPS URLs and resource identifiers; local fixtures use disposable environments.
+`0002-linking.sql` initializes ticket, consent-link and attempt-limit tables in the dedicated integration D1. Both Workers require explicit `OAUTH_ENABLED`; Auth enrollment additionally requires `ENROLLMENT_ENABLED`. The PWA requires a root Auth URL in `ChatGptIntegration:AuthBaseUrl`. Public PWA origin, issuer and resource are exact environment-specific entries in `workers/shared/resources.ts`; management CORS admits the configured PWA origin only. Committed default templates retain inactive placeholder addresses. Reviewed deployment bundles supply selected HTTPS URLs and resource identifiers; local fixtures use disposable environments. Verify actual remote values during the authorized publication preflight.
 
 Activation requires secret provisioning, retention cleanup qualification, provider log/backup review and remote HTTPS/browser OAuth checks. Local test approval grants no live deployment or real enrollment. Management state remains in tab memory; lost management access requires Habitica revalidation. Cleanup blocks access before grant deletion and returns a retryable pending result if bounded grant cleanup cannot finish.
 
 ## MCP read qualification
 
-`0003-read-state.sql` adds per-profile connection cooldown and repair state to integration D1. Local fixtures apply all three integration schemas. Build both Workers before running the Auth test suite because fixtures exercise the actual MCP service binding. MCP accepts stateless Streamable HTTP POST requests at `/mcp`; other methods return 405. Allowed Origins are the resource origin, configured PWA origin and `https://chatgpt.com`; absent Origin remains valid for native clients. Tool output omits server credential material. Local Inspector 1.0.2 CLI successfully lists tools and reads a synthetic profile. No real server enrollment or remote activation occurs during qualification.
+`0003-read-state.sql` adds per-profile connection cooldown and repair state to integration D1. Local fixtures require the complete current integration migration sequence. Build both Workers before running the Auth test suite because fixtures exercise the actual MCP service binding. MCP accepts stateless Streamable HTTP POST requests at `/mcp`; other methods return 405. Allowed Origins are the resource origin, configured PWA origin and `https://chatgpt.com`; absent Origin remains valid for native clients. Tool output omits server credential material. Synthetic SDK discovery and profile reads exercise the guarded transport; local fixture execution establishes no real enrollment or remote activation.
 
 ## Optional Workspace Worker package
 
@@ -217,7 +212,7 @@ The private projection gateway requires Auth migration `0005-projection-gateway.
 
 ## Hosted execution activation boundary
 
-The Workspace configuration declares a minute cron and keeps `EXECUTOR_ENABLED` false in every environment. The local implementation has deployed no schedule or Worker. Activation requires an authorized deployment lane, isolated resources, the current Auth/Workspace migrations and qualified service bindings. Workspace access, Auth projection access and Workspace executor configuration must all be deliberately enabled. Configuration alone cannot enable a profile: Settings requires separate `executor-v1` consent.
+Checked-in Workspace configurations declare a minute cron and disable `EXECUTOR_ENABLED`; selected generated profiles can expose executor availability independently of per-account consent. Activation requires an authorized deployment lane, isolated resources, the current Auth/Workspace migrations and qualified service bindings. Workspace access, Auth projection access and Workspace executor configuration must all be deliberately enabled. Configuration alone cannot enable a profile: Settings requires separate `executor-v1` consent.
 
 The executor processes one eligible profile and at most one effect per scheduled activation. The bounded initial throughput requires rollout measurement before broad adoption. Pausing or disconnecting blocks new calls while preserving accepted data; an upstream request already transmitted may finish. A credential-context change leaves uncertain original effects fenced. Workspace deletion removes runtime and handoff rows through cascading foreign keys. User history remains until workspace deletion; thirty-day operational Auth metadata has an independent retention policy.
 
@@ -241,13 +236,13 @@ PWA activation requires cloud workspace access and separate consent bound to the
 
 ## Spell gateway activation boundary
 
-Auth `SPELLS_ENABLED` ships false in local, preview and production. `SpellService` is a named private entrypoint and has no public route. The reviewed Workspace integration below adds a private dispatch binding and requires no new Auth migration. Existing OAuth grants do not acquire the new `habitica.spells.execute` scope automatically; approval copy discloses mana use, party effects and an automatic Habitica chat notice. Deployment, real enrollment and spell casting remain outside local synthetic qualification. Do not bind MCP directly to this write service; reviewed Workspace action persistence and recovery remain mandatory for activation.
+Checked-in Auth configurations set `SPELLS_ENABLED=false`; selected generated profiles control availability separately. `SpellService` is a named private entrypoint and has no public route. The reviewed Workspace integration below adds a private dispatch binding and requires no new Auth migration. Existing OAuth grants do not acquire the new `habitica.spells.execute` scope automatically; approval copy discloses mana use, party effects and an automatic Habitica chat notice. Deployment, real enrollment and spell casting remain outside local synthetic qualification. Do not bind MCP directly to the private `SpellService`; reviewed Workspace action persistence and recovery remain mandatory for activation.
 
 ## Reviewed spell action schema and bindings
 
 Apply Workspace migration `0005-reviewed-spell-actions.sql` after migrations 0001–0004 before enabling reviewed spell tools in an authorized environment. Each Workspace environment binds `AUTH_SPELL` to the matching Auth `SpellService`; MCP has no direct dispatch binding. Auth and Workspace `SPELLS_ENABLED`, plus the existing Workspace/party flags, ship false. No deployment occurs during local qualification.
 
-Spell previews require separately activated authenticated planning consent and an explicit OAuth `habitica.spells.execute` grant. The hosted background-executor opt-in does not enable spell scheduling; casts require exact foreground preview approval. Operators preserve the action table alongside task history when backing up Workspace D1. The management `/spells/history` projection exports only the actor's normalized history; execution tokens and private dispatch requests are excluded. Explicit Workspace deletion cascades this private history. Shared planning deletion revokes unaccepted previews while preserving accepted private game-effect receipts and uncertainty fences. No live smoke test or host activation is implied.
+Spell previews require separately activated authenticated planning consent and an explicit OAuth `habitica.spells.execute` grant. The hosted background-executor opt-in does not enable spell scheduling; casts require exact foreground preview approval. Operators preserve the action table alongside task history when backing up Workspace D1. The management `/spells/history` projection exports only the actor's normalized history; execution tokens and private dispatch requests are excluded. Explicit Workspace deletion cascades the private spell history. Shared planning deletion revokes unaccepted previews while preserving accepted private game-effect receipts and uncertainty fences. No live smoke test or host activation is implied.
 
 ## Private Cron activation boundary
 
@@ -316,9 +311,9 @@ The optional restorations document extension retains unused legacy defaults and 
 
 restoreTodo and optional patch.restoreTodo use identity v5 while unused extensions preserve existing hashes. Matching application, MCP, Workspace and task-management package updates are required before use; strict older clients can reject extended journal commands. No D1 migration, new secret or enabled background executor is needed. Dry builds and synthetic tests supply local evidence only; deployment and real client qualification remain separate.
 
-## Production user-action correction
+## Production user-action permissions
 
-The existing Pages production slot receives the tested frontend with ordinary user settings and preserved browser-sync/party bindings. The public settings and application asset hashes are verified against the release artifact. The correction requires no Worker publication, database migration, secret change, background activation or real Habitica mutation. Sanitized evidence resides in .skill-tree/history/validation/production-user-actions.json. Existing automatic Git deployment can replace a manual artifact later; the source defaults and generator retain ordinary user permissions for subsequent builds.
+Frontend publication preserves ordinary user permissions and retained browser-sync/party bindings. Compare public settings and asset hashes against the reviewed release artifact. A frontend-only permission correction requires no Worker publication, database migration, secret change or background activation. Automatic Git deployment can replace a manual artifact; maintain matching source defaults and generator output. [Recorded frontend evidence](../history/validation/production-user-actions.json) applies only to the identified source.
 
 ## Todo relationship compatibility
 
@@ -339,43 +334,23 @@ Reviewed organization adapters require matching Auth/MCP/Workspace builds and br
 setTodoState uses optional patch.todoState and identity v7 with coordinated application/MCP/Workspace updates. Old clients can reject used extensions and require matching validators before state authoring. Unused extensions preserve earlier encodings. No D1 migration, secret, new OAuth grant or executor flag is required. Deployment permission does not qualify live account behavior; unrun release and mobile gates remain open.
 
 
-## Selected owner development activation — 2026-10-19
-
-The owner selected featureProfile development for the existing website and reopened own-account Codex tests. Matching Auth/Workspace/MCP/application bundles expose implemented capabilities before broader release qualification. Earlier disabled-flag statements describe template/pilot defaults; explicit development generation enables recognized capability flags and frontend authenticated planning. Per-account opt-ins, OAuth grants and reviewed actions remain mandatory. Existing profile/encryption keys and current key version remain unchanged. Guarded private key availability does not provision a caller or run a migration.
-
-Auth migration 0008 supplies adaptive pacing before activation. Remote preflight checks migration state, secret names, retained bindings and aggregate opted-in executors/queue counts without reading secret values or account content. Party departure remains prohibited; agent party mutations, real Start New Day tests and key operations remain excluded. ChatGPT, independent accounts, mobile/device and human usability evidence remain unverified and do not block owner-selected development exposure. Sanitized publication and bounded owner-test evidence retain actual version identities and observations.
-
-Publication completed from source aab2b87 with matching Auth, Workspace, MCP and Pages bundles. All 1,291 local checks passed; public settings, boot manifest and service-worker assets match the build. Auth migration 0008 was applied; retained bindings and secret names match preflight. Executor preflight found zero opted-in workspaces, and no consent was enabled during publication.
-
-The reopened owner sequence verified native Todo create/edit/deadline/completion/archive, dated native Daily completion/archive and seven matching original command receipts. All native commands requested no Habitica projection. The website cast one self-only Defensive Stance, spending 25 MP, and changed headgear to Dandy Hat before restoring Nameless Helm and original equipment stats. No party mutation, Start New Day, background dispatch, real key operation or ChatGPT test ran. [Sanitized owner evidence](../history/validation/development-owner-checks.json) retains exact receipts and observations; cached Codex discovery has not qualified newer tool names.
-
-## Party quest pool hotfix qualification
-
-The 2026-10-20 update uses two transactional D1 statements for owner-pool replacement instead of a separate delete followed by one statement per quest. No migration or binding change is required. The complete handler uses 22 statements in the synthetic 52/300-type fixtures; other access roles can add fixed management reads. The previous production deployment is `d06b3032-a927-45e9-8de3-a3ae7cfb39d9`; code rollback does not restore database contents. Publication and artifact records reside in `.skill-tree/history/validation/party-quest-pool-publication.json`. Production party mutation testing remains excluded; blocked public artifact inspection is recorded explicitly.
 
 
-## Ready-feature production publication
 
-Source db79a3d is published to the existing habitica-companion Pages production slot with matching Auth, Workspace and MCP Workers. The production-ready-publication evidence records exact versions and rollback predecessors. All runtime variables, resource bindings, current credential-key version and per-account executor consent remain retained. Auth and Workspace report no pending migrations. Production preparation passes 123 Auth tests, 374 Workspace tests, Worker typechecks/dry builds and the frontend Release build. The current frontend source has 961 passing solution tests from local qualification.
 
-The hosted browser signs in, restores existing cloud management access and renders direct capture, hierarchy, Projects and Saved lists with the existing theme. Expired tab access reports unverified status; explicit verification restores access and a fresh server check reports zero pending, stalled, uncertain or blocked commands and zero expired execution leases. Read observations do not qualify native create/update/archive dispatch. Shell artifact/health GETs return HTTP 403; deployment metadata and browser behavior do not establish remote artifact hash equality. Party writes, Start New Day, real spells, key operations and independent-user/device checks remain excluded. The separately captured bulk-casting rate-limit and gear-restoration defect remains unresolved.
-
-The staged publication archive is output/habitica-companion-plugin-db79a3d.zip. The package retains manifest version 0.1.0 and contains the production MCP URL plus five skills from the publication revision. Current repository task-management guidance adds the required correspondence contract; the publication archive does not contain the source guidance update. Existing custom MCP connections require refreshed tool metadata after tool-schema changes; packaged skills require an updated imported package. Installed-package version discovery and backend compatibility reporting remain Pending for a later release. No runtime version-discovery feature is introduced by publication.
-
-The 2026-10-21 frontend repair publishes source f66410c as Pages deployment e1cefdbc-74ac-4b29-88d5-c1737fa894e0. The previous Pages deployment is 8733a2ee-8c12-4ed1-a6a0-d6021d57859f; Workers, databases, bindings, secrets and consent remain unchanged. Browser NFKC normalization replaces the unsupported .NET 8 browser operation. Thirty shared query cases pass in actual WebAssembly, and the previously crashing production saved list returns the matching active Todo. Native saved-list create, filter update and archive qualification remain recorded with original command identities in production-ready-publication.json. The owner-approved source checklist transfer separately confirms one of one Habitica projection effects; completion marks plan intake rather than implementation.
 
 
 ## Tag gateway rollout prerequisite
 
 Auth migration 0009 must precede deployment of the matching tag gateway/Auth cleanup handlers. The migration stores separate tag consent epochs, short-lived checks, adopted identity and bounded original-attempt observations. Existing ProjectionService bindings and Workspace/Projection flags are retained; no new secret is required. Deploy matching Auth, Workspace and MCP adapters before exposing canonical tag controls. Old organization/task OAuth grants do not gain habitica.tags.write; end users choose that permission on reauthorization and separately enable habitica-tags-v1 after the matching consent UI is available.
 
-The local gateway milestone performs no production migration, deployment, enrollment, scope upgrade or consent activation. Canonical tag reconciliation is implemented locally; matching browser consent and repair UI remains a subsequent task. Rollback must account for any retained tag identities/receipts; a code rollback does not delete Habitica tags or undo membership. Never delete native tags as a cleanup shortcut. Public Auth HTTP routes cannot dispatch the private tag gateway; the existing restricted service binding remains the transport boundary documented by [Cloudflare service bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/).
+Canonical tag reconciliation includes browser consent, review/recovery and MCP controls. Source availability establishes no current remote migration, live scope, per-user consent or account qualification. Rollback must account for any retained tag identities/receipts; a code rollback does not delete Habitica tags or undo membership. Never delete native tags as a cleanup shortcut. Public Auth HTTP routes cannot dispatch the private tag gateway; the existing restricted service binding remains the transport boundary documented by [Cloudflare service bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/).
 
 ## Reconciliation deployment dependency
 
 Apply Workspace migration 0008 together with Auth migration 0009 before deploying the matching tag executor. The Workspace migration adds trusted work, source review status and preparation authority records; no new secret, binding or flag is required. Deploy matching Auth, Workspace and MCP code and the following browser consent/recovery controls as one reviewed release. Existing native task and organization grants can still save canonical metadata, but existing grants cannot acquire habitica.tags.write implicitly.
 
-No migration, live scope upgrade, consent activation or deployment ran during the reconciliation milestone. Retain unresolved original attempts across rollback; never delete native tags to clean up a failed release.
+Tag reconciliation deployment never upgrades OAuth grants or activates per-account consent implicitly. Retain unresolved original attempts across rollback; never delete native tags to clean up a failed release.
 
 
 ## Group-tag controls release dependency
@@ -398,15 +373,13 @@ Notes storage requires Workspace migrations 0011-personal-notes.sql and0012-note
 
 Notes consent remains independent of workspace-v1 and existing OAuth grants. Deployment never enables per-account notes-v1 consent or adds notes.read/notes.write to an existing grant. Integration profile deletion includes active Notes tables and reports pending cleanup until the private service acknowledges deletion. Provider point-in-time backups retain the provider recovery policy. Local synthetic migration and lifecycle tests do not establish production migration or live account qualification.
 
-## Notes release candidate 0.2.0
+## Current package and coordinated release contract
 
-The owner-selected sequence completes Notes, publishes accumulated ready work, then completes the three Todo presentation units. Unrelated prioritized work remains outside this release. The candidate uses package/backend0.2.0 and tool schema1.1.0, with package/backend compatibility limited to0.2.x. Package preparation binds actual files and six skills to an explicit reviewed source revision; installation remains unknown until the client reports evidence. Existing0.1.x packaged guidance requires a new import. Direct MCP clients need refreshed tool discovery and separate Notes scopes on reauthorization; deployment never grants Notes consent.
+`workers/release-inputs.json` selects backend `0.3.0`, tool schema `1.2.0` and supported package versions from `0.2.0` inclusive to `0.4.0` exclusive. `plugin/plugin.json` selects package `0.3.0`. The package receipt binds actual files, all six skills, the reviewed endpoint and an explicit source revision. Backend identity never proves package installation or host activation. Existing grants retain original permissions; Notes and Workspace migration require independent grants and separate product consent.
 
-Preflight targets the existing habitica-companion Pages production branch main and the existing Auth/MCP/Workspace Workers, without a dev suffix. All deployed runtime variables, feature flags, credential-key selection and retained resource bindings match the generated candidate. No secret value changes are required. Workspace adds the private NotesLifecycleService entrypoint before Auth binds NOTES_LIFECYCLE. Apply Auth0009 and Workspace0008 through0012 before matching Worker publication. Migrations add tables, columns and an inactive-by-default retirement fence; no existing task text is rewritten. Record D1 Time Travel bookmarks and exact Pages/Worker predecessors before changes. Code rollback does not reverse schema or user data; additive migrations remain in place during ordinary code rollback. Review active retirement fences before rolling back compatible task code.
+Apply the complete current Auth and Workspace migration sequences before matching services, then publish compatible Auth/MCP/Workspace/PWA and package artifacts in the selected release order. Workspace exposes `NotesLifecycleService` before Auth binds `NOTES_LIFECYCLE`. Keep the selected profile/encryption keys, logging settings, consent, executor state and unrelated resources intact unless a separately reviewed change requires modification. Record D1 recovery bookmarks and exact Pages/Worker predecessors before remote mutations. Preserve additive schemas, retained source archives and original receipt fences during code rollback.
 
-Notes UI qualification uses1168 solution tests,35 final Notes controls and720 matching rendered cases. The candidate runs matching Worker builds, package/identity controls and synthetic backend regressions before remote migration/publication. Production smoke checks read public health, OAuth discovery and release assets only; publication is not a new live gameplay test round. Hosted Notes consent, model behavior and physical devices retain separate qualification.
-
-The0.2.0 candidate is now published from ba5a96d to the existing production slot. Exact Pages/Worker versions, preceding deployments, D1 bookmarks and the verified package receipt reside in .skill-tree/history/validation/notes-production-publication.json. Auth154, Workspace572 and package/identity controls pass against matching builds. Remote migrations have no remainder. Ordinary browser inspection confirms the production settings, OAuth Notes scopes, MCP-to-Auth health and rendered WebAssembly Notes route. Terminal403/DNS restrictions and blocked direct manifest navigation remain explicit inspection limits. The ready package is output/habitica-companion-plugin-0.2.0.zip; importing the package and separately granting Notes access remain user actions. No actual hosted Notes enrollment or gameplay test is claimed.
+Run current source-matched Worker, application, package/identity and affected UI checks before publication. Hosted smoke can qualify public health, OAuth metadata and selected release assets; live Notes enrollment, account mutation, imported-package activation, model behavior and physical devices require separate selected evidence. [Notes publication history](../history/validation/notes-production-publication.json) retains the independent `0.2.0` release observations.
 
 ## Web Push subscription release prerequisites
 
@@ -433,7 +406,7 @@ The next Workspace migration after scheduled reminders is `0014-linked-task-reco
 
 ## Separate callback egress candidate
 
-The owner-selected Netlify Functions Free callback gateway has separate source/configuration under deploy/callback-egress. Ordinary pilot/development preparation keeps CALLBACK_EGRESS_ENABLED=false. Apply Auth0012-callback-egress.sql on the exact selected integration database before enabling the narrow claim endpoint; no existing credential, Push or subscription permission grants this lane. The [callback egress contract](callback-egress.md) owns account selection, runtime/service-key setup, Free-plan hard-limit behavior, hosted negative controls and rollback. Source packaging and local dry builds grant no Netlify/Cloudflare publication, remote migration or real callback scope.
+The owner-selected Netlify Functions Free callback gateway has separate source/configuration under deploy/callback-egress. Ordinary pilot/development preparation keeps CALLBACK_EGRESS_ENABLED=false. Apply Auth0012-callback-egress.sql on the exact selected integration database before enabling the narrow claim endpoint; no existing credential, Push or subscription permission grants callback egress. The [callback egress contract](callback-egress.md) owns account selection, runtime/service-key setup, Free-plan hard-limit behavior, hosted negative controls and rollback. Source packaging and local dry builds grant no Netlify/Cloudflare publication, remote migration or real callback scope.
 
 
 The selected Auth callback setup is provisioned with dispatch disabled. Exact initial deployment/base-module identities, the applied `0012` migration and pending hosted qualification are recorded in [callback-egress.md](callback-egress.md#published-auth-setup). The subsequent [2026-10-29 coordinated release](../history/releases/2026-10-29/README.md) publishes full repository Auth/Workspace/MCP source after the remaining migrations and lifecycle bindings. Web Push availability is enabled with dedicated keys and separate device/account consent; callback delivery remains disabled.

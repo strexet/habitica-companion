@@ -6,11 +6,13 @@ Primary Habitica integration reference: `.skill-tree/documents/habitica-api.md`
 
 ## 1. Purpose
 
-This document defines the baseline technical stack, architecture, boundaries, and implementation rules for the project.
+`technical.md` defines the baseline technical stack, architecture, boundaries, and implementation rules for the project.
 
-AI agents must treat this file as the source of truth for project-level technical decisions. If the technical stack, architecture, persistence strategy, API integration strategy, or other foundational technical decisions change, update this document in the same change set.
+AI agents must treat `technical.md` as the source of truth for project-level technical decisions. If the technical stack, architecture, persistence strategy, API integration strategy, or other foundational technical decisions change, update `technical.md` in the same change set.
 
-Do not change this document for local implementation details, small refactors, feature-specific code, UI copy, or isolated bug fixes.
+Do not change `technical.md` for local implementation details, small refactors, feature-specific code, UI copy, or isolated bug fixes.
+
+Validation descriptions identify fixture assertions and evidence boundaries. Current acceptance requires matching source/test/build/environment evidence under [testing.md](testing.md); historical results and deployment records do not qualify changed sources or current live state.
 
 ## 2. Product summary
 
@@ -28,7 +30,7 @@ The application must:
 
 ## 3. Source-of-truth hierarchy
 
-When implementing or modifying the project, use this hierarchy:
+When implementing or modifying the project, use the following hierarchy:
 
 1. `.skill-tree/documents/rules.md` - repository workflow, AI-agent behavior rules, and required research.
 2. `.skill-tree/documents/habitica-api.md` - Habitica API usage, endpoints, headers, rate limits, security, and integration constraints.
@@ -38,7 +40,7 @@ When implementing or modifying the project, use this hierarchy:
 6. Official external documentation and source repositories for third-party behavior.
 7. Community notes, forums, Reddit, and third-party tools.
 
-If these sources conflict during implementation, prefer the higher-priority source and mention the conflict in the implementation notes or pull request summary.
+If the listed sources conflict during implementation, prefer the higher-priority source and mention the conflict in the implementation notes or pull request summary.
 
 For documentation audits and drift fixes, verify claims against the current codebase first, then against official Habitica server/mobile repositories and public API docs. Update or qualify stale documentation instead of treating older project docs as evidence that current code is wrong.
 
@@ -91,11 +93,11 @@ Versioning rules:
 
 - commit `global.json` with an exact .NET SDK version when the solution is scaffolded;
 - do not use floating NuGet package versions in the current baseline;
-- if JavaScript dependencies are introduced, pin them exactly and commit the lockfile.
+- if JavaScript dependencies are introduced, pin JavaScript dependencies exactly and commit the lockfile.
 
 ### 4.2 UI component stack
 
-Use MudBlazor as the initial UI component library unless a future documented decision replaces it.
+Use MudBlazor as the initial UI component library unless a future documented decision replaces MudBlazor.
 
 Expected UI needs:
 
@@ -184,7 +186,7 @@ Responsibilities:
 - `429 Too Many Requests` handling;
 - `Retry-After` handling;
 - rate-limit header tracking;
-- safe transient retry policy only when a feature explicitly implements and verifies it;
+- safe transient retry policy only when a feature explicitly implements and verifies the retry policy;
 - request/response DTOs;
 - API error normalization;
 - redaction of credentials from logs.
@@ -220,8 +222,8 @@ Blazor C# -> JS interop -> Dexie.js -> IndexedDB
 Rationale:
 
 - IndexedDB is browser-native storage for significant structured client-side data.
-- It supports indexes and offline data access.
-- It is better suited than Web Storage for task snapshots, inventory state, sync logs, macro definitions, and derived read models.
+- IndexedDB supports indexes and offline data access.
+- IndexedDB is better suited than Web Storage for task snapshots, inventory state, sync logs, macro definitions, and derived read models.
 
 Project:
 
@@ -300,7 +302,7 @@ Optional backend surfaces may be introduced only for documented product needs su
 - central configuration;
 - secure proxying with explicit credential-handling design.
 
-If a backend is introduced, update this document before or during the implementation.
+If a backend is introduced, update `technical.md` before or during the implementation.
 
 Current optional backend surfaces:
 
@@ -314,11 +316,11 @@ Browser PWA -> Workspace Worker -> canonical task and Notes D1 stores
 
 The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts each section payload independently, and uploads only encrypted JSON.
 
-Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has its own 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written. The WebApp keeps per-section status records in session state with section key, direction, status, update time, payload size, and message; diagnostics is excluded from upload by default through `Features:CloudSyncExcludedSections`.
+Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has a separate 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written. The WebApp keeps per-section status records in session state with section key, direction, status, update time, payload size, and message; diagnostics is excluded from upload by default through `Features:CloudSyncExcludedSections`.
 
-The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, recently completed quest history, automatic completion detection keys, companion-app Owner and Officer roles, party-sync settings, active kick records, and optional tokenized invite-proof metadata. Selected queue entries are companion-app planning state; after a successful Habitica invite, the entry moves to `InviteSent` and is no longer shown in the queue/Next Quest planning views while the Habitica party quest invitation drives accept/reject/start behavior.
+The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. The D1 backend stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, recently completed quest history, automatic completion detection keys, companion-app Owner and Officer roles, party-sync settings, active kick records, and optional tokenized invite-proof metadata. Selected queue entries are companion-app planning state; after a successful Habitica invite, the entry moves to `InviteSent` and is no longer shown in the queue/Next Quest planning views while the Habitica party quest invitation drives accept/reject/start behavior.
 
-Quest-pool publication replaces only the claimed owner's rows in one D1 transaction: a scoped delete and a JSON-bound `INSERT ... SELECT` from `json_each`. Its SQL statement count is independent of the number of scroll types; local D1 qualification covers 52 and 300 types with 22 statements for the complete endpoint under a conservative 50-statement fixture guard. This guard does not reproduce Cloudflare invocation metering: batch sends multiple SQL statements in one binding call. Neither the historical exception nor the account tier or limiting meter has been established. An insertion failure rolls back the deletion and inserts together. Normalized payloads above 1,900,000 UTF-8 bytes are rejected before replacement to remain below D1's bound-value limit. The browser reports an HTTP status on failed quest actions and suppresses raw server error bodies for 5xx responses; it does not automatically retry uncertain actions. Existing rejected-invite-proof recovery remains limited to its 401 path.
+Quest-pool publication replaces only the claimed owner's rows in one D1 transaction: a scoped delete and a JSON-bound `INSERT ... SELECT` from `json_each`. The replacement SQL statement count is independent of the number of scroll types; local D1 qualification covers 52 and 300 types with 22 statements for the complete endpoint under a conservative 50-statement fixture guard. The fixture guard does not reproduce Cloudflare invocation metering: batch sends multiple SQL statements in one binding call. Neither the historical exception nor the account tier or limiting meter has been established. An insertion failure rolls back the deletion and inserts together. Normalized payloads above 1,900,000 UTF-8 bytes are rejected before replacement to remain below D1's bound-value limit. The browser reports an HTTP status on failed quest actions and suppresses raw server error bodies for 5xx responses; the browser does not automatically retry uncertain actions. Existing rejected-invite-proof recovery remains limited to the 401 path.
 
 Party-sync uses browser-only `local-claim-v1` by default and as the owner/app-admin recovery path. Parties can optionally enable `tokenized-invite-v1`: the browser sends a locally stored proof id and token alongside the same local user identity fields, D1 stores only the SHA-256 token hash plus label/issuer/lifecycle metadata, and the Worker validates the proof before applying the existing owner/admin/Officer/kick checks. When mode is disabled or no active proof remains, members continue through `local-claim-v1`. The browser bridge clears a rejected local proof and retries once through local claims so recovery remains possible. The Cloudflare party-sync Function must never receive the Habitica API token.
 
@@ -334,7 +336,7 @@ Both provider boundaries must stay abstract so another remote sync provider can 
 
 ### 6.1 Layering
 
-Use this dependency direction:
+Use the following dependency direction:
 
 ```text
 Habitica.WebApp
@@ -435,7 +437,7 @@ Use snapshot-based storage.
 
 Store raw-enough synchronized data to allow recalculation when formulas or heuristics change. Store derived read models separately where useful for UI performance.
 
-Dashboard CRON damage estimates keep numeric totals separate from explanatory notes. `PendingDamageEstimate` carries typed state for Daily damage, boss damage, included Daily count, unknown due-state count, missing task values, computed Constitution use, missing stat/catalog inputs, unavailable checklist reductions, boss unavailability, Inn pause, and compact diagnostics. UI and health-potion recovery decisions must read those typed fields instead of parsing user-facing strings.
+Dashboard CRON damage estimates keep numeric totals separate from explanatory notes. `PendingDamageEstimate` carries typed state for Daily damage, boss damage, included Daily count, unknown due-state count, missing task values, computed Constitution use, missing stat/catalog inputs, unavailable checklist reductions, boss unavailability, Inn pause, and compact diagnostics. UI and health-potion recovery decisions must read the typed estimate fields instead of parsing user-facing strings.
 
 Recommended object categories:
 
@@ -472,7 +474,7 @@ rawVersion or etag-like marker when available
 
 Snapshot freshness model:
 
-Every snapshot-backed feature must classify required data into one of these states:
+Every snapshot-backed feature must classify required data into one of the following states:
 
 ```text
 fresh
@@ -557,11 +559,11 @@ Current implementation:
 
 Background sync may be added only if:
 
-- it respects Habitica rate limits;
-- it has explicit user-facing settings;
-- it avoids continuous polling;
-- it has termination conditions;
-- it does not execute mutating actions without explicit user intent.
+- the background feature respects Habitica rate limits;
+- the background feature has explicit user-facing settings;
+- the background feature avoids continuous polling;
+- the background feature has termination conditions;
+- the background feature does not execute mutating actions without explicit user intent.
 
 Recommended sync session steps:
 
@@ -709,7 +711,7 @@ PWA offline behavior must be tested from a published build. Do not assume develo
 
 ## 16. Technical decisions requiring .skill-tree/documents/technical.md update
 
-Update this document when changing:
+Update `technical.md` when changing:
 
 - primary client framework;
 - .NET version policy;
@@ -725,7 +727,7 @@ Update this document when changing:
 - testing baseline;
 - logging/security policy.
 
-Do not update this document for:
+Do not update `technical.md` for:
 
 - feature copy;
 - individual endpoint additions that fit the existing API layer;
@@ -872,7 +874,7 @@ The private Auth proof loads only the actor's quest inventory for planning-state
 
 ## Private spell dispatch boundary
 
-Auth exports `SpellService` as a named private entrypoint with no public URL routing. The service independently validates the original OAuth bearer and exact profile/connection, derives credentials from the vault and shares `integration_projection_state` and `integration_projection_attempts` with task projection. No new Auth database schema is needed: the existing operation discriminator accepts spell attempts. Production MCP has no direct binding to this entrypoint; Workspace alone owns the configured production dispatch binding; synthetic fixtures additionally bind the entrypoint for isolation tests.
+Auth exports `SpellService` as a named private entrypoint with no public URL routing. The service independently validates the original OAuth bearer and exact profile/connection, derives credentials from the vault and shares `integration_projection_state` and `integration_projection_attempts` with task projection. No new Auth database schema is needed: the existing operation discriminator accepts spell attempts. Production MCP has no direct binding to the `SpellService` entrypoint; Workspace alone owns the configured production dispatch binding; synthetic fixtures additionally bind the entrypoint for isolation tests.
 
 A unique lease nonce includes the attempt ID for same-intent concurrency detection. A competing copy returns uncertainty without releasing the original lease. Reservation requires the owned, unexpired lease, an eleven-second HTTP reserve and no unresolved gameplay receipt. Terminal outcomes cannot be overwritten by a late owner or refusal. Pre-dispatch failure recording inserts only absent receipts; post-dispatch recording updates only dispatched/unknown attempts. Missing receipts are uncertainty, never permission to repeat a cast. Shared `rateState` can distinguish semantic spell refusals from credential failures.
 
@@ -880,7 +882,7 @@ The gateway hashes normalized persisted account fields and minimal verified part
 
 ## Workspace reviewed spell ledger
 
-Migration `0005-reviewed-spell-actions.sql` adds a typed action table with profile/action and profile/request uniqueness, input/precondition payload, connection/access epoch, authenticated namespace, token hash, expiry, single-use consumption, versioned normalized entry and an optional saved dispatch. Accepted private history cascades only with explicit Workspace deletion. Namespace deletion or contributor opt-out deletes unconsumed previews. No raw OAuth token, Habitica credential or full member snapshot enters this ledger. The separate history projection excludes execution tokens, hashes and private dispatch payloads; task journal serialization remains unchanged.
+Migration `0005-reviewed-spell-actions.sql` adds a typed action table with profile/action and profile/request uniqueness, input/precondition payload, connection/access epoch, authenticated namespace, token hash, expiry, single-use consumption, versioned normalized entry and an optional saved dispatch. Accepted private history cascades only with explicit Workspace deletion. Namespace deletion or contributor opt-out deletes unconsumed previews. No raw OAuth token, Habitica credential or full member snapshot enters the action ledger. The separate history projection excludes execution tokens, hashes and private dispatch payloads; task journal serialization remains unchanged.
 
 Preparation validates fresh Auth context and planning consent before recording a two-minute preview. Token rotation uses action version checks. Execution acquires `workspace_runtime` without overwriting task prepared-request fields, checks unresolved task/spell records and atomically consumes the token. Every single-cast dispatch requires the held lease, current Workspace access and matching planning namespace/consent. Known results update the versioned entry. Interrupted dispatches remain fenced; recovery performs Auth lookup only and stops any unexecuted remainder. Concurrent recovery updates use version and lease predicates.
 
@@ -1149,11 +1151,11 @@ The facade validates canonical snapshots before routing query, agenda, history, 
 
 WorkspaceHabiticaCoveragePolicy supplies a read-only correspondence audit under the [product invariant](companion-workspace-contract.md#required-habitica-correspondence). The audit includes every task kind, full child, completed task and archived task. Stored identity, pending dispatch, missing mapping and review-required mappings remain distinct. Organization entities supply required tag coverage; the current schema has no group/tag mapping, so matching names never count as coverage. TodoWorkspacePresentation caches the audit for the selected document reference and clears coverage with source/account state. TodoTaskPanel displays incomplete coverage without creating commands or game effects. The audit adds no persistence field, automatic repair, mapping default or executor activation.
 
-TodoTaskDraftStore is a scoped memory-only service keyed by the authenticated account, exact TodoWorkspaceSelection, kind and task identity. It retains editing selection and Daily occurrence dates; sign-out/account change clears draft and prepared-command mappings. Basic saves retain original task revision and validate dates and game fields before preparing. Planned date updates use PlanTask separately from basic UpdateTask because canonical patch rules reject mixed operations. WorkspaceTaskController.RetryOriginalPreviewAsync reuses the retained intent and request ID rather than reconstructing a command from a potentially changed editor. The task panel tracks confirmed original receipts before clearing a create draft or advancing an edited draft baseline. Browser-only copies remain subject to the facade's read-only ownership rules.
+TodoTaskDraftStore is a scoped memory-only service keyed by the authenticated account, exact TodoWorkspaceSelection, kind and task identity. The draft store retains editing selection and Daily occurrence dates; sign-out/account change clears draft and prepared-command mappings. Basic saves retain original task revision and validate dates and game fields before preparing. Planned date updates use PlanTask separately from basic UpdateTask because canonical patch rules reject mixed operations. WorkspaceTaskController.RetryOriginalPreviewAsync reuses the retained intent and request ID rather than reconstructing a command from a potentially changed editor. The task panel tracks confirmed original receipts before clearing a create draft or advancing an edited draft baseline. Browser-only copies remain subject to the facade's read-only ownership rules.
 
 ## Today read projection
 
-TodoTodayProjection adapts the existing WorkspaceAgenda for one explicit civil day, a twenty-row page and the selected workspace revision. It groups existing task/date rows without writing occurrence records or combining the Habitica cache. TodoTodayPanel clears stale pages on source/revision changes and validates the displayed source/revision/date before delegating an action. RecurrenceCalendar remains the owner of schedule expansion and time-zone availability. A failed rule evaluation suppresses the entire agenda rather than exposing a misleading partial day. The shared task panel can omit capture/list markup for a compact review surface; its public primary-action entry reuses existing command preparation and explicitly renders the review/focus transition.
+TodoTodayProjection adapts the existing WorkspaceAgenda for one explicit civil day, a twenty-row page and the selected workspace revision. The Today projection groups existing task/date rows without writing occurrence records or combining the Habitica cache. TodoTodayPanel clears stale pages on source/revision changes and validates the displayed source/revision/date before delegating an action. RecurrenceCalendar remains the owner of schedule expansion and time-zone availability. A failed rule evaluation suppresses the entire agenda rather than exposing a misleading partial day. The shared task panel can omit capture/list markup for a compact review surface; the task panel public primary-action entry reuses existing command preparation and explicitly renders the review/focus transition.
 
 
 ## Planning list and editor boundaries
@@ -1269,7 +1271,7 @@ An unaccepted stored preview superseded by current required-projection policy re
 
 WorkspaceDocument schema 1 gains an optional tagLedger, omitted when unused. The ledger accountId is a Habitica account UUID, not a credential. WorkspaceTagMapping holds one stable group identity per entity, exact owner via the enclosing ledger, desired source revision, internal alias, remote tag ID and confirmation evidence. WorkspaceTagIntent stores a separately identified original command/correlation, operation ensureTag/setMembership, desired revision and immutable target/member evidence. Per-member state and receipt references retain partial execution without replaying confirmed members. Archived or logically removed groups keep group metadata and mapping provenance.
 
-The ledger lives in the existing canonical document JSON, so the model milestone requires no D1 table migration. C# strict document/journal serialization and the Worker document/journal parser preserve ledger data through exports and ownership handoff. The existing global identity/size bounds include mapping and intent entities. Mapping/task IDs and tag IDs remain separate namespaces. Old documents without a ledger read unchanged; readers predating the optional field must update before reading populated ledgers. Existing organization command hash encodings and receipt payloads are unchanged.
+The ledger lives in the existing canonical document JSON, so the optional ledger requires no separate D1 table migration. C# strict document/journal serialization and the Worker document/journal parser preserve ledger data through exports and ownership handoff. The existing global identity/size bounds include mapping and intent entities. Mapping/task IDs and tag IDs remain separate namespaces. Old documents without a ledger read unchanged; readers predating the optional field must update before reading populated ledgers. Existing organization command hash encodings and receipt payloads are unchanged.
 
 Ledger content is portable evidence, not trusted authorization or a dispatch queue. Expected account identity must come from the authenticated context; coverage refuses a missing/different expected account. Import remains paused. Upcoming authenticated gateway and executor work owns receipt verification, new consent, leases and upstream mutation. A stored confirmed membership describes the exact recorded source revision and remote identities; complete canonical membership derivation and current upstream freshness are separate checks.
 
@@ -1363,9 +1365,9 @@ Natural-language deadline interpretation belongs to the packaged task-management
 
 ### Reviewed Worker build identities
 
-workers/release-inputs.json owns backend release, tool/schema version and supported package bounds. workers/scripts/generate-build-identity.py derives a deterministic SHA-256 identity from those reviewed inputs, Worker source/configuration/package files and generator code. Regeneration follows source changes; npm build variants reject stale generated identity. Generated metadata contains no credentials, account selectors, task data or runtime environment dump.
+workers/release-inputs.json owns backend release, tool/schema version and supported package bounds. workers/scripts/generate-build-identity.py derives a deterministic SHA-256 identity from the reviewed release inputs, Worker source/configuration/package files and generator code. Regeneration follows source changes; npm build variants reject stale generated identity. Generated metadata contains no credentials, account selectors, task data or runtime environment dump.
 
-Private AuthService and WorkspaceCommandService endpoints expose compiled Worker identities only through existing service bindings. The authenticated MCP discovery tool compares validated peer envelopes with the compiled MCP identity. Discovery retains profile:read authorization and normal ingress quotas. Missing/malformed peers remain unavailable; differing builds remain mixed. Optional client package reports never prove installation. This preparation introduces no production package bump or deployment.
+Private AuthService and WorkspaceCommandService endpoints expose compiled Worker identities only through existing service bindings. The authenticated MCP discovery tool compares validated peer envelopes with the compiled MCP identity. Discovery retains profile:read authorization and normal ingress quotas. Missing/malformed peers remain unavailable; differing builds remain mixed. Optional client package reports never prove installation. Build-identity generation changes no production package, deployment or authorization.
 
 ### Plugin archive identity
 

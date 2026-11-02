@@ -1,6 +1,6 @@
 # AI App Testing Guide
 
-This guide is for future AI agents testing Habitica Tool in a browser. Use it when reviewing deployed or local UI/UX, especially after layout, sign-in, navigation, theme, or foldable-section changes.
+The browser testing guide is for future AI agents testing Habitica Tool in a browser. Use the guide when reviewing deployed or local UI/UX, especially after layout, sign-in, navigation, theme, or foldable-section changes.
 
 ## Targets
 
@@ -11,12 +11,12 @@ Do not start a local server, run build, or run tests unless the user explicitly 
 
 ## Credential Handling
 
-- For an owner-authorized live account test, use the owner-provided root [`test-login.json`](../../test-login.json) if it exists; otherwise ask the user for the Habitica User ID and API token. The file contains `userId` and `apiToken`, is ignored by Git and must stay readable only by the local owner. Synthetic tests do not need it.
+- For an owner-authorized live account test, use the owner-provided root [`test-login.json`](../../test-login.json) when the credential file exists; otherwise ask the user for the Habitica User ID and API token. The file contains `userId` and `apiToken`, is ignored by Git and must stay readable only by the local owner. Synthetic tests require no credential file.
 - Never write the real User ID or API token into tracked repo files, screenshots, final summaries, `.skill-tree/documents/future.md`, or test notes. Never print the file or credentials in command output.
 - Use credentials only in the browser sign-in form.
 - Do not enable `Remember credentials on this device` unless the user explicitly asks for persistent browser sign-in.
-- Use the local test credentials only for the explicitly authorized Habitica sign-in or test operation. Optional server credential storage has its own disclosure and consent; possession of the file does not authorize enabling it. Party actions remain outside this login recipe.
-- If browser snapshots display the password value, do not paste those snapshots into final output or repo docs.
+- Use the local test credentials only for the explicitly authorized Habitica sign-in or test operation. Optional server credential storage requires separate disclosure and consent; possession of the file does not authorize enabling server credential storage. Party actions remain outside the login recipe.
+- If browser snapshots display the password value, do not paste credential-bearing snapshots into final output or repo docs.
 
 ## Login Flow
 
@@ -30,7 +30,7 @@ Do not start a local server, run build, or run tests unless the user explicitly 
 
 Known blocker to recognize:
 
-- If both fields visibly contain values but submit shows `Habitica User ID and API Token are required.`, record this as a sign-in binding bug and stop authenticated testing. Do not keep retrying with altered credentials.
+- If both fields visibly contain values but submit shows `Habitica User ID and API Token are required.`, record the failed submission as a sign-in binding bug and stop authenticated testing. Do not keep retrying with altered credentials.
 
 Expected success signals:
 
@@ -108,11 +108,11 @@ const loginState = await tab.playwright.evaluate(() => ({
 
 Only log lengths and path. Do not log real values.
 
-Stop after these outcomes:
+Stop after the following outcomes:
 
 - Success: URL is `/dashboard`; continue authenticated review.
 - Blocker: fields have non-zero lengths, but app still says `Habitica User ID and API Token are required.`; record sign-in binding bug and do only signed-out review.
-- Auth failure: app shows a Habitica/authentication error; report it without printing credentials and ask user whether to retry.
+- Auth failure: app shows a Habitica/authentication error; report the authentication failure without printing credentials and ask user whether to retry.
 - Network/runtime failure: record browser/runtime error class, retry once after reload, then stop if same failure repeats.
 
 Browser automation tips:
@@ -139,7 +139,7 @@ Safe interactions for UI review:
 - read-only links and panels
 - viewport changes
 
-Avoid these mutation controls:
+Avoid the following mutation controls:
 
 - task `Complete`, `Uncomplete`, `Score +`, `Score -`
 - spell cast buttons
@@ -148,12 +148,12 @@ Avoid these mutation controls:
 - hatch, feed, sell, buy potion, buy gems, armoire
 - quest accept/reject/start/invite/vote/queue/remove/expire/skip/complete actions
 - party role, officer, kick, invite-proof, and shared-queue management buttons
-- Settings `Clear Local Data`, import, upload/download sync, export unless the user asks to test those flows
+- Settings `Clear Local Data`, import, upload/download sync, export unless the user asks to test the named data flows
 - Diagnostics optional gear check or any reversible/live check unless the user explicitly asks
 
 ## Pages To Review
 
-Check these routes after login:
+Check the following routes after login:
 
 - `/dashboard`
 - `/tasks`
@@ -237,7 +237,7 @@ Agent foldable discovery recipe:
 
 ## Responsive Checks
 
-Use at least these viewport sizes:
+Use at least the following viewport sizes:
 
 - Desktop: `1280x720`
 - Tablet: `820x900`
@@ -258,7 +258,7 @@ Reset the viewport when finished unless the user asks to keep a size.
 
 ## Theme Checks
 
-For every new or changed UI route, verify light and dark rendering at phone and desktop widths with normal and enlarged text. This is the repository rule in `AGENTS.md`, not a one-off task. Use local fixtures or an authorized app session; selecting a theme changes local appearance state.
+For every new or changed UI route, verify light and dark rendering at phone and desktop widths with normal and enlarged text. The rendering matrix is a repository rule in `AGENTS.md`, not a one-off task. Use local fixtures or an authorized app session; selecting a theme changes local appearance state.
 
 Minimum built-in schemes to check:
 
@@ -294,7 +294,7 @@ For each issue, capture:
 - actual behavior
 - expected behavior
 - reproduction steps
-- whether it blocks further testing
+- whether the issue blocks further testing
 - suggested implementation plan
 
 When asked to add findings to `.skill-tree/documents/future.md`, add prioritized, self-contained entries under `Prioritized Next Changes`. Each entry should include:
@@ -343,11 +343,11 @@ Version 1 carries browser-local source, nonidentifying device/session scope, UTC
 
 ## Direct Todo capture qualification
 
-TodoTaskPanelTests captures title-first ready, long-name review, advanced edit, Daily occurrence and unknown-acceptance states for /tasks. These fixtures contain synthetic data only. Component tests establish handlers, exact intent/receipt ownership and requested focus transitions; static browser fixtures establish native form/disclosure behavior, rendered geometry and readable themes. A static fixture cannot prove Blazor event dispatch or actual production service behavior. Physical touch/assistive technology, hosted credentials and real game effects remain separate qualification.
+TodoTaskPanelTests captures title-first ready, long-name review, advanced edit, Daily occurrence and unknown-acceptance states for /tasks. The fixtures contain synthetic data only. Component tests establish handlers, exact intent/receipt ownership and requested focus transitions; static browser fixtures establish native form/disclosure behavior, rendered geometry and readable themes. A static fixture cannot prove Blazor event dispatch or actual production service behavior. Physical touch/assistive technology, hosted credentials and real game effects remain separate qualification.
 
 ## Today qualification
 
-TodoTodayPanelTests captures grouped planned/due/recorded/inactive work, exact occurrence review, an empty selected day and unavailable time-zone evaluation for /todo/today. Tests verify device civil date near a DST boundary, weekly/monthly expansion, distinct date reasons without duplicates, unscheduled and paused behavior, original receipt recovery, Todo completion, Habit scores, pagination and sign-out clearing. Browser qualification covers those four states plus the existing direct-capture surface. Static fixtures prove geometry and native controls; exact command dispatch and requested focus remain component-test evidence. No test replays a production party action or creates a live occurrence.
+TodoTodayPanelTests captures grouped planned/due/recorded/inactive work, exact occurrence review, an empty selected day and unavailable time-zone evaluation for /todo/today. Tests verify device civil date near a DST boundary, weekly/monthly expansion, distinct date reasons without duplicates, unscheduled and paused behavior, original receipt recovery, Todo completion, Habit scores, pagination and sign-out clearing. Browser qualification covers the four Today states plus the existing direct-capture surface. Static fixtures prove geometry and native controls; exact command dispatch and requested focus remain component-test evidence. No test replays a production party action or creates a live occurrence.
 
 ## Required Todo correspondence qualification
 

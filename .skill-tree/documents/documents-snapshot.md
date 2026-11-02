@@ -1,13 +1,12 @@
 # Documents Snapshot Flow
 
-Last updated: 2026-06-08
 Primary audience: AI agents creating dated documentation snapshot archives
 
 ## Trigger
 
-Use this flow only when the user explicitly asks for a document, documentation, markdown, or `.md` snapshot archive.
+Use the snapshot flow only when the user explicitly asks for a document, documentation, markdown, or `.md` snapshot archive.
 
-Do not run this flow for ordinary documentation edits.
+Do not run the snapshot flow for ordinary documentation edits.
 
 ## Goal
 
@@ -38,7 +37,7 @@ Example command:
 date '+%Y-%m-%d-%H-%M'
 ```
 
-Do not hard-code example dates from this document. The timestamp must match the actual snapshot creation time.
+Do not hard-code example dates from `documents-snapshot.md`. The timestamp must match the actual snapshot creation time.
 
 ## Source Selection
 
@@ -67,31 +66,31 @@ Supported explicit scopes:
 
 When the user asks to snapshot only one file, create a zip archive that contains only that file's snapshot copy.
 
-If the same user request also creates or edits a source markdown document and asks to snapshot that file, include that intentional source document even before it is committed. Do not add unrelated markdown files in this case.
+If the same user request also creates or edits a source markdown document and asks to snapshot the selected file, include that intentional source document even before the source document is committed. Do not add unrelated markdown files for the selected-document request.
 
 If the user's requested scope is ambiguous, make the narrowest reasonable interpretation from the request and report the chosen scope.
 
-Include a file only when it is relevant to this repository, such as:
+Include a file only when the file is relevant to the target repository, such as:
 
 - product or feature documentation;
 - architecture, stack, storage, sync, deployment, or testing documentation;
 - Habitica API behavior or integration rules;
-- UI/UX rules tied to this app;
-- implementation plans or specs for this app;
-- AI-agent workflow rules for this repository.
+- UI/UX rules tied to Habitica Companion;
+- implementation plans or specs for Habitica Companion;
+- AI-agent workflow rules for the target repository.
 
-Exclude ignored dependency, SDK, build-output, and vendor documents unless the user explicitly asks for them. Common excluded examples:
+Exclude ignored dependency, SDK, build-output, and vendor documents unless the user explicitly requests the excluded documents. Common excluded examples:
 
 - `node_modules/**`
 - `dotnet/sdk/**`
 - `obj/**`
 - generated package documentation
 
-If a tracked markdown file is not clearly repository-specific, exclude it and report why.
+If a tracked markdown file is not clearly repository-specific, exclude the unrelated document and report the reason.
 
 ## Required Relevance Check
 
-Before creating the archive, inspect the selected candidate documents enough to confirm they contain real codebase-related information.
+Before creating the archive, inspect the selected candidate documents enough to confirm the candidate documents contain real codebase-related information.
 
 Recommended checks:
 
@@ -111,7 +110,7 @@ done
 
 Do not claim relevance that was not checked.
 
-For explicit single-file snapshots, inspect that file directly. It is acceptable for the file to document this snapshot workflow itself; that is repository-specific AI-agent workflow information.
+For explicit single-file snapshots, inspect the selected file directly. A selected file documenting the snapshot workflow contains repository-specific AI-agent workflow information and remains eligible.
 
 ## Installed helper
 
@@ -171,7 +170,7 @@ Report any collision handling in the final response.
 
 ## Snapshot Notice
 
-Prepend this HTML comment to every copied markdown file:
+Prepend the following HTML comment to every copied markdown file:
 
 ```markdown
 <!--
@@ -194,7 +193,7 @@ Keep the original markdown content after one blank line.
 3. Gather selected candidate markdown files. Use all tracked project markdown files only when the user did not request a narrower scope.
 4. Exclude ignored dependency, SDK, build-output, and vendor documents unless explicitly requested.
 5. If the user selected one file, keep the candidate list to that one file.
-6. If the user selected a newly created or edited markdown file from the same request, include it even if it is not tracked yet.
+6. If the user selected a newly created or edited markdown file from the same request, include the selected source file even before Git tracking.
 7. Inspect candidates for repository relevance.
 8. Create a temporary staging directory outside the repository, such as `/private/tmp/habitica-tool-documents-snapshot-YYYY-MM-DD-HH-MM`.
 9. Copy each selected source markdown file into staging with the snapshot filename.
@@ -226,9 +225,9 @@ Report:
 - selected source scope;
 - whether ignored/vendor/toolchain markdown files were excluded;
 - whether source markdown documents were untouched by snapshot-copy generation;
-- intentional source documentation changes, if the same request included them;
+- intentional source documentation changes, if the same request included source edits;
 - any collision handling;
 - build and test instructions required by project handoff rules;
 - suggested commit message when files changed.
 
-Do not state that build or tests were run unless the user explicitly asked for them and they were actually run.
+Do not state that build or tests were run unless the user explicitly requested build/tests and the checks actually ran.

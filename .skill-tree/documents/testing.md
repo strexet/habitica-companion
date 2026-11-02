@@ -1,8 +1,14 @@
 # Testing
 
+## Current policy and source-bound results
+
+The generated `.skill-tree/installation/profile.json` owns concrete recipes, lanes and toolchain inputs; [installation context](skill-tree-installation.md) explains static qualification. The catalog below describes fixture assertions and prerequisites. A fixture description supplies no current passing result. Select the smallest relevant checks, record actual discovery/assertions, source/test/environment fingerprints, deadlines, cleanup and required skips, and require matching current evidence before acceptance.
+
+`.skill-tree/history/validation/`, structured task outcomes and release records retain build-specific verdicts. Historical counts never establish current source qualification. Source defaults, selected deployment flags, per-account consent and verified live availability are independent. [Deployment policy](deploy-cloudflare-pages.md) owns remote prerequisites; local tests use synthetic providers unless an explicit live lane is authorized.
+
 ## Local live-test credentials
 
-The owner may provide a root [`test-login.json`](../../test-login.json) with `userId` and `apiToken` for an explicitly authorized live test on the owner's Habitica account. The file is ignored by Git, should have owner-only file permissions, and must not be committed, deployed, included in fixtures, printed in logs, or copied into validation evidence. Its presence grants no permission for gameplay changes, party actions, cloud linking, or another live-test round; use the current user instruction and the [AI app testing guide](ai-app-testing.md) for the allowed scope. Synthetic tests use fixture identities instead.
+The owner may provide a root [`test-login.json`](../../test-login.json) with `userId` and `apiToken` for an explicitly authorized live test on the owner's Habitica account. The file is ignored by Git, should have owner-only file permissions, and must not be committed, deployed, included in fixtures, printed in logs, or copied into validation evidence. The credential file grants no permission for gameplay changes, party actions, cloud linking, or another live-test round; use the current user instruction and the [AI app testing guide](ai-app-testing.md) for the allowed scope. Synthetic tests use fixture identities instead.
 
 ## Browser query normalization regression
 
@@ -41,7 +47,7 @@ python3 .agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-stat
 git diff --check
 ```
 
-Task selection follows current priority, dependencies and unresolved questions. Metadata validation checks manifest paths/hashes, the installed skill catalog, index agreement, dependency closure and checkpoint identities without changing state. Structural validation and indexed state consistency never establish implementation readiness, external compatibility or completed acceptance. The strict prose validator applies separately; inherited prose findings require scoped cleanup and remain audit coverage gaps.
+Task selection follows current priority, dependencies and unresolved questions. Metadata validation checks manifest paths/hashes, the installed skill catalog, index agreement, dependency closure and checkpoint identities without changing state. Structural validation and indexed state consistency never establish implementation readiness, external compatibility or completed acceptance. The complete prose check includes every canonical document plus root discovery files with `--warnings-as-errors`; exceptions require explicit source review rather than disabled diagnostics.
 
 Prose lint reports located errors and review warnings. `--warnings-as-errors` or repository `--strict` elevates warnings for strict qualification. Scoped plan validation avoids rewriting unrelated current-state prose.
 
@@ -59,7 +65,7 @@ The neutral Worker journal fixture is validated by the C# application suite, inc
 
 Auth projection fixtures cover precondition ownership/expiry, durable duplicate receipts, uncertain scores, positive alias reconciliation, write refusals, quota/credential pauses, simultaneous dispatch attempts, reservation failure, automated spacing, Daily preconditions and scheduled retention. Workspace fixtures cover reviewed adoption, metadata changes between preview and confirmation, deletion/edit conflicts, immutable accepted intent and ordered create-then-complete composition through the real private gateway. Every outbound Habitica response is synthetic.
 
-The application suite validates current and legacy Worker journal fixtures and retained accepted task snapshots. Browser IndexedDB qualification rejects edits to accepted intent and verifies the intent after reload. Executor fixtures qualify persisted ownership, receipt-only restart recovery and paced dispatch orchestration. Enabled deployment remains a separate rollout lane.
+The application suite validates current and legacy Worker journal fixtures and retained accepted task snapshots. Browser IndexedDB qualification rejects edits to accepted intent and verifies the intent after reload. Executor fixtures qualify persisted ownership, receipt-only restart recovery and paced dispatch orchestration. Current deployed activation requires separate observed release evidence.
 
 ## Hosted execution qualification
 
@@ -71,7 +77,7 @@ The isolated browser storage fixture verifies the frozen authority and immutable
 
 ## Workspace access renewal qualification
 
-Synthetic tests require explicit renewal consent in connected Settings, reject a late renewal after tab access is forgotten, and preserve an uncertain original command across failed workspace reload and successful receipt recovery. The recovery fixture asserts one accepted identity and one canonical task. Rebuilt default Settings/Tasks browser checks preserve the disabled shipped cloud boundary.
+Synthetic tests require explicit renewal consent in connected Settings, reject a late renewal after tab access is forgotten, and preserve an uncertain original command across failed workspace reload and successful receipt recovery. The recovery fixture asserts one accepted identity and one canonical task. Rebuilt default Settings/Tasks browser checks preserve the disabled source-default cloud boundary.
 
 Setting `HABITICA_BROWSER_EVIDENCE` for the focused component tests exports synthetic HTML rendered by the actual Razor components. Serve the exported HTML with the current app and pinned MudBlazor styles on an isolated local origin for narrow-screen layout inspection. The exported fixtures qualify static layout; component tests qualify interactions, and the ordinary rebuilt app qualifies default routing and feature guards. The fixture output contains no real account data or credentials.
 
@@ -91,19 +97,19 @@ The suite qualifies partial updates, Todo and dated Daily completion, wrong-kind
 
 PWA component/client fixtures require explicit consent and destructive confirmation, hide leader-only actions from members, encode untrusted labels, discard late account responses, use management identity for own exports after disconnect and strip unknown fields from exported records. The opt-in `HABITICA_BROWSER_EVIDENCE` fixture exports actual Razor markup for phone-width layout measurement; model/host activation and live multi-user behavior remain separate rollout checks.
 
-The gated Workspace lifecycle fixture uses a fixture-only Worker and native service bindings. The gate buffers the synthetic identity response and shares boolean state; each request owns its polling promises and has a ten-second deadline. Eight concurrent focused runs and the full parallel Auth and Workspace suites retain all five stale-operation rejection and replacement-session success assertions. Failure diagnostics expose only status and identity-consistency booleans. The fixture qualifies local lifecycle behavior; synthetic transport failures do not establish a production session defect.
+The gated Workspace lifecycle fixture uses a fixture-only Worker and native service bindings. The gate buffers the synthetic identity response and shares boolean state; each request owns separate polling promises and has a ten-second deadline. Concurrency stress and the current Auth/Workspace checks require all five stale-operation rejection and replacement-session success assertions. Failure diagnostics expose only status and identity-consistency booleans. The fixture qualifies local lifecycle behavior; synthetic transport failures do not establish a production session defect.
 
 ## Private spell gateway qualification
 
 The Auth `spells.test.mjs` fixture uses synthetic accounts, OAuth grants and private Miniflare bindings. The fixture verifies allowlist/level/class/mana, stale hashes and party changes, immutable attempt receipts, overlapping requests, cross-profile denial, quota, revocation, storage failure and shared task/spell unknown-effect fencing. No real Habitica request is made. The neutral `tests/fixtures/workspace/spell-safety-v1.json` is consumed by Rules tests and Worker tests: agreement covers metadata and single-cast affordability; the server adds health, classes-enabled and three-cast limits. The fixture does not claim formula or full execution parity.
 
-Build Auth before the Auth fixture suite so the tests exercise the changed bundle. All Worker builds/type checks, full Auth/Workspace suites and the app build/.NET suites qualify this private milestone. Default integration stays disabled; no new PWA control or live host activation is introduced. Workspace prepared-action qualification is described below.
+Build Auth before the Auth fixture suite so the tests exercise the changed bundle. Run source-matched Worker builds/type checks and affected Auth/Workspace/application regressions before claiming integration qualification. Checked-in integration defaults remain disabled; selected production flags and live host evidence remain separate. Workspace prepared-action qualification is described below.
 
 ## Reviewed spell action qualification
 
 Workspace `spells.test.mjs` runs actual MCP SDK requests through OAuth, Workspace/D1 and the private Auth gateway using synthetic accounts. Cases cover a three-cast confirmation, explicit partial refusal, changed state between casts, two-minute expiry, token rotation and single use, duplicate/concurrent execution, namespace/consent/epoch revocation, isolated history export/deletion, independent scope gates and failed durable dispatch persistence. Unknown spell records continue to fence task execution after deleting expired Auth operational receipts. A lost acknowledgement is resolved through lookup only, with the remainder stopped.
 
-The separate `spell-deadline.test.mjs` delays one buffered synthetic private response by twenty-one seconds and verifies known partial success, no second dispatch and a separate unsuccessful refresh indicator. Buffering the response before the gate avoids parking a live Miniflare stream across concurrent Worker calls. This transport fixture does not simulate or qualify real Cloudflare network latency. Both files retain the normal thirty-second per-file test deadline. All three Worker builds, Auth/Workspace suites, the app build and .NET suites run for this milestone. Default Settings still displays unavailable cloud integration controls. No real enrollment or upstream effect occurs.
+The separate `spell-deadline.test.mjs` delays one buffered synthetic private response by twenty-one seconds and verifies known partial success, no second dispatch and a separate unsuccessful refresh indicator. Buffering the response before the gate avoids parking a live Miniflare stream across concurrent Worker calls. The transport fixture does not simulate or qualify real Cloudflare network latency. Both files retain the normal thirty-second per-file test deadline. Use matching Worker bundles and current affected Auth/Workspace/application checks. Settings availability depends on selected public configuration and consent. No real enrollment or upstream effect occurs.
 
 ## Overlapping page refresh qualification
 
@@ -117,7 +123,7 @@ Auth read/projection and plugin/hosted-Daily fixtures model top-level `needsCron
 
 Auth `cron.test.mjs` exercises synthetic OAuth/private bindings, fresh account/day/task/checklist/quest facts, independent scopes, replay/overlap, quota, durable reservation failure, credential/grant revocation and both directions of shared gameplay fencing. A failed response followed by advanced lastCron and needsCron=false remains unknown, fences new task/spell effects and performs no replay. Missing original receipts remain uncertain. Source-shape checks use full top-level readiness, not synthetic flags.
 
-`tests/fixtures/workspace/cron-day-v1.json` is consumed by Domain and Worker cases. The fixture covers before/at boundaries, positive/negative and quarter-hour offsets, and leap-day rollover. Scope is fixed-offset day key/start only, without server timezone-transition, Cron eligibility or effect-formula parity. All three Worker builds, full Auth/Workspace suites and the app build/.NET suites qualify this private milestone. Parallel Worker file scheduling retains every explicit concurrency assertion. Default Cron capability is unavailable. No real Habitica calls occur.
+`tests/fixtures/workspace/cron-day-v1.json` is consumed by Domain and Worker cases. The fixture covers before/at boundaries, positive/negative and quarter-hour offsets, and leap-day rollover. Scope is fixed-offset day key/start only, without server timezone-transition, Cron eligibility or effect-formula parity. Matching Worker builds and current affected Auth/Workspace/application checks are prerequisites for integration qualification. Parallel Worker file scheduling retains every explicit concurrency assertion. Default Cron capability is unavailable. No real Habitica calls occur.
 
 ## Reviewed Cron behavior qualification
 
@@ -147,32 +153,26 @@ App HTTP/component controls cover authenticated bounded status, malformed/missin
 
 ## Complete MCP read permission challenges
 
-The MCP read guard advertises both base profile access and the selected read-tool scope. The actual Auth/MCP fixture verifies denial of a profile-only grant, fresh consent using exactly the advertised scopes and successful account status retrieval. The failed missing-profile control remains bounded historical evidence. No write permission or live host qualification follows from the read upgrade.
+The MCP read guard advertises both base profile access and the selected read-tool scope. The actual Auth/MCP fixture verifies denial of a profile-only grant, fresh consent using exactly the advertised scopes and successful account status retrieval. Negative controls must reject grants missing the required base profile scope. No write permission or live host qualification follows from the read upgrade.
 
-## E14 local dev qualification matrix
+## Local and hosted boundary checks
 
-Status: local checks pass. [Structured evidence](../history/validation/e14-local-qualification.json) records source fingerprints, suite counts and scope. All account/upstream fixtures use synthetic identities and responses.
-
-| Boundary | Passing local coverage | Remaining live gate |
+| Boundary | Required synthetic assertions | Separate hosted/device gate |
 | --- | --- | --- |
-| Dev defaults and legacy data | Isolated config generation, complete frontend merge/restoration, disabled effects, encrypted sync/party Functions and legacy portability fixtures | Cloudflare resource ownership, published configuration and HTTPS |
-| Adoption and backup | Canonical identities/history retained; invalid imports and conflicting existing workspaces rejected; adoption requires review | Real account adoption and browser storage durability |
-| Interrupted ownership and storage | Freeze failure rejects upload, lost acknowledgement retains identity, restored in-flight effects remain unknown, CAS rejects stale writes | Physical device eviction and mixed installed versions |
-| Hosted commands and effects | Concurrent deduplication, epoch isolation, revoke during waits, original receipt recovery, unknown task/spell/Cron fences | Selected real-effect lanes after initial pilot; live Cron stays off |
-| Party and management | Verified membership, leader/member permissions, separate consent, contributor removal/export, revocation and guarded key operations | Consenting multi-user checks and provider retention/log review |
-| Client authorization | Codex-shaped CIMD loopback ports with exact callback/issuer/audience, refresh and complete read-scope upgrade | Actual ChatGPT/Codex desktop OAuth, plugin installation and skill activation |
-| Responsive and accessible controls | Five real-Razor fixtures at 320/390/1024 pixels plus 320 pixels with 200% root text; all twenty cases fit without clipped controls; native keyboard focus reaches saved-work status | Real iOS/Android, assistive technology and end-to-end keyboard flows |
+| Configuration and legacy data | Public override merge/restoration, exact feature-profile availability, legacy encrypted-sync/party and portability fixtures | Selected account/resources, published settings, HTTPS and real data continuity |
+| Adoption and backup | Exact IDs/history, populated-target conflicts, reviewed transfer, frozen originals and original receipt recovery | Owner browser inventory, real account consent and storage durability |
+| Interrupted execution | CAS, epochs, revoke during waits, paced dispatch, deduplication and durable task/spell/Cron unknown fences | Explicit real-effect scope; live Cron requires separate authorization |
+| Party and management | Membership, role checks, independent consent, contributor cleanup, revocation and guarded key operations | Consenting multi-user tests and provider log/backup review |
+| Client authorization | Exact callback/issuer/audience, profile/tool scopes, refresh/recovery and cross-profile isolation | Actual ChatGPT/Codex OAuth, loaded package/discovery and model activation |
+| Responsive and accessible controls | Current Razor interactions plus published-asset light/dark, phone/desktop, enlarged-text, focus and seeded detector assertions | Real iOS/Android, assistive technology and complete keyboard/touch journeys |
 
-Local suites pass 102 Auth, 82 Workspace, 545 .NET and 22 Functions/configuration tests. Forty-three focused UI controls supplement full .NET coverage. App release publication, three Worker dry-run builds and generated Pages Functions compilation pass. Static fixture layout and one native focus observation provide bounded accessibility evidence; component tests qualify interactions separately. No hosted deployment, real enrollment, live Habitica effect or device acceptance follows from local checks.
+[Recorded E14 results](../history/validation/e14-local-qualification.json) identify historical sources and bounded assertions; current acceptance requires source-matched reruns. Local fixture results grant no hosted deployment, real enrollment, live Habitica effect or device acceptance.
 
+## Native client and operational-log qualification
 
-## Native Codex owner pilot
+Native tool calls, ChatGPT behavior and packaged-skill installation require independent observations. Read reuse across a long interval can establish only observed continuity; hidden refresh exchanges, browser PKCE details, acknowledgement loss, denied-write scopes and grant revocation require separate controls. A second consenting account and real mobile devices remain broader release prerequisites.
 
-[Native pilot evidence](../history/validation/codex-native-owner-pilot.json) records the actual Codex MCP surface, six account/task read tools, immediate repeated reads, successful native reuse after 617 seconds with stable profile identity and one explicitly approved Companion-only Todo save. The test task and original command receipt remain available, with Habitica projection not requested and zero confirmed game effects. Original-receipt lookup passes; simulated acknowledgement loss, denied-write scopes and real grant revocation require separate checks.
-
-A bounded Auth live tail captures the application read-log field schema and status only. The log parser discards provider transport envelopes, URLs, request headers, account data and payloads before persistence; the tail process exits gracefully. [Cloudflare real-time log documentation](https://developers.cloudflare.com/workers/observability/logs/real-time-logs/) defines the provider envelope containing request metadata. A successful read sample qualifies only the sampled path; error paths and full production-log coverage remain open.
-
-Native tool execution establishes neither ChatGPT behavior nor packaged-skill installation. A second consenting account and real mobile devices remain release prerequisites. Read reuse across a long interval can establish native session continuity; hidden client refresh exchanges and browser-side PKCE details require separate evidence.
+Operational-log checks retain only sanitized field names, categories, status, duration and bounded counts. Provider transport envelopes, URLs, request headers, account data and payloads must be discarded before persistence. Use a hard deadline and owned-process cleanup for live tails. A successful read sample covers only the sampled path; error paths and complete provider logging require separate evidence. [Recorded native pilot evidence](../history/validation/codex-native-owner-pilot.json) preserves the original source/account observations without establishing current acceptance.
 
 ## Durable admission qualification
 
@@ -260,7 +260,7 @@ Local native restore/completion tests block and reopen dependant eligibility wit
 
 ## User permissions versus agent test isolation
 
-Synthetic API cases cover all sixteen supported class spells in normal and explicit test profiles, with targeted spell identities retained. Ordinary API defaults permit existing party-management/manual Cron routes, while explicit test profiles reject those routes before transport. Every profile rejects party departure, including encoded route variants. Controller regressions qualify task-targeted and party spells in both profiles, retaining ordinary freshness/mana and sequential execution behavior. Razor regressions cover every class in both profiles without a test-only spell disable reason.
+Synthetic API cases cover all sixteen supported class spells in normal and explicit test profiles, with targeted spell identities retained. Ordinary API defaults permit existing party-management/manual Cron routes, while explicit test profiles reject the party-management/manual Cron routes before transport. Every profile rejects party departure, including encoded route variants. Controller regressions qualify task-targeted and party spells in both profiles, retaining ordinary freshness/mana and sequential execution behavior. Razor regressions cover every class in both profiles without a test-only spell disable reason.
 
 Frontend source and deployment-generator checks require normal user permissions. The production override is inspected before the release artifact build; public settings and asset hashes are compared after publication. Public verification performs no authenticated Habitica operation and supplies no real gameplay or multi-user qualification.
 
@@ -308,9 +308,9 @@ Browser qualification uses synthetic Razor output and the production colorScheme
 
 ## Tab connection recovery regression controls
 
-WorkspaceCloudClient.ConnectionStatusTests and ChatGptIntegrationClientTests cover independent fresh clients, explicit recovery without linking/grant creation, retained server state, expired management access, missing executor flags, malformed identity and late session replies. SettingsPageTests and WorkspaceOperationsTests cover consent gating, unknown status copy, failed refresh clearing prior success, recovered executor state, read-only checks and account replacement. AppSessionControllerTests verifies direct account replacement forgets tab management without reenrollment. These checks use synthetic HTTP/component fixtures and contain no live credentials.
+WorkspaceCloudClient.ConnectionStatusTests and ChatGptIntegrationClientTests cover independent fresh clients, explicit recovery without linking/grant creation, retained server state, expired management access, missing executor flags, malformed identity and late session replies. SettingsPageTests and WorkspaceOperationsTests cover consent gating, unknown status copy, failed refresh clearing prior success, recovered executor state, read-only checks and account replacement. AppSessionControllerTests verifies direct account replacement forgets tab management without reenrollment. The connection checks use synthetic HTTP/component fixtures and contain no live credentials.
 
-Synthetic real-Razor output is exported through HABITICA_BROWSER_EVIDENCE for published CSS and light/dark layout inspection. Such frames qualify rendering separately from component event tests; actual Mac/iOS, hosted enrollment and background dispatch remain outside this root validation.
+Synthetic real-Razor output is exported through HABITICA_BROWSER_EVIDENCE for published CSS and light/dark layout inspection. Such frames qualify rendering separately from component event tests; actual Mac/iOS, hosted enrollment and background dispatch remain outside synthetic connection validation.
 
 
 ## Settings session action geometry
@@ -416,7 +416,7 @@ Lost local/cloud acceptance and cloud preparation recover the original receipt/r
 
 WorkspaceHabiticaCoveragePolicyTests cover every task kind, full child, completed archive, retained identity, missing/pending/uncertain mapping and all six organization kinds without mutating canonical data. TodoWorkspacePresentationTests checks cache reuse, updated coverage after save and workspace isolation. TodoTaskPanelTests checks missing-task and missing-tag warnings, zero incidental cloud acceptance and persistence of Urgent separately from game difficulty. Correspondence reporting does not qualify automatic mapping, upstream tag support, historical reward backfill or legacy source retirement; the five integration P0 entries retain the unresolved behavior.
 
-The solution suite passes 967 tests, followed by 24 focused panel/presentation checks for final warning copy. The packaged workflow suite passes both SDK/schema controls with synthetic accounts. Local rendered fixtures use production styles across 360/390/430/768/1024/1200-pixel widths, six deterministic schemes and 100/200-percent text. Structured measurements and source fingerprints reside in projection-policy-audit.json. Physical devices, assistive technologies, installed-host skill updates and new live effects remain outside the audit evidence.
+Run current solution and focused panel/presentation checks for correspondence warnings, plus the packaged SDK/schema controls with synthetic accounts. Local rendered fixtures use production styles across 360/390/430/768/1024/1200-pixel widths, six deterministic schemes and 100/200-percent text. Structured measurements and source fingerprints reside in projection-policy-audit.json. Physical devices, assistive technologies, installed-host skill updates and new live effects remain outside the audit evidence.
 
 ## Projection-only repair coverage
 
@@ -456,7 +456,7 @@ An unaccepted stored preview superseded by current required-projection policy re
 
 The shared tag-projection-v1 fixture exercises all six group kinds with same-name collisions, pending/confirmed/unknown states, archived/removed metadata, explicit membership removal, empty/partially confirmed membership, per-member original receipts, historical target IDs, stale source revisions and old exports. Negative cases cover duplicate tag/group/entity/member IDs, wrong aliases/kinds, invalid owner, malformed evidence, missing collections, unsupported state and confirmed records without original evidence or remote identity. Both C# and Worker parsers consume the same cases and round-trip full journals without game commands/events.
 
-Coverage tests distinguish exact expected owner, foreign/missing owner, stored identity, pending/review counts and stale or changed task membership. Domain and application tests retain accepted organization hashes/receipts across additive ledger storage, logical removal, export, paused restore and frozen handoff. No native-to-Habitica execution or actual account mutation is qualified by the model milestone. Layout/styles are unchanged; dedicated tag UI and live/device checks remain separate.
+Coverage tests distinguish exact expected owner, foreign/missing owner, stored identity, pending/review counts and stale or changed task membership. Domain and application tests retain accepted organization hashes/receipts across additive ledger storage, logical removal, export, paused restore and frozen handoff. Model fixtures establish no native-to-Habitica execution or actual account mutation. Layout/styles are unchanged; dedicated tag UI and live/device checks remain separate.
 
 
 ## Tag gateway qualification
@@ -547,7 +547,7 @@ Typed browser-client controls verify explicit Notes consent, no automatic upload
 
 ### Notes agent contract controls
 
-The actual MCP SDK exercises advertised Notes schemas, separate scopes, exact clothing measurements and family/birthday retrieval, full Markdown preservation, partial edits/appends and verified replacement ranges. Ambiguous duplicate titles expose multiple exact IDs; unknown target selectors fail. Malicious note text remains returned data with no automatic dispatch. Preview before/after values expose conflicting facts without changing stored content before acceptance. These controls qualify server/tool behavior and packaged guidance, not an actual model decision.
+The actual MCP SDK exercises advertised Notes schemas, separate scopes, exact clothing measurements and family/birthday retrieval, full Markdown preservation, partial edits/appends and verified replacement ranges. Ambiguous duplicate titles expose multiple exact IDs; unknown target selectors fail. Malicious note text remains returned data with no automatic dispatch. Preview before/after values expose conflicting facts without changing stored content before acceptance. The Notes SDK controls qualify server/tool behavior and packaged guidance, not an actual model decision.
 
 Response-loss injection forwards real acceptance before withholding the acknowledgement; original receipt/preparation recovery and repeated acceptance preserve one append. Cross-profile, stale, expired and revoked previews refuse. Scheduled expiry and exact purge remove pending body copies. Package validation covers all six skills and generated identity descriptors. Real ChatGPT/Codex discovery, fresh-chat invocation and interpretation remain unqualified.
 
@@ -560,7 +560,7 @@ The matching-source solution passes1168 tests; final focused Notes controls pass
 
 ### Project Notes qualification
 
-NotesProjectPanelTests exercises browser/cloud create-in-project, attach/move/detach reviews, exact duplicate-name identities, retained association versions, unchanged Unicode/CRLF Markdown, combined text/trash/project/unassigned pages beyond twenty results, stale lifecycle labels, unavailable Workspace filters, private drafts across hiding/navigation, account changes, stale reviews, original acknowledgement-loss recovery and separate cloud consent. Archived project context disables creation while retaining existing Notes. Project-only access renders no private browser title or snippet. Existing Notes, hierarchy, organization and navigation regressions retain their original responsibilities.
+NotesProjectPanelTests exercises browser/cloud create-in-project, attach/move/detach reviews, exact duplicate-name identities, retained association versions, unchanged Unicode/CRLF Markdown, combined text/trash/project/unassigned pages beyond twenty results, stale lifecycle labels, unavailable Workspace filters, private drafts across hiding/navigation, account changes, stale reviews, original acknowledgement-loss recovery and separate cloud consent. Archived project context disables creation while retaining existing Notes. Project-only access renders no private browser title or snippet. Existing Notes, hierarchy, organization and navigation regressions retain the original suite responsibilities.
 
 The final local solution passes1441 tests; the final focused route/controller selection passes74 tests and Release publication succeeds. Rendered qualification covers33 actual Razor fixtures on /notes and /todo/projects across360/390/430/768/1024/1200-pixel widths, Gryphy Light, Gryphy Dark and Obsidian Glow, at100/200-percent text:1188 cases with zero geometry, contrast, primary-target or harness errors. The lowest measured enabled-text contrast is5.12. Seeded geometry/contrast controls detect overflow, overlap and unreadable text. Native Tab traversal in the200-percent Obsidian Glow fixture exposes a visible three-pixel focus outline. Paginated library rows grow with long titles rather than clipping controls inside a short nested scroll region. Compact source/evidence resides in .skill-tree/history/validation/notes-project-ui/result.json; large synthetic fixtures and logs reside in ignored .skill-tree/artifacts/notes-project-ui. Real private Notes, hosted enrollment, installed host behavior, physical devices and assistive technologies remain unqualified.
 
@@ -576,7 +576,7 @@ Synthetic component checks cover shared source selection, distinct Workspace con
 
 `AppNavMenuTests` verify the permanent nested menu, every working destination, selected-route state and signed-out absence. `TodoCategoryPageTests` render Habits, Dailies, Tasks and Today with one shared synthetic workspace; kind filters, immediate category capture, score/complete controls, hierarchy and the selected-day create link are present without preparation or acceptance. Existing Today and hierarchy interaction suites retain exact original-receipt and date behavior. Rendered fixtures cover the new menu and four category pages together with Projects, Statistics and Sync across supported viewport, theme and text settings. Browser fixtures are synthetic; hosted enrollment, physical-device touch and assistive-technology behavior remain separate checks.
 
-The final local solution run passed all suites, including 735 WebApp tests, and the Release WebApp publish succeeded. Two rendered Todo matrix batches covered nine fixtures in 756 cases: six viewport widths, seven themes including Gryphy Light and the updated Obsidian Glow, and normal/enlarged text. No geometry, contrast, harness or unqualified-surface errors remained. Manual 360px visual inspection found category labels overlapping at 200-percent text despite a clean initial geometry result; flex wrapping removed the overlap in both light and Obsidian Glow. Seeded controls still detect overflow, overlap and contrast faults. See `.skill-tree/history/validation/obsidian-glow/result.json` and `.skill-tree/history/validation/todo-navigation/result.json`. Physical devices, production sessions and assistive technologies were not exercised for this milestone.
+Todo navigation checks require matching Release assets, current component fixtures and the shared rendered matrix. Inspect category-label wrapping manually at 360px and 200-percent text in readable light and `obsidian-glow`, alongside geometry, contrast and seeded detector controls. Source-bound results reside in `.skill-tree/history/validation/obsidian-glow/result.json` and `.skill-tree/history/validation/todo-navigation/result.json`; the recorded results supply no current physical-device, production-session or assistive-technology qualification.
 
 ## Companion discovery metadata qualification
 
@@ -600,7 +600,7 @@ QualificationCase/QualificationTimer fixtures cover exact identity, stale/late m
 
 ## Foreground reminder controls
 
-Run tests/Functions/foreground-reminders.test.mjs for fake-clock production scheduling and serialized production storage transitions, alongside existing gear-recovery-storage and pwa-push controls. WorkspaceReminderCuesTests checks canonical intent and stable schedule identity; TodoReminderPanelTests covers separate opt-ins, due/future visibility, denied/unavailable/uncertain states and account callback fences. App session browser clearing includes the reminder store. tests/browser-qualification/reminder-storage.html is a disposable-origin real IndexedDB transaction control using fake notification APIs. Captured Today fixtures require normal/enlarged text in light/dark including Obsidian across phone/desktop widths, detector negatives and visible focus. These do not qualify actual OS delivery, permission prompts, assistive technology or physical devices.
+Run tests/Functions/foreground-reminders.test.mjs for fake-clock production scheduling and serialized production storage transitions, alongside existing gear-recovery-storage and pwa-push controls. WorkspaceReminderCuesTests checks canonical intent and stable schedule identity; TodoReminderPanelTests covers separate opt-ins, due/future visibility, denied/unavailable/uncertain states and account callback fences. App session browser clearing includes the reminder store. tests/browser-qualification/reminder-storage.html is a disposable-origin real IndexedDB transaction control using fake notification APIs. Captured Today fixtures require normal/enlarged text in light/dark including Obsidian across phone/desktop widths, detector negatives and visible focus. The reminder fixtures do not qualify actual OS delivery, permission prompts, assistive technology or physical devices.
 
 ## Scheduled push controls
 
@@ -669,14 +669,14 @@ Notes project qualification retains unchanged notes-wire-v1 and adds notes-proje
 
 ## MCP protocol migration qualification
 
-The pinned server/core/client SDK2.4.0 and genuine legacy SDK1.32.1 fixtures exercise matching MCP/Auth/Workspace dry bundles. The Auth suite passes209 tests, including six modern/legacy cases for discovery, automatic/pinned negotiation, complete tool/schema equality, interpreter-backed Worker schema validation, Notes acceptance with lost acknowledgement and cross-era original recovery, malformed/unsupported envelopes and standard headers, content types, audience/Origin/scopes/body bounds, concurrent owners and changed grant epochs. The Workspace suite passes713 controls without transport failures; the retained v1 Events prototype passes10 controls. All three Worker type checks and dry-run builds pass with unchanged runtime/configuration pins and no unsafe-eval binding.
+The pinned server/core/client SDK2.4.0 and genuine legacy SDK1.32.1 fixtures exercise matching MCP/Auth/Workspace dry bundles. The Auth protocol fixture covers modern/legacy cases for discovery, automatic/pinned negotiation, complete tool/schema equality, interpreter-backed Worker schema validation, Notes acceptance with lost acknowledgement and cross-era original recovery, malformed/unsupported envelopes and standard headers, content types, audience/Origin/scopes/body bounds, concurrent owners and changed grant epochs. Workspace regressions and the retained v1 Events refusal controls require matching source/build inputs. Run all three Worker type checks and dry bundles with the pinned runtime and no unsafe-eval binding before claiming current local transport acceptance.
 
 Compatibility discovery reports the modern revision explicitly because the SDK public SUPPORTED_PROTOCOL_VERSIONS constant contains legacy revisions only. The exact SDK/package lock, qualified protocol set, build hashes and independent installed-package uncertainty remain separate. Compact source/evidence resides in .skill-tree/history/validation/mcp2-migration/result.json. Hosted activation, callback subscriptions, real event delivery, remote migrations and device/host observation remain unqualified. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns transport and rollback details.
 
 
 ## Callback egress candidate qualification
 
-Build Auth through its existing npm build script before running `node --experimental-strip-types --test --test-concurrency=1 --test-timeout=30000 workers/chatgpt-auth/test/callback-egress.test.mjs`. Run `npm test` from deploy/callback-egress on Node22. The gateway controls cover public/special/mixed address refusal, exact-byte grants, actual local TLS chain/hostname/address checks, redirects, byte limits, deadlines, one-use concurrency, acknowledgement loss and secret-free output. The Worker controls use actual synthetic Miniflare/D1 reservations and compose the production gateway with the claim route. Dev preparation must retain CALLBACK_EGRESS_ENABLED=false in both ordinary profiles.
+Build Auth through the existing Auth npm build script before running `node --experimental-strip-types --test --test-concurrency=1 --test-timeout=30000 workers/chatgpt-auth/test/callback-egress.test.mjs`. Run `npm test` from deploy/callback-egress on Node22. The gateway controls cover public/special/mixed address refusal, exact-byte grants, actual local TLS chain/hostname/address checks, redirects, byte limits, deadlines, one-use concurrency, acknowledgement loss and secret-free output. The Worker controls use actual synthetic Miniflare/D1 reservations and compose the production gateway with the claim route. Dev preparation must retain CALLBACK_EGRESS_ENABLED=false in both ordinary profiles.
 
 Retain function bundling, Auth type/dry build, negative controls, source fingerprints and profile results under .skill-tree/history/validation/callback-egress-netlify. The [callback egress contract](callback-egress.md) and hosted profile require separate selected-account publication and owned DNS/TLS fixtures. Local loopback TLS and service documentation never establish Netlify DNS/TLS behavior, provider logging, cold starts or a rendered chat reply.
 
@@ -695,7 +695,7 @@ ConnectionRecoveryTests and the WebApp integration suite cover typed existing-on
 
 ### Unified Workspace consumer checks
 
-The coordinated `UnifiedWorkspaceFlowTests` journey verifies browser capture, populated-target review, preserved task/Notes identities, conflict acknowledgement, dirty drafts, response loss, local acknowledgement loss and new-session recovery. `unified-webapp-acceptance.log` records 969 passing WebApp tests. `unified-built-runtime-controls.log` records 46 D1/MCP/Notes/build-identity checks; `unified-auth-controls.log` records 30 OAuth/vault/recovery checks. Final built-in light/dark phone/desktop normal/enlarged text measurements and screenshots reside alongside `rendered-matrix-summary.json`. Rendered checks do not establish a live private browser migration or physical-device qualification.
+The coordinated `UnifiedWorkspaceFlowTests` journey verifies browser capture, populated-target review, preserved task/Notes identities, conflict acknowledgement, dirty drafts, response loss, local acknowledgement loss and new-session recovery. Source-bound component, D1/MCP/Notes/build-identity and OAuth/vault/recovery results reside in `.skill-tree/history/validation/unified-workspace/`. The corresponding `rendered-matrix-summary.json` identifies measured light/dark, phone/desktop and normal/enlarged-text fixtures. Current acceptance requires matching sources and assets. Rendered checks do not establish a live private browser migration or physical-device qualification.
 
 ## Skill Tree Web profile
 

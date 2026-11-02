@@ -17,11 +17,11 @@ The executable pack is [task-journeys.json](../../tests/browser-qualification/ta
 | Sync | Inspect current source and exact original command; unknown/missing receipts never enable replacement dispatch. | TodoSyncPageTests |
 | Diagnostic recovery | Preview sanitized attachment before copy/download; failed local reads retain explicit unavailability. | LiveTestsPageTests and AppSessionControllerTests |
 
-Current native restoration supports eligible completed, nonarchived, unlinked Todos only. Archived restoration and Daily occurrence correction have separate backend/MCP contracts; History UI exposure and reviewed Habitica unchecking retain separate task contracts. A fixture restore never qualifies those future capabilities or an inverse reward.
+Current native restoration supports eligible completed, nonarchived, unlinked Todos only. Archived restoration and Daily occurrence correction have separate backend/MCP contracts; History UI exposure and reviewed Habitica unchecking retain separate task contracts. A fixture restore establishes neither a separate recovery workflow nor an inverse reward.
 
 ## Reproduction
 
-Run from the repository root with the existing .NET dependencies. These commands use synthetic data and local output only. Use a new output directory for each run. Build/publish precedes browser staging; no remote deployment is involved.
+Run from the repository root with the existing .NET dependencies. The commands use synthetic data and local output only. Use a new output directory for each run. Build/publish precedes browser staging; no remote deployment is involved.
 
 ```sh
 dotnet publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release -o /tmp/habitica-journey-publish -m:1 -nodeReuse:false
@@ -30,9 +30,9 @@ python3 tests/browser-qualification/task-journeys.py --captured /tmp/habitica-jo
 python3 tests/browser-qualification/prepare.py --fixtures /tmp/habitica-journey-selected --published /tmp/habitica-journey-publish/wwwroot --serve-seconds 590 --port 17960
 ```
 
-Give each external command an independent deadline and cleanup reserve under the repository execution rules. Open the local matrix.html URL while its bounded server is running. Run all sixteen selected fixtures: six widths, seven deterministic themes (including Gryphy Light, Gryphy Dark and Obsidian Glow), 100/200-percent text. Keep the existing five-second case and 300-second matrix limits. If a prerequisite expires, retain measured cases and restart only the missing cases with a fresh legitimate server. Never report unavailable measurements as passing.
+Give each external command an independent deadline and cleanup reserve under the repository execution rules. Open the local matrix.html URL while the bounded fixture server is running. Run all sixteen selected fixtures: six widths, seven deterministic themes (including Gryphy Light, Gryphy Dark and Obsidian Glow), 100/200-percent text. Keep the existing five-second case and 300-second matrix limits. If a prerequisite expires, retain measured cases and restart only the missing cases with a fresh legitimate server. Never report unavailable measurements as passing.
 
-Export Raw measurements, coverage.json and asset-fingerprints.json; preserve source hashes, TRX, command deadlines and tool wall time. Run seeded failures and confirm geometry and contrast detectors report their intended errors. Exercise native Tab/Enter/Space in separately opened fixtures and record focus/disclosure behavior independently of component event assertions. Screenshots supplement measurements. Disabled controls are geometry-checked and reviewed visibly; automatic text contrast excludes disabled text, so it supplies no disabled-contrast ratio.
+Export Raw measurements, coverage.json and asset-fingerprints.json; preserve source hashes, TRX, command deadlines and tool wall time. Run seeded failures and confirm geometry and contrast detectors report the intended seeded errors. Exercise native Tab/Enter/Space in separately opened fixtures and record focus/disclosure behavior independently of component event assertions. Screenshots supplement measurements. Disabled controls are geometry-checked and reviewed visibly; automatic text contrast excludes disabled text, so automatic text contrast supplies no disabled-contrast ratio.
 
 ## Observation form
 
@@ -50,7 +50,7 @@ Copy one row per journey, state and execution venue. Leave missing observations 
 
 ## Human and device handoff — all unrun
 
-These rows remain requirements of T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The owner explicitly deferred that gate; preparation grants no account/device operation scope.
+The observation rows remain requirements of T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The owner explicitly deferred the release gate; preparation grants no account/device operation scope.
 
 | Lane | Required inputs and observation | Status |
 | --- | --- | --- |
@@ -62,6 +62,6 @@ These rows remain requirements of T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The ow
 | Authenticated Todoist and Things | Authorized existing product sessions/platform/version and synthetic comparison tasks; capture, schedule versus deadline, complete/restore and recurrence observations. No new account or purchase implied | unrun |
 | Two accounts and hosts | Two consenting testers and selected ChatGPT/Codex versions, existing grants/scopes, isolation/revocation/interruption checks from the release matrix | unrun |
 
-Public documentation was rechecked on 2026-10-27: [Todoist Quick Add](https://www.todoist.com/help/todoist/features/use-task-quick-add-in-todoist-va4Lhpzz) supports title-first capture and optional details; [Things scheduling](https://culturedcode.com/things/support/articles/2803579/) distinguishes start dates and deadlines. These are documented workflow references only. They supply no authenticated competitor observation or usability comparison.
+Public documentation was rechecked on 2026-10-27: [Todoist Quick Add](https://www.todoist.com/help/todoist/features/use-task-quick-add-in-todoist-va4Lhpzz) supports title-first capture and optional details; [Things scheduling](https://culturedcode.com/things/support/articles/2803579/) distinguishes start dates and deadlines. The external pages are documented workflow references only and supply no authenticated competitor observation or usability comparison.
 
-Actual local results reside in [task-journeys/result.json](../history/validation/task-journeys/result.json). The [client release matrix](../../plugin/README.md#client-qualification-matrix) retains host qualification; this pack never upgrades its status.
+Actual local results reside in [task-journeys/result.json](../history/validation/task-journeys/result.json). The [client release matrix](../../plugin/README.md#client-qualification-matrix) retains host qualification; the journey pack never upgrades client release status.

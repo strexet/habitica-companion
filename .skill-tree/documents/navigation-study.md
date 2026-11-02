@@ -16,7 +16,7 @@ The [research prototype](../prototypes/navigation-review.html) frames the [navig
 | [TickTick recurrence](https://help.ticktick.com/articles/7055782206349770752) | Recurrence can follow dates or completion; individual instances have separate editing options. | Adapt occurrence-specific controls. Avoid silently converting date recurrence to completion-based recurrence. |
 | [Amazing Marvin recurrence](https://help.amazingmarvin.com/amazing-marvin/recurring-tasks) | Recurrence authoring distinguishes scheduled copies and deadlines and controls occurrence visibility. | Borrow explicit schedule/deadline language; keep Companion occurrences distinct from game rewards. |
 | [Amazing Marvin organization](https://help.amazingmarvin.com/amazing-marvin/categories-projects-and-tasks) | Categories organize areas; projects represent multiple actions. | Adapt optional areas and projects; retain the adopted flat-category and single-primary-project contract. |
-| [Microsoft To Do My Day](https://support.microsoft.com/en-us/todo/my-day-and-suggestions) | Tasks can enter a daily focus list without losing the original list. Unfinished daily selections remain available. | Borrow a focused Today view without deleting unfinished canonical work at midnight. |
+| [`Microsoft To Do My Day`](https://support.microsoft.com/en-us/todo/my-day-and-suggestions) | Tasks can enter a daily focus list without losing the original list. Unfinished daily selections remain available. | Borrow a focused Today view without deleting unfinished canonical work at midnight. |
 | [Asana sections](https://help.asana.com/s/article/sections) | Sections organize tasks inside a project. | Adapt optional project sections without mandatory organization for capture. |
 | [Linear custom views](https://linear.app/docs/custom-views) | Reusable filtered views provide alternative access to existing records. | Borrow saved filters without duplicating canonical tasks. |
 | [Jira boards](https://www.atlassian.com/software/jira/guides/boards/overview) | Boards visualize selected workflow states. | Keep boards optional; reject sprint rituals, staff monitoring and mandatory workflow administration. |
@@ -71,7 +71,7 @@ Detailed UI units can be researched against the contract and existing canonical 
 
 ## Current production navigation and journey pack
 
-The owner Todo structure supersedes the prototype navigation: Today, Habits, Dailies and Tasks are immediately visible under Todo; Projects, Statistics and Sync follow, with Inbox, Planning, Saved lists and History as secondary links. [Current task journey qualification](task-journey-qualification.md) owns exact current-route steps, reproducible synthetic setup, observation forms and explicit device/human handoff. Its local evidence does not close the deferred release gate.
+The owner Todo structure supersedes the prototype navigation: Today, Habits, Dailies and Tasks are immediately visible under Todo; Projects, Statistics and Sync follow, with Inbox, Planning, Saved lists and History as secondary links. [Current task journey qualification](task-journey-qualification.md) owns exact current-route steps, reproducible synthetic setup, observation forms and explicit device/human handoff. The journey pack local evidence does not close the deferred release gate.
 
 ## Historical prototype defaults and advanced behavior
 
