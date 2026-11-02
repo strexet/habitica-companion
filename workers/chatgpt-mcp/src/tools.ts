@@ -74,7 +74,7 @@ function createServer(request: Request, env: McpEnv): Server {
     const paramsSchema={'~standard':{version:1 as const,vendor:'companion-events',validate:(input:unknown)=>input&&typeof input==='object'&&!Array.isArray(input)?{value:input as Record<string,unknown>}:{issues:[{message:'Object parameters required'}]}}};
     for(const method of ['events/list','events/subscribe','events/unsubscribe'])server.setRequestHandler(method,{params:paramsSchema},async params=>{
       const {_meta,...input}=workspaceObject(params);const {response,result}=await forwardEvent(method,input);
-      if(!response.ok)throw new ProtocolError(result.error==='callback_challenge_failed'?-32015:-32602,result.error==='callback_challenge_failed'?'CallbackEndpointError':'Events request refused',{reason:result.error==='callback_challenge_failed'?'challenge_failed':result.error});
+      if(!response.ok)throw new ProtocolError(result.error==='callback_challenge_failed'?-32015:-32602,result.error==='callback_challenge_failed'?'CallbackEndpointError':'Events request refused',{reason:result.error==='callback_challenge_failed'?'challenge_failed':result.error,...(result.original?{original:result.original}:{})});
       return result;
     });
   }

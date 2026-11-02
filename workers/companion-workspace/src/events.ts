@@ -74,6 +74,11 @@ export async function eventLifecycle(env:EventsWorkspaceEnv,who:EventPrincipal,p
  if(path==='/consent')return eventConsent(env,who,String(v.tool),v.arguments);
  if(path==='/context')return (await eventWorkspace(env,who,uuid(v.taskId))).context;
  const id=String(v.subscriptionId);if(!/^[a-f0-9]{64}$/.test(id))throw new WorkspaceError('invalid_subscription',422);
+ if(path==='/subscription-status'){
+  const s=await eventSubscription(env,who,id);if(!s)return null;
+  const latestEvent=await db.prepare('SELECT event_id AS eventId,state,attempt,cue FROM workspace_event_outbox WHERE profile_id=? AND subscription_id=? AND connection_id=? AND access_epoch=? AND grant_epoch=? AND consent_epoch=? ORDER BY created_at DESC,event_id DESC LIMIT 1').bind(who.profileId,id,who.connectionId,s.accessEpoch,who.grantEpoch,s.consentEpoch).first();
+  return {...s,latestEvent};
+ }
  if(path==='/unsubscribe'){
   await eventWorkspace(env,who,undefined,false);
   await db.prepare("UPDATE workspace_event_subscriptions SET state='unsubscribed',revision=revision+1 WHERE profile_id=? AND subscription_id=?").bind(who.profileId,id).run();

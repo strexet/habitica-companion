@@ -11,6 +11,11 @@ import type {CallbackEgressEnv} from './callback-egress.ts';
 export interface EventsAuthEnv extends AuthEnv {CALLBACK_EGRESS_GRANT_KEY?:string;CALLBACK_EGRESS_CLAIM_KEY?:string;CALLBACK_VAULT_KEY_V1?:string;CALLBACK_VAULT_KEY_V2?:string}
 interface Material {url:string;secret:string;consentEpoch?:string;previousSecret?:string;previousUntil?:number}
 interface VaultRow {profile_id:string;task_id:string;subscription_id:string;revision:number;callback_id:string;connection_id:string;grant_epoch:string;consent_epoch:string;operation_id:string;ciphertext:string;iv:string;key_version:string;expires_at:number;request_id:string;state:string;receipt_json:string|null}
+class EventLifecycleError extends Error {
+ readonly code:string;readonly status=409;
+ readonly original:{subscriptionId:string;operationId:string;requestId:string|null;revision:number};
+ constructor(code:string,original:EventLifecycleError['original']){super(code);this.code=code;this.original=original;}
+}
 function keyBytes(value:unknown){if(typeof value!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(value))throw new VaultError('events_configuration_unavailable',503);const bytes=decode(value);if(bytes.length!==32||encode(bytes)!==value)throw new VaultError('events_configuration_unavailable',503);return bytes;}
 export function eventsConfiguration(env:EventsAuthEnv){
  if(!Boolean(env.EVENTS_ENABLED)||!Boolean(env.CALLBACK_EGRESS_ENABLED)||!env.EVENTS_WORKSPACE)throw new VaultError('events_unavailable',503);
@@ -64,7 +69,7 @@ export async function eventProtocol(env:EventsAuthEnv,who:EventPrincipal,method:
  }
  const operationId=crypto.randomUUID(),callbackId=old?.callback_id??crypto.randomUUID();
  const reserved=await eventsWorkspace<EventSubscription>(env,who,'/reserve',{subscriptionId:id,callbackId,taskId:input.arguments.taskId,operationId,expiresAt:Date.now()+input.ttlMs});
- if(reserved.operationId!==operationId)throw new VaultError('subscription_original_operation_pending',409);
+ if(reserved.operationId!==operationId)throw new EventLifecycleError('subscription_original_operation_pending',{subscriptionId:id,operationId:reserved.operationId,requestId:old?.operation_id===reserved.operationId?old.request_id:null,revision:reserved.revision});
  let material:Material={url:input.url,secret:input.secret,consentEpoch:reserved.consentEpoch};
  if(old?.state==='verified'&&old.connection_id===who.connectionId&&old.grant_epoch===who.grantEpoch){const previous=await decrypt(env,old);if(previous.consentEpoch===reserved.consentEpoch&&previous.secret!==material.secret)material={...material,previousSecret:previous.secret,previousUntil:Math.min(Date.now()+300000,reserved.expiresAt)};}
  const row={profile_id:who.profileId,subscription_id:id,revision:reserved.revision,connection_id:who.connectionId,grant_epoch:who.grantEpoch},encrypted=await encrypt(env,row,material),requestId=crypto.randomUUID(),challenge=encode(crypto.getRandomValues(new Uint8Array(32))),body=JSON.stringify({type:'verification',challenge}),eventId=crypto.randomUUID();
@@ -82,7 +87,7 @@ export async function eventProtocol(env:EventsAuthEnv,who:EventPrincipal,method:
  await env.HABITICA_INTEGRATION_DB.prepare('UPDATE integration_event_callbacks SET state=?,receipt_json=? WHERE profile_id=? AND subscription_id=? AND revision=? AND operation_id=?').bind(receipt.state,JSON.stringify(receipt),who.profileId,id,reserved.revision,operationId).run();
  await currentPrincipal(env,who);
  const final=await eventsWorkspace<EventSubscription>(env,who,verified?'/activate':'/unknown',{subscriptionId:id,revision:reserved.revision,operationId});
- if(!verified||final?.state!=='active')throw new VaultError('callback_challenge_failed',409);
+ if(!verified||final?.state!=='active')throw new EventLifecycleError('callback_challenge_failed',{subscriptionId:id,operationId,requestId,revision:reserved.revision});
  return {id,refreshBefore:new Date(final.expiresAt).toISOString(),cursor:null,truncated:false};
 }
 export async function eventsOperation(request:Request,env:EventsAuthEnv):Promise<Response>{
@@ -97,13 +102,13 @@ export async function eventsOperation(request:Request,env:EventsAuthEnv):Promise
   else if(v.method==='get_event_subscription'){
    const args=workspaceObject(v.params,['subscriptionId']);if(typeof args.subscriptionId!=='string'||!/^[a-f0-9]{64}$/.test(args.subscriptionId))throw new VaultError('invalid_subscription',422);
    const original=await env.HABITICA_INTEGRATION_DB.prepare('SELECT receipt_json FROM integration_event_callbacks WHERE profile_id=? AND connection_id=? AND grant_epoch=? AND subscription_id=? ORDER BY revision DESC LIMIT 1').bind(who.profileId,who.connectionId,who.grantEpoch,args.subscriptionId).first<{receipt_json:string|null}>();
-   result={subscription:await eventsWorkspace(env,who,'/status',args),receipt:original?.receipt_json?JSON.parse(original.receipt_json):null,chatResponse:null};
+   result={subscription:await eventsWorkspace(env,who,'/subscription-status',args),receipt:original?.receipt_json?JSON.parse(original.receipt_json):null,chatResponse:null};
   }else if((eventToolNames as readonly string[]).includes(String(v.method)))result=await eventsWorkspace(env,who,'/consent',{tool:v.method,arguments:v.params});
   else if(['events/list','events/subscribe','events/unsubscribe'].includes(String(v.method)))result=await eventProtocol(env,who,String(v.method),v.params);
   else throw new VaultError('invalid_event_method',422);
   if(v.method==='accept_event_consent'){const r=result as {receipt?:{retiredConsentEpoch?:string;taskId?:string}};if(r.receipt?.retiredConsentEpoch)await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_callbacks WHERE profile_id=? AND task_id=? AND consent_epoch=?').bind(who.profileId,r.receipt.taskId,r.receipt.retiredConsentEpoch).run();}
   return Response.json(result,{headers:{'cache-control':'no-store'}});
- }catch(e){const known=e instanceof VaultError||e instanceof WorkspaceError;return Response.json({error:known?e.code:'events_unavailable'},{status:known?e.status:503,headers:{'cache-control':'no-store'}});}
+ }catch(e){const known=e instanceof VaultError||e instanceof WorkspaceError||e instanceof EventLifecycleError;return Response.json({error:known?e.code:'events_unavailable',...(e instanceof EventLifecycleError?{original:e.original}:{})},{status:known?e.status:503,headers:{'cache-control':'no-store'}});}
 }
 export async function clearEvents(env:AuthEnv,profileId:string,connectionId:string){await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_callbacks WHERE profile_id=? AND connection_id=?').bind(profileId,connectionId).run();}
 export async function eventCallbackMaterial(env:EventsAuthEnv,who:EventPrincipal,subscription:EventSubscription):Promise<Material>{

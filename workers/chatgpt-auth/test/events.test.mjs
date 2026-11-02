@@ -14,7 +14,7 @@ test('separate reviewed task consent, encrypted Auth vault and original determin
  const unsub={name:x.params.name,arguments:x.params.arguments,delivery:{mode:'webhook',url:x.params.delivery.url}};assert.deepEqual(await (await x.call('events/unsubscribe',unsub)).json(),{});assert.deepEqual(await (await x.call('events/unsubscribe',unsub)).json(),{});assert.equal((await x.f.db.prepare('SELECT count(*) n FROM integration_event_callbacks').first()).n,0);
 });
 test('wrong echo and uncertain challenge remain inactive and retain one original identity',async t=>{
- for(const behavior of ['wrong','throw','refuse']){const x=await setup(t,{behavior});await x.consent();assert.equal((await x.call('events/subscribe',x.params)).status,409);assert.equal((await x.call('events/subscribe',x.params)).status,409);assert.equal(x.packets.length,1);const row=await x.f.workspaceDb.prepare('SELECT * FROM workspace_event_subscriptions').first();assert.equal(row.state,'unknown');assert.equal((await x.f.db.prepare('SELECT count(*) n FROM integration_event_callbacks').first()).n,1);}
+ for(const behavior of ['wrong','throw','refuse']){const x=await setup(t,{behavior});await x.consent();const first=await x.call('events/subscribe',x.params);assert.equal(first.status,409);const original=(await first.json()).original;assert.ok(original,'Callback failure must expose original recovery identities');assert.match(original.subscriptionId,/^[a-f0-9]{64}$/);const again=await x.call('events/subscribe',x.params);assert.equal(again.status,409);assert.deepEqual((await again.json()).original,original);const recovered=await x.call('get_event_subscription',{subscriptionId:original.subscriptionId});assert.equal(recovered.status,200);assert.equal((await recovered.json()).receipt.requestId,original.requestId);assert.equal(x.packets.length,1);const row=await x.f.workspaceDb.prepare('SELECT * FROM workspace_event_subscriptions').first();assert.equal(row.state,'unknown');assert.equal((await x.f.db.prepare('SELECT count(*) n FROM integration_event_callbacks').first()).n,1);}
 });
 test('schema, current resource access, independent profiles and changed authority refuse before dispatch',async t=>{
  const x=await setup(t);await x.consent();
@@ -47,7 +47,7 @@ test('authenticated modern MCP discovery and extension methods preserve exact sc
  };
  const discovery=await (await rpc('server/discover')).json();assert.deepEqual(discovery.result.capabilities.events,{});
  const tools=await (await rpc('tools/list')).json();assert.ok(tools.result.tools.some(t=>t.name==='prepare_event_consent'));const events=await (await rpc('events/list')).json();assert.equal(events.result.events[0].name,'task.reminder.due');
- await x.consent();x.setBehavior('wrong');const refused=await (await rpc('events/subscribe',x.params)).json();assert.equal(refused.error.code,-32015,JSON.stringify(refused));assert.equal(refused.error.data.reason,'challenge_failed');assert.equal(x.packets.length,1);
+ await x.consent();x.setBehavior('wrong');const refused=await (await rpc('events/subscribe',x.params)).json();assert.equal(refused.error.code,-32015,JSON.stringify(refused));assert.equal(refused.error.data.reason,'challenge_failed');assert.ok(refused.error.data.original,'MCP callback error must retain original identities');assert.match(refused.error.data.original.subscriptionId,/^[a-f0-9]{64}$/);assert.equal(x.packets.length,1);
 });
 test('unsubscribe racing verification and failed secret cleanup retain a closed resource fence',async t=>{
  let x;x=await setup(t,{onPacket:async()=>{
