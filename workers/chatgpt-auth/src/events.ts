@@ -58,7 +58,7 @@ export async function eventProtocol(env:EventsAuthEnv,who:EventPrincipal,method:
  }
  const context=await eventsWorkspace<EventContext>(env,who,'/context',{taskId:input.arguments.taskId});
  const old=await env.HABITICA_INTEGRATION_DB.prepare('SELECT * FROM integration_event_callbacks WHERE profile_id=? AND subscription_id=? ORDER BY revision DESC LIMIT 1').bind(who.profileId,id).first<VaultRow>();
- if(old?.state==='verified'&&old.consent_epoch===context.consentEpoch&&old.expires_at>Date.now()+Math.max(30000,input.ttlMs-60000)&&old.connection_id===who.connectionId&&old.grant_epoch===who.grantEpoch){
+ if(old?.state==='verified'&&old.consent_epoch===context.consentEpoch&&old.expires_at<=Date.now()+input.ttlMs&&old.expires_at>Date.now()+Math.max(30000,input.ttlMs-60000)&&old.connection_id===who.connectionId&&old.grant_epoch===who.grantEpoch){
   const material=await decrypt(env,old),current=await eventsWorkspace<EventSubscription>(env,who,'/status',{subscriptionId:id});
   if(material.secret===input.secret&&current?.state==='active'&&current.expiresAt>Date.now())return {id,refreshBefore:new Date(current.expiresAt).toISOString(),cursor:null,truncated:false};
  }

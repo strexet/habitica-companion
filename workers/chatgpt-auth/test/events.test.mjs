@@ -69,3 +69,7 @@ test('OAuth Events permission has an independent readable opt-in and preserves s
  assert.match(html,/Reminder events/);assert.match(html,/Can create and stop signed callbacks only for separately reviewed exact-task Events consent/);const control=html.match(/<input[^>]+name="scope"[^>]+value="events.subscriptions.write"[^>]*>/)[0];assert.ok(!control.includes('checked'));assert.ok(!control.includes('disabled'));
  if(process.env.EVENTS_UI_CAPTURE_DIR){const {writeFile,mkdir}=await import('node:fs/promises');await mkdir(process.env.EVENTS_UI_CAPTURE_DIR,{recursive:true});await writeFile(process.env.EVENTS_UI_CAPTURE_DIR+'/consent.html',html,{mode:0o600});await writeFile(process.env.EVENTS_UI_CAPTURE_DIR+'/preview.html',first,{mode:0o600});}
 });
+test('a shorter refresh grants no more than the requested finite lifetime',async t=>{
+ const x=await setup(t);await x.consent();const first=await x.call('events/subscribe',x.params);assert.equal(first.status,200);const original=await first.json(),before=Date.now();
+ const response=await x.call('events/subscribe',{...x.params,ttlMs:60000});assert.equal(response.status,200,await response.clone().text());const refreshed=await response.json();assert.equal(refreshed.id,original.id);assert.ok(Date.parse(refreshed.refreshBefore)<=before+65000,'refresh retained authority beyond the requested one-minute lifetime');
+});
