@@ -1,3 +1,4 @@
+@inject IServiceProvider Services
 @page "/settings"
 @implements IDisposable
 @using System.Text.Json
@@ -65,6 +66,7 @@
     <section class="card-surface settings-card">
         <p class="section-label">Optional connection</p>
         <h2>Codex and ChatGPT</h2>
+        <label class="checkbox-row"><input type="checkbox" checked="@(SessionController.HasChatGptConnection && _integrationStatus?.Succeeded==true)" disabled data-testid="integration-restored-state" /><span>Existing integration verified for this session. Permissions below reflect the last server check.</span></label>
         <p>Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. Codex and ChatGPT receive separate access only after you approve permissions for each client. Browser-only use and private device sync do not require this connection.</p>
         <p>The integration stores credentials until disconnect or profile deletion. Linking codes expire within ten minutes; operational audit metadata is limited to thirty days. Companion does not store conversation text. <a href="/privacy">Privacy and data handling</a></p>
         @if (!SessionController.IsChatGptIntegrationAvailable)
@@ -78,12 +80,13 @@
         else if (!SessionController.HasChatGptConnection)
         {
             <p role="status" data-testid="integration-unverified">@(_integrationDisconnected ? "Disconnected from this tab. Verify the account before checking current server status." : "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.")</p>
-            <p>Verify the account to restore management access. Verification sends the current Habitica credentials to the integration server and can create an encrypted profile if none exists. Existing client permissions are retained; verification grants no new permissions.</p>
+            <p>Saved connection settings restore approved access across sessions. For an older connection without saved recovery settings, restore existing access once. The check uses current Habitica credentials and cannot create a profile or grant new permissions.</p>
+            <MudButton Color="Color.Secondary" data-testid="integration-restore-access" Disabled="@(_integrationBusy || SessionController.State.IsBusy || !Guid.TryParse(SessionController.State.UserId,out _))" OnClick="RestoreIntegrationAsync" Variant="Variant.Filled">Restore existing account, tasks and Notes access</MudButton>
+            <p>For a first connection, approve new credential storage below. This acknowledgement is separate from saved connection state.</p>
             <label class="checkbox-row">
                 <input data-testid="integration-consent" type="checkbox" @bind="_integrationConsent" />
                 <span>I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.</span>
             </label>
-            <MudButton Color="Color.Secondary" data-testid="integration-restore-access" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="RestoreIntegrationAsync" Variant="Variant.Filled">Verify account and restore access</MudButton>
             <MudButton data-testid="integration-enroll" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="EnableIntegrationAsync" Variant="Variant.Filled">Enable agent connection</MudButton>
         }
         else
@@ -158,7 +161,7 @@
         }
     </section>
 
-    <section class="card-surface settings-card"><p class="section-label">Todo connections</p><h2>Task source and sync</h2><p>Choose a workspace, review pending game effects, manage Habitica tags, and back up or transfer local tasks in <a href="/todo/sync" data-testid="settings-todo-sync">Todo Sync</a>. Cloud task consent and background execution have separate controls there.</p></section>
+    <section class="card-surface settings-card"><p class="section-label">Todo connections</p><h2>Task source and sync</h2><p>Inspect the active Workspace, review pending game effects and move saved browser tasks and Notes together in <a href="/todo/sync" data-testid="settings-todo-sync">Todo Sync</a>. Cloud task consent and background execution have separate controls there.</p></section>
     <PartyPlanningSettingsPanel />
 
     <section class="card-surface settings-card">
@@ -325,6 +328,9 @@
 
 @code {
     private bool _appearanceCollapsed = true, _clearLocalReview;
+    private CompanionConnectionCoordinator? _connections;
+    private IntegrationStatusResult? _observedStatus;
+    private void ConnectionChanged(){if(_disposed)return;var status=_connections?.IntegrationStatus;if(!ReferenceEquals(status,_observedStatus)){_observedStatus=status;_integrationStatus=status;}_ = InvokeAsync(StateHasChanged);}
     private bool _integrationConsent, _integrationBusy, _integrationDisconnected, _disposed;
     private bool? _integrationCleanup;
     private IntegrationLinkResult? _integrationResult;
@@ -338,6 +344,8 @@
     {
         _integrationOwner = (SessionController.State.IsAuthenticated, SessionController.State.UserId);
         SessionController.Changed += OnSessionChanged;
+        _connections=Services.GetService(typeof(CompanionConnectionCoordinator)) as CompanionConnectionCoordinator;
+        if(_connections is not null){_connections.Changed+=ConnectionChanged;_observedStatus=_integrationStatus=_connections.IntegrationStatus;}
     }
 
     private void OnSessionChanged()
@@ -362,6 +370,7 @@
     {
         _disposed = true;
         SessionController.Changed -= OnSessionChanged;
+        if(_connections is not null)_connections.Changed-=ConnectionChanged;
     }
 
     private async Task LoadIntegrationStatusAsync()
@@ -425,10 +434,8 @@
 
     private async Task RestoreIntegrationAsync()
     {
-        if (!_integrationConsent || _integrationBusy) return;
-        var generation = _integrationGeneration;
-        await RunIntegrationAsync(() => SessionController.RevalidateChatGptAsync(), true);
-        if (CurrentIntegration(generation)) _integrationConsent = false;
+        if (_integrationBusy) return;
+        await RunIntegrationAsync(() => SessionController.RestoreExistingConnectionsAsync(true), true);
     }
 
     private Task NewIntegrationCodeAsync() => RunIntegrationAsync(() => SessionController.CreateChatGptLinkAsync());
@@ -681,6 +688,7 @@
             CloudSyncSection.PartyCurrent => "Party",
             CloudSyncSection.PartyCronHistory => "Party CRON history",
             CloudSyncSection.ColorSchemes => "Color schemes",
+            CloudSyncSection.CompanionPreferences => "Workspace and integration settings",
             CloudSyncSection.Diagnostics => "Diagnostics",
             _ => section.ToString()
         };

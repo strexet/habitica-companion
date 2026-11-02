@@ -133,7 +133,7 @@ public sealed class TodoWorkspacePresentationTests
         await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo("Second workspace")); await f.Controller.ConfirmAsync();
         f.Controller.Forget();
         await f.Controller.LoadAsync(false);
-        Assert.Null(f.Controller.Snapshot); Assert.Contains("Choose the exact", f.Controller.Message);
+        Assert.Null(f.Controller.Snapshot); Assert.Contains("consolidation", f.Controller.Message);
         using var presentation = Presentation(f);
         await presentation.RefreshSourcesAsync();
         Assert.Equal(2, presentation.Sources.Count); Assert.Equal(TodoWorkspaceAvailability.NeedsSelection, presentation.Availability);

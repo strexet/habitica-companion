@@ -66,4 +66,12 @@ public sealed class WorkspaceTransferTests
         var book=NotesJson.Deserialize(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"fixtures","workspace-transfer","accepted-notes.json")));
         Assert.Single(book.Transfers!);Assert.Equal(2,book.Notes[0].Current.Revision);Assert.Empty(book.Receipts);
     }
+    [Fact]public void Unsaved_browser_task_drafts_require_explicit_resolution_and_remain_exportable()
+    {
+        var fixture=new Habitica.WebApp.Tests.Workspace.WorkspaceTaskFixture();using var drafts=new Habitica.WebApp.State.TodoTaskDraftStore(fixture.Session);
+        var source=new Habitica.WebApp.State.TodoWorkspaceSelection(Habitica.WebApp.State.TodoWorkspaceSource.Browser,Guid.NewGuid());
+        var draft=drafts.Get(source,CompanionTaskKind.Todo,null);Assert.Equal(0,drafts.UnsavedBrowserDrafts);draft.Text="Retain private unsaved text";
+        Assert.Equal(1,drafts.UnsavedBrowserDrafts);Assert.Contains("Retain private unsaved text",drafts.ExportUnsavedBrowserDrafts());
+        drafts.DiscardBrowserDrafts();Assert.Equal(0,drafts.UnsavedBrowserDrafts);Assert.DoesNotContain("Retain private unsaved text",drafts.ExportUnsavedBrowserDrafts());
+    }
 }

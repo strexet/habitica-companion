@@ -13,7 +13,7 @@
     <p>@Filter.FromDay.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) through @_day.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture), inclusive UTC dates.</p><p class="panel-copy">Retained history only. Missing history is unknown; zero retained records never proves zero activity. Daily charts use recorded completion time, separate from the scheduled civil date. No lifetime streak or reward total is inferred.</p>
 </section>
 @if(_error is not null){<p role="alert" class="card-surface todo-stat-section">@_error</p>}
-<section class="card-surface todo-stat-section" aria-label="Companion statistics"><h2>Companion accepted activity</h2><p>@(Todo.Selection is {} source ? $"Selected {source.Source} workspace · revision {Todo.Revision?.ToString()??"unavailable"}" : "No Companion workspace selected"). <a href="/todo/sync" data-layout-primary="true">Choose source or inspect sync</a></p>
+<section class="card-surface todo-stat-section" aria-label="Companion statistics"><h2>Companion accepted activity</h2><p>@(Todo.Selection is {} source ? $"Selected {source.Source} workspace · revision {Todo.Revision?.ToString()??"unavailable"}" : "No Companion workspace selected"). <a href="/todo/sync" data-layout-primary="true">Workspace access and sync</a></p>
     <label class="field-row">Companion project (current membership)<select class="app-input" @bind="_project" @bind:after="ChangedFilter" data-testid="stats-project"><option value="">All projects</option>@foreach(var p in Todo.Snapshot?.Document.Projects??[]){<option value="@p.Id">@p.Name @(p.IsRemoved?"(removed)":p.IsArchived?"(archived)":"") · @p.Id</option>}</select></label>
     @if(_canonical is {} c){
         <p>@c.TaskCount current task(s) match these title, type and project filters.</p>

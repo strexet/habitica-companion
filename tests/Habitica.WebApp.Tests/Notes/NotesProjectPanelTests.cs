@@ -88,8 +88,8 @@ public sealed class NotesProjectPanelTests:BunitContext
 
     [Fact] public async Task Project_only_cloud_access_never_renders_private_browser_notes_or_connects_notes()
     {
-        var (f,_,_)=await Setup(cloud:true);var c=f.Controller;await c.SwitchAsync(NotesSource.Browser,true);await Save(c,"Private browser title","Private browser snippet");var cut=Render<TodoProjectNotesPanel>(p=>p.Add(x=>x.ProjectId,A));cut.Find("[data-testid=project-notes-toggle]").Click();Assert.DoesNotContain("Private browser title",cut.Markup);Assert.DoesNotContain("Private browser snippet",cut.Markup);Assert.Contains("Choose that source explicitly",cut.Markup);
-        f.Client.Connected=false;cut.Find("[data-testid=note-source]").Change("Cloud");Assert.Empty(cut.FindAll("[data-testid=note-body]"));Assert.Single(cut.FindAll("[data-testid=notes-consent]"));Assert.Equal(0,f.Client.Submits);
+        var (f,_,_)=await Setup(cloud:true);var c=f.Controller;await c.SwitchAsync(NotesSource.Browser,true);await Save(c,"Private browser title","Private browser snippet");var cut=Render<TodoProjectNotesPanel>(p=>p.Add(x=>x.ProjectId,A));cut.Find("[data-testid=project-notes-toggle]").Click();Assert.DoesNotContain("Private browser title",cut.Markup);Assert.DoesNotContain("Private browser snippet",cut.Markup);Assert.Contains("Restore the shared active source",cut.Markup);
+        f.Client.Connected=false;await cut.InvokeAsync(()=>c.SwitchAsync(NotesSource.Cloud,true));Assert.Empty(cut.FindAll("[data-testid=note-source]"));Assert.Empty(cut.FindAll("[data-testid=note-body]"));Assert.Single(cut.FindAll("[data-testid=notes-consent]"));Assert.Equal(0,f.Client.Submits);
         Evidence("project-notes-no-consent",cut.Markup,"/todo/projects","separate-cloud-consent-no-content",nameof(Project_only_cloud_access_never_renders_private_browser_notes_or_connects_notes));
     }
 

@@ -46,7 +46,7 @@ public sealed class SettingsPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
         Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
-        var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated=true,UserId="synthetic-owner" })
+        var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated=true,UserId="00000000-0000-4000-8000-000000000011" })
             {IsChatGptIntegrationAvailable=true,HasChatGptConnection=tabAccess};
         Services.AddSingleton<IAppSessionController>(session);
         return (session,Render<SettingsPage>());
@@ -71,19 +71,13 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
-    public void Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access()
+    public void Fresh_session_restores_existing_access_without_replaying_new_enrollment_consent()
     {
-        var (session,cut)=ConnectionPage();
-        Assert.Contains("unverified",cut.Find("[data-testid='integration-unverified']").TextContent);
-        Assert.Contains("does not disable",cut.Find("[data-testid='integration-unverified']").TextContent);
-        Assert.True(cut.Find("[data-testid='integration-restore-access']").HasAttribute("disabled"));
-        Assert.Equal(0,session.ChatGptEnrollCalls);Assert.Equal(0,session.ChatGptRevalidateCalls);Assert.Equal(0,session.ChatGptStatusCalls);
+        var (session,cut)=ConnectionPage();Assert.Contains("unverified",cut.Find("[data-testid='integration-unverified']").TextContent);
+        Assert.False(cut.Find("[data-testid='integration-restore-access']").HasAttribute("disabled"));Assert.True(cut.Find("[data-testid='integration-enroll']").HasAttribute("disabled"));
+        session.ExistingRecoveryAction=()=>{session.HasChatGptConnection=true;return Task.FromResult(new Habitica.Application.Integration.IntegrationLinkResult(true,"Existing access restored"));};
         Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("connection-fresh-tab",cut.Markup);
-        cut.Find("[data-testid='integration-consent']").Change(true);
-        cut.Find("[data-testid='integration-restore-access']").Click();
-        Assert.Equal(1,session.ChatGptRevalidateCalls);Assert.Equal(0,session.ChatGptEnrollCalls);Assert.Equal(1,session.ChatGptStatusCalls);
-        Assert.Contains("Fixture account",cut.Find("[data-testid='integration-status-details']").TextContent);
-        Assert.Empty(cut.FindAll("[data-testid='integration-link-code']"));
+        cut.Find("[data-testid='integration-restore-access']").Click();Assert.Equal(1,session.ExistingRecoveryCalls);Assert.Equal(0,session.ChatGptEnrollCalls);Assert.Equal(0,session.ChatGptRevalidateCalls);Assert.Empty(cut.FindAll("[data-testid='integration-consent']"));
     }
 
     [Fact]
@@ -115,18 +109,12 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
-    public void ConnectedWorkspaceRenewalRequiresExplicitDataConsent()
+    public void Connected_Workspace_restoration_uses_existing_only_recovery()
     {
-        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
-        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
-        var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
-        Services.AddSingleton<IAppSessionController>(session); Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new ExecutorCloud());
-        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
-        Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled")); Assert.Equal(0, session.WorkspaceConnectCalls);
-        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("workspace-renewal", cut.Markup);
-        cut.Find("[data-testid='workspace-renew-consent']").Change(true); cut.Find("[data-testid='workspace-renew']").Click();
-        Assert.Equal(1, session.WorkspaceConnectCalls);
-        Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled"));
+        JSInterop.Mode=JSRuntimeMode.Loose;Services.AddMudServices();Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());Services.AddScoped<ColorSchemeService>();
+        var session=new FakeAppSessionController(SessionViewModel.Empty with{IsAuthenticated=true,UserId="00000000-0000-4000-8000-000000000011"});Services.AddSingleton<IAppSessionController>(session);Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new ExecutorCloud());
+        var cut=Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();Assert.Empty(cut.FindAll("[data-testid='workspace-renew-consent']"));Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("workspace-renewal",cut.Markup);
+        cut.Find("[data-testid='workspace-renew']").Click();Assert.Equal(1,session.ExistingRecoveryCalls);Assert.Equal(0,session.WorkspaceConnectCalls);
     }
 
     [Fact]
@@ -169,18 +157,18 @@ public sealed class SettingsPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices(); Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
-        var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
+        var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true, UserId="00000000-0000-4000-8000-000000000011" });
         Services.AddSingleton<IAppSessionController>(controller);
         Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), "https://auth.invalid/", false), "https://workspace.invalid/"));
         var settings = Render<SettingsPage>();
         Assert.NotNull(settings.Find("[data-testid='integration-unavailable']"));
         Assert.Equal("/todo/sync", settings.Find("[data-testid='settings-todo-sync']").GetAttribute("href"));
         var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
-        Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
+        Assert.False(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
         Assert.Equal(0, controller.WorkspaceConnectCalls);
-        cut.Find("[data-testid='workspace-consent']").Change(true);
+        Assert.Empty(cut.FindAll("[data-testid='workspace-consent']"));
         cut.Find("[data-testid='workspace-connect']").Click();
-        Assert.Equal(1, controller.WorkspaceConnectCalls); Assert.Equal(0, controller.ChatGptEnrollCalls);
+        Assert.Equal(1,controller.ExistingRecoveryCalls);Assert.Equal(0, controller.WorkspaceConnectCalls); Assert.Equal(0, controller.ChatGptEnrollCalls);
         Assert.Contains("server can read", cut.Markup);
     }
 

@@ -14,10 +14,10 @@
     else
     {
         <div class="notes-toolbar">
-            <label>Store notes in<select class="app-input" @bind:get="Notes.Source" @bind:set="Switch" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" data-testid="note-source"><option value="Browser">This browser</option><option value="Cloud">Cloud Notes · accessible to connected agents</option></select></label>
+            <p data-testid="note-active-source"><strong>@(Notes.Source==NotesSource.Cloud?"Cloud Workspace":"Browser Workspace")</strong> · the same active Workspace as tasks. <a href="/todo/sync">Workspace access and transfer</a></p>
             <button data-layout-primary="true" class="notes-button" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" @onclick="Refresh">Refresh notes</button>
         </div>
-        <p class="panel-copy">@(Notes.Source == NotesSource.Browser ? "Browser notes stay on this device and are unavailable to agents. Changing source does not copy notes. Clearing browser data removes these notes." : "Cloud Notes are shared across connected devices and authorized agents. Browser notes are never uploaded automatically. This tab’s connection is forgotten at sign-out.")</p>
+        <p class="panel-copy">@(Notes.Source == NotesSource.Browser ? "Browser is the default Workspace. Notes stay on this device until a reviewed cloud move. Clearing browser data removes these notes." : "Cloud is the selected Workspace across sessions. Notes access restores independently from saved consent; unavailable cloud never creates a writable browser fallback.")</p>
         @if (_discard is not null)
         {
             <aside class="notes-review" role="region" aria-label="Unsaved draft"><h2 tabindex="-1" @ref="_reviewHeading">Keep this draft?</h2><p>You have unsaved changes. Export Markdown to keep a copy, or discard the draft to continue.</p><div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export">Export draft</button><button data-layout-primary="true" class="notes-button" @onclick="CancelDiscard">Keep editing</button><button data-layout-primary="true" class="notes-button" @onclick="Discard" data-testid="note-discard">Discard draft and continue</button></div></aside>
@@ -25,7 +25,7 @@
         @if (Notes.Source == NotesSource.Cloud && !Notes.CloudConnected)
         {
             <aside class="notes-review" aria-label="Cloud Notes consent" data-testid="notes-consent"><h2>Connect cloud Notes</h2>
-                @if (!Notes.CloudAvailable) { <p>Cloud Notes is unavailable in this deployment. Browser Notes still works.</p> }
+                @if (!Notes.CloudAvailable) { <p>Cloud Notes is unavailable in this deployment. The selected cloud Workspace remains selected; existing drafts stay preserved.</p> }
                 else
                 {
                     <p>This separate connection sends Habitica credentials for encrypted storage. The Companion server can read note titles, Markdown and up to 16 prior versions per note. Authorized agents need separate Notes permissions. No conversation text is saved automatically.</p>
@@ -39,7 +39,7 @@
         @if (_error is not null) { <p role="alert">@_error</p> }
         @if (Notes.HasPending) { <aside class="notes-review" aria-label="Uncertain save"><h2>Check the original save</h2><p>Original command: @Notes.PendingCommandId. The result is uncertain. Your draft is preserved. This check reads the original receipt and does not repeat the write.</p><button data-layout-primary="true" class="notes-button" disabled="@Notes.Busy" @onclick="() => Notes.RecoverAsync()">Check original receipt</button></aside> }
         @if (Notes.HasConflict) { <aside class="notes-review" aria-label="Note conflict"><h2>The stored note changed</h2><p>Export your draft before loading the latest stored revision. Saving is paused to avoid replacing someone else’s changes.</p><div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export">Export draft</button><button data-layout-primary="true" class="notes-button" disabled="@Notes.HasPending" @onclick="ReloadStored" data-testid="notes-reload">Load stored revision</button></div></aside> }
-        @if (ProjectSource is not null && ProjectSource != Notes.Source) { <p role="status">This project uses @ProjectSource Notes. Choose that source explicitly above. Sources are independent; no content was copied.</p> }
+        @if (ProjectSource is not null && ProjectSource != Notes.Source) { <p role="status">This project uses @ProjectSource Notes. Restore the shared active source in Todo Sync. Resolve or export the current draft before continuing.</p> }
         @if (SourceReadable && Notes.Book is not null)
         {
             @if (ProjectId is {} contextId && Notes.ProjectLink(contextId) is null) { <p role="status">This project is unavailable for new links. Existing Notes and private drafts remain available; clear a stale link explicitly.</p> }

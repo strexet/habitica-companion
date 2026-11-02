@@ -31,6 +31,9 @@ internal sealed class NotesFixture
     {
         public NotesProjectAuthority? ProjectAuthority {get;set;}
         public bool Connected {get;set;}
+        public int ConnectionRecoveries {get;private set;}
+        public Task<NotesCloudResult<bool>> RecoverConnectionAsync(Guid? expectedNotebookId,CancellationToken token)
+        { ConnectionRecoveries++;if(expectedNotebookId is not null&&expectedNotebookId!=Id)return Task.FromResult(new NotesCloudResult<bool>(false,false,"notebook_mismatch"));Connected=true;return Task.FromResult(new NotesCloudResult<bool>(true,true,"recovered")); }
         public bool IsAvailable {get;set;}=true;public bool IsConnected=>Connected;
         public Guid? NotebookId=>Connected?Id:null;public Guid Id {get;set;}=Guid.NewGuid();public string? OwnerScope=>Book.OwnerScope;
         public NotesNotebook Book {get;set;}=NotesModel.Empty(NotesModel.Scope("synthetic-profile"));

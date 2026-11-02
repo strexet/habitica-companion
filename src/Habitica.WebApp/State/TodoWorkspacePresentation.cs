@@ -15,6 +15,7 @@ public sealed record TodoHabiticaCacheContext(string Source, SnapshotFreshnessSt
 /// <summary>Scoped selection and reads; WorkspaceTaskController retains all task command ownership.</summary>
 public sealed partial class TodoWorkspacePresentation : IDisposable
 {
+    private readonly CompanionConnectionCoordinator? _connections;
     private readonly IAppSessionController _session;
     private readonly IWorkspaceCloudClient _cloud;
     private readonly IndexedDbWorkspaceDatabase _database;
@@ -28,8 +29,9 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
     private WorkspaceDocument? _coverageDocument;
     private WorkspaceHabiticaCoverage? _coverage;
     public TodoWorkspacePresentation(IAppSessionController session, IWorkspaceCloudClient cloud,
-        IndexedDbWorkspaceDatabase database, WorkspaceTaskController commands, WorkspaceOrganizationController? organization = null)
+        IndexedDbWorkspaceDatabase database, WorkspaceTaskController commands, WorkspaceOrganizationController? organization = null, CompanionConnectionCoordinator? connections = null)
     {
+        _connections = connections; if (connections is not null) connections.Changed += ConnectionsChanged;
         _session = session; _cloud = cloud; _database = database; _commands = commands; _organization = organization;
         if (_organization is not null) _organization.Changed += OrganizationChanged;
         _account = Account; AdoptLoadedSelection(); _session.Changed += SessionChanged;
@@ -80,7 +82,7 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
         : Selection is { } source && _organization?.LastReceipt is { SavedInCompanion: true } receipt
             && receipt.WorkspaceId == source.WorkspaceId && _organization.IsCloud == (source.Source == TodoWorkspaceSource.Cloud)
             && Revision < receipt.Entry.Snapshot.Revision ? "Organization changes were saved. Reload the selected workspace before editing tasks." : null;
-    public bool IsReadOnly => HasLinkedRecoveryIntent || Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
+    public bool IsReadOnly => !SharedAllowsEditing || HasLinkedRecoveryIntent || Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
     public string IntegrationReadiness => Selection?.Source != TodoWorkspaceSource.Cloud
         ? "Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor."
         : !_cloud.ConnectionStatusVerified ? "Cloud connection status is unverified. Check Todo Sync before relying on game effects."
@@ -94,6 +96,27 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
     public Task RefreshSourcesAsync(CancellationToken token = default) => RunAsync(async () =>
     {
         var scope = Account!; var generation = _generation;
+        if (_connections is not null)
+        {
+            await _connections.RefreshSelectionAsync(scope, token);
+            if (!Current(scope, generation)) return;
+            AdoptLoadedSelection();
+            Sources = _connections.ActiveWorkspaceId is { } active ? [new(_connections.CloudSelected ? TodoWorkspaceSource.Cloud : TodoWorkspaceSource.Browser, active)] : [];
+            BrowserSourcesAvailable = _connections.State != CompanionConnectionState.StorageUnavailable;
+            Message = _connections.State switch
+            {
+                CompanionConnectionState.Loading => "Restoring account settings and the active Workspace.",
+                CompanionConnectionState.ConsolidationRequired => "Existing browser workspaces need reviewed consolidation before editing.",
+                CompanionConnectionState.LegacyRecoveryRequired => "Restore existing cloud access before using a transferred browser copy.",
+                CompanionConnectionState.SettingsConflict => "Account settings conflict. Restore verified existing access before choosing a source.",
+                CompanionConnectionState.CloudUnavailable => "The selected cloud workspace is unavailable. Browser copies remain recovery evidence; no local fallback was created.",
+                CompanionConnectionState.StorageUnavailable => "Account storage is unavailable. Existing records were preserved.",
+                _ => _commands.Message
+            };
+            if(Selection is {} selected&&SharedAllowsEditing&&!HasLinkedRecoveryIntent&&!_commands.HasPendingIntent&&_commands.LinkPreview is null&&_organization?.HasPendingIntent!=true&&_organization?.IsBusy!=true)
+                await _commands.LoadAsync(selected.Source==TodoWorkspaceSource.Cloud,selected.Source==TodoWorkspaceSource.Browser?selected.WorkspaceId:null,token);
+            return;
+        }
         IReadOnlyList<Guid> ids;
         var browserAvailable = true;
         try { ids = await _database.ListAsync(scope, token); }
@@ -106,7 +129,7 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
             .Concat(_cloud.WorkspaceId is { } cloudId ? [new(TodoWorkspaceSource.Cloud, cloudId)] : Array.Empty<TodoWorkspaceSelection>()).ToArray();
         AdoptLoadedSelection();
         Message = !browserAvailable ? "Browser workspaces could not be listed. Existing cloud access remains separate; retry browser storage when available."
-            : Selection is null ? "Choose the exact workspace. Browser and cloud records remain independent." : _commands.Message;
+            : Selection is null ? "The active Workspace needs restoration or reviewed consolidation in Todo Sync." : _commands.Message;
     }, token, preserveUnavailable: true);
 
     public Task SelectAsync(TodoWorkspaceSelection selection, CancellationToken token = default)
@@ -114,6 +137,8 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
         if (!CanSwitchSource) throw new InvalidOperationException("Resolve the original command before switching workspace sources.");
         if (selection.WorkspaceId == Guid.Empty || !Enum.IsDefined(selection.Source) || !Sources.Contains(selection))
             throw new InvalidOperationException("Refresh sources and choose an available workspace.");
+        if (_connections is not null && (selection.WorkspaceId != _connections.ActiveWorkspaceId || (selection.Source == TodoWorkspaceSource.Cloud) != _connections.CloudSelected))
+            throw new InvalidOperationException("Use the shared active workspace; source changes require reviewed adoption.");
         Selection = selection;
         return LoadSelectedAsync(token);
     }
@@ -129,19 +154,21 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
 
     public Task CreateBrowserAsync(CancellationToken token = default)
     {
+        if (_connections is not null) return RefreshSourcesAsync(token);
         if (!CanSwitchSource) throw new InvalidOperationException("Resolve the original command before creating another workspace.");
         return RunAsync(async () => { await _commands.CreateLocalAsync(token); AdoptLoadedSelection(replace: true); }, token, loading: true);
     }
 
     public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken token = default)
     {
+        RequireSharedEditing();
         _ = RequireSnapshot();
         RequireRecoveryResolved();
         if (OrganizationBlockReason is { } reason) throw new InvalidOperationException(reason);
         return RunAsync(() => _commands.PrepareAsync(input, token), token);
     }
     public Task PreviewLinkAsync(Guid taskId, Guid remoteId, CancellationToken token = default)
-    { _ = RequireSnapshot(); RequireRecoveryResolved(); return RunAsync(() => _commands.PreviewLinkAsync(taskId, remoteId, token), token); }
+    { RequireSharedEditing(); _ = RequireSnapshot(); RequireRecoveryResolved(); return RunAsync(() => _commands.PreviewLinkAsync(taskId, remoteId, token), token); }
     public Task AdoptLinkAsync(CancellationToken token = default) => RunAsync(() => _commands.AdoptLinkAsync(token), token);
     public void CancelLinkPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelLinkPreview(); Changed?.Invoke(); }
     public Task ConfirmAsync(CancellationToken token = default) => RunAsync(() => _commands.ConfirmAsync(token), token);
@@ -156,6 +183,7 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
     }, token);
     public Task PrepareOrganizationAsync(WorkspaceOrganizationInput input, CancellationToken token = default) => RunOrganizationAsync(async organization =>
     {
+        RequireSharedEditing();
         _ = RequireSnapshot();
         if (organization.HasPendingIntent) throw new InvalidOperationException("Resolve the original organization command before preparing another change.");
         var source = Selection!; var scope = Account!; var generation = _generation; var revision = Revision;
@@ -213,10 +241,29 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
         return new(document.Id, document.Revision, taskId, Selection!.Source, mapping?.State ?? ProjectionState.Unlinked, mapping?.HabiticaTaskId);
     }
 
+    private void RequireSharedEditing()
+    { if (!SharedAllowsEditing) throw new InvalidOperationException("The active Workspace is unavailable. Restore existing access before preparing another change."); }
+
     private WorkspaceJournalSnapshot RequireSnapshot() => Snapshot ?? throw new InvalidOperationException("Todo workspace data is unavailable. Select or reload the source.");
     private bool Current(string scope, long generation) => generation == _generation && scope == Account;
+    private bool SharedAllowsEditing => _connections is null || _connections.Account == Account
+        && _connections.State is CompanionConnectionState.Browser or CompanionConnectionState.Cloud
+        && Selection is { } selected && selected.WorkspaceId == _connections.ActiveWorkspaceId
+        && (selected.Source == TodoWorkspaceSource.Cloud) == _connections.CloudSelected;
+    private void ConnectionsChanged()
+    {
+        if (_connections?.Account == Account) AdoptLoadedSelection();
+        Changed?.Invoke();
+    }
     private void AdoptLoadedSelection(bool replace = false)
     {
+        if (_connections is not null)
+        {
+            if (_connections.Account != Account || _commands.HasPendingIntent || _commands.LinkPreview is not null || _organization?.HasPendingIntent == true || HasLinkedRecoveryIntent) return;
+            var selected = _connections.ActiveWorkspaceId is { } id ? new TodoWorkspaceSelection(_connections.CloudSelected ? TodoWorkspaceSource.Cloud : TodoWorkspaceSource.Browser, id) : null;
+            if (selected != Selection) { Selection = selected; _commands.Forget(); _validated = null; }
+            return;
+        }
         if (Selection is null && _organization is { HasPendingIntent: true, WorkspaceId: { } originalId })
             Selection = new(_organization.IsCloud ? TodoWorkspaceSource.Cloud : TodoWorkspaceSource.Browser, originalId);
         else if ((replace || Selection is null) && _commands.Snapshot is { } snapshot)
@@ -255,5 +302,5 @@ public sealed partial class TodoWorkspacePresentation : IDisposable
         }
         Changed?.Invoke();
     }
-    public void Dispose() { _session.Changed -= SessionChanged; if (_organization is not null) _organization.Changed -= OrganizationChanged; }
+    public void Dispose() { if (_connections is not null) _connections.Changed -= ConnectionsChanged; _session.Changed -= SessionChanged; if (_organization is not null) _organization.Changed -= OrganizationChanged; }
 }

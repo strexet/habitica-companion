@@ -46,6 +46,7 @@ builder.Services.AddScoped<CompanionPreferencesStore>();
 builder.Services.AddScoped<CompanionConnectionCoordinator>();
 builder.Services.AddScoped<IBrowserWorkspaceTransfer, IndexedDbWorkspaceTransfer>();
 builder.Services.AddScoped<WorkspaceTransferService>();
+builder.Services.AddScoped<WorkspaceTransferController>();
 builder.Services.AddScoped<IWorkspaceTransferCloudClient>(sp => (IWorkspaceTransferCloudClient)sp.GetRequiredService<IWorkspaceCloudClient>());
 builder.Services.AddScoped<DiagnosticsLogWriter>();
 builder.Services.AddScoped<DiagnosticsPresetWorkflow>();

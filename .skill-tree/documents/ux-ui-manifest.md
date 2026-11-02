@@ -613,7 +613,7 @@ Local canonical workspace backups have separate listing, export and confirmed re
 
 ## Companion task editor and command review
 
-The Tasks page exposes the canonical editor through an explicit disclosure button. Browser and cloud sources remain visible, with independent workspace selection, a read-only explanation for frozen or stale copies and separate paused-execution status for restored copies. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
+The Tasks page exposes the canonical editor through an explicit disclosure button. The shared active Workspace appears as a read-only source summary. One browser Workspace is the first-use default; reviewed cloud adoption removes the ordinary browser choice. Frozen recovery copies remain available through backup and original-receipt controls. Unavailable cloud access preserves cloud selection without a writable fallback. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
 
 The editor creates Todos, explicitly scheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. New Daily/Habit creation carries required game intent; unsupported projection controls remain absent for archiving.
 
@@ -926,3 +926,12 @@ Tasks, retained History and the advanced task panel keep the same exact-pair com
 Phone-width link editors remove repeated nested card insets and reduce review padding so enlarged recovery labels remain readable. Desktop spacing stays independent. Geometry/contrast measurements and manual keyboard/readability review remain separate evidence.
 
 DiagnosticSharingPanel shares the /diagnostics and /live-tests routes. The panel separates status, unchecked diagnostic consent, local source/filter preview, metadata preparation, unchecked exact-body upload and original lookup. Pending or unknown outcomes lock replacement and repeat upload. Identity changes erase private preview state; normal navigation preserves the scoped review. Long Workspace/request/hash identifiers wrap inside the card. Cleanup uncertainty and unavailable sources remain visible. Rendered route/state evidence resides in .skill-tree/history/validation/diagnostic-sharing-ui.
+
+
+## Unified Workspace journey
+
+Settings displays observed integration permissions separately from new consent. Existing-only recovery restores approved access after encrypted account metadata loads; route entry never enrolls or activates execution. Tasks, planning, projects and Notes consume one source. Todo Sync owns reviewed browser capture, exact source/target counts, identity conflicts, acceptance and original-receipt recovery. Unsaved task/Notes drafts block capture until explicit resolution. Unknown acceptance disables another acceptance until original receipt recovery or a fresh review of the same immutable transfer.
+
+Legacy frozen transfers retain original identities and an explicit original-receipt/retry path. Existing cloud-owned local task copies remain recovery evidence while remaining browser Notes move through reviewed adoption. Export, pause and disconnect remain available; reverse ownership transfer remains deferred.
+
+Rendered qualification uses actual synthetic Razor markup and published assets in Gryphy Light and Obsidian Glow at 360/1280 pixels and 100/200-percent text. OAuth consent uses corresponding built-in light/dark palettes through system preference. Component interactions, rendered geometry/contrast, focus samples and physical-device gaps have separate evidence under `.skill-tree/history/validation/unified-workspace/`.

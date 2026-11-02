@@ -87,7 +87,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (!cloudSource && localId is null && (Snapshot is null || IsCloud) && ids.Count > 1)
         {
             _scope = scope; _snapshot = null; LocalIds = ids; IsCloud = false; RequiresReload = true;
-            Message = "Choose the exact browser workspace. Independent workspaces are never merged."; return;
+            Message = "Existing browser Workspaces need reviewed consolidation in Todo Sync. Original records remain preserved."; return;
         }
         var id = localId ?? (Snapshot is not null && !IsCloud ? Snapshot.Document.Id : ids.FirstOrDefault());
         var snapshot = cloudSource ? await cloud.LoadWorkspaceAsync(cancellationToken) : id == Guid.Empty ? null : await database.ForScope(scope).LoadAsync(id, cancellationToken);

@@ -4819,3 +4819,10 @@ code {
 .diagnostic-sharing .action-row { flex-wrap: wrap; }
 .diagnostic-sharing button { max-width: 100%; min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
 .diagnostic-identity { overflow-wrap: anywhere; min-width: 0; }
+
+.workspace-transfer-panel { min-width: 0; overflow-wrap: anywhere; }
+.workspace-transfer-panel .notes-review { min-width: 0; }
+.workspace-transfer-panel code { overflow-wrap: anywhere; white-space: normal; }
+.workspace-transfer-panel .action-row { flex-wrap: wrap; }
+
+.workspace-transfer-panel [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }

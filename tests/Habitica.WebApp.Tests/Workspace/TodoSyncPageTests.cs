@@ -32,7 +32,7 @@ public sealed class TodoSyncPageTests : BunitContext
     {
         var (fixture, _) = await SetupAsync();
         var cut = Render<Habitica.WebApp.Pages.TodoSyncPage>();
-        Assert.NotNull(cut.Find("[data-testid='todo-source']"));
+        Assert.NotNull(cut.Find("[data-testid='todo-active-source']"));Assert.Empty(cut.FindAll("[data-testid='todo-source']"));
         Assert.NotNull(cut.Find("[data-testid='todo-command-history']"));
         Assert.NotNull(cut.Find("[data-testid='workspace-tags']"));
         Assert.NotNull(cut.Find("[data-testid='workspace-executor-enable']"));

@@ -93,6 +93,9 @@ internal sealed class WorkspaceTaskFixture
         public List<Guid> AcceptedIds { get; } = [];
         public List<Guid> ReceiptReads { get; } = [];
         public Func<Guid, Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>>>? ReceiptReadAction { get; set; }
+        public int ConnectionRecoveries {get;private set;}
+        public Task<WorkspaceActionResult> RecoverConnectionAsync(Guid? expectedWorkspaceId,CancellationToken token)
+        { ConnectionRecoveries++;if(expectedWorkspaceId is not null&&expectedWorkspaceId!=State.Document.Id)return Task.FromResult(new WorkspaceActionResult(false,"workspace_mismatch"));Connected=true;ConnectionStatusVerified=true;return Task.FromResult(new WorkspaceActionResult(true,"recovered")); }
         public bool IsAvailable => true;
         public Guid? WorkspaceId => Connected ? State.Document.Id : null;
         public bool ConnectionStatusVerified { get; set; } = true;

@@ -26,9 +26,9 @@ public sealed class NotesPanelTests:BunitContext
         cut.Find("[aria-label='Unsaved draft'] button:nth-child(2)").Click();Assert.Equal("private source",f.Controller.Draft.Markdown);cut.Find("[data-testid=note-new]").Click();f.Session.SetState(f.Session.State with{UserId=Guid.NewGuid().ToString("D")});cut.WaitForAssertion(()=>Assert.Empty(cut.FindAll("[data-testid=note-discard]")));Assert.Empty(f.Controller.Draft.Markdown!);Assert.DoesNotContain("private source",cut.Markup);
         Evidence("notes-empty",cut.Markup,"account-changed-empty",nameof(Dirty_navigation_cancel_and_account_switch_do_not_transfer_private_drafts));
     }
-    [Fact]public void Separate_consent_and_unavailable_cloud_are_clear_without_uploading_browser_content()
+    [Fact]public async Task Separate_consent_and_unavailable_cloud_are_clear_without_uploading_browser_content()
     {
-        var f=Setup();var cut=Render<NotesPanel>();cut.Find("[data-testid=note-source]").Change("Cloud");Assert.True(cut.Find("[data-testid=notes-connect]").HasAttribute("disabled"));Assert.Contains("16 prior versions",cut.Markup);Assert.Empty(f.Client.Book.Notes);Evidence("notes-consent",cut.Markup,"separate-consent",nameof(Separate_consent_and_unavailable_cloud_are_clear_without_uploading_browser_content));
+        var f=Setup();await f.Controller.SwitchAsync(NotesSource.Cloud);var cut=Render<NotesPanel>();Assert.Empty(cut.FindAll("[data-testid=note-source]"));Assert.True(cut.Find("[data-testid=notes-connect]").HasAttribute("disabled"));Assert.Contains("16 prior versions",cut.Markup);Assert.Empty(f.Client.Book.Notes);Evidence("notes-consent",cut.Markup,"separate-consent",nameof(Separate_consent_and_unavailable_cloud_are_clear_without_uploading_browser_content));
         cut.Find("[data-testid=notes-consent-check]").Change(true);cut.Find("[data-testid=notes-connect]").Click();Assert.True(f.Client.Connected);Assert.Equal(0,f.Client.Submits);
     }
     [Fact]public void Trash_purge_and_history_actions_have_concrete_cancelable_reviews()
@@ -53,9 +53,9 @@ public sealed class NotesPanelTests:BunitContext
         Assert.Equal(text,f.Controller.Draft.Markdown);Assert.Equal("Journal",f.Controller.Draft.Title);Assert.Null(f.Database.Current.Book);cut.Find("form").Submit();cut.Find("[data-testid=note-body]").Input("revised");cut.Find("form").Submit();
         var history=cut.FindAll("details button").Single(b=>b.TextContent.Contains("Load revision"));history.Click();Assert.Equal(text,f.Controller.Draft.Markdown);Assert.Equal("revised",f.Database.Current.Book!.Notes.Single().Current.Markdown);Assert.True(f.Controller.Dirty);
     }
-    [Fact]public void Unavailable_cloud_and_whole_notebook_cleanup_have_explicit_separate_states()
+    [Fact]public async Task Unavailable_cloud_and_whole_notebook_cleanup_have_explicit_separate_states()
     {
-        var f=Setup();f.Client.IsAvailable=false;var cut=Render<NotesPanel>();cut.Find("[data-testid=note-source]").Change("Cloud");Assert.Empty(cut.FindAll("[data-testid=notes-connect]"));Assert.Contains("unavailable in this deployment",cut.Markup);Evidence("notes-unavailable",cut.Markup,"cloud-unavailable-browser-independent",nameof(Unavailable_cloud_and_whole_notebook_cleanup_have_explicit_separate_states));
+        var f=Setup();f.Client.IsAvailable=false;await f.Controller.SwitchAsync(NotesSource.Cloud);var cut=Render<NotesPanel>();Assert.Empty(cut.FindAll("[data-testid=note-source]"));Assert.Empty(cut.FindAll("[data-testid=notes-connect]"));Assert.Contains("unavailable in this deployment",cut.Markup);Evidence("notes-unavailable",cut.Markup,"cloud-unavailable-browser-independent",nameof(Unavailable_cloud_and_whole_notebook_cleanup_have_explicit_separate_states));
     }
     [Fact]public void Privacy_page_explains_separate_notes_retention_and_browser_data_deletion()
     {

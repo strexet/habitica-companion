@@ -9,6 +9,7 @@ public enum NotesSource {Browser,Cloud}
 public sealed record NotesLifecycleReview(Guid NoteId,long NotebookRevision,long NoteRevision,NoteOperation Operation,string Title,int Versions);
 public sealed partial class NotesController:IAsyncDisposable
 {
+    private readonly CompanionConnectionCoordinator? _connections;
     private readonly IAppSessionController _session;
     private readonly INotesStoreFactory _database;
     private readonly INotesCloudClient _cloud;
@@ -22,8 +23,8 @@ public sealed partial class NotesController:IAsyncDisposable
     private Guid? _pendingNotebook;
     private readonly SemaphoreSlim _gate=new(1,1);
     public event Action? Changed;
-    public NotesController(IAppSessionController session,INotesStoreFactory database,INotesCloudClient cloud,NotesDraftSession draft,DiagnosticsLogWriter? diagnostics=null,IndexedDbWorkspaceDatabase? projectDatabase=null,TodoWorkspacePresentation? projects=null)
-    {_session=session;_database=database;_cloud=cloud;_projectDatabase=projectDatabase;_projects=projects;if(projects is not null)projects.Changed+=ProjectsChanged;_diagnostics=diagnostics;Draft=draft;session.Changed+=SessionChanged;EnsureAccount();}
+    public NotesController(IAppSessionController session,INotesStoreFactory database,INotesCloudClient cloud,NotesDraftSession draft,DiagnosticsLogWriter? diagnostics=null,IndexedDbWorkspaceDatabase? projectDatabase=null,TodoWorkspacePresentation? projects=null,CompanionConnectionCoordinator? connections=null)
+    {_connections=connections;if(connections is not null)connections.Changed+=ConnectionsChanged;_session=session;_database=database;_cloud=cloud;_projectDatabase=projectDatabase;_projects=projects;if(projects is not null)projects.Changed+=ProjectsChanged;_diagnostics=diagnostics;Draft=draft;session.Changed+=SessionChanged;EnsureAccount();}
     public NotesSource Source {get;private set;}
     public NotesNotebook? Book {get;private set;}
     public Guid? SelectedId {get;private set;}
@@ -40,10 +41,21 @@ public sealed partial class NotesController:IAsyncDisposable
     public PersonalNote? Selected=>Book?.Notes.FirstOrDefault(note=>note.Id==SelectedId);
     public bool Dirty=>Draft.Title!=_originalTitle||Draft.Markdown!=_originalMarkdown||Draft.Project!=_originalProject;
     public bool HasConflict=>SelectedId is not null&&(Selected is null||Selected.Current.Revision!=_editorNoteRevision);
-    public bool CanWrite=>_account is not null&&Book is not null&&(!Busy&&!HasPending)&&(Source==NotesSource.Browser||CloudConnected);
+    public bool SourceMatchesActive=>_connections is null||_connections.Account==_account&&(Source==NotesSource.Cloud)==_connections.CloudSelected;
+    public bool CanWrite=>_account is not null&&Book is not null&&(!Busy&&!HasPending)&&SourceMatchesActive
+        &&(_connections is null||!_connections.Preference.Conflict)
+        &&(Source==NotesSource.Browser? _connections is null||_connections.State==CompanionConnectionState.Browser : CloudConnected&&(_connections is null||_connections.NotesAccessVerified));
     private string LocalScope=>NotesModel.Scope(_account??throw new InvalidOperationException("Sign in first."));
     private string DraftScope=>NotesModel.Scope(LocalScope+":"+Source);
-    private void SessionChanged(){EnsureAccount();Changed?.Invoke();}
+    private void SessionChanged(){EnsureAccount();ConnectionsChanged();Changed?.Invoke();}
+    private void ConnectionsChanged()
+    {
+        if(_connections is null||_connections.Account!=_account)return;
+        var selected=_connections.CloudSelected?NotesSource.Cloud:NotesSource.Browser;
+        if(Source!=selected&&!Dirty&&!HasPending)
+        { _generation++;Source=selected;Book=null;SelectedId=null;Review=null;LastReceipt=null;Draft.Bind(DraftScope);ResetDraft(null); }
+        Changed?.Invoke();
+    }
     private void EnsureAccount()
     {
         var account=_session.State.IsAuthenticated&&Guid.TryParse(_session.State.UserId,out var id)?id.ToString("D"):null;
@@ -66,6 +78,7 @@ public sealed partial class NotesController:IAsyncDisposable
     public async Task<bool> SwitchAsync(NotesSource source,bool discard=false,CancellationToken token=default)
     {
         EnsureAccount();if(_account is null||HasPending||Dirty&&!discard)return false;
+        if(_connections is not null&&(source==NotesSource.Cloud)!=_connections.CloudSelected)return false;
         _generation++;Source=source;Book=null;Review=null;LastReceipt=null;Draft.Bind(DraftScope);ResetDraft(null);await LoadAsync(token);return true;
     }
     private Task Observe(string operation,Func<Task> action)
@@ -78,7 +91,10 @@ public sealed partial class NotesController:IAsyncDisposable
     public Task LoadAsync(CancellationToken token=default)=>Observe("notes-load",()=>LoadCoreAsync(token));
     private async Task LoadCoreAsync(CancellationToken token)
     {
-        EnsureAccount();if(_account is null)return;var generation=_generation;
+        EnsureAccount();if(_account is null)return;
+        if(_connections is not null) { await _connections.RefreshSelectionAsync(_account,token);ConnectionsChanged(); }
+        if(!SourceMatchesActive){Say("Resolve or export the current draft before opening the selected Workspace.",true);return;}
+        var generation=_generation;
         try
         {
             NotesNotebook? book;
@@ -195,9 +211,10 @@ public sealed partial class NotesController:IAsyncDisposable
     private async Task DisconnectCloudCoreAsync(bool delete,CancellationToken token)
     {
         EnsureAccount();if(_account is null||HasPending)return;var generation=_generation;
+        if(_connections is not null)await _connections.SuppressAsync(_account,false,false,true,token);
         var result=await _cloud.DisconnectAsync(delete,token);if(!Current(generation))return;
         if(!result.Succeeded){_cloud.ForgetSession();Book=null;ResetDraft(null);Review=null;Say("Cloud cleanup could not be confirmed. This tab was disconnected. Reconnect to inspect the original notebook before another action.",true);return;}
         _generation++;Book=null;SelectedId=null;Review=null;ResetDraft(null);LastReceipt=null;Say(delete?"Cloud Notes notebook deleted. Browser notes and downloaded files remain separate.":"Cloud Notes disconnected. Server notes remain until explicit deletion.");
     }
-    public async ValueTask DisposeAsync(){_session.Changed-=SessionChanged;if(_projects is not null)_projects.Changed-=ProjectsChanged;await _gate.WaitAsync();_gate.Release();_gate.Dispose();}
+    public async ValueTask DisposeAsync(){if(_connections is not null)_connections.Changed-=ConnectionsChanged;_session.Changed-=SessionChanged;if(_projects is not null)_projects.Changed-=ProjectsChanged;await _gate.WaitAsync();_gate.Release();_gate.Dispose();}
 }

@@ -137,15 +137,15 @@ public sealed class TodoTaskPanelTests : BunitContext
     [Fact]
     public async Task Draft_survives_component_recreation_source_changes_and_review_cancellation_but_clears_on_sign_out()
     {
-        var (f, _) = Setup(); await f.Controller.CreateLocalAsync(); var first = f.Controller.Snapshot!.Document.Id;
+        var (f, presentation) = Setup(); await f.Controller.CreateLocalAsync(); var first = f.Controller.Snapshot!.Document.Id;
         await f.Controller.CreateLocalAsync(); var second = f.Controller.Snapshot!.Document.Id;
         var cut = Render<TodoTaskPanel>(); cut.Find("[data-testid='todo-title']").Input("Private retained draft");
         cut.Find("form").Submit(); cut.Find("[data-testid='todo-cancel']").Click(); Assert.Empty(f.Controller.Snapshot.Commands);
         cut.Dispose(); cut = Render<TodoTaskPanel>();
         Assert.Equal("Private retained draft", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
-        cut.Find("[data-testid='todo-source']").Change($"Browser|{first:D}");
+        Assert.Empty(cut.FindAll("[data-testid='todo-source']"));await cut.InvokeAsync(()=>presentation.SelectAsync(new(TodoWorkspaceSource.Browser,first)));
         Assert.Equal("", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
-        cut.Find("[data-testid='todo-source']").Change($"Browser|{second:D}");
+        await cut.InvokeAsync(()=>presentation.SelectAsync(new(TodoWorkspaceSource.Browser,second)));
         Assert.Equal("Private retained draft", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
         f.Session.SetState(SessionViewModel.Empty);
         cut.WaitForAssertion(() => Assert.DoesNotContain("Private retained draft", cut.Markup));

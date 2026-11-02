@@ -25,19 +25,14 @@
     }
     else
     {
-        <details class="todo-source-picker" open="@(ExpandSourcePicker || Todo.Selection is null || Todo.Availability == TodoWorkspaceAvailability.Unavailable)"><summary>@(Todo.Selection is { } currentSource ? $"{(currentSource.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} workspace · {(Todo.Revision is { } revision ? $"rev {revision}" : "reload needed")}" : "Choose workspace")</summary><div class="todo-source-controls">
-            <label class="field-row compact">Workspace<select class="app-input" value="@SourceValue(Todo.Selection)" @onchange="SelectSourceAsync" disabled="@(!Todo.CanSwitchSource || Busy)" data-testid="todo-source">
-                <option value="">Choose workspace</option>
-                @foreach (var source in AvailableSources) { <option value="@SourceValue(source)">@SourceLabel(source)</option> }
-            </select></label>
-            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RefreshAsync" Variant="Variant.Text">Refresh sources</MudButton>
-            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Todo.CanSwitchSource || Busy)" OnClick="CreateBrowserAsync" Variant="Variant.Outlined" data-testid="todo-new-browser">New browser workspace</MudButton>
-            @if (Todo.Selection is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadAsync" Variant="Variant.Text">Reload selected workspace</MudButton> }
-        </div>
-        </details>
-        @if (Todo.BrowserSourcesAvailable == false) { <p role="status">Browser workspaces could not be listed. Cloud access remains separate.</p> }
+        <details class="todo-source-picker" open="@(ExpandSourcePicker || Todo.Selection is null || Todo.Availability == TodoWorkspaceAvailability.Unavailable)"><summary>@(Todo.Selection is { } currentSource ? $"{(currentSource.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} Workspace · {(Todo.Revision is { } revision ? $"rev {revision}" : "restoring access")}" : "Restoring Workspace")</summary><div class="todo-source-controls">
+            <p data-testid="todo-active-source">@(Todo.Selection is {} active ? $"Active Workspace: {active.WorkspaceId:D}. Tasks and Notes share this source." : "Account settings determine the active Workspace. Existing records remain preserved.")</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RefreshAsync" Variant="Variant.Text">Refresh Workspace</MudButton>
+            @if (Todo.Selection is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadAsync" Variant="Variant.Text">Reload Workspace</MudButton> }
+            @if (ShowSyncLink) { <a href="/todo/sync">Workspace access and transfer</a> }
+        </div></details>
         @if (Todo.Availability is TodoWorkspaceAvailability.NeedsSelection or TodoWorkspaceAvailability.Unavailable)
-        { <p role="status">Select a workspace or reload available data before saving tasks. Creating a browser workspace makes no cloud connection.</p> }
+        { <p role="status">Workspace access is unavailable or still restoring. Open Todo Sync to restore existing access or review consolidation; browser recovery copies stay preserved.</p> }
         @if (!ShowCapture && Todo.Selection is not null) { <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness @if (ShowSyncLink) { <a href="/todo/sync">Open Todo Sync</a> }</p> }
         @if (Todo.Commands.LastReceipt is { } receipt)
         { <p role="status" data-testid="todo-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · Habitica: @receipt.HabiticaProjectionStatus · confirmed effects: @receipt.ConfirmedProjectionCount/@receipt.TotalProjectionCount · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required"). Command: @receipt.CommandId</p> }
@@ -267,13 +262,6 @@
     }
     private Task RefreshAsync() => RunAsync(() => Todo.RefreshSourcesAsync());
     private Task ReloadAsync() => RunAsync(() => Todo.LoadSelectedAsync());
-    private Task CreateBrowserAsync() => RunAsync(() => Todo.CreateBrowserAsync());
-    private Task SelectSourceAsync(ChangeEventArgs args) => RunAsync(async () =>
-    {
-        var parts = args.Value?.ToString()?.Split('|');
-        if (parts is not [var kind, var id] || !Enum.TryParse<TodoWorkspaceSource>(kind, out var source) || !Guid.TryParse(id, out var workspaceId)) return;
-        await Todo.SelectAsync(new(source, workspaceId));
-    });
     private void ChangeKind(ChangeEventArgs args) { if (ActionsDisabled) return; if (Enum.TryParse<CompanionTaskKind>(args.Value?.ToString(), out var kind) && Enum.IsDefined(kind)) { _kind = kind; _recurringId = null; _linkTaskId = null; RestoreEditing(); _focusTitle = true; _offset = 0; } }
     private void RestoreEditing() => _editId = Todo.Selection is { } source ? Drafts.Editing(source, _kind) : null;
     private void NewTask() { _editId = null; if (Todo.Selection is { } source) Drafts.Edit(source, _kind, null); _focusTitle = true; _error = null; }
