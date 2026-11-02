@@ -2,7 +2,7 @@
   "active_run": null,
   "format": "skill-tree-future",
   "schema": 2,
-  "source_hash": "b3515e80a4799431120e5d19a4d9cfacb0af8be20f83276e122a5cef75e4a06c",
+  "source_hash": "7bbede7cff34dc6a4493376095f676e6f6f9f23b0210594f536479839c30c316",
   "task_progress": {},
   "tasks": [
     {
@@ -300,22 +300,8 @@
     },
     {
       "depends_on": [],
-      "id": "B-7d51333a-052f-5df8-b69d-f60deefe6851",
-      "line": 1571,
-      "parent_pending_ids": [],
-      "priority": 50,
-      "processing_run_id": null,
-      "queue": "Backlog",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Backlog",
-      "title": "Separate current validation and rollout contracts from milestone evidence"
-    },
-    {
-      "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1607,
+      "line": 1571,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -329,7 +315,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1644,
+      "line": 1608,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -343,7 +329,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1681,
+      "line": 1645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -357,7 +343,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1814,
+      "line": 1778,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -371,7 +357,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1852,
+      "line": 1816,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -385,7 +371,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1886,
+      "line": 1850,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -399,7 +385,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1921,
+      "line": 1885,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -413,7 +399,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1955,
+      "line": 1919,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -427,7 +413,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1993,
+      "line": 1957,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -441,7 +427,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 2020,
+      "line": 1984,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -455,7 +441,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 2042,
+      "line": 2006,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -465,20 +451,6 @@
       "root_task_id": null,
       "status": "Backlog",
       "title": "Background Automation"
-    },
-    {
-      "depends_on": [],
-      "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 2069,
-      "parent_pending_ids": [],
-      "priority": 25,
-      "processing_run_id": null,
-      "queue": "Backlog",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Backlog",
-      "title": "Align inherited documentation prose with current document rules"
     }
   ]
 }

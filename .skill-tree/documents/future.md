@@ -1568,42 +1568,6 @@ Risks:
 
 Deferred work requires an explicit promotion request before implementation.
 
-### Separate current validation and rollout contracts from milestone evidence
-
-```yaml
-id: B-7d51333a-052f-5df8-b69d-f60deefe6851
-priority: 50
-status: Backlog
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Evidence:
-- `testing.md` describes completed milestone test counts and disabled shipped configurations alongside current validation policy. `technical.md` and `features.md` contain layer milestones beside integrated current behavior.
-- `deploy-cloudflare-pages.md` still lists Auth/Workspace migrations `0001` through `0007` as completed publication prerequisites and describes disabled gameplay flags in the owner-pilot section. `.skill-tree/history/releases/2026-10-29/deployment.json` records later Auth/Workspace migrations, including Workspace `0017`, and separately activated Push lanes.
-- `workers/release-inputs.json` and `plugin/plugin.json` declare backend/package `0.3.0`; the deployment document retains an unqualified Notes `0.2.0` candidate sequence. Historical evidence remains valid only for the recorded sources and selected scope.
-
-Impact:
-- Agents can mistake initial-pilot restrictions, old migration lists or historical passes for the current release contract and current validation evidence.
-
-Suggested direction:
-- Keep current policy, required recipes, configuration defaults and qualification gaps in canonical documents. Link source-bound milestone outcomes from retained history without rewriting original verdicts.
-- Reconcile rollout state against exact release identities and source configuration. Record live state as unverified until an authorized read establishes the selected deployment.
-- Preserve credential consent, per-operation review, original receipts, authorization boundaries and all unresolved host/device gates.
-
-Touch:
-- `.skill-tree/documents/testing.md`, `deploy-cloudflare-pages.md`, `technical.md` and `features.md`; relevant structured evidence under `.skill-tree/history/`.
-
-Acceptance:
-- Canonical documents describe current contracts without treating a historical milestone as current qualification.
-- Release instructions identify complete current migration prerequisites and distinguish source defaults, prepared flags, recorded publication and verified live state.
-- Every retained qualification claim links matching source/build evidence and states unrun host, provider and device lanes.
-- Scoped prose and repository documentation checks pass for the reviewed content; broader inherited prose work remains separately tracked by `B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8`.
-
 ### Party Quest Workspace Modes
 
 ```yaml
@@ -2065,36 +2029,3 @@ Constraints:
 - no silent mutations;
 - no aggressive polling;
 - Habitica automated-background calls must respect the documented minimum interval.
-
-### Align inherited documentation prose with current document rules
-
-```yaml
-id: B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8
-priority: 25
-status: Backlog
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Evidence:
-- The installed `validate-document-rules.py` reports inherited explicit-entity and declarative-prose violations across relocated current-state documents.
-- The 2026-11-02 corpus diagnostic reports 273 errors and 169 review warnings; the audit baseline contains 278 errors and 170 warnings. New audit text and complete README/build/dependency/map documents pass scoped diagnostics.
-- Plan documents and newly created baseline documents pass the scoped prose check; full-document strict validation remains incomplete.
-
-Impact:
-- Repository-wide strict documentation validation cannot pass until inherited wording receives review or upstream lint policy gains a supported legacy mode.
-
-Suggested direction:
-- Review affected wording in place without changing product constraints, quoted labels, formulas or API contracts. Resolve upstream false positives before broad mechanical rewriting.
-
-Touch:
-- Existing current-state documents under `.skill-tree/documents/`; preserve plan scope and installed generated packages.
-
-Acceptance:
-- Current-state prose describes named entities and current behavior.
-- Repository-wide strict documentation validation passes under an agreed rule set.
-- API examples, product requirements and source links retain meaning.
