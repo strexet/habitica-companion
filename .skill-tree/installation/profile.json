@@ -1,0 +1,480 @@
+{
+  "bridges": {
+    "AGENTS.md": {
+      "hash": "d34b5166e288879ffacf3a0339292f9fffb3f8b73dfe7da3c57bb2db18c1fbbe",
+      "providers": [
+        "codex"
+      ]
+    }
+  },
+  "bundle_digests": {
+    ".skill-tree/installation/manager.js": "ba94a4a05ef6cd75041f6d80a96c82972024bca84597b1e487a53ae0ed7a059e",
+    ".skill-tree/installation/source/common/references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+    ".skill-tree/installation/source/common/references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+    ".skill-tree/installation/source/common/references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+    ".skill-tree/installation/source/common/references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+    ".skill-tree/installation/source/common/references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+    ".skill-tree/installation/source/common/references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+    ".skill-tree/installation/source/common/references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
+    ".skill-tree/installation/source/common/references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+    ".skill-tree/installation/source/common/references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+    ".skill-tree/installation/source/common/references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+    ".skill-tree/installation/source/common/references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+    ".skill-tree/installation/source/common/references/unity-safety.md": "ff6e0063e3a26f60d8655a08beb33ef19ffa2f27fce9c5efd573480b1b81e6ac",
+    ".skill-tree/installation/source/common/references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+    ".skill-tree/installation/source/common/references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+    ".skill-tree/installation/source/common/scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741",
+    ".skill-tree/installation/source/common/scripts/inspect-unity-repository.py": "794230aca0f338a9d5a6ce7dd62df2016c9d13fb9622174429f9188225fb78e9",
+    ".skill-tree/installation/source/common/scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+    ".skill-tree/installation/source/common/scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+    ".skill-tree/installation/source/common/scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+    ".skill-tree/installation/source/common/scripts/validate-repository-documentation.py": "8844b912c043e7213a1a57476579672e78a4b717152044d0a4114a4523cf8f5d",
+    ".skill-tree/installation/source/common/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+    ".skill-tree/installation/source/config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
+    ".skill-tree/installation/source/config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
+    ".skill-tree/installation/source/config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
+    ".skill-tree/installation/source/config/resource-map.json": "bc7f451af9eae6845327445e5b6f1b26fe382ea1fcb3a2a25701eb517e65d889",
+    ".skill-tree/installation/source/domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+    ".skill-tree/installation/source/domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
+    ".skill-tree/installation/source/domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",
+    ".skill-tree/installation/source/lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+    ".skill-tree/installation/source/lib/installation.js": "8ba136f78ebb23d25c5df58f13a0b1d23d3c4db6ee17461072625a7c4dc92396",
+    ".skill-tree/installation/source/src/init-rules/skill-tree-skills.md": "74cb9a275ce1bcd845c31eae44101e79e5adcd02875d84f1a4c8feb1744716fd",
+    ".skill-tree/installation/source/templates/invariants.json": "4545894b07fab5f222d15eddd17c220408a4be8a5e5f25da3a4a34ef06bb87b5",
+    ".skill-tree/installation/source/templates/operations.json": "4c47abcf67c353eed7754589f103f5b423e9d24147b8b395935167a406538562"
+  },
+  "composer_version": "1.0.0",
+  "destinations": {
+    ".agents/skills/skill-tree-add-pending-task": {
+      "files": {
+        "SKILL.md": "4e22ecf5434e9accfe4bfbad82735a1512f2fffd0bf79acf385d2627f37d28d0",
+        "agents/openai.yaml": "94c2cbb46483713fbd990e37c62cff1332c04f29622a2414dac3b7800960c279",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "7373803488d6f4feef7f2d4aea04a8c97254b663bfae9e7f59b6f262397619be",
+      "name": "skill-tree-add-pending-task",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-create-documents-snapshot": {
+      "files": {
+        "SKILL.md": "4e00a6fd00870a7111b6fe29b63ea60f7b18cfaf8cfff97369840d47984c7e09",
+        "agents/openai.yaml": "870ad8c1d5c0644618f1b1082212c2a9c09dafcd58a21c532d876f723f7dd77a",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741"
+      },
+      "flavor": "web",
+      "identity": "6c3c3cd707ab7a4c2d9df5a8c64d164bda6101c0ba4446f111aa874041826f63",
+      "name": "skill-tree-create-documents-snapshot",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-implement-all": {
+      "files": {
+        "SKILL.md": "2abe31630a7061123bf39d797136e644257df859a90a08fe3350d9e1e9cd134c",
+        "agents/openai.yaml": "2d4a8d52b557c9473ba1f73e7a144169fdfeba4f207335b9341a9a1b127ea516",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "9ada0b199f3177472b4ea53ef9c33557583be4869aa58c6dcee466af90e99bde",
+      "name": "skill-tree-implement-all",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-implement-next-future-task": {
+      "files": {
+        "SKILL.md": "445a4f743a2509b64e3445d519245c59f7abff9febd08ce988bbbb8fd284f902",
+        "agents/openai.yaml": "54f2ca57647dadda1176102aebcbb3850dea38c06c6ac46fbdc311d4832fd0fc",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "036af71c9170aa792f7af2abc71ce87678e45578325a94341fbd61132239bfec",
+      "name": "skill-tree-implement-next-future-task",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-process-future-pending": {
+      "files": {
+        "SKILL.md": "24af57bdd0817513dd6500e270c4cb3d54453e884d8b218f6250de4bf74463b7",
+        "agents/openai.yaml": "c53fa1b0209f9cca9de1d01ac1ebef76bbfa6221a58a0d41be9cf1acbd1a7344",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "e5fa035c659ea1f1c728f1bca1204c90d894962b2ae1c2fe7e709c6bd53cf723",
+      "name": "skill-tree-process-future-pending",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-repo-documentation": {
+      "files": {
+        "SKILL.md": "2d7548dc0c6e97b9105846e2e4a5fe8d438eea881a3a6fc5ea9488f610dfff29",
+        "agents/openai.yaml": "db26fd1ed65f841df1ae73c78181b9eca294a69ec8bdf41a7e4cb0e4ec7e345c",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/validate-repository-documentation.py": "8844b912c043e7213a1a57476579672e78a4b717152044d0a4114a4523cf8f5d",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "c7d2c11bbdd89c13959af4aeae1781b5382f6c80322cc385b5ced519ae3615a6",
+      "name": "skill-tree-repo-documentation",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-repo-documentation-audit": {
+      "files": {
+        "SKILL.md": "bcda5816efbe8de71a83d6f91b12d9ec7c229b3dd67f98c110884915ecd1454a",
+        "agents/openai.yaml": "29784697a7e809dd3031d2eef0c0fc20c1f4a1e07fa843810f9c5fd8c892e54c",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/validate-repository-documentation.py": "8844b912c043e7213a1a57476579672e78a4b717152044d0a4114a4523cf8f5d",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "116c6953a7f4d5521bf5ec20142f553e8c7b1d92dc130ea1dbb2e54a46f2edad",
+      "name": "skill-tree-repo-documentation-audit",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-work-through-next": {
+      "files": {
+        "SKILL.md": "448f0b6cbb8d7494c0c7256f36cc989c3bdff50993ebb5dd23ded6d70d7c8aeb",
+        "agents/openai.yaml": "b5575ab3a7a3fa376a0351d4ac7e0b671c033a6f79fbcd7f69903389378ca8e8",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+        "references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/project-profile.md": "7bebe2d0cb82611e086ec66fed0295347d9761249aa1ceaa687a6845f15d2b58",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249"
+      },
+      "flavor": "web",
+      "identity": "88c2a71c2d2b30ab87045320242d97ac11542765d81dd275a5e7b52a951c53e9",
+      "name": "skill-tree-work-through-next",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    }
+  },
+  "environment_id": "1784a4dca13d114933581f741489e21bffc47a52ea8a4f23b4a6f376c62191c1",
+  "facts": {
+    "capabilities": {
+      "playwright-test": {
+        "package": "@playwright/test",
+        "state": "absent",
+        "version": null
+      }
+    },
+    "node": "22",
+    "package_manager": "npm",
+    "packages": {},
+    "test_assemblies": [],
+    "ui": []
+  },
+  "flavor": "web",
+  "format": "skill-tree-profile",
+  "gaps": [],
+  "identity": "615cda04042e83b4dc8d3f2d04f241cf9355702143a17cc71bca2c0e244a38c7",
+  "inputs": {
+    ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
+    ".nvmrc": null,
+    ".skill-tree/validation-recipes.json": "91dcc06793135ac1e3fa0982e7125a1f3d12408d4162060ddf53d8b9d259773a",
+    "Cargo.toml": null,
+    "Directory.Build.props": "efc75c2ec58a3644f8d66d0749108ef9361ffff26c109feedbf4235b9dd24885",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "Packages/manifest.json": null,
+    "Packages/packages-lock.json": null,
+    "ProjectSettings/EditorSettings.asset": null,
+    "ProjectSettings/ProjectSettings.asset": null,
+    "ProjectSettings/ProjectVersion.txt": null,
+    "bun.lock": null,
+    "bun.lockb": null,
+    "deploy/callback-egress/package.json": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+    "global.json": "9fd12b1529d47d4b26921fc36fc85fe821f2ab83149b5c52994d97e41d117d6c",
+    "npm-shrinkwrap.json": null,
+    "package-lock.json": null,
+    "package.json": null,
+    "pnpm-lock.yaml": null,
+    "pyproject.toml": null,
+    "pytest.ini": null,
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj": "04701b12ecf14d03108f7c38cd2d221b0ba665a79ac720a70c5636fa9372a20b",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj": "e76a831efc80eae479ae18cf3584e800a6885870730ba83d40003756c631c766",
+    "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj": "52070060b47393cda6ef37bda6bc21470b705d37819d68700cb723e9830f5027",
+    "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj": "dbdeeff4bba812d44a01623f7c51830c59d48db523143aa2c07ca7a9bd5e423e",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "132303de10ee830183129eab16fb471746a0f5485d1ac518f3beae0104f29f50",
+    "workers/chatgpt-auth/package-lock.json": "fc3d5e89b1e6391bfe2acbf688c8ece7d0e2cb6ac098179512bc0875d489d792",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
+    "workers/chatgpt-mcp/package.json": "87aa23dd438efcfef334b03bdd8197b6b2b77d873f9e75dfbcd9685c97fc2bab",
+    "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "yarn.lock": null
+  },
+  "inventory": [],
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "qualification": "static compatibility only; product execution unqualified",
+  "recipes": {
+    "dotnet-focused-tests": {
+      "argv": [
+        "dotnet",
+        "test",
+        "{test_project}",
+        "-m:1",
+        "-nodeReuse:false",
+        "--filter",
+        "{test_filter}",
+        "--logger",
+        "trx;LogFileName={report_name}",
+        "--results-directory",
+        "{result_directory}"
+      ],
+      "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "global.json",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+        "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+        "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+        "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      ],
+      "lane": "unit",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "csharp": "12.0",
+        "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+        "framework": "Blazor WebAssembly net8.0",
+        "sdk_declaration": "8.0.125",
+        "test_frameworks": {
+          "Microsoft.NET.Test.Sdk": "18.4.0",
+          "bunit": "2.7.2",
+          "xunit": "2.9.3"
+        }
+      }
+    },
+    "node-focused-tests": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=15000",
+        "{test_file}"
+      ],
+      "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "deploy/callback-egress/package.json"
+      ],
+      "lane": "unit",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node_declaration": "22.x"
+      }
+    },
+    "webapp-release-build": {
+      "argv": [
+        "dotnet",
+        "publish",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "{output_directory}",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "execution_notes": "Local build only; no deployment. Build authorization and isolated output remain task-specific.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "global.json",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "build",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "csharp": "12.0",
+        "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+        "framework": "Blazor WebAssembly net8.0",
+        "sdk_declaration": "8.0.125",
+        "test_frameworks": {
+          "Microsoft.NET.Test.Sdk": "18.4.0",
+          "bunit": "2.7.2",
+          "xunit": "2.9.3"
+        }
+      }
+    },
+    "worker-focused-tests": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=30000",
+        "{test_file}"
+      ],
+      "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "workers/chatgpt-auth/package.json",
+        "workers/chatgpt-auth/package-lock.json",
+        "workers/chatgpt-mcp/package.json",
+        "workers/chatgpt-mcp/package-lock.json",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/package-lock.json"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+        "node_declaration": "22.x"
+      }
+    }
+  },
+  "schema": 1,
+  "source_digests": {
+    "common/references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+    "common/references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+    "common/references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+    "common/references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+    "common/references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+    "common/references/installation-profile.md": "e6d82b42d86e43576ea40c0a890300c047d2a8738b9ca6f2a7c98a0901fe1a3c",
+    "common/references/orchestration.md": "fbe1de4eaa89566ab2c41e9f2f63d390420a191a89b52f3ce1446ccad4d04b87",
+    "common/references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+    "common/references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+    "common/references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+    "common/references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+    "common/references/unity-safety.md": "ff6e0063e3a26f60d8655a08beb33ef19ffa2f27fce9c5efd573480b1b81e6ac",
+    "common/references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+    "common/references/workflow-metadata.md": "a5c5b229ba1a76a6a363db9b92d94e1165da7a1c24a43cab16e2155a7bef119a",
+    "common/scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741",
+    "common/scripts/inspect-unity-repository.py": "794230aca0f338a9d5a6ce7dd62df2016c9d13fb9622174429f9188225fb78e9",
+    "common/scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+    "common/scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+    "common/scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+    "common/scripts/validate-repository-documentation.py": "8844b912c043e7213a1a57476579672e78a4b717152044d0a4114a4523cf8f5d",
+    "common/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+    "config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
+    "config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
+    "config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
+    "config/repository.json": "cdc6218cb1003e00d1e3d703de079a476d283ab6a27132a581078c8228c1eef7",
+    "config/resource-map.json": "bc7f451af9eae6845327445e5b6f1b26fe382ea1fcb3a2a25701eb517e65d889",
+    "domains/general/sections.json": "936bf430802a7ff38ac83413b25162a079bdb81734388420336291b00d2136f6",
+    "domains/unity/development.md": "f65dc5e0e69df84d3204fe70339a7dfa53fcd0d57a2b97f8e57d34a399e5f640",
+    "domains/unity/input-testing.md": "0dec57b1321db917d8e3b06036e4824df94757be0ab49ee959ec84c2688e2347",
+    "domains/unity/panel-simulator.md": "0848b6da7ace415a90aeeca8bc771bc22320a746460f64dadff3396d78576433",
+    "domains/unity/performance-testing.md": "200b28a0305715ff9cb23f4d416fa05a6a30643c146775ceecdc3a0b9bc2f5ea",
+    "domains/unity/sections.json": "e95700a599c6048e3ee9b32b1428c452707297e7425f48349bd8cacd58e9bdc6",
+    "domains/unity/ugui-testing.md": "873c236f793ff3c9ece8f0d0346c5c48513e8220406fce216751571c58b79073",
+    "domains/unity/uitk-testing.md": "c817eb7700e4082ed46557088535ac10e39c928c866ee3b99b343e626b9e449e",
+    "domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+    "domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
+    "domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",
+    "lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+    "lib/installation.js": "8ba136f78ebb23d25c5df58f13a0b1d23d3c4db6ee17461072625a7c4dc92396",
+    "src/init-rules/skill-tree-skills.md": "74cb9a275ce1bcd845c31eae44101e79e5adcd02875d84f1a4c8feb1744716fd",
+    "templates/invariants.json": "4545894b07fab5f222d15eddd17c220408a4be8a5e5f25da3a4a34ef06bb87b5",
+    "templates/operations.json": "4c47abcf67c353eed7754589f103f5b423e9d24147b8b395935167a406538562"
+  }
+}

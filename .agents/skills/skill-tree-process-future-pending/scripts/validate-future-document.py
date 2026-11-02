@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# GENERATED FILE
-# Source: skill-tree/common/scripts/validate-future-document.py; generator: skill-tree/scripts/sync-skill-references.py
 """Validate current task headers, queue structure and prioritized contracts."""
 import argparse
 import json

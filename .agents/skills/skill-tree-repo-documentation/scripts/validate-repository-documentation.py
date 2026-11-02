@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# GENERATED FILE
-# Source: skill-tree/common/scripts/validate-repository-documentation.py; generator: skill-tree/scripts/sync-skill-references.py
 """Validate target documents, navigation manifests and checkpoint consistency."""
 import argparse
 import importlib.util
@@ -17,13 +15,13 @@ def load(name):
 def validate_manifest(root):
     """Read persisted metadata directly; never refresh or replace a checkpoint."""
     root=root.resolve();errors=[];warnings=[];wf=load('workflow-state')
-    manifest_path=root/'skill-tree/skill-tree.json'
+    manifest_path=root/'.skill-tree/skill-tree.json'
     try:data=json.loads(manifest_path.read_text())
     except (OSError,ValueError) as exc:return {'ok':False,'errors':['Invalid manifest JSON: '+str(exc)],'warnings':[]}
     if not isinstance(data,dict):return {'ok':False,'errors':['Manifest requires an object'],'warnings':[]}
     if data.get('format')!='skill-tree-manifest':errors.append('Unsupported manifest format')
     if data.get('role') not in {'source','target'}:errors.append('Unsupported manifest role')
-    actual_role='source' if (root/'skill-tree/skills').is_dir() else 'target'
+    actual_role='source' if (root/'.skill-tree/config/repository.json').is_file() and json.loads((root/'.skill-tree/config/repository.json').read_text()).get('role')=='source' else 'target'
     if data.get('role')!=actual_role:errors.append('Manifest role disagrees with repository layout')
     for field in ['queue','state','latest_audit']:
         if field not in data:errors.append('Missing manifest field: '+field)
@@ -53,7 +51,7 @@ def validate_manifest(root):
     for field in ['queue','state']:
         value=data.get(field)
         if value is not None:portable(value,field)
-    if data['role']=='target' and (data.get('queue')!='skill-tree/documents/future.md' or data.get('state')!='skill-tree/documents/future.json'):
+    if data['role']=='target' and (data.get('queue')!='.skill-tree/documents/future.md' or data.get('state')!='.skill-tree/documents/future.json'):
         errors.append('Target manifest requires canonical queue and state paths')
     if data.get('queue') is not None and data.get('state') is None:errors.append('A queue requires an indexed checkpoint file')
     for path in data['policy_references']:portable(path,'policy_references')
@@ -84,7 +82,7 @@ def validate_manifest(root):
         for skill in data['catalog']:
             if isinstance(skill,dict) and skill.get('entrypoint') in expected_resources and skill.get('resources')!=expected_resources[skill['entrypoint']]:errors.append('Installed skill resources are stale: '+skill['entrypoint'])
     else:
-        actual={p.relative_to(root).as_posix() for p in (root/'skill-tree/skills').glob('*/SKILL.md')}
+        actual={p.relative_to(root).as_posix() for p in (root/'.skill-tree/skills').glob('*/*/SKILL.md')}
         if entries!=actual:errors.append('Source skill catalog is stale; refresh the manifest')
     for audit in data['audit_scopes']:
         if not isinstance(audit,dict):errors.append('Invalid audit navigation entry')
@@ -93,15 +91,16 @@ def validate_manifest(root):
     if latest is not None:
         if not isinstance(latest,dict) or latest not in data['audit_scopes']:errors.append('Latest audit must match an audit navigation entry')
         elif not latest.get('fresh'):warnings.append('Latest recorded audit is stale; historical verdicts remain unchanged')
-    if data.get('queue')=='skill-tree/documents/future.md':
+    if data.get('queue')=='.skill-tree/documents/future.md':
         try:
             store=wf.Store(root);text=store.text();tasks=wf.parse(text)
             state=json.loads(store.state.read_text())
-            if not isinstance(state,dict) or state.get('format')!=wf.FORMAT or 'active_run' not in state:raise wf.WorkflowError('Unsupported checkpoint schema')
+            if not isinstance(state,dict) or state.get('format')!=wf.FORMAT or state.get('schema')!=2 or 'active_run' not in state:raise wf.WorkflowError('Unsupported checkpoint schema')
             if state.get('source_hash')!=wf.digest(text.encode()):errors.append('Queue index source hash is stale')
             if state.get('tasks')!=wf.index(text):errors.append('Queue index differs from task definitions')
             completed={o['task_id'] for o in store.outcomes() if o.get('disposition')=='completed'}
             wf.validate_dependencies(tasks,completed)
+            wf.validate_progress(state,tasks,completed)
             run=state['active_run']
             if run is not None:
                 wf.validate_run(run)
@@ -115,8 +114,8 @@ def validate_manifest(root):
     return {'ok':not errors,'errors':errors,'warnings':warnings}
 
 def validate(root,strict=False):
-    errors=[];warnings=[];docs=root/'skill-tree/documents'
-    for rel in ['README.md','AGENTS.md','skill-tree/skill-tree.json','skill-tree/documents/future.json']+['skill-tree/documents/'+name for name in REQUIRED]:
+    errors=[];warnings=[];docs=root/'.skill-tree/documents'
+    for rel in ['README.md','AGENTS.md','.skill-tree/skill-tree.json','.skill-tree/documents/future.json']+['.skill-tree/documents/'+name for name in REQUIRED]:
         if not (root/rel).is_file():errors.append('Missing '+rel)
     if (docs/'future.md').exists():
         result=load('validate-future-document').validate(docs/'future.md',strict);errors+=result['errors']

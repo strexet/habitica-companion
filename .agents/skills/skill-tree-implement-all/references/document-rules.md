@@ -1,5 +1,3 @@
-<!-- GENERATED FILE; Source: skill-tree/common/references/document-rules.md; generator: skill-tree/scripts/sync-skill-references.py -->
-
 # Document Rules
 
 All Skill Tree-owned prose uses English. Exact identifiers, API symbols, file paths and code retain required syntax. Informal task requests become concise English intent without altering constraints.

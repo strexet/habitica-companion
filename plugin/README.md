@@ -10,7 +10,7 @@ The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker te
 
 ## Private setup
 
-1. Complete the separate deployment and enrollment checklist in [Cloudflare setup](../skill-tree/documents/deploy-cloudflare-pages.md). Keep Auth, MCP and Workspace resource identities consistent.
+1. Complete the separate deployment and enrollment checklist in [Cloudflare setup](../.skill-tree/documents/deploy-cloudflare-pages.md). Keep Auth, MCP and Workspace resource identities consistent.
 2. Copy `plugin/` to a private staging directory. Set only `mcpServers.habitica-companion.url` in staged `mcp.json` to the approved MCP HTTPS `/mcp` endpoint. Keep secrets outside the package.
 3. Import the staged package through the target host's supported private/local plugin source. Host availability and workspace administration controls can vary. For ChatGPT custom MCP testing, connect the approved endpoint using the documented custom MCP flow and test the bundled skills in the same supported environment.
 4. Enroll in Companion Settings through explicit server-storage consent; enable a cloud workspace separately for canonical task tools. Follow OAuth in the host. Never paste a Habitica API token into ChatGPT. A read grant requires separate write consent before task preparation/acceptance. The background executor requires another explicit opt-in.
@@ -69,13 +69,13 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
 | E01 current task journeys, physical devices, assistive technology and authenticated competitor study | Unrun; owner/session/device inputs required | Unrun; local synthetic pack does not qualify host/device research |
 
-The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.
+The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../.skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.
 
-ChatGPT observations are owner-reported. [Codex native pilot evidence](../skill-tree/history/validation/codex-native-owner-pilot.json) records independently executed tool calls and one explicitly approved Companion-only test save. Client versions, granted scopes and browser-side protocol exchanges are not independently captured. The custom MCP connection does not establish bundled-skill installation.
+ChatGPT observations are owner-reported. [Codex native pilot evidence](../.skill-tree/history/validation/codex-native-owner-pilot.json) records independently executed tool calls and one explicitly approved Companion-only test save. Client versions, granted scopes and browser-side protocol exchanges are not independently captured. The custom MCP connection does not establish bundled-skill installation.
 
 Record app/client version, transport, selected permissions, actual callback mode, deployed commit and sanitized evidence per cell. Codex callback checks cover the actual loopback host/path/port and issuer response rather than reusing a ChatGPT redirect. Origin/CORS checks use observed client requests; no blanket origin exception is required by the test plan. Token values, one-time codes and credential-bearing request data remain excluded from evidence. Use [official OpenAI MCP guidance](https://learn.chatgpt.com/docs/extend/mcp?surface=app) and [plugin packaging guidance](https://developers.openai.com/plugins/build/plugins) for client setup.
 
-[Current task journey pack and observation form](../skill-tree/documents/task-journey-qualification.md) records local preparation and the explicit unrun iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader, human and authenticated competitor lanes under T-d76d2a9a-1318-4e63-9bb4-73f620b108cc.
+[Current task journey pack and observation form](../.skill-tree/documents/task-journey-qualification.md) records local preparation and the explicit unrun iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader, human and authenticated competitor lanes under T-d76d2a9a-1318-4e63-9bb4-73f620b108cc.
 
 All workflow scenarios below apply independently to both clients. Selected real effects require explicit review and test scope; the initial owner pilot keeps projection, spells and background execution disabled, with live Cron off. Missing hosted endpoints, host access or per-user consent remain unrun gates.
 

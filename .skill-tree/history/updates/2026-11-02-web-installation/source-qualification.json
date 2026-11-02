@@ -1,0 +1,35 @@
+{
+  "source_snapshot": "5103a1091316c3dab4fca558b5dd2fa228b97dd5885c21f17569f6a69c09e337",
+  "scope": "Skill Tree source and temporary fixture qualification only",
+  "product_execution": false,
+  "checks": [
+    {
+      "check": "source-python-tests",
+      "command": [
+        "npm",
+        "run",
+        "test:py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 5.461,
+      "deadline_seconds": 180,
+      "cleanup_reserve_seconds": 15,
+      "output_sha256": "62ffa1f3b01d8ccdc5f59857235e42fe5373fe068c95d85326138908272b32ca",
+      "tests": 114
+    },
+    {
+      "check": "source-node-tests",
+      "command": [
+        "npm",
+        "run",
+        "test:node"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 11.091,
+      "deadline_seconds": 180,
+      "cleanup_reserve_seconds": 15,
+      "output_sha256": "62b5f5cd5f9b5b9e91b587a572ad12269bcb56d28327bf27f863528a6fe571f6",
+      "tests": 62
+    }
+  ]
+}
