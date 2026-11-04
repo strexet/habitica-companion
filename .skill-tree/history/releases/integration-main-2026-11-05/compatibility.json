@@ -1,0 +1,11 @@
+{
+  "backend_state": "coherent",
+  "backend_release": "0.3.2",
+  "tool_schema": "1.3.0",
+  "all_three_worker_build_hashes": "61eea7185acd134b17a956b0a74674013ebd7d46902142691d071895d4cff568",
+  "reported_package_compatibility": "compatible",
+  "reported_schema_compatibility": "compatible",
+  "host_package_installation": "unknown",
+  "events_enabled": true,
+  "observation_source": "Connected read-only get_connector_compatibility; no Habitica request or account change."
+}

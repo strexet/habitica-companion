@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/dotnet/dotnet",
+    "publish",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj",
+    "-c",
+    "Release",
+    "-o",
+    "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/.skill-tree/artifacts/integrate-production/release/builds/102b056a37d8198e1b4c0d3a3d942df2eebb44d9/frontend",
+    "-m:1",
+    "-nodeReuse:false"
+  ],
+  "exit_code": 0,
+  "seconds": 22.788,
+  "log": ".skill-tree/artifacts/integrate-production/release/release-frontend-publish.log"
+}

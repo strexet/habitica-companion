@@ -1,0 +1,15 @@
+{
+  "check": "production-identity",
+  "commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+  "root": "/Users/petr/Projects/.agent-workspaces/habitica-complete-production",
+  "run": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_fingerprints": {
+    "deploy/coordinated-release.py": "6c3ecd73941ff468ceae4420c964080f7e433f0aaa8ff68acd15b4f147d3cca0",
+    "tests/release/qualification.py": "4854f76bf46438f39e427ee618bea8a70b44485d6b836057131ba398659f6737"
+  },
+  "tools": {
+    "dotnet": "8.0.125",
+    "node": "v22.12.0",
+    "playwright": "1.62.1"
+  }
+}

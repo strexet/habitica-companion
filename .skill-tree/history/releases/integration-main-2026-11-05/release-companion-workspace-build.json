@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "exit_code": 0,
+  "seconds": 2.604,
+  "log": ".skill-tree/artifacts/integrate-production/release/release-companion-workspace-build.log"
+}

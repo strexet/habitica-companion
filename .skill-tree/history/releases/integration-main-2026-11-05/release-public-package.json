@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "python3",
+    "deploy/build-plugin-download.py",
+    "--published",
+    "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/.skill-tree/artifacts/integrate-production/release/builds/102b056a37d8198e1b4c0d3a3d942df2eebb44d9/frontend/wwwroot",
+    "--source-revision",
+    "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+    "--endpoint",
+    "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+  ],
+  "exit_code": 0,
+  "seconds": 0.086,
+  "log": ".skill-tree/artifacts/integrate-production/release/release-public-package.log"
+}

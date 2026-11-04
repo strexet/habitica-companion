@@ -1,0 +1,21 @@
+{
+  "original_baseline_sha256": "e9377306818d40d15f564a257a888963ce44023d82676efbaa5be61993247854",
+  "original_snapshot_retained": true,
+  "changes": [
+    {
+      "environment": "preview",
+      "field": "placement",
+      "original": null,
+      "provider_round_trip": {},
+      "smart_placement_enabled": false
+    },
+    {
+      "environment": "production",
+      "field": "placement",
+      "original": null,
+      "provider_round_trip": {},
+      "smart_placement_enabled": false
+    }
+  ],
+  "reason": "Cloudflare Git build/Pages PATCH represents an unconfigured placement as an empty object. No mode, hostname, binding, variable or runtime capability changed. The working comparison retains the provider canonical representation; all original predecessor identities and settings remain available in the original snapshot."
+}

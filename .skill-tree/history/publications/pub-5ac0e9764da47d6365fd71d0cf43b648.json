@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "identity": {
+    "repo_id": "346b942e74fecb3988438bd677ba7ad4d7f338cd2e03894b2b0a7aad558e4c94",
+    "remote": "origin",
+    "source_branch": "develop",
+    "target_branch": "main",
+    "head": "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+    "base_oid": "cf78535137f748f3f96af707f5dc99b27f121996",
+    "remote_id": "8867e1dfe9f0faa5d3c08dc116176b3587744b1ca06add6eda26e4b7d3c2f87f"
+  },
+  "authorization": {
+    "pr": true,
+    "merge": true,
+    "origin": "owner",
+    "instruction_digest": "57e187beb0bd4363369d099f3d34743fa1b3d994f4f4d31d5c83e98da76f6501"
+  },
+  "status": "merged",
+  "pr": {
+    "id": "PR_kwDOSLLn8s8AAAABM4MKgQ",
+    "number": 3,
+    "url": "https://github.com/strexet/habitica-companion/pull/3"
+  },
+  "rounds": [
+    {
+      "key": "eb171bd6cb2a9917f95392dbf5caaab1752d5a7471ff1499b9469c0b041d65f5",
+      "head": "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+      "base_oid": "cf78535137f748f3f96af707f5dc99b27f121996",
+      "findings": [],
+      "unresolved": 0,
+      "independent_approval": false,
+      "evidence": [
+        ".skill-tree/history/processing/integrate-production-2026-11-04/merge-semantic-review.json",
+        ".skill-tree/run-evidence/wr-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f/events.json"
+      ]
+    }
+  ],
+  "operations": {
+    "create-6294d4b359fadc11ed18a41b0661102b80fcd54a": {
+      "request_digest": "0e8d7e4380c473518ebf50a58c23321602b7cc4d5831da72a1827005c17ffc86",
+      "state": "confirmed",
+      "result": {
+        "number": 3,
+        "url": "https://github.com/strexet/habitica-companion/pull/3"
+      }
+    },
+    "merge-6294d4b359fadc11ed18a41b0661102b80fcd54a": {
+      "request_digest": "bbdbb95a1409324a25e812e89f08b81669e8aa14a9e5c636c97ebf30947b02ed",
+      "state": "confirmed",
+      "result": {
+        "merged": true,
+        "sha": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9"
+      }
+    }
+  },
+  "snapshot_key": "eb171bd6cb2a9917f95392dbf5caaab1752d5a7471ff1499b9469c0b041d65f5",
+  "findings": {},
+  "review": {
+    "key": "eb171bd6cb2a9917f95392dbf5caaab1752d5a7471ff1499b9469c0b041d65f5",
+    "head": "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+    "base_oid": "cf78535137f748f3f96af707f5dc99b27f121996",
+    "findings": [],
+    "unresolved": 0,
+    "independent_approval": false,
+    "evidence": [
+      ".skill-tree/history/processing/integrate-production-2026-11-04/merge-semantic-review.json",
+      ".skill-tree/run-evidence/wr-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f/events.json"
+    ]
+  },
+  "ci": "required-checks-passed",
+  "policy_evidence": {
+    "rulesets": [],
+    "branch_protection": "not-configured"
+  },
+  "inventory_evidence": {
+    "local_count": 3361,
+    "provider_count": 3361,
+    "method": "Exact fetched head/base Git trees; full local inventory supplements provider file-list limits"
+  },
+  "merge_commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9"
+}

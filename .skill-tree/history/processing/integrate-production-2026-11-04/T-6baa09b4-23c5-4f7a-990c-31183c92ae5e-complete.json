@@ -1,0 +1,118 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/integrate-production/T-6baa09b4-23c5-4f7a-990c-31183c92ae5e/C-22031e81-dc17-4d5a-888d-ce57dc2b02b6.json",
+          "sha256": "eb3644d5fb27d0c3735359aa97eebf6e5664dbaa4ed2691c613a690e2d1ae337"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.",
+        "criteria": [
+          "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes."
+        ],
+        "id": "merged-targets",
+        "parameters": {},
+        "recipe_id": "static-inspection",
+        "sources": [
+          ".skill-tree/documents/build-and-release.md",
+          "tests/release/qualification.py"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-22031e81-dc17-4d5a-888d-ce57dc2b02b6",
+        "classification": "executed-control",
+        "cleanup": "Read-only source, Git and retained evidence checks completed; no launched product process.",
+        "definition": "e6ae9208f1051b9bd45d9be714aa503bff781529638a3b3235e9021ed8f39f23",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/integrate-production/T-6baa09b4-23c5-4f7a-990c-31183c92ae5e/C-22031e81-dc17-4d5a-888d-ce57dc2b02b6.json",
+            "sha256": "eb3644d5fb27d0c3735359aa97eebf6e5664dbaa4ed2691c613a690e2d1ae337"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "0298319ec3340b70ade1cc0f93319b2cd86977da871cfbfc7706ec664096350c",
+        "payload_hash": "c3571c8d4f1e12f51588510898eaeb102dad19cd6e7869be102d47c0b6eed79a",
+        "recorded_at": "2026-11-04T18:10:51.899335+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/build-and-release.md": "a84b40794b265200f5b544612001c7e73c7c7c7dec497c3018c0f1b03ca2d0d7",
+          "tests/release/qualification.py": "4854f76bf46438f39e427ee618bea8a70b44485d6b836057131ba398659f6737"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.474073834251612
+        }
+      }
+    }
+  ],
+  "commits": [
+    "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+    "102b056a37d8198e1b4c0d3a3d942df2eebb44d9"
+  ],
+  "depends_on": [
+    "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/integrate-production/T-6baa09b4-23c5-4f7a-990c-31183c92ae5e/C-22031e81-dc17-4d5a-888d-ce57dc2b02b6.json",
+      "sha256": "eb3644d5fb27d0c3735359aa97eebf6e5664dbaa4ed2691c613a690e2d1ae337"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-5c3921e2-10a1-4e53-ae8b-8bf41a134a54",
+  "limitations": [],
+  "outcome": "Merged the qualified full source through develop and main using reviewed provider-confirmed conditional PR merges, preserved both histories and verified every qualified source file against main.",
+  "parent_pending_ids": [
+    "P-9579af1d-3709-4bca-961a-6947585c7747"
+  ],
+  "recorded_at": "2026-11-04T18:10:52.779330+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+  "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_fingerprints": {
+    ".skill-tree/documents/build-and-release.md": "a84b40794b265200f5b544612001c7e73c7c7c7dec497c3018c0f1b03ca2d0d7",
+    "tests/release/qualification.py": "4854f76bf46438f39e427ee618bea8a70b44485d6b836057131ba398659f6737"
+  },
+  "task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+  "title": "Review and merge the validated integration through develop into main",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.",
+      "criteria": [
+        "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes."
+      ],
+      "id": "merged-targets",
+      "parameters": {},
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".skill-tree/documents/build-and-release.md",
+        "tests/release/qualification.py"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "e6ae9208f1051b9bd45d9be714aa503bff781529638a3b3235e9021ed8f39f23"
+}

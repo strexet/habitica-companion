@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "pages",
+    "deploy",
+    "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/.skill-tree/artifacts/integrate-production/release/builds/102b056a37d8198e1b4c0d3a3d942df2eebb44d9/frontend/wwwroot",
+    "--project-name",
+    "habitica-companion",
+    "--branch",
+    "main",
+    "--commit-hash",
+    "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+    "--commit-message",
+    "Complete integrated main release"
+  ],
+  "exit_code": 0,
+  "seconds": 20.918,
+  "log": ".skill-tree/artifacts/integrate-production/release/release-pages.log"
+}
