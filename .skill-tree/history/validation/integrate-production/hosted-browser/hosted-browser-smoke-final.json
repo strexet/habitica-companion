@@ -1,0 +1,104 @@
+{
+  "origin": "https://habitica-companion.pages.dev",
+  "results": [
+    {
+      "engine": "chromium",
+      "routes": [
+        {
+          "route": "/settings",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/settings"
+        },
+        {
+          "route": "/todo/tasks",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/todo/tasks"
+        },
+        {
+          "route": "/todo/projects",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/todo/projects"
+        },
+        {
+          "route": "/notes",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/notes"
+        },
+        {
+          "route": "/inventory",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/inventory"
+        }
+      ],
+      "title": "Sign In",
+      "coldStartup": true,
+      "serviceWorker": {
+        "ready": true,
+        "active": "activated",
+        "script": "https://habitica-companion.pages.dev/service-worker.js"
+      },
+      "controlled": true,
+      "offlineSignedOutRelaunch": true,
+      "pass": true,
+      "pageErrors": [],
+      "serverErrors": [],
+      "writes": []
+    },
+    {
+      "engine": "webkit",
+      "routes": [
+        {
+          "route": "/settings",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/settings"
+        },
+        {
+          "route": "/todo/tasks",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/todo/tasks"
+        },
+        {
+          "route": "/todo/projects",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/todo/projects"
+        },
+        {
+          "route": "/notes",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/notes"
+        },
+        {
+          "route": "/inventory",
+          "status": 200,
+          "rendered": true,
+          "finalPath": "/inventory"
+        }
+      ],
+      "title": "Sign In",
+      "coldStartup": true,
+      "serviceWorker": {
+        "ready": true,
+        "active": "activated",
+        "script": "https://habitica-companion.pages.dev/service-worker.js"
+      },
+      "controlled": true,
+      "offlineSignedOutRelaunch": "Not exercised against hosted WebKit; separate local lifecycle checks cover native network refusal.",
+      "pass": true,
+      "pageErrors": [],
+      "serverErrors": [],
+      "writes": []
+    }
+  ],
+  "pass": true,
+  "qualification": "Fresh signed-out startup, routed cold loads and public offline shell only; actual account/device/assistive-technology review remains separate.",
+  "cleanup": "Both owned browser contexts and browsers closed."
+}

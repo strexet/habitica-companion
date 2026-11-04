@@ -1,0 +1,15 @@
+{
+  "version": "dde51db1-1a56-42d5-adda-35a3edda7d0b",
+  "previous": "d78ff6f7-f294-4f3f-8bcc-29cbdf1efffd",
+  "source_commit": "7b86c9827d298b3de855a87a285d9a188e3b75f7",
+  "build_identity": {
+    "backendRelease": "0.3.2",
+    "toolSchemaVersion": "1.3.0",
+    "supportedPackage": {
+      "minimum": "0.2.0",
+      "maximumExclusive": "0.4.0"
+    },
+    "buildHash": "61eea7185acd134b17a956b0a74674013ebd7d46902142691d071895d4cff568"
+  },
+  "runtime_and_secrets_preserved": true
+}

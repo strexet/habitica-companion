@@ -1,0 +1,15 @@
+{
+  "check": "production-browser",
+  "commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+  "root": "/Users/petr/Projects/.agent-workspaces/habitica-complete-production",
+  "run": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "3287f66c4f329f9b761f34493f85043cc9d6a17354dae8a980a96ee27c838bb4",
+    "tests/release/hosted-smoke.mjs": "56740b49e48af473892afc4ba7557009258aa4848fa590d9020ccb64d5506b8a"
+  },
+  "tools": {
+    "dotnet": "8.0.125",
+    "node": "v22.12.0",
+    "playwright": "1.62.1"
+  }
+}
