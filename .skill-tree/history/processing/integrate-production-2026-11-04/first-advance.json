@@ -1,0 +1,25 @@
+{
+  "body": "### Preserve completed source and planning state for full integration\n\n```yaml\nid: T-7bba9311-6e90-492e-a7bb-df656c3d26a9\npriority: 115\nstatus: Ready\nparent_pending_ids: [\"P-9579af1d-3709-4bca-961a-6947585c7747\"]\nprocessing_run_id: PR-29d81efe-837a-4d24-8135-018611823297\nroot_task_id: T-7bba9311-6e90-492e-a7bb-df656c3d26a9\nrelated_task_id: null\nrelation: main\ndepends_on: []\nboundary_validation: before-dependent-work\n```\n\nGoal:\n- Freeze and commit the completed dirty source and evidence before integrating diverged branches.\n\nTouch:\n- Current tracked/untracked completed work, Git source inventory, canonical workflow registry and integration evidence.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- Inspect the complete candidate file list, excluded ignored secrets and exact source hashes. Preserve the previous controller before explicit registry adoption. The owner authorizes the scoped snapshot commit; no remote branch is updated during preservation.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"preserved-source\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\"\n      ],\n      \"sources\": [\n        \".gitignore\",\n        \"AGENTS.md\",\n        \".skill-tree/documents/build-and-release.md\"\n      ],\n      \"parameters\": {},\n      \"assertion\": \"A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\n\n",
+  "checks": [
+    {
+      "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+      "criteria": [
+        "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials."
+      ],
+      "id": "preserved-source",
+      "parameters": {},
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".gitignore",
+        "AGENTS.md",
+        ".skill-tree/documents/build-and-release.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "phase": "implement",
+  "priority": 115,
+  "root_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+  "task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+  "title": "Preserve completed source and planning state for full integration"
+}

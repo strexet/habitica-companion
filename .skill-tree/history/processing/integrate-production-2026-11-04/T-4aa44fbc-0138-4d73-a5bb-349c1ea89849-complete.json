@@ -1,0 +1,121 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/integrate-production/T-4aa44fbc-0138-4d73-a5bb-349c1ea89849/C-7a33edab-037a-48a5-851d-f7f4aa6315fc.json",
+          "sha256": "45b68b04e4f97e234599fe24f55566d5c68badbca49dbbdba2659acd4349cb10"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.",
+        "criteria": [
+          "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup."
+        ],
+        "id": "integrated-source",
+        "parameters": {},
+        "recipe_id": "static-inspection",
+        "sources": [
+          "Habitica.sln",
+          "workers/release-inputs.json",
+          ".skill-tree/documents/build-and-release.md"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-7a33edab-037a-48a5-851d-f7f4aa6315fc",
+        "classification": "executed-control",
+        "cleanup": "Read-only source, Git and retained evidence checks completed; no launched product process.",
+        "definition": "b2dc387d8acd0f4cac2c0b33776797649e854145f5e79956ba72efc831664fe9",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/integrate-production/T-4aa44fbc-0138-4d73-a5bb-349c1ea89849/C-7a33edab-037a-48a5-851d-f7f4aa6315fc.json",
+            "sha256": "45b68b04e4f97e234599fe24f55566d5c68badbca49dbbdba2659acd4349cb10"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "fdce4140d8d43ed558b8698c860189fb8fdabde8bd78d5f0c7d0505c3dab5464",
+        "payload_hash": "f4399113ef77a0ed56ec092c179088991c2c4065e13b5d358c32290a5d463707",
+        "recorded_at": "2026-11-04T17:37:16.861066+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/build-and-release.md": "a84b40794b265200f5b544612001c7e73c7c7c7dec497c3018c0f1b03ca2d0d7",
+          "Habitica.sln": "4fcc6561712eb7d566b1366e6e6d742e2db05e0e23ba81fbe8a909aa6dc5ad86",
+          "workers/release-inputs.json": "cfa814d571b7e66033852c17a649b8eadb8612dd0dc7c3544c1547d55286a7c1"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.2433174578472972
+        }
+      }
+    }
+  ],
+  "commits": [
+    "918f5c795a445fe3c9bee83436a2af8bcde09829"
+  ],
+  "depends_on": [
+    "T-7bba9311-6e90-492e-a7bb-df656c3d26a9"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/integrate-production/T-4aa44fbc-0138-4d73-a5bb-349c1ea89849/C-7a33edab-037a-48a5-851d-f7f4aa6315fc.json",
+      "sha256": "45b68b04e4f97e234599fe24f55566d5c68badbca49dbbdba2659acd4349cb10"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-6a84ad6d-55e4-4733-82fd-b532ad2413b5",
+  "limitations": [],
+  "outcome": "Integrated both completed source histories, resolved all merge conflicts, preserved feature tests and prepared pinned validation and exact-main deployment tooling.",
+  "parent_pending_ids": [
+    "P-9579af1d-3709-4bca-961a-6947585c7747"
+  ],
+  "recorded_at": "2026-11-04T17:37:17.857431+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+  "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_fingerprints": {
+    ".skill-tree/documents/build-and-release.md": "a84b40794b265200f5b544612001c7e73c7c7c7dec497c3018c0f1b03ca2d0d7",
+    "Habitica.sln": "4fcc6561712eb7d566b1366e6e6d742e2db05e0e23ba81fbe8a909aa6dc5ad86",
+    "workers/release-inputs.json": "cfa814d571b7e66033852c17a649b8eadb8612dd0dc7c3544c1547d55286a7c1"
+  },
+  "task_id": "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+  "title": "Integrate main and develop with complete source and validation setup",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.",
+      "criteria": [
+        "The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup."
+      ],
+      "id": "integrated-source",
+      "parameters": {},
+      "recipe_id": "static-inspection",
+      "sources": [
+        "Habitica.sln",
+        "workers/release-inputs.json",
+        ".skill-tree/documents/build-and-release.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "b2dc387d8acd0f4cac2c0b33776797649e854145f5e79956ba72efc831664fe9"
+}

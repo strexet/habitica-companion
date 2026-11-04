@@ -296,7 +296,7 @@
       ]
     }
   },
-  "environment_id": "288bc23c54c91e68750236c671c7d939791024a33f77e40788351af93f70c330",
+  "environment_id": "7658e89e630490c452431027e3aae2b9ed29ef0af64879ec96a0f6be0a59df43",
   "execution_bindings": {},
   "facts": {
     "capabilities": {
@@ -315,7 +315,7 @@
   "flavor": "web",
   "format": "skill-tree-profile",
   "gaps": [],
-  "identity": "ec2a4f2279b41c3e490e6fde5c6ac0d7564ace5d470a6a717347fcaeb50affef",
+  "identity": "e0a3a68d54f320d259db30abc1dfc5957dde5f916baabadabbcb8312a48aa838",
   "inputs": {
     ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
     ".nvmrc": null,
@@ -345,7 +345,7 @@
     "src/Habitica.WebApp/package-lock.json": "5aa1533f6dfb042df98b0e435b2a40d7d22aa5a33bcb81666a57d6f30a8137e0",
     "src/Habitica.WebApp/package.json": "214cc3d44c28eebc447028224fef5d4387cb922397fcb87b773f97524b7ea0ad",
     "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
-    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "3287f66c4f329f9b761f34493f85043cc9d6a17354dae8a980a96ee27c838bb4",
     "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
     "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj": "04701b12ecf14d03108f7c38cd2d221b0ba665a79ac720a70c5636fa9372a20b",
     "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
@@ -424,7 +424,7 @@
     "tests/browser/project-history-fixture.mjs": "5c56c9ebc1c9d8489d293706d6cb7dfc87516d8258e33aa94075b42c1c47c9b8",
     "tests/browser/project-history-ui.mjs": "67829a381d4b283ec952a364b650bf2aac7492879e50503d7fc1e6e69f0e82e7",
     "tests/browser/project-history-ui.py": "1519d9ad8a5ce78356fdcda941434904d1a2300ab89acc91a618ae15bbccbcfc",
-    "tests/browser/pwa-shell.mjs": "44abe8f31f3f13659771af088b7fbef7c0f9a788b3d1f8b6f81c69a74fbc6cc5",
+    "tests/browser/pwa-shell.mjs": "31373c9bd757b5689669e30ddae6620cf87a8750e024eefcaff19da6f9e2dda5",
     "tests/browser/relative-saved-ui.mjs": "596ef67ce98bcbfb39f5bd870d12b5b858030b23cbdec61be111417873b8ba9c",
     "tests/browser/relative-saved-ui.py": "0c82dfb909230505ecd779265c6f5f5f15e541c1bd4e29182a219187e81ffd74",
     "tests/browser/relative-tag-fixture.mjs": "a7b03e7db197f3df37eab81ea61f896f1128453aa5252bb6377a15bd8cb2b1a3",
@@ -969,16 +969,7 @@
     "config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
     "config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
     "config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
-    "config/repository.json": "cdc6218cb1003e00d1e3d703de079a476d283ab6a27132a581078c8228c1eef7",
     "config/resource-map.json": "faf33e768cd6ffebb59328fbc076287b199ee5289a56db22ec8a4e48e7fb2c7f",
-    "domains/general/sections.json": "936bf430802a7ff38ac83413b25162a079bdb81734388420336291b00d2136f6",
-    "domains/unity/development.md": "f65dc5e0e69df84d3204fe70339a7dfa53fcd0d57a2b97f8e57d34a399e5f640",
-    "domains/unity/input-testing.md": "0dec57b1321db917d8e3b06036e4824df94757be0ab49ee959ec84c2688e2347",
-    "domains/unity/panel-simulator.md": "0848b6da7ace415a90aeeca8bc771bc22320a746460f64dadff3396d78576433",
-    "domains/unity/performance-testing.md": "200b28a0305715ff9cb23f4d416fa05a6a30643c146775ceecdc3a0b9bc2f5ea",
-    "domains/unity/sections.json": "e95700a599c6048e3ee9b32b1428c452707297e7425f48349bd8cacd58e9bdc6",
-    "domains/unity/ugui-testing.md": "873c236f793ff3c9ece8f0d0346c5c48513e8220406fce216751571c58b79073",
-    "domains/unity/uitk-testing.md": "c817eb7700e4082ed46557088535ac10e39c928c866ee3b99b343e626b9e449e",
     "domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
     "domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
     "domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",

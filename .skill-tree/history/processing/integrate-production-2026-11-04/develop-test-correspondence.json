@@ -1,0 +1,17 @@
+{
+  "missing": [
+    {
+      "develop_cases_absent_from_snapshot": [
+        "Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access",
+        "ConnectedWorkspaceRenewalRequiresExplicitDataConsent"
+      ],
+      "path": "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+    },
+    {
+      "develop_cases_absent_from_snapshot": [
+        "Unblocked_source_resets_incompatible_fields_and_evaluates_dependencies_and_stage"
+      ],
+      "path": "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs"
+    }
+  ]
+}
