@@ -1,0 +1,23 @@
+{
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "check_id": "daily-schedule-gateway",
+  "attempt_id": "C-2584bcb5-a7fb-4364-8a12-14007b1cf717",
+  "environment_identity": "84622edc612b84ec09c30a9086bf2cca8ff0ed0545d35fffad179193a3218d2a",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 5,
+    "discovered": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 3.48402512492612
+  },
+  "evidence": [
+    ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-current-build-execution.log"
+  ]
+}

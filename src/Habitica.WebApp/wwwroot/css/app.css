@@ -37,7 +37,7 @@
     --button-text-danger: #ffffff;
     --button-text-success: #ffffff;
     --disabled-bg: rgba(103, 49, 184, 0.06);
-    --disabled-text: rgba(117, 104, 129, 0.58);
+    --disabled-text: #756881;
     --disabled-border: rgba(117, 104, 129, 0.22);
     --input-bg: rgba(255, 252, 255, 0.92);
     --input-border: rgba(103, 49, 184, 0.13);
@@ -111,6 +111,44 @@ input[type="radio"] {
     min-height: 100vh;
 }
 
+/* MudBlazor's dense bar, drawer clipping and main offset all use 3/4 of this
+   value. Keep that shared height equal to the rem-scaled application toolbar. */
+.mud-layout {
+    --mud-appbar-height: calc(3.5rem / .75);
+}
+
+.skip-to-content {
+    position: fixed;
+    top: .5rem;
+    left: .5rem;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .5rem .75rem;
+    background: var(--card-bg);
+    color: var(--ink);
+    border: 2px solid var(--focus);
+    border-radius: .5rem;
+    transform: translateY(calc(-100% - 1rem));
+}
+
+.skip-to-content:focus {
+    transform: translateY(0);
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+#main-content:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+}
+
+.topbar .mud-icon-button {
+    min-width: 44px;
+    min-height: 44px;
+}
+
 .topbar {
     background: var(--appbar-gradient) !important;
     color: var(--appbar-text) !important;
@@ -168,7 +206,7 @@ input[type="radio"] {
 .sign-in-button,
 .refresh-status {
     flex: 0 0 auto;
-    min-height: 2.5rem;
+    min-height: max(44px, 2.5rem);
 }
 
 .refresh-status {
@@ -421,6 +459,13 @@ input[type="radio"] {
 
 .refresh-status-pill {
     border-radius: 0.75rem;
+    max-width: 100%;
+    flex-wrap: wrap;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-snapshot-time {
+    display: block;
 }
 
 .card-surface {
@@ -996,7 +1041,7 @@ input[type="radio"] {
 }
 
 .party-detail-grid {
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
 }
 
 .party-quest-panel {
@@ -1300,7 +1345,7 @@ input[type="radio"] {
 .party-member-summary-row {
     display: grid;
     gap: 0.9rem;
-    grid-template-columns: minmax(10rem, 0.8fr) minmax(22rem, 1.6fr) minmax(14rem, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     align-items: center;
 }
 
@@ -1331,7 +1376,12 @@ input[type="radio"] {
 }
 
 .party-member-actions .secondary-action-button {
-    min-width: 7rem;
+    min-width: min(100%, 7rem);
+    max-width: 100%;
+}
+
+.party-member-identity .dashboard-stat-note {
+    overflow-wrap: anywhere;
 }
 
 .party-member-classline {
@@ -1346,9 +1396,9 @@ input[type="radio"] {
     min-height: 1.65rem;
     padding: 0.2rem 0.45rem;
     border-radius: 999px;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(255, 255, 255, 0.44);
-    color: var(--text-muted, var(--ink));
+    border: 1px solid var(--card-border);
+    background: var(--surface-strong);
+    color: var(--ink);
     font-size: 0.76rem;
     font-weight: 700;
     line-height: 1.1;
@@ -3256,9 +3306,15 @@ input[type="radio"] {
 
 .dashboard-appearance-head {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+}
+
+.dashboard-appearance-head .mud-button {
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .dashboard-appearance-head .section-label {
@@ -4027,8 +4083,7 @@ input[type="file"].app-input::file-selector-button {
     background: var(--card-gradient) !important;
 }
 
-.feature-chip,
-.party-resource-chip {
+.feature-chip {
     background: var(--accent-chip-gradient) !important;
 }
 
@@ -4422,7 +4477,7 @@ code {
     .topbar .sign-in-button {
         flex: 0 0 auto;
         min-width: 4.35rem;
-        min-height: 2.15rem;
+        min-height: max(44px, 2.15rem);
         margin-left: 0;
         padding: 0 0.58rem;
         font-size: 0.76rem;
@@ -4607,6 +4662,8 @@ code {
 .todo-task-panel fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .todo-source-controls, .todo-capture-primary, .todo-editor-fields { display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; gap: 0.7rem; }
 .todo-capture-primary { grid-template-columns: minmax(0, 1fr) auto auto; }
+.todo-capture-primary.todo-capture-primary--daily { grid-template-columns: minmax(0, 1fr); }
+.todo-capture-primary--daily input[type="date"], .todo-occurrence-field input[type="date"] { padding-inline: 0.5rem; }
 .todo-source-picker summary, .todo-advanced summary { cursor: pointer; padding-block: 0.6rem; overflow-wrap: anywhere; }
 .todo-advanced { margin-top: 0.5rem; }
 .todo-task-panel :is(input,select,textarea) { min-width: 0; max-width: 100%; }
@@ -4614,6 +4671,8 @@ code {
 .todo-task-panel p, .todo-task-panel strong, .todo-task-panel span { min-width: 0; overflow-wrap: anywhere; }
 .todo-direct-list { display: grid; grid-template-columns: minmax(0, 1fr); }
 .todo-direct-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; padding-block: 0.8rem; border-bottom: 1px solid var(--card-border); }
+.todo-direct-list .todo-direct-row { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.todo-direct-list .todo-row-actions { min-width: 0; max-width: 100%; }
 .todo-row-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.2rem; align-content: start; }
 .todo-row-content p { white-space: pre-wrap; margin: 0; }
 .todo-row-context { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: center; }
@@ -4622,7 +4681,7 @@ code {
 .todo-command-review p { margin: 0; white-space: pre-wrap; }
 .todo-task-panel [role="alert"] { color: var(--text-danger, var(--ink)); }
 @media (min-width: 900px) { .todo-source-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); } .todo-editor-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 650px) { .todo-capture-primary, .todo-direct-row { grid-template-columns: minmax(0, 1fr); } .todo-row-actions { max-width: 100%; } }
+@media (max-width: 650px) { .todo-direct-list .todo-row-actions .mud-button-root, .todo-task-panel .todo-command-review .mud-button-root { padding-inline: 0.0625rem; min-width: 44px; } .todo-task-panel--daily-capture { padding: 1rem; } .todo-capture-primary, .todo-direct-row { grid-template-columns: minmax(0, 1fr); } .todo-row-actions { max-width: 100%; } }
 @media (max-width: 650px) {
     .todo-task-panel .todo-link-editor { padding: 0; border: 0; background: transparent !important; box-shadow: none; }
     .todo-link-editor .todo-command-review { padding: 0.4rem; }
@@ -4676,8 +4735,9 @@ code {
 
 .todo-day-title { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
 .todo-day-title h1 { margin: 0; }
-.todo-day-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 0.75rem; }
-.todo-day-controls .app-input { min-width: 0; max-width: 100%; }
+.todo-day-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; }
+.todo-day-controls > .field-row { flex: 1 1 18rem; min-width: 0; }
+.todo-day-controls .app-input { min-width: 0; max-width: 100%; padding-inline: 0.5rem; }
 .todo-today-header { display: grid; gap: 0.65rem; padding: 1rem; }
 .todo-task-panel--compact { padding: 0.5rem 1rem; gap: 0.25rem; }
 .todo-task-panel--compact > .panel-copy { margin: 0; }
@@ -4746,9 +4806,10 @@ code {
 .notes-primary { background: var(--primary); color: var(--button-text); border-color: var(--primary); }
 .notes-button[aria-pressed=true] { border-color: var(--primary); box-shadow: inset 0 -2px var(--primary); }
 .notes-selected { border-color: var(--primary); box-shadow: inset 3px 0 var(--primary); }
-.notes-button:disabled { cursor: default; opacity: .6; }
-.notes-panel :is(button,input,textarea,select,summary):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.notes-button:disabled { cursor: not-allowed; }
+.notes-panel :is(button,a,input,textarea,select,summary):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .notes-panel :is(input,textarea,select) { width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box; font: inherit; }
+.notes-panel select { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .notes-panel :is(select,input[type=search],input:not([type])) { min-height: 44px; }
 .notes-panel .notes-check { display: flex; align-items: center; gap: .65rem; min-height: 44px; }
 .notes-check input { flex: 0 0 1.25rem; width: 1.25rem; height: 1.25rem; }
@@ -4764,6 +4825,8 @@ code {
 .notes-file { border: 1px solid var(--input-border); padding: .55rem; border-radius: .6rem; }
 .notes-file input { min-height: 44px; }
 .notes-message,.notes-reference { overflow-wrap: anywhere; }
+.notes-folder-fields { display:grid; gap:.85rem; min-width:0; padding-block:.85rem; }
+.notes-folder-management { min-width:0; }
 .notes-markdown { line-height: 1.7; min-height: 12rem; overflow-wrap: anywhere; min-width: 0; }
 .notes-markdown :is(p,h1,h2,h3,h4,h5,h6,ul,ol,blockquote,pre) { margin-block: .7rem; }
 .notes-markdown :is(ul,ol) { padding-inline-start: 1.8rem; }
@@ -4826,3 +4889,175 @@ code {
 .workspace-transfer-panel .action-row { flex-wrap: wrap; }
 
 .workspace-transfer-panel [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
+
+.activity-context { overflow-wrap:anywhere; }
+.activity-day-list { display:grid; gap:.75rem; min-width:0; }
+.activity-day-list article { display:flex; flex-wrap:wrap; gap:.5rem 1rem; padding-block:.6rem; border-bottom:1px solid var(--card-border); min-width:0; overflow-wrap:anywhere; }
+.activity-streaks :is(button,a,input,select):focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.activity-streaks select { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.task-type-copy-panel :is(a,input,select):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.task-type-copy-panel, .task-type-copy-review { min-width: 0; overflow-wrap: anywhere; }
+.todo-task-panel a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.todo-task-panel select { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.relative-date-summary { min-width: 0; overflow-wrap: anywhere; }
+
+.todo-history select { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.todo-history :is(a,summary):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* Native :disabled includes controls disabled by an ancestor fieldset. Keep
+   text paint opaque in WebKit as well as Chromium; authority remains native. */
+input:disabled,
+textarea:disabled,
+select:disabled,
+.notes-button:disabled {
+    color: var(--disabled-text) !important;
+    -webkit-text-fill-color: var(--disabled-text) !important;
+    background: var(--disabled-bg) !important;
+    border-color: var(--disabled-border) !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+/* Keep native date segments clear of picker affordances at enlarged text. */
+.todo-planning-controls input[type="date"], .todo-stat-filters input[type="date"] { padding-inline: 0.5rem; }
+@media (max-width: 650px) { .todo-statistics > .todo-stat-section:first-child { padding-inline: 1rem; } }
+
+.todo-reminder-panel summary { min-height: 44px; padding-block: 0.65rem; cursor: pointer; overflow-wrap: anywhere; }
+.todo-reminder-panel summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.companion-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-block: 0.75rem; min-width: 0; }
+.companion-pagination > span { flex: 1 1 12rem; min-width: 0; overflow-wrap: anywhere; }
+.companion-pagination button { min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
+.companion-pagination button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.companion-reset-filters, .companion-group-actions button { min-height: 44px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.companion-reset-filters:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.companion-collection .inventory-item-card .habitica-item-identity { display: flex; flex-wrap: wrap; align-items: flex-start; }
+.companion-collection .inventory-item-card .habitica-item-identity > div { flex: 1 1 8rem; min-width: 0; }
+
+.todo-saved-list-panel .saved-list-field { min-width: 0; }
+.todo-saved-list-panel .saved-list-field-error { color: var(--text-danger, var(--ink)); margin: 0.3rem 0 0; }
+.todo-saved-list-panel .app-input[aria-invalid="true"] { border-color: var(--text-danger, var(--ink)); }
+
+.todo-saved-list-panel .app-input { scroll-margin-block: 8rem; }
+
+.todo-saved-list-panel .saved-filter-grid input[type="date"] { padding-inline: 0.5rem; }
+@media (max-width: 650px) { .todo-saved-list-panel { padding: 1rem; } }
+
+/* Keep complete runtime warnings within the shared content column. */
+.shell-content > .inline-banner { min-width: 0; max-width: 100%; }
+.shell-content > .inline-banner .mud-alert-message { min-width: 0; overflow-wrap: anywhere; }
+
+/* Equipment artwork yields a full row to readable identity copy when constrained. */
+.inventory-shell .habitica-item-identity { display: flex; flex-wrap: wrap; align-items: flex-start; }
+.inventory-shell .habitica-item-identity > div { flex: 1 1 10rem; min-width: 0; }
+.inventory-shell .stat-pill-group { padding-inline: .3rem; }
+.inventory-shell .inventory-stat-value { white-space: nowrap; flex-shrink: 0; }
+
+.inventory-shell .stat-pill-group { border-radius: .65rem; }
+@media (max-width: 650px) {
+    .inventory-shell .inventory-group-card { padding: .5rem; }
+    .inventory-shell .inventory-item-card { padding: .5rem; }
+    .inventory-shell .preset-mini-item { padding: .35rem; }
+    /* Let long fixed action words use the card width while preserving body gutters. */
+    .inventory-shell .preset-save-row .inventory-actions { margin-inline: -.5rem; width: calc(100% + 1rem); }
+    .inventory-shell .preset-save-row .inventory-actions .mud-button-root { padding-inline: .0625rem; }
+}
+
+@media (max-width: 650px) {
+    .settings-account-shell > .settings-card,
+    .settings-account-shell > .settings-section-group > .settings-card { padding: .75rem; }
+    .settings-account-shell .settings-card .action-card,
+    .settings-account-shell .sync-status-panel { padding: .5rem; }
+    .settings-account-shell .sync-section-row { padding: .375rem; }
+    .settings-account-shell .settings-card .mud-button-root { padding-inline: .25rem; min-width: 44px; }
+}
+
+.drawer-identity { display: grid; gap: .15rem; min-width: 0; padding: .65rem .9rem .5rem; color: var(--drawer-readable-text); }
+.drawer-identity strong { font-size: .95rem; }
+.drawer-identity span { color: var(--drawer-readable-muted); font-size: .8rem; overflow-wrap: anywhere; }
+.app-nav-menu { padding-inline: .5rem; }
+.app-nav-menu .mud-nav-link { min-height: 44px; padding-inline: .35rem; white-space: normal; }
+.app-nav-menu .todo-nav-heading { padding-inline: .25rem; gap: .35rem; }
+.app-nav-menu .todo-nav-links { padding-inline-start: 0; }
+.nav-capture { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: .5rem .35rem; color: var(--drawer-readable-text); border: 1px solid currentColor; border-radius: .6rem; font-weight: 700; text-decoration: none; }
+.nav-secondary > summary { cursor: pointer; min-height: 44px; padding: .6rem .3rem; color: var(--drawer-readable-text); overflow-wrap: anywhere; }
+.nav-secondary > summary::marker { color: var(--drawer-readable-text); }
+.nav-capture:focus-visible, .nav-secondary > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.nav-secondary.nav-group-current:not([open]) > summary { box-shadow: inset 3px 0 var(--drawer-readable-text); font-weight: 700; }
+
+.inventory-discovery-fields { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit,minmax(min(100%,16rem),1fr)); }
+.inventory-discovery :is(input,select), .inventory-discovery > * { min-width: 0; max-width: 100%; }
+.inventory-owned-results { min-width: 0; }
+.inventory-owned-results :is(h2,h3)[tabindex="-1"] { scroll-margin-block: 8rem; }
+.inventory-owned-results :is(h2,h3)[tabindex="-1"]:focus { outline: 2px solid var(--focus); outline-offset: 2px; }
+.inventory-owned-paging { margin-block: 1rem; }
+
+.inventory-discovery select { padding-inline: .5rem; }
+
+@media (max-width: 650px) {
+    .inventory-shell .inventory-discovery { padding-inline: 8px; }
+    .inventory-discovery select { padding-inline: 8px; }
+}
+
+/* Keep complete fixed-offset captions clear of the native select arrow at enlarged text. */
+.linked-daily-zone select.app-input { padding-inline: 0.5rem; }
+
+@media (max-width: 650px) { .todo-task-panel .todo-recurring-editor { padding: 0.5rem; } }
+
+.todo-editor-fields[data-testid="daily-creation-fields"] { align-items: start; }
+.todo-recurring-editor input[type="date"] { padding-inline: 0.5rem; }
+@media (max-width: 650px) {
+    .todo-task-panel .todo-recurring-editor { margin-inline: -0.5rem; }
+    .todo-recurring-editor .action-row .mud-button-root { padding-inline: 0.25rem; min-width: 44px; }
+}
+
+/* Notes choose a single readable pane from available width, including nested project panels. */
+.notes-panel { container-type: inline-size; }
+.notes-workbench { --notes-layout: single; grid-template-columns: minmax(0, 1fr); }
+.notes-workbench[data-notes-mode="library"] > .notes-editor,
+.notes-workbench[data-notes-mode="editor"] > .notes-library { display: none; }
+.notes-back { justify-self: start; }
+.notes-associations { min-width: 0; }
+.notes-associations > summary { padding-block: .5rem; overflow-wrap: anywhere; }
+.notes-associations[open] { display: grid; gap: .85rem; }
+.notes-panel[data-testid="project-notes"] > .notes-panel { padding: .5rem; margin-inline: -.5rem; min-width: 0; }
+@container (min-width: 40rem) {
+    .notes-workbench { --notes-layout: split; grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr); }
+    .notes-workbench[data-notes-mode] > :is(.notes-library,.notes-editor) { display: grid; }
+    .notes-workbench .notes-back { display: none; }
+}
+
+.notes-panel .notes-review { padding: .5rem; }
+.notes-panel .notes-review .notes-button { padding-inline: .25rem; }
+.notes-editor .notes-button { padding-inline: .5rem; }
+
+/* Settings section anchors retain native keyboard navigation and fixed-header clearance. */
+.settings-section-nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+.settings-section-nav a { display: inline-flex; align-items: center; min-block-size: 44px; padding: .25rem .5rem; border: 1px solid var(--card-border); border-radius: .5rem; }
+.settings-account-shell h2[id] { scroll-margin-block-start: calc(var(--mud-appbar-height) + 1rem); }
+.settings-integration, .settings-section-group { display: grid; min-inline-size: 0; gap: 1rem; }
+.settings-integration { margin-block-start: 1.5rem; }
+
+[data-testid="push-schedule"] .push-day-choices { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap:.5rem; }
+[data-testid="push-schedule"] .push-month-choices { grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr)); }
+[data-testid="push-schedule"] .push-day-choices legend { grid-column:1/-1; }
+[data-testid="push-schedule"] .push-day-choices .checkbox-row { min-block-size:44px; padding:.25rem; margin:0; }
+@media(max-width:650px){[data-testid="push-schedule"]{padding:.5rem;}[data-testid="push-schedule"] input[type="date"]{padding-inline:.5rem;}}
+
+/* Count labels get a complete row; large values can wrap below reserved artwork. */
+.inventory-shell .habitica-icon-count-chip { display:flex; flex-wrap:wrap; }
+.inventory-shell .habitica-icon-count-chip > strong { flex:0 0 auto; max-inline-size:100%; font-size:1rem; white-space:nowrap; }
+.inventory-shell .habitica-icon-count-chip > span:last-child { flex:1 1 100%; overflow-wrap:break-word; word-break:normal; }
+
+.type-copy-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap:.75rem; margin-block:.75rem; }
+.type-copy-fields > div { min-inline-size:0; }
+.type-copy-fields dt { font-weight:700; }
+.type-copy-fields dd { margin:0; min-inline-size:0; overflow-wrap:anywhere; }
+@media(max-width:650px){
+    .todo-task-panel:has(.task-type-copy-review) { padding:.75rem; }
+    .todo-command-review:has(> .task-type-copy-review) { padding:.4rem; }
+}

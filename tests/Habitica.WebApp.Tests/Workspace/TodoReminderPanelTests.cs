@@ -17,7 +17,12 @@ public sealed class TodoReminderPanelTests : BunitContext
         await f.Load(document:new(){Id=Guid.NewGuid(),Revision=10,Tasks=[task,task with{Id=Guid.NewGuid(),Text="Future cue",ReviewAfterUtc=Now.AddDays(1)}]});
         Services.AddSingleton<IAppSessionController>(f.Task.Session);Services.AddSingleton(f.Todo);var browser=new ReminderBrowserFixture();var controller=new ForegroundReminderController(f.Task.Session,f.Todo,browser);Services.AddSingleton(controller);if(available)await controller.InitializeAsync();return(f,browser,controller);
     }
-    private static void Save(string name,string markup,string state,string test)=>Qualification.PageLayoutEvidence.Save(name,markup,"/todo/today",state,["actions","disabled-controls","error","navigation"],test);
+    private static void Save(string name,string markup,string state,string test)
+    {
+        var document=new AngleSharp.Html.Parser.HtmlParser().ParseDocument(markup);
+        document.QuerySelector("[data-testid='reminder-configuration']")?.SetAttribute("open", "");
+        Qualification.PageLayoutEvidence.Save(name,document.Body!.InnerHtml,"/todo/today",state+"-configuration-open",["actions","disabled-controls","error","navigation"],test);
+    }
     [Fact]
     public async Task Explicit_browser_action_is_separate_from_inapp_cues_and_read_only_catchup_persists()
     {
@@ -41,6 +46,28 @@ public sealed class TodoReminderPanelTests : BunitContext
             await controller.SetInAppAsync(true);browser.Emit(browser.State with{Permission=permission,Capability=capability,Delivery=delivery,ClockChanged=true});var cut=Render<TodoReminderPanel>();Assert.Single(cut.FindAll("[data-testid='reminder-cue']"));Assert.Contains("Device clock changed",cut.Markup);Assert.Contains("background delivery are unavailable",cut.Markup);if(permission!="granted")Assert.True(cut.Find("[data-testid='reminder-browser']").HasAttribute("disabled"));Save("reminder-"+delivery+"-"+permission,cut.Markup,"explicit-reminder-limit-"+delivery+"-"+permission,nameof(Permission_failure_and_clock_change_keep_inapp_cues_and_honest_limits));
         }
     }
+    [Fact]
+    public async Task Summary_retains_explicit_preferences_and_uncertain_delivery_remains_outside_configuration()
+    {
+        var (f, browser, controller) = await Setup(); using(f) using(controller)
+        {
+            var cut = Render<TodoReminderPanel>();
+            var details = cut.Find("[data-testid='reminder-configuration']"); Assert.False(details.HasAttribute("open"));
+            Qualification.PageLayoutEvidence.Save("reminder-summary-closed",cut.Markup,"/todo/today","closed-setup-summary",["status","disclosure"],nameof(Summary_retains_explicit_preferences_and_uncertain_delivery_remains_outside_configuration));
+            Assert.Contains("off", cut.Find("[data-testid='reminder-summary']").TextContent);
+            details.SetAttribute("open", ""); cut.Find("[data-testid='reminder-inapp']").Click();
+            Assert.True(controller.State!.InApp); Assert.Equal(0, browser.Permissions);
+            cut.Find("[data-testid='reminder-configuration']").RemoveAttribute("open");
+            browser.Emit(browser.State with { Delivery = "unknown" });
+            cut.WaitForAssertion(() => Assert.Contains("1 reached", cut.Find("[data-testid='reminder-summary']").TextContent));
+            Assert.Null(cut.Find("[data-testid='reminder-delivery-warning']").Closest("details"));
+            Assert.True(controller.State.InApp); Assert.False(controller.State.Browser); Assert.Equal(0, browser.Permissions);
+            cut.Find("[data-testid='reminder-configuration']").SetAttribute("open", "");
+            Assert.Contains("Turn off in-app cues", cut.Find("[data-testid='reminder-inapp']").TextContent);
+            Assert.Empty(f.Task.Client.AcceptedIds); Assert.Empty(f.Task.Client.PreparationIds);
+        }
+    }
+
     [Fact]
     public async Task Account_switch_discards_cues_and_late_permission_callback_and_old_binding()
     {

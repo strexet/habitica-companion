@@ -1,0 +1,54 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-b3238092-925f-4391-800d-93ffc2f26091",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 24,
+    "expected": 24,
+    "failed": 0,
+    "passed": 24,
+    "skipped": 0
+  },
+  "definition": "c8b58d355e408257a809c52b9ac15bcbccd78f83a41e163fd730be9c07d118ea",
+  "environment_identity": "d48f27077384f1ad20d9140bfacf7dae35765dbbd4aa36820ebab4c3eb7168b3",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/account-fence-green-execution.log",
+      "sha256": "3d629cabf252f9df3d2b57c8cb06ddb93205477295920ed098f661ecf2e9ef05"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components/account-fence-green.trx",
+      "sha256": "1ab446249272376819cc9a7f068672ba5d2b6efceaf10b95402d4b3a16bae658"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "97fbc7baaca521bea1eab9c4345fd8e6a5b85de70951f95d11e3b0700b4d1984",
+  "payload_hash": "6ef3ec3eb01c2d39adc17b716f73276ed9d545f40a0ce59aaec82b57e08e8576",
+  "recorded_at": "2026-11-02T19:39:04.624500+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "cc584dbee15b5dd1d44c9258d52645690406d5b6ee9e28a38999ae818d1d550d",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+    "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+    "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d403761bf34d1f1bd4eaff5e3dda9a941e9acbc48d518c81b67426754f2eea4c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95"
+  },
+  "timing": {
+    "tool_wall_seconds": 17.350243541877717
+  }
+}

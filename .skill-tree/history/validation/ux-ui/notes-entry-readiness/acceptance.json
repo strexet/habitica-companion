@@ -1,0 +1,50 @@
+{
+  "task_id": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+  "title": "Fence New note until the Notes component finishes initial loading",
+  "operation_history": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/operation-history.json",
+  "checks": [
+    {
+      "id": "notes-initial-entry-behavior",
+      "counts": {
+        "discovered": 26,
+        "expected": 26,
+        "failed": 0,
+        "passed": 26,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.log",
+          "sha256": "4a5da868ebd5e32edae4d75e9a4c58d85be98283f6fc95598ea9c66feae6bcfb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.trx",
+          "sha256": "74fbc468a344bd9dc2213d450b5dac89fec79e143b4934e5a8632fd62f673c61"
+        }
+      ]
+    },
+    {
+      "id": "notes-initial-entry-rendered",
+      "counts": {
+        "discovered": 433,
+        "expected": 433,
+        "failed": 0,
+        "passed": 433,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser/daca672c-ef38-41bf-a9fe-682e65b71286.json",
+          "sha256": "ec2289c233115c3d28b1228fdaf6cd435dbbb05f4d75eeb3d6e4fe5883a7e7c8"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

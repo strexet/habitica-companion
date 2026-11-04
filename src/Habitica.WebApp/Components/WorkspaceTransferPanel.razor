@@ -72,6 +72,14 @@
             <aside class="notes-review" aria-label="Review Workspace move" data-testid="workspace-transfer-review">
                 <h3 tabindex="-1" @ref="_heading">Review the move</h3>
                 <p>Move @counts.GetProperty("tasks").GetInt32() tasks and @counts.GetProperty("notes").GetInt32() personal Notes from @counts.GetProperty("sources").GetInt32() browser Workspace(s). Retain @counts.GetProperty("sourceCommands").GetInt32() original task commands and @counts.GetProperty("sourceEvents").GetInt32() journal events. Purged Note markers: @counts.GetProperty("purgedNotes").GetInt32().</p>
+                @if(counts.TryGetProperty("folders",out var folderCount))
+                {
+                    <p data-testid="transfer-folder-counts">Source folders: @folderCount.GetInt32() · original folder receipts: @counts.GetProperty("folderReceipts").GetInt32() · existing target folders retained: @counts.GetProperty("existingTargetFolders").GetInt32(). Current and historical note memberships retain exact folder IDs.</p>
+                    <details><summary>Exact destination folder identities</summary>
+                        @foreach(var folder in review.GetProperty("noteFolders").EnumerateArray()){<p data-testid="transfer-folder-identity">@folder.GetProperty("name").GetString() · <code>@folder.GetProperty("id").GetString()</code> · revision @folder.GetProperty("revision").GetInt64() · removed: @folder.GetProperty("isRemoved").GetBoolean()</p>}
+                        @if(review.TryGetProperty("noteFolderMemberships",out var memberships)){@foreach(var membership in memberships.EnumerateArray()){<p data-testid="transfer-folder-membership">Note <code>@membership.GetProperty("noteId").GetString()</code> · current folder: <code>@membership.GetProperty("currentFolderId").GetString()</code> · historical folder IDs: @membership.GetProperty("historicalFolderIds").GetRawText()</p>}}
+                    </details>
+                }
                 <p>Destination Workspace: <code>@review.GetProperty("workspaceId").GetString()</code>. Existing cloud records remain: @counts.GetProperty("existingTargetTasks").GetInt32() tasks and @counts.GetProperty("existingTargetNotes").GetInt32() personal Notes. Imported pending game effects stay paused. This move triggers zero game effects.</p>
                 @if(review.GetProperty("notebookId").ValueKind!=JsonValueKind.Null){<p>Destination Notes notebook: <code>@review.GetProperty("notebookId").GetString()</code>.</p>}
                 <details><summary>Exact source identities and review fingerprint</summary><p>Transfer: <code>@review.GetProperty("transferId").GetString()</code></p><p>Source fingerprint: <code>@review.GetProperty("artifactHash").GetString()</code></p><p>Target store revision: @review.GetProperty("workspaceStoreVersion").GetInt64(). Review expires @review.GetProperty("expiresAtUtc").GetDateTimeOffset().ToLocalTime().ToString("g").</p>

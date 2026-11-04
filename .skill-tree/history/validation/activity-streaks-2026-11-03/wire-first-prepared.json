@@ -1,0 +1,47 @@
+{
+  "assertion": "Portable full-journal day/coverage cases match the independently asserted C# fixtures, including DST, pauses, corrections, negative-only activity, historical timezone refusal and context-bound paging. Malformed input and fabricated coverage refuse without writes.",
+  "attempt_id": "C-3b42c5b2-525c-44e6-ab88-56d370d8ce70",
+  "check_id": "activity-wire",
+  "definition": "983ace06a4187a98d7d1f7865ff5c0dccfe18c9853941567a91d005b43aaf041",
+  "environment_identity": "2366f31c66bde9e576e5aaaa07f769fd9ea69215da7149aa047e59511d485c22",
+  "key": "0456dfb3c1737e971266f8ce17ef859edc014147c27ad12feccca4834c04d49d",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T18:25:08.908354+00:00",
+    "execution_profile": "notes-folders-cloud-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T18:21:09.079822+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=15000",
+      "workers/companion-workspace/test/activity-streaks.test.mjs"
+    ],
+    "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "deploy/callback-egress/package.json"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+    "workers/companion-workspace/src/activity-streaks.ts": "51f7e692de020c0c17123b7b9de62d32301a272f3d48237267ba72581cbe0482",
+    "workers/companion-workspace/test/activity-streaks.test.mjs": "95a9e1cb255da3bca22bcac8294483ef3de0ffddee683be32144cbb6c356e177",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

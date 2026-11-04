@@ -6,5 +6,5 @@ export async function savedTaskReads(env:WorkspaceEnv,row:WorkspaceRow,name:Save
  catch{throw new WorkspaceError('saved_views_unavailable',503);}
  if(!current)throw new WorkspaceError('unauthorized',401);
  try{const source=JSON.parse(current.document_json);if(uuid(source.id)!==current.workspace_id)throw new Error('workspace_mismatch');return readSavedTaskViews(source,name,input);}
- catch(error){if(error instanceof WorkspaceError&&['stale_revision','saved_view_not_found'].includes(error.code))throw error;throw new WorkspaceError('saved_views_unavailable',503);}
+ catch(error){if(error instanceof WorkspaceError&&['stale_revision','saved_view_not_found','stale_evaluation_day','evaluation_day_required','invalid_evaluation_context','relative_timezone_unavailable','relative_bounds_unavailable','invalid_evaluation_clock'].includes(error.code))throw error;throw new WorkspaceError('saved_views_unavailable',503);}
 }

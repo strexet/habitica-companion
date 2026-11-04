@@ -1,0 +1,8 @@
+{
+  "attempt_id": "C-6d529783-9676-4015-9d31-a28528c8ef44",
+  "outer_report": ".skill-tree/history/validation/ux-ui/game-control-names/browser/a571a908-24ac-4fd4-aa93-bcc881fba44b-failure.json",
+  "actual_boundary": "Node failed compileSourceTextModule while linking the journey module. No journey evaluation, Playwright context, fixture server or profile launched. The publish/test staging prerequisites had exited.",
+  "receipt_note": "Original receipt records a failed planned browser lane with broad executed-control classification. Preserve that immutable receipt; this artifact clarifies that the failure was a harness syntax prerequisite, not an executed browser/product control.",
+  "repair": "Journey comparison now uses a block callback; node --check exited0. Helper now identifies static ESM compilation errors as unavailable/prerequisite-wait before another browser launch.",
+  "cleanup": "No browser/profile/server was launched by the failed Node module; no browser cleanup assumption is inferred from exit status."
+}

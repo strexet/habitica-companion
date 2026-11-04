@@ -131,7 +131,25 @@ public static class WorkspaceJournalValidation
                 && (DailyProjectionSchedule.RuleFailure(entry.Command.Patch?.Recurrence) is not null || entry.Command.Patch?.Deadline is not null
                     || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Daily, State: CompanionTaskState.Active, IsArchived: false }
                     || entry.Effects.Count != 1 || entry.Effects[0] != ProjectionEffectKind.Create)) return false;
-            if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
+            if(entry.Command.Patch?.TypeCopy is not null&&entry.Command.Operation!=WorkspaceOperation.CopyTaskType)return false;
+            var currentLineage=snapshot.Document.Tasks.FirstOrDefault(task=>task.Id==entry.Command.TaskId)?.CopyLineage;
+            if(entry.TaskSnapshot?.CopyLineage is {} anyCopy&&(!anyCopy.IsValid(snapshot.Document,entry.TaskSnapshot)||!anyCopy.SameAs(currentLineage)))return false;
+            if(currentLineage is not null&&entry.TaskSnapshot?.CopyLineage is null)return false;
+            if(entry.Command.Operation==WorkspaceOperation.CopyTaskType)
+            {
+                if(entry.Command.ProjectToHabitica||entry.Command.Count!=1||entry.Command.Direction is not null||entry.Command.OccurrenceDate is not null
+                    ||entry.Command.Patch is not {TypeCopy:{} copy} copyPatch||!copy.IsValid()||(copyPatch with{TypeCopy=null})!=new WorkspaceTaskPatch()
+                    ||entry.ProjectionState!=ProjectionCommandState.NotRequested||entry.Effects.Count!=0||entry.ConfirmedEffects!=0||entry.Failure!=ProjectionFailure.None
+                    ||entry.TaskSnapshot is not {CopyLineage:{} lineage} copied||copied.IsArchived||copied.State!=CompanionTaskState.Active
+                    ||lineage.CommandId!=entry.Command.Id||lineage.PayloadHash!=entry.PayloadHash||lineage.SourceWorkspaceId!=entry.Command.WorkspaceId
+                    ||lineage.SourceSnapshot.Id!=copy.SourceTaskId||lineage.SourceSnapshot.Revision!=copy.SourceRevision||lineage.TargetKind!=copy.TargetKind
+                    ||lineage.CopyOrganization!=copy.CopyOrganization||(copy.Recurrence is null?lineage.Recurrence is not null:!SameRecurrence(copy.Recurrence,lineage.Recurrence))||lineage.InitialTargetRevision!=entry.Command.ExpectedRevision+1||lineage.CopiedAtUtc!=entry.AcceptedAtUtc
+                    ||!WorkspaceTaskTypeCopyPolicy.InitialTargetMatches(copied,lineage))return false;
+            }
+            if (entry.ScheduleResult is {} scheduleResult && (entry.Command.Operation != WorkspaceOperation.EditLinkedDailySchedule || !scheduleResult.IsValid(entry.Command.Patch?.LinkedSchedule) || scheduleResult.ObservedAtUtc < entry.AcceptedAtUtc || entry.ConfirmedEffects != 1 || entry.Effects.Count != 1 || entry.ProjectionState != (scheduleResult.MatchesExpected ? ProjectionCommandState.Confirmed : ProjectionCommandState.Blocked))) return false;
+            if (entry.Command.Patch?.LinkedSchedule is not null && entry.Command.Operation != WorkspaceOperation.EditLinkedDailySchedule) return false;
+            if (entry.Command.Operation == WorkspaceOperation.EditLinkedDailySchedule && (entry.Command.Patch is not {LinkedSchedule:{} context, Recurrence:{} linkedRule} linkedPatch || !context.IsValid(linkedRule) || (linkedPatch with {LinkedSchedule=null,Recurrence=null}) != new WorkspaceTaskPatch() || !entry.Command.ProjectToHabitica || entry.TaskSnapshot is not {Kind:CompanionTaskKind.Daily,State:CompanionTaskState.Active,IsArchived:false} || entry.Effects.Count!=1 || entry.Effects[0]!=ProjectionEffectKind.Update || context.ObservedAtUtc>entry.AcceptedAtUtc || entry.AcceptedAtUtc-context.ObservedAtUtc>TimeSpan.FromSeconds(90))) return false;
+            if (entry.Command.Operation != WorkspaceOperation.EditLinkedDailySchedule && (entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
                 && ((entry.Command.ProjectToHabitica ? entry.Command.Operation != WorkspaceOperation.CreateDaily || DailyProjectionSchedule.RuleFailure(entry.Command.Patch.Recurrence) is not null || entry.Command.Patch.Deadline is not null || entry.Effects.Count != 1 || entry.Effects[0] != ProjectionEffectKind.Create : entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0)
                     || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)
                     || entry.Command.Operation == WorkspaceOperation.CreateDaily && entry.Command.Patch.ClearRecurrence

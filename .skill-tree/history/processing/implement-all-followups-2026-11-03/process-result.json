@@ -1,0 +1,28 @@
+{
+  "created_ids": [
+    "T-925d1068-d6c5-4334-8438-3996c46b5455",
+    "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+  ],
+  "dispositions": {
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31": {
+      "reason": "Current Notes schema2 and schema1-only adoption validators establish a concrete prefreeze and lossless-journal compatibility gap with existing fixture/MCP infrastructure.",
+      "status": "promoted"
+    },
+    "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228": {
+      "reason": "The current fail-closed relative-tag fence establishes a concrete missing day-bound reviewed projection contract with existing SDK/reconciliation/component infrastructure.",
+      "status": "promoted"
+    },
+    "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b": {
+      "reason": "Owned authoritative DNS and raw public TLS fixture identities, allocation and cleanup scope remain unavailable. Existing normal HTTPS evidence cannot establish the deferred failure controls. Keep the owner-deferred hosted test Pending; no resource purchase or live scope is inferred. Research: .skill-tree/history/processing/implement-all-followups-2026-11-03/research.json.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-7817cae4-44e6-4db8-83e1-84f339ff64e4",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31",
+    "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228"
+  ],
+  "task_keys": {}
+}

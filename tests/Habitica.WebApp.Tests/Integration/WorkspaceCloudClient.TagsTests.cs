@@ -69,4 +69,21 @@ public sealed partial class WorkspaceCloudClientTests
         var vault=new ChatGptIntegrationClient(http,"https://auth.invalid/",false);await vault.RevalidateAsync(Credentials,default);
         Assert.False((await vault.ReadTagConsentAsync(default)).Enabled);Assert.True((await vault.SetTagConsentAsync(true,default)).Enabled);Assert.Equal(2,calls);
     }
+    [Fact]public async Task Relative_tag_wire_requires_complete_context_and_refuses_forged_bounds()
+    {
+        var vault=Vault(out var vaultHttp);using var owned=vaultHttp;var id=Guid.NewGuid();var request=Guid.NewGuid();var at=DateTimeOffset.Parse("2026-11-03T00:30:00Z");var evaluation=new WorkspaceRelativeDateEvaluation(at,"America/New_York",new(2026,11,2),new(WorkspaceRelativeDatePreset.Today,new(2026,11,2),new(2026,11,2)),null);
+        var review=new WorkspaceTagReview(Guid.NewGuid(),request,_id,"reconcile",1,DateTimeOffset.UtcNow.AddMinutes(5),true,0,new(id,WorkspaceOrganizationKind.SavedTaskView,"Relative",null,[],"Exact day metadata",Evaluation:evaluation));
+        using var http=new HttpClient(new Handler(async(r,t)=>{if(r.RequestUri!.AbsolutePath=="/connect")return Connection();using var body=JsonDocument.Parse(await r.Content!.ReadAsStringAsync(t));Assert.True(body.RootElement.GetProperty("arguments").GetProperty("relativeDayReview").GetBoolean());return new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(WorkspaceTaskApiJson.Serialize(review))};}));var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);var command=new WorkspaceTagRequest(request,"reconcile",WorkspaceOrganizationKind.SavedTaskView,id,RelativeDayReview:true);Assert.True((await client.PrepareTagReviewAsync(command,default)).Succeeded);
+        review=review with{Details=review.Details! with{Evaluation=evaluation with{Planned=new(WorkspaceRelativeDatePreset.Today,new(2026,11,3),new(2026,11,3))}}};Assert.False((await client.PrepareTagReviewAsync(command,default)).Succeeded);review=review with{Details=review.Details! with{Evaluation=null}};Assert.False((await client.PrepareTagReviewAsync(command,default)).Succeeded);
+    }
+
+    [Theory][InlineData("stale_evaluation_day")][InlineData("tag_evaluation_changed")]
+    public async Task Relative_tag_wire_terminal_context_is_validated_without_releasing_unproven_uncertainty(string reason)
+    {
+        var vault=Vault(out var vaultHttp);using var owned=vaultHttp;var command=Guid.NewGuid();var request=Guid.NewGuid();var at=DateTimeOffset.Parse("2026-11-03T00:30:00Z");var evaluation=new WorkspaceRelativeDateEvaluation(at,"UTC",new(2026,11,3),new(WorkspaceRelativeDatePreset.NoDate,null,null),null);
+        var receipt=new WorkspaceTagReceipt(command,request,_id,"reconcile",false,0,false,[],ReviewOutcome:"terminal-unaccepted",Reason:reason,ClosedAtUtc:DateTimeOffset.UtcNow,Evaluation:evaluation);
+        using var http=new HttpClient(new Handler((r,_)=>Task.FromResult(r.RequestUri!.AbsolutePath=="/connect"?Connection():new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(WorkspaceTaskApiJson.Serialize(receipt))})));
+        var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);Assert.True((await client.ReadTagReviewAsync(command,default)).Succeeded);receipt=receipt with{Evaluation=null};Assert.False((await client.ReadTagReviewAsync(command,default)).Succeeded);
+    }
+
 }

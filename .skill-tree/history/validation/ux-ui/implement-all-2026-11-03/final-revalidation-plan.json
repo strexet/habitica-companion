@@ -1,0 +1,182 @@
+[
+  {
+    "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "title": "Extend shared UI qualification for disabled text and native date content",
+    "key": "ui-qualification"
+  },
+  {
+    "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+    "title": "Make global navigation identifiable and keyboard accessible",
+    "key": "accessible-shell"
+  },
+  {
+    "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+    "title": "Qualify visible full-shell content with current theme geometry",
+    "key": "shell-content-visibility"
+  },
+  {
+    "task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "title": "Keep disabled control text readable in built-in themes",
+    "key": "disabled-readability"
+  },
+  {
+    "task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+    "title": "Keep selected native dates readable with enlarged text",
+    "key": "native-date-reflow"
+  },
+  {
+    "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "title": "Explain workspace readiness and disabled editor recovery",
+    "key": "workspace-readiness"
+  },
+  {
+    "task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+    "title": "Provide page headings and route focus for Habits and Dailies",
+    "key": "category-headings"
+  },
+  {
+    "task_id": "T-b8a05278-292d-4f91-a882-35e0944a742d",
+    "title": "Keep planning and statistics native dates readable at enlarged text",
+    "key": "planning-date-readability"
+  },
+  {
+    "task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "title": "Use consistent canonical task destinations from planning views",
+    "key": "canonical-destinations"
+  },
+  {
+    "task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "title": "Put daily work before optional reminder setup on Today",
+    "key": "today-work-first"
+  },
+  {
+    "task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+    "title": "Bound companion collection rendering and clarify search results",
+    "key": "bounded-companions"
+  },
+  {
+    "task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+    "title": "Keep dashboard Appearance actions readable at enlarged phone widths",
+    "key": "dashboard-appearance-reflow"
+  },
+  {
+    "task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "title": "Reconcile dashboard account freshness and refresh-history labels",
+    "key": "dashboard-freshness"
+  },
+  {
+    "task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+    "title": "Place required Daily schedule fields before the add action",
+    "key": "daily-form-order"
+  },
+  {
+    "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+    "title": "Identify the exact invalid saved-list fields and preserve focus",
+    "key": "saved-list-errors"
+  },
+  {
+    "task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+    "title": "Keep Party grids and disclosure actions bounded with enlarged text",
+    "key": "party-context-reflow"
+  },
+  {
+    "task_id": "T-e3859337-1a25-48e6-a37d-817868623ec7",
+    "title": "Keep equipment identity text and stat tokens readable in constrained cards",
+    "key": "equipment-identity-reflow"
+  },
+  {
+    "task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "title": "Name repeated game controls and equipment preset inputs",
+    "key": "game-control-names"
+  },
+  {
+    "task_id": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0",
+    "title": "Name canonical Todo hierarchy row controls in Tasks and Projects",
+    "key": "hierarchy-control-names"
+  },
+  {
+    "task_id": "T-d123dff7-af96-45ab-9690-a0932de03df9",
+    "title": "Keep recurring task identities readable beside row actions",
+    "key": "recurring-row-readability"
+  },
+  {
+    "task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+    "title": "Keep selected Daily occurrence dates readable with enlarged phone text",
+    "key": "daily-occurrence-readability"
+  },
+  {
+    "task_id": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7",
+    "title": "Keep nested Settings content and action labels readable on enlarged phones",
+    "key": "settings-content-reflow"
+  },
+  {
+    "task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "title": "Name repeated task and private-sync record controls",
+    "key": "workspace-control-names"
+  },
+  {
+    "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+    "title": "Distinguish unchecked push capability from unsupported browsers",
+    "key": "push-capability-state"
+  },
+  {
+    "task_id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+    "title": "Make primary planning navigation reachable without a long drawer scan",
+    "key": "compact-navigation"
+  },
+  {
+    "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+    "title": "Add direct discovery for equipment slots and owned items",
+    "key": "equipment-discovery"
+  },
+  {
+    "task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+    "title": "Offer understandable supported timezone choices for linked Dailies",
+    "key": "daily-timezones"
+  },
+  {
+    "task_id": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+    "title": "Shorten saved-list authoring and prioritize existing lists",
+    "key": "saved-list-layout"
+  },
+  {
+    "task_id": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+    "title": "Make phone note capture reach the editor directly",
+    "key": "phone-notes-editor"
+  },
+  {
+    "task_id": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+    "title": "Open Projects on existing work and reveal management on demand",
+    "key": "projects-browse-first"
+  },
+  {
+    "task_id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+    "title": "Organize Settings around clear account and data-management sections",
+    "key": "settings-sections"
+  },
+  {
+    "task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+    "title": "Use named day controls for repeating push reminders",
+    "key": "named-reminder-days"
+  },
+  {
+    "task_id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+    "title": "Prevent mid-word wrapping in equipment count summaries",
+    "key": "equipment-count-wrap"
+  },
+  {
+    "task_id": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+    "title": "Format private-sync timestamps without literal format suffixes",
+    "key": "sync-timestamp"
+  },
+  {
+    "task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+    "title": "Show explicit unset values in task-copy reviews",
+    "key": "copy-unset-values"
+  },
+  {
+    "task_id": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+    "title": "Fence New note until the Notes component finishes initial loading",
+    "key": "notes-entry-readiness"
+  }
+]

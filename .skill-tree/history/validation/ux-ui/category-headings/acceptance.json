@@ -1,0 +1,67 @@
+{
+  "task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+  "title": "Provide page headings and route focus for Habits and Dailies",
+  "operation_history": ".skill-tree/history/validation/ux-ui/category-headings/operation-history.json",
+  "checks": [
+    {
+      "id": "category-headings-behavior",
+      "counts": {
+        "discovered": 9,
+        "expected": 9,
+        "failed": 0,
+        "passed": 9,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.log",
+          "sha256": "1cf8c0e318b5fcf8bf3c04fd6f0c86a4e0f5b9931912c6333318b129a15500f0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.trx",
+          "sha256": "cdf5da7b37a342b46a788348c5958a137b6491f39348e42efd5989f09add365a"
+        }
+      ]
+    },
+    {
+      "id": "category-headings-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/browser/62730f94-b369-4315-80e1-c4ceccf0eda8.json",
+          "sha256": "2e529ee6ca7ab460021705d6168f8ee48e8383f04b457e74796a1310b7c30a06"
+        }
+      ]
+    },
+    {
+      "id": "category-headings-appearance-guards",
+      "counts": {
+        "discovered": 27,
+        "expected": 27,
+        "failed": 0,
+        "passed": 27,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-fd3e381b-7eff-45cb-af8e-29d3345c8f15.tap",
+          "sha256": "267145bec66cf0b7b7534cc6a63b28922d89576e123aaa861147462dabcae50c"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

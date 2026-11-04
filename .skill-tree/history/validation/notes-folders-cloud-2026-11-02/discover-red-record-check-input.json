@@ -1,0 +1,24 @@
+{
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "check_id": "notes-owner-api",
+  "attempt_id": "C-8bb10d01-824e-466d-b389-2272fa732cb4",
+  "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "red",
+  "counts": {
+    "expected": 13,
+    "discovered": 13,
+    "passed": 12,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 9.883797958027571
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/discover-red-execution.log"
+  ],
+  "failure_category": "expected-behavior"
+}

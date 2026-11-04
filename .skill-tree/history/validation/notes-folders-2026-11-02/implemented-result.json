@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-local-model",
+      "parameters": {
+        "report_name": "notes-local-model.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
+        "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.Application/Notes/NotesEngine.cs",
+        "src/Habitica.Application/Notes/NotesFolders.cs",
+        "src/Habitica.Application/Notes/NotesService.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Notes/NotesProjects.cs",
+        "src/Habitica.Application/Notes/INotesCloudClient.cs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-storage-contracts",
+      "parameters": {
+        "report_name": "notes-storage-contracts.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-indexeddb",
+      "parameters": {},
+      "recipe_id": "notes-indexeddb-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/browser/notes-folders.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
+}

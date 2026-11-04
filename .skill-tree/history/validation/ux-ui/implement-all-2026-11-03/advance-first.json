@@ -1,0 +1,98 @@
+{
+  "body": "### Make global navigation identifiable and keyboard accessible\n\n```yaml\nid: T-ea2058ab-c817-4368-9431-b26314f58a2e\npriority: 105\nstatus: Ready\nparent_pending_ids: [\"P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea\"]\nprocessing_run_id: PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8\nroot_task_id: T-ea2058ab-c817-4368-9431-b26314f58a2e\nrelated_task_id: null\nrelation: main\ndepends_on: [\"T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0\"]\n```\n\nGoal:\nMake global navigation identifiable and keyboard accessible.\n\nCurrent behavior:\nMainLayout renders an unnamed menu icon without an expanded-state association or skip link. App FocusOnNavigate targets h1. The audit does not establish a focus-trap defect.\n\nDesired behavior:\nGive the menu a meaningful accessible name, expansion state and stable drawer association; add a visible-on-focus skip link to the main landmark. Verify the existing MudBlazor 9.3 drawer behavior before adjusting phone Escape, backdrop dismissal and focus return. Preserve desktop navigation and route focus.\n\nTouch:\n- `src/Habitica.WebApp/Layout/MainLayout.razor`\n- `src/Habitica.WebApp/App.razor`\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs`\n- `tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs`\n\nImplementation constraints:\nUse actual native or supported pinned component attributes. Avoid inventing a new focus trap or keyboard shortcut conflicting with browser shortcuts. Preserve sign-in and account boundaries.\nUse existing application commands and reviewed MCP contracts. Capture any newly discovered browser-only supported agent action as a separate scoped parity bug; presentation changes grant no new execution authority. No live provider mutation, deployment, publication or consent is authorized by processing. Local build/test authorization must be checked against the active implementation instruction and testing.md before execution. Physical devices, assistive technology and hosted qualification remain separate from desktop emulation.\n\nValidation:\nUse test-first behavior slices for meaningful interaction or state changes. A layout-only change uses a failing rendered regression rather than a markup-mirroring unit test. The shared qualification task registers ux-ui-rendered-browser and refreshes the profile before any dependent browser check. The audit baseline is research evidence, not fix acceptance. Changed routes require all declared widths, text sizes and light/dark schemes, including obsidian-glow. Browser checks use owned current Release fixtures, isolated synthetic data, bounded readiness/deadlines and verified cleanup; no real account or provider write. Missing required checks block completion.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"accessible-shell-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.\",\n        \"Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Layout/MainLayout.razor\",\n        \"src/Habitica.WebApp/App.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/Habitica.WebApp.Tests/AppNavMenuTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests\",\n        \"report_name\": \"accessible-shell.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/accessible-shell/unit\"\n      },\n      \"assertion\": \"Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"accessible-shell-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Shell navigation, focus indicators and primary content remain usable across the required rendered matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Layout/MainLayout.razor\",\n        \"src/Habitica.WebApp/App.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/Habitica.WebApp.Tests/AppNavMenuTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"accessible-shell\",\n        \"routes\": [\n          \"/dashboard\",\n          \"/todo/today\",\n          \"/todo/tasks\",\n          \"/settings\"\n        ],\n        \"cases\": \"Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/accessible-shell/browser\"\n      },\n      \"assertion\": \"Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.\n- Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target.\n- Shell navigation, focus indicators and primary content remain usable across the required rendered matrix.\n\nDocumentation updates:\nUpdate `.skill-tree/documents/ux-ui-manifest.md` for changed behavior and `.skill-tree/documents/testing.md` for changed qualification contracts. Update `.skill-tree/documents/features.md` when a user flow materially changes. Record exact task-scoped acceptance artifacts and explicit untested paths.\n\nResearch provenance:\n- Findings F01 in `.skill-tree/history/reviews/ux-ui-2026-11-03/report.md`; original screenshots and source identity remain in the review directory.\n- Processing decisions, source/test fingerprints and validation availability: `.skill-tree/history/processing/ux-ui-review-2026-11-03/research.json`.\n\n",
+  "checks": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+        "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target."
+      ],
+      "id": "accessible-shell-behavior",
+      "parameters": {
+        "report_name": "accessible-shell.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/unit",
+        "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/App.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix."
+      ],
+      "id": "accessible-shell-rendered",
+      "parameters": {
+        "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings"
+        ],
+        "task_key": "accessible-shell"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/App.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "priority": 105,
+  "root_task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+  "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+  "title": "Make global navigation identifiable and keyboard accessible"
+}

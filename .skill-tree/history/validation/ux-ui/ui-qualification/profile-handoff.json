@@ -1,0 +1,1 @@
+{"phase": "blocked", "stop_reason": "Profile recipe registration requires a stopped cleanup handoff; all owned processes are closed.", "next_action": "Refresh the installed profile and re-admit the selected controller."}

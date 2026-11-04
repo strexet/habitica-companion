@@ -1,0 +1,50 @@
+{
+  "task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+  "title": "Offer understandable supported timezone choices for linked Dailies",
+  "operation_history": ".skill-tree/history/validation/ux-ui/daily-timezones/operation-history.json",
+  "checks": [
+    {
+      "id": "daily-timezones-behavior",
+      "counts": {
+        "discovered": 56,
+        "expected": 56,
+        "failed": 0,
+        "passed": 56,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.log",
+          "sha256": "98085cd33a988e71e1fc3ff3a3433fd1ee2fcb9ea18f4ae11d225af74b0cee07"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.trx",
+          "sha256": "315e89d668d23cd4f1b03207055c434d97161f14b59a11727b3de31128b9fb2b"
+        }
+      ]
+    },
+    {
+      "id": "daily-timezones-rendered",
+      "counts": {
+        "discovered": 865,
+        "expected": 865,
+        "failed": 0,
+        "passed": 865,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json",
+          "sha256": "95fa99e7abfad9d099b202b8fd9d54b6f75dc9911046ee215760e74d9257e6a1"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

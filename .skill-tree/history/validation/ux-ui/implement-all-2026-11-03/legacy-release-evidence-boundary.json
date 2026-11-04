@@ -1,0 +1,85 @@
+{
+  "legacy_completed_dependencies_without_immutable_check_contract": [
+    {
+      "task_id": "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+      "title": "Prepare the selected existing Pages site for dev qualification",
+      "outcome": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17"
+    },
+    {
+      "task_id": "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+      "title": "Explain the linking-code browser authorization handoff",
+      "outcome": "O-bd86cfe5-e6df-40d4-8d64-25ed8ea68fcb"
+    },
+    {
+      "task_id": "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+      "title": "Align selected deployment with production names and replace exposed setup key",
+      "outcome": "O-8a6c239c-6b80-4210-a2e6-a94e7a8e560b"
+    },
+    {
+      "task_id": "T-34491faa-090e-4d97-b496-1fe947770688",
+      "title": "Publish the selected production website and verify hosted boundaries",
+      "outcome": "O-038739b4-83cf-4f3a-a2b1-970281d2d9dd"
+    },
+    {
+      "task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "title": "Package The Plugin And Add Core Skills",
+      "outcome": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5"
+    },
+    {
+      "task_id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "title": "Qualify E14 local adoption and recovery boundaries",
+      "outcome": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720"
+    },
+    {
+      "task_id": "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+      "title": "Preserve access and uncertainty across profile re-enrollment",
+      "outcome": "O-75a3f695-3334-45b4-8000-06045ef1ca34"
+    },
+    {
+      "task_id": "T-5737120b-52a5-4a57-9072-fce514adaf33",
+      "title": "Complete integration management and grant revocation",
+      "outcome": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60"
+    },
+    {
+      "task_id": "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "title": "Add resumable credential encryption key operations",
+      "outcome": "O-c907310b-d594-4093-a241-5bff64729b14"
+    },
+    {
+      "task_id": "T-65810da7-9524-45ce-b280-668d04c86441",
+      "title": "Distinguish active and archived task counts",
+      "outcome": "O-33a5eda4-5cb2-4c4a-8f16-12553960765a"
+    },
+    {
+      "task_id": "T-70901e97-738c-42c2-ae50-68dd71417a32",
+      "title": "Complete canonical Daily Habit and deletion commands",
+      "outcome": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0"
+    },
+    {
+      "task_id": "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "title": "Repair OAuth request and refresh continuity",
+      "outcome": "O-47e8cb8a-fa05-4e7f-bf62-842c0f09a339"
+    },
+    {
+      "task_id": "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "title": "Repair browser authorization callback navigation",
+      "outcome": "O-f47ae9c9-bdbf-4622-a685-4cfc7c91068e"
+    },
+    {
+      "task_id": "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "title": "Enforce own-account mutation isolation and party departure prohibition",
+      "outcome": "O-ba1742c1-00fe-4f18-9dea-c829e62f3190"
+    },
+    {
+      "task_id": "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "title": "Expose sign-in navigation in the signed-out app header",
+      "outcome": "O-73471b3d-a79c-4f29-b7fb-2c5512696896"
+    },
+    {
+      "task_id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+      "title": "Bound integration traffic and expose safe stalled work status",
+      "outcome": "O-cee482d5-3499-4e41-be3b-ebf181723600"
+    }
+  ],
+  "scope": "Historical release dependencies remain behind blocked owner qualification. No contract, validation or acceptance is fabricated from imported metadata. Current36UIcontracts have immutable checks and actual current revalidation. Review original release evidence before any future finish."
+}

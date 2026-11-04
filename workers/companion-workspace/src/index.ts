@@ -41,7 +41,7 @@ import {partyToolScopes,publicPartyContext,type PartyTool} from '../../shared/pa
 import { purgeExpiredPreparations } from "./preparation-retention";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { taskApi } from "./task-api";
-import { taskToolScopes, type TaskTool } from "../../shared/task-tools";
+import { taskToolScopes, taskRequiredScopes, type TaskTool } from "../../shared/task-tools";
 import { handoff } from "./handoff";
 import { executeScheduled, cloudAuthority, type WorkspaceRow } from "./executor";
 import { adoptProjection } from "./projection-adapter";
@@ -123,6 +123,7 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
+ if(input.operation==='editLinkedDailySchedule'&&!prepared)throw new WorkspaceError('prepared_linked_schedule_required',409);
  if(input.projectToHabitica||input.operation==='ensureProjection'){
   const fence=await env.WORKSPACE_DB.prepare('SELECT transfer_id FROM workspace_transfer_fences WHERE profile_id=? AND task_id=?').bind(row.profile_id,input.taskId).first();
   if(fence)throw new WorkspaceError('imported_effect_review_required',409);
@@ -134,7 +135,7 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  }
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString(),await recoveryCommands(env,row.profile_id,input));
  const approval=prepared?await env.WORKSPACE_DB.prepare('SELECT tag_authority_json FROM workspace_preparations WHERE profile_id=? AND command_id=?').bind(row.profile_id,input.id).first<{tag_authority_json:string|null}>():undefined;
- const tags=['unarchiveTask','correctOccurrence'].includes(input.operation)?{document:accepted.document,work:[],gap:null}:await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
+ const tags=['copyTaskType','unarchiveTask','correctOccurrence'].includes(input.operation)?{document:accepted.document,work:[],gap:null}:await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
  accepted.document=tags.document;
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
@@ -304,7 +305,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
     if(!verified.ok)throw new WorkspaceError('unauthorized',401);const who=await verified.json<Identity&{scopes:string[];grantEpoch:string}>();
     if(!Array.isArray(who.scopes)||workspaceTransferScopes[tool].some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
     let row=await this.env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1 AND consent_version=?').bind(who.profileId,who.connectionId,'workspace-v1').first<WorkspaceRow>();if(!row)throw new WorkspaceError('workspace_consent_required',403);row=await mcpEpoch(this.env,row,who.grantEpoch);
-    const notesIncluded=tool!=='list_workspace_transfers'&&!(tool==='get_workspace_transfer_record'&&args.kind!=='noteReceipt')&&await transferContainsNotes(this.env,row,String(args.transferId));
+    const notesIncluded=tool!=='list_workspace_transfers'&&!(tool==='get_workspace_transfer_record'&&!['noteReceipt','folderReceipt'].includes(String(args.kind)))&&await transferContainsNotes(this.env,row,String(args.transferId));
     if(notesIncluded){const required=['notes.read',...(['preview_workspace_transfer','accept_workspace_transfer'].includes(tool)?['notes.write']:[])];if(required.some(scope=>!who.scopes.includes(scope)))return json({error:'independent_notes_scope_required',requiredScopes:required,outcomeUnknown:false},403);}
     return json(await workspaceTransferApi(this.env,row,tool,args,who.grantEpoch));
    }
@@ -323,7 +324,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
    const requiredScope=Object.hasOwn(groupTagScopes,body.tool)?groupTagScopes[body.tool as GroupTagTool]:Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
-   const required=Object.hasOwn(adoptionScopes,body.tool)?adoptionScopes[body.tool as AdoptionTool]:Object.hasOwn(linkedRecoveryScopes,body.tool)?linkedRecoveryScopes[body.tool as LinkedRecoveryTool]:Object.hasOwn(reminderToolScopes,body.tool)?reminderToolScopes[body.tool as ReminderTool]:Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
+   const required=Object.hasOwn(adoptionScopes,body.tool)?adoptionScopes[body.tool as AdoptionTool]:Object.hasOwn(linkedRecoveryScopes,body.tool)?linkedRecoveryScopes[body.tool as LinkedRecoveryTool]:Object.hasOwn(reminderToolScopes,body.tool)?reminderToolScopes[body.tool as ReminderTool]:Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:Object.hasOwn(taskToolScopes,body.tool)?taskRequiredScopes(body.tool as TaskTool,body.arguments):['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);

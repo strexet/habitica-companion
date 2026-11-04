@@ -1,0 +1,458 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Private-sync status shows a correctly formatted local date and time without a literal format suffix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.log",
+          "sha256": "720ab6d22e9d72c61313bceac81c20d096e713e8c0d0cfc4de2115504dd71579"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.trx",
+          "sha256": "3b13621968b5f02773dab96dc289971847fc33778cfed51b43b82970ba9ccf9c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/acceptance.json",
+          "sha256": "f3c89ff9148a1bdf472ae50da5ba7c634a385b945a73e08b9c94e11b404b981e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser/8bfa279d-64eb-4eda-a7cc-a4eb0a7e3a48.json",
+          "sha256": "eb36912f136dca6cd6c3ac18ab6241d820d8bcf3e3252d63dd67977b6f6443ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Formatting preserves stored UTC metadata, missing-value behavior and sync status.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.log",
+          "sha256": "720ab6d22e9d72c61313bceac81c20d096e713e8c0d0cfc4de2115504dd71579"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.trx",
+          "sha256": "3b13621968b5f02773dab96dc289971847fc33778cfed51b43b82970ba9ccf9c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/acceptance.json",
+          "sha256": "f3c89ff9148a1bdf472ae50da5ba7c634a385b945a73e08b9c94e11b404b981e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser/8bfa279d-64eb-4eda-a7cc-a4eb0a7e3a48.json",
+          "sha256": "eb36912f136dca6cd6c3ac18ab6241d820d8bcf3e3252d63dd67977b6f6443ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Timestamp rows remain readable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.log",
+          "sha256": "720ab6d22e9d72c61313bceac81c20d096e713e8c0d0cfc4de2115504dd71579"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.trx",
+          "sha256": "3b13621968b5f02773dab96dc289971847fc33778cfed51b43b82970ba9ccf9c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/acceptance.json",
+          "sha256": "f3c89ff9148a1bdf472ae50da5ba7c634a385b945a73e08b9c94e11b404b981e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser/8bfa279d-64eb-4eda-a7cc-a4eb0a7e3a48.json",
+          "sha256": "eb36912f136dca6cd6c3ac18ab6241d820d8bcf3e3252d63dd67977b6f6443ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Known UTC timestamp, nonzero local offset, at least two controlled cultures, null status date and narrow long metadata. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Private-sync status shows a correctly formatted local date and time without a literal format suffix.",
+          "Formatting preserves stored UTC metadata, missing-value behavior and sync status."
+        ],
+        "id": "sync-timestamp-behavior",
+        "parameters": {
+          "report_name": "sync-timestamp.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/sync-timestamp/unit",
+          "test_filter": "FullyQualifiedName~SettingsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-bf81b20d-7c39-4903-bcc8-8300af34cabf",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 19,
+          "expected": 19,
+          "failed": 2,
+          "passed": 17,
+          "skipped": 0
+        },
+        "definition": "bdbb1e66d2ecdf5436e8f3fd01b5f8968101193abf9be4a375da375d001f64b9",
+        "environment_identity": "b59697062d59ac46ac41439fc8139278914a4c8a9792cfb2deab708f0a948cd5",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-bf81b20d-7c39-4903-bcc8-8300af34cabf.log",
+            "sha256": "b4d5142bfb03c5e88814b5bcaa4188d3496586309bf2afa1cf6164132b978fcb"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-bf81b20d-7c39-4903-bcc8-8300af34cabf.trx",
+            "sha256": "646871d904f08f176b513f4624b2b2392e564a71876bbcf20397916edafb7511"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "73ff4aaec46e68b5ff793198c2541c56da3d7af2b5fa04b9321cc1b1bb29ec3f",
+        "payload_hash": "0944124133b76af023234aaa91c386cc60a3fbf46d5459e1157fb30db9a5d900",
+        "recorded_at": "2026-11-03T23:27:43.774232+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "bc71d988906ee3f7ceb357c4f30c3629caed8d5339b8627ae3ea62326cf74cf0",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "32a1a564699a3b34ae71796ac4e1dca741bde3298c88c3ce59e21e6303f31f7d"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.520813291892409
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-d54a16ab-12d6-41de-84d9-d859bb336773",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 19,
+          "expected": 19,
+          "failed": 0,
+          "passed": 19,
+          "skipped": 0
+        },
+        "definition": "bdbb1e66d2ecdf5436e8f3fd01b5f8968101193abf9be4a375da375d001f64b9",
+        "environment_identity": "b59697062d59ac46ac41439fc8139278914a4c8a9792cfb2deab708f0a948cd5",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.log",
+            "sha256": "720ab6d22e9d72c61313bceac81c20d096e713e8c0d0cfc4de2115504dd71579"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/C-d54a16ab-12d6-41de-84d9-d859bb336773.trx",
+            "sha256": "3b13621968b5f02773dab96dc289971847fc33778cfed51b43b82970ba9ccf9c"
+          }
+        ],
+        "execution_sessions": {
+          "2340a514f1ecdd7930deae2ae698c6e84456218cba4d6f4b404918d3c4aa554d": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:44:16.932360+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/sync-timestamp/launch-1793748496932556000.json"
+            ],
+            "profile_id": "9ee593985f3889d6091e2ebcffa4e52e306416b06fdfd716d3034c5c20681ff1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/sync-timestamp",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "97ccccb51c99432f69171474e9b4fbd521bef38cddd147f5dc7568f6f29aec0e",
+        "payload_hash": "0b39d50cb96873730fe50ffdd432d0b6e5840ffee457404071a76fb04ed5915a",
+        "recorded_at": "2026-11-03T23:29:56.399162+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "e9168316cb8d741fc1a9a29db4692cb9b2dce306642ae2f1bc7e8c57adfc92fc",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "7604589ef7fa091594038f18c45265328c529ccd67937ff3e798983992d0556f"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.906633791979402
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Timestamp rows remain readable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Timestamp rows remain readable across the required rendered matrix."
+        ],
+        "id": "sync-timestamp-rendered",
+        "parameters": {
+          "cases": "Known UTC timestamp, nonzero local offset, at least two controlled cultures, null status date and narrow long metadata.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser",
+          "routes": [
+            "/settings"
+          ],
+          "task_key": "sync-timestamp"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-c9e0432f-53a4-4a4c-bf6f-a9c5e0c86e58",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 361,
+          "expected": 361,
+          "failed": 0,
+          "passed": 361,
+          "skipped": 0
+        },
+        "definition": "bdbb1e66d2ecdf5436e8f3fd01b5f8968101193abf9be4a375da375d001f64b9",
+        "environment_identity": "af36b7f62dbbc7012ab440f7d98cd145e38b8d8c897c5a5c6912caf49d47edef",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser/8bfa279d-64eb-4eda-a7cc-a4eb0a7e3a48.json",
+            "sha256": "eb36912f136dca6cd6c3ac18ab6241d820d8bcf3e3252d63dd67977b6f6443ba"
+          }
+        ],
+        "execution_sessions": {
+          "2340a514f1ecdd7930deae2ae698c6e84456218cba4d6f4b404918d3c4aa554d": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:44:16.932360+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/sync-timestamp/launch-1793748496932556000.json"
+            ],
+            "profile_id": "9ee593985f3889d6091e2ebcffa4e52e306416b06fdfd716d3034c5c20681ff1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/sync-timestamp",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "787900bff73ef1d37da066d6f45562744e6500d51570cf8c1bc8e419d317fb6e": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:45:57.865114+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/sync-timestamp/launch-1793748597865381000.json"
+            ],
+            "profile_id": "45b04b585c4300812bd3a3d8a9159c90015fdb1f6b409c0774a2d26815d19319",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/sync-timestamp",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "6bb37cd7d336ebed4e385aa824211ecba2ed20a1d3ba551ae8a0d33367cb7f48",
+        "payload_hash": "c73eabb33677c4f76db4ee41b9f44e5682d50a522a2e1f8d043142da19521c8a",
+        "recorded_at": "2026-11-03T23:30:56.647750+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "e9168316cb8d741fc1a9a29db4692cb9b2dce306642ae2f1bc7e8c57adfc92fc",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "7604589ef7fa091594038f18c45265328c529ccd67937ff3e798983992d0556f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 57.7219774578698
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/acceptance.json",
+      "sha256": "f3c89ff9148a1bdf472ae50da5ba7c634a385b945a73e08b9c94e11b404b981e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/sync-timestamp/operation-history.json",
+      "sha256": "cdae1eeec22a970ed6b0188c9b8465a98968633a0228f6d0f30e45d3210d2e70"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-902babe8-b0b5-4103-becd-bf49d0198a5a",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Format private-sync timestamps without literal format suffixes. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b"
+  ],
+  "recorded_at": "2026-11-03T23:31:41.347368+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+  "source_fingerprints": {
+    ".skill-tree/documents/testing.md": "26fcee4937dd147e01893f47646b1cad521ba7f0f0f75e44210732809f381146",
+    ".skill-tree/documents/ux-ui-manifest.md": "cd0d55808a31871e1adcd021815f057215764217c9f127004379260e3a4fe203",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "e9168316cb8d741fc1a9a29db4692cb9b2dce306642ae2f1bc7e8c57adfc92fc",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "7604589ef7fa091594038f18c45265328c529ccd67937ff3e798983992d0556f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "82af72fbd47c4d89c30f8ba29d4aa42b2f145c16ffb894b91b0e8b1a1a810da4",
+    "tests/browser-qualification/ux-ui-settings-sections-journey.mjs": "985522dd74bb4a677bd26c542a5379af0e371ff48b4885750805b9ed64edc1ee",
+    "tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs": "82411e39e22fd20d02d6d0655ec5feea61c9a9871eebb5bbba9bad7ca761f0a7"
+  },
+  "task_id": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+  "title": "Format private-sync timestamps without literal format suffixes",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Known UTC timestamp, nonzero local offset, at least two controlled cultures, null status date and narrow long metadata. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Private-sync status shows a correctly formatted local date and time without a literal format suffix.",
+        "Formatting preserves stored UTC metadata, missing-value behavior and sync status."
+      ],
+      "id": "sync-timestamp-behavior",
+      "parameters": {
+        "report_name": "sync-timestamp.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/sync-timestamp/unit",
+        "test_filter": "FullyQualifiedName~SettingsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Timestamp rows remain readable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Timestamp rows remain readable across the required rendered matrix."
+      ],
+      "id": "sync-timestamp-rendered",
+      "parameters": {
+        "cases": "Known UTC timestamp, nonzero local offset, at least two controlled cultures, null status date and narrow long metadata.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/sync-timestamp/browser",
+        "routes": [
+          "/settings"
+        ],
+        "task_key": "sync-timestamp"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "bdbb1e66d2ecdf5436e8f3fd01b5f8968101193abf9be4a375da375d001f64b9"
+}

@@ -1,3 +1,5 @@
+import {initialCopyMatches,sameCopyLineage,sameRule as sameCopyRule} from '../../shared/task-type-copy.ts';
+import {scheduleContextMatches,linkedDailyScheduleResult} from '../../shared/linked-daily-schedule.ts';
 import {validateActivityCoverage} from '../../shared/activity-coverage.ts';
 import {validateLinkedRecoveryHashes,linkedRecoveryJournalValid} from '../../shared/linked-recovery.ts';
 import {applyUnarchive} from '../../shared/task-recovery.ts';
@@ -29,7 +31,7 @@ export async function journal(value:unknown):Promise<Journal>{
  await validateOrganizationHistoryHashes(document);
  const ids=new Set<string>();const commands:CommandEntry[]=[];
  for(const raw of input.commands){
-  const row=object(raw,['command','payloadHash','acceptedAtUtc','projectionState','effects','confirmedEffects','failure','retryAtUtc','lease','dispatchedAtUtc','attempts','taskSnapshot']);
+  const row=object(raw,['command','payloadHash','acceptedAtUtc','projectionState','effects','confirmedEffects','failure','retryAtUtc','lease','dispatchedAtUtc','attempts','taskSnapshot','scheduleResult']);
   const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&!organizationIds.has(command.id)&&!organizationRevisions.has(command.expectedRevision+1)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
   valid(timestamp(row.acceptedAtUtc)&&states.includes(String(row.projectionState))&&failures.includes(String(row.failure))&&Array.isArray(row.effects)&&row.effects.length<=11&&row.effects.every(v=>['create','update','scoreUp','scoreDown'].includes(v)));
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
@@ -61,7 +63,14 @@ export async function journal(value:unknown):Promise<Journal>{
    const task=object(row.taskSnapshot);valid(['daily','habit'].includes(String(task.kind)));
    valid(command.operation==='skipOccurrence'?task.kind==='daily'&&task.state==='active'&&task.recurrence!=null&&command.occurrenceDate!==null&&command.occurrenceDate!=='0001-01-01':command.occurrenceDate===null&&task.state===(command.operation==='pauseTask'?'paused':'active'));
   }
-  if(command.patch?.recurrence||command.patch?.clearRecurrence){valid((command.projectToHabitica?command.operation==='createDaily'&&!dailyRuleFailure(command.patch.recurrence)&&command.patch.deadline===null&&effects.length===1&&effects[0]==='create':row.projectionState==='notRequested'&&effects.length===0)&&['createDaily','updateTask'].includes(command.operation)&&!(command.operation==='createDaily'&&command.patch.clearRecurrence));const accepted=object(row.taskSnapshot);valid(accepted.kind==='daily');const rule=workspaceRecurrence(accepted.recurrence);valid(command.patch.clearRecurrence?rule===null:JSON.stringify(rule)===JSON.stringify(command.patch.recurrence));}
+  if(command.operation==='copyTaskType'){
+   const copy=command.patch?.typeCopy,accepted=workspaceTask(row.taskSnapshot,document.revision),line=accepted.copyLineage;
+   valid(copy&&line&&!command.projectToHabitica&&command.count===1&&command.direction===null&&command.occurrenceDate===null&&row.projectionState==='notRequested'&&effects.length===0&&row.confirmedEffects===0&&row.failure==='none'
+    &&line.commandId===command.id&&line.payloadHash===row.payloadHash&&line.sourceWorkspaceId===command.workspaceId&&line.sourceSnapshot.id===copy.sourceTaskId&&line.sourceSnapshot.revision===copy.sourceRevision&&line.targetKind===copy.targetKind&&line.copyOrganization===copy.copyOrganization&&sameCopyRule(line.recurrence,copy.recurrence)&&line.initialTargetRevision===command.expectedRevision+1&&utcTicks(line.copiedAtUtc)===utcTicks(row.acceptedAtUtc)&&initialCopyMatches(accepted,line));
+  }
+  if(command.operation==='editLinkedDailySchedule'){const context=command.patch?.linkedSchedule;valid(context&&command.patch?.recurrence&&scheduleContextMatches(context,command.patch.recurrence)&&command.projectToHabitica&&effects.length===1&&effects[0]==='update'&&utcTicks(context.observedAtUtc)<=utcTicks(row.acceptedAtUtc)&&utcTicks(row.acceptedAtUtc)-utcTicks(context.observedAtUtc)<=900000000n);}
+  if((command.patch?.recurrence||command.patch?.clearRecurrence)&&command.operation!=='editLinkedDailySchedule'){valid((command.projectToHabitica?command.operation==='createDaily'&&!dailyRuleFailure(command.patch.recurrence)&&command.patch.deadline===null&&effects.length===1&&effects[0]==='create':row.projectionState==='notRequested'&&effects.length===0)&&['createDaily','updateTask'].includes(command.operation)&&!(command.operation==='createDaily'&&command.patch.clearRecurrence));const accepted=object(row.taskSnapshot);valid(accepted.kind==='daily');const rule=workspaceRecurrence(accepted.recurrence);valid(command.patch.clearRecurrence?rule===null:JSON.stringify(rule)===JSON.stringify(command.patch.recurrence));}
+  if(command.operation==='editLinkedDailySchedule'){const accepted=workspaceTask(row.taskSnapshot,document.revision);valid(accepted.kind==='daily'&&JSON.stringify(accepted.recurrence)===JSON.stringify(command.patch?.recurrence));}
   valid(row.projectionState==='notRequested'?effects.length===0:effects.length>0);
   if(row.projectionState==='confirmed')valid(row.confirmedEffects===effects.length);
   if(['pending','leased','executing','unknownOutcome'].includes(String(row.projectionState)))valid(Number(row.confirmedEffects)<effects.length);
@@ -69,11 +78,14 @@ export async function journal(value:unknown):Promise<Journal>{
   if(row.lease!=null){const lease=object(row.lease,['owner','token','expiresAtUtc']);uuid(lease.token);valid(typeof lease.owner==='string'&&lease.owner.trim().length>0&&lease.owner.length<=128&&timestamp(lease.expiresAtUtc));}
   if(['executing','unknownOutcome'].includes(String(row.projectionState)))valid(timestamp(row.dispatchedAtUtc)&&Number(row.attempts)>0);
   valid(row.retryAtUtc==null||timestamp(row.retryAtUtc));valid(row.dispatchedAtUtc==null||timestamp(row.dispatchedAtUtc));
-  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails','executionStage']);
+  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails','executionStage','copyLineage']);
    habiticaDetails(task.habiticaDetails);if(executionStage(task.executionStage)!==null)valid(task.kind==='todo');
    if(task.recurrence!=null){valid(task.kind==='daily');workspaceRecurrence(task.recurrence);}
    valid(task.id===command.taskId&&task.revision===command.expectedRevision+1&&['todo','daily','habit'].includes(String(task.kind))&&['active','paused','completed','waiting','someday','cancelled'].includes(String(task.state))&&['low','normal','high','urgent'].includes(String(task.priority))&&typeof task.text==='string'&&task.text.trim().length>0&&task.text.length<=2048&&(task.notes==null||typeof task.notes==='string'&&task.notes.length<=10000)&&timestamp(task.createdAtUtc)&&timestamp(task.updatedAtUtc)&&utcTicks(task.updatedAtUtc)===utcTicks(row.acceptedAtUtc)&&utcTicks(task.createdAtUtc)<=utcTicks(task.updatedAtUtc));
   }
+  if(row.scheduleResult!==undefined){valid(command.operation==='editLinkedDailySchedule'&&command.patch?.linkedSchedule);const result=linkedDailyScheduleResult(row.scheduleResult,command.patch.linkedSchedule);valid(utcTicks(result.observedAtUtc)>=utcTicks(row.acceptedAtUtc)&&row.confirmedEffects===1&&effects.length===1&&row.projectionState===(result.matchesExpected?'confirmed':'blocked'));row.scheduleResult=result;}
+  const currentLineage=document.tasks.find(task=>task.id===command.taskId)?.copyLineage;
+  if(currentLineage||row.taskSnapshot&&object(row.taskSnapshot).copyLineage){valid(row.taskSnapshot);const accepted=workspaceTask(row.taskSnapshot,document.revision);valid(sameCopyLineage(accepted.copyLineage,currentLineage));}
   commands.push({...row,command} as unknown as CommandEntry);
  }
  valid(Array.isArray(input.events)||commands.length===0&&input.events==null);const events:JournalEvent[]=[];const eventIds=new Set<string>();

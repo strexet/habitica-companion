@@ -1,0 +1,68 @@
+{
+  "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+  "attempt_id": "C-23b15de0-fd82-490e-9223-4d5eb39eb3ab",
+  "check_id": "notes-local-model",
+  "definition": "94373d8f381966b78ea034af24700efad56ddf435174d07a98e6bbac32d1146c",
+  "environment_identity": "4c4f4eb130016c62d954d4bc316b63aa0c751c78c5a67a6f5e7dabb3c24a066a",
+  "key": "019a23c06db9d34e38a0fd7c1f236a87afc177c572cb94f9e0dfba7f82c05227",
+  "launch": {
+    "assertion": "Notes folder compatibility, exact retained content and original receipt recovery under isolated local fixtures.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish serializable versioned journal compatibility or service/CAS behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T16:35:10.311335+00:00",
+    "execution_profile": "notes-folders-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T16:27:10.527734+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Notes",
+      "--logger",
+      "trx;LogFileName=notes-local-model.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "99f5cfd03db029ca3268a33293ca1f6166cc85b150386be55bc881c340a285ec",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "d3767a823661d01bdf52466bc22a1bd4fce5625076152e96b417c4b91852a171",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "b8caae5c59507ce06bb893999bbaa0285c3bee6ba160a84f82b04bd5f56ad6b8"
+  },
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
+}

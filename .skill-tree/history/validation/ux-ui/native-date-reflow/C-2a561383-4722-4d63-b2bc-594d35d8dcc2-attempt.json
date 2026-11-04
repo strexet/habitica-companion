@@ -1,0 +1,67 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-2a561383-4722-4d63-b2bc-594d35d8dcc2",
+  "check_id": "native-date-reflow-behavior",
+  "definition": "2ccea1c0ac1486e97d269ba815dbe9d67ea6876e59971276824f6c0d200126e6",
+  "environment_identity": "b31be7ab484d612697a177a0bb9769d45e1c93d74248277abb9f5ed41b64b830",
+  "key": "7a3b54126296cb54f8d3eaf64fc85bdbc3f053b356df1cb98aa69fbdbabe688e",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T03:32:58.124518+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T03:27:58.519852+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoTodayPanelTests",
+      "--logger",
+      "trx;LogFileName=native-date-reflow.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/native-date-reflow/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+  },
+  "task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d"
+}

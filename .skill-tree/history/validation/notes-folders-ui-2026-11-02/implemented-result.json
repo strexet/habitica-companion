@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "assertion": "- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.\n- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-components",
+      "parameters": {
+        "report_name": "notes-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current captured Razor states qualify both shared routes, light/obsidian, phone/desktop, normal/enlarged text, long/empty/disabled/error states, keyboard, geometry and contrast. Hydrated integration has a separate required check.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-rendered-interactions",
+      "parameters": {
+        "mode": "matrix"
+      },
+      "recipe_id": "notes-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "before-dependent-work"
+    },
+    {
+      "assertion": "Actual Release Blazor routing/hydration and real persistent IndexedDB confirm reviewed standalone/project folder-note creation, exact Markdown reload and unsaved unfiled import on Chromium and WebKit. Synthetic provider responses do not establish live provider or hosted behavior.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-hydrated-journeys",
+      "parameters": {
+        "mode": "journeys"
+      },
+      "recipe_id": "notes-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d"
+}

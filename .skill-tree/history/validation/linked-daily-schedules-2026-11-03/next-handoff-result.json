@@ -1,0 +1,75 @@
+{
+  "body": "### Convert task types through reviewed linked copies\n\n```yaml\nid: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528\npriority: 99\nstatus: Ready\nparent_pending_ids: [\"P-438c79fe-385d-4657-be24-85fad9a49c31\"]\nprocessing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed\nroot_task_id: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528\nrelated_task_id: null\nrelation: main\ndepends_on: [\"T-2355607b-ba77-46c0-9495-aae61e16a8f0\", \"T-ea3c2df0-7c13-4a77-a920-1451801b9946\"]\n```\n\nGoal:\n- Offer task-type changes without corrupting retained event semantics or Habitica mappings.\nCurrent behavior:\n- Current commands create explicit kinds and history validation compares accepted snapshot kind with current task kind; in-place conversion would invalidate prior activity.\nDesired behavior:\n- Conversion creates a new native target-kind task with explicit lineage and a preview of copied/reset fields. The original remains intact unless a separate supported native archive is selected.\nTouch:\n- Workspace typed commands/identity, portable lineage validation, command engine and Worker parity, browser capture/editor and MCP descriptions.\nDiscovery allowance:\n- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.\nOut of scope:\n- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.\nImplementation constraints:\n- Default to a new unlinked copy; never rewrite historical task kind, transfer mappings/history, create a Habitica task automatically or silently archive linked work. Copy name/notes/priority and valid chosen organization; require explicit target Daily recurrence, reset kind-specific state/stage/occurrence fields, and show all losses. The optional native archive is allowed only with available references and no unresolved effects. One reviewed atomic command binds source revision, target identity and field choices; repeated acceptance retains the same target. Original Habitica records remain unchanged and separate explicit linking remains available.\n- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.\nQuestions and required clarifications:\n- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.\nValidation:\n- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"conversion-rules\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.\",\n        \"Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs\",\n        \"tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Conversion\",\n        \"report_name\": \"conversion-rules.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules\"\n      },\n      \"assertion\": \"- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"conversion-components\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.\",\n        \"Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs\",\n        \"tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Conversion\",\n        \"report_name\": \"conversion-components.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components\"\n      },\n      \"assertion\": \"- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"conversion-wire\",\n      \"recipe_id\": \"worker-focused-tests\",\n      \"criteria\": [\n        \"Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.\",\n        \"Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.\"\n      ],\n      \"sources\": [\n        \"workers/companion-workspace/test/conversion-api.test.mjs\",\n        \"workers/companion-workspace/package.json\"\n      ],\n      \"parameters\": {\n        \"test_file\": \"workers/companion-workspace/test/conversion-api.test.mjs\"\n      },\n      \"assertion\": \"- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.\n- Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.\nDocumentation updates:\n- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.\nRisks:\n- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.\n\n",
+  "checks": [
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rules",
+      "parameters": {
+        "report_name": "conversion-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-components",
+      "parameters": {
+        "report_name": "conversion-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/conversion-api.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/conversion-api.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "priority": 99,
+  "root_task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "title": "Convert task types through reviewed linked copies"
+}

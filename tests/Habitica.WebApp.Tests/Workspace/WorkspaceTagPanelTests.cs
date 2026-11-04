@@ -15,19 +15,19 @@ public sealed class WorkspaceTagPanelTests : BunitContext
 {
     private sealed class Client : WorkspaceTaskFixture.Cloud,IWorkspaceCloudClient,IWorkspaceTagApi
     {
-        public Guid EntityId=Guid.NewGuid(),NativeId=Guid.NewGuid(),WorkId=Guid.NewGuid();public int ConsentReads,TagStatusReads,NativeReads,RecoveryReads;public bool Consent,Unknown,FailAccept,Terminal,Prepared,KnownRefusal;
+        public Guid EntityId=Guid.NewGuid(),NativeId=Guid.NewGuid(),WorkId=Guid.NewGuid();public int ConsentReads,TagStatusReads,NativeReads,RecoveryReads;public bool Consent,Unknown,FailAccept,Terminal,Prepared,KnownRefusal,RelativeDates,StaleDate;
         public List<bool> ConsentChanges=[];public List<WorkspaceTagRequest> Requests=[];public List<Guid> Accepts=[];public int TaskCount=1;
         public Func<Task<IntegrationTagConsentResult>>? DelayedConsent {get;set;}
         public Task<IntegrationTagConsentResult> ReadTagConsentAsync(CancellationToken token){ConsentReads++;return DelayedConsent?.Invoke()??Task.FromResult(new IntegrationTagConsentResult(true,"Checked",Consent));}
         public Task<IntegrationTagConsentResult> SetTagConsentAsync(bool enabled,CancellationToken token){ConsentChanges.Add(enabled);Consent=enabled;return Task.FromResult(new IntegrationTagConsentResult(true,"Changed",enabled));}
         public Task<WorkspaceTaskResponse<WorkspaceTagStatusPage>> ReadGroupTagsAsync(int offset,long? revision,CancellationToken token)
-        {TagStatusReads++;return Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagStatusPage>(true,new("stored-canonical-evidence",WorkspaceId!.Value,State.Document.Revision,true,Consent,true,false,new(1,1,0,0,0,0),new(1,0,0,0,1),[new(EntityId,WorkspaceOrganizationKind.Project,"Long duplicate project "+new string('W',170),false,false,"missing","missing",null,TaskCount,0,null,Unknown?[WorkId]:[])],1,null),"Coverage checked"));}
+        {TagStatusReads++;return Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagStatusPage>(true,new("stored-canonical-evidence",WorkspaceId!.Value,State.Document.Revision,true,Consent,true,false,new(1,1,0,0,0,0),new(1,0,0,RelativeDates?1:0,RelativeDates?0:1),[new(EntityId,RelativeDates?WorkspaceOrganizationKind.SavedTaskView:WorkspaceOrganizationKind.Project,"Long duplicate project "+new string('W',170),false,false,"missing",RelativeDates?"needsReview":"missing",null,RelativeDates?0:TaskCount,0,RelativeDates?"relative_dates_require_review":null,Unknown?[WorkId]:[])],1,null),"Coverage checked"));}
         public Task<WorkspaceTaskResponse<WorkspaceTagCandidatePage>> InspectTagCandidatesAsync(WorkspaceOrganizationKind kind,Guid id,int offset,string? hash,CancellationToken token)
         {NativeReads++;return Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagCandidatePage>(true,new(WorkspaceId!.Value,State.Document.Revision,id,kind,"Duplicate project",new string('a',64),[new(Guid.NewGuid(),"Same name",false),new(NativeId,"Same name",false)],2,null),"Choose exact ID"));}
         public Task<WorkspaceTaskResponse<WorkspaceTagReview>> PrepareTagReviewAsync(WorkspaceTagRequest request,CancellationToken token)
         {
             Requests.Add(request);var changes=request.Operation=="reconcile"?Enumerable.Range(0,TaskCount).Select(i=>new WorkspaceTagTaskChange(Guid.NewGuid(),NativeId.ToString(),true,"pending",null,"Task "+i+" "+new string('x',120))).ToArray():[];
-            var details=new WorkspaceTagReviewDetails(EntityId,WorkspaceOrganizationKind.Project,"Duplicate project",request.HabiticaTagId?.ToString(),changes,"Review exact metadata. No game effects.",OriginalWorkId:request.Operation=="recover"?WorkId:null,OriginalAttemptId:request.Operation=="recover"?Guid.NewGuid():null,ObservedTag:request.Operation=="adopt"?new(NativeId,"Same name"):null);
+            var details=new WorkspaceTagReviewDetails(EntityId,request.RelativeDayReview?WorkspaceOrganizationKind.SavedTaskView:WorkspaceOrganizationKind.Project,"Duplicate project",request.HabiticaTagId?.ToString(),changes,"Review exact metadata. No game effects.",OriginalWorkId:request.Operation=="recover"?WorkId:null,OriginalAttemptId:request.Operation=="recover"?Guid.NewGuid():null,ObservedTag:request.Operation=="adopt"?new(NativeId,"Same name"):null,Evaluation:request.RelativeDayReview?new(StaleDate?DateTimeOffset.UtcNow.AddDays(-2):DateTimeOffset.UtcNow,"UTC",DateOnly.FromDateTime(StaleDate?DateTime.UtcNow.AddDays(-2):DateTime.UtcNow),new(WorkspaceRelativeDatePreset.NoDate,null,null),null):null);
             OriginalReview=new(Guid.NewGuid(),request.RequestId,WorkspaceId!.Value,request.Operation,State.Document.Revision,DateTimeOffset.UtcNow.AddMinutes(5),true,0,details);
             return Task.FromResult(new WorkspaceTaskResponse<WorkspaceTagReview>(true,OriginalReview,"Prepared"));
         }
@@ -122,4 +122,25 @@ public sealed class WorkspaceTagPanelTests : BunitContext
     [Fact]
     public void Todo_sync_route_renders_connection_controls_and_group_tags_together()
     {Setup();var cut=Render<Habitica.WebApp.Pages.TodoSyncPage>();Assert.NotNull(cut.Find("[data-testid='workspace-tags']"));Assert.Contains("Todo Sync",cut.Markup);Save("tags-sync-page",cut.Markup);}
+
+    [Fact]public void Relative_saved_list_membership_stays_unavailable_while_original_receipt_recovery_remains_enabled()
+    {
+        var client=Setup();client.Consent=true;client.RelativeDates=true;client.Unknown=true;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid=tag-coverage-check]").Click();Assert.Contains("Relative-date tag membership is unavailable",cut.Markup);Assert.True(cut.Find($"[data-testid=tag-reconcile-{client.EntityId:D}]").HasAttribute("disabled"));Assert.False(cut.Find($"[data-testid=tag-candidates-{client.EntityId:D}]").HasAttribute("disabled"));Assert.False(cut.Find($"[data-testid=tag-relative-review-{client.EntityId:D}]").HasAttribute("disabled"));Assert.DoesNotContain("0 desired tasks",cut.Markup);var recovery=cut.FindAll("button").Single(b=>b.TextContent.Contains("Check original tag result"));Assert.False(recovery.HasAttribute("disabled"));Save("tags-relative-unavailable",cut.Markup);recovery.Click();Assert.Equal(1,client.RecoveryReads);Assert.Empty(client.Accepts);
+    }
+    [Fact]public void Relative_day_review_exposes_context_and_requires_explicit_empty_selection_approval()
+    {
+        var client=Setup();client.Consent=true;client.RelativeDates=true;client.TaskCount=0;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid=tag-coverage-check]").Click();cut.Find($"[data-testid=tag-relative-review-{client.EntityId:D}]").Click();Assert.True(Assert.Single(client.Requests).RelativeDayReview);Assert.Contains("UTC",cut.Find("[data-testid=tag-relative-context]").TextContent);Assert.Contains("No date assigned",cut.Find("[data-testid=tag-relative-bounds]").TextContent);Assert.True(cut.Find("[data-testid=tag-confirm]").HasAttribute("disabled"));Save("tags-relative-empty-review",cut.Markup);cut.Find("[data-testid=tag-empty-membership-ack]").Change(true);Assert.False(cut.Find("[data-testid=tag-confirm]").HasAttribute("disabled"));cut.Find("[data-testid=tag-confirm]").Click();Assert.Single(client.Accepts);
+    }
+
+    [Fact]public void A_changed_local_day_disables_new_acceptance_and_keeps_original_receipt_recovery()
+    {
+        var client=Setup();client.Consent=true;client.RelativeDates=true;client.TaskCount=0;client.StaleDate=true;var cut=Render<WorkspaceTagPanel>();cut.Find("[data-testid=tag-coverage-check]").Click();cut.Find($"[data-testid=tag-relative-review-{client.EntityId:D}]").Click();Assert.NotNull(cut.Find("[data-testid=tag-relative-stale]"));cut.Find("[data-testid=tag-empty-membership-ack]").Change(true);Assert.True(cut.Find("[data-testid=tag-confirm]").HasAttribute("disabled"));Assert.False(cut.Find("[data-testid=tag-review-recover]").HasAttribute("disabled"));Assert.Empty(client.Accepts);Save("tags-relative-stale",cut.Markup);
+    }
+
+    [Fact]public async Task Existing_access_recovery_updates_controls_without_navigation_or_automatic_tag_reads()
+    {
+        var client=Setup();client.Connected=false;var cut=Render<WorkspaceTagPanel>();Assert.Contains("Verify and connect",cut.Markup);client.Connected=true;
+        await Services.GetRequiredService<TodoWorkspacePresentation>().RefreshSourcesAsync();cut.WaitForAssertion(()=>Assert.NotNull(cut.Find("[data-testid=tag-coverage-check]")));Assert.Equal(0,client.TagStatusReads);Assert.Empty(client.Requests);Assert.Empty(client.Accepts);
+    }
+
 }

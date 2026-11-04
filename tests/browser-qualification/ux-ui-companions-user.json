@@ -1,0 +1,62 @@
+{
+  "_id": "00000000-0000-4000-8000-000000000011",
+  "profile": {
+    "name": "Synthetic collector"
+  },
+  "stats": {
+    "class": "warrior",
+    "lvl": 1,
+    "hp": 50,
+    "maxHealth": 50,
+    "mp": 10,
+    "maxMP": 10,
+    "exp": 0,
+    "gp": 50
+  },
+  "preferences": {
+    "dayStart": 0,
+    "timezoneOffset": 0
+  },
+  "items": {
+    "gear": {
+      "equipped": {},
+      "owned": {}
+    },
+    "pets": {
+      "Wolf-Base": 5,
+      "TigerCub-Base": 5,
+      "SyntheticLongCompanionWithReadableRetainedKey-Base": 1
+    },
+    "mounts": {
+      "Wolf-Base": false,
+      "TigerCub-Base": false
+    },
+    "food": {
+      "Meat": 500,
+      "Saddle": 1
+    },
+    "eggs": {
+      "Wolf": 100,
+      "TigerCub": 100,
+      "PandaCub": 100,
+      "LionCub": 100,
+      "Fox": 100,
+      "FlyingPig": 100,
+      "Dragon": 100,
+      "Cactus": 100,
+      "BearCub": 100
+    },
+    "hatchingPotions": {
+      "Base": 100,
+      "White": 100,
+      "Desert": 100,
+      "Red": 100,
+      "Shade": 100,
+      "Skeleton": 100,
+      "Zombie": 100,
+      "CottonCandyPink": 100,
+      "CottonCandyBlue": 100,
+      "Golden": 100
+    }
+  }
+}

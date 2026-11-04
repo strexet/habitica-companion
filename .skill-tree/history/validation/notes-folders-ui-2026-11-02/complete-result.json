@@ -1,0 +1,1148 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+          "sha256": "6b430266a8bf2054937b0bea055f6daad2c368b6a9afa933d940d65bca201aa1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+          "sha256": "6de877be4f30c0f4d4384ca99ad2691ebe8f8635a1f2cf332cef1380d5566be4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+          "sha256": "7f2c66bf446860059a52205484e88c7adc682b89c0a0767947194ada9dc7f909"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+          "sha256": "f25fb518703ca978a1e1e20bac8bdd98f0c62469a12beb47994355528941e7cf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+          "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+          "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json",
+          "sha256": "26e3bbd57199f88410f13a886c048c5424e0fbb3e28ee0845071786288c5934f"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+          "sha256": "6b430266a8bf2054937b0bea055f6daad2c368b6a9afa933d940d65bca201aa1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+          "sha256": "6de877be4f30c0f4d4384ca99ad2691ebe8f8635a1f2cf332cef1380d5566be4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+          "sha256": "7f2c66bf446860059a52205484e88c7adc682b89c0a0767947194ada9dc7f909"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+          "sha256": "f25fb518703ca978a1e1e20bac8bdd98f0c62469a12beb47994355528941e7cf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+          "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+          "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json",
+          "sha256": "26e3bbd57199f88410f13a886c048c5424e0fbb3e28ee0845071786288c5934f"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.\n- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.",
+        "criteria": [
+          "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+          "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+        ],
+        "id": "notes-components",
+        "parameters": {
+          "report_name": "notes-components.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components",
+          "test_filter": "FullyQualifiedName~Notes",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+          "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+          "src/Habitica.Domain/Notes/NotesModel.cs",
+          "src/Habitica.WebApp/State/NotesController.cs",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs",
+          "src/Habitica.WebApp/Components/NotesPanel.razor",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+          "src/Habitica.Application/Notes/NotesQueries.cs",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-63aee6f4-452a-4ca1-888d-5e225f5798c0",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 55,
+          "expected": 55,
+          "failed": 1,
+          "passed": 54,
+          "skipped": 0
+        },
+        "definition": "2e398c4da986e640f43e6f7ad34160ab489c0b6348722f7340c38f74aaec918c",
+        "environment_identity": "ff7479d3c97c9e8d8f4b89fc7776a2e92260257e4dfe820c2a94a255396219e6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-red-execution.log",
+            "sha256": "568db72be890f7b7b18f7d388f6580f3d8167527a6dca14eed76acc6c640192c"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-navigation-red.trx",
+            "sha256": "f697dce04cc01aafb2d4641fb05df506f8e4b50e8ee62cfcc8aa49934f2bd4c3"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "f8664a2ffa3a9185c6c6ab6ea3f4da3b4bfeac4cc3c30277239cf7f3a91881d2",
+        "payload_hash": "fc979fd6b1d81b822838610ce00f4fc6af4eb1f37f296b5517806a2d8010ea22",
+        "recorded_at": "2026-11-02T17:23:34.452312+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+          "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+          "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "c27c5a17c971757eed34a70d8be07ee4967c5e0194bc72d5a1738a7eb0c8c5fe",
+          "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "e93f4204486bb04e5cfd6cc04cd2deeb2692a9eea29f05008be722f86f9fd7f3",
+          "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.85596716706641
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-73bd6657-5737-49c9-87f1-a1c6a0659222",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 64,
+          "expected": 64,
+          "failed": 0,
+          "passed": 64,
+          "skipped": 0
+        },
+        "definition": "941c9347866bc70bdb42add0947d62ab914e413bdc97aabfa8698154e5ac9e51",
+        "environment_identity": "8e066adc520a066b63d118277120e89cad2a2ef0570344a2cdaed08499b1daf4",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+            "sha256": "6b430266a8bf2054937b0bea055f6daad2c368b6a9afa933d940d65bca201aa1"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+            "sha256": "6de877be4f30c0f4d4384ca99ad2691ebe8f8635a1f2cf332cef1380d5566be4"
+          }
+        ],
+        "execution_sessions": {
+          "070c67ceb1713e7b0dcf032a7db708c76b07977f072b498e7b22d608eaad2f8f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:05:20.884689+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-73405771",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "0bac21ec6fa358e100490671d37ae6b9eeb5e67c33c91dc1192a35a75c92cf43": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:00:46.860981+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-f7f8772b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "20cd940ad79ea8d0b933ab24c21aa1457b7ca2d1c2ba6db95d8870a1f1bdc24e": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:13:13.850942+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-80aa7c4b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "2b4bef75e55b04a1e39c5ab3495742d32eb738ec26a934763c6477d39817837c": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:04:15.788382+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-190834ec",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "5d292971958ce7a31f25286b943923d6a945da2e84c8ccb064563061032f78a7": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:07:04.903723+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-fcd7fc07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a71f29dc920e69c324c15ac47edf964890282a075022dad52ee08fa026b84465": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:57:29.489984+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-b78ab176",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "b2b0ffe235be458b7e113f1fbfaaaf2eb6e2a7a879d47311e799543f8f49a4dc": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:22.872096+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-405e8094",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c0fe8bbc2cdf9a752f962576142e2f44a385a134d32776066bef7c5220a7eb82": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:58:55.205734+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-7a947400",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c9dfea4260e21314566030860a1e218fb9ef592fcb437ff0b249ce286accafde": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:01:42.629054+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-6f176039",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cbd60e1253880928b2fa6f2a604285642bdbc897783b21f04bf3119eaedf038b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:02:21.968044+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-ba9f4a18",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "fc69fc0773a82ac50e993acb03950f1345e8f2deecd1de4d27d5b60667f4b374": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:57.360415+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a92a71cd",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "aff43a6260d1a74a0bb92454220d07ff7e7f72d89b5693ab687d703bf53fd170",
+        "payload_hash": "be25dc8ff00556b569a6e65681099777ca274d49c8034204bd2010550c3a4d3e",
+        "recorded_at": "2026-11-02T18:01:03.024578+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+          "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+          "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+          "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.4211777090094984
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Current captured Razor states qualify both shared routes, light/obsidian, phone/desktop, normal/enlarged text, long/empty/disabled/error states, keyboard, geometry and contrast. Hydrated integration has a separate required check.",
+        "criteria": [
+          "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+          "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+        ],
+        "id": "notes-rendered-interactions",
+        "parameters": {
+          "mode": "matrix"
+        },
+        "recipe_id": "notes-rendered-browser",
+        "sources": [
+          ".skill-tree/documents/testing.md",
+          ".skill-tree/documents/technical.md",
+          "src/Habitica.WebApp/State/NotesController.cs",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs",
+          "src/Habitica.WebApp/Components/NotesPanel.razor",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+          "tests/browser/notes-ui.py",
+          "tests/browser/notes-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+          "src/Habitica.Application/Notes/NotesQueries.cs",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-77e4b362-73e2-44ab-a828-dca5b9f9f5fb",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+        "counts": {
+          "discovered": 128,
+          "expected": 128,
+          "failed": 0,
+          "passed": 128,
+          "skipped": 0
+        },
+        "definition": "941c9347866bc70bdb42add0947d62ab914e413bdc97aabfa8698154e5ac9e51",
+        "environment_identity": "632e4111ba4f7bc29ec7c82bdbb0bf30e1d972200a4dfbaf36732e7e3717421d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+            "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+            "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+            "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+          }
+        ],
+        "execution_sessions": {
+          "070c67ceb1713e7b0dcf032a7db708c76b07977f072b498e7b22d608eaad2f8f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:05:20.884689+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-73405771",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "0bac21ec6fa358e100490671d37ae6b9eeb5e67c33c91dc1192a35a75c92cf43": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:00:46.860981+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-f7f8772b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "20cd940ad79ea8d0b933ab24c21aa1457b7ca2d1c2ba6db95d8870a1f1bdc24e": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:13:13.850942+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-80aa7c4b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "2b4bef75e55b04a1e39c5ab3495742d32eb738ec26a934763c6477d39817837c": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:04:15.788382+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-190834ec",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "5d292971958ce7a31f25286b943923d6a945da2e84c8ccb064563061032f78a7": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:07:04.903723+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-fcd7fc07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a71f29dc920e69c324c15ac47edf964890282a075022dad52ee08fa026b84465": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:57:29.489984+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-b78ab176",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "b2b0ffe235be458b7e113f1fbfaaaf2eb6e2a7a879d47311e799543f8f49a4dc": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:22.872096+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-405e8094",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c0fe8bbc2cdf9a752f962576142e2f44a385a134d32776066bef7c5220a7eb82": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:58:55.205734+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-7a947400",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c9dfea4260e21314566030860a1e218fb9ef592fcb437ff0b249ce286accafde": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:01:42.629054+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-6f176039",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cbd60e1253880928b2fa6f2a604285642bdbc897783b21f04bf3119eaedf038b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:02:21.968044+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-ba9f4a18",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "fc69fc0773a82ac50e993acb03950f1345e8f2deecd1de4d27d5b60667f4b374": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:57.360415+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a92a71cd",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "a94c4f666dddb8d402a7964eec89c88099585080d769351c8fcaf56e69de889a",
+        "payload_hash": "6b30bce1362c536e51f68c75e804b88c7de855f8d0321dd5aff5b60f8138652d",
+        "recorded_at": "2026-11-02T18:00:37.043618+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+          ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+          "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+          "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+        },
+        "timing": {
+          "tool_wall_seconds": 22.581186749972403
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Actual Release Blazor routing/hydration and real persistent IndexedDB confirm reviewed standalone/project folder-note creation, exact Markdown reload and unsaved unfiled import on Chromium and WebKit. Synthetic provider responses do not establish live provider or hosted behavior.",
+        "criteria": [
+          "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+          "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+        ],
+        "id": "notes-hydrated-journeys",
+        "parameters": {
+          "mode": "journeys"
+        },
+        "recipe_id": "notes-rendered-browser",
+        "sources": [
+          ".skill-tree/documents/testing.md",
+          ".skill-tree/documents/technical.md",
+          "src/Habitica.WebApp/State/NotesController.cs",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs",
+          "src/Habitica.WebApp/Components/NotesPanel.razor",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+          "tests/browser/notes-ui.py",
+          "tests/browser/notes-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+          "src/Habitica.Application/Notes/NotesQueries.cs",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-e60a7709-56bb-4b89-98ec-4c057d62bd09",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+        "counts": {
+          "discovered": 2,
+          "expected": 2,
+          "failed": 0,
+          "passed": 2,
+          "skipped": 0
+        },
+        "definition": "941c9347866bc70bdb42add0947d62ab914e413bdc97aabfa8698154e5ac9e51",
+        "environment_identity": "1bc6bf724acf6d66edd33876df23afa7d673cc301704869533d423e7face7e93",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+            "sha256": "7f2c66bf446860059a52205484e88c7adc682b89c0a0767947194ada9dc7f909"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+            "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+            "sha256": "f25fb518703ca978a1e1e20bac8bdd98f0c62469a12beb47994355528941e7cf"
+          }
+        ],
+        "execution_sessions": {
+          "070c67ceb1713e7b0dcf032a7db708c76b07977f072b498e7b22d608eaad2f8f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:05:20.884689+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-73405771",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "0bac21ec6fa358e100490671d37ae6b9eeb5e67c33c91dc1192a35a75c92cf43": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:00:46.860981+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-f7f8772b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "1cfeba4450d6d224b15b9bc00aabaea0c359bd0bac4b906f83cb04cbcc35f99b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:14:27.672625+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-f7cd8cd0",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "20cd940ad79ea8d0b933ab24c21aa1457b7ca2d1c2ba6db95d8870a1f1bdc24e": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:13:13.850942+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-80aa7c4b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "2b4bef75e55b04a1e39c5ab3495742d32eb738ec26a934763c6477d39817837c": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:04:15.788382+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-190834ec",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "5d292971958ce7a31f25286b943923d6a945da2e84c8ccb064563061032f78a7": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:07:04.903723+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-fcd7fc07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a71f29dc920e69c324c15ac47edf964890282a075022dad52ee08fa026b84465": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:57:29.489984+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-b78ab176",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "b2b0ffe235be458b7e113f1fbfaaaf2eb6e2a7a879d47311e799543f8f49a4dc": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:22.872096+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-405e8094",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c0fe8bbc2cdf9a752f962576142e2f44a385a134d32776066bef7c5220a7eb82": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T17:58:55.205734+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-7a947400",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c9dfea4260e21314566030860a1e218fb9ef592fcb437ff0b249ce286accafde": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:01:42.629054+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-6f176039",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cbd60e1253880928b2fa6f2a604285642bdbc897783b21f04bf3119eaedf038b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:02:21.968044+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-ba9f4a18",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "fc69fc0773a82ac50e993acb03950f1345e8f2deecd1de4d27d5b60667f4b374": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:08:57.360415+00:00",
+            "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json"
+            ],
+            "profile_id": "notes-folders-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a92a71cd",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "d5ebfe4f000f6b87a173b315634e032bd98caa19f17c2ee4c4f2e70bd87350f9",
+        "payload_hash": "de2ff183baea6eaef9397a2255aa43e3b2498a09b3580114e4c9e5535beea667",
+        "recorded_at": "2026-11-02T18:01:46.203491+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+          ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+          "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+          "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+          "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+          "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+          "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+          "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+          "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+        },
+        "timing": {
+          "tool_wall_seconds": 17.860808749916032
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+      "sha256": "6b430266a8bf2054937b0bea055f6daad2c368b6a9afa933d940d65bca201aa1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+      "sha256": "6de877be4f30c0f4d4384ca99ad2691ebe8f8635a1f2cf332cef1380d5566be4"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+      "sha256": "7f2c66bf446860059a52205484e88c7adc682b89c0a0767947194ada9dc7f909"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+      "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+      "sha256": "f25fb518703ca978a1e1e20bac8bdd98f0c62469a12beb47994355528941e7cf"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+      "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+      "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+      "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json",
+      "sha256": "26e3bbd57199f88410f13a886c048c5424e0fbb3e28ee0845071786288c5934f"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-1c1a5bae-dcb5-4451-895f-fde1ff5e521e",
+  "limitations": [
+    "No remote deployment, actual account operation, hosted OAuth, installed-PWA activation, physical-device or assistive-technology qualification was performed.",
+    "Folder-aware Workspace adoption remains the separate nonblocking followup P-1b2a534e-5f45-4f47-b56d-1a3870199b31. A fresh project login/startup path remains outside the two in-app folder journeys."
+  ],
+  "outcome": "Shared Notes/project folder controls support reviewed metadata, exact placement and retained content/history, explicit draft/source/privacy boundaries and original receipt recovery. Current component controls and both browser engines qualify the local Release journeys and light/obsidian rendering matrix.",
+  "parent_pending_ids": [
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+  ],
+  "recorded_at": "2026-11-02T18:03:49.421882+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "source_fingerprints": {
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+    "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "bbaaef2bf8bbf33109f9a4516f7bd56475bbee1fe0f59abe55dbb82dc8b5d770",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+    "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+    "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+    "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+    "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+    "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+    "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd",
+    "workers/shared/diagnostic-catalog.ts": "5f8067683f0e2a354990e7cd7b931348a7557fe0137d3047259bbc827a8c83d5"
+  },
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "title": "Browse and manage standalone and project Notes folders",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.\n- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-components",
+      "parameters": {
+        "report_name": "notes-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current captured Razor states qualify both shared routes, light/obsidian, phone/desktop, normal/enlarged text, long/empty/disabled/error states, keyboard, geometry and contrast. Hydrated integration has a separate required check.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-rendered-interactions",
+      "parameters": {
+        "mode": "matrix"
+      },
+      "recipe_id": "notes-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "before-dependent-work"
+    },
+    {
+      "assertion": "Actual Release Blazor routing/hydration and real persistent IndexedDB confirm reviewed standalone/project folder-note creation, exact Markdown reload and unsaved unfiled import on Chromium and WebKit. Synthetic provider responses do not establish live provider or hosted behavior.",
+      "criteria": [
+        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+      ],
+      "id": "notes-hydrated-journeys",
+      "parameters": {
+        "mode": "journeys"
+      },
+      "recipe_id": "notes-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs",
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "941c9347866bc70bdb42add0947d62ab914e413bdc97aabfa8698154e5ac9e51"
+}

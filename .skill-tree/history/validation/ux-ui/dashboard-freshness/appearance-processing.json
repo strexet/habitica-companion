@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-1d47a442-c7d4-420a-99ae-270d1b204653"
+    ],
+    "dispositions": {
+      "P-1d47a442-c7d4-420a-99ae-270d1b204653": {
+        "status": "promoted",
+        "reason": "The current screenshot and owning responsive CSS demonstrate a primary-action geometry blocker. One scoped layout repair retains existing preference and disclosure behavior."
+      }
+    },
+    "tasks": [
+      {
+        "key": "dashboard-appearance-reflow",
+        "title": "Keep dashboard Appearance actions readable at enlarged phone widths",
+        "body": "Goal:\nKeep the dashboard Appearance action readable at enlarged phone widths.\n\nCurrent behavior:\nA current WebKit screenshot at 360 pixels and 200-percent text exposes a glyph-wide Customize theme action and a tall blank card. The phone rule assigns full width to both flex children; the Appearance flex row has no wrapping or phone direction change. The same source applies in Chromium and requires qualification.\n\nDesired behavior:\nUse scoped responsive wrapping or stacking so the label and action remain readable and bounded. Retain theme preferences, disclosure behavior and account status.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `src/Habitica.WebApp/Pages/DashboardPage.razor`\n- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`\n- `tests/browser-qualification/ux-ui-dashboard-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nNo text reduction, forced theme, new preference, provider request or interaction behavior change. Local synthetic build/test authorization applies. Physical devices and assistive technology remain unqualified.\n\nValidation:\nThe original native screenshot supplies the failing layout regression. Include the real complete Appearance row in Razor fixtures and assert native button bounds, readable label width, visible focus and disclosure behavior. Retain existing dashboard action/freshness tests and the complete light/dark matrix including `obsidian-glow`.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"dashboard-appearance-reflow-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"The dashboard Appearance action stays readable and keyboard operable without altering theme selection.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/DashboardPage.razor\",\n        \"src/Habitica.WebApp/State/AppSessionController.cs\",\n        \"src/Habitica.WebApp/State/IAppSessionController.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests\",\n        \"report_name\": \"dashboard-appearance-reflow.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/unit\"\n      },\n      \"assertion\": \"Keep dashboard public appearance disclosure, account freshness, action gates and account-switch regressions passing; use native keyboard and geometry as the independent layout oracle.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"dashboard-appearance-reflow-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"The full Appearance row and account feedback retain bounded geometry across the required light/dark phone/desktop and normal/enlarged matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/DashboardPage.razor\",\n        \"src/Habitica.WebApp/State/AppSessionController.cs\",\n        \"src/Habitica.WebApp/State/IAppSessionController.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-dashboard-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"dashboard-appearance-reflow\",\n        \"routes\": [\n          \"/dashboard\"\n        ],\n        \"cases\": \"Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser\"\n      },\n      \"assertion\": \"Require the real full Appearance row and toggle to remain within the viewport with at least 44 CSS pixels per target and a label-wide text area. Prove native keyboard focus, open/close behavior and account refresh status in both engines across the complete matrix.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- The dashboard Appearance action stays readable and keyboard operable without altering theme selection.\n- The full Appearance row and account feedback retain bounded geometry across the required light/dark phone/desktop and normal/enlarged matrix.\n\nDocumentation updates:\nRecord scoped wrapping and rendered coverage in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\n`.skill-tree/artifacts/ux-ui/dashboard-freshness/1793715437200725000/webkit-gryphy-light-360-200-dashboard-failed.png`; current dashboard Appearance markup, flex row and phone full-width child CSS. Existing dashboard appearance interaction test and freshness fixture coverage were inspected. The initial freshness fixture isolated the toggle from the owning flex row; the expanded fixture must retain that row.\n",
+        "parent_pending_ids": [
+          "P-1d47a442-c7d4-420a-99ae-270d1b204653"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "594d21f5e706168724ab3fab82f85fa01e3a29876097a5649814bbc5aca0c48b"
+  },
+  "result": {
+    "created_ids": [
+      "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69"
+    ],
+    "dispositions": {
+      "P-1d47a442-c7d4-420a-99ae-270d1b204653": {
+        "reason": "The current screenshot and owning responsive CSS demonstrate a primary-action geometry blocker. One scoped layout repair retains existing preference and disclosure behavior.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-c5dae835-ce45-41df-b844-8c19674d4731",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-1d47a442-c7d4-420a-99ae-270d1b204653"
+    ],
+    "task_keys": {
+      "dashboard-appearance-reflow": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69"
+    }
+  }
+}

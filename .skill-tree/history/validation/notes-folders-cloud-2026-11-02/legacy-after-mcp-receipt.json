@@ -1,0 +1,42 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-1a16d7bf-8e59-467b-8f2f-679d4222318a",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 8,
+    "expected": 8,
+    "failed": 0,
+    "passed": 8,
+    "skipped": 0
+  },
+  "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+  "environment_identity": "10cdb3fc149208e0e6c81e06c12a984c724ea93389bcde68f619e7d9b42ad48a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-after-mcp-execution.log",
+      "sha256": "d90bb21c2197acae8750ddb1477be6e6218724d6bf82c44973eb876d8275ae94"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "3cfb7552ffff4fd1c1199f83c9a6cb3bfe391974892043460a547ef03bffd80a",
+  "payload_hash": "7f3a1de179c7ab343dbc62acd553a88e3d1fa09ae2241c05bf1c745b2c0fbba1",
+  "recorded_at": "2026-11-02T17:20:23.619515+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+    "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "timing": {
+    "tool_wall_seconds": 7.566688916180283
+  }
+}

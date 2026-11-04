@@ -21,6 +21,55 @@ public sealed class NotesCloudClientTests
     private static HttpResponseMessage Connection()=>Json(new{notebookId=Notebook,ownerScope=Scope,accessEpoch=Guid.NewGuid(),consentVersion="notes-v1",sessionToken=new string('n',43),expiresAtUtc=DateTimeOffset.UtcNow.AddHours(8)});
     private static HttpResponseMessage Enrolled()=>Json(new{profileId=Profile,managementToken=new string('m',43)});
     [Fact]
+    public async Task Version_two_cloud_export_round_trips_folder_journals_and_refuses_missing_or_foreign_metadata()
+    {
+        var command=new NoteFolderCommand(Guid.NewGuid(),Guid.NewGuid(),0,0,NoteFolderOperation.Create,Scope,"cloud","Hotels 🧥");var accepted=NotesFolders.Apply(NotesModel.Empty(Scope),command,DateTimeOffset.UtcNow);Assert.True(accepted.Accepted);var mode=0;
+        using var http=new HttpClient(new Handler((request,_)=>Task.FromResult(request.RequestUri!.AbsolutePath switch{
+            "/enroll"=>Enrolled(),"/notes/connect"=>Connection(),_=>new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(mode==1?NotesJson.Serialize(accepted.Notebook).Replace("\"cloud\"","\"browser\""):mode==2?NotesJson.Serialize(accepted.Notebook).Replace("\"folderReceipts\":", "\"unsupportedReceipts\":"):NotesJson.Serialize(accepted.Notebook))}
+        })));
+        var client=new NotesCloudClient(http,new(http,"https://auth.invalid"),"https://workspace.invalid");Assert.True((await client.ConnectAsync(new("fixture","fixture"),default)).Succeeded);var result=await client.LoadAsync(default);Assert.True(result.Succeeded);Assert.Equal(NotesJson.Serialize(accepted.Notebook),NotesJson.Serialize(result.Value!));
+        mode=1;Assert.False((await client.LoadAsync(default)).Succeeded);mode=2;Assert.False((await client.LoadAsync(default)).Succeeded);
+    }
+    [Fact]
+    public async Task Folder_original_receipt_recovers_after_response_loss_and_malformed_identity_never_escapes()
+    {
+        var folder=Guid.NewGuid();var command=new NoteFolderCommand(Guid.NewGuid(),folder,0,0,NoteFolderOperation.Create,Scope,"cloud","Hotels 🧥");var receipt=new NoteFolderReceipt(command.Id,NotesJson.Hash(command),folder,1,1);var writes=0;var bad=false;
+        using var http=new HttpClient(new Handler(async(request,token)=>{
+            var path=request.RequestUri!.AbsolutePath;if(path=="/enroll")return Enrolled();if(path=="/notes/connect")return Connection();
+            using var input=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token));Assert.Equal(Notebook,input.RootElement.GetProperty("expectedNotebookId").GetGuid());
+            if(path=="/notes/folder-command"){writes++;Assert.Equal(folder,input.RootElement.GetProperty("command").GetProperty("folderId").GetGuid());throw new HttpRequestException("Synthetic folder response loss.");}
+            Assert.Equal("/notes/folder-receipt",path);Assert.Equal(command.Id,input.RootElement.GetProperty("commandId").GetGuid());return Json(new{notebookId=Notebook,ownerScope=Scope,receipt=bad?receipt with {FolderId=Guid.NewGuid()}:receipt,saved=true,revision=7});
+        }));
+        var client=new NotesCloudClient(http,new(http,"https://auth.invalid"),"https://workspace.invalid");Assert.True((await client.ConnectAsync(new("fixture","fixture"),default)).Succeeded);
+        Assert.True((await client.SubmitFolderAsync(command,default)).OutcomeUnknown);Assert.Equal(receipt,(await client.RecoverFolderAsync(command,default)).Value);Assert.Equal(1,writes);
+        bad=true;var result=await client.RecoverFolderAsync(command,default);Assert.False(result.Succeeded);Assert.Null(result.Value);Assert.True(result.OutcomeUnknown);
+        Assert.False((await client.SubmitFolderAsync(command with {OwnerScope=NotesModel.Scope("other")},default)).Succeeded);Assert.Equal(1,writes);
+    }
+    [Fact]
+    public async Task Folder_reads_searches_and_membership_filters_validate_exact_source_owner_and_stable_pages()
+    {
+        var id=Guid.NewGuid();var now=DateTimeOffset.UtcNow;var folder=new NoteFolder(id,1,"Hotels 尾","cloud",now,now);var note=NotesEngine.Apply(NotesModel.Empty(Scope),Command(),now).Notebook.Notes[0];var mode=0;var nullRevisionSent=false;
+        using var http=new HttpClient(new Handler(async(request,token)=>{
+            var path=request.RequestUri!.AbsolutePath;if(path=="/enroll")return Enrolled();if(path=="/notes/connect")return Connection();
+            if(path=="/notes/folder")return Json(new CloudNoteFolder(Notebook,Scope,2,mode==1?folder with {Source="browser"}:folder));
+            if(path=="/notes/folders")return Json(new NotesFolderPage(Notebook,mode==2?NotesModel.Scope("foreign"):Scope,2,[folder],1,null));
+            Assert.Equal("/notes/search",path);using var body=JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token));Assert.Equal(id,body.RootElement.GetProperty("folderId").GetGuid());nullRevisionSent=body.RootElement.TryGetProperty("expectedRevision",out _);
+            return Json(new NotesSearchPage(Notebook,Scope,2,[new(note.Id,note.Current.Title,1,false,now,"snippet",true,Folder:new(id,mode==3?NotesModel.Scope("foreign"):Scope,"cloud"))],1,null,false));
+        }));
+        var client=new NotesCloudClient(http,new(http,"https://auth.invalid"),"https://workspace.invalid");Assert.True((await client.ConnectAsync(new("fixture","fixture"),default)).Succeeded);
+        Assert.Equal(folder,(await client.ReadFolderAsync(id,default)).Value!.Folder);Assert.Equal(folder,(await client.SearchFoldersAsync("Hotels",0,null,new(),false,default)).Value!.Folders[0]);
+        Assert.Equal(id,(await client.SearchAsync("",false,0,null,new(),new(id,"cloud"),default)).Value!.Results[0].Folder!.FolderId);Assert.False(nullRevisionSent,"First-page search must omit an unavailable expectedRevision.");
+        mode=1;Assert.False((await client.ReadFolderAsync(id,default)).Succeeded);mode=2;Assert.False((await client.SearchFoldersAsync("",0,null,new(),false,default)).Succeeded);mode=3;Assert.False((await client.SearchAsync("",false,0,null,new(),new(id,"cloud"),default)).Succeeded);
+        Assert.False((await client.SearchAsync("",false,0,null,new(),new(id,"browser"),default)).Succeeded);
+    }
+    [Fact]
+    public async Task Late_folder_results_do_not_restore_a_forgotten_account_session()
+    {
+        var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);var release=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var http=new HttpClient(new Handler(async(request,_)=>{var path=request.RequestUri!.AbsolutePath;if(path=="/enroll")return Enrolled();if(path=="/notes/connect")return Connection();entered.SetResult();await release.Task;return Json(new NotesFolderPage(Notebook,Scope,0,[],0,null));}));
+        var client=new NotesCloudClient(http,new(http,"https://auth.invalid"),"https://workspace.invalid");Assert.True((await client.ConnectAsync(new("fixture","fixture"),default)).Succeeded);var pending=client.SearchFoldersAsync("",0,null,new(),false,default);await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));client.ForgetSession();release.SetResult();var result=await pending;Assert.False(result.Succeeded);Assert.Null(result.Value);Assert.False(client.IsConnected);
+    }
+    [Fact]
     public async Task Separate_consent_connects_without_uploading_local_notes_and_export_remains_account_bound()
     {
         var paths=new List<string>();var book=NotesEngine.Apply(NotesModel.Empty(Scope),Command(),DateTimeOffset.UtcNow).Notebook;

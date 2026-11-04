@@ -1,0 +1,65 @@
+{
+  "future": {
+    "command": "python3 .agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py .skill-tree/documents/future.md --strict --format json",
+    "exit_code": 0,
+    "ok": true,
+    "errors": []
+  },
+  "documentation": {
+    "command": "python3 .agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py . --format json",
+    "exit_code": 0,
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Latest recorded audit is stale; historical verdicts remain unchanged"
+    ]
+  },
+  "whitespace": {
+    "command": "git diff --check",
+    "exit_code": 0,
+    "output": ""
+  },
+  "queue_counts": {
+    "Pending Queue": 3,
+    "Prioritized Next Changes": 8,
+    "Backlog": 11
+  },
+  "current_UI_contracts": 36,
+  "completed_local_units": 37,
+  "deferred_UI_followups": 6,
+  "parked_checkpoints": [
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "bytes": 94143,
+      "sha256": "2cb877ab833487960ec8e7cffd94aa5605078a46a2e70199a4b93cb151adef5a",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "bytes": 2031,
+      "sha256": "3c613af1db9771130a3520eb37ceb6923ebbddf1cf6189a11b89dcd6d938042b",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-58676666-0043-43fa-b934-02eff3e3ead6-2026-10-19.json",
+      "bytes": 84437,
+      "sha256": "8ef38980e1b9548daeeeecde0fbecbc9e62784b96537481a63fb9b07c346b056",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-4aa3ced0-8469-45b5-90ce-c0bd51c19114.json",
+      "bytes": 28074,
+      "sha256": "7f876d6efc1a206b9cb73e2ba5cf280baf2e5a2618e93d5be37f0fcf56c48853",
+      "unchanged": true
+    }
+  ],
+  "owned_UI_processes_remaining": [],
+  "qualification_profiles_remaining": [],
+  "profile_sha256": "ddf27b25ea6b73bde49aa5f4c08b82f9ba5fe7916321f0a14777215db856251f",
+  "registry_sha256": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+  "owner_gate": {
+    "phase": "blocked",
+    "stop_reason": "{\n  \"error\": \"Selected required task has blocking unresolved questions: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc\",\n  \"ok\": false\n}\n",
+    "next_action": "Resolve the existing owner-controlled qualification questions for T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. Local synthetic checks do not accept release/security gates."
+  }
+}

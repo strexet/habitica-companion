@@ -1,0 +1,856 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Disabled text meets the product 3:1 rendered readability floor in every built-in scheme without changing interactivity.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-167569bc-d865-4995-88a3-ddd798f5aa58.tap",
+          "sha256": "6054b46a4887921a1a5af3528bc74662b877deb64a8d7cac4ebc7f5165761914"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.log",
+          "sha256": "ca6b09d6d9a141b44bc7389f2c0491303aead299126205dc9fe993c109039332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.trx",
+          "sha256": "2f141380192c5857b8cbf32a2e770d155c66afe13b5c60d03ea579ee02dba581"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/acceptance.json",
+          "sha256": "7cf0cb4a23c7411e72e17f3fd7f356c3c8b306400907d9629ec1fd8fefacefab"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/04d8e792-e3ae-497f-9971-18a3ec8ae8b5.json",
+          "sha256": "59a569e695dd9d894c1d7a23a66abfb700e567e96aa5476be49c324da31e8b83"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Disabled controls retain a distinguishable inactive appearance and relevant cause text while custom palette data remains intact.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-167569bc-d865-4995-88a3-ddd798f5aa58.tap",
+          "sha256": "6054b46a4887921a1a5af3528bc74662b877deb64a8d7cac4ebc7f5165761914"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.log",
+          "sha256": "ca6b09d6d9a141b44bc7389f2c0491303aead299126205dc9fe993c109039332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.trx",
+          "sha256": "2f141380192c5857b8cbf32a2e770d155c66afe13b5c60d03ea579ee02dba581"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/acceptance.json",
+          "sha256": "7cf0cb4a23c7411e72e17f3fd7f356c3c8b306400907d9629ec1fd8fefacefab"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/04d8e792-e3ae-497f-9971-18a3ec8ae8b5.json",
+          "sha256": "59a569e695dd9d894c1d7a23a66abfb700e567e96aa5476be49c324da31e8b83"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-167569bc-d865-4995-88a3-ddd798f5aa58.tap",
+          "sha256": "6054b46a4887921a1a5af3528bc74662b877deb64a8d7cac4ebc7f5165761914"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.log",
+          "sha256": "ca6b09d6d9a141b44bc7389f2c0491303aead299126205dc9fe993c109039332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.trx",
+          "sha256": "2f141380192c5857b8cbf32a2e770d155c66afe13b5c60d03ea579ee02dba581"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/acceptance.json",
+          "sha256": "7cf0cb4a23c7411e72e17f3fd7f356c3c8b306400907d9629ec1fd8fefacefab"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/04d8e792-e3ae-497f-9971-18a3ec8ae8b5.json",
+          "sha256": "59a569e695dd9d894c1d7a23a66abfb700e567e96aa5476be49c324da31e8b83"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Disabled text meets the product 3:1 rendered readability floor in every built-in scheme without changing interactivity.",
+          "Disabled controls retain a distinguishable inactive appearance and relevant cause text while custom palette data remains intact."
+        ],
+        "id": "disabled-readability-behavior",
+        "parameters": {
+          "report_name": "disabled-readability.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/disabled-readability/unit",
+          "test_filter": "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~ColorSchemeCatalogTests|FullyQualifiedName~InventoryPageTests|FullyQualifiedName~SettingsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-4bfdb8ca-f3a7-44c7-a71b-35ac440669d9",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 42,
+          "expected": 42,
+          "failed": 1,
+          "passed": 41,
+          "skipped": 0
+        },
+        "definition": "373cdf67be8c3d7858b06968f5acf0d281abb276d50ca498db1a30848b7c4c6f",
+        "environment_identity": "e455d131d0a74a6dcc927b2db219fc25f88b7c99615703229997fdaac9929efe",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-4bfdb8ca-f3a7-44c7-a71b-35ac440669d9.log",
+            "sha256": "2471de836be7365155b44ce5b24619626343d0e5540f760810ecd45f249470fd"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-4bfdb8ca-f3a7-44c7-a71b-35ac440669d9.trx",
+            "sha256": "dadc43556a82c3d61992dae9c5d821d0db54f1b1948080b81adae70e288cb0af"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "d7a120efd44fa8112e013ecdb958a15ec9a22682ca533d6a302f4e80767d931f",
+        "payload_hash": "6e28b5da2b782ea6f5426547b89ce895c1cacdb5ff1714fcbc5f0afe8eda9368",
+        "recorded_at": "2026-11-03T09:47:48.838219+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "f557e894bbcb91905e831658e9b13be7ec0bb04ac17c4502fc7947cbe093eb68",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+          "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "36d9a2bbcec9e1e530c97df1f1b891a35c47859b30a4d3c78c30dc0b12eff225",
+          "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9"
+        },
+        "timing": {
+          "tool_wall_seconds": 8.003765708068386
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-933e8da8-3df8-4e61-ac50-af05790e1f57",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 85,
+          "expected": 85,
+          "failed": 0,
+          "passed": 85,
+          "skipped": 0
+        },
+        "definition": "8043792b13d47923c86f9092c2a0bb456a5482d757bf58b0090bd84026dedcda",
+        "environment_identity": "2c99447f997797238f98453740431aa1da9a6da50aada30a2ca7687a5e25e249",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.log",
+            "sha256": "ca6b09d6d9a141b44bc7389f2c0491303aead299126205dc9fe993c109039332"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.trx",
+            "sha256": "2f141380192c5857b8cbf32a2e770d155c66afe13b5c60d03ea579ee02dba581"
+          }
+        ],
+        "execution_sessions": {
+          "02c3d8f56b9c39d84e54a33e37d0230ea35dab31859f7c427a67e6de59597a46": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:45:53.085563+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701073085790000.json"
+            ],
+            "profile_id": "f3cafde8e552f3d639ce2ee050e8efc1e79f7133c316569c3680f5ff96430f84",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "1694233f3103c7e987d5ed1b44a125ac3623f8e1010eec6e06c7d303e726b560": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:04:04.925132+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793702164925292000.json"
+            ],
+            "profile_id": "deaca7949fdd072f25bca10affb8eec1d2b0bc5688bdaf0e79c43b0a58215d9f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "16ed6585d71991e2a7e9cc8c8bc0507616947b35339ca4a14b4433fe44143c92": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:42:34.124194+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793700874124405000.json"
+            ],
+            "profile_id": "337680bf58fb0bde5c1fb42a9636e0935a921e1f5de760989f39a578fc0e60c5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "19094c31c348b318b3a6cf735ed188136225418e06aaec76bb0bfa471da2e5d8": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:53:55.119253+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701555119493000.json"
+            ],
+            "profile_id": "7e6c30d046c1a8158f92b3ef0b028b0201288e0b4b22b880dfccabcbb63c207e",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bc9cf4a2b2ee807cd000dce12047ff0bd338430e731781b54898cb39e0ff7d1c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:32:00.109427+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793703840109677000.json"
+            ],
+            "profile_id": "0ef6ce563e09069b272ac8e452ce92d2ddf096b1aa705069b68bcea1351e4d63",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f666e13802617c331888355f456018b9df53b856aceda74451f9eacd9586f277": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:14:09.581567+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793699889584035000.json"
+            ],
+            "profile_id": "f3fda276ecd2442ca65182690bffafdbe3b1ca0954ba4d1dd74bcde86751ba51",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "ad0936a3f7ca17b66f54354caa199102009fbfe238fceb195391c69396db2044",
+        "payload_hash": "f4d7ade8c3feafe131b49779d1a3f86be6d51f8961e0326877bf9e5d160df386",
+        "recorded_at": "2026-11-03T11:29:57.274822+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d5e54e1860a7ad5529291282304596b4396757f7df8dee0ba23979c6a8e85777",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "9e5eefb439736fe1f09869deb140083469df94fd9e11c8c958b3c239cf93892d",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+          "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "36d9a2bbcec9e1e530c97df1f1b891a35c47859b30a4d3c78c30dc0b12eff225",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.506840334041044
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling."
+        ],
+        "id": "disabled-readability-rendered",
+        "parameters": {
+          "cases": "Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": "all built-in schemes from ColorSchemeCatalog; explicitly enumerate resolved IDs in report",
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/disabled-readability/browser",
+          "routes": [
+            "/todo/tasks",
+            "/todo/dailies",
+            "/notes",
+            "/inventory",
+            "/settings"
+          ],
+          "task_key": "disabled-readability"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/ux-ui.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-disabled-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-e9f42760-b642-4aa9-b06a-e4ba7bc609e7",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 4105,
+          "expected": 4105,
+          "failed": 0,
+          "passed": 4105,
+          "skipped": 0
+        },
+        "definition": "8043792b13d47923c86f9092c2a0bb456a5482d757bf58b0090bd84026dedcda",
+        "environment_identity": "d2d05de5b031a715406982c4969207b53c83ee47ef8f213b1f4e0346c469abe9",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/04d8e792-e3ae-497f-9971-18a3ec8ae8b5.json",
+            "sha256": "59a569e695dd9d894c1d7a23a66abfb700e567e96aa5476be49c324da31e8b83"
+          }
+        ],
+        "execution_sessions": {
+          "02c3d8f56b9c39d84e54a33e37d0230ea35dab31859f7c427a67e6de59597a46": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:45:53.085563+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701073085790000.json"
+            ],
+            "profile_id": "f3cafde8e552f3d639ce2ee050e8efc1e79f7133c316569c3680f5ff96430f84",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "1694233f3103c7e987d5ed1b44a125ac3623f8e1010eec6e06c7d303e726b560": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:04:04.925132+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793702164925292000.json"
+            ],
+            "profile_id": "deaca7949fdd072f25bca10affb8eec1d2b0bc5688bdaf0e79c43b0a58215d9f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "16ed6585d71991e2a7e9cc8c8bc0507616947b35339ca4a14b4433fe44143c92": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:42:34.124194+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793700874124405000.json"
+            ],
+            "profile_id": "337680bf58fb0bde5c1fb42a9636e0935a921e1f5de760989f39a578fc0e60c5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "19094c31c348b318b3a6cf735ed188136225418e06aaec76bb0bfa471da2e5d8": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:53:55.119253+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701555119493000.json"
+            ],
+            "profile_id": "7e6c30d046c1a8158f92b3ef0b028b0201288e0b4b22b880dfccabcbb63c207e",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bc9cf4a2b2ee807cd000dce12047ff0bd338430e731781b54898cb39e0ff7d1c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:32:00.109427+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793703840109677000.json"
+            ],
+            "profile_id": "0ef6ce563e09069b272ac8e452ce92d2ddf096b1aa705069b68bcea1351e4d63",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f139bd3e50e79f02a04ff7cba2fbdf94bf1c1f693768d8803a32a8ab87befdc5": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:58:09.560866+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793705409561142000.json"
+            ],
+            "profile_id": "7d96fccc6c7c06b72588659167684e0410427f0a7af42e04d0c10bcf22f31e06",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f666e13802617c331888355f456018b9df53b856aceda74451f9eacd9586f277": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:14:09.581567+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793699889584035000.json"
+            ],
+            "profile_id": "f3fda276ecd2442ca65182690bffafdbe3b1ca0954ba4d1dd74bcde86751ba51",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "85202ca80de6863ea5ea9e0a6dc151e8b346a6d9935c4fecc148758fa7c2ec2b",
+        "payload_hash": "ed5674b0a3d08570516bd782631659fd10899384bd08c87cd1a6b1d7b41fcd22",
+        "recorded_at": "2026-11-03T11:45:20.437057+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d5e54e1860a7ad5529291282304596b4396757f7df8dee0ba23979c6a8e85777",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "9e5eefb439736fe1f09869deb140083469df94fd9e11c8c958b3c239cf93892d",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "f6e5dbdb229cb6dc7715f45c581f09505e27c60a4c74b56e028faf47ad5b4aa1",
+          "tests/browser-qualification/ux-ui-contract.mjs": "d6ba6d3307335686e8152972993467dfbd7f02298876e4a7467117746ecd01ae",
+          "tests/browser-qualification/ux-ui-disabled-journey.mjs": "46515a5eb7b9bcd07d6126551dbccad02c07c28eed0c445c02277aff99ea1416",
+          "tests/browser-qualification/ux-ui.mjs": "506f619bff8bf1f1a63d23fe4e351e3b3e938544ec8a00d2775cb243be5d6360"
+        },
+        "timing": {
+          "tool_wall_seconds": 909.7348398750182
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Reject missing, duplicate and out-of-scope matrix cases; preserve negative paint controls and owned cleanup behavior.",
+        "criteria": [
+          "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling."
+        ],
+        "id": "disabled-matrix-coverage",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/ux-ui.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-0ce4904a-0863-4f67-9a42-53fe12c58612",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 23,
+          "expected": 23,
+          "failed": 3,
+          "passed": 20,
+          "skipped": 0
+        },
+        "definition": "703ba79bd47effeafb5c16ecd2029e76553b4042da9dd4aee83367b1f7c10f49",
+        "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-0ce4904a-0863-4f67-9a42-53fe12c58612.tap",
+            "sha256": "37edb7bed06fd072fc0163db9f851b76301a858f4a9ab93d4698bf6f4e6fd2dd"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "7facd338b9c45892e732d8d00db732df4c5d54c5e1b4e4c41202cc298feb8ee6",
+        "payload_hash": "be0eab8dfb5d4a8a9d62322421b8d895160669988dce2f9239eac4864a1075f9",
+        "recorded_at": "2026-11-03T09:52:29.080830+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "dbd3a876f753584ec661e46ea0ef5d6fb87a712274ba53a79307bfe8504ff5f9",
+          "tests/browser-qualification/ux-ui-contract.mjs": "8df2fe5a46742e16da5cfe6375d8b8b720dc973b3dbf7c5da0b69c3404618b1e",
+          "tests/browser-qualification/ux-ui.mjs": "54785cdeff998b8ddab31c03a1688eef58014f98d9301baec2ed2d835e8922fa"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.17706912499852479
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-167569bc-d865-4995-88a3-ddd798f5aa58",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 24,
+          "expected": 24,
+          "failed": 0,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "8043792b13d47923c86f9092c2a0bb456a5482d757bf58b0090bd84026dedcda",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-167569bc-d865-4995-88a3-ddd798f5aa58.tap",
+            "sha256": "6054b46a4887921a1a5af3528bc74662b877deb64a8d7cac4ebc7f5165761914"
+          }
+        ],
+        "execution_sessions": {
+          "02c3d8f56b9c39d84e54a33e37d0230ea35dab31859f7c427a67e6de59597a46": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:45:53.085563+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701073085790000.json"
+            ],
+            "profile_id": "f3cafde8e552f3d639ce2ee050e8efc1e79f7133c316569c3680f5ff96430f84",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "1694233f3103c7e987d5ed1b44a125ac3623f8e1010eec6e06c7d303e726b560": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:04:04.925132+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793702164925292000.json"
+            ],
+            "profile_id": "deaca7949fdd072f25bca10affb8eec1d2b0bc5688bdaf0e79c43b0a58215d9f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "16ed6585d71991e2a7e9cc8c8bc0507616947b35339ca4a14b4433fe44143c92": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:42:34.124194+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793700874124405000.json"
+            ],
+            "profile_id": "337680bf58fb0bde5c1fb42a9636e0935a921e1f5de760989f39a578fc0e60c5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "19094c31c348b318b3a6cf735ed188136225418e06aaec76bb0bfa471da2e5d8": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:53:55.119253+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793701555119493000.json"
+            ],
+            "profile_id": "7e6c30d046c1a8158f92b3ef0b028b0201288e0b4b22b880dfccabcbb63c207e",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bc9cf4a2b2ee807cd000dce12047ff0bd338430e731781b54898cb39e0ff7d1c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T11:32:00.109427+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793703840109677000.json"
+            ],
+            "profile_id": "0ef6ce563e09069b272ac8e452ce92d2ddf096b1aa705069b68bcea1351e4d63",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f666e13802617c331888355f456018b9df53b856aceda74451f9eacd9586f277": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T10:14:09.581567+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/disabled-readability/launch-1793699889584035000.json"
+            ],
+            "profile_id": "f3fda276ecd2442ca65182690bffafdbe3b1ca0954ba4d1dd74bcde86751ba51",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/disabled-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "7dc9b1ce16b9bb328733d2bd29350e96320ce525049ac52c7b70bd301d828583",
+        "payload_hash": "32ad4654cb066da2c8d6c00492e6399068807b558bfa387936a6bf0fff149ad1",
+        "recorded_at": "2026-11-03T11:29:49.015056+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "81a7dbea4f410a22c1ee0fbe087a4da577421a71b82f65e95e51a7fe0a2170e6",
+          "tests/browser-qualification/ux-ui-contract.mjs": "d6ba6d3307335686e8152972993467dfbd7f02298876e4a7467117746ecd01ae",
+          "tests/browser-qualification/ux-ui.mjs": "506f619bff8bf1f1a63d23fe4e351e3b3e938544ec8a00d2775cb243be5d6360"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.15592329087667167
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/disabled-readability/acceptance.json",
+      "sha256": "7cf0cb4a23c7411e72e17f3fd7f356c3c8b306400907d9629ec1fd8fefacefab"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/disabled-readability/operation-history.json",
+      "sha256": "6a2c11f9db1b1597a074c31a4b0102a4dc7af5bed68d00fafd56fa2182f2be7c"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-f2a8c676-2ef9-415a-b05a-d2969acf82b5",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep disabled control text readable in built-in themes. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-b7836285-3b2f-434b-8716-cd3e78482dda"
+  ],
+  "recorded_at": "2026-11-03T11:46:29.789537+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e67c233bce543f6d1412924c0858cdcbcaa9f4276fe46ec2b1eb7b439226fb7d",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d5e54e1860a7ad5529291282304596b4396757f7df8dee0ba23979c6a8e85777",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "9e5eefb439736fe1f09869deb140083469df94fd9e11c8c958b3c239cf93892d",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+    "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "36d9a2bbcec9e1e530c97df1f1b891a35c47859b30a4d3c78c30dc0b12eff225",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "f6e5dbdb229cb6dc7715f45c581f09505e27c60a4c74b56e028faf47ad5b4aa1",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "81a7dbea4f410a22c1ee0fbe087a4da577421a71b82f65e95e51a7fe0a2170e6",
+    "tests/browser-qualification/ux-ui-contract.mjs": "d6ba6d3307335686e8152972993467dfbd7f02298876e4a7467117746ecd01ae",
+    "tests/browser-qualification/ux-ui-disabled-journey.mjs": "46515a5eb7b9bcd07d6126551dbccad02c07c28eed0c445c02277aff99ea1416",
+    "tests/browser-qualification/ux-ui.mjs": "506f619bff8bf1f1a63d23fe4e351e3b3e938544ec8a00d2775cb243be5d6360"
+  },
+  "task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "title": "Keep disabled control text readable in built-in themes",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Disabled text meets the product 3:1 rendered readability floor in every built-in scheme without changing interactivity.",
+        "Disabled controls retain a distinguishable inactive appearance and relevant cause text while custom palette data remains intact."
+      ],
+      "id": "disabled-readability-behavior",
+      "parameters": {
+        "report_name": "disabled-readability.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/disabled-readability/unit",
+        "test_filter": "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~ColorSchemeCatalogTests|FullyQualifiedName~InventoryPageTests|FullyQualifiedName~SettingsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling."
+      ],
+      "id": "disabled-readability-rendered",
+      "parameters": {
+        "cases": "Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": "all built-in schemes from ColorSchemeCatalog; explicitly enumerate resolved IDs in report",
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/disabled-readability/browser",
+        "routes": [
+          "/todo/tasks",
+          "/todo/dailies",
+          "/notes",
+          "/inventory",
+          "/settings"
+        ],
+        "task_key": "disabled-readability"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-disabled-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Reject missing, duplicate and out-of-scope matrix cases; preserve negative paint controls and owned cleanup behavior.",
+      "criteria": [
+        "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling."
+      ],
+      "id": "disabled-matrix-coverage",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "8043792b13d47923c86f9092c2a0bb456a5482d757bf58b0090bd84026dedcda"
+}

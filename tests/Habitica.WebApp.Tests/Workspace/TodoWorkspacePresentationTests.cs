@@ -1,12 +1,180 @@
 using Habitica.Application.Workspace;
 using Habitica.Domain.Workspace;
 using Habitica.WebApp.State;
+using Habitica.Storage;
+using Habitica.WebApp.Integration;
 
 namespace Habitica.WebApp.Tests.Workspace;
 
 public sealed class TodoWorkspacePresentationTests
 {
     private static TodoWorkspacePresentation Presentation(WorkspaceTaskFixture f) => new(f.Session, f.Client, f.Database, f.Controller);
+
+    private sealed class BrowserSource(BrowserWorkspaceSelection selection) : IBrowserWorkspaceSource
+    {
+        public Task<BrowserWorkspaceSelection> EnsureDefaultAsync(string account, CancellationToken token) => Task.FromResult(selection);
+    }
+
+    [Theory]
+    [InlineData("loading", "loading", TodoWorkspaceRecoveryAction.Wait)]
+    [InlineData("browser", "ready", TodoWorkspaceRecoveryAction.None)]
+    [InlineData("cloud", "ready", TodoWorkspaceRecoveryAction.None)]
+    [InlineData("cloud-unavailable", "cloud-unavailable", TodoWorkspaceRecoveryAction.Sync)]
+    [InlineData("conflict", "settings-conflict", TodoWorkspaceRecoveryAction.Sync)]
+    [InlineData("consolidation", "consolidation-required", TodoWorkspaceRecoveryAction.Sync)]
+    [InlineData("legacy", "legacy-recovery-required", TodoWorkspaceRecoveryAction.Sync)]
+    [InlineData("storage", "storage-unavailable", TodoWorkspaceRecoveryAction.Refresh)]
+    public async Task Readiness_describes_observed_connection_state_without_restoring_or_mutating(string scenario, string code, TodoWorkspaceRecoveryAction action)
+    {
+        var f = new WorkspaceTaskFixture(); await f.Controller.CreateLocalAsync();
+        var storage = new InMemoryKeyValueStorage(); var preferences = new CompanionPreferencesStore(storage, new());
+        using var http = new HttpClient();
+        var integration = new ChatGptIntegrationClient(http, "https://auth.invalid/");
+        var notes = new NotesCloudClient(http, integration, "https://workspace.invalid/");
+        var selected = new BrowserWorkspaceSelection(scenario is "consolidation" or "legacy" or "storage" ? null : f.Controller.Snapshot!.Document.Id,
+            scenario == "consolidation", scenario == "legacy");
+        var coordinator = new CompanionConnectionCoordinator(preferences, new BrowserSource(selected), integration, f.Client, notes);
+        coordinator.BindAccount(WorkspaceTaskFixture.User);
+        if (scenario is "cloud" or "cloud-unavailable" or "conflict")
+        {
+            f.Client.Connected = true; f.Client.ConnectionStatusVerified = scenario == "cloud";
+            await preferences.UpdateAsync(WorkspaceTaskFixture.User, value => value with
+            { CloudSelected = true, WorkspaceId = f.Client.State.Document.Id, Conflict = scenario == "conflict" }, default);
+        }
+        using var todo = new TodoWorkspacePresentation(f.Session, f.Client, f.Database, f.Controller, connections: coordinator);
+        if (scenario != "loading") await todo.RefreshSourcesAsync();
+        Assert.Equal(code, todo.Readiness.Code); Assert.Equal(action, todo.Readiness.Action);
+        Assert.False(string.IsNullOrWhiteSpace(todo.Readiness.Message));
+        Assert.Equal(scenario is "cloud" or "cloud-unavailable" or "conflict" ? "Cloud workspace" : scenario == "browser" ? "Browser workspace" : "Workspace", todo.Readiness.Source);
+        Assert.Equal(scenario != "browser" && scenario != "cloud", todo.IsReadOnly);
+        Assert.Empty(f.Client.AcceptedIds); Assert.Empty(f.Client.PreparationIds); Assert.Equal(0, f.Client.ConnectionRecoveries);
+    }
+
+    [Fact]
+    public async Task Startup_completion_preserves_original_review_instead_of_reloading_over_it()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();var id=f.Controller.Snapshot!.Document.Id;
+        using var http=new HttpClient();var integration=new ChatGptIntegrationClient(http,"https://auth.invalid/");
+        var coordinator=new CompanionConnectionCoordinator(new(new InMemoryKeyValueStorage(),new()),new BrowserSource(new(id,false,false)),integration,f.Client,new NotesCloudClient(http,integration,"https://workspace.invalid/"));
+        coordinator.BindAccount(WorkspaceTaskFixture.User);
+        using var todo=new TodoWorkspacePresentation(f.Session,f.Client,f.Database,f.Controller,connections:coordinator);
+        await todo.RefreshSourcesAsync();await todo.PrepareAsync(WorkspaceTaskFixture.Todo());var original=todo.Commands.Preview;
+        coordinator.BeginStartup(WorkspaceTaskFixture.User);await coordinator.CompleteStartupAsync(WorkspaceTaskFixture.User,default);
+        Assert.Same(original,todo.Commands.Preview);Assert.Equal("command-review",todo.Readiness.Code);
+        Assert.False(todo.CanSwitchSource);Assert.Empty(f.Client.AcceptedIds);
+    }
+
+    [Fact]
+    public async Task Original_review_retains_its_source_label_when_coordinator_preference_changes()
+    {
+        var f = new WorkspaceTaskFixture(); await f.Controller.CreateLocalAsync();
+        var id = f.Controller.Snapshot!.Document.Id;
+        var preferences = new CompanionPreferencesStore(new InMemoryKeyValueStorage(), new());
+        using var http = new HttpClient(); var integration = new ChatGptIntegrationClient(http, "https://auth.invalid/");
+        var coordinator = new CompanionConnectionCoordinator(preferences, new BrowserSource(new(id, false, false)), integration, f.Client, new NotesCloudClient(http, integration, "https://workspace.invalid/"));
+        coordinator.BindAccount(WorkspaceTaskFixture.User);
+        using var todo = new TodoWorkspacePresentation(f.Session, f.Client, f.Database, f.Controller, connections: coordinator);
+        await todo.RefreshSourcesAsync(); await todo.PrepareAsync(WorkspaceTaskFixture.Todo());
+        var original = todo.Commands.Preview; var snapshot = todo.Snapshot;
+        f.Client.Connected = true;
+        await preferences.UpdateAsync(WorkspaceTaskFixture.User, value => value with { CloudSelected = true, WorkspaceId = f.Client.State.Document.Id }, default);
+        await coordinator.RefreshSelectionAsync(WorkspaceTaskFixture.User, default);
+        Assert.True(coordinator.CloudSelected); Assert.Equal(TodoWorkspaceSource.Browser, todo.Selection!.Source);
+        Assert.Equal("Browser workspace", todo.Readiness.Source); Assert.Equal("command-review", todo.Readiness.Code);
+        Assert.Same(original, todo.Commands.Preview); Assert.Same(snapshot, todo.Snapshot);
+        Assert.True(todo.IsReadOnly); Assert.Empty(f.Client.AcceptedIds); Assert.Empty(f.Client.PreparationIds);
+    }
+
+    [Fact]
+    public async Task Cancelled_link_review_reload_offers_reload_before_an_unrenderable_review()
+    {
+        var f = new WorkspaceTaskFixture(); f.Client.Connected = true;
+        var taskId = Guid.NewGuid();
+        f.Client.State = WorkspaceCommandEngine.Accept(f.Client.State,
+            new(Guid.NewGuid(), f.Client.State.Document.Id, f.Client.State.Document.Revision, WorkspaceOperation.CreateTodo, taskId, new(Text: "Exact original link")), DateTimeOffset.UtcNow).Snapshot!;
+        using var todo = Presentation(f); await todo.RefreshSourcesAsync(); await todo.SelectAsync(todo.Sources.Single());
+        await todo.PreviewLinkAsync(taskId, Guid.NewGuid()); var original = todo.Commands.LinkPreview;
+        using var cancelled = new CancellationTokenSource(); cancelled.Cancel();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => todo.LoadSelectedAsync(cancelled.Token));
+        Assert.Same(original, todo.Commands.LinkPreview); Assert.Null(todo.Snapshot);
+        Assert.Equal(TodoWorkspaceRecoveryAction.Reload, todo.Readiness.Action);
+        Assert.True(todo.IsReadOnly); Assert.Empty(f.Client.AdoptionRequests); Assert.Empty(f.Client.AcceptedIds);
+        await todo.LoadSelectedAsync(); Assert.Equal("ready", todo.Readiness.Code);
+        Assert.Empty(f.Client.AdoptionRequests);
+    }
+
+    [Fact]
+    public async Task Late_startup_source_selection_loads_once_without_another_user_refresh()
+    {
+        var f=new WorkspaceTaskFixture(); await f.Controller.CreateLocalAsync();var id=f.Controller.Snapshot!.Document.Id;
+        using var http=new HttpClient();var integration=new ChatGptIntegrationClient(http,"https://auth.invalid/");
+        var coordinator=new CompanionConnectionCoordinator(new(new InMemoryKeyValueStorage(),new()),new BrowserSource(new(id,false,false)),integration,f.Client,new NotesCloudClient(http,integration,"https://workspace.invalid/"));
+        coordinator.BindAccount(WorkspaceTaskFixture.User);coordinator.BeginStartup(WorkspaceTaskFixture.User);
+        using var todo=new TodoWorkspacePresentation(f.Session,f.Client,f.Database,f.Controller,connections:coordinator);
+        await todo.RefreshSourcesAsync();Assert.Equal("loading",todo.Readiness.Code);Assert.Null(todo.Snapshot);
+        var loaded=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        todo.Changed+=()=>{if(todo.Readiness.Code=="ready")loaded.TrySetResult();};
+        await coordinator.CompleteStartupAsync(WorkspaceTaskFixture.User,default);
+        await loaded.Task.WaitAsync(TimeSpan.FromSeconds(3));
+        Assert.Equal(id,todo.Snapshot!.Document.Id);Assert.Equal("ready",todo.Readiness.Code);
+        Assert.Empty(f.Client.PreparationIds);Assert.Empty(f.Client.AcceptedIds);Assert.Equal(0,f.Client.ConnectionRecoveries);
+    }
+
+    [Fact]
+    public async Task Preparation_and_link_reviews_keep_exact_original_recovery_visible()
+    {
+        var f = new WorkspaceTaskFixture(); f.Client.Connected = true;
+        using var todo = Presentation(f); await todo.RefreshSourcesAsync(); await todo.SelectAsync(todo.Sources.Single());
+        f.Client.LosePreparation = true; await todo.PrepareAsync(WorkspaceTaskFixture.Todo());
+        Assert.Equal("command-preparation-unknown", todo.Readiness.Code);
+        await todo.RetryOriginalPreviewAsync(); Assert.Equal("command-review", todo.Readiness.Code);
+        todo.CancelPreview();
+        var taskId=Guid.NewGuid(); f.Client.State=WorkspaceCommandEngine.Accept(f.Client.State,
+            new(Guid.NewGuid(),f.Client.State.Document.Id,f.Client.State.Document.Revision,WorkspaceOperation.CreateTodo,taskId,new(Text:"Exact link review")),DateTimeOffset.UtcNow).Snapshot!;
+        await todo.LoadSelectedAsync(); await todo.PreviewLinkAsync(taskId,Guid.NewGuid());
+        Assert.Equal(TodoWorkspaceRecoveryAction.Review,todo.Readiness.Action);
+        f.Client.LoseLinkAcceptance=true; await todo.AdoptLinkAsync();
+        Assert.Equal("command-outcome-unknown",todo.Readiness.Code); Assert.Equal(TodoWorkspaceRecoveryAction.Review,todo.Readiness.Action);
+        Assert.Single(f.Client.AdoptionRequests);
+    }
+
+    [Fact]
+    public async Task Organization_fences_and_newer_receipts_have_distinct_recovery_guidance()
+    {
+        using var f=new TodoOrganizationFixture(); await f.Load();
+        var old=f.Task.Client.State;
+        var entered=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        f.Task.Client.LoadAction=async _=>{entered.TrySetResult();await release.Task;return old;};
+        var pending=f.Todo.LoadOrganizationAsync();await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Equal("operation-in-progress",f.Todo.Readiness.Code);Assert.Equal(TodoWorkspaceRecoveryAction.Wait,f.Todo.Readiness.Action);
+        release.SetResult();await pending;f.Task.Client.LoadAction=null;
+        await f.Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Create,Patch:new(Name:"New project")));
+        Assert.Equal("organization-command",f.Todo.Readiness.Code);Assert.Equal(TodoWorkspaceRecoveryAction.Projects,f.Todo.Readiness.Action);
+        f.Task.Client.LoadAction=_=>Task.FromResult<WorkspaceJournalSnapshot?>(old);
+        await f.Todo.ConfirmOrganizationAsync();
+        Assert.Equal("organization-reload",f.Todo.Readiness.Code);Assert.True(f.Todo.IsReadOnly);
+        f.Task.Client.LoadAction=null;await f.Todo.LoadSelectedAsync();Assert.Equal("ready",f.Todo.Readiness.Code);
+    }
+
+    [Fact]
+    public async Task Readiness_keeps_original_command_priority_and_recovers_failed_load_without_claiming_game_effects()
+    {
+        var f = new WorkspaceTaskFixture(); f.Client.Connected = true;
+        using var todo = Presentation(f); await todo.RefreshSourcesAsync(); await todo.SelectAsync(todo.Sources.Single());
+        Assert.Equal("ready", todo.Readiness.Code);
+        await todo.PrepareAsync(WorkspaceTaskFixture.Todo()); var original = f.Controller.Preview!.PreparedCommandId;
+        Assert.Equal("command-review", todo.Readiness.Code);
+        f.Client.LoseAcceptance = true; await todo.ConfirmAsync();
+        Assert.Equal("command-outcome-unknown", todo.Readiness.Code);
+        f.Client.FailLoads = true; await todo.LoadSelectedAsync();
+        Assert.Equal("command-outcome-unknown", todo.Readiness.Code); Assert.Equal(original, todo.Commands.Preview!.PreparedCommandId);
+        f.Client.FailLoads = false; await todo.CheckOriginalAsync();
+        Assert.Equal("ready", todo.Readiness.Code); Assert.Single(f.Client.AcceptedIds);
+        f.Session.SetState(SessionViewModel.Empty);
+        Assert.Equal("signed-out", todo.Readiness.Code); Assert.Equal("Workspace", todo.Readiness.Source);
+        Assert.DoesNotContain(original.ToString(), todo.Readiness.Message);
+    }
 
     [Fact]
     public async Task Coverage_updates_after_a_save_and_does_not_leak_between_workspaces()
@@ -90,6 +258,7 @@ public sealed class TodoWorkspacePresentationTests
         await entered.Task.WaitAsync(TimeSpan.FromSeconds(5)); cancellation.Cancel(); release.TrySetResult();
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => pending);
         Assert.Null(presentation.Snapshot); Assert.False(presentation.IsBusy);
+        Assert.Equal("reload-required", presentation.Readiness.Code);
         Assert.Equal(TodoWorkspaceAvailability.Unavailable, presentation.Availability);
         f.Client.LoadAction = null; await presentation.LoadSelectedAsync();
         Assert.Equal(TodoWorkspaceAvailability.Available, presentation.Availability); Assert.Empty(f.Client.AcceptedIds);
@@ -103,6 +272,7 @@ public sealed class TodoWorkspacePresentationTests
         using var presentation = Presentation(f); await presentation.RefreshSourcesAsync();
         await presentation.SelectAsync(presentation.Sources.Single());
         Assert.Equal(TodoWorkspaceAvailability.Unavailable, presentation.Availability);
+        Assert.Equal("snapshot-unavailable", presentation.Readiness.Code);
         Assert.Null(presentation.Revision); Assert.Throws<InvalidOperationException>(() => presentation.Tasks(new()));
         Assert.Throws<InvalidOperationException>(() => presentation.Hierarchy(new()));
         Assert.Empty(f.Client.AcceptedIds);
@@ -180,6 +350,8 @@ public sealed class TodoWorkspacePresentationTests
         Assert.True(await f.Database.ForScope(WorkspaceTaskFixture.User).TryCommitAsync(original.StoreVersion, frozen, default));
         using var presentation = Presentation(f); await presentation.LoadSelectedAsync();
         Assert.True(presentation.IsReadOnly); Assert.NotNull(presentation.Snapshot);
+        Assert.Equal(mode == WorkspaceAuthorityMode.Frozen ? "browser-frozen" : "browser-cloud-owned", presentation.Readiness.Code);
+        Assert.Equal(TodoWorkspaceRecoveryAction.Sync, presentation.Readiness.Action);
         await Assert.ThrowsAsync<InvalidOperationException>(() => presentation.PrepareAsync(WorkspaceTaskFixture.Todo()));
         Assert.Null(f.Controller.Preview); Assert.Empty(f.Client.PreparationIds); Assert.Empty(f.Client.AcceptedIds);
     }

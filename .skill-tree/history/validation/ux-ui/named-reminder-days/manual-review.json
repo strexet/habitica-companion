@@ -1,0 +1,18 @@
+{
+  "report": "browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+  "reviewed": [
+    "webkit light360/200 previewheading",
+    "chromium light1280/100 full monthlyreview",
+    "chromium obsidian360/200 previewheading",
+    "webkit obsidian1280/100 fullmonthlyreview"
+  ],
+  "observations": [
+    "Review heading appears in viewport; exact cue, schedule identity/revision, month selections and ISO civil dates readable.",
+    "Weekly names retain numeric identity; monthly review contains no empty weekday field.",
+    "Full light/dark disabled, native date paint, focus and geometry checks pass. Phone200 requires vertical scrolling; existing header Sync clipping remains deferred."
+  ],
+  "limitations": [
+    "Synthetic HTTP replies qualify actual client/controller/IndexedDB presentation flow, without Worker/D1 integration. No acceptance, scheduling, provider delivery or device permission occurred.",
+    "Physical devices, virtual keyboards, service workers and AT unqualified."
+  ]
+}

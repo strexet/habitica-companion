@@ -1,0 +1,132 @@
+{
+  "purpose": "Determine native select commit behavior on the owned macOS headless engines; synthetic standalone control only.",
+  "results": [
+    {
+      "engine": "chromium",
+      "keys": [
+        "ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "Space",
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": " ",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "Alt+ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "Alt",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "Space",
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": " ",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "Alt+ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "Alt",
+          "value": "Daily"
+        }
+      ]
+    }
+  ],
+  "cleanup": true
+}

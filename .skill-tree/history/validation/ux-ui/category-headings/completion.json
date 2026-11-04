@@ -1,0 +1,620 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Each category route exposes exactly one descriptive h1 and correct active-tab semantics.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.log",
+          "sha256": "1cf8c0e318b5fcf8bf3c04fd6f0c86a4e0f5b9931912c6333318b129a15500f0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.trx",
+          "sha256": "cdf5da7b37a342b46a788348c5958a137b6491f39348e42efd5989f09add365a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-fd3e381b-7eff-45cb-af8e-29d3345c8f15.tap",
+          "sha256": "267145bec66cf0b7b7534cc6a63b28922d89576e123aaa861147462dabcae50c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/acceptance.json",
+          "sha256": "dc6dd59090d8a359d52876a928c8677e5c86809076f745363b9d0720a20e8b8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/browser/62730f94-b369-4315-80e1-c4ceccf0eda8.json",
+          "sha256": "2e529ee6ca7ab460021705d6168f8ee48e8383f04b457e74796a1310b7c30a06"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Client route changes and history navigation move focus usefully without submitting capture.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.log",
+          "sha256": "1cf8c0e318b5fcf8bf3c04fd6f0c86a4e0f5b9931912c6333318b129a15500f0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.trx",
+          "sha256": "cdf5da7b37a342b46a788348c5958a137b6491f39348e42efd5989f09add365a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-fd3e381b-7eff-45cb-af8e-29d3345c8f15.tap",
+          "sha256": "267145bec66cf0b7b7534cc6a63b28922d89576e123aaa861147462dabcae50c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/acceptance.json",
+          "sha256": "dc6dd59090d8a359d52876a928c8677e5c86809076f745363b9d0720a20e8b8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/browser/62730f94-b369-4315-80e1-c4ceccf0eda8.json",
+          "sha256": "2e529ee6ca7ab460021705d6168f8ee48e8383f04b457e74796a1310b7c30a06"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Headings, tabs and capture remain visible and usable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.log",
+          "sha256": "1cf8c0e318b5fcf8bf3c04fd6f0c86a4e0f5b9931912c6333318b129a15500f0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.trx",
+          "sha256": "cdf5da7b37a342b46a788348c5958a137b6491f39348e42efd5989f09add365a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/C-fd3e381b-7eff-45cb-af8e-29d3345c8f15.tap",
+          "sha256": "267145bec66cf0b7b7534cc6a63b28922d89576e123aaa861147462dabcae50c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/acceptance.json",
+          "sha256": "dc6dd59090d8a359d52876a928c8677e5c86809076f745363b9d0720a20e8b8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/category-headings/browser/62730f94-b369-4315-80e1-c4ceccf0eda8.json",
+          "sha256": "2e529ee6ca7ab460021705d6168f8ee48e8383f04b457e74796a1310b7c30a06"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Each category route exposes exactly one descriptive h1 and correct active-tab semantics.",
+          "Client route changes and history navigation move focus usefully without submitting capture."
+        ],
+        "id": "category-headings-behavior",
+        "parameters": {
+          "report_name": "category-headings.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/category-headings/unit",
+          "test_filter": "FullyQualifiedName~TodoCategoryPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/TodoHabitsPage.razor",
+          "src/Habitica.WebApp/Pages/TodoDailiesPage.razor",
+          "src/Habitica.WebApp/App.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoCategoryTabs.razor",
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-d0055b48-8cc1-43b3-b745-ab9b006fdaab",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 9,
+          "expected": 9,
+          "failed": 0,
+          "passed": 9,
+          "skipped": 0
+        },
+        "definition": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33",
+        "environment_identity": "e2bab03a1f8c554ad01eaabcbf24ca4e2037f1068668fad9f274030fb1d74f1b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.log",
+            "sha256": "1cf8c0e318b5fcf8bf3c04fd6f0c86a4e0f5b9931912c6333318b129a15500f0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/category-headings/C-d0055b48-8cc1-43b3-b745-ab9b006fdaab.trx",
+            "sha256": "cdf5da7b37a342b46a788348c5958a137b6491f39348e42efd5989f09add365a"
+          }
+        ],
+        "execution_sessions": {
+          "d79b6b105361834c227e2301909e53f572fe7e955c07c1184055685d512bd6a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:30:51.160073+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/category-headings/launch-1793708091160317000.json"
+            ],
+            "profile_id": "34580b9bd9d18b97e6e85cd8e24b054fba3616a72d3a5214db7988b0c2c7cc78",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/category-headings",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "9a11bf60ca171e41eb491e9a9b3084f99395b91b765cd26d3ed99121185c3b6e",
+        "payload_hash": "6b902917250dee307f631e3457efe9232d3e7d766bb6c31a353bc95dc64dbfe6",
+        "recorded_at": "2026-11-03T12:20:21.807875+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Components/TodoCategoryTabs.razor": "bdfddddb321a3e6fb82fcd0684c77e75c90f94be531c7f6406390a3c24cb7c27",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "c50a43db9919ac57bb95b5dc094d675c8d5c96f5690940354dabd118780efac9",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/Pages/TodoDailiesPage.razor": "c9143486ce9fd8e89a0eb04ee282ea68e9b7d73172b7a53417a31cd6c345e4b6",
+          "src/Habitica.WebApp/Pages/TodoHabitsPage.razor": "eadb6bd1f7e66e0f698c3bc67f3c795af7e58a0509f747e2bb14f3cc931c3c4e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.4248183330055326
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Headings, tabs and capture remain visible and usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Headings, tabs and capture remain visible and usable across the required rendered matrix."
+        ],
+        "id": "category-headings-rendered",
+        "parameters": {
+          "cases": "Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/category-headings/browser",
+          "routes": [
+            "/todo/habits",
+            "/todo/dailies"
+          ],
+          "task_key": "category-headings"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/TodoHabitsPage.razor",
+          "src/Habitica.WebApp/Pages/TodoDailiesPage.razor",
+          "src/Habitica.WebApp/App.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoCategoryTabs.razor",
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-category-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-992455fc-80cb-42e2-a3c5-ab2cf8be99e9",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33",
+        "environment_identity": "48fb5dc8e1e1a61cf8004e202749cbb4b46c6599a818a6a00a1e86d284a7e957",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/category-headings/browser/62730f94-b369-4315-80e1-c4ceccf0eda8.json",
+            "sha256": "2e529ee6ca7ab460021705d6168f8ee48e8383f04b457e74796a1310b7c30a06"
+          }
+        ],
+        "execution_sessions": {
+          "068cd853cd6eef75e3f108b961e4621b9f55e1230095334881d12392b31344a3": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:41:24.569721+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/category-headings/launch-1793708724569943000.json"
+            ],
+            "profile_id": "cf4f635bf668f965faef09bf02e860d307c6863b624497f3ac40ff83e3dcc811",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/category-headings",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d79b6b105361834c227e2301909e53f572fe7e955c07c1184055685d512bd6a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:30:51.160073+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/category-headings/launch-1793708091160317000.json"
+            ],
+            "profile_id": "34580b9bd9d18b97e6e85cd8e24b054fba3616a72d3a5214db7988b0c2c7cc78",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/category-headings",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "25e3260f61a28678be779553ab6e274e4a3407c2697c53865fe81727db41b641",
+        "payload_hash": "1ebf4570c52b29d70c2920eb07c7324ab1ef3c07e2a5df6e10c4a2d4b9574f58",
+        "recorded_at": "2026-11-03T12:29:26.293331+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Components/TodoCategoryTabs.razor": "bdfddddb321a3e6fb82fcd0684c77e75c90f94be531c7f6406390a3c24cb7c27",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "c50a43db9919ac57bb95b5dc094d675c8d5c96f5690940354dabd118780efac9",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/Pages/TodoDailiesPage.razor": "c9143486ce9fd8e89a0eb04ee282ea68e9b7d73172b7a53417a31cd6c345e4b6",
+          "src/Habitica.WebApp/Pages/TodoHabitsPage.razor": "eadb6bd1f7e66e0f698c3bc67f3c795af7e58a0509f747e2bb14f3cc931c3c4e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "a1fd1b9142acfb937ed0ca0bc6caffde39f28b69bef7ade08310c6bb5157123e",
+          "tests/browser-qualification/ux-ui-category-journey.mjs": "dc15afdf075956ce0c41d067915a07417e66fcb12ec088bdd0cf7de1c78c2c14"
+        },
+        "timing": {
+          "tool_wall_seconds": 240.66640054201707
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Independent observed appearance controls reject dark-labelled light pages and enlarged-text cases retaining normal root font. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Headings, tabs and capture remain visible and usable across the required rendered matrix."
+        ],
+        "id": "category-headings-appearance-guards",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/ux-ui.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-1783eabf-89d5-4f73-9163-b49ba340bac1",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 27,
+          "expected": 27,
+          "failed": 3,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/category-headings/C-1783eabf-89d5-4f73-9163-b49ba340bac1.tap",
+            "sha256": "d6bdfce4926e87f38910f0c1e1aabed787c90beebd7f930c9358da5f458a6f42"
+          }
+        ],
+        "execution_sessions": {
+          "d79b6b105361834c227e2301909e53f572fe7e955c07c1184055685d512bd6a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:30:51.160073+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/category-headings/launch-1793708091160317000.json"
+            ],
+            "profile_id": "34580b9bd9d18b97e6e85cd8e24b054fba3616a72d3a5214db7988b0c2c7cc78",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/category-headings",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "cae16028836ad4754cfc4fc064d133cf8b798ed3ba9bd845c483460fb4b99a7d",
+        "payload_hash": "ec51dd7400b22271226cc8ca504849577ab9f90cec8b1ea41a6416f3bd995419",
+        "recorded_at": "2026-11-03T12:19:12.719373+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "213495b2642309c682f1c169073ae9133eb3c6db17f8d04e86ea057e2a182f27",
+          "tests/browser-qualification/ux-ui-contract.mjs": "d6ba6d3307335686e8152972993467dfbd7f02298876e4a7467117746ecd01ae",
+          "tests/browser-qualification/ux-ui.mjs": "506f619bff8bf1f1a63d23fe4e351e3b3e938544ec8a00d2775cb243be5d6360"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.1412010001949966
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-fd3e381b-7eff-45cb-af8e-29d3345c8f15",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 27,
+          "expected": 27,
+          "failed": 0,
+          "passed": 27,
+          "skipped": 0
+        },
+        "definition": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/category-headings/C-fd3e381b-7eff-45cb-af8e-29d3345c8f15.tap",
+            "sha256": "267145bec66cf0b7b7534cc6a63b28922d89576e123aaa861147462dabcae50c"
+          }
+        ],
+        "execution_sessions": {
+          "d79b6b105361834c227e2301909e53f572fe7e955c07c1184055685d512bd6a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:30:51.160073+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/category-headings/launch-1793708091160317000.json"
+            ],
+            "profile_id": "34580b9bd9d18b97e6e85cd8e24b054fba3616a72d3a5214db7988b0c2c7cc78",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/category-headings",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "8723eab1b2c47e6deaa5dcde2ba24639c0af064a42d5f9dda7b8d2eb35db8c69",
+        "payload_hash": "2269c6f817d33ee887a1a48014d6a025d5c923f5e76a5eab6b29866427f667fb",
+        "recorded_at": "2026-11-03T12:20:14.614139+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "213495b2642309c682f1c169073ae9133eb3c6db17f8d04e86ea057e2a182f27",
+          "tests/browser-qualification/ux-ui-contract.mjs": "89f2a5ffbe2bd0b2a7b127e801cd8c1a5168b50e3129fd311bc57c306cc7f4e4",
+          "tests/browser-qualification/ux-ui.mjs": "cc003ed1a4961606e06a568358b6d22cd97e353be23a1bd0564f1b0527de5482"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.13798308395780623
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/category-headings/acceptance.json",
+      "sha256": "dc6dd59090d8a359d52876a928c8677e5c86809076f745363b9d0720a20e8b8f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/category-headings/operation-history.json",
+      "sha256": "9ecd9d7d1eb74ede73215b215e19e2a1b64ef2c327ef922c937a38bb92f8bb76"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-67d674ae-6ff9-48fc-a3e7-98a58a787ad9",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Provide page headings and route focus for Habits and Dailies. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6"
+  ],
+  "recorded_at": "2026-11-03T12:29:43.976694+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Components/TodoCategoryTabs.razor": "bdfddddb321a3e6fb82fcd0684c77e75c90f94be531c7f6406390a3c24cb7c27",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "c50a43db9919ac57bb95b5dc094d675c8d5c96f5690940354dabd118780efac9",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+    "src/Habitica.WebApp/Pages/TodoDailiesPage.razor": "c9143486ce9fd8e89a0eb04ee282ea68e9b7d73172b7a53417a31cd6c345e4b6",
+    "src/Habitica.WebApp/Pages/TodoHabitsPage.razor": "eadb6bd1f7e66e0f698c3bc67f3c795af7e58a0509f747e2bb14f3cc931c3c4e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "a1fd1b9142acfb937ed0ca0bc6caffde39f28b69bef7ade08310c6bb5157123e",
+    "tests/browser-qualification/ux-ui-category-journey.mjs": "dc15afdf075956ce0c41d067915a07417e66fcb12ec088bdd0cf7de1c78c2c14",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "213495b2642309c682f1c169073ae9133eb3c6db17f8d04e86ea057e2a182f27",
+    "tests/browser-qualification/ux-ui-contract.mjs": "89f2a5ffbe2bd0b2a7b127e801cd8c1a5168b50e3129fd311bc57c306cc7f4e4",
+    "tests/browser-qualification/ux-ui.mjs": "cc003ed1a4961606e06a568358b6d22cd97e353be23a1bd0564f1b0527de5482"
+  },
+  "task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+  "title": "Provide page headings and route focus for Habits and Dailies",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Each category route exposes exactly one descriptive h1 and correct active-tab semantics.",
+        "Client route changes and history navigation move focus usefully without submitting capture."
+      ],
+      "id": "category-headings-behavior",
+      "parameters": {
+        "report_name": "category-headings.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/category-headings/unit",
+        "test_filter": "FullyQualifiedName~TodoCategoryPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/TodoHabitsPage.razor",
+        "src/Habitica.WebApp/Pages/TodoDailiesPage.razor",
+        "src/Habitica.WebApp/App.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoCategoryTabs.razor",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Headings, tabs and capture remain visible and usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Headings, tabs and capture remain visible and usable across the required rendered matrix."
+      ],
+      "id": "category-headings-rendered",
+      "parameters": {
+        "cases": "Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/category-headings/browser",
+        "routes": [
+          "/todo/habits",
+          "/todo/dailies"
+        ],
+        "task_key": "category-headings"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/TodoHabitsPage.razor",
+        "src/Habitica.WebApp/Pages/TodoDailiesPage.razor",
+        "src/Habitica.WebApp/App.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoCategoryTabs.razor",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-category-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Independent observed appearance controls reject dark-labelled light pages and enlarged-text cases retaining normal root font. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Headings, tabs and capture remain visible and usable across the required rendered matrix."
+      ],
+      "id": "category-headings-appearance-guards",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33"
+}

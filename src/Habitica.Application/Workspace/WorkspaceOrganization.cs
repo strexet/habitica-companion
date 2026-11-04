@@ -19,10 +19,10 @@ public static class WorkspaceOrganization
     }
     public static WorkspaceReadPage<WorkspaceCategory> Categories(WorkspaceDocument document, WorkspaceReadFilter filter) => Page(document, filter, document.Categories.Where(value => !value.IsArchived));
     public static WorkspaceReadPage<WorkspaceLabel> Labels(WorkspaceDocument document, WorkspaceReadFilter filter) => Page(document, filter, document.Labels.Where(value => !value.IsArchived));
-    public static WorkspaceReadPage<WorkspaceProject> Projects(WorkspaceDocument document, WorkspaceReadFilter filter, Guid? categoryId = null)
+    public static WorkspaceReadPage<WorkspaceProject> Projects(WorkspaceDocument document, WorkspaceReadFilter filter, Guid? categoryId = null,bool includeRetained=false)
     {
         if (categoryId == Guid.Empty) throw new ArgumentException("invalid_filter");
-        return Page(document, filter, document.Projects.Where(value => !value.IsArchived && (categoryId is null || value.CategoryId == categoryId)));
+        return Page(document, filter, document.Projects.Where(value => (includeRetained||!value.IsArchived) && (categoryId is null || value.CategoryId == categoryId)));
     }
     public static WorkspaceReadPage<WorkspaceSection> Sections(WorkspaceDocument document, WorkspaceReadFilter filter, Guid projectId)
     {

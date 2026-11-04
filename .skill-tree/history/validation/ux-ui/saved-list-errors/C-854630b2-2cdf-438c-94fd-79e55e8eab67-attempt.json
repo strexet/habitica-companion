@@ -1,0 +1,66 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-854630b2-2cdf-438c-94fd-79e55e8eab67",
+  "check_id": "saved-list-errors-behavior",
+  "definition": "000169900296986f54d8cc2fde026a177ea50a6552ff1a4e41d85f10e905d1dc",
+  "environment_identity": "e15c3f4e12644df2384297715a481beadcff327c1a7cecc4dd800b4a100cec8b",
+  "key": "fef9b06a588ebb0f5a69b35754a7876c998fc0b7eff7bc62c0666acf8aa89c38",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T15:36:13.824638+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T15:31:14.536259+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoSavedListPanelTests",
+      "--logger",
+      "trx;LogFileName=saved-list-errors.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/saved-list-errors/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "6e309184044ec699b6d89e0db879c2d026386c3899254120e052cdfcf2687e68",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "b9d608db2fa73f84350fd103fc79ba853b9b58f5a84f7c1a6c04018d12523fc1"
+  },
+  "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18"
+}

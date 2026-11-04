@@ -13,12 +13,12 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceSavedTaskViewApi
                 &&!string.IsNullOrWhiteSpace(row.Name)&&row.Name.Length<=256&&row.Query is not null&&row.Query.IsValid())
             &&rows.Select(row=>row.Id).Distinct().Count()==rows.Count,cancellationToken);
     }
-    public Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-saved-query", () => QuerySavedTaskViewCoreAsync(viewId,page,cancellationToken));
-    private Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewCoreAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken)
+    public Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken,DateOnly? expectedEvaluationDay=null) => ObserveResponseAsync("workspace-saved-query", () => QuerySavedTaskViewCoreAsync(viewId,page,cancellationToken,expectedEvaluationDay));
+    private Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewCoreAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken,DateOnly? expectedEvaluationDay)
     {
-        if(viewId==Guid.Empty||!ValidSavedPage(page))return Task.FromResult(new WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>(false,null,"Invalid saved-view identity or page."));
-        var args=SavedPageArgs(page);args["viewId"]=viewId;
-        return ReadSavedAsync<WorkspaceSavedViewTaskPage>("query_saved_task_view",args,value=>value.ViewId==viewId&&value.Tasks is {} rows
+        if(viewId==Guid.Empty||!ValidSavedPage(page)||expectedEvaluationDay==DateOnly.MinValue)return Task.FromResult(new WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>(false,null,"Invalid saved-view identity or page."));
+        var args=SavedPageArgs(page);args["viewId"]=viewId;if(expectedEvaluationDay is {} day)args["expectedEvaluationDay"]=day.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture);
+        return ReadSavedAsync<WorkspaceSavedViewTaskPage>("query_saved_task_view",args,value=>value.ViewId==viewId&&ValidRelativeEvaluation(value.Evaluation,expectedEvaluationDay,page)&&value.Tasks is {} rows
             &&ValidSavedResult(page,value.Provenance,value.WorkspaceId,value.Revision,rows.Count,value.MatchedCount,value.Truncated,value.Offset,value.NextOffset)
             &&rows.All(row=>row is not null&&row.Id!=Guid.Empty&&row.Revision>=1&&row.Revision<=value.Revision&&!row.IsArchived
                 &&Enum.IsDefined(row.Kind)&&Enum.IsDefined(row.State)&&Enum.IsDefined(row.Priority)
@@ -26,6 +26,12 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceSavedTaskViewApi
                 &&row.Notes?.Length is not >10000&&row.CreatedAtUtc!=default&&row.CreatedAtUtc.Offset==TimeSpan.Zero&&row.UpdatedAtUtc.Offset==TimeSpan.Zero&&row.CreatedAtUtc<=row.UpdatedAtUtc
                 &&(row.ExecutionStage is null||row.Kind==CompanionTaskKind.Todo&&Enum.IsDefined(row.ExecutionStage.Value)))
             &&rows.Select(row=>row.Id).Distinct().Count()==rows.Count,cancellationToken);
+    }
+    private static bool ValidRelativeEvaluation(WorkspaceRelativeDateEvaluation? evaluation,DateOnly? expected,WorkspaceReadFilter page)
+    {
+        if(evaluation is null)return expected is null;
+        if(page.Offset>0&&expected is null||expected is {} day&&evaluation.LocalDate!=day||evaluation.Planned is null&&evaluation.Deadline is null)return false;
+        try{var query=new WorkspaceSavedTaskQuery(WorkspaceSavedTaskSource.Tasks,new(PlannedRelative:evaluation.Planned?.Preset,DeadlineRelative:evaluation.Deadline?.Preset),evaluation.TimeZoneId);return WorkspaceRelativeDates.Evaluate(query,evaluation.AsOfUtc,expected)==evaluation;}catch(InvalidOperationException){return false;}
     }
     private static bool ValidSavedPage(WorkspaceReadFilter page)=>page.Limit is >=1 and <=100&&page.Offset is >=0 and <=100000
         &&(page.ExpectedRevision is null||page.ExpectedRevision is >=1 and <=WorkspaceDocument.MaxRevision)&&(page.Offset==0||page.ExpectedRevision is not null);

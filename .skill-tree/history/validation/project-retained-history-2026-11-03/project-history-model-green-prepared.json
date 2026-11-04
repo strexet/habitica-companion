@@ -1,0 +1,72 @@
+{
+  "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+  "attempt_id": "C-152522c4-66fb-429e-9116-ea9a04a92faf",
+  "check_id": "history-rules",
+  "definition": "1ff4e8d4832c491b70d2fab5e41862b42f6e88cd1e5f9f947e038eb05359600f",
+  "environment_identity": "eaf72f12decfed819cf48df3c82b47e795c53c062421e0a402e69c749b8dc0d7",
+  "key": "8c23427888871da05e359c205aae2c23fa6369432b7ff46a01726d3436850036",
+  "launch": {
+    "assertion": "Project-filtered retained completion and Habit events use current canonical assignment without changing accepted event details, original recovery or stable revision-bound pages.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish current-versus-historical project selection, archive/unassigned semantics or original restore receipt recovery.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T22:27:46.741042+00:00",
+    "execution_profile": "project-retained-history-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T22:19:46.937515+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~History",
+      "--logger",
+      "trx;LogFileName=history-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f6f13184d35eae86bfce657c1ebe688ccea53877026f2da7f4b7328084c1ed70",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "37b0a2abaa0264e36e999c698131ef751e37016a8da433380e1b80c60743fe60",
+    "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs": "63fc342aa3fffad40e1af498a8fc8ac7166d21418fe77ea1a603b0ae9c2a4433",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs": "7739e71be486025e277f9f28bd5ec4eb9c5cf8c0a8a3fad3aed2933d106f0f2d",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs": "1fe5ab20bf52d55d7c2bc6e2b957cdb7859d107c1cc1dbd0ad0b8f520f07ad4b",
+    "tests/fixtures/workspace/project-retained-history-v1.json": "96f8ce166c9648a3dc8b20ad92fd3214a33167affa129267f6dfbdf7248de40c"
+  },
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+}

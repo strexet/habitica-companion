@@ -1,0 +1,40 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-2584bcb5-a7fb-4364-8a12-14007b1cf717",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 5,
+    "expected": 5,
+    "failed": 0,
+    "passed": 5,
+    "skipped": 0
+  },
+  "definition": "e0ea98af419e80f2ef6ac4a44328274a36dd44d47d9fad5b0a0ab6cb2e8a2fa9",
+  "environment_identity": "84622edc612b84ec09c30a9086bf2cca8ff0ed0545d35fffad179193a3218d2a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-current-build-execution.log",
+      "sha256": "cf4b6b0035222d2a7fdabdcb32747c620553d5b169bd1ed59d60c8231248e85e"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "dadffe51dc6f5e04d16d15cf218f0a956dad32d423ac4fdcc55b52729f7b01e1",
+  "payload_hash": "01d6c244ae384b3d4ea738ff587b08e953f7be3c936c56ed6ef1dea546d6c0d0",
+  "recorded_at": "2026-11-02T19:30:36.815689+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/linked-daily-schedule-v1.json": "1188a8c5a0134e1e2e451343e538775ad5c5402196a740abd3e734c4a5df8709",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs": "a274eb8ef5e6ae904bf439878bac39924df102eb6b49244b0291e928556e8223",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "ebed2fd98e89bb639d36d4839602326d183937b33508a90be35a215461faebed",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "timing": {
+    "tool_wall_seconds": 3.48402512492612
+  }
+}

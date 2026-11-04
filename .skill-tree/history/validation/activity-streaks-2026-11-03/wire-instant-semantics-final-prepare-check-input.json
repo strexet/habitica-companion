@@ -1,0 +1,13 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-wire",
+  "launch": {
+    "assertion": "Canonical activity day-series parity, historical goal/schedule coverage, context paging and exact read permissions.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable day classification, real read-scope fences or guarded journal evaluation.",
+    "authorization": "Direct owner Implement All continuation; pure Node journal fixtures with synthetic identities and no server or external effects.",
+    "deadline_utc": "2026-11-02T18:58:49.040733+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "activity-streaks-wire-local-v1"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "session": "canonical-transport-recovery-1793755779557",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "authorization": "Owner-invoked Implement All local synthetic qualification and recovery; exact original fixture only.",
+  "deadline_utc": "2026-11-04T01:31:09.557Z",
+  "cleanup_seconds": 30,
+  "tool_identity": "Pinned Playwright1.62.1 Chromium",
+  "fixture_identity": "Original canonical-destinations fixture and hashed assets from1793755145416269000",
+  "assertion": "Fresh transport resolves the original failing390px200percent obsidian fixture JSON and closes the owned context/profile; no full UI acceptance.",
+  "classification": "transport-uncertainty-recovery",
+  "origin": "http://127.0.0.1:49524",
+  "fixture_result": {
+    "caseId": "canonical-transport-recovery-1793755779557",
+    "fixture": "/todo-history-completions.html",
+    "theme": "obsidian-glow",
+    "textPercent": 200,
+    "seed": null,
+    "width": 390,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "controls": 24,
+    "scrollableControls": [],
+    "primaryControls": 11,
+    "textSamples": 52,
+    "minimumMeasuredContrast": 7.095085642278324,
+    "disabledSkipped": 0,
+    "disabledSamples": [
+      {
+        "id": "SPAN",
+        "text": "Previous events",
+        "ratio": 6.418956592454164,
+        "minimum": 3,
+        "source": "dom-text"
+      },
+      {
+        "id": "SPAN",
+        "text": "Next events",
+        "ratio": 6.483877861708926,
+        "minimum": 3,
+        "source": "dom-text"
+      },
+      {
+        "id": "SPAN",
+        "text": "Previous retained records",
+        "ratio": 6.503166312916516,
+        "minimum": 3,
+        "source": "dom-text"
+      },
+      {
+        "id": "SPAN",
+        "text": "Next retained records",
+        "ratio": 6.503166312916516,
+        "minimum": 3,
+        "source": "dom-text"
+      }
+    ],
+    "nativeDateInputs": [],
+    "equipmentReadability": {
+      "identities": [],
+      "stats": []
+    },
+    "notesFixedWords": [],
+    "errors": [],
+    "unqualifiedSurfaces": [],
+    "inspectionElapsedMs": 53.80000019073486
+  },
+  "result": "pass",
+  "cleanup": {
+    "context": true,
+    "server": true,
+    "profile": true
+  },
+  "wall_seconds": 0.507
+}

@@ -1,0 +1,23 @@
+{
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+  "changed_files": [
+    "plugin/skills/habitica-notes/SKILL.md",
+    "plugin/skills/habitica-notes/references/folders.md",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+    "workers/chatgpt-mcp/src/note-tools.ts",
+    "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+    "workers/companion-workspace/package.json",
+    "workers/companion-workspace/src/note-folder-tools-api.ts",
+    "workers/companion-workspace/src/note-tools-api.ts",
+    "workers/companion-workspace/src/notes-api.ts",
+    "workers/companion-workspace/src/notes-folders-api.ts",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs",
+    "workers/companion-workspace/test/note-projects.test.mjs",
+    "workers/shared/note-tools.ts",
+    "workers/shared/notes-folders.ts",
+    "workers/shared/notes.ts",
+    "workers/companion-workspace/test/note-tools.test.mjs",
+    "workers/shared/build-identity.generated.ts",
+    ".skill-tree/documents/notes-folders.md"
+  ]
+}

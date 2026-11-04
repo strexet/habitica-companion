@@ -878,6 +878,99 @@ public sealed class PetsMountsPageTests : BunitContext
         Assert.Contains((InventorySellItemType.Food, "Meat", 1), controller.SellInventoryItemCalls);
     }
 
+    [Fact]
+    public async Task Large_expanded_collections_page_twenty_exact_keys_and_reset_query_without_mutations()
+    {
+        var pets = Enumerable.Range(0, 1200).ToDictionary(i => $"Synthetic{i:D4}-Base", _ => 5, StringComparer.Ordinal);
+        var mounts = Enumerable.Range(0, 1200).ToDictionary(i => $"Synthetic{i:D4}-Base", i => i % 2 == 0, StringComparer.Ordinal);
+        var storage = new InMemoryKeyValueStorage();
+        await storage.SetAsync(StorageKeys.PetsMountsViewPreferences, new PetsMountsViewPreferences(PetsMountsCatalog.Groups.ToDictionary(group => group.Key, _ => false)), default);
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with { Inventory = CreateInventory(pets:pets, mounts:mounts) }));
+        var cut = RenderPage(controller:controller, storage:storage);
+        var special = cut.Find("[data-testid='pets-mounts-group-special']");
+        SaveCollectionSurface("companions-large-page",cut,"special","retained-expanded-thousands-corpus-first-page",nameof(Large_expanded_collections_page_twenty_exact_keys_and_reset_query_without_mutations));
+        Assert.Equal(20, special.QuerySelectorAll("[data-testid^='pet-card-']").Length);
+        Assert.Equal(20, special.QuerySelectorAll("[data-testid^='mount-card-']").Length);
+        var first = special.QuerySelectorAll("[data-testid^='pet-card-']").Select(el => el.GetAttribute("data-testid")).ToArray();
+        cut.Find("[data-testid='companion-next-special-pets']").Click();
+        var second = cut.Find("[data-testid='pets-mounts-group-special']").QuerySelectorAll("[data-testid^='pet-card-']").Select(el => el.GetAttribute("data-testid")).ToArray();
+        Assert.Equal(20, second.Length); Assert.Empty(first.Intersect(second));
+        SaveCollectionSurface("companions-second-page",cut,"special","independent-second-page-keys",nameof(Large_expanded_collections_page_twenty_exact_keys_and_reset_query_without_mutations));
+        Assert.Contains("21–40", cut.Find("[data-testid='companion-range-special-pets']").TextContent);
+        cut.Find("[data-testid='companion-previous-special-pets']").Click();
+        Assert.Equal(first, cut.Find("[data-testid='pets-mounts-group-special']").QuerySelectorAll("[data-testid^='pet-card-']").Select(el => el.GetAttribute("data-testid")).ToArray());
+        cut.Find("[data-testid='companion-next-special-pets']").Click();
+        cut.Find("[data-testid='pets-mounts-search']").Input("Synthetic1199-Base");
+        Assert.Contains("1–1", cut.Find("[data-testid='companion-range-special-pets']").TextContent);
+        Assert.Single(cut.FindAll("[data-testid^='pet-card-']")); Assert.Single(cut.FindAll("[data-testid^='mount-card-']"));
+        Qualification.PageLayoutEvidence.Save("companions-filtered",cut.Markup,"/pets-mounts","large-corpus-single-match",["search","pagination","counts"],nameof(Large_expanded_collections_page_twenty_exact_keys_and_reset_query_without_mutations));
+        cut.Find("[data-testid='toggle-pets-mounts-group-special']").Click();
+        Assert.Empty(cut.Find("[data-testid='pets-mounts-group-special']").QuerySelectorAll("[data-testid^='pet-card-']"));
+        cut.Find("[data-testid='pets-mounts-search']").Input("Synthetic1198-Base");Assert.Single(cut.FindAll("[data-testid^='pet-card-']"));
+        cut.Find("[data-testid='companion-reset-filters']").Click();
+        Assert.Equal("", cut.Find("[data-testid='pets-mounts-search']").GetAttribute("value"));
+        Assert.Contains("1–20", cut.Find("[data-testid='companion-range-special-pets']").TextContent);
+        Assert.Empty(controller.HatchPetCalls); Assert.Empty(controller.FeedPetCalls); Assert.Empty(controller.SellInventoryItemCalls);
+    }
+
+    [Fact]
+    public void Full_matching_hatch_queue_and_selected_keys_are_independent_of_visible_pages()
+    {
+        var group = PetsMountsCatalog.Pets.Where(pet => pet.GroupKey == "magic-potion").ToArray();
+        var eggs = group.Select(pet => pet.EggKey).Distinct().ToDictionary(key => key, _ => 100, StringComparer.Ordinal);
+        var potions = group.Select(pet => pet.HatchingPotionKey).Distinct().ToDictionary(key => key, _ => 100, StringComparer.Ordinal);
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with { Inventory = CreateInventory(eggs:eggs, potions:potions) }));
+        var cut = RenderPage(controller:controller); cut.Find("[data-testid='toggle-pets-mounts-group-magic-potion']").Click();
+        var section = cut.Find("[data-testid='pets-mounts-group-magic-potion']"); Assert.Equal(20, section.QuerySelectorAll("[data-testid^='pet-card-']").Length);
+        SaveCollectionSurface("companions-candidates",cut,"magic-potion","full-matching-candidate-count-above-paged-cards",nameof(Full_matching_hatch_queue_and_selected_keys_are_independent_of_visible_pages));
+        var firstKey = section.QuerySelector("[data-testid^='pet-card-']")!.GetAttribute("data-testid")!["pet-card-".Length..];
+        cut.Find($"[data-testid='select-hatch-{firstKey}']").Click();
+        cut.Find("[data-testid='companion-next-magic-potion-pets']").Click();
+        Assert.NotNull(cut.Find($"[data-testid='hatch-queue-card-{firstKey}']"));
+        Assert.Contains((group.Length-1).ToString(),cut.Find("[data-testid='add-group-hatch-queue-magic-potion']").TextContent);
+        cut.Find("[data-testid='add-group-hatch-queue-magic-potion']").Click();
+        Assert.Equal(group.Length,cut.FindAll("[data-testid^='hatch-queue-card-']").Count);
+        Assert.Equal(group.Select(pet=>pet.Key).Order(StringComparer.Ordinal),cut.FindAll("[data-testid^='hatch-queue-card-']").Select(el=>el.GetAttribute("data-testid")!["hatch-queue-card-".Length..]).Order(StringComparer.Ordinal));
+        Assert.Empty(controller.HatchPetCalls);Assert.Empty(controller.FeedPetCalls);Assert.Empty(controller.SellInventoryItemCalls);
+    }
+
+    [Fact]
+    public void Zero_matches_has_one_reset_path_and_sale_preview_keeps_independent_inventory_scope()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with { Inventory = CreateInventory(eggs:new Dictionary<string,int>{{"Wolf",5}},food:new Dictionary<string,int>{{"Meat",3}}) }));
+        var cut=RenderPage(controller:controller);var sale=cut.Find(".bulk-sell-list").TextContent;
+        cut.Find("[data-testid='pets-mounts-search']").Input("no-synthetic-match-anywhere");
+        Assert.Single(cut.FindAll("[data-testid='companion-no-results']")); Assert.Single(cut.FindAll("[data-testid='companion-reset-filters']"));
+        Assert.Empty(cut.FindAll("[data-testid^='pet-card-']"));Assert.Empty(cut.FindAll("[data-testid^='mount-card-']"));Assert.Empty(cut.FindAll("[data-testid^='hatching-potion-']"));
+        Assert.Equal(sale,cut.Find(".bulk-sell-list").TextContent);Assert.Contains("separate",cut.Find("[data-testid='companion-sale-scope']").TextContent);
+        Qualification.PageLayoutEvidence.Save("companions-no-results",cut.Markup,"/pets-mounts","no-results-with-separate-sale-inventory",["search","reset","scope","disabled-controls"],nameof(Zero_matches_has_one_reset_path_and_sale_preview_keeps_independent_inventory_scope));
+        cut.Find("[data-testid='companion-reset-filters']").Click();Assert.Empty(cut.FindAll("[data-testid='companion-no-results']"));Assert.NotEmpty(cut.FindAll("[data-testid^='pet-card-']"));
+        Assert.Empty(controller.HatchPetCalls);Assert.Empty(controller.FeedPetCalls);Assert.Empty(controller.SellInventoryItemCalls);
+    }
+
+    [Fact]
+    public void Feeding_group_queue_includes_all_matching_candidates_after_mount_paging()
+    {
+        var group=PetsMountsCatalog.Pets.Where(pet=>pet.GroupKey=="magic-potion").ToArray();
+        var controller=new FakeAppSessionController(CreateState(CreateSnapshot() with {Inventory=CreateInventory(pets:group.ToDictionary(pet=>pet.Key,_=>5,StringComparer.Ordinal),food:new Dictionary<string,int>{{"Meat",10000}})}));
+        var cut=RenderPage(controller:controller);cut.Find("[data-testid='toggle-pets-mounts-group-magic-potion']").Click();
+        cut.Find("[data-testid='companion-next-magic-potion-mounts']").Click();
+        Assert.Equal(20,cut.Find("[data-testid='pets-mounts-group-magic-potion']").QuerySelectorAll("[data-testid^='mount-card-']").Length);
+        Assert.Contains(group.Length.ToString(),cut.Find("[data-testid='add-group-feed-queue-magic-potion']").TextContent);
+        cut.Find("[data-testid='add-group-feed-queue-magic-potion']").Click();
+        Assert.Equal(group.Length,cut.FindAll("[data-testid^='feed-queue-card-']").Count);
+        cut.Find("[data-testid='pets-mounts-search']").Input("no-synthetic-match-anywhere");
+        Assert.Equal(group.Length,cut.FindAll("[data-testid^='feed-queue-card-']").Count);
+        Assert.Empty(controller.FeedPetCalls);Assert.Empty(controller.HatchPetCalls);Assert.Empty(controller.SellInventoryItemCalls);
+    }
+
+    private static void SaveCollectionSurface(string name, IRenderedComponent<PetsMountsPage> cut, string group, string state, string test)
+    {
+        var original=cut.Find(".inventory-shell");var root=(AngleSharp.Dom.IElement)original.Clone(false);
+        foreach(var section in original.Children.Where(el=>el.QuerySelector("[data-testid='pets-mounts-search']") is not null || el.GetAttribute("data-testid")=="pets-mounts-group-"+group))root.AppendChild(section.Clone(true));
+        Qualification.PageLayoutEvidence.Save(name,root.OuterHtml,"/pets-mounts",state+"-partial-real-search-and-group",["search","pagination","counts","long-content","disabled-controls"],test);
+    }
+
     private IRenderedComponent<PetsMountsPage> RenderPage(
         UserSnapshot? snapshot = null,
         FakeAppSessionController? controller = null,

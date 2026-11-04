@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Habitica.Domain.Workspace;
 
-public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask, PlanTask, RestoreTodo, RelateTodo, SetTodoState, SetTodoStage, EnsureProjection, ReviewTask, UnarchiveTask, CorrectOccurrence }
+public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask, PlanTask, RestoreTodo, RelateTodo, SetTodoState, SetTodoStage, EnsureProjection, ReviewTask, UnarchiveTask, CorrectOccurrence, EditLinkedDailySchedule, CopyTaskType }
 public enum ProjectionCommandState { NotRequested, Pending, Leased, Executing, Confirmed, Blocked, UnknownOutcome, Cancelled }
 public enum ProjectionFailure { None, RateLimited, CredentialRepair, Precondition, Permanent, Transient, Ambiguous }
 public enum ProjectionEffectKind { Create, Update, ScoreUp, ScoreDown }
@@ -27,7 +27,9 @@ public sealed record WorkspaceTaskPatch(
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTodoStage? TodoStage = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskReview? Review = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskUnarchive? Unarchive = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceOccurrenceCorrection? CorrectOccurrence = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceOccurrenceCorrection? CorrectOccurrence = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] LinkedDailyScheduleContext? LinkedSchedule = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskTypeCopy? TypeCopy = null);
 
 public sealed record WorkspaceCommand(
     Guid Id,
@@ -54,7 +56,8 @@ public sealed record WorkspaceCommandEntry(
     ProjectionLease? Lease = null,
     DateTimeOffset? DispatchedAtUtc = null,
     int Attempts = 0,
-    CompanionTask? TaskSnapshot = null);
+    CompanionTask? TaskSnapshot = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] LinkedDailyScheduleResult? ScheduleResult = null);
 
 public sealed record WorkspaceJournalEvent(Guid Id, Guid CommandId, JournalEventKind Kind, DateTimeOffset AtUtc, int ConfirmedEffects, ProjectionFailure Failure, Guid? AttemptToken = null, string? EvidenceReference = null);
 public enum WorkspaceAuthorityMode { Local, Frozen, Cloud, Paused }

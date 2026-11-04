@@ -1,0 +1,65 @@
+{
+  "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+  "attempt_id": "C-24d34443-c9c1-4bfa-b557-a4914a3066ee",
+  "check_id": "conversion-wire",
+  "definition": "6b22c4703505ca077d184df04c32d5ae2cf86ffde82da7b7ec6b11872d7a5678",
+  "environment_identity": "141262cf081734c6b7a529f88f0b2e7b77d131af25973ebd14917235f3271343",
+  "key": "ead5eb8662f50ee3822b17742665300118a39e412271539fde75131c4bf0b1c0",
+  "launch": {
+    "assertion": "Native type-copy parity, exact original target/lineage recovery and independent read/write scope fences.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 duplicate acceptance, durable original reviews or no provider/tag effects.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T21:19:29.143436+00:00",
+    "execution_profile": "linked-conversion-wire-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T21:15:29.570245+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/task-type-copy.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+    "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+    "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/src/task-api.ts": "80c67286035e5633a344d0dca8e91275f9a4caec889ade7724d28bb0a1ced19e",
+    "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+    "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+    "workers/companion-workspace/test/task-type-copy.test.mjs": "601c8bc70c6c3af379b0700796b3c5c3fbd5000a1e09d29bf61f73662b87b1a2",
+    "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+    "workers/shared/build-identity.generated.ts": "84819aabec0bc088e992a1e7c95e2f592aa196a428e4023a321c44d66a2dfd73",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+    "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+    "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+    "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+  },
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

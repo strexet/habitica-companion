@@ -1,0 +1,25 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "check_id": "folder-transfer-rendering",
+  "attempt_id": "C-e8936c4c-2ebc-488a-9fd9-fb8448706cba",
+  "environment_identity": "984e06a4c8a85aac2a990ce1aca8e49b0fcb533367ed69659e15379d515eb419",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 50.38583583314903
+  },
+  "evidence": [
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+    ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json"
+  ],
+  "counts": {
+    "expected": 114,
+    "discovered": 114,
+    "passed": 114,
+    "failed": 0,
+    "skipped": 0
+  }
+}

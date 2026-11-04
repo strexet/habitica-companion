@@ -1,0 +1,64 @@
+{
+  "assertion": "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-4dcd6075-7920-46b1-ae54-aa64a98542c5",
+  "check_id": "daily-timezones-rendered",
+  "definition": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad",
+  "environment_identity": "fe590fa9ff36d4b746b44264d563c35dd985507e65a795fb4c87f37fe34eee4a",
+  "key": "76614de42cc002e4344244b465c5a4ed4df5eab862dba0cb0148d1799dbee652",
+  "launch": {
+    "assertion": "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T21:42:56.597325+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T21:26:56.900250+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "daily-timezones",
+      ".skill-tree/history/validation/ux-ui/daily-timezones/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/linked-daily-schedules.md": "b800ab6cee87edef01a11cd59244afedd33bc2c6855830ce1395bbc0d65c72bb",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9a3de34c5d1b7d06748f96b197d34681128f196bf5c0eda7facdaae968544567",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "4d51a34a6949cbb94a26681df145c08b7ca4eb9d138c066218ce01cb82651fc3",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6"
+  },
+  "task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5"
+}

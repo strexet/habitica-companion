@@ -1,0 +1,68 @@
+@using Habitica.Domain.Notes
+@inject NotesController Notes
+@inject IJSRuntime Js
+
+<details class="notes-folder-management">
+    <summary>Manage folders</summary>
+    <div class="notes-folder-fields">
+        <label>Folder name<input class="app-input" maxlength="256" @bind="_name" @bind:event="oninput" disabled="@(!Notes.CanManageFolders)" data-testid="folder-name" /></label>
+        <label>New folder scope<select class="app-input" @bind="_project" disabled="@(!Notes.CanManageFolders)" data-testid="folder-project"><option value="">Outside projects</option>
+            @if (UnavailableScope) { <option value="@_project" disabled>Retained project · unavailable for new folders · @_project</option> }
+            @foreach (var project in Notes.ProjectChoices) { <option value="@project.Id">@project.Name · @project.Id</option> }
+        </select></label>
+        @if (UnavailableScope) { <p>The retained project is unavailable for new folders. Choose Outside projects or an active project explicitly.</p> }
+        <p class="panel-copy">Folder scope stays fixed. Rename changes the name; removing an empty folder keeps note history intact.</p>
+        @if (Notes.Dirty) { <p>Save or resolve the note draft before managing folders. The draft remains unchanged.</p> }
+        @if (Selected is { } selected) { <p class="notes-reference">Selected folder: @selected.Name · @selected.Id<br />@Notes.ProjectLabel(selected.Project)</p> }
+        @if (HasMembers) { <p>Folder removal is unavailable while notes remain, including trash. Move notes explicitly before removing the empty folder.</p> }
+        <div class="notes-actions">
+            <button data-layout-primary="true" class="notes-button" disabled="@(!Notes.CanManageFolders || UnavailableScope || string.IsNullOrWhiteSpace(_name))" @onclick="Create" data-testid="folder-create">Create folder</button>
+            <button data-layout-primary="true" class="notes-button" disabled="@(!Notes.CanManageFolders || Selected is null || string.IsNullOrWhiteSpace(_name))" @onclick="Rename" data-testid="folder-rename">Rename selected folder</button>
+            <button data-layout-primary="true" class="notes-button" disabled="@(!Notes.CanManageFolders || Selected is null || HasMembers)" @onclick="Remove" data-testid="folder-remove">Remove empty folder</button>
+        </div>
+    </div>
+</details>
+@if (Notes.FolderReview is { } review)
+{
+    <aside class="notes-review" aria-label="Review folder action" data-testid="folder-review">
+        <h2 tabindex="-1" @ref="_heading">Review @review.Command.Operation folder</h2>
+        <p class="notes-reference">Exact folder: @review.Command.FolderId · revision @review.Command.ExpectedFolderRevision</p>
+        <p class="notes-reference">Before: @(review.Before?.Name ?? "New folder")<br />After: @review.After.Name<br />Scope: @Notes.ProjectLabel(review.After.Project)</p>
+        <p>@(review.Command.Operation==NoteFolderOperation.Remove?"Remove only the empty folder. Historical memberships remain readable; no notes are deleted.":"Save only the reviewed folder metadata. Note content, history and tasks remain unchanged.")</p>
+        <div class="notes-actions"><button data-layout-primary="true" class="notes-button" disabled="@(Notes.Busy || Notes.HasPending)" @onclick="Notes.CancelFolderReview">Keep editing</button><button data-layout-primary="true" class="notes-button notes-primary" disabled="@(!Notes.CanWrite || Notes.Dirty)" @onclick="Confirm" data-testid="folder-confirm">Confirm folder action</button></div>
+    </aside>
+}
+@if (Notes.LastFolderReceipt is { } receipt)
+{
+    <details><summary>Last confirmed folder receipt</summary><p class="notes-reference">Command: @receipt.CommandId<br />Folder: @receipt.FolderId<br />Folder revision: @receipt.FolderRevision · Notebook revision: @receipt.NotebookRevision<br />Payload hash: @receipt.PayloadHash</p></details>
+}
+
+@code {
+    [Parameter] public Guid? SelectedId {get;set;}
+    [Parameter] public Guid? ProjectId {get;set;}
+    [Parameter] public EventCallback<Guid?> SelectedChanged {get;set;}
+    private string _name="",_project="";
+    private string? _context;
+    private Guid? _lastSelected;
+    private bool _focus;
+    private ElementReference _heading;
+    private NoteFolder? Selected=>Notes.Folders.FirstOrDefault(f=>f.Id==SelectedId);
+    private bool UnavailableScope=>Guid.TryParse(_project,out var id)&&Notes.ProjectLink(id) is null;
+    private bool HasMembers=>SelectedId is {} id&&Notes.Book?.Notes.Any(n=>n.Current.Folder?.FolderId==id)==true;
+    protected override void OnParametersSet()
+    {
+        var context=Notes.ContextIdentity+":"+ProjectId;
+        if(_context!=context){_context=context;_name="";_project=ProjectId?.ToString()??"";}
+        if(_lastSelected!=SelectedId){_lastSelected=SelectedId;_name=Selected?.Name??"";}
+    }
+    private void Create(){if(Notes.PrepareFolder(NoteFolderOperation.Create,null,_name,Guid.TryParse(_project,out var id)?id:null))_focus=true;}
+    private void Rename(){if(Notes.PrepareFolder(NoteFolderOperation.Rename,SelectedId,_name))_focus=true;}
+    private void Remove(){if(Notes.PrepareFolder(NoteFolderOperation.Remove,SelectedId,null))_focus=true;}
+    private async Task Confirm()
+    {
+        var context=Notes.ContextIdentity;await Notes.AcceptFolderAsync();
+        if(context==Notes.ContextIdentity&&!Notes.HasPending&&!Notes.IsError&&Notes.LastFolderReceipt is {} receipt&&Notes.Book is not null)
+            await SelectedChanged.InvokeAsync(Notes.Folders.Any(f=>f.Id==receipt.FolderId)?receipt.FolderId:null);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;try{await _heading.FocusAsync();}catch(JSException){}}}
+}

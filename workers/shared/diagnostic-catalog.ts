@@ -116,6 +116,8 @@ export const diagnosticCatalog = {
     "notes-lifecycle",
     "notes-recover",
     "notes-cloud-cleanup",
+    "notes-folder-save",
+    "notes-folder-recover",
     "app-operation"
   ],
   "counts": [

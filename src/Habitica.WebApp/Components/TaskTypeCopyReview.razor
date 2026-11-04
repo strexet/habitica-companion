@@ -1,0 +1,52 @@
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@if(Review is {Ready:true,Source:{} source,Target:{} target})
+{
+<section class="task-type-copy-review" data-testid="type-copy-review" aria-label="Copied and reset fields">
+    <section data-testid="type-copy-source-summary">
+        <h3>Original remains unchanged</h3><p>@source.Text · @source.Kind · @source.State @(source.IsArchived?"· archived":"") · @source.Id · revision @source.Revision</p>
+        <dl class="type-copy-fields">
+            @Row("Schedule",Schedule(source.Recurrence))
+            @Row("Planned date",Date(source.PlannedDate))
+            @Row("Deadline",Date(source.Deadline))
+            @Row("Review cue",Instant(source.ReviewAfterUtc))
+            @Row("Stale since",Instant(source.StaleSinceUtc))
+            @Row("Stage",source.ExecutionStage?.ToString()??NotSet)
+            @Row("Parent",Id(source.ParentTaskId))
+            @Row("Dependencies",Ids(source.DependsOn))
+            @Row("Category",Id(source.CategoryId))
+            @Row("Project",Id(source.ProjectId))
+            @Row("Section",Id(source.SectionId))
+            @Row("Labels",Ids(source.LabelIds))
+        </dl>
+        <p>Existing goals, recorded activity, checklist and Habitica correspondence remain on the source.</p>
+    </section>
+    <section data-testid="type-copy-target-summary">
+        <h3>New unlinked @target.Kind</h3><p>Exact new ID: @target.Id · initial revision @target.Revision · state @target.State · urgency @target.Priority</p>
+        <h4>@target.Text</h4><pre class="conversion-notes">@(target.Notes is null or ""?NotSet:target.Notes)</pre>
+        <dl class="type-copy-fields">
+            @Row("Category",Id(target.CategoryId))
+            @Row("Project",Id(target.ProjectId))
+            @Row("Section",Id(target.SectionId))
+            @Row("Labels",Ids(target.LabelIds))
+            @Row("Schedule",Schedule(target.Recurrence))
+        </dl>
+    </section>
+    <h4>Copied fields</h4><ul>@foreach(var field in Review.CopiedFields){<li>@field</li>}</ul>
+    <h4>Reset fields</h4><ul>@foreach(var field in Review.ResetFields){<li>@field</li>}</ul>
+    <p>No Habitica task, tag, score or Cron action is requested. Link the new copy separately before game activity. Archiving the original requires a separate review.</p>
+</section>
+}
+@code {
+    [Parameter,EditorRequired]public WorkspaceTaskTypeCopyReview Review{get;set;}=default!;
+    private const string NotSet="Not set";
+    private static string Id(Guid? value)=>value?.ToString("D")??NotSet;
+    private static string Date(DateOnly? value)=>value?.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)??NotSet;
+    private static string Instant(DateTimeOffset? value)=>value?.ToString("O",CultureInfo.InvariantCulture)??NotSet;
+    private static string Ids(IReadOnlyList<Guid>? values)=>values is {Count:>0}?string.Join(", ",values.Select(value=>value.ToString("D"))):"None";
+    private static string Schedule(RecurrenceRule? rule)=>rule is null?NotSet:$"{rule.Frequency}, every {rule.Interval}; start {rule.StartDate:yyyy-MM-dd}; zone {rule.TimeZoneId}; weekdays [{(rule.Weekdays.Count==0?"None":string.Join(", ",rule.Weekdays))}]; month dates [{(rule.DaysOfMonth.Count==0?"None":string.Join(", ",rule.DaysOfMonth))}]";
+    private static RenderFragment Row(string label,string value)=>builder=>
+    {
+        builder.OpenElement(0,"div");builder.OpenElement(1,"dt");builder.AddContent(2,label);builder.CloseElement();builder.OpenElement(3,"dd");builder.AddContent(4,value);builder.CloseElement();builder.CloseElement();
+    };
+}

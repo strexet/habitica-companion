@@ -5,7 +5,8 @@ const bytes=(value:string)=>new TextEncoder().encode(value).length;
 // The null receipt is the acceptance fence. Both acceptance and closure guard their
 // first write on it in the same D1 transaction; accepted work always wins recovery.
 export async function closeTagReview(env:Pick<WorkspaceEnv,'WORKSPACE_DB'>,row:Pick<WorkspaceRow,'profile_id'|'workspace_id'>,review:TagReview,reason:string):Promise<TagReview>{
- const closedAtUtc=new Date().toISOString(),receipt=JSON.stringify({commandId:review.command_id,requestId:review.request_id,workspaceId:review.workspace_id,operation:review.operation,savedInCompanion:false,outcomeUnknown:false,reviewOutcome:'terminal-unaccepted',gameEffects:0,workIds:[],reason,closedAtUtc});
+ const evaluation=JSON.parse(review.payload_json).evaluation;
+ const closedAtUtc=new Date().toISOString(),receipt=JSON.stringify({...(evaluation?{evaluation}:{}),commandId:review.command_id,requestId:review.request_id,workspaceId:review.workspace_id,operation:review.operation,savedInCompanion:false,outcomeUnknown:false,reviewOutcome:'terminal-unaccepted',gameEffects:0,workIds:[],reason,closedAtUtc});
  const preview=JSON.stringify({commandId:review.command_id,requestId:review.request_id,workspaceId:review.workspace_id,operation:review.operation,expectedRevision:review.expected_revision,expiresAtUtc:review.expires_at_utc,canAccept:false,gameEffects:0,reason});
  const commit=crypto.randomUUID(),delta=bytes('{}')+bytes(preview)+bytes(receipt)-bytes(review.payload_json)-bytes(review.preview_json);
  await env.WORKSPACE_DB.batch([

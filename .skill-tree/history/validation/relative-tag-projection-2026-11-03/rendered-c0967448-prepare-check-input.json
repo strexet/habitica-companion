@@ -1,0 +1,18 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-rendering",
+  "execution": {
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+    "profile_id": "relative-tag-ui-browser-v1",
+    "deadline_utc": "2026-11-03T02:32:10.778702+00:00",
+    "cleanup_seconds": 30,
+    "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22",
+    "session_identity": "rendered-c0967448",
+    "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+    "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "identity_evidence": [
+      ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-identity.json"
+    ]
+  }
+}

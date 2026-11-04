@@ -1,0 +1,67 @@
+{
+  "assertion": "Hold actual Notes store loading while a retained notebook remains readable. Require disabled New note and loading explanation, release the read, activate New once, and retain exact unsaved input without notebook changes. Preserve existing conflict, pending, source and project workflows; require nonzero focused discovery and no required skips.",
+  "attempt_id": "C-9b480ec3-befd-4eb5-88bb-24287f320a49",
+  "check_id": "notes-initial-entry-behavior",
+  "definition": "28df3c20ab5fbf65bd94d1156a9d673ac851b322ce68e46d377a14e9bebbc40d",
+  "environment_identity": "767b5d907b59fc4f48c1924afab9844b0fd349452e2e1077285f5de327ebbfc4",
+  "key": "1f5d54ea2d6e6f46d9f5cd01dab69e08401b92e7e26b22bc0b854d5eb8b1686a",
+  "launch": {
+    "assertion": "Hold actual Notes store loading while a retained notebook remains readable. Require disabled New note and loading explanation, release the read, activate New once, and retain exact unsaved input without notebook changes. Preserve existing conflict, pending, source and project workflows; require nonzero focused discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T05:07:57.251014+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T05:02:57.695292+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+      "--logger",
+      "trx;LogFileName=notes-entry-readiness.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/notes-entry-readiness-unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "527c2c1e008f5f044fd30de462059906049d06cf70b2d04c4810523e0a719af0",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e"
+  },
+  "task_id": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2"
+}

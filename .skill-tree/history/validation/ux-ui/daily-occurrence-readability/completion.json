@@ -1,0 +1,425 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Exact Daily occurrence drafts, review dates, disabled fences and unchanged journals remain covered by component interaction checks.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.log",
+          "sha256": "eea9f24b54f0c936ecdb328a0856483c0ab59bfc2db4ad97d2bf26ff71b4048d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.trx",
+          "sha256": "673977095a11c49b54584cce2522b182ea1ffa7c347eb9f9170f6d6709cb4d4e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/acceptance.json",
+          "sha256": "1ab06dbb121299747bdf43dfb5a9f1afc36f2841c7edd8f7c1c8007b028d7ae5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/4a4b25f6-ecc5-48bc-83db-46d3d54163b1.json",
+          "sha256": "f08953496398c0b3836d56e6e17a02abe49a6078b12022c813651aa48b5226d4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Selected Daily occurrence dates retain complete native value paint across the required light/dark phone/desktop normal/enlarged matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.log",
+          "sha256": "eea9f24b54f0c936ecdb328a0856483c0ab59bfc2db4ad97d2bf26ff71b4048d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.trx",
+          "sha256": "673977095a11c49b54584cce2522b182ea1ffa7c347eb9f9170f6d6709cb4d4e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/acceptance.json",
+          "sha256": "1ab06dbb121299747bdf43dfb5a9f1afc36f2841c7edd8f7c1c8007b028d7ae5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/4a4b25f6-ecc5-48bc-83db-46d3d54163b1.json",
+          "sha256": "f08953496398c0b3836d56e6e17a02abe49a6078b12022c813651aa48b5226d4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Retain exact Daily occurrence drafts, review targets and original fences; current failing native screenshot is the layout regression.",
+        "criteria": [
+          "Exact Daily occurrence drafts, review dates, disabled fences and unchanged journals remain covered by component interaction checks."
+        ],
+        "id": "daily-occurrence-readability-behavior",
+        "parameters": {
+          "report_name": "daily-occurrence-readability.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/unit",
+          "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-c850eb2a-61d3-4d94-9564-42136b703581",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 25,
+          "expected": 25,
+          "failed": 0,
+          "passed": 25,
+          "skipped": 0
+        },
+        "definition": "fca685955e7a3a322a49225e196d84b1131408197f0abfab607c12b061f7c615",
+        "environment_identity": "d20cf5a340aa8817ec71cd024ac55007d6f2f686cb19cdb5887b6a76d3f193c1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.log",
+            "sha256": "eea9f24b54f0c936ecdb328a0856483c0ab59bfc2db4ad97d2bf26ff71b4048d"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.trx",
+            "sha256": "673977095a11c49b54584cce2522b182ea1ffa7c347eb9f9170f6d6709cb4d4e"
+          }
+        ],
+        "execution_sessions": {
+          "ab8eb7bf293a74618db9f49eea79d6033d76f9292672d5c43674da686c4d8363": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e6041c2ae06f6c7ad0eeb5a8e02218efaa155a610601210db011d79660a19c2a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:25:59.966554+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/launch-1793732999966762000.json"
+            ],
+            "profile_id": "442b347314eae45f67631762ff03506e6acead87505babea47d4863111ca9624",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-occurrence-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "3bb2aa0d4418e83a22b30e75cf8dc4a8df4e9a4e22eb897a86fde608a19969ba",
+        "payload_hash": "d8285ab62b811728c6805dd4c4de167984626b3b59ad91eed0752f4582fc1193",
+        "recorded_at": "2026-11-03T19:29:55.535694+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.689018332865089
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Require selected native occurrence date ink against same-engine full-width references for both exact task records across the full matrix. Preserve native date editing, explicit review targets, keyboard focus and unchanged journals.",
+        "criteria": [
+          "Selected Daily occurrence dates retain complete native value paint across the required light/dark phone/desktop normal/enlarged matrix."
+        ],
+        "id": "daily-occurrence-readability-rendered",
+        "parameters": {
+          "cases": "Same-named Daily ready and original-review-disabled states, selected creation and occurrence dates with full native ink.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser",
+          "routes": [
+            "/todo/dailies"
+          ],
+          "task_key": "daily-occurrence-readability"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-8c0a0ba2-e758-4a6c-ba5b-890d9fe04bda",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 289,
+          "expected": 289,
+          "failed": 0,
+          "passed": 289,
+          "skipped": 0
+        },
+        "definition": "fca685955e7a3a322a49225e196d84b1131408197f0abfab607c12b061f7c615",
+        "environment_identity": "d9ae92038980ad0fc0303acfcfb1e724f273560fd5de0a29cb23afe3ce80f65f",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/4a4b25f6-ecc5-48bc-83db-46d3d54163b1.json",
+            "sha256": "f08953496398c0b3836d56e6e17a02abe49a6078b12022c813651aa48b5226d4"
+          }
+        ],
+        "execution_sessions": {
+          "9fbb890e0ea0571868a48e05f5fbde6b31757d51f69d45e77a3249e0ca9fb26d": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:45:55.667545+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/launch-1793734195667742000.json"
+            ],
+            "profile_id": "6ae18953b150eda0056ccc49c5dcc1d212d14bcad744b9f0a6784ff7a11d0a9b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-occurrence-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "ab8eb7bf293a74618db9f49eea79d6033d76f9292672d5c43674da686c4d8363": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e6041c2ae06f6c7ad0eeb5a8e02218efaa155a610601210db011d79660a19c2a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:25:59.966554+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/launch-1793732999966762000.json"
+            ],
+            "profile_id": "442b347314eae45f67631762ff03506e6acead87505babea47d4863111ca9624",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-occurrence-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "3e15b0d7ff0f270a35a9ad8caa7548b27463e418c37e3de5946e7ab3f9173779",
+        "payload_hash": "b752ed3fe18bdf3cbf814a49c3f3b1493fba700305ffea1dd9934b1afe966c3a",
+        "recorded_at": "2026-11-03T19:34:27.715677+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "b8fc241dfd334cb2e1782828ab11a3a57394835f07f5378bc6105e966d114672",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs": "585fb5384ddfc1a5b729e6f9bf49cd30efc47f0813e618e5a0621075f6b1600f",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+        },
+        "timing": {
+          "tool_wall_seconds": 270.8364184158854
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-d123dff7-af96-45ab-9690-a0932de03df9"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/acceptance.json",
+      "sha256": "1ab06dbb121299747bdf43dfb5a9f1afc36f2841c7edd8f7c1c8007b028d7ae5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/operation-history.json",
+      "sha256": "0f6380a73f480e9305f4288678fce4a0ee733e10fe395b165840aea14cd5e406"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-64c19a65-3cfa-4464-b4ab-3c71d701eb56",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep selected Daily occurrence dates readable with enlarged phone text. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67"
+  ],
+  "recorded_at": "2026-11-03T19:34:42.478020+00:00",
+  "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "b8fc241dfd334cb2e1782828ab11a3a57394835f07f5378bc6105e966d114672",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs": "585fb5384ddfc1a5b729e6f9bf49cd30efc47f0813e618e5a0621075f6b1600f",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+  },
+  "task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+  "title": "Keep selected Daily occurrence dates readable with enlarged phone text",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Retain exact Daily occurrence drafts, review targets and original fences; current failing native screenshot is the layout regression.",
+      "criteria": [
+        "Exact Daily occurrence drafts, review dates, disabled fences and unchanged journals remain covered by component interaction checks."
+      ],
+      "id": "daily-occurrence-readability-behavior",
+      "parameters": {
+        "report_name": "daily-occurrence-readability.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/unit",
+        "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Require selected native occurrence date ink against same-engine full-width references for both exact task records across the full matrix. Preserve native date editing, explicit review targets, keyboard focus and unchanged journals.",
+      "criteria": [
+        "Selected Daily occurrence dates retain complete native value paint across the required light/dark phone/desktop normal/enlarged matrix."
+      ],
+      "id": "daily-occurrence-readability-rendered",
+      "parameters": {
+        "cases": "Same-named Daily ready and original-review-disabled states, selected creation and occurrence dates with full native ink.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser",
+        "routes": [
+          "/todo/dailies"
+        ],
+        "task_key": "daily-occurrence-readability"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "fca685955e7a3a322a49225e196d84b1131408197f0abfab607c12b061f7c615"
+}

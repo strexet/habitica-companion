@@ -1,10 +1,10 @@
-import {workspaceDocument,type WorkspaceDocument} from './workspace-domain.ts';
+import {workspaceDocument,type WorkspaceDocument,type CompanionTask} from './workspace-domain.ts';
 import {queryTasks,taskFilter,taskFilterKeys} from './task-query.ts';
 import {workspaceObject} from './workspace-http.ts';
 export const unblockedTodoKeys=taskFilterKeys.filter(key=>key!=='kind'&&key!=='state');
 export function unblockedTodoFilter(input:unknown){return taskFilter(workspaceObject(input,unblockedTodoKeys));}
-export function queryUnblockedTodos(document:WorkspaceDocument,input:unknown){
+export function queryUnblockedTodos(document:WorkspaceDocument,input:unknown,eligible?:(task:CompanionTask)=>boolean){
  const filter=unblockedTodoFilter(input),source=workspaceDocument(document);
  const completed=new Set(source.tasks.filter(task=>task.state==='completed').map(task=>task.id));
- return queryTasks(source,{...filter,kind:'todo',state:'active'},task=>task.dependsOn.every(id=>completed.has(id)));
+ return queryTasks(source,{...filter,kind:'todo',state:'active'},task=>(eligible===undefined||eligible(task))&&task.dependsOn.every(id=>completed.has(id)));
 }

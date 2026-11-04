@@ -1,0 +1,25 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-components",
+  "attempt_id": "C-cc9bd506-b472-43a9-991a-618d5a1350a9",
+  "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "fail",
+  "counts": {
+    "expected": 18,
+    "discovered": 18,
+    "passed": 17,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 6.727510541910306
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-components-final-execution.log",
+    ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-components-final.trx"
+  ],
+  "failure_signature": "focused_suite_failure"
+}

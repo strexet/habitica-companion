@@ -1,0 +1,1016 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/components-frozen-final-execution.log",
+          "sha256": "13190cef34de4328195770396f86069c539ab76e7b641e5ebead6ff0992265a0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/components-frozen-final.trx",
+          "sha256": "ced68a8d0a3ce0048d4d3a6cd79d1fc45f57a21d7f12a4c1e1df32467921c155"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-final-execution.log",
+          "sha256": "6d63cc7dddb21ef198f9018c8c10ce54b7c0b79297abf48bf3f2d9536c21d459"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+          "sha256": "168afbcae8d3cbfcd05e35e0675e47a3080dc4bdb46d927069fc81eabacf8722"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+          "sha256": "653d83eb4c3f92683c9d4324acbbb434aefe7614be3a36a4e39dc5091a5b89ac"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json",
+          "sha256": "02ee44e36dd24a7e3aee39523720666f8af4950398c40c0b034ed58d5aee31ef"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rules-frozen-fixture-final-execution.log",
+          "sha256": "bee6b0dbe8230f7aef2e2b6ba94b77798e78515f863ee42dae45b6d22b8db97d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/rules-frozen-fixture-final.trx",
+          "sha256": "5c2a58974b06198f4b7d5bb583934a692f9ff150a2fbcc580f03c1d28214cdbc"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+          "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/acceptance-findings.json",
+          "sha256": "adca17acfd1431834e2b84b47d9151c2d20f95e331265dcd3126a3436ee246d6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/worker-final-dry-builds.json",
+          "sha256": "33abbbf490041f9c71c11d9facf6d8918318ce27f3cd68d402c260e4bc448e53"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-auth-final-dry-build.log",
+          "sha256": "11e9d868410b168ca5cb5d6936368bee4436f0d3d44ab684da3b6f3151a4feb2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/companion-workspace-final-dry-build.log",
+          "sha256": "692d01b4412b498b220c4ed8f1e97fea02de4b3fc1033340f87795d168e66682"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-mcp-final-dry-build.log",
+          "sha256": "c8db8cd053b4b2781a988f0d468c58487f8b816a3e568d5d7eb92e4f47cc3083"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/components-frozen-final-execution.log",
+          "sha256": "13190cef34de4328195770396f86069c539ab76e7b641e5ebead6ff0992265a0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/components-frozen-final.trx",
+          "sha256": "ced68a8d0a3ce0048d4d3a6cd79d1fc45f57a21d7f12a4c1e1df32467921c155"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-final-execution.log",
+          "sha256": "6d63cc7dddb21ef198f9018c8c10ce54b7c0b79297abf48bf3f2d9536c21d459"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+          "sha256": "168afbcae8d3cbfcd05e35e0675e47a3080dc4bdb46d927069fc81eabacf8722"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+          "sha256": "653d83eb4c3f92683c9d4324acbbb434aefe7614be3a36a4e39dc5091a5b89ac"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json",
+          "sha256": "02ee44e36dd24a7e3aee39523720666f8af4950398c40c0b034ed58d5aee31ef"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rules-frozen-fixture-final-execution.log",
+          "sha256": "bee6b0dbe8230f7aef2e2b6ba94b77798e78515f863ee42dae45b6d22b8db97d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/rules-frozen-fixture-final.trx",
+          "sha256": "5c2a58974b06198f4b7d5bb583934a692f9ff150a2fbcc580f03c1d28214cdbc"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+          "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/acceptance-findings.json",
+          "sha256": "adca17acfd1431834e2b84b47d9151c2d20f95e331265dcd3126a3436ee246d6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/worker-final-dry-builds.json",
+          "sha256": "33abbbf490041f9c71c11d9facf6d8918318ce27f3cd68d402c260e4bc448e53"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-auth-final-dry-build.log",
+          "sha256": "11e9d868410b168ca5cb5d6936368bee4436f0d3d44ab684da3b6f3151a4feb2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/companion-workspace-final-dry-build.log",
+          "sha256": "692d01b4412b498b220c4ed8f1e97fea02de4b3fc1033340f87795d168e66682"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-mcp-final-dry-build.log",
+          "sha256": "c8db8cd053b4b2781a988f0d468c58487f8b816a3e568d5d7eb92e4f47cc3083"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+        "criteria": [
+          "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+          "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+        ],
+        "id": "activity-rules",
+        "parameters": {
+          "report_name": "activity-rules.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules",
+          "test_filter": "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
+          "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+          "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs",
+          "tests/fixtures/workspace/activity-streaks-v1.json"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-576bcc26-03a9-43cc-9af5-8de14114f317",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 1,
+          "passed": 19,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "97721387fe8b57f73811f49a67f736aa269204872dbe776641c9159d7762b7b1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/historical-habit-goal-red-execution.log",
+            "sha256": "0d175715e961f8b358296394c87df2eaa1f267d6cc8f81c07e92fdebed4f0c8d"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/historical-habit-goal-red.trx",
+            "sha256": "b5d43170e66c0a05147f594e8759d5fa37578a46374d107c10f0c8c8aada5cc7"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a207941a",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "7e813e10d5310250a5d5e81441eea7a387b6a5590a7c9852cb814f7448f8f73b",
+        "payload_hash": "9618e5ddcc5878859084f9bf9ae5d1fb4ad9fea678a271349931bad6dd67e5d9",
+        "recorded_at": "2026-11-02T18:46:02.252418+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "5879b448b049e9b496e676c4533c10e201177173c00f65ff3acb913d94c3cbcd",
+          "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "878e7818dcd00a93ec4cb38382cb55432ed148d4ec3a8fa68058dac7946df782",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs": "980f2f0ead1a114706775ae35c03b7f54b3a28a6d768e242446c97aa1344316e",
+          "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.0949349999427795
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-139cb022-caba-49e6-91d0-83d3663929b0",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 0,
+          "passed": 21,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "97721387fe8b57f73811f49a67f736aa269204872dbe776641c9159d7762b7b1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rules-frozen-fixture-final-execution.log",
+            "sha256": "bee6b0dbe8230f7aef2e2b6ba94b77798e78515f863ee42dae45b6d22b8db97d"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/rules-frozen-fixture-final.trx",
+            "sha256": "5c2a58974b06198f4b7d5bb583934a692f9ff150a2fbcc580f03c1d28214cdbc"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a207941a",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "e90df143ba9b8d73d62a19b04777ee3d2448298821065b47ce2b6b732fb7229c",
+        "payload_hash": "31fc84dff2b19ca8baecd9bf82f67e3c20c70122aa6a29d965d31bb3269724de",
+        "recorded_at": "2026-11-02T18:51:34.171158+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0ee09b11f6dbafd8eee4338830861a5d88f3235bbfe51a8e0b7cee0e6ead6991",
+          "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "878e7818dcd00a93ec4cb38382cb55432ed148d4ec3a8fa68058dac7946df782",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs": "bb6dc2e25871f08fb2e13d6c7edfeb53a0f2c254cc504b770a4b0aa9afee44df",
+          "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97"
+        },
+        "timing": {
+          "tool_wall_seconds": 2.694721790961921
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+        "criteria": [
+          "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+          "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+        ],
+        "id": "activity-components",
+        "parameters": {
+          "report_name": "activity-components.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components",
+          "test_filter": "FullyQualifiedName~Statistics",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+          "tests/fixtures/workspace/activity-streaks-v1.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-d4f5dfc2-8f86-4041-a0eb-594aafc356dc",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 8,
+          "expected": 8,
+          "failed": 0,
+          "passed": 8,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "c95159a7ea87d2c3e7496694636a26aec29dcc713196315eabd161f0734d539f",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/components-frozen-final-execution.log",
+            "sha256": "13190cef34de4328195770396f86069c539ab76e7b641e5ebead6ff0992265a0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/components-frozen-final.trx",
+            "sha256": "ced68a8d0a3ce0048d4d3a6cd79d1fc45f57a21d7f12a4c1e1df32467921c155"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a207941a",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "87aed8d091f7fad303413353fb4ea96f99a87431ae272cf202f505185118e997",
+        "payload_hash": "dcdaa2d4065c124f76b95923c0ad3734f7dd537608bf49171ed0d8c483f6c7ef",
+        "recorded_at": "2026-11-02T18:57:11.429510+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0ee09b11f6dbafd8eee4338830861a5d88f3235bbfe51a8e0b7cee0e6ead6991",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+          "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "97adbe510538e6fe1297ea3a990e287fe9ccae831232ba5123f0ce5feff31b9e",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+          "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "a3d239a19d2d1c0ce39e35d9c421c78de9c387d8d73a4d5e450563884c72ed1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+          "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97"
+        },
+        "timing": {
+          "tool_wall_seconds": 14.00540158408694
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+        "criteria": [
+          "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+          "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+        ],
+        "id": "activity-rendering",
+        "parameters": {},
+        "recipe_id": "activity-rendered-browser",
+        "sources": [
+          ".skill-tree/documents/testing.md",
+          ".skill-tree/documents/technical.md",
+          "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsChart.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+          "tests/fixtures/workspace/activity-streaks-v1.json",
+          "tests/browser/activity-ui.py",
+          "tests/browser/activity-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-f77bc2c9-33a5-4d4e-9d9b-c4d5cf2efeb4",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+        "counts": {
+          "discovered": 114,
+          "expected": 114,
+          "failed": 0,
+          "passed": 114,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "9a067715b90d8398612834b758e727eb4a505792877f5f948bfc22e07634677e",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+            "sha256": "168afbcae8d3cbfcd05e35e0675e47a3080dc4bdb46d927069fc81eabacf8722"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+            "sha256": "653d83eb4c3f92683c9d4324acbbb434aefe7614be3a36a4e39dc5091a5b89ac"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json",
+            "sha256": "02ee44e36dd24a7e3aee39523720666f8af4950398c40c0b034ed58d5aee31ef"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:11:38.983856+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-42042df9",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "2c2c5c0d1be50a9d0287222bac2d36a6d6eccdbf4700730567876d591a1357a9",
+        "payload_hash": "55b67055f252a182c1fcf3a564985057c9c4028d500c0cde25f50c8a5b0cb5f3",
+        "recorded_at": "2026-11-02T18:59:24.188986+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+          ".skill-tree/documents/testing.md": "539a9a6ab3ef80e1ac3eda07719963b978d297bff9b5e0b24d66c6f562dd7900",
+          "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0ee09b11f6dbafd8eee4338830861a5d88f3235bbfe51a8e0b7cee0e6ead6991",
+          "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "97adbe510538e6fe1297ea3a990e287fe9ccae831232ba5123f0ce5feff31b9e",
+          "src/Habitica.WebApp/Components/TodoStatisticsChart.razor": "eb7e9f71b41122fae41f59011f459c70974e650f873d97f289c755dcba257d7d",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "a3d239a19d2d1c0ce39e35d9c421c78de9c387d8d73a4d5e450563884c72ed1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/activity-ui.mjs": "45f444b17ed7762910dc7cd7868c4e2c41258442df1c63b08c9557feadc8ead7",
+          "tests/browser/activity-ui.py": "c7796537d8282ec304b5d031c6c056ee95cb7e61bda597899abf682187d37fc0",
+          "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97"
+        },
+        "timing": {
+          "tool_wall_seconds": 44.31062504183501
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Portable full-journal day/coverage cases match the independently asserted C# fixtures, including DST, pauses, corrections, negative-only activity, historical timezone refusal and context-bound paging. Malformed input and fabricated coverage refuse without writes.",
+        "criteria": [
+          "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+          "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+        ],
+        "id": "activity-wire",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/activity-streaks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/activity-streaks.test.mjs",
+          "workers/companion-workspace/src/activity-streaks.ts",
+          "workers/companion-workspace/src/activity-coverage-query.ts",
+          "workers/shared/activity-streak-filter.ts",
+          "workers/shared/recurrence-calendar.ts",
+          "tests/fixtures/workspace/activity-streaks-v1.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-250bdcc8-5d26-4dd0-a152-7d13f5ede7d7",
+        "classification": "executed-control",
+        "cleanup": "The pure Node controls exited. No server, Miniflare/D1 instance, account or external request was used.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 0,
+          "passed": 21,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "dbef3285f85298430713c176ab329720dda85e1ebff0f11aa28870449ef4bde7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+            "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a207941a",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "dd32d0073910ebe98cf3f9bed62192aa2ef009db2990f6c604b616772645fca9",
+        "payload_hash": "f84cd96a8caba690fa20d698970d192a093dcb6ec352ce4fadfeebdb6afba83c",
+        "recorded_at": "2026-11-02T18:56:25.812921+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+          "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+          "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+          "workers/companion-workspace/test/activity-streaks.test.mjs": "76d418dc946ec283463f920f2de3449cb205483fc03bcc1225151774826bf82c",
+          "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+          "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.28797941701486707
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Actual SDK and local Worker/D1 reads preserve full-journal day/coverage statistics, read scope separation, original context paging and account/source isolation, without commands or game effects.",
+        "criteria": [
+          "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+          "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+        ],
+        "id": "activity-mcp",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/activity-statistics-mcp.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/activity-statistics-mcp.test.mjs",
+          "workers/companion-workspace/src/activity-statistics-api.ts",
+          "workers/companion-workspace/src/activity-streaks.ts",
+          "workers/companion-workspace/src/task-api.ts",
+          "workers/shared/activity-streak-filter.ts",
+          "workers/shared/task-tools.ts",
+          "workers/chatgpt-mcp/src/task-tools.ts",
+          "workers/shared/build-identity.generated.ts",
+          "tests/fixtures/workspace/activity-streaks-v1.json",
+          "plugin/skills/habitica-activity-review/SKILL.md"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-daf2ec96-35d1-408b-91b7-485c5ba3985c",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 3,
+          "expected": 3,
+          "failed": 0,
+          "passed": 3,
+          "skipped": 0
+        },
+        "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+        "environment_identity": "e9a477173cfb4a8cd69852c6da0ed31294eed6ddc18c2f269eb86a1b2a83635a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-final-execution.log",
+            "sha256": "6d63cc7dddb21ef198f9018c8c10ce54b7c0b79297abf48bf3f2d9536c21d459"
+          }
+        ],
+        "execution_sessions": {
+          "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-a207941a",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+            "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+            ],
+            "profile_id": "activity-streaks-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-16d53395",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "9021665f277537accc5b22dd58fe9719642a2d6332f017df01bfdcbe4d6a8b0b",
+        "payload_hash": "8b21e3445ad6d8c528739181583ff371f723a58af3db89622bd35c6acca5fafc",
+        "recorded_at": "2026-11-02T18:52:23.689981+00:00",
+        "result": "pass",
+        "sources": {
+          "plugin/skills/habitica-activity-review/SKILL.md": "b2c270f11c6848019df7e89aca8134a9abc1ab86dd141ff079f199ba9e5fe918",
+          "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+          "workers/chatgpt-mcp/src/task-tools.ts": "a667530d54360d51e6ce2ef16f3f27724191b512534d8b5032e5efa649ed0f32",
+          "workers/companion-workspace/src/activity-statistics-api.ts": "19f5c9cb22477d16553757bd307d441497fcaa5afe0251521fa13eeea0411785",
+          "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+          "workers/companion-workspace/src/task-api.ts": "5075707b213a2edef24cfc177afe8ba2e0cc1d5f430dc5e6caccd51ffbbe981e",
+          "workers/companion-workspace/test/activity-statistics-mcp.test.mjs": "56c04e5e375301586f55925897a676b4b4f773b4839e96dc9266db1272bd6994",
+          "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+          "workers/shared/build-identity.generated.ts": "ddb7e13f7730b959172cead8e1203b475a25c54e04a6acae457f1912b17e9a84",
+          "workers/shared/task-tools.ts": "4e8d34a496192eeb1262c8d7bb346f572fa1cf52a2a63d2463c5cb7603793a91"
+        },
+        "timing": {
+          "tool_wall_seconds": 5.376165374880657
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+    "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/components-frozen-final-execution.log",
+      "sha256": "13190cef34de4328195770396f86069c539ab76e7b641e5ebead6ff0992265a0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/components-frozen-final.trx",
+      "sha256": "ced68a8d0a3ce0048d4d3a6cd79d1fc45f57a21d7f12a4c1e1df32467921c155"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-final-execution.log",
+      "sha256": "6d63cc7dddb21ef198f9018c8c10ce54b7c0b79297abf48bf3f2d9536c21d459"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+      "sha256": "168afbcae8d3cbfcd05e35e0675e47a3080dc4bdb46d927069fc81eabacf8722"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+      "sha256": "653d83eb4c3f92683c9d4324acbbb434aefe7614be3a36a4e39dc5091a5b89ac"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json",
+      "sha256": "02ee44e36dd24a7e3aee39523720666f8af4950398c40c0b034ed58d5aee31ef"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rules-frozen-fixture-final-execution.log",
+      "sha256": "bee6b0dbe8230f7aef2e2b6ba94b77798e78515f863ee42dae45b6d22b8db97d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/rules-frozen-fixture-final.trx",
+      "sha256": "5c2a58974b06198f4b7d5bb583934a692f9ff150a2fbcc580f03c1d28214cdbc"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+      "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/acceptance-findings.json",
+      "sha256": "adca17acfd1431834e2b84b47d9151c2d20f95e331265dcd3126a3436ee246d6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/worker-final-dry-builds.json",
+      "sha256": "33abbbf490041f9c71c11d9facf6d8918318ce27f3cd68d402c260e4bc448e53"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-auth-final-dry-build.log",
+      "sha256": "11e9d868410b168ca5cb5d6936368bee4436f0d3d44ab684da3b6f3151a4feb2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/companion-workspace-final-dry-build.log",
+      "sha256": "692d01b4412b498b220c4ed8f1e97fea02de4b3fc1033340f87795d168e66682"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/chatgpt-mcp-final-dry-build.log",
+      "sha256": "c8db8cd053b4b2781a988f0d468c58487f8b816a3e568d5d7eb92e4f47cc3083"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-93b4af73-0351-46ec-8cb1-0a53ebc086f3",
+  "limitations": [
+    "Historical terminal dates in a different timezone remain unknown rather than reinterpreted. Lifetime best remains unavailable; retained counts do not establish complete provider history or rewards.",
+    "Hosted OAuth, actual accounts, installed-PWA behavior, physical devices and assistive technologies remain unqualified. All changed components, packages and backend sources remain unpublished."
+  ],
+  "outcome": "Canonical Daily/Habit statistics distinguish verified runs, lower bounds, unavailable context and negative-only frequency using retained historical schedules, goal settings and causal witnesses. Exact as-of/timezone reads, reviewed MCP parity and private context-bound statistics controls pass current local source-matched qualification.",
+  "parent_pending_ids": [
+    "P-438c79fe-385d-4657-be24-85fad9a49c31"
+  ],
+  "recorded_at": "2026-11-02T19:02:08.895337+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "e8dc1fe53f3062f1bd8b284a207d7d7e42678dc16c5f90111d8b454a7dc5dd30",
+    ".skill-tree/documents/task-activity-coverage.md": "01eb07cba72fe6c41e9f0b30d9ebc16f79d7c8873e66ceea61af8f0edc5e3cac",
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "539a9a6ab3ef80e1ac3eda07719963b978d297bff9b5e0b24d66c6f562dd7900",
+    ".skill-tree/documents/ux-ui-manifest.md": "775756c934f518044228c1f76af8827fc6a46ae094d2d8c712cebee5d226a545",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "plugin/skills/habitica-activity-review/SKILL.md": "b2c270f11c6848019df7e89aca8134a9abc1ab86dd141ff079f199ba9e5fe918",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0ee09b11f6dbafd8eee4338830861a5d88f3235bbfe51a8e0b7cee0e6ead6991",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "878e7818dcd00a93ec4cb38382cb55432ed148d4ec3a8fa68058dac7946df782",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "97adbe510538e6fe1297ea3a990e287fe9ccae831232ba5123f0ce5feff31b9e",
+    "src/Habitica.WebApp/Components/TodoStatisticsChart.razor": "eb7e9f71b41122fae41f59011f459c70974e650f873d97f289c755dcba257d7d",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs": "bb6dc2e25871f08fb2e13d6c7edfeb53a0f2c254cc504b770a4b0aa9afee44df",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "a3d239a19d2d1c0ce39e35d9c421c78de9c387d8d73a4d5e450563884c72ed1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/activity-ui.mjs": "45f444b17ed7762910dc7cd7868c4e2c41258442df1c63b08c9557feadc8ead7",
+    "tests/browser/activity-ui.py": "c7796537d8282ec304b5d031c6c056ee95cb7e61bda597899abf682187d37fc0",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+    "workers/chatgpt-mcp/src/task-tools.ts": "a667530d54360d51e6ce2ef16f3f27724191b512534d8b5032e5efa649ed0f32",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+    "workers/companion-workspace/src/activity-statistics-api.ts": "19f5c9cb22477d16553757bd307d441497fcaa5afe0251521fa13eeea0411785",
+    "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+    "workers/companion-workspace/src/task-api.ts": "5075707b213a2edef24cfc177afe8ba2e0cc1d5f430dc5e6caccd51ffbbe981e",
+    "workers/companion-workspace/test/activity-statistics-mcp.test.mjs": "56c04e5e375301586f55925897a676b4b4f773b4839e96dc9266db1272bd6994",
+    "workers/companion-workspace/test/activity-streaks.test.mjs": "76d418dc946ec283463f920f2de3449cb205483fc03bcc1225151774826bf82c",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/build-identity.generated.ts": "ddb7e13f7730b959172cead8e1203b475a25c54e04a6acae457f1912b17e9a84",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f",
+    "workers/shared/task-tools.ts": "4e8d34a496192eeb1262c8d7bb346f572fa1cf52a2a63d2463c5cb7603793a91"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "title": "Show coverage-aware Daily and Habit activity streaks",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rules",
+      "parameters": {
+        "report_name": "activity-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules",
+        "test_filter": "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-components",
+      "parameters": {
+        "report_name": "activity-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components",
+        "test_filter": "FullyQualifiedName~Statistics",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rendering",
+      "parameters": {},
+      "recipe_id": "activity-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsChart.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json",
+        "tests/browser/activity-ui.py",
+        "tests/browser/activity-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "before-dependent-work"
+    },
+    {
+      "assertion": "Portable full-journal day/coverage cases match the independently asserted C# fixtures, including DST, pauses, corrections, negative-only activity, historical timezone refusal and context-bound paging. Malformed input and fabricated coverage refuse without writes.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/activity-streaks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/activity-streaks.test.mjs",
+        "workers/companion-workspace/src/activity-streaks.ts",
+        "workers/companion-workspace/src/activity-coverage-query.ts",
+        "workers/shared/activity-streak-filter.ts",
+        "workers/shared/recurrence-calendar.ts",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Actual SDK and local Worker/D1 reads preserve full-journal day/coverage statistics, read scope separation, original context paging and account/source isolation, without commands or game effects.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/activity-statistics-mcp.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/activity-statistics-mcp.test.mjs",
+        "workers/companion-workspace/src/activity-statistics-api.ts",
+        "workers/companion-workspace/src/activity-streaks.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/shared/activity-streak-filter.ts",
+        "workers/shared/task-tools.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/activity-streaks-v1.json",
+        "plugin/skills/habitica-activity-review/SKILL.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1"
+}

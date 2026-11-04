@@ -1,0 +1,61 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-92b68944-4893-42ee-b6d4-99e70bed0fb2",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 21,
+    "expected": 21,
+    "failed": 0,
+    "passed": 21,
+    "skipped": 0
+  },
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "a25016e09624df2c0f38112cdcaeaeab2b97ad73c6ba9d9acbc22e3cb80319af",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-execution.log",
+      "sha256": "0a65d82e6fb6625a06baf20111ef8bcfa237e35aae3fd9d400da1b9b5a31e93f"
+    }
+  ],
+  "execution_sessions": {
+    "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+      ],
+      "profile_id": "relative-tag-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-167fad4d",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "42978e4c20084ec371b531e57f7d4847c763a466464b0b23a97f5a15d7e93c13",
+  "payload_hash": "24071654e7537f032e5af391d1e080e47544edb3eb7f7e126b06f3f90df7b900",
+  "recorded_at": "2026-11-03T02:06:24.662986+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+    "workers/chatgpt-mcp/src/group-tag-tools.ts": "5e436c24670ebea7a8110c320cf402205aef8c4f2bd0f9384648f317e20b91e5",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "84c19e720535ad7520c0e90f1a1745addd32036406c6450a20fc355edec11238",
+    "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+    "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "20efd7b57f00242886098aef8575c3bb28bd0728f4e5be813724545e4818c5f4",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+    "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+  },
+  "timing": {
+    "tool_wall_seconds": 16.221507374895737
+  }
+}

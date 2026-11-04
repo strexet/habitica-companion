@@ -1,0 +1,13 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-components",
+  "launch": {
+    "assertion": "Canonical Daily/Habit day-series rules, historical schedules and goal directions, unknown coverage and private UI controls under isolated synthetic fixtures.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish historical calendar, causal coverage, as-of and component interaction behavior.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "deadline_utc": "2026-11-02T19:04:56.577410+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "activity-streaks-local-v1"
+  }
+}

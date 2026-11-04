@@ -1,0 +1,13 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "check_id": "history-wire",
+  "launch": {
+    "assertion": "Relative saved-date parity, one explicit clock/timezone context, guarded pagination and no task/provider mutations.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 definition authoring, interpreted date bounds or stale-day refusal.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "deadline_utc": "2026-11-02T22:45:17.375466+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "linked-conversion-wire-local-v1"
+  }
+}

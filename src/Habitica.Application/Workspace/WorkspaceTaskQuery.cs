@@ -11,7 +11,8 @@ public sealed record WorkspaceTaskFilter(string? Query = null, CompanionTaskKind
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null);
 
 public sealed record WorkspaceTaskPage(Guid WorkspaceId, long Revision, IReadOnlyList<CompanionTask> Tasks,
-    int MatchedCount, bool Truncated, int Offset, int? NextOffset);
+    int MatchedCount, bool Truncated, int Offset, int? NextOffset,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceRelativeDateEvaluation? Evaluation=null);
 
 public static class WorkspaceTaskQuery
 {

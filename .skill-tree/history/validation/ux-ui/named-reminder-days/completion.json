@@ -1,0 +1,492 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Named weekday and month-day controls produce the exact reviewed recurrence with correct Sunday and month-date identities.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+          "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+          "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/acceptance.json",
+          "sha256": "ee0aa0c74b6d87992bb8673316e82936ed7362481f77e8058fa2cef3219cee52"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+          "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Invalid selections receive specific associated messages while UTC cue, DST, consent and original-command safeguards remain intact.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+          "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+          "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/acceptance.json",
+          "sha256": "ee0aa0c74b6d87992bb8673316e82936ed7362481f77e8058fa2cef3219cee52"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+          "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Selection, retained editing and review are keyboard usable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+          "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+          "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/acceptance.json",
+          "sha256": "ee0aa0c74b6d87992bb8673316e82936ed7362481f77e8058fa2cef3219cee52"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+          "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Named weekday and month-day controls produce the exact reviewed recurrence with correct Sunday and month-date identities.",
+          "Invalid selections receive specific associated messages while UTC cue, DST, consent and original-command safeguards remain intact."
+        ],
+        "id": "named-reminder-days-behavior",
+        "parameters": {
+          "report_name": "named-reminder-days.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/named-reminder-days/unit",
+          "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 34,
+          "expected": 34,
+          "failed": 2,
+          "passed": 32,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.log",
+            "sha256": "993cf05081ea8e7dc84a5dab9411c1d2557af0b82bf5598206c68212320dbd27"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.trx",
+            "sha256": "6707411aa4c089ead9dbd7726c711fef2eeed1debb7ad4ed1c1d1652bf7c65ca"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "2227c80fc517c22924f54a12710158c34327ce62cb1bd2856c7fc49f7a27b2c4",
+        "payload_hash": "b3022b2de2f0275b94fbd8ed1e4cc6bdb5259cf03f3ec91d630296db0405dd2e",
+        "recorded_at": "2026-11-03T23:07:56.375015+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "f169253b9bec0d62042089342933b75f31322f00347769815fc0be3e3af15222",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "ca84323ca5db10d53a0893d4a6bcaf53950f740c8b7e8b992b76576c6eaaf11f",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.012217957992107
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f0cef8eb-8008-481f-a07a-ebf5a340ffad",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 35,
+          "expected": 35,
+          "failed": 0,
+          "passed": 35,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+            "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+            "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+          }
+        ],
+        "execution_sessions": {
+          "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+            ],
+            "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:29:37.168266+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747617168474000.json"
+            ],
+            "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "0c6ab08cea2587a5921c15b8a24cf5e269de5518428876a0fc9a108bcf16ed57",
+        "payload_hash": "a8ed03a6e4a04b7bb7a30c52a9277786d28f7024d5d14fc0fb41c67cdeacb079",
+        "recorded_at": "2026-11-03T23:17:41.990199+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.306993540842086
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Selection, retained editing and review are keyboard usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Selection, retained editing and review are keyboard usable across the required rendered matrix."
+        ],
+        "id": "named-reminder-days-rendered",
+        "parameters": {
+          "cases": "All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser",
+          "routes": [
+            "/todo/reminders",
+            "/todo/tasks"
+          ],
+          "task_key": "named-reminder-days"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-378e4596-6612-41e6-acb9-59ccc780941c",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 721,
+          "expected": 721,
+          "failed": 0,
+          "passed": 721,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "3db379d29c7d9fd6ad669c5895aaff8f67738d14b8c16076b5e5a470d4db0eee",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+            "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+          }
+        ],
+        "execution_sessions": {
+          "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+            ],
+            "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:33:43.549692+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747863549942000.json"
+            ],
+            "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "cace77239d49cb8d60875090a795e48a5818afc046b6c797341db847d7a0bee6",
+        "payload_hash": "47ab3730aeb41e1225f7043009e5d26f739d75bf6d066b626a0fea7714fd21a1",
+        "recorded_at": "2026-11-03T23:20:40.347983+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 175.57541712513193
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/acceptance.json",
+      "sha256": "ee0aa0c74b6d87992bb8673316e82936ed7362481f77e8058fa2cef3219cee52"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/operation-history.json",
+      "sha256": "c1c1e85edc5decac10c8473624961a7cd595b1d5d460a10ce862e1bff6a90bb8"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-a2d4e215-9095-4ddd-ba5d-31e6a52aa6af",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Use named day controls for repeating push reminders. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8"
+  ],
+  "recorded_at": "2026-11-03T23:21:02.004865+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "520c80fd988ee1cfb51fdfb75a9c247dd6419c30b580fda34c5ea170286f1326",
+    ".skill-tree/documents/testing.md": "e9cd8eeb2a132710205485d2e5b1aa54b9a769872ac0fc03c14f9d2d3a68e813",
+    ".skill-tree/documents/ux-ui-manifest.md": "d46dac5f7173e3404bd087b224087762479139c902c201c10cc049402f67c056",
+    "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+    "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "813a77241a3124d140bd8f5d71d46c9b831c9be83b9580710089c5bdd91a4e76",
+    "tests/browser-qualification/ux-ui-reminder-days-journey.mjs": "8f70daae9c5c3d80bd918f59625cb5f49036fc391673ae34963ff263ad94f286"
+  },
+  "task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+  "title": "Use named day controls for repeating push reminders",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Named weekday and month-day controls produce the exact reviewed recurrence with correct Sunday and month-date identities.",
+        "Invalid selections receive specific associated messages while UTC cue, DST, consent and original-command safeguards remain intact."
+      ],
+      "id": "named-reminder-days-behavior",
+      "parameters": {
+        "report_name": "named-reminder-days.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/named-reminder-days/unit",
+        "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Selection, retained editing and review are keyboard usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Selection, retained editing and review are keyboard usable across the required rendered matrix."
+      ],
+      "id": "named-reminder-days-rendered",
+      "parameters": {
+        "cases": "All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser",
+        "routes": [
+          "/todo/reminders",
+          "/todo/tasks"
+        ],
+        "task_key": "named-reminder-days"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad"
+}

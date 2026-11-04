@@ -1,0 +1,7 @@
+{
+  "attempt": "C-ad486251-33c9-4e32-8b94-203bfcfc713e",
+  "classification_correction": "Compilation prerequisite failed before discovery. The temporary orchestration script read a prior raw TRX. The failed receipt must not establish test discovery or acceptance.",
+  "resolution": "Keep the original failed receipt. Delete only the disposable raw TRX before each future focused run; immutable per-attempt copied evidence remains preserved. Use a Task-returning Razor event handler.",
+  "affected_browser_attempt": "C-2630d332-e489-4275-8707-770425b8047c",
+  "browser_classification_correction": "Release compilation failed before any browser or owned server launched."
+}

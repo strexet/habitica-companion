@@ -1,0 +1,72 @@
+{
+  "identity": {
+    "projectRoot": "/Users/petr/Projects/habitica-tool/",
+    "storageSha256": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "fixtureSha256": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "node": "v22.12.0",
+    "pid": 76504,
+    "startedAt": "2026-11-02T18:03:23.569Z",
+    "origin": "http://127.0.0.1:64678"
+  },
+  "results": [
+    {
+      "engine": "chromium",
+      "checks": [
+        "Legacy IndexedDB upgrade preserves unrelated store data",
+        "Lost folder-only acknowledgment retains the original receipt without a fabricated note",
+        "Original folder-only revision cannot commit twice",
+        "Exact note membership commits after a folder revision",
+        "An aborted folder rename preserves the complete previous journal",
+        "Concurrent folder writers admit one original revision",
+        "Portable note revision 4 commits",
+        "Portable folder revision 5 commits",
+        "Accepted folder receipts remain immutable after removal",
+        "A legacy writer cannot drop folder metadata",
+        "Removed folder tombstones cannot be resurrected by a later writer",
+        "Folder journals remain account separated",
+        "Synthetic canonical project authority is isolated and persisted",
+        "Stale Workspace authority rolls back a new project folder",
+        "Exact current canonical authority permits a project-folder commit",
+        "A concurrent canonical project archival persists",
+        "Archived project authority refuses a guarded folder write without changing Notes",
+        "Foreign account proof cannot authorize project folders",
+        "Exact Markdown, historical folder references and removed identities survive reload",
+        "Explicit Notes cleanup preserves unrelated stores"
+      ]
+    },
+    {
+      "engine": "webkit",
+      "checks": [
+        "Legacy IndexedDB upgrade preserves unrelated store data",
+        "Lost folder-only acknowledgment retains the original receipt without a fabricated note",
+        "Original folder-only revision cannot commit twice",
+        "Exact note membership commits after a folder revision",
+        "An aborted folder rename preserves the complete previous journal",
+        "Concurrent folder writers admit one original revision",
+        "Portable note revision 4 commits",
+        "Portable folder revision 5 commits",
+        "Accepted folder receipts remain immutable after removal",
+        "A legacy writer cannot drop folder metadata",
+        "Removed folder tombstones cannot be resurrected by a later writer",
+        "Folder journals remain account separated",
+        "Synthetic canonical project authority is isolated and persisted",
+        "Stale Workspace authority rolls back a new project folder",
+        "Exact current canonical authority permits a project-folder commit",
+        "A concurrent canonical project archival persists",
+        "Archived project authority refuses a guarded folder write without changing Notes",
+        "Foreign account proof cannot authorize project folders",
+        "Exact Markdown, historical folder references and removed identities survive reload",
+        "Explicit Notes cleanup preserves unrelated stores"
+      ]
+    }
+  ],
+  "counts": {
+    "expected": 40,
+    "discovered": 40,
+    "passed": 40,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "Owned loopback server and both persistent browser contexts closed; generated temporary profiles removed. No actual user database, credentials, network service or device permission used.",
+  "artifactPath": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb-1793642605813-76504.json"
+}

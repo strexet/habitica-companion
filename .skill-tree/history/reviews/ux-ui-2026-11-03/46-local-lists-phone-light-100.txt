@@ -1,0 +1,112 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - heading "Saved lists" [level=1]
+  - link "Tasks and subtasks":
+    - /url: /todo/tasks
+  - paragraph: Save a named selection of existing Companion tasks. Lists create no tasks or game effects. Choose fixed ranges or explicit relative planned/deadline presets in a UTC/IANA timezone. Relative dates are interpreted when read; custom expressions are unavailable.
+  - generic "Cloud Workspace · rev 10"
+  - paragraph:
+    - text: Task creation, field edits and scoring require Habitica correspondence. Cloud task execution is unavailable. Canonical saves do not confirm Habitica presence or rewards.
+    - link "Open Todo Sync":
+      - /url: /todo/sync
+  - alert: Use ordered absolute ranges or one relative preset per date field, an explicit UTC/IANA timezone for relative dates, up to256 search characters and supported filters. Clear conflicting fixed dates explicitly. Stage filters require active Todos. Unblocked Todos source requires empty type and state filters.
+  - heading "New saved list" [level=2]
+  - text: List name
+  - textbox "List name": Today and overdue
+  - text: Source
+  - combobox "Source":
+    - option "Tasks" [selected]
+    - option "Unblocked active Todos"
+  - paragraph: Choosing Unblocked active Todos clears the type/state filters; the source already requires active Todos with every prerequisite completed. Other filters remain explicit. Stage filters only select active Todos.
+  - text: Search titles and notes (plain text)
+  - textbox "Search titles and notes (plain text)"
+  - text: Task type
+  - combobox "Task type":
+    - option "Any type permitted by source" [selected]
+    - option "Todo"
+    - option "Daily"
+    - option "Habit"
+  - text: Task state
+  - combobox "Task state":
+    - option "Any state permitted by source" [selected]
+    - option "Active"
+    - option "Completed"
+    - option "Waiting"
+    - option "Someday"
+    - option "Paused"
+    - option "Cancelled"
+  - text: Urgency
+  - combobox "Urgency":
+    - option "Any urgency" [selected]
+    - option "Low"
+    - option "Normal"
+    - option "High"
+    - option "Urgent"
+  - text: Active Todo stage
+  - combobox "Active Todo stage":
+    - option "Any stage" [selected]
+    - option "Inbox"
+    - option "Next"
+    - option "In progress"
+  - text: Project filter
+  - combobox "Project filter":
+    - option "Any project" [selected]
+  - text: Category filter
+  - combobox "Category filter":
+    - option "Any category" [selected]
+  - text: Label filter
+  - combobox "Label filter":
+    - option "Any label" [selected]
+  - text: Habitica mapping state
+  - combobox "Habitica mapping state":
+    - option "Any mapping state" [selected]
+    - option "Unlinked"
+    - option "Pending"
+    - option "Linked"
+    - option "ExternalConflict"
+    - option "UnknownOutcome"
+  - text: Relative planned date
+  - combobox "Relative planned date":
+    - option "Use fixed range or any date"
+    - option "Today" [selected]
+    - option "Before today"
+    - option "Next seven days including today"
+    - option "This week (Monday–Sunday)"
+    - option "No date"
+  - text: Relative deadline
+  - combobox "Relative deadline":
+    - option "Use fixed range or any date"
+    - option "Today"
+    - option "Before today" [selected]
+    - option "Next seven days including today"
+    - option "This week (Monday–Sunday)"
+    - option "No date"
+  - text: Explicit UTC or IANA timezone
+  - textbox "Explicit UTC or IANA timezone": UTC
+  - text: Planned from (fixed date)
+  - textbox "Planned from (fixed date)" [disabled]
+  - text: Planned through (fixed date)
+  - textbox "Planned through (fixed date)" [disabled]
+  - text: Deadline from (fixed date)
+  - textbox "Deadline from (fixed date)" [disabled]
+  - text: Deadline through (fixed date)
+  - textbox "Deadline through (fixed date)" [disabled]
+  - button "Review complete definition":
+    - generic: Review complete definition
+  - button "Clear filters (keep source)":
+    - generic: Clear filters (keep source)
+  - button "New definition":
+    - generic: New definition
+  - button "Reload editor context":
+    - generic: Reload editor context
+  - region "Saved definitions":
+    - heading "Saved definitions" [level=2]
+    - paragraph: No active saved definitions on this page.
+    - generic: 0 active definitions
+    - button "Previous definitions" [disabled]:
+      - generic: Previous definitions
+    - button "Next definitions" [disabled]:
+      - generic: Next definitions
+  - region "Saved list results":
+    - heading "Selected list" [level=2]
+    - paragraph: Open a saved definition to read matching tasks. No implicit all-task fallback is selected.

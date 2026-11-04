@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep recurring task identities readable beside row actions",
+    "description": "Current hydrated768-pixel Daily qualification shows the auto-width action column squeezing task title, public reference, state and Notes into a glyph-wide column. Open Notes has no visible content area. The shared raw-list layout also renders Habits.",
+    "expected_behavior": "Give recurring task identity and action areas usable minimum widths, wrapping into stacked rows when both areas cannot fit. Preserve exact actions, occurrence inputs and original review fences.",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "related_task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/daily-occurrence-readability/1793733000383594000/failure.png and failure.html; todo-direct-row minmax(0,1fr) auto and todo-row-actions max25rem.",
+    "priority_reason": "Row layout hides the selected task identity and native Notes despite bounded outer document width; required occurrence/name acceptance cannot proceed.",
+    "expected_source_hash": "e2c3234d85a28f18016bd02bb7b40c91e60b38fa9cf05c7893f8341d298d4497"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-5403c100-334b-41bf-9f4b-0d4a66794ea5",
+    "parent_pending_ids": [],
+    "priority": 108,
+    "processing_run_id": null,
+    "related_task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+    "relation": "blocker",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "status": "Pending"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "assertion": "Actual Release Blazor routing/hydration and real persistent IndexedDB confirm reviewed standalone/project folder-note creation, exact Markdown reload and unsaved unfiled import on Chromium and WebKit. Synthetic provider responses do not establish live provider or hosted behavior.",
+  "attempt_id": "C-2a3bd9b8-207a-4700-86c9-b5d9af2c4146",
+  "check_id": "notes-hydrated-journeys",
+  "definition": "6f506170e5cbe7d10f27f416c8cc6a5882a7fc1552afd3a0f1b4c5fa790551f7",
+  "environment_identity": "54357a6f73f9a593a90c300d417141f473e632fcd61d9e9afdd65d0a467d94ad",
+  "key": "d7a0d300afcf9dc3a9fb042e7cf8a7f791ddf0ae0abdc08b2c7fd918611660f9",
+  "launch": null,
+  "prepared_at": "2026-11-02T17:47:47.058412+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/notes-ui.py",
+      "journeys"
+    ],
+    "execution_notes": "Bounded Release publish and current Razor capture precede128 light/obsidian phone/desktop100/200-percent state cases and2 actual hydrated /notes + /todo/projects journeys on isolated persistent profiles and real IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, device, hosted qualification or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/notes-ui.py",
+      "tests/browser/notes-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+    "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+    "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+    "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+    "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/notes-ui.mjs": "f2bc0a0cb5efc74d34f164f48e6587cb0fdec4da532d2a34111a963f3ded636d",
+    "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+  },
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d"
+}

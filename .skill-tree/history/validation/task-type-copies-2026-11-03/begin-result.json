@@ -1,0 +1,71 @@
+{
+  "checks": [
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rules",
+      "parameters": {
+        "report_name": "conversion-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-components",
+      "parameters": {
+        "report_name": "conversion-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/conversion-api.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/conversion-api.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

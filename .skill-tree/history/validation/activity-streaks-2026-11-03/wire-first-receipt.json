@@ -1,0 +1,38 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-3b42c5b2-525c-44e6-ab88-56d370d8ce70",
+  "classification": "executed-control",
+  "cleanup": "The pure Node portable-journal controls exited. No server, browser profile, Miniflare/D1 instance, account or external request was used.",
+  "counts": {
+    "discovered": 18,
+    "expected": 18,
+    "failed": 0,
+    "passed": 18,
+    "skipped": 0
+  },
+  "definition": "983ace06a4187a98d7d1f7865ff5c0dccfe18c9853941567a91d005b43aaf041",
+  "environment_identity": "2366f31c66bde9e576e5aaaa07f769fd9ea69215da7149aa047e59511d485c22",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-first-execution.log",
+      "sha256": "eb6692947edcef1d416b051f472194265d3d22b8e02f85395307c1be57023d26"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "0456dfb3c1737e971266f8ce17ef859edc014147c27ad12feccca4834c04d49d",
+  "payload_hash": "7d5b0f7fc736388e7b81164cbc544f4980a8a3e4af0205b7c69db12dae061a73",
+  "recorded_at": "2026-11-02T18:21:40.682810+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+    "workers/companion-workspace/src/activity-streaks.ts": "51f7e692de020c0c17123b7b9de62d32301a272f3d48237267ba72581cbe0482",
+    "workers/companion-workspace/test/activity-streaks.test.mjs": "95a9e1cb255da3bca22bcac8294483ef3de0ffddee683be32144cbb6c356e177",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f"
+  },
+  "timing": {
+    "tool_wall_seconds": 0.30708854203112423
+  }
+}

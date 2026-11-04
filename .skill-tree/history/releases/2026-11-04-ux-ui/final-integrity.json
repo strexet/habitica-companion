@@ -1,0 +1,41 @@
+{
+  "parked_checkpoints": [
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-58676666-0043-43fa-b934-02eff3e3ead6-2026-10-19.json",
+      "unchanged": true
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-4aa3ced0-8469-45b5-90ce-c0bd51c19114.json",
+      "unchanged": true
+    }
+  ],
+  "whitespace": {
+    "exit_code": 0
+  },
+  "checks": {
+    "documentation": {
+      "exit_code": 0,
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    },
+    "future": {
+      "exit_code": 0,
+      "ok": true,
+      "errors": []
+    },
+    "whitespace": {
+      "exit_code": 0
+    }
+  }
+}

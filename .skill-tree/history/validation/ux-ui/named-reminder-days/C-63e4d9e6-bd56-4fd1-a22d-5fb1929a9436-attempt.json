@@ -1,0 +1,67 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-63e4d9e6-bd56-4fd1-a22d-5fb1929a9436",
+  "check_id": "named-reminder-days-behavior",
+  "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+  "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+  "key": "3824be27b544d11f2ba2deb24b67fd7e572de7571cd96ac931d600b12bc32ef9",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T23:14:25.599178+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T23:09:25.898824+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+      "--logger",
+      "trx;LogFileName=named-reminder-days.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/named-reminder-days/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "8463ec5d696266ece4095b36afc87af8ddfdd38fbae9b4b77d4f6e78fa8035d4",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+  },
+  "task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a"
+}

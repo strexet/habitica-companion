@@ -1,0 +1,17 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/compact-navigation/1793736990257595000",
+  "reviewed": [
+    "webkit-obsidian-glow-1280-100-compact-inventory.png"
+  ],
+  "prior_primary_view": ".skill-tree/artifacts/ux-ui/compact-navigation/1793736680318935000/chromium-gryphy-light-360-200-compact-today.png",
+  "observations": [
+    "Collapsed active Game tools retains the current-section inset marker and bold summary. Expanded groups leave the exact selected link as the current cue.",
+    "All four frequent planning links remain in the initial drawer viewport at enlarged phone text under current native geometry assertions.",
+    "Every declared route is reached by keyboard; native summaries, capture link, Escape/focus and exact journal equality pass across the complete matrix."
+  ],
+  "limitations": [
+    "Existing enlarged header Sync status clipping is a separate captured followup.",
+    "Physical devices and assistive technology remain unqualified."
+  ]
+}

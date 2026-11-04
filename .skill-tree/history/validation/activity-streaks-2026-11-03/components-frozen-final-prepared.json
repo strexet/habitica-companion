@@ -1,0 +1,72 @@
+{
+  "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+  "attempt_id": "C-d4f5dfc2-8f86-4041-a0eb-594aafc356dc",
+  "check_id": "activity-components",
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "c95159a7ea87d2c3e7496694636a26aec29dcc713196315eabd161f0734d539f",
+  "key": "87aed8d091f7fad303413353fb4ea96f99a87431ae272cf202f505185118e997",
+  "launch": {
+    "assertion": "Canonical Daily/Habit day-series rules, historical schedules and goal directions, unknown coverage and private UI controls under isolated synthetic fixtures.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish historical calendar, causal coverage, as-of and component interaction behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T19:04:56.577410+00:00",
+    "execution_profile": "activity-streaks-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T18:56:56.967345+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Statistics",
+      "--logger",
+      "trx;LogFileName=activity-components.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0ee09b11f6dbafd8eee4338830861a5d88f3235bbfe51a8e0b7cee0e6ead6991",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "97adbe510538e6fe1297ea3a990e287fe9ccae831232ba5123f0ce5feff31b9e",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "a3d239a19d2d1c0ce39e35d9c421c78de9c387d8d73a4d5e450563884c72ed1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

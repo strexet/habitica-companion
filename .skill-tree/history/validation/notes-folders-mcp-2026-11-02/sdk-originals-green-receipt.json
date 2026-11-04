@@ -1,0 +1,40 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-77fb16f1-9326-497b-95ac-66c80f7a47d4",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 8,
+    "expected": 8,
+    "failed": 1,
+    "passed": 7,
+    "skipped": 0
+  },
+  "definition": "dd0e1b65d4a13e08969e95b6bf2d6c9e5247c12007023f2eff6eb6ee57d9050a",
+  "diagnostic_key": "5a6f061e1cf6fa1ac17f7a660410da7f689f6083a964c12702d6dc931e5a05f1",
+  "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/sdk-originals-green-execution.log",
+      "sha256": "78e2f0fe1946143d47843d9917a846fc050ed2c7fd1113a308879a53f9184148"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "notes_owner_api_failureType: 'testCodeFailure'",
+  "key": "ab37bc272c56652b285cd0fc9edb73d05f9bec0c3bdade83586e7db3429dc95e",
+  "payload_hash": "08e11e846470166f55f849f2476657a5d2b9d2d9e722335c71594393f6e799e6",
+  "recorded_at": "2026-11-02T17:07:46.488435+00:00",
+  "result": "fail",
+  "sources": {
+    "plugin/skills/habitica-notes/SKILL.md": "08d5458c56cdc49b185bff82483fd6afd5cef6bf3c58ed31cce5a8bac3fa4eef",
+    "workers/chatgpt-mcp/src/note-tools.ts": "aae1c4782df0a0e8bc67665a94f3f4552c6d8f5762b7d43ef69ab88d65814d1c",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-tools-api.ts": "c10662e5ad8aa8c9ba594a3002bdd1f3c464464e74b09910de12f5601fef3968",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "db32ecb3001ccffdb31210f64c8ba7c7480396953ea8245b5b5cff368c93cac4",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3"
+  },
+  "timing": {
+    "tool_wall_seconds": 9.393755750032142
+  }
+}

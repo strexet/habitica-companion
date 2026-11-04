@@ -1,0 +1,119 @@
+{
+  "checks": [
+    {
+      "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+      "criteria": [
+        "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures."
+      ],
+      "id": "qualification-contract",
+      "parameters": {
+        "review": "recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity"
+      },
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+      "criteria": [
+        "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass."
+      ],
+      "id": "qualification-canaries",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+      ],
+      "id": "ui-qualification-rendered",
+      "parameters": {
+        "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+        "expected_product_baseline_failures": [
+          "unfixed disabled readability",
+          "unfixed native date content clipping"
+        ],
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "mode": "harness-canaries-and-baseline-observation",
+        "report_directory": ".skill-tree/history/validation/ux-ui/ui-qualification/browser",
+        "routes": [
+          "/todo/today",
+          "/todo/tasks",
+          "/todo/dailies",
+          "/notes",
+          "/inventory",
+          "/settings"
+        ],
+        "task_key": "ui-qualification"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.py",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-shared-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+}

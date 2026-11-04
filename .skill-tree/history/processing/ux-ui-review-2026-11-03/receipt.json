@@ -1,0 +1,184 @@
+{
+  "created_ids": [
+    "T-21881802-f186-479d-9111-295192ce2de8",
+    "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+    "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+    "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+    "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+    "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "T-84818186-be62-46d9-be33-c237da0054f2",
+    "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+    "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+    "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+    "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+    "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+    "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+    "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+    "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+    "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+    "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+    "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+    "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+    "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+    "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "dispositions": {
+    "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-10dedd84-9a90-447e-bf89-c3dcb81affc7": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-1ffff778-5db1-447c-95f7-fde01d72e70c": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-2897d6c0-a804-41fe-9d92-091049683fa3": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-49528543-08db-4727-a2ca-bf390aa3b7d5": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-ae822766-780c-4584-a33f-d8978ee060c0": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-b302aa68-7d63-4f74-9aa7-338c56700923": {
+      "reason": "Current source and review evidence support scoped Ready work. A shared required qualification task closes disabled-text and native-date validation gaps.",
+      "status": "promoted"
+    },
+    "P-b7836285-3b2f-434b-8716-cd3e78482dda": {
+      "reason": "Current source and review evidence support scoped Ready work. A shared required qualification task closes disabled-text and native-date validation gaps.",
+      "status": "promoted"
+    },
+    "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-d3155b74-ab23-4ed6-8073-e794af664988": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-d3dd549c-426f-4e67-9061-df88247cba31": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-ec998b4e-f73d-47cc-a884-06b5619f717c": {
+      "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+      "status": "promoted"
+    },
+    "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45": {
+      "reason": "Current source and review evidence support scoped Ready work. Split game controls and workspace/private-sync controls into independent tasks.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea",
+    "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6",
+    "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635",
+    "P-10dedd84-9a90-447e-bf89-c3dcb81affc7",
+    "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539",
+    "P-49528543-08db-4727-a2ca-bf390aa3b7d5",
+    "P-2897d6c0-a804-41fe-9d92-091049683fa3",
+    "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2",
+    "P-d3155b74-ab23-4ed6-8073-e794af664988",
+    "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330",
+    "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139",
+    "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7",
+    "P-ec998b4e-f73d-47cc-a884-06b5619f717c",
+    "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb",
+    "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0",
+    "P-1ffff778-5db1-447c-95f7-fde01d72e70c",
+    "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8",
+    "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45",
+    "P-b7836285-3b2f-434b-8716-cd3e78482dda",
+    "P-b302aa68-7d63-4f74-9aa7-338c56700923",
+    "P-ae822766-780c-4584-a33f-d8978ee060c0",
+    "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b",
+    "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f",
+    "P-d3dd549c-426f-4e67-9061-df88247cba31"
+  ],
+  "task_keys": {
+    "accessible-shell": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+    "bounded-companions": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+    "canonical-destinations": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "category-headings": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+    "compact-navigation": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+    "copy-unset-values": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+    "daily-form-order": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+    "daily-timezones": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+    "dashboard-freshness": "T-21881802-f186-479d-9111-295192ce2de8",
+    "disabled-readability": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "equipment-count-wrap": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+    "equipment-discovery": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+    "game-control-names": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "named-reminder-days": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+    "native-date-reflow": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+    "phone-notes-editor": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+    "projects-browse-first": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+    "push-capability-state": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+    "saved-list-errors": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+    "saved-list-layout": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+    "settings-sections": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+    "sync-timestamp": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+    "today-work-first": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "ui-qualification": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "workspace-control-names": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "workspace-readiness": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+  }
+}

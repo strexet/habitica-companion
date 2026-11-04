@@ -1,0 +1,123 @@
+{
+  "body": "### Extend shared UI qualification for disabled text and native date content\n\n```yaml\nid: T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0\npriority: 105\nstatus: Ready\nparent_pending_ids: [\"P-b7836285-3b2f-434b-8716-cd3e78482dda\", \"P-b302aa68-7d63-4f74-9aa7-338c56700923\"]\nprocessing_run_id: PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8\nroot_task_id: T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0\nrelated_task_id: null\nrelation: main\ndepends_on: []\n```\n\nGoal:\nExtend shared UI qualification for disabled text and native date content.\n\nCurrent behavior:\nThe audit matrix covers rendered Razor geometry and enabled text. Disabled text is deliberately skipped and native date text is absent from sampled text nodes. Existing specialist runners already provide current Release, Chromium/WebKit, isolated IndexedDB and hydrated journey foundations; a generic changed-route recipe is absent.\n\nDesired behavior:\nExtend the existing browser-qualification core with a parameterized ux-ui-rendered-browser recipe. Add route/state selection and a semantic journey-adapter interface. The shared task owns representative date and disabled-control adapters; each dependent task owns the affected route/state journey adapter. Use a runner interface that reads the selected task key from future.md and writes the declared report directory; recipe argv placeholders bind task_key and report_directory. Register the recipe in validation-recipes.json and refresh the installed profile before preparing dependent checks. Add explicit disabled foreground/surface sampling and native-date visual/read/edit checks, including positive and deliberately broken canaries. Preserve specialist runners and use existing synthetic fixtures rather than creating another application framework.\n\nTouch:\n- `tests/browser-qualification/prepare.py`\n- `tests/browser-qualification/qualification-core.mjs`\n- `tests/browser-qualification/qualification-frame.mjs`\n- `tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs`\n- `.skill-tree/validation-recipes.json`\n- `.skill-tree/installation/profile.json`\n- `.skill-tree/documents/testing.md`\n- `tests/browser-qualification/ux-ui-checks.test.mjs`\n\n- `tests/browser-qualification/ux-ui.py`\n- `tests/browser-qualification/ux-ui.mjs`\n- `tests/browser-qualification/ux-ui-contract.mjs`\n- `tests/browser-qualification/ux-ui-native-date.mjs`\n- `tests/browser-qualification/ux-ui-shared-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nThe planned recipe is unavailable until recipe registration and profile refresh complete. Dependent tasks declare a dependency on the qualification task. No application appearance fix belongs in the harness task. Validate the harness with readable synthetic controls and seeded negative controls; report known unfixed product baseline failures as expected detected regressions rather than requiring the harness task to fix dependent product issues. Product-disabled text uses an explicit 3:1 readability floor; inactive controls are exempt from WCAG text-contrast conformance. Native date value and outer bounds alone cannot pass content visibility. Record manual visual evidence when native shadow content prevents a reliable automatic visibility assertion, and block acceptance when required evidence is missing.\nUse existing application commands and reviewed MCP contracts. Capture any newly discovered browser-only supported agent action as a separate scoped parity bug; presentation changes grant no new execution authority. No live provider mutation, deployment, publication or consent is authorized by processing. Local build/test authorization must be checked against the active implementation instruction and testing.md before execution. Physical devices, assistive technology and hosted qualification remain separate from desktop emulation.\n\nValidation:\nUse test-first behavior slices for meaningful interaction or state changes. A layout-only change uses a failing rendered regression rather than a markup-mirroring unit test. The shared qualification task registers ux-ui-rendered-browser and refreshes the profile before any dependent browser check. The audit baseline is research evidence, not fix acceptance. Changed routes require all declared widths, text sizes and light/dark schemes, including obsidian-glow. Browser checks use owned current Release fixtures, isolated synthetic data, bounded readiness/deadlines and verified cleanup; no real account or provider write. Missing required checks block completion.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"qualification-contract\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.\"\n      ],\n      \"sources\": [\n        \".skill-tree/validation-recipes.json\",\n        \".skill-tree/installation/profile.json\",\n        \".skill-tree/documents/testing.md\"\n      ],\n      \"parameters\": {\n        \"review\": \"recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity\"\n      },\n      \"assertion\": \"The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"qualification-canaries\",\n      \"recipe_id\": \"node-focused-tests\",\n      \"criteria\": [\n        \"Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass.\"\n      ],\n      \"sources\": [\n        \"tests/browser-qualification/ux-ui-checks.test.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/ux-ui-contract.mjs\"\n      ],\n      \"parameters\": {\n        \"test_file\": \"tests/browser-qualification/ux-ui-checks.test.mjs\"\n      },\n      \"assertion\": \"A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"ui-qualification-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects.\"\n      ],\n      \"sources\": [\n        \"tests/browser-qualification/prepare.py\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \".skill-tree/validation-recipes.json\",\n        \".skill-tree/installation/profile.json\",\n        \".skill-tree/documents/testing.md\",\n        \"tests/browser-qualification/ux-ui-checks.test.mjs\",\n        \"tests/browser-qualification/ux-ui.py\",\n        \"tests/browser-qualification/ux-ui.mjs\",\n        \"tests/browser-qualification/ux-ui-contract.mjs\",\n        \"tests/browser-qualification/ux-ui-native-date.mjs\",\n        \"tests/browser-qualification/ux-ui-shared-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"ui-qualification\",\n        \"routes\": [\n          \"/todo/today\",\n          \"/todo/tasks\",\n          \"/todo/dailies\",\n          \"/notes\",\n          \"/inventory\",\n          \"/settings\"\n        ],\n        \"cases\": \"A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/ui-qualification/browser\",\n        \"mode\": \"harness-canaries-and-baseline-observation\",\n        \"expected_product_baseline_failures\": [\n          \"unfixed disabled readability\",\n          \"unfixed native date content clipping\"\n        ]\n      },\n      \"assertion\": \"An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.\n- Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass.\n- An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects.\n\nDocumentation updates:\nUpdate `.skill-tree/documents/ux-ui-manifest.md` for changed behavior and `.skill-tree/documents/testing.md` for changed qualification contracts. Update `.skill-tree/documents/features.md` when a user flow materially changes. Record exact task-scoped acceptance artifacts and explicit untested paths.\n\nResearch provenance:\n- Findings F19, F20 in `.skill-tree/history/reviews/ux-ui-2026-11-03/report.md`; original screenshots and source identity remain in the review directory.\n- Processing decisions, source/test fingerprints and validation availability: `.skill-tree/history/processing/ux-ui-review-2026-11-03/research.json`.\n\n",
+  "checks": [
+    {
+      "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+      "criteria": [
+        "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures."
+      ],
+      "id": "qualification-contract",
+      "parameters": {
+        "review": "recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity"
+      },
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+      "criteria": [
+        "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass."
+      ],
+      "id": "qualification-canaries",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+      ],
+      "id": "ui-qualification-rendered",
+      "parameters": {
+        "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+        "expected_product_baseline_failures": [
+          "unfixed disabled readability",
+          "unfixed native date content clipping"
+        ],
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "mode": "harness-canaries-and-baseline-observation",
+        "report_directory": ".skill-tree/history/validation/ux-ui/ui-qualification/browser",
+        "routes": [
+          "/todo/today",
+          "/todo/tasks",
+          "/todo/dailies",
+          "/notes",
+          "/inventory",
+          "/settings"
+        ],
+        "task_key": "ui-qualification"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.py",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-shared-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "priority": 105,
+  "root_task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "title": "Extend shared UI qualification for disabled text and native date content"
+}

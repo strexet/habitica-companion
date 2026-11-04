@@ -1,0 +1,10 @@
+{
+  "original_failure": "b81c3627-cb0a-4578-90b3-ae90c6897d4a",
+  "observed": "Opening ColorSchemePanel reapplies current service-owned saved scheme. Direct paint setup does not update service-owned scheme; first dark case returns saved light.",
+  "correction": "When exercising appearance, explicitly select matrix scheme through actual color-scheme control before closing. Product handlers unchanged; final observed scheme remains asserted.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

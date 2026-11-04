@@ -1,0 +1,50 @@
+{
+  "task_id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+  "title": "Organize Settings around clear account and data-management sections",
+  "operation_history": ".skill-tree/history/validation/ux-ui/settings-sections/operation-history.json",
+  "checks": [
+    {
+      "id": "settings-sections-behavior",
+      "counts": {
+        "discovered": 16,
+        "expected": 16,
+        "failed": 0,
+        "passed": 16,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.log",
+          "sha256": "b2d5b4c6563685212b2d19522a1143129e8fe60cdd926f46351f340ee459c82f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.trx",
+          "sha256": "dd0e9f915685c834c3ddccfa40c35a6eb6c2e7acdf7c93c6c1f47ce32a233351"
+        }
+      ]
+    },
+    {
+      "id": "settings-sections-rendered",
+      "counts": {
+        "discovered": 505,
+        "expected": 505,
+        "failed": 0,
+        "passed": 505,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+          "sha256": "34363957896743b875e4f640c066dca952e447764e4370b891b998991b79e343"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

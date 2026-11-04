@@ -1,0 +1,13 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "check_id": "notes-local-model",
+  "launch": {
+    "assertion": "Notes folder compatibility, exact retained content and original receipt recovery under isolated local fixtures.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish serializable versioned journal compatibility or service/CAS behavior.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "deadline_utc": "2026-11-02T16:35:10.311335+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "notes-folders-local-v1"
+  }
+}

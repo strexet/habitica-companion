@@ -1,0 +1,18 @@
+{
+  "worker": "habitica-companion-workspace",
+  "previous_version": "45c6d965-cbf7-4fb3-9e64-3a08ddb7afe5",
+  "version": "a6d853b0-f595-4251-b97b-1751ec1a1578",
+  "build_hash": "42b57a6f8f92cae0dec9820059414433ef1959936bbd9793fae9c940977f1799",
+  "backend_release": "0.3.1",
+  "tool_schema": "1.3.0",
+  "runtime_bindings_and_secrets_preserved": true,
+  "runtime_configuration_preserved": true,
+  "source_hashes": {
+    "index.js": "f255106db79ab5a9362a0d15413126f874f5454ef4f195aafe6b31a7efd664aa",
+    "index.js.map": "92c1e0525257523ab8b0c6d3d7f6fdd39b3a7f92416a20376c841330fcc218f1"
+  },
+  "provider_source_hashes": {
+    "index.js": "f255106db79ab5a9362a0d15413126f874f5454ef4f195aafe6b31a7efd664aa",
+    "index.js.map": "d801bdfef993eaf84e97a9f3e1ce48d8f050b1cf33ed16f7ddeecfbe291ff9cb"
+  }
+}

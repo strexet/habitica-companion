@@ -7,7 +7,8 @@ export async function readActivityCoverage(snapshot:unknown,taskId:string,fromUt
 }
 
 const fail=():never=>{throw new WorkspaceError('invalid_activity_coverage',422);};
-function activityIntervals(document:WorkspaceDocument,taskId:string,fromUtc:string,throughUtc:string):ActivityInterval[] {
+// Internal callers must validate the complete journal before evaluating intervals.
+export function activityIntervals(document:WorkspaceDocument,taskId:string,fromUtc:string,throughUtc:string):ActivityInterval[] {
  const start=utcTicks(fromUtc),end=utcTicks(throughUtc);if(start===utcTicks('0001-01-01T00:00:00Z')||end<=start||!document.tasks.some(task=>task.id===taskId))return fail();
  const rows=(document.activityCoverage??[]).filter(row=>row.taskId===taskId).sort((a,b)=>a.revision-b.revision);
  if(rows.some((row,index)=>index>0&&utcTicks(rows[index-1].recordedAtUtc)>utcTicks(row.recordedAtUtc)))return [{fromUtc,throughUtc,isKnown:false,unknownReason:'clock_order_unknown',schedule:null}];

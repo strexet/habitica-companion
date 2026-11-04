@@ -1,0 +1,67 @@
+{
+  "task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+  "title": "Place required Daily schedule fields before the add action",
+  "operation_history": ".skill-tree/history/validation/ux-ui/daily-form-order/operation-history.json",
+  "checks": [
+    {
+      "id": "daily-form-order-behavior",
+      "counts": {
+        "discovered": 37,
+        "expected": 37,
+        "failed": 0,
+        "passed": 37,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.log",
+          "sha256": "0eee49c683f27d552c4062b22210ea0e43628e8062648e92a311a76aafa6b192"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.trx",
+          "sha256": "022e84537054b017b81fb4dd7708cf7c4be39c3b4fd797d83274a85628ab10fa"
+        }
+      ]
+    },
+    {
+      "id": "daily-form-order-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json",
+          "sha256": "caf6fa4c4c879d85b3d7535ee6b3a75bb0ef492439387d1923bb252015346033"
+        }
+      ]
+    },
+    {
+      "id": "daily-form-order-native-oracles",
+      "counts": {
+        "discovered": 29,
+        "expected": 29,
+        "failed": 0,
+        "passed": 29,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6.tap",
+          "sha256": "f99bfacd5693297c534f2ec0aa0fe5b5b03be7427c2d83e4566c6d9a403ee984"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-cd227387-914a-46a6-89a8-bdc2cdeba0ae",
+  "check_id": "accessible-shell-behavior",
+  "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+  "environment_identity": "a4e42c790784bdca624ed16355ce06bea6c955ed05eebc158be10639384f0de3",
+  "key": "60572ecf6d1785c67b193a8f0d04f45257755f8efef8c85e3512e11a8fafe9b7",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T08:23:11.285964+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T08:18:11.891238+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+      "--logger",
+      "trx;LogFileName=accessible-shell.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/accessible-shell/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "22ac34f3a470b02ef899facb43427810a8643c4444d014e9c909d558263342b9",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2"
+  },
+  "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e"
+}

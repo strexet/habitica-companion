@@ -1275,7 +1275,7 @@ The integration Auth service uses existing v3 GET contracts: full `/user` for co
 
 The local projection implementation rechecks current primary [task controller source](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js), [task model source](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) and [scoring source](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js). The gateway uses v3 task creation, UUID/alias reads, partial updates and single scores. UUID lookup still requires an explicit returned-owner check; group/challenge tasks remain excluded. Alias validation provides correlation within an account, rather than a durable scoring idempotency guarantee.
 
-Daily inspection requests `type=dailys`, `history=false` and the current `dueDate`. Projection requires verified due state and account day/Cron preconditions. Unknown readiness blocks the effect. Ambiguous creation or metadata update can use positive observed-state reconciliation; a missing task after timeout never proves non-application. Ambiguous Habit scoring remains unresolved because no per-command scoring receipt is available. All gateway qualification uses synthetic accounts and mocked responses; real backend enrollment and Habitica writes remain disabled.
+Daily inspection requests `type=dailys`, `history=false` and the current `dueDate`. Projection requires verified due state and account day/Cron preconditions. Unknown readiness blocks the effect. Ambiguous creation or ordinary metadata update can use positive observed-state reconciliation; the reviewed linked Daily schedule lane instead requires the original Auth receipt and refuses current-state equality as original delivery proof; a missing task after timeout never proves non-application. Ambiguous Habit scoring remains unresolved because no per-command scoring receipt is available. All gateway qualification uses synthetic accounts and mocked responses; real backend enrollment and Habitica writes remain disabled.
 
 ## Verified integration party reads
 
@@ -1438,3 +1438,12 @@ Workspace requires the complete original score-source proof before preparing a p
 ## Retained recovery read boundary
 
 `list_task_recovery_records` reads only the owned canonical journal through the reviewed Workspace MCP boundary. The query performs no Habitica request, scoring, consent or mutation and makes no fresh upstream ownership/day/refund claim. See [retained recovery discovery](retained-recovery-discovery.md).
+
+
+## Lossless linked Daily updates
+
+The reviewed linked Daily schedule contract revalidates complete raw provider fields and fresh account normalization before one metadata PUT. Habitica rewrites nonempty monthly day arrays from the account-local start date during Daily updates, including ordinary title-only updates. Unsupported retained rules therefore remain read-only. The supported monthly update subset contains one matching start-date day; daily/weekly rules preserve complete representable semantics and inactive weekday defaults. Fresh account/task reads reduce stale writes, but Habitica offers no conditional PUT. Original accepted/normalized schedule facts, unknown-result fences, exact supported fields and source references reside in [linked-daily-schedules.md](linked-daily-schedules.md). No schedule edit scores, runs Cron or pauses provider penalties.
+
+## Reviewed relative-date tag membership
+
+Reviewed relative saved-list tag reconciliation uses existing native tag and task-tag endpoints without task scoring or Cron. Exact day/timezone is bound to new attempts; the final Auth dispatch guard refuses stale context. Original unknown receipt lookup remains available after day changes and never sends a replacement mutation. Existing ownership, unrelated-tag preservation, rate-limit and separate consent/scope guards remain enforced. See [relative tag reviews](relative-tag-reviews.md).

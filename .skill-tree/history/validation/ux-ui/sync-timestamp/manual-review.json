@@ -1,0 +1,12 @@
+{
+  "report": "browser/8bfa279d-64eb-4eda-a7cc-a4eb0a7e3a48.json",
+  "visualEvidence": "manual-visual-capture.json",
+  "observed": [
+    "Focused actual timestamp rows in Chromium/WebKit light360/200 and Obsidian1280/100 retain readable local date/time and explicit local context.",
+    "Original byte/status values and UTC time attribute preserved; no literal format suffix.",
+    "Hydrated settings navigation/safeguards qualify without claiming private-sync success."
+  ],
+  "limitations": [
+    "Actual formatted metadata values are controlled-culture component captures. Native upload/download and file dialogs, live providers, physical devices and AT unqualified."
+  ]
+}

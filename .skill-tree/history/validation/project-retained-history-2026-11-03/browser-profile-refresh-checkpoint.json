@@ -1,0 +1,5 @@
+{
+  "phase": "implement",
+  "stop_reason": "Refresh exact project-retained history browser recipe inputs after registering the required shared project-history fixture in the web test project. All previous attempts are closed and no fixture remains running.",
+  "next_action": "Refresh and re-admit the same active run, then repeat the concrete browser control."
+}

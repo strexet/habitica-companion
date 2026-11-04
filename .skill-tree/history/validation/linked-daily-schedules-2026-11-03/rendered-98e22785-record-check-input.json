@@ -1,0 +1,25 @@
+{
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "check_id": "daily-schedule-rendering",
+  "attempt_id": "C-5c44976d-4b96-4405-b9be-a29c63a184f0",
+  "environment_identity": "d221b7089a6691627a548b4d51c61ff0db8ac641a262a213e97f11ec1b60f140",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 44.50493208412081
+  },
+  "evidence": [
+    ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-execution.log",
+    ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json",
+    ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json"
+  ],
+  "counts": {
+    "expected": 146,
+    "discovered": 146,
+    "passed": 146,
+    "failed": 0,
+    "skipped": 0
+  }
+}

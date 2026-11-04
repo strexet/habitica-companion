@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/bf6fb95a-c52e-43a8-8e1e-34a2af0cc2b6-failure.json",
+  "diagnosis": "The journey programmatically focused after a pointer click, leaving the browser in pointer modality. A focus-visible keyboard contract needs actual keyboard traversal.",
+  "repair": "Shift+Tab then Tab must return focus to the recovery button before checking its visible outline. Product focus styling is unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

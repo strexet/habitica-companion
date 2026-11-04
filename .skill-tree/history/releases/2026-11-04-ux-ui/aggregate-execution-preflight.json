@@ -1,0 +1,14 @@
+{
+  "executor_counts": [
+    {
+      "executor_enabled": 1,
+      "count": 1
+    }
+  ],
+  "command_rows": [
+    {
+      "count": 100
+    }
+  ],
+  "prior_optional_inspection": "One optional aggregate SQL query was refused without writes; not used as qualification evidence."
+}

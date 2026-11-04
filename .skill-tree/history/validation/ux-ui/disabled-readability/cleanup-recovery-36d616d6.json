@@ -1,0 +1,22 @@
+{
+  "original_failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/36d616d6-6d2e-4934-bc9e-16175192c75e-failure.json",
+  "verified_after_process_exit": {
+    "runner_pid": 31117,
+    "runner_exists": false,
+    "pinned_browser_processes_observed": false,
+    "loopback_port": 59153,
+    "listener_observed": false,
+    "profile_open_handles": false
+  },
+  "ownership_evidence": "Exactly6 profiles were born during the recorded six-profile launch at2026-11-03T09:58:47 UTC. Unrelated native WebKit/Rider processes were preserved.",
+  "removed_profiles": [
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-ug3ShN",
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-Q2SR5M",
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-kfHVcq",
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-AdOuEN",
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-tiEQtM",
+    "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-p2awkF"
+  ],
+  "profiles_removed": true,
+  "original_cleanup_failure_preserved": true
+}

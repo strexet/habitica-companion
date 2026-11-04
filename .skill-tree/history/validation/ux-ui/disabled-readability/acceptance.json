@@ -1,0 +1,67 @@
+{
+  "task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "title": "Keep disabled control text readable in built-in themes",
+  "operation_history": ".skill-tree/history/validation/ux-ui/disabled-readability/operation-history.json",
+  "checks": [
+    {
+      "id": "disabled-readability-behavior",
+      "counts": {
+        "discovered": 85,
+        "expected": 85,
+        "failed": 0,
+        "passed": 85,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.log",
+          "sha256": "ca6b09d6d9a141b44bc7389f2c0491303aead299126205dc9fe993c109039332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-933e8da8-3df8-4e61-ac50-af05790e1f57.trx",
+          "sha256": "2f141380192c5857b8cbf32a2e770d155c66afe13b5c60d03ea579ee02dba581"
+        }
+      ]
+    },
+    {
+      "id": "disabled-readability-rendered",
+      "counts": {
+        "discovered": 4105,
+        "expected": 4105,
+        "failed": 0,
+        "passed": 4105,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/04d8e792-e3ae-497f-9971-18a3ec8ae8b5.json",
+          "sha256": "59a569e695dd9d894c1d7a23a66abfb700e567e96aa5476be49c324da31e8b83"
+        }
+      ]
+    },
+    {
+      "id": "disabled-matrix-coverage",
+      "counts": {
+        "discovered": 24,
+        "expected": 24,
+        "failed": 0,
+        "passed": 24,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/disabled-readability/C-167569bc-d865-4995-88a3-ddd798f5aa58.tap",
+          "sha256": "6054b46a4887921a1a5af3528bc74662b877deb64a8d7cac4ebc7f5165761914"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "original_report": "6ff4fc38-f253-44f5-87f9-f309ad4729e5-failure.json",
+  "diagnosis": "Native UTC+7 capture, exact preview/cancel and IANA review/cancel completed. Navigation then failed strict matching because the compact shell intentionally retains both Add task and Tasks links to the canonical route. The journey now targets the named navigation route link excluding the separate capture shortcut. No product behavior changed; original failure remains retained.",
+  "cleanup": "Inspect browser failure report when browser execution began; a forced controller timeout never proves child cleanup.",
+  "actual_cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "actual_cleanup_source": ".skill-tree/artifacts/ux-ui/daily-timezones/1793740258193392000/failure.json"
+}

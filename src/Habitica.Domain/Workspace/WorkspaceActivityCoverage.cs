@@ -73,15 +73,15 @@ public static class WorkspaceActivityCoverage
             var current = currentTasks[row.TaskId];
             if (current.Revision < row.Revision || current.Revision == row.Revision && (current.Kind != row.Kind || current.State != row.State
                 || current.IsArchived != row.IsArchived || !SameRecurrence(current.Recurrence, row.Recurrence))) return false;
-            var creating = entry.Command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
+            var creating = entry.Command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit or WorkspaceOperation.CopyTaskType;
             if (creating != (row.PreviousTaskRevision == 0)) return false;
             if (creating && (row.State != CompanionTaskState.Active || row.IsArchived
-                || row.Kind != (entry.Command.Operation == WorkspaceOperation.CreateTodo ? CompanionTaskKind.Todo : entry.Command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : CompanionTaskKind.Habit)
-                || !SameRecurrence(row.Recurrence, entry.Command.Patch?.Recurrence))) return false;
+                || row.Kind != (entry.Command.Operation == WorkspaceOperation.CopyTaskType ? entry.Command.Patch!.TypeCopy!.TargetKind : entry.Command.Operation == WorkspaceOperation.CreateTodo ? CompanionTaskKind.Todo : entry.Command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : CompanionTaskKind.Habit)
+                || !SameRecurrence(row.Recurrence, entry.Command.Operation == WorkspaceOperation.CopyTaskType ? entry.Command.Patch!.TypeCopy!.Recurrence : entry.Command.Patch?.Recurrence))) return false;
             var continuesWitness = witnessedRevisions.Contains((row.TaskId, row.PreviousTaskRevision));
             var before = continuesWitness ? taskSnapshots[(row.TaskId, row.PreviousTaskRevision)].FirstOrDefault()?.TaskSnapshot : null;
             if (before is not null && (row.Kind != before.Kind
-                || !SameRecurrence(row.Recurrence, entry.Command.Operation == WorkspaceOperation.UpdateTask ? entry.Command.Patch!.ClearRecurrence ? null : entry.Command.Patch.Recurrence ?? before.Recurrence : before.Recurrence)
+                || !SameRecurrence(row.Recurrence, entry.Command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.EditLinkedDailySchedule ? entry.Command.Patch!.ClearRecurrence ? null : entry.Command.Patch.Recurrence ?? before.Recurrence : before.Recurrence)
                 || row.IsArchived != (entry.Command.Operation == WorkspaceOperation.DeleteTask || entry.Command.Operation != WorkspaceOperation.UnarchiveTask && before.IsArchived)
                 || row.State != (entry.Command.Operation switch {
                     WorkspaceOperation.PauseTask => CompanionTaskState.Paused,

@@ -1,0 +1,214 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Use Companion as an app
+- heading "Install on iPhone" [level=2]
+- paragraph: Open Habitica Companion from your Home Screen in its own window.
+- button "Show installation steps":
+  - generic: Show installation steps
+- paragraph: Session controls
+- heading "Local data and sign-in behavior" [active] [level=1]
+- paragraph: Use the actions below to sign out, check connections, manage saved browser data, or sync supported data between your devices.
+- generic: If the app looks old, refresh first. Before clearing browser data, export any browser-only Notes from Notes and local workspaces from Todo Sync.
+- heading "Sign out for this tab" [level=2]
+- paragraph: Ends the current sign-in session without deleting saved app data in this browser.
+- button "Sign Out":
+  - generic: Sign Out
+- heading "Check app connections" [level=2]
+- paragraph: Open safe connection checks and the optional reversible gear check.
+- link "Open Checks":
+  - /url: /live-tests
+  - generic: Open Checks
+- paragraph: Appearance
+- heading "Color scheme" [level=2]
+- button "Customize theme":
+  - text: Customize theme
+- paragraph: Optional connection
+- heading "Codex and ChatGPT" [level=2]
+- checkbox "Existing integration verified for this session. Permissions below reflect the last server check." [disabled]
+- generic: Existing integration verified for this session. Permissions below reflect the last server check.
+- paragraph: Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. Codex and ChatGPT receive separate access only after you approve permissions for each client. Browser-only use and private device sync do not require this connection.
+- paragraph:
+  - text: The integration stores credentials until disconnect or profile deletion. Linking codes expire within ten minutes; operational audit metadata is limited to thirty days. Companion does not store conversation text.
+  - link "Privacy and data handling":
+    - /url: /privacy
+- status: Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.
+- paragraph: Saved connection settings restore approved access across sessions. For an older connection without saved recovery settings, restore existing access once. The check uses current Habitica credentials and cannot create a profile or grant new permissions.
+- button "Restore existing account, tasks and Notes access":
+  - generic: Restore existing account, tasks and Notes access
+- paragraph: For a first connection, approve new credential storage below. This acknowledgement is separate from saved connection state.
+- checkbox "I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above."
+- generic: I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.
+- button "Enable agent connection" [disabled]:
+  - generic: Enable agent connection
+- paragraph: Todo connections
+- heading "Task source and sync" [level=2]
+- paragraph:
+  - text: Inspect the active Workspace, review pending game effects and move saved browser tasks and Notes together in
+  - link "Todo Sync":
+    - /url: /todo/sync
+  - text: . Cloud task consent and background execution have separate controls there.
+- paragraph: Optional shared planning
+- heading "Authenticated party planning" [level=2]
+- paragraph: This queue is separate from legacy party planning. The server stores readable quest selections, contributor labels, votes and planning receipts. Only separately consented current party members can read shared planning. Records remain until explicit removal. Planning does not start quests, purchase scrolls or cast spells.
+- paragraph: You can export or remove your own contributions after leaving a party. Removing your queued quests also removes votes on those quests. The verified current leader can delete the whole authenticated queue. Browser-claimed roles grant no access. Cloud workspace deletion and credential deletion do not remove these separate shared records; use the contribution controls before credential deletion or revalidate later.
+- paragraph: Connect the cloud workspace above before enabling shared planning.
+- button "Export my contributions":
+  - generic: Export my contributions
+- button "Remove my contributions":
+  - generic: Remove my contributions
+- paragraph: Portable app data
+- heading "Backup, restore, and private sync" [level=2]
+- paragraph:
+  - text: Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Export personal Notes from Notes and workspaces from Todo Sync separately. Habitica API tokens are not included.
+  - link "Privacy and data handling":
+    - /url: /privacy
+- heading "Download backup" [level=2]
+- paragraph: Downloads a readable backup of this browser's saved app data. Keep the file private.
+- button "Export":
+  - generic: Export
+- heading "Restore backup" [level=2]
+- paragraph: Imports a Habitica Tool backup. If this browser already has app data, choose merge before importing.
+- button "Choose File"
+- heading "Private device sync" [level=2]
+- paragraph: Your browser encrypts the upload before it leaves this device. The sync server stores only encrypted data.
+- generic: Excluded diagnostics at 11/3/2026 12:27 PM.
+- button "Upload":
+  - generic: Upload
+- button "Download":
+  - generic: Download
+- heading "Clear this browser" [level=2]
+- paragraph: Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first. Push device bindings and original pending-command references are also removed. Revoke push devices in Todo Sync first; local removal does not revoke cloud push consent or browser permission.
+- button "Clear Local Data":
+  - generic: Clear Local Data
+- heading "Cloud sync sections" [level=3]
+- paragraph: Each section uploads independently. Excluded sections stay only in this browser.
+- strong: User profile
+- generic: Uploaded
+- generic: 17.2 KB at 11/3/2026 12:27:35 PM +07:00:g
+- generic: Uploaded
+- strong: Saved presets
+- generic: Uploaded
+- generic: 902 B at 11/3/2026 12:27:35 PM +07:00:g
+- generic: Uploaded
+- strong: Tasks
+- generic: Uploaded
+- generic: 50.6 KB at 11/3/2026 12:27:36 PM +07:00:g
+- generic: Uploaded
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Task order
+- generic: No local data
+- generic: Skipped
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Inventory catalog
+- generic: Uploaded
+- generic: 932.2 KB at 11/3/2026 12:27:38 PM +07:00:g
+- generic: Uploaded
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Party
+- generic: Uploaded
+- generic: 98.5 KB at 11/3/2026 12:27:38 PM +07:00:g
+- generic: Uploaded
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Party CRON history
+- generic: Uploaded
+- generic: 457.1 KB at 11/3/2026 12:27:39 PM +07:00:g
+- generic: Uploaded
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Color schemes
+- generic: Uploaded
+- generic: 37.2 KB at 11/3/2026 12:27:39 PM +07:00:g
+- generic: Uploaded
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Workspace and integration settings
+- generic: No local data
+- generic: Skipped
+- checkbox "Exclude"
+- generic: Exclude
+- strong: Diagnostics
+- generic: Excluded by sync settings
+- generic: Excluded
+- checkbox "Exclude" [checked]
+- generic: Exclude

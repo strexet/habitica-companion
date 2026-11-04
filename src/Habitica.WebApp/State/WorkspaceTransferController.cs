@@ -108,6 +108,8 @@ public sealed class WorkspaceTransferController(IAppSessionController session,IW
         try{await action(account,generation);}
         catch(OperationCanceledException)when(token.IsCancellationRequested){throw;}
         catch(InvalidOperationException error){if(Current(account,generation))Say(error.Message,true);}
+        catch(System.Text.Json.JsonException){if(Current(account,generation))Say("The retained browser journal or Notes format failed validation. No new transfer was captured; preserve the original records.",true);}
+        catch(Microsoft.JSInterop.JSException){if(Current(account,generation))Say("Browser storage could not finish the transfer capture. Preserve the original records and check the original transfer before trying again.",true);}
         catch{if(Current(account,generation))Say("Transfer did not finish. Original frozen records and transfer identity remain available for recovery.",true);}
         finally{Busy=false;Changed?.Invoke();}
     }

@@ -11,6 +11,21 @@ public static class WorkspaceCommandIdentity
     {
         static string? Name<T>(T? value) where T : struct, Enum => value is null ? null : JsonNamingPolicy.CamelCase.ConvertName(value.Value.ToString());
         var patch = command.Patch;
+        if(patch?.TypeCopy is {} copy)
+        {
+            var previous=Hash(command with{Patch=patch with{TypeCopy=null}});
+            var rule=copy.Recurrence;
+            var copyFields=new List<string?>{copy.SourceTaskId.ToString("D"),copy.SourceRevision.ToString(CultureInfo.InvariantCulture),Name<CompanionTaskKind>(copy.TargetKind),copy.CopyOrganization?"1":"0",rule is null?"0":"1",rule is null?null:Name<RecurrenceFrequency>(rule.Frequency),rule?.Interval.ToString(CultureInfo.InvariantCulture),rule?.StartDate.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture),rule?.TimeZoneId,rule?.Weekdays.Count.ToString(CultureInfo.InvariantCulture),rule?.DaysOfMonth.Count.ToString(CultureInfo.InvariantCulture)};
+            if(rule is not null){copyFields.AddRange(rule.Weekdays.Select(day=>Name<DayOfWeek>(day)));copyFields.AddRange(rule.DaysOfMonth.Select(day=>day.ToString(CultureInfo.InvariantCulture)));}
+            var payload="companion-command-v13\n64:"+previous+string.Concat(copyFields.Select(field=>field is null?"-1:":Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture)+":"+field));
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
+        if (patch?.LinkedSchedule is {} schedule)
+        {
+            var previous=Hash(command with {Patch=patch with {LinkedSchedule=null}});
+            var payload="companion-command-v12\n64:"+previous+string.Concat(schedule.HashFields().Select(field=>Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture)+":"+field));
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
         if (patch?.Unarchive is not null || patch?.CorrectOccurrence is not null)
         {
             var previous = Hash(command with { Patch = patch with { Unarchive = null, CorrectOccurrence = null } });

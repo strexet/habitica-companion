@@ -1,0 +1,66 @@
+{
+  "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+  "title": "Qualify visible full-shell content with current theme geometry",
+  "checks": [
+    {
+      "id": "shell-content-behavior",
+      "counts": {
+        "discovered": 24,
+        "expected": 24,
+        "failed": 0,
+        "passed": 24,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.log",
+          "sha256": "765d33318f7eb8c35f3313ad3fcd3bdb40b748d28f0066054e392c339f00681a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.trx",
+          "sha256": "b0e35a70ebe8237b316e03064ea4156282c4d304c66bd110ab0d754c9c8b440b"
+        }
+      ]
+    },
+    {
+      "id": "shell-content-canaries",
+      "counts": {
+        "discovered": 20,
+        "expected": 20,
+        "failed": 0,
+        "passed": 20,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-81c4095b-4712-4ab7-a07d-97b187100ad7.tap",
+          "sha256": "26333bed8570a0f773dc69cbcbe02f345d2f7a4892803952f7b69552faf1ad1b"
+        }
+      ]
+    },
+    {
+      "id": "shell-content-rendered",
+      "counts": {
+        "discovered": 1369,
+        "expected": 1369,
+        "failed": 0,
+        "passed": 1369,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/ab0e0f3b-c825-4ccf-a945-4c297f6415a6.json",
+          "sha256": "7799f783e8fb19fd3ab933e367bb72da5c7a61e7199167c46544c74319692047"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

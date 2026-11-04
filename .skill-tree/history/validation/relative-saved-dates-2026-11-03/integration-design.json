@@ -1,0 +1,31 @@
+{
+  "status": "Complete local qualification:15 native,43 typed/component,42 SDK/shared/tag and210 rendered controls pass. No relative saved-list change is published.",
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "decisions": [
+    "Append null-omitted plannedRelative/deadlineRelative preset selectors to saved predicates and an explicit timeZoneId to the saved query. Both date fields remain independent; a relative selector conflicts with an absolute range on the same field. Unused timezone context is invalid.",
+    "Presets are Today, BeforeToday, NextSevenDays including today and six following days, ThisWeek Monday through Sunday, and NoDate. Date bounds use civil days, never elapsed24-hour arithmetic. NoDate matches only absent dates.",
+    "One explicit UTC as-of clock is captured per relative evaluation. The stored UTC/IANA timezone resolves the local evaluation day. Pure native/Worker evaluators accept an injected clock; public Worker reads capture server UTC without caller clock override.",
+    "Response evaluation metadata reports original as-of UTC, explicit timezone, local day and separate interpreted planned/deadline bounds. Relative pagination requires expectedEvaluationDay alongside exact document revision. A changed local day or definition fails rather than mixing pages; callers explicitly restart at offset0.",
+    "Reuse existing eligible predicates in canonical task queries. Extend unblocked-Todo evaluation with an additional internal predicate, preserving the full source document and dependency set for NoDate. Avoid new public generic task filters or a copied temporary task database.",
+    "Structural stored definitions remain readable when a historical timezone is unavailable, but current evaluation and new authoring fail explicitly. Accepted organization changes retain current native-only semantics and zero provider/game effects.",
+    "Organization command v5 binds relative selectors and timezone only when used. All older absent-field identities and absolute saved queries retain exact prior encodings and hashes. Shared fixtures independently verify bounds, selection, rollover, identity and no mutation.",
+    "The saved-list editor exposes explicit relative selectors and timezone plus interpreted bounds in review/results. Absolute fields remain visible and disabled while a relative selector is chosen; stale values must be explicitly cleared before a conflicting definition can be reviewed. Selected-list paging retains the original day and offers explicit restart. MCP schemas/descriptions and typed transport mirror the same context.",
+    "Qualification requires native, actual SDK/Worker/D1, typed/component and current Release light/obsidian phone/desktop normal/enlarged-text UI controls. No publication, actual account, notification/device operation or provider write is authorized by development qualification.",
+    "The existing tag membership adapters are revision-only. Relative selectors cannot be reinterpreted as absolute unbounded filters or current-day membership without an exact day-bound review. Relative groups now carry relative_dates_require_review, retain existing upstream membership and queue no new tag work. Old pending work must refuse before a new provider request; original unknown receipt recovery stays available. Absolute saved groups and other native group kinds retain existing behavior.",
+    "Full day-bound tag projection remains independently actionable follow-up P-34bd63a8-f6d9-4d08-acf3-2a8d13483228 outside the frozen initial snapshot; native list definitions/reads remain supported with explicit correspondence gaps."
+  ],
+  "sources": [
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+    "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs",
+    "src/Habitica.Application/Workspace/WorkspaceUnblockedTodos.cs",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs",
+    "workers/shared/saved-task-views.ts",
+    "workers/shared/saved-task-query.ts",
+    "workers/shared/saved-task-read.ts",
+    "workers/shared/workspace-organization.ts",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor"
+  ],
+  "followup_id": "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228",
+  "next": "Continue the frozen controller snapshot. Process captured nonblocking follow-ups once at flow end without implementing outside the snapshot."
+}

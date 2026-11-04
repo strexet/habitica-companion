@@ -1,0 +1,39 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-dbd3854b-6de2-45fb-b517-6b0318e8e348",
+  "classification": "prerequisite-wait",
+  "cleanup": "The dotnet build exited before test discovery; no fixture or service remains running.",
+  "definition": "6dd5ded868a7b9605febaabf0314e3b19233936010afbe20f407a0a895434663",
+  "environment_identity": "76b4facaf90e2a74d6eaefe063dcfe844ae74ed2661405c84501f6138217c33c",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/first-native-ui-execution.log",
+      "sha256": "08c4dfe2f3fdbd7d5c5d6a4b43bf8b78bce2980a10270c633ecbe7cf7817e6cf"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "fd979ba18a0475c19878477c8f724c8bf9a90c5303127764f0cbd1a02c61f37f",
+  "payload_hash": "728ddd77b8b2c47540f153d09bef11671c3f32facd12465dc8c3ba0c8dbca1e1",
+  "recorded_at": "2026-11-02T21:10:15.088844+00:00",
+  "result": "fail",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "41d83cc46126ba3cddf917ad2e1867c20d0d9c74e9be940d69212f8925636b56",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "f287cc70be10847f6877859574e8122acfbc30001bf1fca048ca9018acad8d5e",
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "d1ff61062e1e044037067a63a71ab45f1ba361349bcb82488ea8d16e096077cb",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "e426de31f3bbd02eee4ecafd68f9c5d59ad795533c8473c18dcf955ca432e5ce",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "a5d9a01c5beb95b4e84a18baf8c994a3294189a509777ea960296af7e0774ccb",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs": "d25fa4993e4c4241f165224e970674966b99c0986ad603f22de410b3e9d838ee",
+    "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs": "dc233df496f0b0c085339109ea2b623379f154ba4b97f8249332a7045eef7d47",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "27cbc9404a4f24bc4781e2f580aa5d6228edb530de6cf67fdfe14591a8244eba",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "c7a9a3528224ee0f314ac42de23c97741770c1dcdfb1ee3e9ec7b18fc9d555f3",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs": "eb56bcfc43b0992257bf05cc19ecd4623c38f0215440fc79ee0e003fcdd54153",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "07392415fbb8849b5a9ba369fad66c20fbe1eebe1e94f20cddb8a83c8314c7f9"
+  }
+}

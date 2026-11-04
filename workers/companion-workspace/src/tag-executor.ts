@@ -1,15 +1,17 @@
 import {tagsFingerprint} from '../../shared/tag-gateway.ts';
 import {workspaceDocument,type WorkspaceDocument} from '../../shared/workspace-domain.ts';
+import {validateTagEvaluation,tagSelectionHash} from '../../shared/reviewed-tag-dates.ts';
+import type {ReviewedTagDay} from '../../shared/reviewed-tag-dates.ts';
 import {desiredTagMembership} from '../../shared/tag-membership.ts';
-import {workspaceTokenHash} from '../../shared/workspace-http.ts';
+import {workspaceTokenHash,WorkspaceError} from '../../shared/workspace-http.ts';
 import type {TagEvidence} from '../../shared/tag-projection.ts';
 import {tagAuthority,tagAuthorityGap} from './tag-authority.ts';
 import type {TagWorkPlan} from './tag-planner.ts';
 import type {WorkspaceRow,ExecutorEnv} from './executor.ts';
 interface WorkRow {work_id:string;work_json:string;state:string;prepared_request_json:string|null;connection_id:string;access_epoch:string;retry_at_utc:string|null}
-interface Prepared {profileId:string;connectionId:string;context:TagWorkPlan['context'];operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string;memberTaskId?:string;expectedConsentEpoch?:string;requiredGrantEpoch?:string}
+interface Prepared {profileId:string;connectionId:string;context:TagWorkPlan['context'];operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string;relativeDay?:ReviewedTagDay;memberTaskId?:string;expectedConsentEpoch?:string;requiredGrantEpoch?:string}
 interface Outcome {kind?:string;code?:string;retryAtUtc?:string;accountId?:string;checkToken?:string;fingerprint?:string;mappedTagId?:string|null;mappedTagFingerprint?:string|null;tags?:{id:string;name:string;native:boolean}[];receiptId?:string;confirmedAtUtc?:string;tag?:{id:string;name:string;fingerprint:string};task?:{id:string;kind:string;fingerprint:string;tags?:string[]}}
-export interface TagExecutorControl {runtime:()=>Promise<{next_network_at_utc:string|null}|null>;row:()=>Promise<WorkspaceRow|null>;permitted:()=>Promise<boolean>;wait:(ms:number)=>Promise<void>;deadline:number;token:string;epoch:string}
+export interface TagExecutorControl {evaluationClock?:()=>string;runtime:()=>Promise<{next_network_at_utc:string|null}|null>;row:()=>Promise<WorkspaceRow|null>;permitted:()=>Promise<boolean>;wait:(ms:number)=>Promise<void>;deadline:number;token:string;epoch:string}
 const bytes=(value:string)=>new TextEncoder().encode(value).length;
 // Called under the same durable profile lease as game task projection. One metadata effect per wake.
 export async function executeTagWork(env:ExecutorEnv,profileId:string,control:TagExecutorControl,uncertainOnly=false,workId?:string):Promise<string|null>{
@@ -33,6 +35,8 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
    ]);if(result[0].meta.changes)return true;
   }return false;
  }
+ const clock=control.evaluationClock??(()=>new Date().toISOString());
+ const evaluationError=(document:WorkspaceDocument)=>{if(!work.evaluation)return null;try{if(document.revision!==work.sourceRevision)return 'tag_source_changed';validateTagEvaluation(document,work.context.entityId,work.evaluation,clock());return null;}catch(error){return error instanceof WorkspaceError?error.code:'tag_evaluation_changed';}};
  const review=async(code:string)=>{await save('needsReview',code,document=>{if(work.operation==='ensureTag'){const mapping=document.tagLedger?.mappings.find(item=>item.id===work.mappingId);if(mapping)mapping.state='needsReview';}});return 'tag_review';};
  async function paced(){
   const runtime=await control.runtime(),delay=Math.max(0,Date.parse(runtime?.next_network_at_utc??'')-Date.now());
@@ -80,8 +84,9 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
  let authority;try{authority=await tagAuthority(env,row,{source:work.origin.source,tagWriteAllowed:work.origin.scopeAllowed,grantEpoch:work.origin.grantEpoch??undefined});}catch{return review('tag_authority_unavailable');}
  const gap=tagAuthorityGap(authority);if(gap)return review(gap);
  if(authority.accountId!==work.accountId||authority.consentEpoch!==work.consentEpoch)return review('tag_authority_changed');
- let document=workspaceDocument(JSON.parse(row.document_json));const group=desiredTagMembership(document).groups.find(item=>item.entityId===work.context.entityId&&item.kind===work.context.kind);
- if(!group||group.retainMembership||await workspaceTokenHash(JSON.stringify({context:work.context,name:group.name,members:group.taskIds,removed:group.removed}))!==work.desiredHash)return review('tag_source_changed');
+ let document=workspaceDocument(JSON.parse(row.document_json));const changedDay=evaluationError(document);if(changedDay)return review(changedDay);const group=desiredTagMembership(document,work.evaluation?{entityId:work.context.entityId,asOfUtc:work.evaluation.asOfUtc}:undefined).groups.find(item=>item.entityId===work.context.entityId&&item.kind===work.context.kind);
+ if(group?.unavailableReason)return review(group.unavailableReason);
+ if(!group||group.retainMembership||await tagSelectionHash(work.context,group)!==work.desiredHash)return review('tag_source_changed');
  const mapping=document.tagLedger?.mappings.find(item=>item.id===work.mappingId),intent=document.tagLedger?.intents.find(item=>item.id===work.intentId);
  if(!mapping||!intent||document.tagLedger?.accountId!==work.accountId)return review('tag_ledger_changed');
  const tags=await gateway('inspectTags',{});if(tags.kind==='refused')return review(tags.code??'tag_inspect_failed');
@@ -104,6 +109,7 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
   if(!taskMapping?.habiticaTaskId)return review('tag_task_counterpart_required');
   if(member.habiticaTaskId&&member.habiticaTaskId!==taskMapping.habiticaTaskId)return review('tag_task_identity_changed');
   member.habiticaTaskId=taskMapping.habiticaTaskId;
+  const changedDay=evaluationError(document);if(changedDay)return review(changedDay);
   const observed=await gateway('inspectMembership',{tagId:work.plannedTagId,taskId:member.habiticaTaskId,tagCheckToken:tags.checkToken});
   if(observed.kind==='refused')return review(observed.code??'tag_inspect_failed');
   if(observed.accountId!==work.accountId||observed.task?.id!==member.habiticaTaskId||!observed.checkToken||!observed.fingerprint)return review('tag_invalid_observation');
@@ -111,11 +117,13 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
  }
  // Pace before creating the attempt, then recheck the exact source after any awaited inspection.
  await paced();const latest=await control.row();if(!latest||latest.store_version!==row.store_version)return review('tag_source_changed');
- const prepared:Prepared={profileId,connectionId:row.connection_id,context:work.context,operation,arguments:args,automated:true,attemptId:crypto.randomUUID(),attemptAtUtc:new Date().toISOString(),expectedConsentEpoch:work.consentEpoch,...(work.origin.source==='mcp'&&work.origin.grantEpoch?{requiredGrantEpoch:work.origin.grantEpoch}:{}),...(memberTaskId?{memberTaskId}:{})};
+ const changedBeforeDispatch=evaluationError(document);if(changedBeforeDispatch)return review(changedBeforeDispatch);
+ const prepared:Prepared={...(work.evaluation?{relativeDay:{timeZoneId:work.evaluation.timeZoneId,localDate:work.evaluation.localDate}}:{}),profileId,connectionId:row.connection_id,context:work.context,operation,arguments:args,automated:true,attemptId:crypto.randomUUID(),attemptAtUtc:new Date().toISOString(),expectedConsentEpoch:work.consentEpoch,...(work.origin.source==='mcp'&&work.origin.grantEpoch?{requiredGrantEpoch:work.origin.grantEpoch}:{}),...(memberTaskId?{memberTaskId}:{})};
  if(!await save('executing',null,()=>{},prepared,null,latest.store_version))return 'tag_conflict';
  // Pacing was already reserved. Persisted request is sent once, with its original timestamp and token.
  let outcome:Outcome;try{
   if(!await control.permitted())return 'tag_paused';
+  const changedDay=evaluationError(document);if(changedDay){await save('needsReview',changedDay,()=>{},null);return 'tag_review';}
   const payload={...prepared};delete payload.memberTaskId;
   const response=await env.AUTH_PROJECTION.fetch('https://projection.internal/tags',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});outcome=await response.json<Outcome>();
  }catch{outcome={kind:'unknown',code:'tag_transport_unknown'};}

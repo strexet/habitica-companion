@@ -8,6 +8,7 @@ export function scopedTagCorrespondence(document:WorkspaceDocument,group:Desired
  const entity=(collections[group.kind] as Entity[]).find(row=>row.id===group.entityId);
  const intents=document.tagLedger?.intents.filter(row=>row.mappingId===mapping?.id&&row.operation==='setMembership').sort((a,b)=>b.desiredRevision-a.desiredRevision||b.revision-a.revision)??[],intent=intents[0];
  const identityCurrent=Boolean(entity&&mapping&&mapping.desiredName===group.name&&mapping.isArchived===group.archived&&mapping.desiredRevision>=entity.revision&&mapping.habiticaTagId&&mapping.evidence);
+ if(group.unavailableReason)return {identityCurrent,exact:false,confirmed:false,intent};
  const desired=new Set(group.taskIds),present=intent?.members?.filter(member=>member.present)??[],projections=new Map(document.projections.map(row=>[row.taskId,row]));
  const exact=Boolean(identityCurrent&&intent&&intent.isArchived===group.archived&&intent.desiredRevision>=entity!.revision&&intent.desiredRevision===mapping!.desiredRevision&&!document.tagLedger?.intents.some(row=>row.mappingId===mapping!.id&&row.state==='unknownOutcome')&&intent.habiticaTagId===mapping!.habiticaTagId
   &&intents.filter(row=>row.desiredRevision===intent.desiredRevision&&row.revision===intent.revision).length===1&&present.length===desired.size

@@ -1,0 +1,49 @@
+{
+  "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+  "title": "Make global navigation identifiable and keyboard accessible",
+  "checks": [
+    {
+      "id": "accessible-shell-behavior",
+      "counts": {
+        "discovered": 20,
+        "expected": 20,
+        "failed": 0,
+        "passed": 20,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.log",
+          "sha256": "b460bc0b0e2e5b43586576ea884553f0ac0271e0beff43b6511e69a5a9dc7068"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.trx",
+          "sha256": "6320f721622dc80668cf6dabbad11ec2f9e4c1c10d110b5f6d6d139d92ab643d"
+        }
+      ]
+    },
+    {
+      "id": "accessible-shell-rendered",
+      "counts": {
+        "discovered": 937,
+        "expected": 937,
+        "failed": 0,
+        "passed": 937,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json",
+          "sha256": "cee4bcccfc0fdbbb473111009dfd119e454da7ce1e5eadec261195f158aec30e"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

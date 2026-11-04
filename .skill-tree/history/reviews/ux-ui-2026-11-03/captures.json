@@ -1,0 +1,1146 @@
+[
+  {
+    "name": "02-dashboard-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/02-dashboard-desktop-light.png",
+    "font": "16px",
+    "headings": [
+      {
+        "tag": "H2",
+        "text": "Local-first planning surface"
+      },
+      {
+        "tag": "H1",
+        "text": "Local Habitica dashboard"
+      },
+      {
+        "tag": "H2",
+        "text": "Companion links"
+      },
+      {
+        "tag": "H2",
+        "text": "Stats and allocation"
+      },
+      {
+        "tag": "H2",
+        "text": "Bulk armoire"
+      },
+      {
+        "tag": "H2",
+        "text": "Buy gems with gold"
+      }
+    ],
+    "overflow": [],
+    "path": "/dashboard",
+    "scroll": [
+      1280,
+      2088
+    ],
+    "unlabelledButtons": [
+      {
+        "class": "mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon",
+        "html": "<button type=\"button\" class=\"mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon\" _bl_18=\"\"><span class=\"mud-icon-button-label\"><!--!--><svg class=\"mud-icon-root mud-svg-icon mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" role=\"img\"><!--!--><path d=\"M0 0h24v24H0V0z\" fill=\"none\"></path><path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"></path></svg></span></button>"
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "03-today-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/03-today-desktop-light.png",
+    "font": "16px",
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "Today"
+      },
+      {
+        "tag": "H2",
+        "text": "Optional reminders"
+      }
+    ],
+    "overflow": [],
+    "path": "/todo/today",
+    "scroll": [
+      1280,
+      851
+    ],
+    "unlabelledButtons": [],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "04-today-auth-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/04-today-auth-desktop-light.png",
+    "font": "16px",
+    "headings": [
+      {
+        "tag": "H2",
+        "text": "Local-first planning surface"
+      },
+      {
+        "tag": "H1",
+        "text": "Today"
+      },
+      {
+        "tag": "H2",
+        "text": "Optional reminders"
+      }
+    ],
+    "overflow": [],
+    "path": "/todo/today",
+    "scroll": [
+      1269,
+      963
+    ],
+    "unlabelledButtons": [
+      {
+        "class": "mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon",
+        "html": "<button type=\"button\" class=\"mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon\" _bl_10=\"\"><span class=\"mud-icon-button-label\"><!--!--><svg class=\"mud-icon-root mud-svg-icon mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" role=\"img\"><!--!--><path d=\"M0 0h24v24H0V0z\" fill=\"none\"></path><path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"></path></svg></span></button>"
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "06-settings-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/06-settings-desktop-light.png",
+    "font": "16px",
+    "headings": [
+      {
+        "tag": "H2",
+        "text": "Local-first planning surface"
+      },
+      {
+        "tag": "H2",
+        "text": "Install on iPhone"
+      },
+      {
+        "tag": "H1",
+        "text": "Local data and sign-in behavior"
+      },
+      {
+        "tag": "H2",
+        "text": "Sign out for this tab"
+      },
+      {
+        "tag": "H2",
+        "text": "Check app connections"
+      },
+      {
+        "tag": "H2",
+        "text": "Color scheme"
+      },
+      {
+        "tag": "H2",
+        "text": "Codex and ChatGPT"
+      },
+      {
+        "tag": "H2",
+        "text": "Task source and sync"
+      },
+      {
+        "tag": "H2",
+        "text": "Authenticated party planning"
+      },
+      {
+        "tag": "H2",
+        "text": "Backup, restore, and private sync"
+      },
+      {
+        "tag": "H2",
+        "text": "Download backup"
+      },
+      {
+        "tag": "H2",
+        "text": "Restore backup"
+      },
+      {
+        "tag": "H2",
+        "text": "Private device sync"
+      },
+      {
+        "tag": "H2",
+        "text": "Clear this browser"
+      },
+      {
+        "tag": "H3",
+        "text": "Cloud sync sections"
+      }
+    ],
+    "overflow": [],
+    "path": "/settings",
+    "scroll": [
+      1280,
+      4075
+    ],
+    "unlabelledButtons": [
+      {
+        "class": "mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon",
+        "html": "<button type=\"button\" class=\"mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon\" _bl_10=\"\"><span class=\"mud-icon-button-label\"><!--!--><svg class=\"mud-icon-root mud-svg-icon mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" role=\"img\"><!--!--><path d=\"M0 0h24v24H0V0z\" fill=\"none\"></path><path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"></path></svg></span></button>"
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "07-notes-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/07-notes-desktop-light.png",
+    "font": "16px",
+    "headings": [
+      {
+        "tag": "H2",
+        "text": "Local-first planning surface"
+      },
+      {
+        "tag": "H1",
+        "text": "Notes"
+      },
+      {
+        "tag": "H2",
+        "text": "New note"
+      }
+    ],
+    "overflow": [],
+    "path": "/notes",
+    "scroll": [
+      1280,
+      1433
+    ],
+    "unlabelledButtons": [
+      {
+        "class": "mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon",
+        "html": "<button type=\"button\" class=\"mud-button-root mud-icon-button mud-inherit-text hover:mud-inherit-hover mud-ripple mud-ripple-icon\" _bl_10=\"\"><span class=\"mud-icon-button-label\"><!--!--><svg class=\"mud-icon-root mud-svg-icon mud-icon-size-medium\" focusable=\"false\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" role=\"img\"><!--!--><path d=\"M0 0h24v24H0V0z\" fill=\"none\"></path><path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"></path></svg></span></button>"
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "08-equipment-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/08-equipment-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/inventory",
+    "scroll": [
+      1269,
+      7526
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "09-equipment-expanded-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/09-equipment-expanded-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/inventory",
+    "scroll": [
+      1269,
+      8204
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "10-pets-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/10-pets-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/pets-mounts",
+    "scroll": [
+      1269,
+      231507
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "11-pets-no-results-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/11-pets-no-results-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/pets-mounts",
+    "scroll": [
+      1269,
+      3675
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "12-party-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/12-party-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/party",
+    "scroll": [
+      1269,
+      7265
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "13-party-details-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/13-party-details-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/party",
+    "scroll": [
+      1269,
+      8060
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "14-quests-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/14-quests-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/quests",
+    "scroll": [
+      1269,
+      11578
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "15-spells-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/15-spells-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      1269,
+      3496
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "16-spells-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/16-spells-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      379,
+      5094
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "17-spells-phone-focus-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/17-spells-phone-focus-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      379,
+      5094
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "18-navigation-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/18-navigation-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      379,
+      5094
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "19-navigation-phone-background-focus-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/19-navigation-phone-background-focus-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      379,
+      5094
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "20-diagnostics-phone-light-drawer",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/20-diagnostics-phone-light-drawer.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/diagnostics",
+    "scroll": [
+      379,
+      3407
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "21-diagnostics-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/21-diagnostics-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/diagnostics",
+    "scroll": [
+      379,
+      3407
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "22-habits-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/22-habits-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/habits",
+    "scroll": [
+      1280,
+      720
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "23-dailies-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/23-dailies-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/dailies",
+    "scroll": [
+      1269,
+      883
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "24-projects-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/24-projects-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/projects",
+    "scroll": [
+      1269,
+      1702
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "25-statistics-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/25-statistics-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/statistics",
+    "scroll": [
+      1269,
+      2480
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "26-inbox-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/26-inbox-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/inbox",
+    "scroll": [
+      1280,
+      720
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "27-planning-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/27-planning-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/plan",
+    "scroll": [
+      1269,
+      724
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "28-lists-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/28-lists-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/lists",
+    "scroll": [
+      1269,
+      1387
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "29-history-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/29-history-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/history",
+    "scroll": [
+      1269,
+      1024
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "30-sync-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/30-sync-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/sync",
+    "scroll": [
+      1269,
+      2635
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "31-reminders-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/31-reminders-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/reminders",
+    "scroll": [
+      1269,
+      1092
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "32-convert-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/32-convert-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/convert",
+    "scroll": [
+      1280,
+      720
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "33-habitica-tasks-desktop-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/33-habitica-tasks-desktop-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/tasks",
+    "scroll": [
+      1269,
+      4575
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "35-tasks-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/35-tasks-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/tasks",
+    "scroll": [
+      379,
+      1039
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "36-notes-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/36-notes-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/notes",
+    "scroll": [
+      379,
+      2077
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "37-notes-new-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/37-notes-new-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/notes",
+    "scroll": [
+      379,
+      2077
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "39-settings-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/39-settings-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/settings",
+    "scroll": [
+      379,
+      6446
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "41-tasks-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/41-tasks-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/tasks",
+    "scroll": [
+      379,
+      1039
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "42-notes-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/42-notes-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/notes",
+    "scroll": [
+      379,
+      2077
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "43-projects-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/43-projects-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/todo/projects",
+    "scroll": [
+      379,
+      2364
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "52-equipment-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/52-equipment-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/inventory",
+    "scroll": [
+      379,
+      16777
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "53-pets-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/53-pets-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/pets-mounts",
+    "scroll": [
+      379,
+      490536
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "54-party-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/54-party-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/party",
+    "scroll": [
+      379,
+      13333
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "55-quests-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/55-quests-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/quests",
+    "scroll": [
+      379,
+      28888
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "57-dashboard-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/57-dashboard-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/dashboard",
+    "scroll": [
+      1269,
+      2088
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "58-equipment-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/58-equipment-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/inventory",
+    "scroll": [
+      1269,
+      7526
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "59-pets-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/59-pets-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/pets-mounts",
+    "scroll": [
+      1269,
+      231507
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "60-party-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/60-party-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/party",
+    "scroll": [
+      1269,
+      7265
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "61-quests-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/61-quests-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/quests",
+    "scroll": [
+      1269,
+      11578
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "62-spells-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/62-spells-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/spells",
+    "scroll": [
+      1269,
+      3496
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "63-settings-desktop-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/63-settings-desktop-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/settings",
+    "scroll": [
+      1269,
+      4075
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "name": "64-dashboard-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/64-dashboard-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/dashboard",
+    "scroll": [
+      379,
+      3994
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "65-equipment-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/65-equipment-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/inventory",
+    "scroll": [
+      379,
+      16777
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "66-pets-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/66-pets-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/pets-mounts",
+    "scroll": [
+      379,
+      490536
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "67-party-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/67-party-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/party",
+    "scroll": [
+      379,
+      13333
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "68-quests-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/68-quests-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/quests",
+    "scroll": [
+      379,
+      28888
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "69-settings-phone-light-stable",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/69-settings-phone-light-stable.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/settings",
+    "scroll": [
+      379,
+      6467
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "70-sign-in-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/70-sign-in-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/sign-in",
+    "scroll": [
+      379,
+      2484
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "71-sign-in-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/71-sign-in-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/sign-in",
+    "scroll": [
+      379,
+      2573
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "72-privacy-phone-obsidian",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/72-privacy-phone-obsidian.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/privacy",
+    "scroll": [
+      379,
+      4632
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  {
+    "name": "73-privacy-phone-light",
+    "file": "/Users/petr/Projects/habitica-tool/.skill-tree/history/reviews/ux-ui-2026-11-03/screenshots/73-privacy-phone-light.png",
+    "controls": [],
+    "font": "16px",
+    "headings": [],
+    "overflow": [],
+    "path": "/privacy",
+    "scroll": [
+      379,
+      4632
+    ],
+    "viewport": [
+      390,
+      844
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - heading "Today" [level=1]
+  - link "Add task":
+    - /url: /todo/tasks
+    - generic: Add task
+  - text: Day
+  - textbox "Day": 2026-10-19
+  - button "Use today's device date":
+    - generic: Today
+  - generic "Cloud Workspace · rev 10"
+  - paragraph:
+    - text: Task creation, field edits and scoring require Habitica correspondence. Cloud task execution is unavailable. Canonical saves do not confirm Habitica presence or rewards.
+    - link "Open Todo Sync":
+      - /url: /todo/sync
+  - status:
+    - text: "Habitica task links: 0/10 · missing: 10 · pending: 0 · need review: 0. Unlinked task completions earn no Habitica rewards. Pending links are unconfirmed."
+    - link "Review links and original receipts":
+      - /url: /todo/sync
+    - text: .
+  - region "Optional reminders":
+    - heading "Optional reminders" [level=2]
+    - paragraph:
+      - text: Saved review cues can appear here after you enable them for the selected workspace in this browser. Set, snooze or clear an exact review cue in
+      - link "Tasks → Organize → Voluntary review":
+        - /url: /todo/tasks
+      - text: .
+    - paragraph: Browser notifications are best effort while this app is open and visible. Closed tabs and background delivery are unavailable here. Reopen Today to see missed cues. No Habitica polling or task changes run automatically.
+    - paragraph: Reminders use the currently loaded workspace snapshot. Reload the workspace to include changes made elsewhere. Clearing browser data removes these preferences and local delivery receipts.
+    - status: Select and load a workspace. Reminder preferences and review cues stay bound to that account and source.
+  - region "Tasks for the selected day":
+    - paragraph: Selected cloud workspace · revision 10 · 2026-10-19 · 7 matching task/date rows
+    - heading "Tasks for this day" [level=2]
+    - article:
+      - strong: Planned deadline
+      - generic: Todo · Active
+      - generic: Planned for this day
+      - generic: Deadline on this day
+      - button "Complete":
+        - generic: Complete
+    - article:
+      - strong: Unscheduled planned
+      - generic: Daily · Active
+      - generic: Planned for this day
+      - generic: No scheduled occurrence on this date; planned/deadline information only.
+      - button "Complete" [disabled]:
+        - generic: Complete
+    - heading "Scheduled Dailies" [level=2]
+    - article:
+      - strong: Weekly Monday
+      - generic: Daily · Active
+      - generic: "Schedule time zone: UTC"
+      - generic: "Occurrence: Pending · 2026-10-19"
+      - button "Complete":
+        - generic: Complete
+    - article:
+      - strong: Monthly nineteenth
+      - generic: Daily · Active
+      - generic: "Schedule time zone: UTC"
+      - generic: "Occurrence: Pending · 2026-10-19"
+      - button "Complete":
+        - generic: Complete
+    - heading "Already recorded" [level=2]
+    - article:
+      - strong: Skipped
+      - generic: Daily · Active
+      - generic: "Schedule time zone: UTC"
+      - generic: "Occurrence: Skipped · 2026-10-19"
+      - button "Skipped" [disabled]:
+        - generic: Skipped
+    - article:
+      - strong: Completed
+      - generic: Daily · Active
+      - generic: "Schedule time zone: UTC"
+      - generic: "Occurrence: Completed · 2026-10-19"
+      - button "Completed" [disabled]:
+        - generic: Completed
+    - heading "Not active" [level=2]
+    - article:
+      - strong: Paused
+      - generic: Daily · Paused
+      - generic: Planned for this day
+      - generic: "Schedule time zone: UTC"
+      - generic: No scheduled occurrence on this date; planned/deadline information only.
+      - button "Complete" [disabled]:
+        - generic: Complete
+    - generic: Showing 1–7 of 7
+    - button "Previous day rows" [disabled]:
+      - generic: Previous day rows
+    - button "Next day rows" [disabled]:
+      - generic: Next day rows
+    - paragraph: Each Daily uses its named schedule time zone. Planned dates and deadlines stay separate. Habit events are recorded now, without backdating to the selected day.
+    - paragraph:
+      - text: "Separate Habitica cache; not merged into Companion tasks · freshness: Missing. Legacy Habitica due state remains on"
+      - link "Habitica tasks":
+        - /url: /tasks
+      - text: and is not inferred from Companion schedules.

@@ -32,12 +32,15 @@ public sealed class TodoPlanningPanelTests : BunitContext
         var recurring = Task("Weekly Tuesday") with { Kind = CompanionTaskKind.Daily, Recurrence = new(RecurrenceFrequency.Weekly, 1, new(2026, 1, 1), "UTC", [DayOfWeek.Tuesday], []) };
         var (f, _) = await Setup(Doc(inbox, assigned, planned, recurring) with { Projects = [project] }); var before = WorkspaceJournalJson.Serialize(f.Client.State);
         var cut = Render<TodoPlanningPanel>(p => p.Add(x => x.View, TodoPlanningView.Inbox).Add(x => x.Day, Day));
+        Assert.Equal("/todo/tasks", cut.Find(".todo-planning-header a").GetAttribute("href"));
         Assert.Single(cut.FindAll("[data-testid^='plan-row-']")); Assert.Contains("deadline alone", cut.Markup);
         Save("todo-plan-inbox", cut.Markup, "inbox-deadline", nameof(Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure), "/todo/inbox");
+        Save("todo-plan-inbox-date-header", cut.Find(".todo-planning-header").OuterHtml, "native-date-header", nameof(Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure), "/todo/inbox");
         cut.Find("[data-testid='plan-view']").Change("Anytime"); Assert.Equal(2, cut.FindAll("[data-testid^='plan-row-']").Count);
         cut.Find("[data-testid='plan-view']").Change("Overdue"); Assert.Single(cut.FindAll("[data-testid^='plan-row-']")); Assert.Contains("Planned earlier.", cut.Markup); Assert.Contains("Deadline overdue.", cut.Markup);
         cut.Find("[data-testid='plan-view']").Change("Week"); Assert.Contains("2026-10-19–2026-10-25", cut.Markup); Assert.Contains("Weekly Tuesday", cut.Markup);
         Save("todo-plan-week", cut.Markup, "week-agenda", nameof(Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure));
+        Save("todo-plan-week-date-header", cut.Find(".todo-planning-header").OuterHtml, "native-date-header", nameof(Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure));
         cut.Find("[data-testid='plan-view']").Change("Month"); Assert.Contains("2026-10-01–2026-10-31", cut.Markup);
         cut.Find("[data-testid='plan-next-period']").Click(); Assert.Contains("2026-11-01–2026-11-30", cut.Markup);
         cut.Find("[data-testid='plan-view']").Change("Upcoming"); Assert.Contains("2026-11-20–2026-12-19", cut.Markup);

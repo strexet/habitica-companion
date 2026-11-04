@@ -1,25 +1,31 @@
 import {workspaceDocument,type WorkspaceDocument} from './workspace-domain.ts';
 import {desiredTagMembership} from './tag-membership.ts';
 import {scopedTagCorrespondence} from './tag-correspondence.ts';
+import {validateTagEvaluation} from './reviewed-tag-dates.ts';
+import type {RelativeDateEvaluation} from './relative-saved-dates.ts';
 import {WorkspaceError} from './workspace-http.ts';
-export interface TagStatusAuthority {accountId:string;scopeAllowed:boolean;consentEnabled:boolean;trustedIntentIds?:ReadonlySet<string>}
-export function groupTagStatus(source:WorkspaceDocument,authority:TagStatusAuthority|null,input:Record<string,unknown>={}){
+export interface TagStatusAuthority {accountId:string;scopeAllowed:boolean;consentEnabled:boolean;trustedIntentIds?:ReadonlySet<string>;reviewedGroups?:ReadonlyMap<string,{evaluation:RelativeDateEvaluation;sourceRevision:number}>}
+export function groupTagStatus(source:WorkspaceDocument,authority:TagStatusAuthority|null,input:Record<string,unknown>={},asOfUtc=new Date().toISOString()){
  const document=workspaceDocument(source);if(input.expectedRevision!==undefined&&input.expectedRevision!==document.revision)throw new WorkspaceError('stale_revision',409);
  const accountVerified=Boolean(authority&&(!document.tagLedger||document.tagLedger.accountId===authority.accountId));
  const ledger=accountVerified?document.tagLedger:null,projections=new Map(document.projections.map(row=>[row.taskId,row]));
  const retired=new Set((document.sourceRetirements??[]).map(row=>row.sourceTaskId));
  const tasks=document.tasks.filter(task=>!retired.has(task.id)).map(task=>{const mapping=projections.get(task.id),state=mapping?.state==='linked'&&mapping.habiticaTaskId?task.isArchived||task.state==='completed'?'retained':'linked':mapping?.state==='pending'?'pending':!mapping||mapping.state==='unlinked'?'missing':'needsReview';return {taskId:task.id,kind:task.kind,archived:task.isArchived,state};});
- const groups=desiredTagMembership(document).groups.map(group=>{
+ const groups=desiredTagMembership(document).groups.map(original=>{
+  let group=original;const reviewed=authority?.reviewedGroups?.get(group.entityId);
+  if(group.unavailableReason&&reviewed&&reviewed.sourceRevision===document.revision){try{validateTagEvaluation(document,group.entityId,reviewed.evaluation,asOfUtc);group=desiredTagMembership(document,{entityId:group.entityId,asOfUtc:reviewed.evaluation.asOfUtc}).groups.find(g=>g.entityId===group.entityId)!;}catch{/* Old context remains historical without authorizing new membership. */}}
+
   const mapping=ledger?.mappings.find(row=>row.kind===group.kind&&row.entityId===group.entityId),proof=scopedTagCorrespondence(document,group,mapping),latest=proof.intent;
   const identity=accountVerified?mapping?.state==='confirmed'&&proof.identityCurrent?group.archived?'retained':'linked':mapping?.state==='pending'?'pending':mapping?'needsReview':'missing':'needsReview';
   let membership='missing',reason:string|null=null;
-  if(!accountVerified){membership='needsReview';reason='tag_account_unverified';}
+  if(group.unavailableReason){membership='needsReview';reason=group.unavailableReason;}
+  else if(!accountVerified){membership='needsReview';reason='tag_account_unverified';}
   else if(latest){
    if(!proof.exact){membership='needsReview';reason='tag_membership_requires_review';}
    else if(proof.confirmed&&authority?.trustedIntentIds&&!authority.trustedIntentIds.has(latest.id)){membership='needsReview';reason='tag_connection_evidence_unavailable';}
    else membership=proof.confirmed?group.archived?'retained':'confirmed':latest.state==='pending'?'pending':'needsReview';
   }
-  return {entityId:group.entityId,kind:group.kind,name:group.name,archived:group.archived,removed:group.removed,identityState:identity,membershipState:membership,habiticaTagId:accountVerified?mapping?.habiticaTagId??null:null,desiredTaskCount:group.taskIds.length,confirmedMemberCount:latest?.members?.filter(member=>member.state==='confirmed').length??0,reason};
+  return {...(group.evaluation?{evaluation:group.evaluation}:{}),entityId:group.entityId,kind:group.kind,name:group.name,archived:group.archived,removed:group.removed,identityState:identity,membershipState:membership,habiticaTagId:accountVerified?mapping?.habiticaTagId??null:null,desiredTaskCount:group.taskIds.length,confirmedMemberCount:latest?.members?.filter(member=>member.state==='confirmed').length??0,reason};
  });
  const matching=groups.filter(group=>(input.kind===undefined||group.kind===input.kind)&&(input.entityId===undefined||group.entityId===input.entityId)),offset=Number(input.offset??0),limit=Number(input.limit??20),next=offset+limit<matching.length?offset+limit:null;
  return {...(retired.size?{retiredSourceContainers:retired.size}:{}),provenance:'stored-canonical-evidence',workspaceId:document.id,revision:document.revision,accountVerified,tagConsentEnabled:authority?.consentEnabled===true,tagScopeAllowed:authority?.scopeAllowed===true,integrationComplete:accountVerified&&authority?.consentEnabled===true&&authority.scopeAllowed&&groups.every(group=>['confirmed','retained'].includes(group.membershipState))&&tasks.every(task=>['linked','retained'].includes(task.state)),

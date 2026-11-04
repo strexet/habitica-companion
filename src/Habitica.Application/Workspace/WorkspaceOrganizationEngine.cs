@@ -31,6 +31,8 @@ public static class WorkspaceOrganizationEngine
         if(command.Operation==WorkspaceOrganizationOperation.Create ? current is not null : current is null||(current.IsRemoved||current.IsArchived&&command.Operation!=WorkspaceOrganizationOperation.Remove)&&!WorkspaceProjectAliases.IsRetainedClear(command))
             return Reject(SubmissionDisposition.Invalid,"organization_unavailable");
         var patch=command.Patch;
+        if(patch?.Query is {HasRelativeDates:true} relativeQuery){try{WorkspaceRelativeDates.Evaluate(relativeQuery,now);}catch(InvalidOperationException error){return Reject(SubmissionDisposition.Invalid,error.Message);}}
+
         if(command.Operation==WorkspaceOrganizationOperation.Remove&&!patch!.Removal!.Matches(document,command.EntityId))return Reject(SubmissionDisposition.Invalid,"project_removal_impact_changed");
         if(patch?.CategoryId is {} category&&!document.Categories.Any(row=>row.Id==category&&!row.IsArchived)
             ||patch?.ProjectId is {} project&&!document.Projects.Any(row=>row.Id==project&&!row.IsArchived)

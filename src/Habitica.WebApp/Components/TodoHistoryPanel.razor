@@ -6,11 +6,14 @@
 
 <div class="todo-history" data-testid="todo-history">
     <section class="card-surface todo-history-header">
-        <div class="todo-day-title"><h1>Task history</h1><a href="/tasks">Open tasks</a></div>
+        <div class="todo-day-title"><h1>Task history</h1><MudButton Href="/todo/tasks" data-layout-primary="true" Variant="Variant.Outlined">Open tasks</MudButton></div>
         <div class="todo-history-filters">
             <label class="field-row">Activity<select class="app-input" value="@_activity" @onchange="ChangeActivity" data-testid="history-activity"><option value="Completions">All completions</option><option value="Todo">Todo completions</option><option value="Daily">Daily completions</option><option value="Habit">Habit activity</option></select></label>
             <label class="field-row">Search retained title or notes<input class="app-input" maxlength="256" value="@_query" @onchange="ChangeQuery" @ref="_searchInput" data-testid="history-query" /></label>
+            <label class="field-row">Current retained project<select class="app-input" value="@_project" @onchange="ChangeProject" data-testid="history-project"><option value="">All projects and Unassigned</option><option value="unassigned">Unassigned, including removed-project placement</option>@foreach(var project in Todo.Snapshot?.Document.Projects??[]){<option value="@project.Id">@ProjectLabel(project)</option>}</select></label>
         </div>
+        <p>Project filtering uses current retained task assignment, including archived tasks. Event details retain accepted snapshots or labelled current-task fallbacks; timestamps stay unchanged. Project selection does not establish event-time membership.</p>
+        @if(_project.Length>0){<p data-testid="history-project-context">@ProjectContext()</p>}
         <details class="todo-history-advanced" open="@(_from.Length > 0 || _through.Length > 0 || _direction.Length > 0)"><summary>More filters@(_from.Length > 0 || _through.Length > 0 || _direction.Length > 0 ? " (active)" : "")</summary><div class="todo-history-filters">
             <label class="field-row">From UTC day<input class="app-input" type="date" value="@_from" @onchange="args => ChangeDate(args, true)" data-testid="history-from" /></label>
             <label class="field-row">Through UTC day (inclusive)<input class="app-input" type="date" value="@_through" @onchange="args => ChangeDate(args, false)" data-testid="history-through" /></label>
@@ -35,6 +38,7 @@
                         <span>Recorded UTC: @row.Recorded.ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture)</span>
                         @if (row.OccurrenceDate is { } date) { <span>Daily civil occurrence date: @date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</span> }
                         <span>@(row.DetailSource == "commandSnapshot" ? "Historical details saved with the original command" : "Current task details (historical snapshot unavailable)")</span>
+                        @if(row.Placement is {} placement){<span data-testid="history-current-placement">Current retained placement: @PlacementText(placement)</span>}
                         <span>Task archived: @(row.TaskArchived ? "Yes" : "No") · Event archived: @(row.EventArchived ? "Yes" : "No")</span>
                         @if (row.Restoration is { } restoration) { <span>Restored UTC: @restoration.RestoredAtUtc.ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture) · Restoration archived: @(restoration.IsArchived ? "Yes" : "No")</span> }
                         @if (!string.IsNullOrEmpty(row.Notes)) { <details><summary>Retained notes</summary><p class="todo-preserved-text">@row.Notes</p></details> }
@@ -57,10 +61,17 @@
         else if (_error is null) { <p role="status">Choose and load an available workspace. Unavailable history is not an empty activity list.</p> }
         <p class="panel-copy">Canonical events record Companion acceptance. A completion or Habit event alone does not confirm a Habitica effect. Native Todo restoration retains history and creates no negative reward. Use Recovery options for a separate reviewed linked uncheck or native occurrence correction; archived tasks and terminal Daily occurrences are listed below.</p>
     </section>
+    @if(_project.Length>0){<p class="panel-copy">The project filter above applies to completion and Habit events. Archived-task and occurrence recovery below keeps independent discovery filters and exact original recovery identities.</p>}
     <TodoRecoveryBrowser Selected="OpenRecovery" />
 </div>
 
 @code {
+    [Parameter]public string? ProjectReference{get;set;}
+    [Parameter]public string? UnassignedReference{get;set;}
+    [Parameter]public string? WorkspaceReference{get;set;}
+    [Parameter]public string? SourceReference{get;set;}
+    private sealed record Route(string? Project,string? Unassigned,string? Workspace,string? Source);
+    private Route? _route;private string? _routeError;private string _project="",_routeProject="";private Guid? _routeWorkspace;private TodoWorkspaceSource? _routeSource;private bool _useRoute=true;
     private string _activity = "Completions", _query = "", _from = "", _through = "", _direction = "";
     private TodoWorkspaceSelection? _source;
     private long? _revision;
@@ -74,9 +85,20 @@
     private ElementReference _searchInput;
     private bool CanRestore => !Todo.IsBusy && !Todo.IsReadOnly && !Todo.Commands.HasPendingIntent && Todo.Commands.LinkPreview is null;
     protected override void OnInitialized() { Todo.Changed += Changed; Rebuild(); }
+    protected override void OnParametersSet()
+    {
+        var route=new Route(ProjectReference,UnassignedReference,WorkspaceReference,SourceReference);if(route==_route)return;_route=route;_useRoute=true;_routeError=null;_routeProject="";_routeWorkspace=null;_routeSource=null;
+        try{
+            if(!string.IsNullOrEmpty(ProjectReference)){if(!Guid.TryParseExact(ProjectReference,"D",out var id)||id==Guid.Empty)throw new ArgumentException();_routeProject=id.ToString("D");}
+            if(!string.IsNullOrEmpty(UnassignedReference)){if(!bool.TryParse(UnassignedReference,out var unassigned))throw new ArgumentException();if(unassigned){if(_routeProject.Length>0)throw new ArgumentException();_routeProject="unassigned";}}
+            var workspace=!string.IsNullOrEmpty(WorkspaceReference);var source=!string.IsNullOrEmpty(SourceReference);if(workspace!=source)throw new ArgumentException();
+            if(workspace){if(!Guid.TryParseExact(WorkspaceReference,"D",out var id)||id==Guid.Empty)throw new ArgumentException();_routeWorkspace=id;_routeSource=SourceReference!.ToLowerInvariant() switch{"browser"=>TodoWorkspaceSource.Browser,"cloud"=>TodoWorkspaceSource.Cloud,_=>throw new ArgumentException()};}
+        }catch(ArgumentException){_routeError="The history link has an invalid project or Workspace/source context. Choose an exact current filter or clear filters.";}
+        _project=_routeProject;_offset=0;Rebuild();
+    }
     private void Changed()
     {
-        if (_source != Todo.Selection) { _linkTaskId=null; _recovery=null; _activity = "Completions"; _query = _from = _through = _direction = ""; }
+        if (_source != Todo.Selection) { _project=_useRoute?_routeProject:"";_linkTaskId=null; _recovery=null; _activity = "Completions"; _query = _from = _through = _direction = ""; }
         if (_source != Todo.Selection || _revision != Todo.Revision) _offset = 0;
         Rebuild(); _ = InvokeAsync(StateHasChanged);
     }
@@ -84,27 +106,29 @@
     {
         _rows = []; _total = 0; _next = null; _revision = null; _error = null; _source = Todo.Selection;
         if (Todo.Snapshot is not { } snapshot) return;
+        if(_useRoute&&(_routeError is not null||_routeWorkspace is {} expected&&(_source?.WorkspaceId!=expected||_source?.Source!=_routeSource))){_error=_routeError??"The history link belongs to another Workspace/source. Load that exact source or choose a current project filter explicitly.";return;}
         try
         {
+            Guid? projectId=null;var unassigned=_project=="unassigned";if(_project.Length>0&&!unassigned){if(!Guid.TryParseExact(_project,"D",out var selected)||selected==Guid.Empty)throw new ArgumentException("invalid_filter");projectId=selected;}
             var from = Utc(_from, false); var through = Utc(_through, true);
             if (_activity == "Habit")
             {
                 var direction = _direction.Length == 0 ? (HabitScoreDirection?)null : Enum.Parse<HabitScoreDirection>(_direction);
-                var page = Todo.HabitHistory(new(_query, Direction: direction, RecordedFromUtc: from, RecordedThroughUtc: through, Limit: 20, Offset: _offset, ExpectedRevision: Todo.Revision));
-                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, CompanionTaskKind.Habit, item.TaskText, item.Notes, item.DetailSource, item.RecordedAtUtc, null, item.TaskArchived, item.EventArchived, null, item.Direction, "Habit undo is unavailable here.")).ToList();
+                var page = Todo.HabitHistory(new(_query, Direction: direction, RecordedFromUtc: from, RecordedThroughUtc: through, Limit: 20, Offset: _offset, ExpectedRevision: Todo.Revision,ProjectId:projectId,Unassigned:unassigned));
+                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, CompanionTaskKind.Habit, item.TaskText, item.Notes, item.DetailSource, item.RecordedAtUtc, null, item.TaskArchived, item.EventArchived, null, item.Direction, "Habit undo is unavailable here.",Placement:item.CurrentPlacement)).ToList();
                 _total = page.MatchedCount; _next = page.NextOffset;
             }
             else
             {
                 var kind = _activity == "Todo" ? CompanionTaskKind.Todo : _activity == "Daily" ? CompanionTaskKind.Daily : (CompanionTaskKind?)null;
-                var page = Todo.History(new(_query, Kind: kind, CompletedFromUtc: from, CompletedThroughUtc: through, Limit: 20, Offset: _offset, ExpectedRevision: Todo.Revision));
-                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, item.Kind, item.TaskText, item.Notes, item.DetailSource, item.CompletedAtUtc, item.OccurrenceDate, item.TaskArchived, item.EventArchived, item.Restoration, null, TodoHistoryRestoration.UnavailableReason(snapshot.Document, item.TaskId, item.EventId),item.OccurrenceCorrection)).ToList();
+                var page = Todo.History(new(_query, Kind: kind, CompletedFromUtc: from, CompletedThroughUtc: through, Limit: 20, Offset: _offset, ExpectedRevision: Todo.Revision,ProjectId:projectId,Unassigned:unassigned));
+                _rows = page.Items.Select(item => new Row(item.EventId, item.TaskId, item.CommandId, item.Kind, item.TaskText, item.Notes, item.DetailSource, item.CompletedAtUtc, item.OccurrenceDate, item.TaskArchived, item.EventArchived, item.Restoration, null, TodoHistoryRestoration.UnavailableReason(snapshot.Document, item.TaskId, item.EventId),item.OccurrenceCorrection,item.CurrentPlacement)).ToList();
                 _total = page.MatchedCount; _next = page.NextOffset;
             }
             _revision = snapshot.Document.Revision;
         }
         catch (ArgumentException) { _error = "Choose valid UTC days, filter values and an ordered date range."; }
-        catch (InvalidOperationException) { _error = "History data changed or is unavailable. Reload the selected workspace before reviewing events."; }
+        catch (InvalidOperationException error) { _error = error.Message=="history_project_not_found"?"The exact project is not retained in the active Workspace. Choose another project or clear filters.":"History data changed or is unavailable. Reload the selected workspace before reviewing events."; }
     }
     private static DateTimeOffset? Utc(string text, bool end)
     {
@@ -121,7 +145,8 @@
     private void ChangeDirection(ChangeEventArgs args) { _direction = args.Value?.ToString() ?? ""; Reset(); }
     private void ChangeQuery(ChangeEventArgs args) { _query = args.Value?.ToString() ?? ""; Reset(); }
     private void ChangeDate(ChangeEventArgs args, bool from) { if (from) _from = args.Value?.ToString() ?? ""; else _through = args.Value?.ToString() ?? ""; Reset(); }
-    private void ClearFilters() { _activity = "Completions"; _query = _from = _through = _direction = ""; Reset(); }
+    private void ChangeProject(ChangeEventArgs args){_useRoute=false;_routeError=null;_project=args.Value?.ToString()??"";Reset();}
+    private void ClearFilters() { _useRoute=false;_routeError=null;_project="";_activity = "Completions"; _query = _from = _through = _direction = ""; Reset(); }
     private void Reset() { _offset = 0; Rebuild(); }
     private void Previous() { _offset = Math.Max(0, _offset - 20); Rebuild(); }
     private void Next() { if (_next is { } next) { _offset = next; Rebuild(); } }
@@ -143,5 +168,8 @@
     private async Task FocusSearchAsync() { try { await _searchInput.FocusAsync(); } catch (JSException) { } }
     public void Dispose() => Todo.Changed -= Changed;
     private sealed record Row(Guid EventId, Guid TaskId, Guid CommandId, CompanionTaskKind Kind, string Text, string? Notes, string DetailSource,
-        DateTimeOffset Recorded, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived, WorkspaceRestorationDetail? Restoration, HabitScoreDirection? Direction, string? RestoreReason, WorkspaceOccurrenceCorrectionDetail? Correction=null);
+        DateTimeOffset Recorded, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived, WorkspaceRestorationDetail? Restoration, HabitScoreDirection? Direction, string? RestoreReason, WorkspaceOccurrenceCorrectionDetail? Correction=null,WorkspaceHistoryProjectPlacement? Placement=null);
+    private static string ProjectLabel(WorkspaceProject project)=>$"{project.Name} · {project.Id:D}{(project.IsRemoved?" · removed":project.IsArchived?" · archived":"")}";
+    private string ProjectContext()=>_project=="unassigned"?"Current Unassigned: no project, or a retained reference to a removed project. Exact removed-project selection remains separate.":Todo.Snapshot?.Document.Projects.FirstOrDefault(p=>p.Id.ToString("D")==_project) is {} project?"Current project filter: "+ProjectLabel(project):"The selected exact project is unavailable in the active Workspace.";
+    private static string PlacementText(WorkspaceHistoryProjectPlacement value)=>value.Unassigned?value.ProjectId is null?"Unassigned; no retained project":"Unassigned; retained removed project "+value.ProjectName+" · "+value.ProjectId:$"{value.ProjectName} · {value.ProjectId}{(value.ProjectArchived?" · archived":"")}";
 }

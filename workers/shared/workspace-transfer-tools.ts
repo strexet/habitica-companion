@@ -11,6 +11,6 @@ export function workspaceTransferInput(name:string,input:unknown){
  uuid(value.transferId);
  if(name==='preview_workspace_transfer'&&value.archiveConflicts!==undefined&&typeof value.archiveConflicts!=='boolean')throw new WorkspaceError('invalid_conflict_policy',422);
  if(name==='accept_workspace_transfer'&&(typeof value.reviewHash!=='string'||!/^[a-f0-9]{64}$/.test(value.reviewHash)))throw new WorkspaceError('exact_transfer_review_required',409);
- if(name==='get_workspace_transfer_record'){uuid(value.commandId);if(!['taskCommand','organizationCommand','noteReceipt'].includes(String(value.kind)))throw new WorkspaceError('invalid_source_record',422);if(value.kind==='noteReceipt'){if(value.sourceWorkspaceId!==undefined)throw new WorkspaceError('invalid_source_record',422);}else uuid(value.sourceWorkspaceId);}
+ if(name==='get_workspace_transfer_record'){uuid(value.commandId);if(!['taskCommand','organizationCommand','noteReceipt','folderReceipt'].includes(String(value.kind)))throw new WorkspaceError('invalid_source_record',422);if(['noteReceipt','folderReceipt'].includes(String(value.kind))){if(value.sourceWorkspaceId!==undefined)throw new WorkspaceError('invalid_source_record',422);}else uuid(value.sourceWorkspaceId);}
  return value;
 }

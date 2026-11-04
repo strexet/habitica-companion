@@ -1,0 +1,65 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-ce129c8f-9f11-439c-b905-bbfb6ea43b14",
+  "check_id": "copy-unset-values-behavior",
+  "definition": "7c424f6bcb8028298cce4155638620356888fedb3f7810b7b2f1349bff5767cf",
+  "environment_identity": "7de212861a7c12e2756dd3665f2f8d7fac20996ba55329d719fda205d17e927a",
+  "key": "9e1923ccdac1f711503569068d123118abeaaa5ed9be5a8617cfc5248c8590bd",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T23:38:09.046918+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T23:33:09.361602+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TaskTypeConversionPanelTests",
+      "--logger",
+      "trx;LogFileName=copy-unset-values.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/copy-unset-values/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "a5238b18cc6116d3e09fe94cc457dfe63cba86708568a87757ffbf15e6a1a441"
+  },
+  "task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80"
+}

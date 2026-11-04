@@ -1,0 +1,7 @@
+{
+  "argv": ["node", "--experimental-strip-types", "--test", "tests/Functions/*.test.mjs"],
+  "shell_glob_expanded": true,
+  "exit_code": 0,
+  "counts": {"tests": 103, "pass": 103, "fail": 0, "skipped": 0},
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/functions-pwa-final.log"
+}

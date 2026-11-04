@@ -85,6 +85,7 @@ public static class WorkspaceRules
         }
         foreach (var task in document.Tasks)
         {
+            if(task.CopyLineage is {} lineage&&!lineage.IsValid(document,task))errors.Add(new("invalid_task_copy_lineage",task.Id));
             if (task.ExecutionStage is {} stage && (task.Kind != CompanionTaskKind.Todo || !Enum.IsDefined(stage))) errors.Add(new("invalid_execution_stage",task.Id));
             if (!HabiticaTaskDetails.IsValid(task.HabiticaDetails) || task.Kind != CompanionTaskKind.Habit && (task.HabiticaDetails?.Up is not null || task.HabiticaDetails?.Down is not null)) errors.Add(new("invalid_habitica_details", task.Id));
             if (string.IsNullOrWhiteSpace(task.Text) || task.Text.Length > 2048 || task.Notes?.Length > 10000) errors.Add(new("invalid_task_text", task.Id));

@@ -326,13 +326,17 @@ export async function commitNotes(scope, expectedRevision, json, projectGuard = 
   noteScope(scope);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || typeof json !== "string" || new TextEncoder().encode(json).length > 16*1024*1024) throw new Error("Invalid notes commit.");
   const next=JSON.parse(json);
-  if(next.schemaVersion!==1 || next.ownerScope!==scope || !Number.isSafeInteger(next.revision) || next.revision<=expectedRevision
-    || expectedRevision>0&&next.revision!==expectedRevision+1 || !Array.isArray(next.receipts) || next.receipts.length+(next.transfers??[]).length!==next.revision || !Array.isArray(next.purged)) throw new Error("Invalid notes revision.");
+  if(![1,2].includes(next.schemaVersion) || next.ownerScope!==scope || !Number.isSafeInteger(next.revision) || next.revision<=expectedRevision
+    || expectedRevision>0&&next.revision!==expectedRevision+1 || !Array.isArray(next.receipts) || next.receipts.length+(next.transfers??[]).length+(next.folderReceipts??[]).length!==next.revision || !Array.isArray(next.purged)
+    ||next.schemaVersion===1&&(next.folders!==undefined||next.folderReceipts!==undefined)||next.schemaVersion===2&&(!Array.isArray(next.folders)||!Array.isArray(next.folderReceipts))
+    ||(next.folders??[]).some(f=>f.source!=='browser')) throw new Error("Invalid notes revision.");
   if(projectGuard){
-    workspaceScope(projectGuard.accountScope);workspaceId(projectGuard.workspaceId);workspaceId(projectGuard.projectId);workspaceId(projectGuard.noteId);
+    workspaceScope(projectGuard.accountScope);workspaceId(projectGuard.workspaceId);workspaceId(projectGuard.projectId);
+    if(Boolean(projectGuard.noteId)===Boolean(projectGuard.folderId))throw new Error("Exact project target required.");
+    workspaceId(projectGuard.noteId??projectGuard.folderId);
     const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(projectGuard.accountScope));
     if(Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')!==scope||!Number.isSafeInteger(projectGuard.workspaceStoreVersion)||projectGuard.workspaceStoreVersion<1)throw new Error("Project owner mismatch.");
-    const link=next.notes?.find(n=>n.id===projectGuard.noteId)?.current?.project;
+    const link=projectGuard.folderId?next.folders?.find(f=>f.id===projectGuard.folderId&&!f.isRemoved)?.project:next.notes?.find(n=>n.id===projectGuard.noteId)?.current?.project;
     if(link?.ownerScope!==scope||link.source!=='browser'||link.workspaceId!==projectGuard.workspaceId||link.projectId!==projectGuard.projectId)throw new Error("Project source mismatch.");
   }
   return database.transaction("rw",kv,notes,workspaces,async()=>{
@@ -348,8 +352,11 @@ export async function commitNotes(scope, expectedRevision, json, projectGuard = 
     if(row){
       const previous=JSON.parse(row.json);
       if(previous.receipts.some((receipt,index)=>stableJson(receipt)!==stableJson(next.receipts[index]))
+        ||(previous.folderReceipts??[]).some((receipt,index)=>stableJson(receipt)!==stableJson((next.folderReceipts??[])[index]))
         ||previous.purged.some((item,index)=>stableJson(item)!==stableJson(next.purged[index]))
         ||(previous.transfers??[]).some((item,index)=>stableJson(item)!==stableJson((next.transfers??[])[index])))throw new Error("Notes receipts and purged identities are immutable.");
+      if(previous.schemaVersion===2&&next.schemaVersion!==2)throw new Error("Notes folder format cannot be downgraded.");
+      if((previous.folders??[]).some(f=>!(next.folders??[]).some(n=>n.id===f.id&&n.source===f.source&&stableJson(n.project??null)===stableJson(f.project??null)&&(!f.isRemoved||stableJson(n)===stableJson(f)))))throw new Error("Folder identity and scope are retained.");
     }
     await notes.put({scope,revision:next.revision,json});return true;
   });
@@ -366,7 +373,7 @@ export async function getWorkspaceTransferInventory(account, ownerScope) {
     pendingJson:(await kv.get('companion-adoption-v1:'+account))?.jsonText??null,
   }));
 }
-export async function freezeWorkspaceTransfer(account, ownerScope, transferId, targetWorkspaceId, plans) {
+export async function freezeWorkspaceTransfer(account, ownerScope, transferId, targetWorkspaceId, plans, expectedNotesJson = undefined) {
   workspaceScope(account);noteScope(ownerScope);workspaceId(transferId);workspaceId(targetWorkspaceId);
   const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(account));
   if(Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('')!==ownerScope)throw new Error('Transfer account mismatch.');
@@ -390,6 +397,8 @@ export async function freezeWorkspaceTransfer(account, ownerScope, transferId, t
       captures.push({workspaceId:after.document.id,archive:plan.frozenJson});
     }
     const notesRow=await notes.get(ownerScope),notesJson=notesRow?.json??null;
+    if(expectedNotesJson!==undefined&&notesJson!==expectedNotesJson)throw new Error('Notes changed after compatibility review. Original authority remains unchanged.');
+    if(notesJson!==null){const book=JSON.parse(notesJson);if(![1,2].includes(book.schemaVersion)||book.ownerScope!==ownerScope||book.schemaVersion===2&&(!Array.isArray(book.folders)||!Array.isArray(book.folderReceipts)||book.folders.some(f=>f.source!=='browser')))throw new Error('Notes format or folder source is unsupported. Original authority remains unchanged.');}
     // A metadata fence also rejects an already-open older tab's revision CAS without changing Note bytes.
     await notes.put(notesRow?{...notesRow,revision:Number.MAX_SAFE_INTEGER,authorityFrozen:true}:{scope:ownerScope,revision:Number.MAX_SAFE_INTEGER,authorityFrozen:true,json:JSON.stringify({schemaVersion:1,ownerScope,revision:0,notes:[],receipts:[],purged:[]})});
     const artifact=JSON.stringify({version:'companion-adoption-v1',transferId,ownerScope,targetWorkspaceId,workspaces:captures.sort((a,b)=>a.workspaceId.localeCompare(b.workspaceId)),notes:notesJson});

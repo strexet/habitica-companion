@@ -19,8 +19,31 @@ Flavor: web. Static compatibility only; execution remains unqualified.
     "ui": []
   },
   "gaps": [],
-  "instruction_profile_id": "bb326012f921b283552737895372f53475376596a98322fdf551cdd009713122",
+  "instruction_profile_id": "69aebd197236f859586b896286cf07241f2e7c125b9613742d04c45c64d42c27",
   "recipes": {
+    "activity-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/activity-ui.py"
+      ],
+      "execution_notes": "Bounded current Release publish, real Razor capture,112 light/obsidian phone/desktop normal/enlarged-text state cases and2 actual hydrated statistics journeys with real isolated IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, hosted qualification, mutation or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/activity-ui.py",
+        "tests/browser/activity-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
     "dotnet-focused-tests": {
       "argv": [
         "dotnet",
@@ -61,6 +84,54 @@ Flavor: web. Static compatibility only; execution remains unqualified.
           "bunit": "2.7.2",
           "xunit": "2.9.3"
         }
+      }
+    },
+    "folder-adoption-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/folder-adoption-ui.py"
+      ],
+      "execution_notes": "Current Release Sync route,112 light/obsidian phone/desktop normal/enlarged-text Razor cases and two real hydrated folder-adoption journeys with isolated Auth/Workspace/D1 and native IndexedDB. Recover original acceptance after lost reply; no real account/provider or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/folder-adoption-ui.py",
+        "tests/browser/folder-adoption-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/folder-adoption-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "linked-daily-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/linked-daily-ui.py"
+      ],
+      "execution_notes": "Bounded current Release build and current Razor capture qualify144 light/obsidian phone/desktop100/200-percent layout/focus cases plus2 real hydrated Daily/Sync journeys using exact existing synthetic cloud recovery, isolated Auth/Workspace Workers/D1 and IndexedDB. Synthetic provider observations never leave the fixture; executor disabled, no upstream write, score, Cron, live account, publication or device permission. Own localhost5081 for exact local CORS; fail safely if occupied. Dispose all fixture Workers and profiles.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/linked-daily-ui.py",
+        "tests/browser/linked-daily-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
       }
     },
     "netlify-hosted-controls": {
@@ -107,6 +178,73 @@ Flavor: web. Static compatibility only; execution remains unqualified.
         "node_declaration": "22.x"
       }
     },
+    "notes-indexeddb-browser": {
+      "argv": [
+        "node",
+        "tests/browser/notes-folders.mjs"
+      ],
+      "execution_notes": "Actual source adapter and neutral C# wire fixture on an owned loopback origin. Two isolated persistent browser profiles; hard90-second fixture deadline and120-second controller deadline with30-second cleanup reserve. No real account, service or permission.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/notes-folders.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache; no package upgrades",
+        "node": "22.x"
+      }
+    },
+    "notes-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/notes-ui.py",
+        "{mode}"
+      ],
+      "execution_notes": "Bounded Release publish and current Razor capture precede128 light/obsidian phone/desktop100/200-percent state cases and2 actual hydrated /notes + /todo/projects journeys on isolated persistent profiles and real IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, device, hosted qualification or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "project-history-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/project-history-ui.py"
+      ],
+      "execution_notes": "Bounded current Release, actual project/history Razor states,160 light/obsidian phone/desktop normal/enlarged-text layout/focus cases and2 actual hydrated scoped navigation/original-receipt journeys under Chromium/WebKit with isolated Auth/Workspace/D1 and IndexedDB. No real account, provider writes, device permissions or publication. Service workers blocked.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/project-history-ui.py",
+        "tests/browser/project-history-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/project-history-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
     "pwa-shell-browser": {
       "argv": [
         "node",
@@ -122,6 +260,54 @@ Flavor: web. Static compatibility only; execution remains unqualified.
       ],
       "lane": "browser",
       "qualification": "owner-declared static recipe; runner unqualified"
+    },
+    "relative-saved-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/relative-saved-ui.py"
+      ],
+      "execution_notes": "Bounded current Release, current saved-list/tag Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, focus and disabled controls under Chromium/WebKit, plus actual hydrated saved-list/Sync journeys using isolated Auth/Workspace Workers/D1 and native IndexedDB. Relative definitions retain intent; unavailable time-bound tag projection stays explicitly fenced. Service workers blocked; no real account, provider writes or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/relative-saved-ui.py",
+        "tests/browser/relative-saved-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "relative-tag-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/relative-tag-ui.py"
+      ],
+      "execution_notes": "Current Release Sync route,160 light/obsidian phone/desktop normal/enlarged-text Razor cases and two actual hydrated day-bound tag review/original-receipt journeys with isolated Auth/Workspace/D1 and native IndexedDB. No real provider operation, executor opt-in or notification qualification.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/relative-tag-ui.py",
+        "tests/browser/relative-tag-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/relative-tag-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
     },
     "subscription-contracts-execution-profile": {
       "argv": [
@@ -152,6 +338,106 @@ Flavor: web. Static compatibility only; execution remains unqualified.
         "node": "22.x",
         "python": "3.x",
         "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+      }
+    },
+    "task-type-copy-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/task-type-copy-ui.py"
+      ],
+      "execution_notes": "Bounded current Release publish, current conversion Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, disabled controls and focus in Chromium/WebKit, plus actual hydrated type-copy routes with isolated Auth/Workspace Workers/D1 and native IndexedDB. Service workers blocked; no real provider write, device permission or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/task-type-copy-ui.py",
+        "tests/browser/task-type-copy-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "ux-ui-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser-qualification/ux-ui.py",
+        "{task_key}",
+        "{report_directory}"
+      ],
+      "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser-qualification/ux-ui.py",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-shared-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-session.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+        "tests/browser-qualification/ux-ui-notes-metrics.mjs",
+        "tests/browser-qualification/ux-ui-canonical-journey.mjs",
+        "tests/browser-qualification/ux-ui-category-journey.mjs",
+        "tests/browser-qualification/ux-ui-compact-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-companions-journey.mjs",
+        "tests/browser-qualification/ux-ui-companions-user.json",
+        "tests/browser-qualification/ux-ui-copy-values-journey.mjs",
+        "tests/browser-qualification/ux-ui-counts-user.json",
+        "tests/browser-qualification/ux-ui-daily-order-journey.mjs",
+        "tests/browser-qualification/ux-ui-daily-timezones-journey.mjs",
+        "tests/browser-qualification/ux-ui-daily-timezones-user.json",
+        "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs",
+        "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+        "tests/browser-qualification/ux-ui-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-disabled-journey.mjs",
+        "tests/browser-qualification/ux-ui-discovery-content.json",
+        "tests/browser-qualification/ux-ui-discovery-user.json",
+        "tests/browser-qualification/ux-ui-equipment-counts-journey.mjs",
+        "tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs",
+        "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-content.json",
+        "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-party.json",
+        "tests/browser-qualification/ux-ui-game-user.json",
+        "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-party-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-phone-notes-journey.mjs",
+        "tests/browser-qualification/ux-ui-planning-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-projects-browse-journey.mjs",
+        "tests/browser-qualification/ux-ui-push-capability-journey.mjs",
+        "tests/browser-qualification/ux-ui-readiness-journey.mjs",
+        "tests/browser-qualification/ux-ui-recurring-row-journey.mjs",
+        "tests/browser-qualification/ux-ui-reminder-days-journey.mjs",
+        "tests/browser-qualification/ux-ui-saved-errors-journey.mjs",
+        "tests/browser-qualification/ux-ui-saved-layout-journey.mjs",
+        "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-settings-sections-journey.mjs",
+        "tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs",
+        "tests/browser-qualification/ux-ui-today-work-journey.mjs",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-notes-entry-journey.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+        "framework": "Blazor WebAssembly8 Release",
+        "node": "22.x"
       }
     },
     "webapp-release-build": {
@@ -214,6 +500,12 @@ Flavor: web. Static compatibility only; execution remains unqualified.
         "node_declaration": "22.x"
       }
     }
+  },
+  "worktree_environment": {
+    "exclusive_resources": [],
+    "isolated_directories": [],
+    "required_files": [],
+    "schema": 1
   }
 }
 ```

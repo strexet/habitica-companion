@@ -1,0 +1,135 @@
+{
+  "checks": [
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rules",
+      "parameters": {
+        "report_name": "activity-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules",
+        "test_filter": "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-components",
+      "parameters": {
+        "report_name": "activity-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components",
+        "test_filter": "FullyQualifiedName~Statistics",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rendering",
+      "parameters": {},
+      "recipe_id": "activity-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.WebApp/Components/ActivityStreakPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsChart.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/fixtures/workspace/activity-streaks-v1.json",
+        "tests/browser/activity-ui.py",
+        "tests/browser/activity-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "before-dependent-work"
+    },
+    {
+      "assertion": "Portable full-journal day/coverage cases match the independently asserted C# fixtures, including DST, pauses, corrections, negative-only activity, historical timezone refusal and context-bound paging. Malformed input and fabricated coverage refuse without writes.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/activity-streaks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/activity-streaks.test.mjs",
+        "workers/companion-workspace/src/activity-streaks.ts",
+        "workers/companion-workspace/src/activity-coverage-query.ts",
+        "workers/shared/activity-streak-filter.ts",
+        "workers/shared/recurrence-calendar.ts",
+        "tests/fixtures/workspace/activity-streaks-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Actual SDK and local Worker/D1 reads preserve full-journal day/coverage statistics, read scope separation, original context paging and account/source isolation, without commands or game effects.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/activity-statistics-mcp.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/activity-statistics-mcp.test.mjs",
+        "workers/companion-workspace/src/activity-statistics-api.ts",
+        "workers/companion-workspace/src/activity-streaks.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/shared/activity-streak-filter.ts",
+        "workers/shared/task-tools.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/activity-streaks-v1.json",
+        "plugin/skills/habitica-activity-review/SKILL.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

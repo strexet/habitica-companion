@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep the dashboard Appearance action readable at enlarged phone widths",
+    "description": "The current dashboard browser screenshot at 360 pixels and 200-percent text shows the Appearance heading beside a button squeezed into a glyph-wide column. Phone rules set both flex children to full width without allowing the row to wrap.",
+    "expected_behavior": "Keep the Appearance label and Customize theme or Done action readable, visible and keyboard accessible at phone and desktop widths without reducing text size or changing theme preferences.",
+    "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "related_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/dashboard-freshness/1793715437200725000/webkit-gryphy-light-360-200-dashboard-failed.png; app.css dashboard-appearance-head and phone child width rules.",
+    "priority_reason": "The collapsed dashboard Appearance row obstructs current changed-route primary-action qualification and expands above the account status at enlarged phone text.",
+    "expected_source_hash": "c8a5582c3ec617663e097699db70fe8ac3a727e2f55aba835d8eb964ef8a22f0"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-1d47a442-c7d4-420a-99ae-270d1b204653",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "relation": "blocker",
+    "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "status": "Pending"
+  }
+}

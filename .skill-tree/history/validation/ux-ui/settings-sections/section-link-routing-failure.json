@@ -1,0 +1,10 @@
+{
+  "original_failure": "48b15ae6-bbf6-4f1f-bbaa-cd5246929584",
+  "observed": "Fragment-only href resolves against base root; actual app routed to /dashboard.",
+  "repair": "Explicit /settings fragment URLs preserve open-link destination; in-page activation focuses exact ElementReference then existing field-focus reveal. No state handler changes.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

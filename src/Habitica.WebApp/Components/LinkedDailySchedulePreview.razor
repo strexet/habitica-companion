@@ -1,0 +1,27 @@
+@using Habitica.Domain.Workspace
+@using System.Globalization
+<section class="linked-daily-review" aria-label="Linked Daily schedule review" data-testid="linked-daily-review">
+    <h4>Companion and Habitica schedule replacement</h4>
+    <p>Exact Habitica Daily: @Context.HabiticaTaskId. Account UTC offset: @Context.Account.TimezoneOffset minutes west of UTC; day start: @Context.Account.DayStart:00. Observed @Context.ObservedAtUtc.ToString("u"). Review expires after 90 seconds.</p>
+    <p>Saved Companion rule before replacement: @TodoRecurringEditor.RuleText(NativeBefore)</p>
+    <p>Retained Habitica rule: @Fields(Context.Before)</p>
+    <p>Expected Habitica rule after normalization: @Fields(Context.ExpectedAfter)</p>
+    @if (Review.BeforeNative is {} before)
+    {
+        <p data-testid="linked-daily-current">Current account day @Day.ToString("yyyy-MM-dd"): retained Habitica rule @(Due(before) ? "scheduled" : "not scheduled"); proposed rule @(Due(Proposed) ? "scheduled" : "not scheduled"). These calendar dates do not assert completion or live Habitica due state.</p>
+        <p>Retained Habitica dates in the next 366-day window: @Dates(before)</p>
+        <p data-testid="linked-daily-next">Proposed dates in the next 366-day window: @Dates(Proposed)</p>
+    }
+    <p>Saving changes the native rule now and queues one exact Habitica metadata update. The executor rechecks the account and full original task. Recorded completions and skips remain; no past date is scored and no Cron runs. Companion skip or pause does not pause Habitica penalties.</p>
+    <p>An external edit or unsupported normalization blocks the update. An uncertain outcome keeps the original command and attempt; matching current fields alone cannot prove the original write. Check the original receipt before another edit.</p>
+</section>
+@code {
+    [Parameter,EditorRequired] public LinkedDailyScheduleContext Context {get;set;}=default!;
+    [Parameter,EditorRequired] public RecurrenceRule Proposed {get;set;}=default!;
+    [Parameter] public RecurrenceRule? NativeBefore {get;set;}
+    private LinkedDailyScheduleReview Review=>LinkedDailySchedulePolicy.Review(Context.Before,Proposed,Context.Account);
+    private DateOnly Day=>DateOnly.FromDateTime(Context.ObservedAtUtc.AddMinutes(-Context.Account.TimezoneOffset).DateTime);
+    private bool Due(RecurrenceRule rule)=>RecurrenceCalendar.Expand(rule,Day,Day) is {Succeeded:true,Dates.Count:>0};
+    private string Dates(RecurrenceRule rule){var last=Day.DayNumber> DateOnly.MaxValue.DayNumber-365?DateOnly.MaxValue:Day.AddDays(365);var result=RecurrenceCalendar.Expand(rule,Day,last);return !result.Succeeded?"Unavailable":result.Dates.Count==0?"No dates in this bounded window":string.Join(", ",result.Dates.Take(6).Select(day=>day.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)));}
+    internal static string Fields(HabiticaDailySchedule value)=>$"{value.Frequency}, every {value.EveryX}; start {value.StartDate:u}; weekdays [{string.Join(", ",new[]{"su","m","t","w","th","f","s"}.Select(day=>$"{day}: {(value.Repeat[day]?"on":"off")}"))}]; month dates [{string.Join(", ",value.DaysOfMonth)}]; month weeks [{string.Join(", ",value.WeeksOfMonth)}]";
+}

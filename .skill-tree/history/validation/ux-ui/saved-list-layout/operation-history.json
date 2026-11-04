@@ -1,0 +1,464 @@
+{
+  "admission": {
+    "environment_id": "f42fa93d4d7ffa85950050982f15fbc12051e97d7e9c3ebfa0f791d564d8fa54",
+    "flavor": "web",
+    "identity": "7ac24cc161a229b3d4dc533525ec521a7486545f61dbc29466cf663a2166d32b",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "checks": {
+    "saved-list-layout-behavior": {
+      "attempt": {
+        "attempt_id": "C-887d367b-197a-4eb9-bc76-7517904c3a78",
+        "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+        "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+        "key": "dd949a841eabdfc42a59ccd93a3bbcc40df5ca6a38d879d0b5c12d59e3787b42",
+        "launch": {
+          "assertion": "Exercise public component/controller behavior with independent expected outcomes: No definitions, many definitions, selected results, new/edit/cancel, advanced retained values, unavailable source and invalid fixed/relative dates. Require nonzero discovery and no required skips.",
+          "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+          "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+          "cleanup_seconds": 15,
+          "deadline_utc": "2026-11-03T21:45:06.587695+00:00",
+          "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T21:40:07.405990+00:00",
+        "recipe": {
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "-m:1",
+            "-nodeReuse:false",
+            "--filter",
+            "FullyQualifiedName~TodoSavedListPanelTests",
+            "--logger",
+            "trx;LogFileName=saved-list-layout.trx",
+            "--results-directory",
+            ".skill-tree/history/validation/ux-ui/saved-list-layout/unit"
+          ],
+          "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "global.json",
+            "Directory.Build.props",
+            "Directory.Packages.props",
+            "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+            "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+            "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "csharp": "12.0",
+            "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+            "framework": "Blazor WebAssembly net8.0",
+            "sdk_declaration": "8.0.125",
+            "test_frameworks": {
+              "Microsoft.NET.Test.Sdk": "18.4.0",
+              "bunit": "2.7.2",
+              "xunit": "2.9.3"
+            }
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b"
+        }
+      },
+      "receipts": {
+        "C-2bb147b1-4c97-41a0-8f69-f8ac47fd0c7d": {
+          "actual_lane": "unit",
+          "attempt_id": "C-2bb147b1-4c97-41a0-8f69-f8ac47fd0c7d",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 37,
+            "expected": 37,
+            "failed": 0,
+            "passed": 37,
+            "skipped": 0
+          },
+          "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+          "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-2bb147b1-4c97-41a0-8f69-f8ac47fd0c7d.log",
+              "sha256": "104a1746e8f55c3ab9a7c638cddb3ae25e3f2480779d98890fb419287234b4f8"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-2bb147b1-4c97-41a0-8f69-f8ac47fd0c7d.trx",
+              "sha256": "c99776c16634e605443c08df048a8b4ad892f1a94b427a7f143f80f9dee6d1b4"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "f02c4032f11ca2e1643be1cb0c9b66e24c959146ace936bd9ce9b5c1d63ad0f0",
+          "payload_hash": "fbad9c81f61b0c2e65a7cf651a64b083f5a455524e10e7a1318364ac763b317b",
+          "recorded_at": "2026-11-03T21:35:30.605784+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "080e659c1e2b09a830dfcb99bd8c959c214e43ae987707b81a842223c143b57b",
+            "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+            "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "b12b95236738818f6cb5f0775493b67ece81640791ee56c6898d1ba23a390f14"
+          },
+          "timing": {
+            "tool_wall_seconds": 15.146847541909665
+          }
+        },
+        "C-63d51e07-6814-4887-a9f6-0c7aa682c353": {
+          "actual_lane": "unit",
+          "attempt_id": "C-63d51e07-6814-4887-a9f6-0c7aa682c353",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 37,
+            "expected": 37,
+            "failed": 2,
+            "passed": 35,
+            "skipped": 0
+          },
+          "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+          "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-63d51e07-6814-4887-a9f6-0c7aa682c353.log",
+              "sha256": "29fe0ed0002d773cc7058cfe2a5fa647904d7382f096bbc8663bfce67b8213fc"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-63d51e07-6814-4887-a9f6-0c7aa682c353.trx",
+              "sha256": "99d6fe293c714e92dacdb47b1e3bb4ae1f5c6a53cb09723dcbdf71a7601a113f"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_category": "expected-behavior",
+          "key": "43777981d3cd8431dbbd09cf1aa9a08f7fd6eb99002df82ad7b114d78af42e4a",
+          "payload_hash": "50023c25238be87078331b43302a1dac228ecfdcf2cc27c0c039bb0fc2b446f7",
+          "recorded_at": "2026-11-03T21:32:41.400314+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+            "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+            "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "68940d085549141192ea08b98ad1ca2c2d16374bb96bdc3180609938f761dcb1"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.959734749980271
+          }
+        },
+        "C-887d367b-197a-4eb9-bc76-7517904c3a78": {
+          "actual_lane": "unit",
+          "attempt_id": "C-887d367b-197a-4eb9-bc76-7517904c3a78",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 37,
+            "expected": 37,
+            "failed": 0,
+            "passed": 37,
+            "skipped": 0
+          },
+          "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+          "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.log",
+              "sha256": "07b0d63023864a23203364690a80ad903829138308a50c520685bb72dc75f176"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.trx",
+              "sha256": "5bc5765cddb02e0dfbe7192735a01cac31e8cf503f68cccfec590908516ba8eb"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "dd949a841eabdfc42a59ccd93a3bbcc40df5ca6a38d879d0b5c12d59e3787b42",
+          "payload_hash": "f2e44c50a3c899438165a227532faf44637acc4c6d653533772a51af2fd29d6a",
+          "recorded_at": "2026-11-03T21:40:21.782963+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+            "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+            "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.97008620807901
+          }
+        }
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-63d51e07-6814-4887-a9f6-0c7aa682c353",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 37,
+          "expected": 37,
+          "failed": 2,
+          "passed": 35,
+          "skipped": 0
+        },
+        "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+        "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-63d51e07-6814-4887-a9f6-0c7aa682c353.log",
+            "sha256": "29fe0ed0002d773cc7058cfe2a5fa647904d7382f096bbc8663bfce67b8213fc"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-63d51e07-6814-4887-a9f6-0c7aa682c353.trx",
+            "sha256": "99d6fe293c714e92dacdb47b1e3bb4ae1f5c6a53cb09723dcbdf71a7601a113f"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "43777981d3cd8431dbbd09cf1aa9a08f7fd6eb99002df82ad7b114d78af42e4a",
+        "payload_hash": "50023c25238be87078331b43302a1dac228ecfdcf2cc27c0c039bb0fc2b446f7",
+        "recorded_at": "2026-11-03T21:32:41.400314+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "68940d085549141192ea08b98ad1ca2c2d16374bb96bdc3180609938f761dcb1"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.959734749980271
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-887d367b-197a-4eb9-bc76-7517904c3a78",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 37,
+          "expected": 37,
+          "failed": 0,
+          "passed": 37,
+          "skipped": 0
+        },
+        "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+        "environment_identity": "2d6832876aac9fed4b0dd4cdf9fd3dfcd03ea44ddef4c9ce6610bfafa9a388f7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.log",
+            "sha256": "07b0d63023864a23203364690a80ad903829138308a50c520685bb72dc75f176"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.trx",
+            "sha256": "5bc5765cddb02e0dfbe7192735a01cac31e8cf503f68cccfec590908516ba8eb"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "dd949a841eabdfc42a59ccd93a3bbcc40df5ca6a38d879d0b5c12d59e3787b42",
+        "payload_hash": "f2e44c50a3c899438165a227532faf44637acc4c6d653533772a51af2fd29d6a",
+        "recorded_at": "2026-11-03T21:40:21.782963+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.97008620807901
+        }
+      }
+    },
+    "saved-list-layout-rendered": {
+      "attempt": {
+        "attempt_id": "C-50f6ac9d-4a57-407c-8b73-b92a82ae0d1f",
+        "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+        "environment_identity": "3e9f7aa88ae75780c2c594c57660ffeec8f76039cee970454a410c902fc28466",
+        "key": "cf0691992a9cc55b0173289428e0dd56715ce2cc26986922839dae34f60f0dad",
+        "launch": {
+          "assertion": "New, edit, cancel, invalid-field focus and result navigation pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+          "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+          "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+          "cleanup_seconds": 30,
+          "deadline_utc": "2026-11-03T21:56:23.339438+00:00",
+          "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T21:40:23.649532+00:00",
+        "recipe": {
+          "argv": [
+            "python3",
+            "tests/browser-qualification/ux-ui.py",
+            "saved-list-layout",
+            ".skill-tree/history/validation/ux-ui/saved-list-layout/browser"
+          ],
+          "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "tests/browser-qualification/ux-ui.py",
+            "tests/browser-qualification/ux-ui.mjs",
+            "tests/browser-qualification/ux-ui-contract.mjs",
+            "tests/browser-qualification/ux-ui-native-date.mjs",
+            "tests/browser-qualification/ux-ui-shared-journey.mjs",
+            "tests/browser-qualification/ux-ui-adapters.json",
+            "tests/browser-qualification/ux-ui-checks.test.mjs",
+            "tests/browser-qualification/prepare.py",
+            "tests/browser-qualification/qualification-core.mjs",
+            "tests/browser-qualification/qualification-frame.mjs",
+            "tests/browser-qualification/qualification-session.mjs",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+            "src/Habitica.WebApp/Habitica.WebApp.csproj",
+            "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+          ],
+          "lane": "browser",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+            "framework": "Blazor WebAssembly8 Release",
+            "node": "22.x"
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6"
+        }
+      },
+      "receipts": {
+        "C-50f6ac9d-4a57-407c-8b73-b92a82ae0d1f": {
+          "actual_lane": "browser",
+          "attempt_id": "C-50f6ac9d-4a57-407c-8b73-b92a82ae0d1f",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 649,
+            "expected": 649,
+            "failed": 0,
+            "passed": 649,
+            "skipped": 0
+          },
+          "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+          "environment_identity": "3e9f7aa88ae75780c2c594c57660ffeec8f76039cee970454a410c902fc28466",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/browser/645e83fd-003e-49b5-9df2-ec1efd720bc6.json",
+              "sha256": "580617f11124c8b29875575393c2e3c66ce98bda7a52e4d5bd5a66aef9b50194"
+            }
+          ],
+          "execution_sessions": {
+            "ed23104042697f766b398e67b5a32c2d04869bbe1d106b378ddc7e631b265b56": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T21:56:23.339438+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/saved-list-layout/launch-1793742023339647000.json"
+              ],
+              "profile_id": "0818472ce2193ac8b012a2866abbb4019f40315d2b63b8d27af71c193eace830",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-layout",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "cf0691992a9cc55b0173289428e0dd56715ce2cc26986922839dae34f60f0dad",
+          "payload_hash": "af16642f6b290d8f91c31f33e417e8acd7b3d02d12710e0b8e1313e698333acc",
+          "recorded_at": "2026-11-03T21:42:50.087451+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+            "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6"
+          },
+          "timing": {
+            "tool_wall_seconds": 145.58181275008246
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-50f6ac9d-4a57-407c-8b73-b92a82ae0d1f",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 649,
+          "expected": 649,
+          "failed": 0,
+          "passed": 649,
+          "skipped": 0
+        },
+        "definition": "b0da98650ea00af52377dba81c1b2e6a9463da82629e8effa26404c77486e507",
+        "environment_identity": "3e9f7aa88ae75780c2c594c57660ffeec8f76039cee970454a410c902fc28466",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/browser/645e83fd-003e-49b5-9df2-ec1efd720bc6.json",
+            "sha256": "580617f11124c8b29875575393c2e3c66ce98bda7a52e4d5bd5a66aef9b50194"
+          }
+        ],
+        "execution_sessions": {
+          "ed23104042697f766b398e67b5a32c2d04869bbe1d106b378ddc7e631b265b56": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:56:23.339438+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/saved-list-layout/launch-1793742023339647000.json"
+            ],
+            "profile_id": "0818472ce2193ac8b012a2866abbb4019f40315d2b63b8d27af71c193eace830",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-layout",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "cf0691992a9cc55b0173289428e0dd56715ce2cc26986922839dae34f60f0dad",
+        "payload_hash": "af16642f6b290d8f91c31f33e417e8acd7b3d02d12710e0b8e1313e698333acc",
+        "recorded_at": "2026-11-03T21:42:50.087451+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "7c92a45019601ea4dda425d89e7086fa7a3370f6ed8095edd1998bc5622dacc7",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "31c8b2d4aa45a0e5c24d52f5fd7975fb40cc3bd8df664f2cde3ddbc41d84f87b",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "788f4352944949c57e3d662842c034dd7f94dd7c8dd4f8c90ffcca7a7874887b",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6"
+        },
+        "timing": {
+          "tool_wall_seconds": 145.58181275008246
+        }
+      }
+    }
+  },
+  "execution_sessions": {
+    "ed23104042697f766b398e67b5a32c2d04869bbe1d106b378ddc7e631b265b56": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T21:56:23.339438+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/saved-list-layout/launch-1793742023339647000.json"
+      ],
+      "profile_id": "0818472ce2193ac8b012a2866abbb4019f40315d2b63b8d27af71c193eace830",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-layout",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    }
+  },
+  "partial_work": [],
+  "stage": "implementing"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "PR-a444bcff-be76-49f0-a8de-1c14e0ebfd20",
+  "selected_ids": [
+    "P-3293e9dd-24a8-4efe-9133-64af8b19f939"
+  ],
+  "created_ids": [
+    "T-13e3754f-774b-443f-8997-e1d677f3c079"
+  ],
+  "reused_ids": [],
+  "task_keys": {},
+  "dispositions": {
+    "P-3293e9dd-24a8-4efe-9133-64af8b19f939": {
+      "status": "promoted",
+      "reason": "Current registry, adapter loader, installed source fingerprinting and composer establish a concrete omitted-input defect. Independent temporary mutation controls can reproduce the stale-identity gap before a scoped registration repair."
+    }
+  }
+}

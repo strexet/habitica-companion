@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/db1c329d-3d7f-40c0-8af8-9401af054218-failure.json",
+  "observed": "Both hydrated engine journeys completed their first full five-route case. Frozen task/Notes fixture inspection then reported a textarea DOM range without a rectangle, despite the separate native value sampler.",
+  "repair": "Exclude native value hosts from DOM text walking and sample native values through actual control geometry. Keep compound-opacity paint measurement. Add an independently low-contrast disabled textarea canary that must fail via control-value sampling exactly once. Enabled native values now also require computed paint contrast.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

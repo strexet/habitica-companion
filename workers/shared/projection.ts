@@ -11,7 +11,7 @@ export function selector(value: unknown): string {
  if (typeof value === "string" && /^companion_[0-9a-f]{32}_[0-9a-f]{32}$/.test(value)) return value;
  return uuid(value);
 }
-export function remotePatch(input: unknown, creating = false, kind?: string): RemotePatch {
+export function remotePatch(input: unknown, creating = false, kind?: string, reviewedScheduleEdit = false): RemotePatch {
  const value = workspaceObject(input, ["text", "notes", "date", "priority", "attribute", "checklist", "up", "down", "frequency", "everyX", "startDate", "repeat", "daysOfMonth", "weeksOfMonth"]); const patch: RemotePatch = {};
  for (const field of ["text", "notes"] as const) if (value[field] !== undefined) {
   if (typeof value[field] !== "string" || value[field].length > (field === "text" ? 2048 : 10000) || field === "text" && !value[field].trim()) throw new WorkspaceError("invalid_patch", 422);
@@ -20,7 +20,7 @@ export function remotePatch(input: unknown, creating = false, kind?: string): Re
  for(const field of ['up','down'] as const)if(value[field]!==undefined){if(kind!=='habit'||typeof value[field]!=='boolean')throw new WorkspaceError('invalid_patch',422);patch[field]=value[field];}
  if(kind==='daily'&&value.date!==undefined)throw new WorkspaceError('unsupported_daily_fields',422);
  const scheduleFields=['frequency','everyX','startDate','repeat','daysOfMonth','weeksOfMonth'];
- if(scheduleFields.some(field=>value[field]!==undefined)){if(kind!=='daily'||!creating)throw new WorkspaceError('unsupported_schedule_edit',422);Object.assign(patch,readDailySchedule(value));}
+ if(scheduleFields.some(field=>value[field]!==undefined)){if(kind!=='daily'||!creating&&!reviewedScheduleEdit)throw new WorkspaceError('unsupported_schedule_edit',422);Object.assign(patch,readDailySchedule(value));}
  if(creating&&kind==='daily'&&patch.frequency===undefined)throw new WorkspaceError('daily_schedule_required',422);
  if(kind==='habit'&&(value.date!==undefined||value.checklist!==undefined))throw new WorkspaceError('unsupported_habit_fields',422);
  if(creating&&kind==='habit'){patch.up??=true;patch.down??=true;}

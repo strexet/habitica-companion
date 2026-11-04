@@ -1,0 +1,24 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-rules",
+  "attempt_id": "C-d0f9324b-d114-4a54-8a1d-8f8dde878bbe",
+  "environment_identity": "ea294348e7c4762c21cf8cbdd175abf1245866ff1a9b2c422949db57307eb638",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 17,
+    "discovered": 17,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 5.157532499870285
+  },
+  "evidence": [
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/scheduled-daily-green-execution.log",
+    ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/scheduled-daily-green.trx"
+  ]
+}

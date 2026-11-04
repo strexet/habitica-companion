@@ -1,0 +1,28 @@
+{
+  "ok": false,
+  "errors": [
+    ".skill-tree/documents/relative-saved-dates.md:7:450: Explicit entity required: their",
+    "plugin/skills/habitica-task-management/references/saved-task-views.md:5:254: Explicit entity required: it"
+  ],
+  "warnings": [],
+  "diagnostics": [
+    {
+      "rule": "explicit-entity",
+      "severity": "error",
+      "message": "Explicit entity required: their",
+      "line": 7,
+      "column": 450,
+      "excerpt": "their",
+      "path": ".skill-tree/documents/relative-saved-dates.md"
+    },
+    {
+      "rule": "explicit-entity",
+      "severity": "error",
+      "message": "Explicit entity required: it",
+      "line": 5,
+      "column": 254,
+      "excerpt": "it",
+      "path": "plugin/skills/habitica-task-management/references/saved-task-views.md"
+    }
+  ]
+}

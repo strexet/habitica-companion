@@ -107,8 +107,8 @@ public sealed class DashboardPageTests : BunitContext
         var refreshStatusText = cut.Find("[data-testid='dashboard-refresh-status']").TextContent;
 
         Assert.Contains("Account data is up to date", cut.Markup);
-        Assert.Contains("Tasks refreshing", refreshStatusText);
-        Assert.Contains("Account updated", refreshStatusText);
+        Assert.Contains("Tasks refresh: refreshing", refreshStatusText);
+        Assert.Contains("Account refresh: completed", refreshStatusText);
         Assert.Contains("Mage Tester", cut.Markup);
         Assert.Contains("Level 15", cut.Markup);
         Assert.Contains("HP", cut.Markup);
@@ -857,6 +857,65 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Contains("Done", cut.Find("[data-testid='dashboard-appearance-toggle']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
+    }
+
+    [Theory]
+    [InlineData("fresh", SnapshotFreshnessState.Fresh, false, false, true, true)]
+    [InlineData("signed-out-cache", SnapshotFreshnessState.Fresh, false, false, true, true)]
+    [InlineData("stale", SnapshotFreshnessState.Stale, false, false, true, true)]
+    [InlineData("missing", SnapshotFreshnessState.Missing, false, false, false, false)]
+    [InlineData("fetching", SnapshotFreshnessState.Fresh, true, false, true, true)]
+    [InlineData("failed", SnapshotFreshnessState.Fresh, false, true, true, true)]
+    [InlineData("success", SnapshotFreshnessState.Fresh, false, false, true, true)]
+    [InlineData("unknown-time", SnapshotFreshnessState.Fresh, false, false, true, false)]
+    public async Task Snapshot_readiness_and_refresh_history_keep_independent_provenance(
+        string scenario, SnapshotFreshnessState freshness, bool fetching, bool failed, bool hasSnapshot, bool hasTimestamp)
+    {
+        var (cut, controller) = RenderDashboardForGemPurchase();
+        var retrieved = DateTimeOffset.Parse("2026-04-25T08:00:00Z");
+        var refreshed = DateTimeOffset.Parse("2026-04-25T09:12:00Z");
+        var snapshot = hasSnapshot ? controller.State.UserSnapshot! with { RetrievedAtUtc = hasTimestamp ? retrieved : default } : null;
+        var domain = fetching || failed || scenario == "success"
+            ? new DomainRefreshState(RefreshDomain.UserProfile, fetching, LastRefreshedAtUtc: scenario == "success" ? refreshed : null, LastError: failed ? "sensitive provider failure" : null)
+            : null;
+        await cut.InvokeAsync(() => controller.SetState(controller.State with
+        {
+            UserSnapshot = snapshot, UserFreshness = freshness, IsAuthenticated = scenario != "signed-out-cache",
+            DomainStates = domain is null ? null : new Dictionary<RefreshDomain, DomainRefreshState> { [RefreshDomain.UserProfile] = domain }
+        }));
+        var history = cut.Find("[data-testid='dashboard-refresh-UserProfile']");
+        var expected = fetching ? "refreshing" : failed ? "failed" : scenario == "success" ? "completed" : "no later refresh recorded";
+        Assert.Contains("Account refresh: " + expected, history.TextContent);
+        Assert.Equal(failed, history.ClassList.Contains("danger-pill"));
+        Assert.Equal(scenario == "success", history.ClassList.Contains("success-pill"));
+        Assert.DoesNotContain("sensitive provider failure", cut.Markup);
+        if (hasSnapshot)
+        {
+            var readiness = cut.Find("[data-testid='dashboard-account-readiness']");
+            Assert.Contains(freshness == SnapshotFreshnessState.Stale ? "may need refresh" : "up to date", readiness.TextContent);
+            if (hasTimestamp)
+                Assert.Equal(retrieved.ToString("O"), readiness.QuerySelector("time")!.GetAttribute("datetime"));
+            else
+            {
+                Assert.Empty(readiness.QuerySelectorAll("time"));
+                Assert.Contains("Retrieval time unavailable", readiness.TextContent);
+            }
+        }
+        else Assert.Empty(cut.FindAll("[data-testid='dashboard-account-readiness']"));
+        if (scenario == "success") Assert.Equal(refreshed.ToString("O"), history.QuerySelector("time")!.GetAttribute("datetime"));
+        else Assert.Empty(history.QuerySelectorAll("time"));
+        Assert.DoesNotContain("Account not refreshed", cut.Markup);
+        var surfaces = string.Concat(cut.FindAll("[data-testid='dashboard-account-readiness'], [data-testid='dashboard-refresh-status'], .dashboard-appearance").Select(el => el.OuterHtml));
+        Qualification.PageLayoutEvidence.Save("dashboard-" + scenario, surfaces, "/dashboard", scenario + "-real-readiness-history-and-appearance-action", ["readiness", "refresh-history", "timestamps", "focus"], nameof(Snapshot_readiness_and_refresh_history_keep_independent_provenance));
+        await cut.InvokeAsync(() => controller.SetState(controller.State with { IsAuthenticated = false }));
+        if (hasSnapshot) Assert.Contains("Signed out. Saved snapshot only. Account", cut.Find("[data-testid='dashboard-account-readiness']").TextContent);
+        await cut.InvokeAsync(() => controller.SetState(SessionViewModel.Empty));
+        Assert.Empty(cut.FindAll("[data-testid='dashboard-refresh-status'], [data-testid='dashboard-account-readiness']"));
+        Assert.Contains("Sign in", cut.Markup);
+        await cut.InvokeAsync(() => controller.SetState(SessionViewModel.Empty with { IsAuthenticated = true, DisplayName = "Other account" }));
+        Assert.Contains("Account refresh: no later refresh recorded", cut.Find("[data-testid='dashboard-refresh-status']").TextContent);
+        Assert.DoesNotContain(retrieved.ToString("O"), cut.Markup);
+        Assert.DoesNotContain(refreshed.ToString("O"), cut.Markup);
     }
 
     private static void AssertMarkupOrder(string markup, params string[] fragments)

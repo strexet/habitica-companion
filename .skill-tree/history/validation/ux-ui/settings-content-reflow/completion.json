@@ -1,0 +1,424 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Settings private-section labels, independent exclusion state and original data/consent guards remain unchanged.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.log",
+          "sha256": "d5cd5e68f43a8968faf8f64af63370fdd7a06fe632f9d15f85d24f7b4cb6e2ce"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.trx",
+          "sha256": "74bc7b5d2b05d310e885195d86ea2c7e72ce532ec496072c2da97e481ae25b8e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/acceptance.json",
+          "sha256": "3bfc6a342a0c5bdfd6de2935289320d2fcee8b3b749b21689c02dfc43a948938"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser/13326090-f7cc-4bee-847e-6a6a0b397340.json",
+          "sha256": "887c9768440d318d4e704685903d20c8bcada03e556fe3606476783cd0fd6c30"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Nested Settings content and action words remain readable with primary targets across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.log",
+          "sha256": "d5cd5e68f43a8968faf8f64af63370fdd7a06fe632f9d15f85d24f7b4cb6e2ce"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.trx",
+          "sha256": "74bc7b5d2b05d310e885195d86ea2c7e72ce532ec496072c2da97e481ae25b8e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/acceptance.json",
+          "sha256": "3bfc6a342a0c5bdfd6de2935289320d2fcee8b3b749b21689c02dfc43a948938"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser/13326090-f7cc-4bee-847e-6a6a0b397340.json",
+          "sha256": "887c9768440d318d4e704685903d20c8bcada03e556fe3606476783cd0fd6c30"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Retain Settings exact private-section selection/label tests and existing session/data safeguards. Capture the owning Settings page rather than an extracted inner list; original screenshot supplies the failing layout regression.",
+        "criteria": [
+          "Settings private-section labels, independent exclusion state and original data/consent guards remain unchanged."
+        ],
+        "id": "settings-content-reflow-behavior",
+        "parameters": {
+          "report_name": "settings-content-reflow.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/settings-content-reflow/unit",
+          "test_filter": "FullyQualifiedName~SettingsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f5156bc3-7c83-474b-8f26-dcbfab448927",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 15,
+          "expected": 15,
+          "failed": 0,
+          "passed": 15,
+          "skipped": 0
+        },
+        "definition": "9414b9cc9c0c68c6b392b789c9fa2c5f70d39fc205cdfa7db9a593a7d5b56143",
+        "environment_identity": "71ba3286636c4a83d91bc37762f97a5ea44e5f645117d427ee0bf738cfffda80",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.log",
+            "sha256": "d5cd5e68f43a8968faf8f64af63370fdd7a06fe632f9d15f85d24f7b4cb6e2ce"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.trx",
+            "sha256": "74bc7b5d2b05d310e885195d86ea2c7e72ce532ec496072c2da97e481ae25b8e"
+          }
+        ],
+        "execution_sessions": {
+          "8dd9d08505fb2699997ac3e4d0e25a3e675b1c17cc55ce885146c06d01b78fd2": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:58:01.626555+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-content-reflow/launch-1793734921626764000.json"
+            ],
+            "profile_id": "cf1571587ab4ecc5c51e9b0bd844bbab9ae511dd9048e3ba9ead0a835d0df2b1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-content-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "d95da67beb5e4a7c149b18c2d4545f0d6a507b71c229dc1cbdf593e02acfd3d8",
+        "payload_hash": "57b6ef2561892da3c3de88d05aff464b7a8df876a83d40f2247ebd380732c1b9",
+        "recorded_at": "2026-11-03T19:43:30.502691+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.30352137517184
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Use full current Settings fixtures and the hydrated route to require ordinary-word width for section context and native Range whole-word action labels. Preserve exact checkbox targeting and restore selections, unchanged task journal, visible keyboard focus and full declared matrix. Do not activate destructive, restore, upload, consent or provider actions.",
+        "criteria": [
+          "Nested Settings content and action words remain readable with primary targets across the required rendered matrix."
+        ],
+        "id": "settings-content-reflow-rendered",
+        "parameters": {
+          "cases": "Full Settings owning layout with nested account/data actions and private-sync names, exact exclusion labels, whole action words and44-pixel targets.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser",
+          "routes": [
+            "/settings"
+          ],
+          "task_key": "settings-content-reflow"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-6766605e-1ace-4c5b-946c-27989760bc71",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 289,
+          "expected": 289,
+          "failed": 0,
+          "passed": 289,
+          "skipped": 0
+        },
+        "definition": "9414b9cc9c0c68c6b392b789c9fa2c5f70d39fc205cdfa7db9a593a7d5b56143",
+        "environment_identity": "d2aaf93abae1d06e4a73e3b86b78ca25a0e18ce9e168de73f0b9295278760544",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser/13326090-f7cc-4bee-847e-6a6a0b397340.json",
+            "sha256": "887c9768440d318d4e704685903d20c8bcada03e556fe3606476783cd0fd6c30"
+          }
+        ],
+        "execution_sessions": {
+          "021e0a0b248ec7789a2cb4e8de83db7d8f7b6a076e4e7503e463627798cade0a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:59:30.640986+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-content-reflow/launch-1793735010641265000.json"
+            ],
+            "profile_id": "e7cc99cab045795ec9e4ab0562a1f1dd5781b6ab5dbf66a2a5764cbfb8e090e5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-content-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "8dd9d08505fb2699997ac3e4d0e25a3e675b1c17cc55ce885146c06d01b78fd2": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:58:01.626555+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-content-reflow/launch-1793734921626764000.json"
+            ],
+            "profile_id": "cf1571587ab4ecc5c51e9b0bd844bbab9ae511dd9048e3ba9ead0a835d0df2b1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-content-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "7d297a75d51c64bdce8dff6222f0a719dc8445bec2280ee7caac2d01901cd684",
+        "payload_hash": "af13c741618469d5c318afeef1afb8ad8be09bc2d037f6d68921d580345fa6c8",
+        "recorded_at": "2026-11-03T19:45:54.205777+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "8dced82f004ee12c51b0822ce726fb84c9025e12795ec0ad8c4bf4f5da41ccc1",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs": "c2393d756470874f245cadab62412dbee78bdc6ef2d6d988e4b4d5e687e18e28",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+        },
+        "timing": {
+          "tool_wall_seconds": 142.41980120912194
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/acceptance.json",
+      "sha256": "3bfc6a342a0c5bdfd6de2935289320d2fcee8b3b749b21689c02dfc43a948938"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/operation-history.json",
+      "sha256": "08366abac45cd97a7e537c2e82bceae5d2128dca93bd17f48ba55e67d394d6cd"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-78155e5f-6184-4119-958e-ca24841f2976",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep nested Settings content and action labels readable on enlarged phones. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735"
+  ],
+  "recorded_at": "2026-11-03T19:46:18.182769+00:00",
+  "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "8dced82f004ee12c51b0822ce726fb84c9025e12795ec0ad8c4bf4f5da41ccc1",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs": "c2393d756470874f245cadab62412dbee78bdc6ef2d6d988e4b4d5e687e18e28",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+  },
+  "task_id": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7",
+  "title": "Keep nested Settings content and action labels readable on enlarged phones",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Retain Settings exact private-section selection/label tests and existing session/data safeguards. Capture the owning Settings page rather than an extracted inner list; original screenshot supplies the failing layout regression.",
+      "criteria": [
+        "Settings private-section labels, independent exclusion state and original data/consent guards remain unchanged."
+      ],
+      "id": "settings-content-reflow-behavior",
+      "parameters": {
+        "report_name": "settings-content-reflow.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/settings-content-reflow/unit",
+        "test_filter": "FullyQualifiedName~SettingsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Use full current Settings fixtures and the hydrated route to require ordinary-word width for section context and native Range whole-word action labels. Preserve exact checkbox targeting and restore selections, unchanged task journal, visible keyboard focus and full declared matrix. Do not activate destructive, restore, upload, consent or provider actions.",
+      "criteria": [
+        "Nested Settings content and action words remain readable with primary targets across the required rendered matrix."
+      ],
+      "id": "settings-content-reflow-rendered",
+      "parameters": {
+        "cases": "Full Settings owning layout with nested account/data actions and private-sync names, exact exclusion labels, whole action words and44-pixel targets.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser",
+        "routes": [
+          "/settings"
+        ],
+        "task_key": "settings-content-reflow"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "9414b9cc9c0c68c6b392b789c9fa2c5f70d39fc205cdfa7db9a593a7d5b56143"
+}

@@ -1,0 +1,121 @@
+{
+  "checks": [
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-rules",
+      "parameters": {
+        "report_name": "history-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules",
+        "test_filter": "FullyQualifiedName~History",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "src/Habitica.Application/Workspace/WorkspaceOrganization.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-components",
+      "parameters": {
+        "report_name": "history-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components",
+        "test_filter": "FullyQualifiedName~History|FullyQualifiedName~TodoOrganizationPanel",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+        "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/project-retained-history.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/project-retained-history.test.mjs",
+        "workers/companion-workspace/test/completion-history.test.mjs",
+        "workers/companion-workspace/test/habit-history.test.mjs",
+        "workers/companion-workspace/test/organization-query.test.mjs",
+        "workers/shared/history-projects.ts",
+        "workers/shared/completion-history.ts",
+        "workers/shared/habit-history.ts",
+        "workers/shared/organization-query.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/companion-workspace/src/completion-history.ts",
+        "workers/companion-workspace/src/habit-history.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-rendering",
+      "parameters": {},
+      "recipe_id": "project-history-rendered-browser",
+      "sources": [
+        "tests/browser/project-history-ui.py",
+        "tests/browser/project-history-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/project-history-fixture.mjs",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+}

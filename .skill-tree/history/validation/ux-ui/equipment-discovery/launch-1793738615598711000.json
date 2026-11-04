@@ -1,0 +1,9 @@
+{
+  "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+  "check_id": "equipment-discovery-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T20:59:35.598493+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "45839f60a02a66b8c883e635f38b9732437c4ea5ab21819f08fa25368690d67e"
+}

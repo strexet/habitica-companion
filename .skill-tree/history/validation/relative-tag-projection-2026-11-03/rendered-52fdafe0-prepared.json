@@ -1,0 +1,49 @@
+{
+  "assertion": "Current Release explicit day-bound review, complete membership/empty approval, stale-day refusal and original acceptance recovery qualify across both browser engines and required theme/layout/text cases.",
+  "attempt_id": "C-52162c2c-dac8-4d9c-86a6-c1404c9e26cd",
+  "check_id": "day-bound-tag-rendering",
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "65df9c4b65362db0a7b36509467a96aa4f6992193d716afef5482ca4d48bbdad",
+  "key": "63b09ced220ee174886ec49caa229031e20d0db123b24dd0f072f7665c5781df",
+  "launch": null,
+  "prepared_at": "2026-11-03T02:14:31.445603+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/relative-tag-ui.py"
+    ],
+    "execution_notes": "Current Release Sync route,160 light/obsidian phone/desktop normal/enlarged-text Razor cases and two actual hydrated day-bound tag review/original-receipt journeys with isolated Auth/Workspace/D1 and native IndexedDB. No real provider operation, executor opt-in or notification qualification.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/relative-tag-ui.py",
+      "tests/browser/relative-tag-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser/relative-tag-fixture.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "208d9ac128f6dc3b996aebaea771531a5e4fba7f4fd5a728261b82329e6a8bad",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "24985cc1a1821255eea8f82252c86db3f14f10a2ea7f85533200857eca36916d",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/relative-tag-fixture.mjs": "a7b03e7db197f3df37eab81ea61f896f1128453aa5252bb6377a15bd8cb2b1a3",
+    "tests/browser/relative-tag-ui.mjs": "8fbd772c4945938cc4c3d6ea5928718d50df985f46875e60a7c0e55a71e58672",
+    "tests/browser/relative-tag-ui.py": "7d9c428ac5cd774b7854bd7d2455bcbf48b37d5c20a21a01e800c01bfe559ba2"
+  },
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+}

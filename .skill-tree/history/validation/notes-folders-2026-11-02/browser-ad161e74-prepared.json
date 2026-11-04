@@ -1,0 +1,38 @@
+{
+  "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+  "attempt_id": "C-6525d8f7-db79-4b5c-9f65-4aeb39fd7968",
+  "check_id": "notes-indexeddb",
+  "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+  "environment_identity": "988ddd8a1fc7ffde289dfa608d5f7cf09d881d7bb2c4c47b919141fc11e57474",
+  "key": "2836be16ba26da14bb98c7f73653f98f19041a080a04ccc291ddc2fc46ba0bf1",
+  "launch": null,
+  "prepared_at": "2026-11-02T16:36:40.168662+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "tests/browser/notes-folders.mjs"
+    ],
+    "execution_notes": "Actual source adapter and neutral C# wire fixture on an owned loopback origin. Two isolated persistent browser profiles; hard90-second fixture deadline and120-second controller deadline with30-second cleanup reserve. No real account, service or permission.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/notes-folders.mjs",
+      "tests/fixtures/notes/notes-folder-wire-v3.json",
+      "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache; no package upgrades",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/technical.md": "a746313d9b1e8ca278f2a5b52242064294e7530d3fa326638c189c555d9d2b6a",
+    ".skill-tree/documents/testing.md": "329ac6f4cdc8837cd1097e2b7467fb28ed8b74c8a85953a0c8b07ed619754f47",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/browser/notes-folders.mjs": "0e7228423d92827f26332eec6e0697312674969a8d3a1dcfe8d381fdfeeb6708",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+  },
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
+}

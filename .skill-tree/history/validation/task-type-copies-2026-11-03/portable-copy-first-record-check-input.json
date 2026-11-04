@@ -1,0 +1,23 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-wire",
+  "attempt_id": "C-cdcdd679-2abc-4480-994d-d4e211209c42",
+  "environment_identity": "8ef0438dcfd0633b6e623eeba6cf1a308ce0f77246073564421f47dfaabd48e5",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 4,
+    "discovered": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 9.37278608395718
+  },
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/portable-copy-first-execution.log"
+  ]
+}

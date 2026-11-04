@@ -1,0 +1,43 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-eb5fc900-3942-4dd5-bccb-6e5bd41eda10",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 3,
+    "expected": 3,
+    "failed": 0,
+    "passed": 3,
+    "skipped": 0
+  },
+  "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+  "environment_identity": "76e60181f5b687aee476975cfadbde0392fb4c2f5ab0b18a83e28deea95af88b",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/storage-revalidation-execution.log",
+      "sha256": "7740c8c4a96cf90ab39acd0f6b61b26a6f200ae14d9854a2a86f34022677d69a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-revalidation.trx",
+      "sha256": "0570690a0343eb11adf1dd0b801daf6519017636b82c7a81903181bd83b33244"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "801123130c746ad0dabe1ea7a137ba2ae8cfbccbaecbc7896b3877a3f0bb6a6e",
+  "payload_hash": "14cecc9096660d3f7833c8bf120e12fa775f8e79ffc5a04a8d2ddae4251d468a",
+  "recorded_at": "2026-11-02T17:17:39.777337+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "abe8b9f780b66a6644a4244bd5d3efbfbf8089ceee44c68feacabe4b2fbf44eb"
+  },
+  "timing": {
+    "tool_wall_seconds": 1.7142019160091877
+  }
+}

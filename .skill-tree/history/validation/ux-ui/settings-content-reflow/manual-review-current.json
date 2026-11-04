@@ -1,0 +1,17 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser/13326090-f7cc-4bee-847e-6a6a0b397340.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/settings-content-reflow/1793735011071976000",
+  "reviewed": [
+    "chromium-gryphy-light-360-200-workspace-names-sync.png",
+    "webkit-obsidian-glow-1280-100-workspace-names-sync.png"
+  ],
+  "observations": [
+    "Export, Upload and Download retain whole labels at enlarged phone text.",
+    "Private-sync record names retain ordinary-word width inside the owning cards.",
+    "Desktop names, original checkboxes and data actions retain existing layout and gates."
+  ],
+  "limitations": [
+    "Section navigation/heading order remains the separate frozen Settings root.",
+    "Physical devices, native file dialogs and assistive technology remain unqualified."
+  ]
+}

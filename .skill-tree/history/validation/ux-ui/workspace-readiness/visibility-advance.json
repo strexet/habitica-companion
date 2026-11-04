@@ -1,0 +1,124 @@
+{
+  "body": "### Qualify visible full-shell content with current theme geometry\n\n```yaml\nid: T-1fa4460c-6493-446e-9bc3-bd33d976404f\npriority: 107\nstatus: Ready\nparent_pending_ids: [\"P-642ba84c-019f-42cb-a8f6-53440c6c147f\"]\nprocessing_run_id: PR-dddd6b8b-fbca-48bd-a1f5-765bb86ef1af\nroot_task_id: T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12\nrelated_task_id: T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12\nrelation: blocker\ndepends_on: []\n```\n\nGoal:\nQualify visible full-shell content with current theme geometry.\n\nCurrent behavior:\nManual navigation screenshot review shows missing body paint despite exported Layout body markup. Full-layout captures omit the App theme provider stylesheet. The existing control-only oracle cannot reject header-covered body content. The exact hydrated offset remains a measurement question rather than an assumed provider defect.\n\nTouch:\n- `tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs`\n- `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs`\n- `tests/browser-qualification/qualification-core.mjs`\n- `tests/browser-qualification/qualification-frame.mjs`\n- `tests/browser-qualification/ux-ui-navigation-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n- `tests/browser-qualification/ux-ui.mjs`\n- `src/Habitica.WebApp/Layout/MainLayout.razor`\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `.skill-tree/documents/testing.md`\n- `.skill-tree/documents/ux-ui-manifest.md`\n\nImplementation constraints:\nRender geometry variables through the current App theme provider in synthetic full-layout exports. Preserve ordinary component captures. Add an independent header-occlusion oracle and real visible body controls. Measure hydrated layout before changing header dimensions; a demonstrated sizing inconsistency may receive a scoped shared CSS correction. Preserve menu/skip/route behavior, source identity, consent and original-command fences. No deployment, live login, provider mutation or device claim. Existing navigation outcome O-9926a5e9-82a3-4d1e-9141-b03c49f26136 retains interaction evidence; missing body-visibility coverage is explicitly corrected by the required task. Required completed-contract revalidation remains source-bound.\n\nValidation:\nUse focused geometry Red/Green examples, fresh component theme captures and current Release browser journeys. Native full-shell fixtures must expose actual body markers rather than accepting empty or occluded pages.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"shell-content-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.\",\n        \"The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"tests/Habitica.WebApp.Tests/AppNavMenuTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/browser-qualification/ux-ui-navigation-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui.mjs\",\n        \"src/Habitica.WebApp/Layout/MainLayout.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests\",\n        \"report_name\": \"shell-content-visibility.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/shell-content-visibility/unit\"\n      },\n      \"assertion\": \"Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"shell-content-canaries\",\n      \"recipe_id\": \"node-focused-tests\",\n      \"criteria\": [\n        \"The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.\"\n      ],\n      \"sources\": [\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/ux-ui-checks.test.mjs\"\n      ],\n      \"parameters\": {\n        \"test_file\": \"tests/browser-qualification/ux-ui-checks.test.mjs\"\n      },\n      \"assertion\": \"Independent header/main rectangles detect complete and partial header overlap while clear and horizontally separate content passes.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"shell-content-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.\",\n        \"The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.\",\n        \"Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"tests/Habitica.WebApp.Tests/AppNavMenuTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/browser-qualification/ux-ui-navigation-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui.mjs\",\n        \"src/Habitica.WebApp/Layout/MainLayout.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"shell-content-visibility\",\n        \"routes\": [\n          \"/dashboard\",\n          \"/todo/today\",\n          \"/todo/tasks\",\n          \"/settings\",\n          \"/todo/habits\",\n          \"/todo/dailies\",\n          \"/todo/sync\"\n        ],\n        \"cases\": \"SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/shell-content-visibility/browser\"\n      },\n      \"assertion\": \"Actual App theme geometry, visibly exposed full-shell body controls and hydrated main/header clearance pass the declared seven-route six-width light/dark matrix without product effects.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.\n- The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.\n- Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup.\n\nResearch provenance:\n- `.skill-tree/history/validation/ux-ui/workspace-readiness/visibility-selection.json` and the navigation browser report `cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json` supply exact intake and screenshot evidence.\n- PageLayoutEvidence currently omits MudThemeProvider output; MainLayout alone does not define MudBlazor geometry variables. The current App theme source and pinned MudBlazor stylesheet own the intended dimensions.\n\n",
+  "checks": [
+    {
+      "assertion": "Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.",
+      "criteria": [
+        "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+      ],
+      "id": "shell-content-behavior",
+      "parameters": {
+        "report_name": "shell-content-visibility.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/unit",
+        "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Independent header/main rectangles detect complete and partial header overlap while clear and horizontally separate content passes.",
+      "criteria": [
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+      ],
+      "id": "shell-content-canaries",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Actual App theme geometry, visibly exposed full-shell body controls and hydrated main/header clearance pass the declared seven-route six-width light/dark matrix without product effects.",
+      "criteria": [
+        "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.",
+        "Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup."
+      ],
+      "id": "shell-content-rendered",
+      "parameters": {
+        "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings",
+          "/todo/habits",
+          "/todo/dailies",
+          "/todo/sync"
+        ],
+        "task_key": "shell-content-visibility"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "priority": 107,
+  "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+  "title": "Qualify visible full-shell content with current theme geometry"
+}

@@ -1,0 +1,1001 @@
+{
+  "contract": "native-task-type-copy-v13",
+  "cases": [
+    {
+      "name": "todo-to-daily",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000001",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000001",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000001",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000001"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000001",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000001",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000001",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000001",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000001"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000001",
+            "revision": 5,
+            "text": "Original todo Ω",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000001",
+            "projectId": "20000000-0000-4000-8000-000000000001",
+            "sectionId": "30000000-0000-4000-8000-000000000001",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000001"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": null,
+            "isArchived": false,
+            "habiticaDetails": {
+              "difficulty": 2,
+              "attribute": "int",
+              "checklist": [
+                {
+                  "id": "d0000000-0000-4000-8000-000000000001",
+                  "text": "Retain original checklist",
+                  "completed": true
+                }
+              ]
+            },
+            "executionStage": "inProgress"
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000001",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000001",
+            "commandId": "c0000000-0000-4000-8000-000000000001",
+            "completedAtUtc": "2026-11-01T00:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000001",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000001",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000001",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000001",
+        "workspaceId": "70000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000001",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000001",
+            "sourceRevision": 5,
+            "targetKind": "daily",
+            "copyOrganization": true,
+            "recurrence": {
+              "frequency": "monthly",
+              "interval": 1,
+              "startDate": "2026-11-03",
+              "timeZoneId": "America/New_York",
+              "weekdays": [],
+              "daysOfMonth": [
+                3,
+                31
+              ]
+            }
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "b2baa2e9fb54a8ab946d096b976dd393a632717711d523dbf2072dfaf1c95e73",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original todo Ω",
+        "kind": "daily",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": "10000000-0000-4000-8000-000000000001",
+        "projectId": "20000000-0000-4000-8000-000000000001",
+        "sectionId": "30000000-0000-4000-8000-000000000001",
+        "parentTaskId": null,
+        "labelIds": [
+          "40000000-0000-4000-8000-000000000001"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "monthly",
+          "interval": 1,
+          "startDate": "2026-11-03",
+          "timeZoneId": "America/New_York",
+          "weekdays": [],
+          "daysOfMonth": [
+            3,
+            31
+          ]
+        },
+        "habiticaDetails": null
+      }
+    },
+    {
+      "name": "todo-to-habit",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000002",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000002",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000002"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000002",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000002",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000002",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000002",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000002"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000002",
+            "revision": 5,
+            "text": "Original todo Ω",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000002",
+            "projectId": "20000000-0000-4000-8000-000000000002",
+            "sectionId": "30000000-0000-4000-8000-000000000002",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000002"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": null,
+            "isArchived": true,
+            "habiticaDetails": {
+              "difficulty": 2,
+              "attribute": "int",
+              "checklist": [
+                {
+                  "id": "d0000000-0000-4000-8000-000000000002",
+                  "text": "Retain original checklist",
+                  "completed": true
+                }
+              ]
+            },
+            "executionStage": "inProgress"
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000002",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000002",
+            "commandId": "c0000000-0000-4000-8000-000000000002",
+            "completedAtUtc": "2026-11-01T00:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000002",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000002",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000002",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000002",
+        "workspaceId": "70000000-0000-4000-8000-000000000002",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000002",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000002",
+            "sourceRevision": 5,
+            "targetKind": "habit",
+            "copyOrganization": false
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "94d84df5a4a293851e35cd90526b1f1c1bc2e674cd7b7daba2e6f8a1a4ed444c",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000002",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original todo Ω",
+        "kind": "habit",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "name": "daily-to-todo",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000003",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000003",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000003",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000003"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000003",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000003",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000003",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000003",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000003"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000003",
+            "revision": 5,
+            "text": "Original daily Ω",
+            "kind": "daily",
+            "state": "paused",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000003",
+            "projectId": "20000000-0000-4000-8000-000000000003",
+            "sectionId": "30000000-0000-4000-8000-000000000003",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000003"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-01",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            },
+            "isArchived": false,
+            "habiticaDetails": {
+              "difficulty": 2,
+              "attribute": "int",
+              "checklist": [
+                {
+                  "id": "d0000000-0000-4000-8000-000000000003",
+                  "text": "Retain original checklist",
+                  "completed": true
+                }
+              ]
+            }
+          }
+        ],
+        "occurrences": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000003",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000003",
+            "date": "2026-11-01",
+            "state": "completed"
+          }
+        ],
+        "completions": [
+          {
+            "id": "c0000000-0000-4000-8000-000000000003",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000003",
+            "commandId": "d0000000-0000-4000-8000-000000000003",
+            "completedAtUtc": "2026-11-01T00:00:00Z",
+            "occurrenceId": "b0000000-0000-4000-8000-000000000003"
+          }
+        ],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000003",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000003",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000003",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000003",
+        "workspaceId": "70000000-0000-4000-8000-000000000003",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000003",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000003",
+            "sourceRevision": 5,
+            "targetKind": "todo",
+            "copyOrganization": true
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "066927d217a133715c346bdb614edda4b3144e53914d6a3d08b00b998b1bb61c",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000003",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original daily Ω",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": "10000000-0000-4000-8000-000000000003",
+        "projectId": "20000000-0000-4000-8000-000000000003",
+        "sectionId": "30000000-0000-4000-8000-000000000003",
+        "parentTaskId": null,
+        "labelIds": [
+          "40000000-0000-4000-8000-000000000003"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "name": "daily-to-habit",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000004",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000004",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000004",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000004"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000004",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000004",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000004",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000004",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000004"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000004",
+            "revision": 5,
+            "text": "Original daily Ω",
+            "kind": "daily",
+            "state": "paused",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000004",
+            "projectId": "20000000-0000-4000-8000-000000000004",
+            "sectionId": "30000000-0000-4000-8000-000000000004",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000004"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-01",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            },
+            "isArchived": true,
+            "habiticaDetails": {
+              "difficulty": 2,
+              "attribute": "int",
+              "checklist": [
+                {
+                  "id": "d0000000-0000-4000-8000-000000000004",
+                  "text": "Retain original checklist",
+                  "completed": true
+                }
+              ]
+            }
+          }
+        ],
+        "occurrences": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000004",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000004",
+            "date": "2026-11-01",
+            "state": "completed"
+          }
+        ],
+        "completions": [
+          {
+            "id": "c0000000-0000-4000-8000-000000000004",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000004",
+            "commandId": "d0000000-0000-4000-8000-000000000004",
+            "completedAtUtc": "2026-11-01T00:00:00Z",
+            "occurrenceId": "b0000000-0000-4000-8000-000000000004"
+          }
+        ],
+        "habitScores": [],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000004",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000004",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000004",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000004",
+        "workspaceId": "70000000-0000-4000-8000-000000000004",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000004",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000004",
+            "sourceRevision": 5,
+            "targetKind": "habit",
+            "copyOrganization": false
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "4f7495f4ec23fb7f8b6268e2d63d7ffb37472557c2d12c6d29495e5f7d0a54cb",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000004",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original daily Ω",
+        "kind": "habit",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "name": "habit-to-todo",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000005",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000005",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000005",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000005"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000005",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000005",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000005",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000005",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000005"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000005",
+            "revision": 5,
+            "text": "Original habit Ω",
+            "kind": "habit",
+            "state": "paused",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000005",
+            "projectId": "20000000-0000-4000-8000-000000000005",
+            "sectionId": "30000000-0000-4000-8000-000000000005",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000005"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": null,
+            "isArchived": false,
+            "habiticaDetails": {
+              "difficulty": 1.5,
+              "attribute": "per",
+              "checklist": null,
+              "up": false,
+              "down": true
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000005",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000005",
+            "commandId": "c0000000-0000-4000-8000-000000000005",
+            "recordedAtUtc": "2026-11-01T00:00:00Z",
+            "direction": "down"
+          }
+        ],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000005",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000005",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000005",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000005",
+        "workspaceId": "70000000-0000-4000-8000-000000000005",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000005",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000005",
+            "sourceRevision": 5,
+            "targetKind": "todo",
+            "copyOrganization": true
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "82ccdda41950e0f7c1890ed465748aa506d0d2f45deb1f876f308249cc99cc8d",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000005",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original habit Ω",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": "10000000-0000-4000-8000-000000000005",
+        "projectId": "20000000-0000-4000-8000-000000000005",
+        "sectionId": "30000000-0000-4000-8000-000000000005",
+        "parentTaskId": null,
+        "labelIds": [
+          "40000000-0000-4000-8000-000000000005"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "name": "habit-to-daily",
+      "document": {
+        "schemaVersion": 1,
+        "id": "70000000-0000-4000-8000-000000000006",
+        "revision": 10,
+        "categories": [
+          {
+            "id": "10000000-0000-4000-8000-000000000006",
+            "revision": 1,
+            "name": "Category"
+          }
+        ],
+        "projects": [
+          {
+            "id": "20000000-0000-4000-8000-000000000006",
+            "revision": 2,
+            "name": "Project",
+            "categoryId": "10000000-0000-4000-8000-000000000006"
+          }
+        ],
+        "sections": [
+          {
+            "id": "30000000-0000-4000-8000-000000000006",
+            "revision": 3,
+            "name": "Section",
+            "projectId": "20000000-0000-4000-8000-000000000006",
+            "position": 0
+          }
+        ],
+        "labels": [
+          {
+            "id": "40000000-0000-4000-8000-000000000006",
+            "revision": 4,
+            "name": "Label"
+          }
+        ],
+        "goals": [
+          {
+            "id": "f0000000-0000-4000-8000-000000000006",
+            "revision": 4,
+            "name": "Original goal membership",
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000006"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "60000000-0000-4000-8000-000000000006",
+            "revision": 5,
+            "text": "Original habit Ω",
+            "kind": "habit",
+            "state": "paused",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-11-01T00:00:00Z",
+            "notes": "Retain exact notes 🧥",
+            "categoryId": "10000000-0000-4000-8000-000000000006",
+            "projectId": "20000000-0000-4000-8000-000000000006",
+            "sectionId": "30000000-0000-4000-8000-000000000006",
+            "parentTaskId": null,
+            "labelIds": [
+              "40000000-0000-4000-8000-000000000006"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-11-01",
+            "deadline": "2026-11-05",
+            "reviewAfterUtc": "2026-11-04T12:00:00Z",
+            "staleSinceUtc": "2026-10-30T00:00:00Z",
+            "recurrence": null,
+            "isArchived": true,
+            "habiticaDetails": {
+              "difficulty": 1.5,
+              "attribute": "per",
+              "checklist": null,
+              "up": false,
+              "down": true
+            }
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [
+          {
+            "id": "b0000000-0000-4000-8000-000000000006",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000006",
+            "commandId": "c0000000-0000-4000-8000-000000000006",
+            "recordedAtUtc": "2026-11-01T00:00:00Z",
+            "direction": "down"
+          }
+        ],
+        "projections": [
+          {
+            "id": "a0000000-0000-4000-8000-000000000006",
+            "revision": 5,
+            "taskId": "60000000-0000-4000-8000-000000000006",
+            "state": "linked",
+            "habiticaTaskId": "e0000000-0000-4000-8000-000000000006",
+            "fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      },
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000006",
+        "workspaceId": "70000000-0000-4000-8000-000000000006",
+        "expectedRevision": 10,
+        "operation": "copyTaskType",
+        "taskId": "90000000-0000-4000-8000-000000000006",
+        "patch": {
+          "typeCopy": {
+            "sourceTaskId": "60000000-0000-4000-8000-000000000006",
+            "sourceRevision": 5,
+            "targetKind": "daily",
+            "copyOrganization": false,
+            "recurrence": {
+              "frequency": "monthly",
+              "interval": 1,
+              "startDate": "2026-11-03",
+              "timeZoneId": "America/New_York",
+              "weekdays": [],
+              "daysOfMonth": [
+                3,
+                31
+              ]
+            }
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "now": "2026-11-03T00:00:00Z",
+      "payloadHash": "72266b262255bd997b8debada6bb316da3a8464b86d6a83aac345593cd700588",
+      "expectedTarget": {
+        "id": "90000000-0000-4000-8000-000000000006",
+        "revision": 11,
+        "isArchived": false,
+        "text": "Original habit Ω",
+        "kind": "daily",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-11-03T00:00:00Z",
+        "updatedAtUtc": "2026-11-03T00:00:00Z",
+        "notes": "Retain exact notes 🧥",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "monthly",
+          "interval": 1,
+          "startDate": "2026-11-03",
+          "timeZoneId": "America/New_York",
+          "weekdays": [],
+          "daysOfMonth": [
+            3,
+            31
+          ]
+        },
+        "habiticaDetails": null
+      }
+    }
+  ]
+}

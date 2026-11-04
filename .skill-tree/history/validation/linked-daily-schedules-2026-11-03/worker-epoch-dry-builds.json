@@ -1,0 +1,23 @@
+{
+  "authorization": "Owner Implement All; local dry-build prerequisites only.",
+  "steps": [
+    {
+      "component": "chatgpt-auth",
+      "exit": 0,
+      "seconds": 3.542604374932125,
+      "log": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-auth-epoch-dry-build.log"
+    },
+    {
+      "component": "companion-workspace",
+      "exit": 0,
+      "seconds": 3.145442749839276,
+      "log": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/companion-workspace-epoch-dry-build.log"
+    },
+    {
+      "component": "chatgpt-mcp",
+      "exit": 0,
+      "seconds": 3.2395284578669816,
+      "log": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-mcp-epoch-dry-build.log"
+    }
+  ]
+}

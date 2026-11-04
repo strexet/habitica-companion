@@ -1,0 +1,11 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/2f26e4d2-174f-44c1-9b40-9ef5f3998671-failure.json",
+  "observed": "Chromium completed all12 light-scheme cases; both engines completed22 hydrated cases and126 fixture measurements before dark Settings controls used the light disabled foreground. The failure document reported data-color-scheme=gryphy-light.",
+  "source_cause": "ColorSchemePanel.OnInitializedAsync calls ColorSchemeService.LoadAsync, which reapplies the stored selected preference. The journey had changed only DOM CSS, leaving the owned profile stored preference light.",
+  "repair": "Seed preferences/colorSchemes using the existing schema2 before boot, then assert the rendered scheme stays aligned across each route/disclosure. Do not invoke sync or change any live/custom user data.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

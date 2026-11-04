@@ -1,0 +1,46 @@
+- banner:
+  - toolbar:
+    - strong: Habitica Tool
+    - generic: Local-first Habitica companion
+    - generic "Last synced Tuesday, November 3, 2026 12:26 PM": Synced 12:26 PM
+    - link "Sign in":
+      - /url: /sign-in
+      - generic: Sign in
+- navigation "Todo categories":
+  - link "Today":
+    - /url: /todo/today
+  - link "Habits":
+    - /url: /todo/habits
+  - link "Dailies":
+    - /url: /todo/dailies
+  - link "Tasks":
+    - /url: /todo/tasks
+- heading "Today" [active] [level=1]
+- link "Add task":
+  - /url: /todo/tasks
+  - generic: Add task
+- text: Day
+- textbox "Day": 2026-11-03
+- button "Use today's device date":
+  - generic: Today
+- paragraph: Sign in to use account-bound Companion tasks. Saved Habitica data remains separate.
+- link "Sign in":
+  - /url: /sign-in
+- region "Optional reminders":
+  - heading "Optional reminders" [level=2]
+  - paragraph:
+    - text: Saved review cues can appear here after you enable them for the selected workspace in this browser. Set, snooze or clear an exact review cue in
+    - link "Tasks → Organize → Voluntary review":
+      - /url: /todo/tasks
+    - text: .
+  - paragraph: Browser notifications are best effort while this app is open and visible. Closed tabs and background delivery are unavailable here. Reopen Today to see missed cues. No Habitica polling or task changes run automatically.
+  - paragraph: Reminders use the currently loaded workspace snapshot. Reload the workspace to include changes made elsewhere. Clearing browser data removes these preferences and local delivery receipts.
+  - status: Select and load a workspace. Reminder preferences and review cues stay bound to that account and source.
+- region "Tasks for the selected day":
+  - status: Choose and load an available workspace above. Unavailable task data is not an empty day.
+  - paragraph: Each Daily uses its named schedule time zone. Planned dates and deadlines stay separate. Habit events are recorded now, without backdating to the selected day.
+  - paragraph:
+    - text: "Separate Habitica cache; not merged into Companion tasks · freshness: Missing. Legacy Habitica due state remains on"
+    - link "Habitica tasks":
+      - /url: /tasks
+    - text: and is not inferred from Companion schedules.

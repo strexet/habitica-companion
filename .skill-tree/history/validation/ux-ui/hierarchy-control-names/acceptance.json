@@ -1,0 +1,50 @@
+{
+  "task_id": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0",
+  "title": "Name canonical Todo hierarchy row controls in Tasks and Projects",
+  "operation_history": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/operation-history.json",
+  "checks": [
+    {
+      "id": "hierarchy-control-names-behavior",
+      "counts": {
+        "discovered": 13,
+        "expected": 13,
+        "failed": 0,
+        "passed": 13,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/C-0f0d24c1-f793-4d62-a66b-f6953ef37577.log",
+          "sha256": "f3071eddcaf21fa8464939c88868e4007d16174f61ee7e8b424b009cac292a8e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/C-0f0d24c1-f793-4d62-a66b-f6953ef37577.trx",
+          "sha256": "aa1f4a74bf128794805a15dfcfce182e79a307ca20a3df2606209e990d8138c9"
+        }
+      ]
+    },
+    {
+      "id": "hierarchy-control-names-rendered",
+      "counts": {
+        "discovered": 433,
+        "expected": 433,
+        "failed": 0,
+        "passed": 433,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/950e338c-0076-467b-832f-1123c3309a02.json",
+          "sha256": "6e5fb91be15384fd1c52af21eedda935c33e27cb2e3c356832a7dff14718df59"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

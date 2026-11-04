@@ -3,6 +3,19 @@ using Habitica.WebApp.State;
 namespace Habitica.WebApp.Tests.Workspace;
 public sealed class PushReminderControllerTests
 {
+    [Theory][InlineData(false)][InlineData(true)]
+    public async Task Account_or_source_change_clears_observed_capability_and_discards_late_probe(bool sourceChange)
+    {
+        var f=new PushReminderFixture();await f.InitializeAsync();f.BrowserApi.PrepareGate=new(TaskCreationOptions.RunContinuationsAsynchronously);var check=f.Devices.RefreshAsync();
+        if(sourceChange){f.Api.ContextVersion++;f.Task.Session.SetState(f.Task.Session.State);}else f.Task.Session.SetState(f.Task.Session.State with{UserId=Guid.NewGuid().ToString()});
+        Assert.Equal("unprepared",f.Devices.Capability.State);Assert.Null(f.Devices.Current);Assert.False(f.Devices.CanRegister);
+        f.BrowserApi.PrepareGate.SetResult(new("available","granted"));await check;Assert.Equal("unprepared",f.Devices.Capability.State);Assert.Null(f.Devices.Current);Assert.Null(f.Devices.Status);Assert.False(f.Devices.IsBusy);Assert.Equal(0,f.BrowserApi.Permissions);
+    }
+    [Fact] public async Task Disposal_discards_late_browser_capability_results()
+    {
+        var f=new PushReminderFixture();await f.InitializeAsync();f.BrowserApi.PrepareGate=new(TaskCreationOptions.RunContinuationsAsynchronously);var check=f.Devices.RefreshAsync();f.Devices.Dispose();
+        f.BrowserApi.PrepareGate.SetResult(new("available","granted"));await check;Assert.NotEqual("granted",f.Devices.Capability.Permission);Assert.Equal(0,f.BrowserApi.Permissions);
+    }
     [Fact] public async Task Read_never_prompts_and_consent_precedes_device_gesture_and_secret_upload()
     {
         var f=new PushReminderFixture();await f.InitializeAsync();Assert.Equal(0,f.BrowserApi.Permissions);

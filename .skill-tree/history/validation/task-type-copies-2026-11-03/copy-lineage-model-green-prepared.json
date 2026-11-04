@@ -1,0 +1,71 @@
+{
+  "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+  "attempt_id": "C-0c6375eb-f6a7-4492-8c98-63ae45d500fb",
+  "check_id": "conversion-rules",
+  "definition": "918513a422a295c89769cb2d04fa86ba5bc368e2566ec40861dfdbd811ddce0c",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "key": "8f02e2bcd07987a4fb305b803dd5a5f47df0cdcc851868231cf6e2c93346a8fb",
+  "launch": {
+    "assertion": "Native task-type copy preserves the original, copies selected fields, resets target history/game state and retains exact lineage.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish atomic cross-kind acceptance, original command recovery or portable lineage validation.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T20:26:36.045649+00:00",
+    "execution_profile": "task-type-copies-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T20:18:36.262529+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Conversion",
+      "--logger",
+      "trx;LogFileName=conversion-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "03544db15b590577cc6dc4c9020169c8e08c2fd79b2fb3c31c52ac75bb947774",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "03e01c4bcb84f7948a3d9aac5aaf23a45d1758574072117306b003d4d518774f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18"
+  },
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

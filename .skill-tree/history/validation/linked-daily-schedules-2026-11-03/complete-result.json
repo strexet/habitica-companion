@@ -1,0 +1,1524 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rules-final-execution.log",
+          "sha256": "f24b846a3774953b7855f17ad1e46dfb4983872ae71fcc19bffcf914fbed1fa5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/rules-final.trx",
+          "sha256": "648f9648c6e148710b416d05b47f57136e7c9704f23bfb37c456ca1036fd3cc5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/components-final-execution.log",
+          "sha256": "c24909ba0dd17b2e39d56dea9b234557833a7f896f65a2442f84c1da0597e5af"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components/components-final.trx",
+          "sha256": "d2cd19d5faeb800c4ade9c6164a9c0da2e054531bac68a83e99a6f891159afef"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/wire-final-execution.log",
+          "sha256": "403574a5afa9e9a699cdf2908c8b2ec094ccdc15af144cdf988f9ed1ae99972a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-execution.log",
+          "sha256": "53b247c650ed777b1642734e8d4823943a58c2046dacced0194f7df11b694c9a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-final-execution.log",
+          "sha256": "e962764567db255dcd92fa062c3442c2fc1e02a0f5acebe38d4d54e267127b24"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-execution.log",
+          "sha256": "52925b7ed352a64e06dd4fbe957ef431e2167baa00291aa4a925838d22b34827"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json",
+          "sha256": "ffa4a3ab84ba573d0807e424905a4fe26893181a483a22f5b934fc6914a66912"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json",
+          "sha256": "818336bf5c96c17065f81c14bebbc9b391dfdf95922fa62536741fb63e0eef6d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/acceptance-findings.json",
+          "sha256": "d0de83afc515ed95c07eacd82ab9ce01bbd0011310960234068b38c750a3be4b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/future-validation.json",
+          "sha256": "0d6bf960c1192cbea8d54be0f8de6579f1c327d4318e166127c6469309c66b63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/changed-prose-validation.json",
+          "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-auth-bounds-dry-build.log",
+          "sha256": "7e3462dde171279edaffb543fa160a1c88a33d8ff5f96199f8b034aa12215d6d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/companion-workspace-bounds-dry-build.log",
+          "sha256": "b3c8ce2a70af3fa6e70b35ab126dae208591aba23b8c9afdc8307f1a1728b09e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-mcp-bounds-dry-build.log",
+          "sha256": "6e6e18a6bb5f8dd4218dee13a34b1e55518eaa139433df687b0f23e00fb32877"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rules-final-execution.log",
+          "sha256": "f24b846a3774953b7855f17ad1e46dfb4983872ae71fcc19bffcf914fbed1fa5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/rules-final.trx",
+          "sha256": "648f9648c6e148710b416d05b47f57136e7c9704f23bfb37c456ca1036fd3cc5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/components-final-execution.log",
+          "sha256": "c24909ba0dd17b2e39d56dea9b234557833a7f896f65a2442f84c1da0597e5af"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components/components-final.trx",
+          "sha256": "d2cd19d5faeb800c4ade9c6164a9c0da2e054531bac68a83e99a6f891159afef"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/wire-final-execution.log",
+          "sha256": "403574a5afa9e9a699cdf2908c8b2ec094ccdc15af144cdf988f9ed1ae99972a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-execution.log",
+          "sha256": "53b247c650ed777b1642734e8d4823943a58c2046dacced0194f7df11b694c9a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-final-execution.log",
+          "sha256": "e962764567db255dcd92fa062c3442c2fc1e02a0f5acebe38d4d54e267127b24"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-execution.log",
+          "sha256": "52925b7ed352a64e06dd4fbe957ef431e2167baa00291aa4a925838d22b34827"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json",
+          "sha256": "ffa4a3ab84ba573d0807e424905a4fe26893181a483a22f5b934fc6914a66912"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json",
+          "sha256": "818336bf5c96c17065f81c14bebbc9b391dfdf95922fa62536741fb63e0eef6d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/acceptance-findings.json",
+          "sha256": "d0de83afc515ed95c07eacd82ab9ce01bbd0011310960234068b38c750a3be4b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/future-validation.json",
+          "sha256": "0d6bf960c1192cbea8d54be0f8de6579f1c327d4318e166127c6469309c66b63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/changed-prose-validation.json",
+          "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-auth-bounds-dry-build.log",
+          "sha256": "7e3462dde171279edaffb543fa160a1c88a33d8ff5f96199f8b034aa12215d6d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/companion-workspace-bounds-dry-build.log",
+          "sha256": "b3c8ce2a70af3fa6e70b35ab126dae208591aba23b8c9afdc8307f1a1728b09e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-mcp-bounds-dry-build.log",
+          "sha256": "6e6e18a6bb5f8dd4218dee13a34b1e55518eaa139433df687b0f23e00fb32877"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-rules",
+        "parameters": {
+          "report_name": "daily-schedule-rules.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules",
+          "test_filter": "FullyQualifiedName~Schedule",
+          "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+          "Directory.Packages.props",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+          "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+          "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs",
+          "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+          "tests/fixtures/workspace/linked-daily-command-v12.json"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-5d532ff4-dadd-43a0-8426-c04bd9e85ff5",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 12,
+          "expected": 12,
+          "failed": 1,
+          "passed": 11,
+          "skipped": 0
+        },
+        "definition": "93af30510b23e287e5c18f82a330f93ad48c201709b50d6a2971f3b0396d58cd",
+        "environment_identity": "013b65ae9c598494aaf12aba9e69e03ee0bf26b241678147d1cd608bae13af80",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/supported-linked-edit-red-execution.log",
+            "sha256": "1680a63cc07cd0ce6f809866fb64a8053e1f6fb8fda1673dd5607df27cf59267"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/supported-linked-edit-red.trx",
+            "sha256": "23cad1338fc77e05b9efca066c1fc4a223e3ddec89403d54aa7549d7bd2fa4b2"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "ebebd03545263f59cd3243b9023512ac3ce6186a9ae16aab43a04feb8704f969",
+        "payload_hash": "5db8647213e8250cff95c03d17e6ad0a871c6e145c467412462a9a8318277582",
+        "recorded_at": "2026-11-02T19:14:29.088765+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "15793e9470c7932b9707d6f1b43bd3b71eeea28616b10c16eb6cfa33f38a449f",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs": "ed03cf18f49f511f5bb2faa3e9cbb320aa66b2e2f6a2744c1649a6bd279a2014"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.94186829100363
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e343497c-1bdb-46ec-90ba-27d4c6e84bff",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 15,
+          "expected": 15,
+          "failed": 0,
+          "passed": 15,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "22fcf414254da3ac027ca18bec5bde07e7c2f7e79e682edaedcdd08ec4074059",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rules-final-execution.log",
+            "sha256": "f24b846a3774953b7855f17ad1e46dfb4983872ae71fcc19bffcf914fbed1fa5"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/rules-final.trx",
+            "sha256": "648f9648c6e148710b416d05b47f57136e7c9704f23bfb37c456ca1036fd3cc5"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "7331b38ac39462be05d4fb66b018586929e7d9bf2b5be366a5a84ed994a6c87e",
+        "payload_hash": "2d2f303034bc10293ca903ac1b3491552f26151cea86e2e872761a3b57b0e799",
+        "recorded_at": "2026-11-02T19:58:18.491517+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+          "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "cd9f8d544719fc532a106c86658a62a88e5c944fd29b57aa485c57ce6b69a456",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "ad517a4f930472b72ef51f4e1690586238bce5d981071856b8e05bc822b4ca1e",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+          "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "a64d0f1bcc10a07276edbb7028bb51b49ab48e68e7de29a84528d3a26ede4b70",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs": "d5f5fa98c57596ee313019cb146feadd5847b4ddbf90cab318e3a23abf8c5e60",
+          "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+          "tests/fixtures/workspace/linked-daily-schedule-v1.json": "b7bf77dea01f949414db3b4c0cdda44b2f58801c5ed74ff86f6b45e1ffb2475c"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.0377071250695735
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-wire",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/recurrence-commands.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+          "workers/companion-workspace/src/task-api.ts",
+          "workers/companion-workspace/src/task-recovery-store.ts",
+          "workers/companion-workspace/src/commands.ts",
+          "workers/companion-workspace/src/executor.ts",
+          "workers/companion-workspace/src/projection-adapter.ts",
+          "workers/companion-workspace/src/journal.ts",
+          "workers/shared/workspace-commands.ts",
+          "workers/shared/workspace-domain.ts",
+          "workers/shared/task-tools.ts",
+          "workers/shared/activity-coverage.ts",
+          "workers/shared/linked-daily-schedule.ts",
+          "workers/shared/daily-projection.ts",
+          "workers/shared/projection.ts",
+          "workers/chatgpt-mcp/src/task-tools.ts",
+          "workers/chatgpt-auth/src/projection.ts",
+          "workers/shared/build-identity.generated.ts",
+          "tests/fixtures/workspace/linked-daily-command-v12.json",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "workers/companion-workspace/src/index.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-a949a5b1-ce42-436d-8e40-53100ecc25f6",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 8,
+          "expected": 3,
+          "failed": 0,
+          "passed": 8,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "63b40f279855fa204879e6d7ddc0402cc7af1f929e6e0cb0667e0c1f0802ec5c",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/wire-final-execution.log",
+            "sha256": "403574a5afa9e9a699cdf2908c8b2ec094ccdc15af144cdf988f9ed1ae99972a"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "18708d43e1edc7f76116e8c795061135736b33dd35588417b34c7242b39eecb6",
+        "payload_hash": "de8b498272730ca033b35cf217a3260cb7492a2df6ea4de275fa9209016fbb31",
+        "recorded_at": "2026-11-02T19:58:25.618475+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+          "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+          "workers/chatgpt-mcp/src/task-tools.ts": "fa767047d4af02addd93b378820fca7c6882b6bbe2f2a5e83466868b6f3fb240",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/commands.ts": "cd1f692fae2bf806bf06fa76d7b69782fb977a9b3633f025e3ce67c364f265e8",
+          "workers/companion-workspace/src/executor.ts": "593f9d24b1ac6d3e4472e741aadee1dd322796906aab5bd5858cd95b52f2347f",
+          "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+          "workers/companion-workspace/src/journal.ts": "12846580de3cfe78e188b3623f03353cdb329e865a3bd452392c8a78a9c0108e",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+          "workers/companion-workspace/src/projection-adapter.ts": "0652ae9e311a00408264ca96d345503b5efcaae7b2d0ebc790a1f46798388cbb",
+          "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+          "workers/companion-workspace/src/task-recovery-store.ts": "77c1b8e4eb5e6b0f503f006e1e5faa8c6a976ea2ed1702d973136a5eab6891d3",
+          "workers/companion-workspace/test/linked-daily-schedule.test.mjs": "dcb08442a49de51591ceb24723af776f602869b61264abdfffa24ed761906312",
+          "workers/companion-workspace/test/recurrence-commands.test.mjs": "fd28e5cc5a174e7c3dc5ca7a9846797bfbcfeb16bef3de8e1a12b9625e30d845",
+          "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+          "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+          "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+          "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+          "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+          "workers/shared/task-tools.ts": "8f62a8c580b9f72334bba5edd0d7438053171b1b2325a7f9f8e64a712bf56fbf",
+          "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5",
+          "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+        },
+        "timing": {
+          "tool_wall_seconds": 1.9909992080647498
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-gateway",
+        "parameters": {
+          "test_file": "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs",
+          "workers/chatgpt-auth/src/projection.ts",
+          "workers/shared/projection.ts",
+          "workers/shared/daily-projection.ts",
+          "workers/shared/linked-daily-schedule.ts",
+          "workers/shared/workspace-domain.ts",
+          "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+          "workers/chatgpt-auth/package.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-fadec9e5-be4f-436c-a4d0-277b62ca4a28",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 5,
+          "expected": 5,
+          "failed": 0,
+          "passed": 5,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "55406b9e6b3c299e3b8c8be7a95c3019d8157ee4af9b072aef7fa22424947157",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-execution.log",
+            "sha256": "53b247c650ed777b1642734e8d4823943a58c2046dacced0194f7df11b694c9a"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "1dc8d3430d226ee7c39f8a187672d71d96884c57126922af40182121de2dda44",
+        "payload_hash": "70b8114e6fbb86e3caaceca34e567eab5a681ca026d2eccbc97df5e9e4484e70",
+        "recorded_at": "2026-11-02T19:58:29.718684+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/linked-daily-schedule-v1.json": "b7bf77dea01f949414db3b4c0cdda44b2f58801c5ed74ff86f6b45e1ffb2475c",
+          "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+          "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+          "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs": "b1f91d0eb79ef7167796a7d6b9647ef1c6bbfb97f569a24a37070f04a6e70f89",
+          "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+          "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+          "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+          "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.540564249968156
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-components",
+        "parameters": {
+          "report_name": "daily-schedule-components.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components",
+          "test_filter": "FullyQualifiedName~LinkedDailySchedule|FullyQualifiedName~TodoRecurringEditor",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-42f331cf-65c7-4ee6-9d27-b538d62ac819",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 24,
+          "expected": 24,
+          "failed": 0,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "d09a66b78b6935d4cf89c0af49cdb4838401648cfb8928c7e27904c9827b7578",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/components-final-execution.log",
+            "sha256": "c24909ba0dd17b2e39d56dea9b234557833a7f896f65a2442f84c1da0597e5af"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components/components-final.trx",
+            "sha256": "d2cd19d5faeb800c4ade9c6164a9c0da2e054531bac68a83e99a6f891159afef"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "180652c314241cec9ec5db3c6afb9d1110f192839938e8fd43fc2c183c226d2a",
+        "payload_hash": "433d840442872535a2a18a5e4160f9cec4b4f20d89ec162bacd4bc9e981e73b8",
+        "recorded_at": "2026-11-02T19:58:23.050158+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+          "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+          "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+          "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d39382b5e7d6edee6a7deaa946d1c7e5ebc901ec14044cd116f3859073a731e8",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.9902290829923004
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-mcp",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/linked-daily-schedule.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+          "workers/companion-workspace/src/task-api.ts",
+          "workers/companion-workspace/src/task-recovery-store.ts",
+          "workers/companion-workspace/src/commands.ts",
+          "workers/companion-workspace/src/executor.ts",
+          "workers/companion-workspace/src/projection-adapter.ts",
+          "workers/companion-workspace/src/journal.ts",
+          "workers/shared/workspace-commands.ts",
+          "workers/shared/workspace-domain.ts",
+          "workers/shared/task-tools.ts",
+          "workers/shared/activity-coverage.ts",
+          "workers/shared/linked-daily-schedule.ts",
+          "workers/shared/daily-projection.ts",
+          "workers/shared/projection.ts",
+          "workers/chatgpt-mcp/src/task-tools.ts",
+          "workers/chatgpt-auth/src/projection.ts",
+          "workers/shared/build-identity.generated.ts",
+          "tests/fixtures/workspace/linked-daily-command-v12.json",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "workers/companion-workspace/src/index.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-7510ee5c-b310-444a-8b54-5c49e5a99521",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 7,
+          "expected": 7,
+          "failed": 0,
+          "passed": 7,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "0567f0f4b2920e7d6fded3f33623d0047aecb0b243f35820325e3e5820dbde78",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-final-execution.log",
+            "sha256": "e962764567db255dcd92fa062c3442c2fc1e02a0f5acebe38d4d54e267127b24"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "e5fef5039bc967d31ddfa20dbd8f6ab902b099c8c70e8b92c70e55d1c5c5aaa7",
+        "payload_hash": "fcf863dff824963b1aa31816ae2818a793923c8bf56a6d7090ca4d7ef2b02fe4",
+        "recorded_at": "2026-11-02T19:58:38.473334+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+          "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+          "workers/chatgpt-mcp/src/task-tools.ts": "fa767047d4af02addd93b378820fca7c6882b6bbe2f2a5e83466868b6f3fb240",
+          "workers/companion-workspace/src/commands.ts": "cd1f692fae2bf806bf06fa76d7b69782fb977a9b3633f025e3ce67c364f265e8",
+          "workers/companion-workspace/src/executor.ts": "593f9d24b1ac6d3e4472e741aadee1dd322796906aab5bd5858cd95b52f2347f",
+          "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+          "workers/companion-workspace/src/journal.ts": "12846580de3cfe78e188b3623f03353cdb329e865a3bd452392c8a78a9c0108e",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+          "workers/companion-workspace/src/projection-adapter.ts": "0652ae9e311a00408264ca96d345503b5efcaae7b2d0ebc790a1f46798388cbb",
+          "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+          "workers/companion-workspace/src/task-recovery-store.ts": "77c1b8e4eb5e6b0f503f006e1e5faa8c6a976ea2ed1702d973136a5eab6891d3",
+          "workers/companion-workspace/test/linked-daily-schedule.test.mjs": "dcb08442a49de51591ceb24723af776f602869b61264abdfffa24ed761906312",
+          "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+          "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+          "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+          "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+          "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+          "workers/shared/task-tools.ts": "8f62a8c580b9f72334bba5edd0d7438053171b1b2325a7f9f8e64a712bf56fbf",
+          "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5",
+          "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+        },
+        "timing": {
+          "tool_wall_seconds": 8.009341083001345
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+        "criteria": [
+          "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+          "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+        ],
+        "id": "daily-schedule-rendering",
+        "parameters": {},
+        "recipe_id": "linked-daily-rendered-browser",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/browser/linked-daily-ui.py",
+          "tests/browser/linked-daily-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj",
+          "tests/browser/linked-daily-fixture.mjs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "workers/shared/build-identity.generated.ts",
+          "workers/shared/linked-daily-schedule.ts",
+          "workers/shared/workspace-commands.ts",
+          "workers/shared/activity-coverage.ts",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+          "workers/companion-workspace/src/task-api.ts",
+          "workers/chatgpt-auth/src/projection.ts",
+          "workers/companion-workspace/src/index.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-5c44976d-4b96-4405-b9be-a29c63a184f0",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+        "counts": {
+          "discovered": 146,
+          "expected": 146,
+          "failed": 0,
+          "passed": 146,
+          "skipped": 0
+        },
+        "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+        "environment_identity": "d221b7089a6691627a548b4d51c61ff0db8ac641a262a213e97f11ec1b60f140",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-execution.log",
+            "sha256": "52925b7ed352a64e06dd4fbe957ef431e2167baa00291aa4a925838d22b34827"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json",
+            "sha256": "ffa4a3ab84ba573d0807e424905a4fe26893181a483a22f5b934fc6914a66912"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json",
+            "sha256": "818336bf5c96c17065f81c14bebbc9b391dfdf95922fa62536741fb63e0eef6d"
+          }
+        ],
+        "execution_sessions": {
+          "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-9ce9568b",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-50291c1f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d9fcee07",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+            "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+            ],
+            "profile_id": "linked-daily-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-98e22785",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "59fa758bbd12d6c28458074e33dc9fb2524f240dd58df20e3f724a6cfc6b84e4",
+        "payload_hash": "3dc74a610667895e5d3a2c0bfbc8d67436c3ef839da3f2989383349c714288fd",
+        "recorded_at": "2026-11-02T19:56:35.009570+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+          "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+          "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d39382b5e7d6edee6a7deaa946d1c7e5ebc901ec14044cd116f3859073a731e8",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+          "tests/browser/linked-daily-ui.mjs": "25173c9a65de4ec174970221595bf2d71bfdfac894418a0b11226ecf9bbc8aec",
+          "tests/browser/linked-daily-ui.py": "e90067bfa2622e312231bea7d9fac5eb1a380e387eae45b48219101de11a22c0",
+          "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+          "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+          "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+          "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+          "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+          "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+          "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+          "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5"
+        },
+        "timing": {
+          "tool_wall_seconds": 44.50493208412081
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+    "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+    "T-07d27408-3019-423f-a5de-4cda1f9e2818"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rules-final-execution.log",
+      "sha256": "f24b846a3774953b7855f17ad1e46dfb4983872ae71fcc19bffcf914fbed1fa5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/rules-final.trx",
+      "sha256": "648f9648c6e148710b416d05b47f57136e7c9704f23bfb37c456ca1036fd3cc5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/components-final-execution.log",
+      "sha256": "c24909ba0dd17b2e39d56dea9b234557833a7f896f65a2442f84c1da0597e5af"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components/components-final.trx",
+      "sha256": "d2cd19d5faeb800c4ade9c6164a9c0da2e054531bac68a83e99a6f891159afef"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/wire-final-execution.log",
+      "sha256": "403574a5afa9e9a699cdf2908c8b2ec094ccdc15af144cdf988f9ed1ae99972a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-execution.log",
+      "sha256": "53b247c650ed777b1642734e8d4823943a58c2046dacced0194f7df11b694c9a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-final-execution.log",
+      "sha256": "e962764567db255dcd92fa062c3442c2fc1e02a0f5acebe38d4d54e267127b24"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-execution.log",
+      "sha256": "52925b7ed352a64e06dd4fbe957ef431e2167baa00291aa4a925838d22b34827"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json",
+      "sha256": "ffa4a3ab84ba573d0807e424905a4fe26893181a483a22f5b934fc6914a66912"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json",
+      "sha256": "818336bf5c96c17065f81c14bebbc9b391dfdf95922fa62536741fb63e0eef6d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/acceptance-findings.json",
+      "sha256": "d0de83afc515ed95c07eacd82ab9ce01bbd0011310960234068b38c750a3be4b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/future-validation.json",
+      "sha256": "0d6bf960c1192cbea8d54be0f8de6579f1c327d4318e166127c6469309c66b63"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/documentation-validation.json",
+      "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/changed-prose-validation.json",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-auth-bounds-dry-build.log",
+      "sha256": "7e3462dde171279edaffb543fa160a1c88a33d8ff5f96199f8b034aa12215d6d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/companion-workspace-bounds-dry-build.log",
+      "sha256": "b3c8ce2a70af3fa6e70b35ab126dae208591aba23b8c9afdc8307f1a1728b09e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/chatgpt-mcp-bounds-dry-build.log",
+      "sha256": "6e6e18a6bb5f8dd4218dee13a34b1e55518eaa139433df687b0f23e00fb32877"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-6d0ab2a7-dea8-45d7-bb36-77106500c192",
+  "limitations": [
+    "Habitica provides no conditional PUT; fresh exact account/task observation cannot eliminate the final external edit race. Only the documented bounded lossless subset is writable.",
+    "Hosted publication, real provider account/task edits, originating-chat/device notification delivery, installed-PWA activation, physical devices and assistive technologies remain unqualified. Current changes remain uncommitted and unpublished."
+  ],
+  "outcome": "Exact cloud-linked Daily schedule replacement now has a fresh reviewed MCP/UI command, lossless provider/account guards, native acceptance epochs and original normalized provider receipts. Unsupported or unknown schedules refuse safely; actual local gateway/SDK/D1, portable policy/hash examples, typed/component controls and146 light/dark responsive browser cases pass without provider writes, scoring or Cron.",
+  "parent_pending_ids": [
+    "P-438c79fe-385d-4657-be24-85fad9a49c31",
+    "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
+  ],
+  "recorded_at": "2026-11-02T20:02:52.107969+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "b7ef0440c4d7f014ec4fb510610010612c328fb42a8e10809450ef9bf6e2bc20",
+    ".skill-tree/documents/habitica-api.md": "bd1988a78fd8703adff5c23475752e7820eb57cfae9ff5ee4648fe4f4109643a",
+    ".skill-tree/documents/linked-daily-schedules.md": "bce951dac0900083a910d1284d61ab37d99a0ea936cefd3d441b41e5506816d3",
+    ".skill-tree/documents/testing.md": "a7dd1ae4415368543f3d213b0e10a6729103279a24d45ef48ff5e4cc018842d4",
+    ".skill-tree/documents/ux-ui-manifest.md": "9e4f132f6bd3080a69b3d9e5ad777d1d183af7d71efaadf3f0c04051414f45c2",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "plugin/skills/habitica-task-management/SKILL.md": "982ba37a5a76654aaeca79a63c5d58288d0c9c8e7696438367f254f1f3c90573",
+    "plugin/skills/habitica-task-management/references/linked-daily-schedules.md": "f705a552b15eca4c1ef9fc9ca17866a93bd759879dcd9756c6012a183d06e549",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+    "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "cd9f8d544719fc532a106c86658a62a88e5c944fd29b57aa485c57ce6b69a456",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "ad517a4f930472b72ef51f4e1690586238bce5d981071856b8e05bc822b4ca1e",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "a64d0f1bcc10a07276edbb7028bb51b49ab48e68e7de29a84528d3a26ede4b70",
+    "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs": "d5f5fa98c57596ee313019cb146feadd5847b4ddbf90cab318e3a23abf8c5e60",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d39382b5e7d6edee6a7deaa946d1c7e5ebc901ec14044cd116f3859073a731e8",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/linked-daily-ui.mjs": "25173c9a65de4ec174970221595bf2d71bfdfac894418a0b11226ecf9bbc8aec",
+    "tests/browser/linked-daily-ui.py": "e90067bfa2622e312231bea7d9fac5eb1a380e387eae45b48219101de11a22c0",
+    "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+    "tests/fixtures/workspace/linked-daily-schedule-v1.json": "b7bf77dea01f949414db3b4c0cdda44b2f58801c5ed74ff86f6b45e1ffb2475c",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs": "b1f91d0eb79ef7167796a7d6b9647ef1c6bbfb97f569a24a37070f04a6e70f89",
+    "workers/chatgpt-mcp/src/task-tools.ts": "fa767047d4af02addd93b378820fca7c6882b6bbe2f2a5e83466868b6f3fb240",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/commands.ts": "cd1f692fae2bf806bf06fa76d7b69782fb977a9b3633f025e3ce67c364f265e8",
+    "workers/companion-workspace/src/executor.ts": "593f9d24b1ac6d3e4472e741aadee1dd322796906aab5bd5858cd95b52f2347f",
+    "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+    "workers/companion-workspace/src/journal.ts": "12846580de3cfe78e188b3623f03353cdb329e865a3bd452392c8a78a9c0108e",
+    "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+    "workers/companion-workspace/src/projection-adapter.ts": "0652ae9e311a00408264ca96d345503b5efcaae7b2d0ebc790a1f46798388cbb",
+    "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+    "workers/companion-workspace/src/task-recovery-store.ts": "77c1b8e4eb5e6b0f503f006e1e5faa8c6a976ea2ed1702d973136a5eab6891d3",
+    "workers/companion-workspace/test/linked-daily-schedule.test.mjs": "dcb08442a49de51591ceb24723af776f602869b61264abdfffa24ed761906312",
+    "workers/companion-workspace/test/recurrence-commands.test.mjs": "fd28e5cc5a174e7c3dc5ca7a9846797bfbcfeb16bef3de8e1a12b9625e30d845",
+    "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+    "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/task-tools.ts": "8f62a8c580b9f72334bba5edd0d7438053171b1b2325a7f9f8e64a712bf56fbf",
+    "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "title": "Edit supported linked Daily schedules with explicit reconciliation",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rules",
+      "parameters": {
+        "report_name": "daily-schedule-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules",
+        "test_filter": "FullyQualifiedName~Schedule",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+        "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs",
+        "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+        "tests/fixtures/workspace/linked-daily-command-v12.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/recurrence-commands.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/task-recovery-store.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/executor.ts",
+        "workers/companion-workspace/src/projection-adapter.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/projection.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/linked-daily-command-v12.json",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-gateway",
+      "parameters": {
+        "test_file": "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/projection.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/workspace-domain.ts",
+        "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+        "workers/chatgpt-auth/package.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-components",
+      "parameters": {
+        "report_name": "daily-schedule-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components",
+        "test_filter": "FullyQualifiedName~LinkedDailySchedule|FullyQualifiedName~TodoRecurringEditor",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/linked-daily-schedule.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/task-recovery-store.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/executor.ts",
+        "workers/companion-workspace/src/projection-adapter.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/projection.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/linked-daily-command-v12.json",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rendering",
+      "parameters": {},
+      "recipe_id": "linked-daily-rendered-browser",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/browser/linked-daily-ui.py",
+        "tests/browser/linked-daily-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "workers/shared/build-identity.generated.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25"
+}

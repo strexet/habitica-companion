@@ -1,0 +1,13 @@
+{
+  "name": "shared-ui-recheck",
+  "argv": [
+    "python3",
+    "tests/browser-qualification/ux-ui.py",
+    "ui-qualification",
+    ".skill-tree/history/validation/ux-ui/ui-qualification/browser"
+  ],
+  "exit_code": 0,
+  "seconds": 146.822,
+  "deadline_seconds": 900,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/shared-ui-recheck.log"
+}

@@ -4,13 +4,15 @@ using Habitica.Domain.Workspace;
 namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceTagGroupChange(Guid EntityId, WorkspaceOrganizationKind Kind, string Name, bool Archived, bool Removed,
-    IReadOnlyList<Guid> TaskIds, [property:JsonRequired] bool RetainMembership, IReadOnlyList<Guid> RemovedTaskIds);
+    IReadOnlyList<Guid> TaskIds, [property:JsonRequired] bool RetainMembership, IReadOnlyList<Guid> RemovedTaskIds,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UnavailableReason=null);
 public sealed record WorkspaceTagChangePreview([property:JsonRequired] bool SeparateConsentRequired, [property:JsonRequired] bool ScopeAllowed,
     [property:JsonRequired] bool ConsentEnabled, IReadOnlyList<WorkspaceTagGroupChange> Groups)
 {
     [JsonIgnore] public bool RequestsMetadataChanges => ScopeAllowed && ConsentEnabled && Groups.Any(group => !group.RetainMembership);
     public bool IsValid() => SeparateConsentRequired && Groups is not null && Groups.Count <= 100000
         && Groups.All(group => group.EntityId != Guid.Empty && Enum.IsDefined(group.Kind) && !string.IsNullOrWhiteSpace(group.Name) && group.Name.Length <= 256
+            && (group.UnavailableReason is null||group.UnavailableReason=="relative_dates_require_review"&&group.Kind==WorkspaceOrganizationKind.SavedTaskView&&group.RetainMembership&&group.TaskIds is {Count:0}&&group.RemovedTaskIds is {Count:0})
             && group.TaskIds is not null && group.RemovedTaskIds is not null && group.TaskIds.Count <= 100000 && group.RemovedTaskIds.Count <= 100000
             && group.TaskIds.All(id => id != Guid.Empty) && group.TaskIds.Distinct().Count() == group.TaskIds.Count
             && group.RemovedTaskIds.All(id => id != Guid.Empty) && group.RemovedTaskIds.Distinct().Count() == group.RemovedTaskIds.Count)
@@ -19,7 +21,7 @@ public sealed record WorkspaceTagChangePreview([property:JsonRequired] bool Sepa
 public sealed record WorkspaceTagTaskCoverage(int Total,int Linked,int Pending,int Missing,int NeedsReview,int Archived);
 public sealed record WorkspaceTagGroupCoverage(int Total,int Confirmed,int Pending,int NeedsReview,int Missing);
 public sealed record WorkspaceGroupTagState(Guid EntityId,WorkspaceOrganizationKind Kind,string Name,bool Archived,bool Removed,
-    string IdentityState,string MembershipState,string? HabiticaTagId,int DesiredTaskCount,int ConfirmedMemberCount,string? Reason,IReadOnlyList<Guid>? UnknownWorkIds=null);
+    string IdentityState,string MembershipState,string? HabiticaTagId,int DesiredTaskCount,int ConfirmedMemberCount,string? Reason,IReadOnlyList<Guid>? UnknownWorkIds=null,[property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceRelativeDateEvaluation? Evaluation=null);
 public sealed record WorkspaceTagStatusPage(string Provenance,Guid WorkspaceId,long Revision,[property:JsonRequired] bool AccountVerified,
     [property:JsonRequired] bool TagConsentEnabled,[property:JsonRequired] bool TagScopeAllowed,[property:JsonRequired] bool IntegrationComplete,
     WorkspaceTagTaskCoverage TaskCoverage,WorkspaceTagGroupCoverage GroupCoverage,IReadOnlyList<WorkspaceGroupTagState> Groups,int MatchedCount,int? NextOffset, [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int RetiredSourceContainers=0);
@@ -31,15 +33,16 @@ public sealed record WorkspaceTagObservedTag(Guid Id,string Name,bool? Native=nu
 public sealed record WorkspaceTagObservedTask(Guid Id,string Kind,string? Fingerprint=null,IReadOnlyList<Guid>? Tags=null);
 public sealed record WorkspaceTagReviewDetails(Guid EntityId,WorkspaceOrganizationKind Kind,string Name,string? HabiticaTagId,
     IReadOnlyList<WorkspaceTagTaskChange> TaskChanges,string Disclosure,string? DesiredName=null,bool? RetainsHistoricalTags=null,
-    Guid? OriginalWorkId=null,Guid? OriginalAttemptId=null,WorkspaceTagObservedTag? ObservedTag=null,WorkspaceTagObservedTask? ObservedTask=null);
+    Guid? OriginalWorkId=null,Guid? OriginalAttemptId=null,WorkspaceTagObservedTag? ObservedTag=null,WorkspaceTagObservedTask? ObservedTask=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceRelativeDateEvaluation? Evaluation=null);
 public sealed record WorkspaceTagReview(Guid? CommandId,Guid? RequestId,Guid WorkspaceId,string Operation,long ExpectedRevision,DateTimeOffset ExpiresAtUtc,
     bool CanAccept,[property:JsonRequired] int GameEffects,WorkspaceTagReviewDetails? Details,bool Expired=false,bool SavedInCompanion=false,WorkspaceTagReceipt? Receipt=null,
     string? Reason=null,WorkspaceTagOriginal? Original=null,string? ReviewOutcome=null);
 public sealed record WorkspaceTagOriginal(Guid WorkId,Guid CommandId,long SourceRevision,string State,string? Error,Guid EntityId,WorkspaceOrganizationKind Kind,
-    string Operation,Guid? OriginalAttemptId,string? Provenance=null,bool? OutcomeUnknown=null,int? GameEffects=null);
+    string Operation,Guid? OriginalAttemptId,string? Provenance=null,bool? OutcomeUnknown=null,int? GameEffects=null,[property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceRelativeDateEvaluation? Evaluation=null);
 public sealed record WorkspaceTagReceipt(Guid CommandId,Guid? RequestId,Guid? WorkspaceId,string? Operation,bool? SavedInCompanion,
-    [property:JsonRequired] int GameEffects,[property:JsonRequired] bool OutcomeUnknown,IReadOnlyList<Guid>? WorkIds=null,WorkspaceTagOriginal? Original=null,bool? Prepared=null,string? ReviewOutcome=null,string? Reason=null,DateTimeOffset? ClosedAtUtc=null);
-public sealed record WorkspaceTagRequest(Guid RequestId,string Operation,WorkspaceOrganizationKind? Kind=null,Guid? EntityId=null,Guid? HabiticaTagId=null,Guid? WorkId=null);
+    [property:JsonRequired] int GameEffects,[property:JsonRequired] bool OutcomeUnknown,IReadOnlyList<Guid>? WorkIds=null,WorkspaceTagOriginal? Original=null,bool? Prepared=null,string? ReviewOutcome=null,string? Reason=null,DateTimeOffset? ClosedAtUtc=null,[property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceRelativeDateEvaluation? Evaluation=null);
+public sealed record WorkspaceTagRequest(Guid RequestId,string Operation,WorkspaceOrganizationKind? Kind=null,Guid? EntityId=null,Guid? HabiticaTagId=null,Guid? WorkId=null,[property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] bool RelativeDayReview=false);
 public interface IWorkspaceTagApi
 {
     Task<WorkspaceTaskResponse<WorkspaceTagStatusPage>> ReadGroupTagsAsync(int offset,long? expectedRevision,CancellationToken cancellationToken);

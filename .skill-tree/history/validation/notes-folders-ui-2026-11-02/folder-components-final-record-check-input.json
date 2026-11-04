@@ -1,0 +1,24 @@
+{
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "check_id": "notes-components",
+  "attempt_id": "C-9a408978-b1f7-40b0-b87c-55ac23acfb64",
+  "environment_identity": "0bb144b984b06b2151208b58987ec68a98d31689615d9bf960c328a487409485",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 62,
+    "discovered": 62,
+    "passed": 62,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 17.272045582998544
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-components-final-execution.log",
+    ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-components-final.trx"
+  ]
+}

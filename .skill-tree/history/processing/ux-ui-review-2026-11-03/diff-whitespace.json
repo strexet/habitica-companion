@@ -1,0 +1,13 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "exit_code": 0,
+  "result": {
+    "ok": true,
+    "output": ""
+  },
+  "stderr": ""
+}

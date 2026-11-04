@@ -1,0 +1,11 @@
+{
+  "original_report": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/32fcf306-c5d3-4b1e-9336-85f7dd001aa1-failure.json",
+  "observation": "Selected occurrence values passed with full ink retention. Newly reset Daily creation draft had empty daily-start; selected native-value evidence was unavailable, with no product clipping diagnosis.",
+  "repair": "Select an explicit Daily creation start date before both ready and frozen captures. Preserve production validation and97-percent paint floor.",
+  "original_receipt": "Retained unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

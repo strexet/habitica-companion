@@ -1,0 +1,17 @@
+{
+  "report": "browser/cf964016-c9a0-40be-a751-18ec26d83ff5.json",
+  "reviewed": [
+    "chromium gryphy-light360/200 browse",
+    "chromium gryphy-light1280/100 alias review",
+    "webkit gryphy-dark360/200 alias review",
+    "chromium obsidian-glow1280/200 browse"
+  ],
+  "observations": [
+    "Work and Notes precede optional management; explicit empty selection retained.",
+    "Light/dark content and disabled management controls readable; native focus return visible; exact alias review retained.",
+    "Phone200 review requires vertical scrolling; fixed words visible in reviewed captures. Existing header Sync clipping remains separately deferred."
+  ],
+  "limitations": [
+    "Physical devices, AT, virtual keyboards, service workers and live provider paths unqualified. Native journeys cancel every preview; no acceptance."
+  ]
+}

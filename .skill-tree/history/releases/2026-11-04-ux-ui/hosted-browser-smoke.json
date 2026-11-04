@@ -1,0 +1,11 @@
+{
+  "name": "hosted-browser-smoke",
+  "argv": [
+    "node",
+    "/tmp/habitica-hosted-smoke-20261104.mjs"
+  ],
+  "exit_code": 1,
+  "seconds": 17.508,
+  "deadline_seconds": 240,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/hosted-browser-smoke.log"
+}

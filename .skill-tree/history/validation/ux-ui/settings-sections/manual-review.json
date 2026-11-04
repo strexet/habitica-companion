@@ -1,0 +1,19 @@
+{
+  "report": "browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+  "reviewed": [
+    "light360/100 header and section navigation",
+    "light360/200 account anchor",
+    "light1280/100 summary and actions",
+    "webkit obsidian360/200 account anchor",
+    "chromium obsidian1280/100 summary and actions"
+  ],
+  "observations": [
+    "Heading and account state precede installation; five sections readable with whole words.",
+    "Native links retain explicit Settings fallback URLs; actual activation focuses and reveals exact heading without losing route, consent or reviews.",
+    "Grouped cards avoid double gutters;44px actions and disabled controls retain normal styling.",
+    "Enlarged phone text requires vertical scrolling; existing header Sync clipping remains deferred."
+  ],
+  "limitations": [
+    "Native file dialogs, live server operations, physical devices, virtual keyboards, service workers and AT unqualified."
+  ]
+}

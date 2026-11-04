@@ -1,0 +1,123 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- generic: Personal knowledge
+- heading "Notes" [active] [level=1]
+- paragraph: Capture facts, keep documents and find them later.
+- button "New note"
+- paragraph:
+  - strong: Browser Workspace
+  - text: · the same active Workspace as tasks.
+  - link "Workspace access and transfer":
+    - /url: /todo/sync
+- button "Refresh notes"
+- paragraph: Browser is the default Workspace. Notes stay on this device until a reviewed cloud move. Clearing browser data removes these notes.
+- complementary "Find notes":
+  - text: Search titles and Markdown
+  - searchbox "Search titles and Markdown"
+  - checkbox "Show trash"
+  - text: Show trash
+  - text: Project filter
+  - combobox "Project filter":
+    - option "All notes" [selected]
+    - option "Unassigned"
+  - paragraph: 0 note(s) · This browser only
+  - list
+  - button "Previous notes" [disabled]
+  - button "More notes" [disabled]
+  - paragraph: No notes yet. Start a new note.
+- heading "New note" [level=2]
+- paragraph: This browser only · Unsaved draft
+- paragraph: "Project: Unassigned"
+- text: Project
+- combobox "Project":
+  - option "Unassigned" [selected]
+- button "Unassigned · clear project" [disabled]
+- text: Title
+- textbox "Title"
+- group "Editor mode":
+  - button "Markdown"
+  - button "Preview"
+- text: Markdown
+- textbox "Markdown"
+- paragraph: 0 / 131072 UTF-8 bytes. Preview supports headings, lists, tables and fenced code. HTML is displayed as text; remote images are omitted. Source stays unchanged.
+- button "Save note"
+- button "Export Markdown"
+- text: Import .md
+- button "Import .md"
+- paragraph: Imports become unsaved drafts. Exports contain readable private text; keep downloaded files safe.

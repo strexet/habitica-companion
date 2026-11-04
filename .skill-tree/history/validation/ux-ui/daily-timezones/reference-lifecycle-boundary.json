@@ -1,0 +1,10 @@
+{
+  "original_report": "cecf8a3d-292d-432d-be08-d5739ddab77a-failure.json",
+  "actual_failure": "Blank owned reference document navigation waited12seconds for load during native date probe.22 journeys had completed; original selected-date thresholds remain unchanged.",
+  "actual_cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "new_control": "One origin-bound reference page per owned context, awaited DOMContentLoaded and exact owned document title. Probe input, full styles, opacity, backdrop, date and disabled state are replaced on every use. Unexpected closure/origin change fails explicitly. No automatic reload or assertion retry. Context cleanup owns the shared page. Fixed heading checks now explicitly include h2 elements as well as controls; an independent native wide/narrow word canary validates Range line behavior."
+}

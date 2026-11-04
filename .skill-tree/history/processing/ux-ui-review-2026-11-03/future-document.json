@@ -1,0 +1,724 @@
+{
+  "command": [
+    "python3",
+    ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+    ".skill-tree/documents/future.md",
+    "--strict",
+    "--format",
+    "json"
+  ],
+  "exit_code": 0,
+  "result": {
+    "ok": true,
+    "errors": [],
+    "tasks": [
+      {
+        "title": "Resolve mass spell rate limits and explicit gear recovery",
+        "queue": "Pending Queue",
+        "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+        "priority": 106,
+        "status": "Pending",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 75
+      },
+      {
+        "title": "Qualify hosted callback DNS and TLS failure injection",
+        "queue": "Pending Queue",
+        "id": "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+        "priority": 100,
+        "status": "Pending",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 113
+      },
+      {
+        "title": "Extend shared UI qualification for disabled text and native date content",
+        "queue": "Prioritized Next Changes",
+        "id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+        "priority": 105,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-b7836285-3b2f-434b-8716-cd3e78482dda",
+          "P-b302aa68-7d63-4f74-9aa7-338c56700923"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 149
+      },
+      {
+        "title": "Make global navigation identifiable and keyboard accessible",
+        "queue": "Prioritized Next Changes",
+        "id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+        "priority": 105,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 312
+      },
+      {
+        "title": "Explain workspace readiness and disabled editor recovery",
+        "queue": "Prioritized Next Changes",
+        "id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+        "priority": 105,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-10dedd84-9a90-447e-bf89-c3dcb81affc7"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 455
+      },
+      {
+        "title": "Provide page headings and route focus for Habits and Dailies",
+        "queue": "Prioritized Next Changes",
+        "id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+        "priority": 104,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 608
+      },
+      {
+        "title": "Keep selected native dates readable with enlarged text",
+        "queue": "Prioritized Next Changes",
+        "id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+        "priority": 104,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-b302aa68-7d63-4f74-9aa7-338c56700923"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 746
+      },
+      {
+        "title": "Use consistent canonical task destinations from planning views",
+        "queue": "Prioritized Next Changes",
+        "id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+        "priority": 103,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 882
+      },
+      {
+        "title": "Put daily work before optional reminder setup on Today",
+        "queue": "Prioritized Next Changes",
+        "id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+        "priority": 103,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+          "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+        ],
+        "line": 1035
+      },
+      {
+        "title": "Bound companion collection rendering and clarify search results",
+        "queue": "Prioritized Next Changes",
+        "id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+        "priority": 103,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-2897d6c0-a804-41fe-9d92-091049683fa3"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1172
+      },
+      {
+        "title": "Reconcile dashboard account freshness and refresh-history labels",
+        "queue": "Prioritized Next Changes",
+        "id": "T-21881802-f186-479d-9111-295192ce2de8",
+        "priority": 103,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-d3dd549c-426f-4e67-9061-df88247cba31"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1306
+      },
+      {
+        "title": "Place required Daily schedule fields before the add action",
+        "queue": "Prioritized Next Changes",
+        "id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+        "priority": 102,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-d3155b74-ab23-4ed6-8073-e794af664988"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1446
+      },
+      {
+        "title": "Identify the exact invalid saved-list fields and preserve focus",
+        "queue": "Prioritized Next Changes",
+        "id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+        "priority": 102,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1585
+      },
+      {
+        "title": "Name repeated game controls and equipment preset inputs",
+        "queue": "Prioritized Next Changes",
+        "id": "T-84818186-be62-46d9-be33-c237da0054f2",
+        "priority": 102,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1719
+      },
+      {
+        "title": "Name repeated task and private-sync record controls",
+        "queue": "Prioritized Next Changes",
+        "id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+        "priority": 102,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1857
+      },
+      {
+        "title": "Keep disabled control text readable in built-in themes",
+        "queue": "Prioritized Next Changes",
+        "id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+        "priority": 102,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-b7836285-3b2f-434b-8716-cd3e78482dda"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 1997
+      },
+      {
+        "title": "Distinguish unchecked push capability from unsupported browsers",
+        "queue": "Prioritized Next Changes",
+        "id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+        "priority": 101,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-1ffff778-5db1-447c-95f7-fde01d72e70c"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 2136
+      },
+      {
+        "title": "Make primary planning navigation reachable without a long drawer scan",
+        "queue": "Prioritized Next Changes",
+        "id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-49528543-08db-4727-a2ca-bf390aa3b7d5"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+          "T-ea2058ab-c817-4368-9431-b26314f58a2e"
+        ],
+        "line": 2273
+      },
+      {
+        "title": "Add direct discovery for equipment slots and owned items",
+        "queue": "Prioritized Next Changes",
+        "id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 2419
+      },
+      {
+        "title": "Offer understandable supported timezone choices for linked Dailies",
+        "queue": "Prioritized Next Changes",
+        "id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 2553
+      },
+      {
+        "title": "Shorten saved-list authoring and prioritize existing lists",
+        "queue": "Prioritized Next Changes",
+        "id": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+          "T-feff83db-9aa8-410f-b2bc-caddd62fcf18"
+        ],
+        "line": 2701
+      },
+      {
+        "title": "Make phone note capture reach the editor directly",
+        "queue": "Prioritized Next Changes",
+        "id": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-ec998b4e-f73d-47cc-a884-06b5619f717c"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 2835
+      },
+      {
+        "title": "Open Projects on existing work and reveal management on demand",
+        "queue": "Prioritized Next Changes",
+        "id": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 2979
+      },
+      {
+        "title": "Organize Settings around clear account and data-management sections",
+        "queue": "Prioritized Next Changes",
+        "id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 3122
+      },
+      {
+        "title": "Use named day controls for repeating push reminders",
+        "queue": "Prioritized Next Changes",
+        "id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 3256
+      },
+      {
+        "title": "Prevent mid-word wrapping in equipment count summaries",
+        "queue": "Prioritized Next Changes",
+        "id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-ae822766-780c-4584-a33f-d8978ee060c0"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 3394
+      },
+      {
+        "title": "Format private-sync timestamps without literal format suffixes",
+        "queue": "Prioritized Next Changes",
+        "id": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 3528
+      },
+      {
+        "title": "Show explicit unset values in task-copy reviews",
+        "queue": "Prioritized Next Changes",
+        "id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+        "priority": 100,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f"
+        ],
+        "processing_run_id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+        "root_task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ],
+        "line": 3659
+      },
+      {
+        "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates",
+        "queue": "Prioritized Next Changes",
+        "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+        "priority": 24,
+        "status": "Blocked pending answers",
+        "parent_pending_ids": [
+          "P-29925105-1015-5ced-8844-d56fa47e33c9"
+        ],
+        "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+        "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+        "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+        "relation": "subtask",
+        "depends_on": [
+          "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+          "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+          "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+          "T-34491faa-090e-4d97-b496-1fe947770688",
+          "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+          "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+          "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+          "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+          "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+          "T-70901e97-738c-42c2-ae50-68dd71417a32",
+          "T-65810da7-9524-45ce-b280-668d04c86441"
+        ],
+        "boundary_validation": "before-dependent-work",
+        "line": 3793
+      },
+      {
+        "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout",
+        "queue": "Prioritized Next Changes",
+        "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+        "priority": 24,
+        "status": "Ready",
+        "parent_pending_ids": [
+          "P-0ea957c0-5210-5931-b545-82b9f13197db"
+        ],
+        "processing_run_id": null,
+        "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [
+          "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+          "T-5737120b-52a5-4a57-9072-fce514adaf33",
+          "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+          "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+          "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+          "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+          "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+        ],
+        "boundary_validation": "before-dependent-work",
+        "line": 3892
+      },
+      {
+        "title": "Party Quest Workspace Modes",
+        "queue": "Backlog",
+        "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4110
+      },
+      {
+        "title": "Party Quest History Analytics",
+        "queue": "Backlog",
+        "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4147
+      },
+      {
+        "title": "Skill Macro Collection MVP",
+        "queue": "Backlog",
+        "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4184
+      },
+      {
+        "title": "Task Mutation Dry-Run Summaries",
+        "queue": "Backlog",
+        "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4317
+      },
+      {
+        "title": "Settings Danger Zone Confirmation",
+        "queue": "Backlog",
+        "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4355
+      },
+      {
+        "title": "Returning User Copy Compression",
+        "queue": "Backlog",
+        "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4389
+      },
+      {
+        "title": "Mobile Stat Table Context",
+        "queue": "Backlog",
+        "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4424
+      },
+      {
+        "title": "Compact Spell Card Density Pass",
+        "queue": "Backlog",
+        "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4458
+      },
+      {
+        "title": "Public Plugin Directory Submission",
+        "queue": "Backlog",
+        "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4496
+      },
+      {
+        "title": "MCP Custom UI",
+        "queue": "Backlog",
+        "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4523
+      },
+      {
+        "title": "Background Automation",
+        "queue": "Backlog",
+        "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
+        "priority": 25,
+        "status": "Backlog",
+        "parent_pending_ids": [],
+        "processing_run_id": null,
+        "root_task_id": null,
+        "related_task_id": null,
+        "relation": "main",
+        "depends_on": [],
+        "line": 4545
+      }
+    ]
+  },
+  "stderr": ""
+}

@@ -1,0 +1,703 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+          "sha256": "e1f182397b6bc3e9eb25ba852870f1db1b5bcf4f0133ff2cebfb38388e0e5b1c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/final-contract.json",
+          "sha256": "e069f4ec97ce35539555dbc1bfb1d022f3b4203a33a82b4e9e4abdb2398200a4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+          "sha256": "e1f182397b6bc3e9eb25ba852870f1db1b5bcf4f0133ff2cebfb38388e0e5b1c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/final-unit.tap",
+          "sha256": "dd2776ad4a68664648b611010d8f44ef0f55f614180bdaa974b36a222031f03b"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+          "sha256": "e1f182397b6bc3e9eb25ba852870f1db1b5bcf4f0133ff2cebfb38388e0e5b1c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/ui-qualification/browser/256fca65-9fe5-425d-8cae-5c60aeedbeda.json",
+          "sha256": "fe158e44c4d1cf07fa0867e6be2475e50e242fd0b5331058eb7ca2b2b6d861ab"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+        "criteria": [
+          "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures."
+        ],
+        "id": "qualification-contract",
+        "parameters": {
+          "review": "recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity"
+        },
+        "recipe_id": "static-inspection",
+        "sources": [
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          ".skill-tree/documents/testing.md"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-1d68b761-d134-41d5-ab9f-4009f3b94b49",
+        "classification": "executed-control",
+        "cleanup": "Read-only profile, recipe, source-path and scoped-prose assertions completed.",
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/final-contract.json",
+            "sha256": "e069f4ec97ce35539555dbc1bfb1d022f3b4203a33a82b4e9e4abdb2398200a4"
+          }
+        ],
+        "execution_sessions": {
+          "4cbd4b0ea87ddc9fd5aed4ea087966f2ab2c4cfb452d1568f8711bd3923e8116": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:46:30.291650+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-2.json"
+            ],
+            "profile_id": "d35872f95895b2c101e2b706d336b7ff2dd0288f0c54221f58ccfcd882483ceb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "4d0d8e23784f5c5d8434381d62aa8267b4930653bc0577bde9501175eabfd0b3": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:43:56.221899+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity.json"
+            ],
+            "profile_id": "cc1b3e3baf020605d67d09de06041df147051966ff426c575d1cbb0a93baa2f9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "d8d2c892588102784ae18b72ef999f62e10cad80df28066268bddad36a704076": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:57:27.493580+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-4.json"
+            ],
+            "profile_id": "e9405d6fafdebbce66181272bfaef75d364e1f8d5506f1068586e60ada5c08c7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "e36962d40bf9201fd23f54fe893fa73e2b90b0a1569626e0b5023fb1d1702202": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:50:21.915779+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-3.json"
+            ],
+            "profile_id": "e9d490fe37e160a22729fc6484f564fb88c858fae9a0d301eea43b80e70955e7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          }
+        },
+        "key": "958eb11d3c2830f1a56239d6300787f5baa9a175c2f35329b44706a4de03ec7e",
+        "payload_hash": "52d493a5dfdefb54ab475a28715ccd32a7249b22a5c2eb4f388b0a23f46badb9",
+        "recorded_at": "2026-11-03T07:44:07.116616+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e",
+          ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+          ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f"
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+        "criteria": [
+          "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass."
+        ],
+        "id": "qualification-canaries",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-910e9f42-5f29-4ead-bd51-b3140a4eac7c",
+        "classification": "executed-control",
+        "cleanup": "Pure Node examples completed; no browser or server launched.",
+        "counts": {
+          "discovered": 17,
+          "expected": 17,
+          "failed": 3,
+          "passed": 14,
+          "skipped": 0
+        },
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/contract-red.tap",
+            "sha256": "9f556d366ed72f0ea415aa3c10d0479157b8ffbd61aef35a66927803e2976a6d"
+          }
+        ],
+        "execution_sessions": {
+          "4cbd4b0ea87ddc9fd5aed4ea087966f2ab2c4cfb452d1568f8711bd3923e8116": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:46:30.291650+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-2.json"
+            ],
+            "profile_id": "d35872f95895b2c101e2b706d336b7ff2dd0288f0c54221f58ccfcd882483ceb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "4d0d8e23784f5c5d8434381d62aa8267b4930653bc0577bde9501175eabfd0b3": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:43:56.221899+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity.json"
+            ],
+            "profile_id": "cc1b3e3baf020605d67d09de06041df147051966ff426c575d1cbb0a93baa2f9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "e36962d40bf9201fd23f54fe893fa73e2b90b0a1569626e0b5023fb1d1702202": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:50:21.915779+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-3.json"
+            ],
+            "profile_id": "e9d490fe37e160a22729fc6484f564fb88c858fae9a0d301eea43b80e70955e7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "d0c5a22f4c145139ff3a602d814aa1e311b1e24c5172675347313a4715e2133b",
+        "payload_hash": "a033c761eeb2e1e24cb6cecc8359fe7d3b6f6fb44f88a443dcdc36756f6e727e",
+        "recorded_at": "2026-11-03T07:40:53.112851+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+          "tests/browser-qualification/qualification-frame.mjs": "84ba431955964e1c8394cc747c6ec3095bc586148b6cc4820b5079b5d921414f",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "f2bf8706c01c570f1e92385bc690d1bf4bbfcc650cbe914ed6129446932ab600",
+          "tests/browser-qualification/ux-ui-contract.mjs": "b57c7b70a42f9dc75b264fc3a17419c76ef1e91be3d30055d6e49c72e89d7394"
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-48376a6e-50e7-4204-b2af-773a0d81b2bc",
+        "classification": "executed-control",
+        "cleanup": "Pure Node measurement, adapter and cleanup examples exited; no product process launched.",
+        "counts": {
+          "discovered": 17,
+          "expected": 17,
+          "failed": 0,
+          "passed": 17,
+          "skipped": 0
+        },
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/final-unit.tap",
+            "sha256": "dd2776ad4a68664648b611010d8f44ef0f55f614180bdaa974b36a222031f03b"
+          }
+        ],
+        "execution_sessions": {
+          "4cbd4b0ea87ddc9fd5aed4ea087966f2ab2c4cfb452d1568f8711bd3923e8116": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:46:30.291650+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-2.json"
+            ],
+            "profile_id": "d35872f95895b2c101e2b706d336b7ff2dd0288f0c54221f58ccfcd882483ceb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "4d0d8e23784f5c5d8434381d62aa8267b4930653bc0577bde9501175eabfd0b3": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:43:56.221899+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity.json"
+            ],
+            "profile_id": "cc1b3e3baf020605d67d09de06041df147051966ff426c575d1cbb0a93baa2f9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "d8d2c892588102784ae18b72ef999f62e10cad80df28066268bddad36a704076": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:57:27.493580+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-4.json"
+            ],
+            "profile_id": "e9405d6fafdebbce66181272bfaef75d364e1f8d5506f1068586e60ada5c08c7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "e36962d40bf9201fd23f54fe893fa73e2b90b0a1569626e0b5023fb1d1702202": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:50:21.915779+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-3.json"
+            ],
+            "profile_id": "e9d490fe37e160a22729fc6484f564fb88c858fae9a0d301eea43b80e70955e7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          }
+        },
+        "key": "f81f24395fe90913eaaf18f6c15ce5ecbdd89bc00c360af5236fca94693651c1",
+        "payload_hash": "aca0c2088203b5d01099b06c0b27a5367462511abd0c083ccd768c4b6195be9d",
+        "recorded_at": "2026-11-03T07:42:58.001436+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+          "tests/browser-qualification/qualification-frame.mjs": "1fc35dfbec50101b5970526690a2343c12888cf26ec2c56561c22fccc869af71",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "f2bf8706c01c570f1e92385bc690d1bf4bbfcc650cbe914ed6129446932ab600",
+          "tests/browser-qualification/ux-ui-contract.mjs": "bf0fc516fb199720d6bfacbb1f7fb8acd5ea8b892735ff0a4df1ef7206e78a76"
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+        ],
+        "id": "ui-qualification-rendered",
+        "parameters": {
+          "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+          "expected_product_baseline_failures": [
+            "unfixed disabled readability",
+            "unfixed native date content clipping"
+          ],
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "mode": "harness-canaries-and-baseline-observation",
+          "report_directory": ".skill-tree/history/validation/ux-ui/ui-qualification/browser",
+          "routes": [
+            "/todo/today",
+            "/todo/tasks",
+            "/todo/dailies",
+            "/notes",
+            "/inventory",
+            "/settings"
+          ],
+          "task_key": "ui-qualification"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          ".skill-tree/documents/testing.md",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/ux-ui.py",
+          "tests/browser-qualification/ux-ui.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-shared-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-856bd6cb-904c-41e0-80a8-237bf531ff2f",
+        "classification": "executed-control",
+        "cleanup": "All owned Chromium/WebKit contexts and loopback server closed; both persistent profiles removed. Provider and artwork GETs were fulfilled locally; no real provider effect or device permission.",
+        "counts": {
+          "discovered": 721,
+          "expected": 721,
+          "failed": 0,
+          "passed": 721,
+          "skipped": 0
+        },
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "0b30250f4a6f9177e03a40252b3f2398f4f08375faa138d2def4427a0ea873b0",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/browser/256fca65-9fe5-425d-8cae-5c60aeedbeda.json",
+            "sha256": "fe158e44c4d1cf07fa0867e6be2475e50e242fd0b5331058eb7ca2b2b6d861ab"
+          }
+        ],
+        "execution_sessions": {
+          "4cbd4b0ea87ddc9fd5aed4ea087966f2ab2c4cfb452d1568f8711bd3923e8116": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:46:30.291650+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-2.json"
+            ],
+            "profile_id": "d35872f95895b2c101e2b706d336b7ff2dd0288f0c54221f58ccfcd882483ceb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "4d0d8e23784f5c5d8434381d62aa8267b4930653bc0577bde9501175eabfd0b3": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:43:56.221899+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity.json"
+            ],
+            "profile_id": "cc1b3e3baf020605d67d09de06041df147051966ff426c575d1cbb0a93baa2f9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "d8d2c892588102784ae18b72ef999f62e10cad80df28066268bddad36a704076": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:57:27.493580+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-4.json"
+            ],
+            "profile_id": "e9405d6fafdebbce66181272bfaef75d364e1f8d5506f1068586e60ada5c08c7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          },
+          "e36962d40bf9201fd23f54fe893fa73e2b90b0a1569626e0b5023fb1d1702202": {
+            "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+            "build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T07:50:21.915779+00:00",
+            "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-identity-3.json"
+            ],
+            "profile_id": "e9d490fe37e160a22729fc6484f564fb88c858fae9a0d301eea43b80e70955e7",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12/shared-ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs"
+          }
+        },
+        "key": "4cf6d3661c38275a36fa61e617357b4f73016991bfa184b177a07a0eb0801e85",
+        "payload_hash": "1c087f9056a9f8e7360a793b4b87ca9deec64d7f117fdf9c19fda53539c344d0",
+        "recorded_at": "2026-11-03T07:48:48.094943+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e",
+          ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+          ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "aeef67f524185d984747166462a2ee3c5c20e3ead00f910111124e232f83d39b",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+          "tests/browser-qualification/qualification-frame.mjs": "1fc35dfbec50101b5970526690a2343c12888cf26ec2c56561c22fccc869af71",
+          "tests/browser-qualification/ux-ui-adapters.json": "04ba39ed2e8988314cad6bb7eb8311efd2e2601aeadecda31913753b5ab63b1d",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "f2bf8706c01c570f1e92385bc690d1bf4bbfcc650cbe914ed6129446932ab600",
+          "tests/browser-qualification/ux-ui-contract.mjs": "bf0fc516fb199720d6bfacbb1f7fb8acd5ea8b892735ff0a4df1ef7206e78a76",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+          "tests/browser-qualification/ux-ui-shared-journey.mjs": "19e7a3c0fa6b957a2167af750035a1d3eb8142fa89cac1f2f217be15eb133b7b",
+          "tests/browser-qualification/ux-ui.mjs": "f9fb4d25e7d296c9a36e17d4615d9cf085e3e7cb1fd7811f3e0800ed4ba400d6",
+          "tests/browser-qualification/ux-ui.py": "638c40ab1c684e1b353b119f7835cfd62720e6e045508e905e3d1240c853a160"
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+      "sha256": "e1f182397b6bc3e9eb25ba852870f1db1b5bcf4f0133ff2cebfb38388e0e5b1c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance-summary.json",
+      "sha256": "460dcb3cc5fa52760e1a529376f5352820912ddec8c03aa3ba8d1de83299ba24"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/ui-qualification/scoped-changes.json",
+      "sha256": "9611081c8058ea63e9b245e8093b4ce9182d85bdc327596ead3afd040b0e0123"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-b3430299-e9d2-4647-8f0c-803a5ee96864",
+  "limitations": [
+    "Physical devices, assistive technology, mobile keyboards, hosted/service-worker behavior and real provider effects remain unqualified.",
+    "Product baseline observations do not establish acceptance of the remaining UI fixes.",
+    "Native paint uses same-engine screenshot references and a 97-percent retention tolerance; unsupported evidence remains unavailable."
+  ],
+  "outcome": "Registered the parameterized shared UI qualification runner with disabled text/value opacity checks, native-date screenshot evidence, exact adapter/route/state selection and verified owned-session cleanup. Final current Release qualification passes 721 harness assertions, 61 component captures and 17 focused unit checks. Existing product defects remain separate planned fixes.",
+  "parent_pending_ids": [
+    "P-b7836285-3b2f-434b-8716-cd3e78482dda",
+    "P-b302aa68-7d63-4f74-9aa7-338c56700923"
+  ],
+  "recorded_at": "2026-11-03T07:50:46.520220+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "source_fingerprints": {
+    ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e",
+    ".skill-tree/documents/ux-ui-manifest.md": "d155a06028404277ec3c8247cd784969e3f2469f7b959018c6fec934211043ad",
+    ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+    ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "aeef67f524185d984747166462a2ee3c5c20e3ead00f910111124e232f83d39b",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+    "tests/browser-qualification/qualification-frame.mjs": "1fc35dfbec50101b5970526690a2343c12888cf26ec2c56561c22fccc869af71",
+    "tests/browser-qualification/ux-ui-adapters.json": "04ba39ed2e8988314cad6bb7eb8311efd2e2601aeadecda31913753b5ab63b1d",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "f2bf8706c01c570f1e92385bc690d1bf4bbfcc650cbe914ed6129446932ab600",
+    "tests/browser-qualification/ux-ui-contract.mjs": "bf0fc516fb199720d6bfacbb1f7fb8acd5ea8b892735ff0a4df1ef7206e78a76",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs": "19e7a3c0fa6b957a2167af750035a1d3eb8142fa89cac1f2f217be15eb133b7b",
+    "tests/browser-qualification/ux-ui.mjs": "f9fb4d25e7d296c9a36e17d4615d9cf085e3e7cb1fd7811f3e0800ed4ba400d6",
+    "tests/browser-qualification/ux-ui.py": "638c40ab1c684e1b353b119f7835cfd62720e6e045508e905e3d1240c853a160"
+  },
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "title": "Extend shared UI qualification for disabled text and native date content",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+      "criteria": [
+        "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures."
+      ],
+      "id": "qualification-contract",
+      "parameters": {
+        "review": "recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity"
+      },
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+      "criteria": [
+        "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass."
+      ],
+      "id": "qualification-canaries",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+      ],
+      "id": "ui-qualification-rendered",
+      "parameters": {
+        "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+        "expected_product_baseline_failures": [
+          "unfixed disabled readability",
+          "unfixed native date content clipping"
+        ],
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "mode": "harness-canaries-and-baseline-observation",
+        "report_directory": ".skill-tree/history/validation/ux-ui/ui-qualification/browser",
+        "routes": [
+          "/todo/today",
+          "/todo/tasks",
+          "/todo/dailies",
+          "/notes",
+          "/inventory",
+          "/settings"
+        ],
+        "task_key": "ui-qualification"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.py",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-shared-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9"
+}

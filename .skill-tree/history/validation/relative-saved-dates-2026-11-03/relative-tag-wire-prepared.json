@@ -1,0 +1,72 @@
+{
+  "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+  "attempt_id": "C-4a068fdf-932d-4c1e-b7d3-cb872ea532da",
+  "check_id": "relative-date-wire",
+  "definition": "2e7aecb1f52b656372f6d47cea10679d0c377f37a5fe46cf328fdc160ed652ca",
+  "environment_identity": "e659a6b4e2ad6f1acc89d41ddb7274a29b78ae5600b431ab199b1053ce091d0d",
+  "key": "dd66497b6b775a1ffc7f699b64649b98e485dd95d0f38e97432b38fd3d433287",
+  "launch": {
+    "assertion": "Relative saved-date parity, one explicit clock/timezone context, guarded pagination and no task/provider mutations.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 definition authoring, interpreted date bounds or stale-day refusal.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T22:08:16.732904+00:00",
+    "execution_profile": "linked-conversion-wire-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T22:04:16.914007+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/relative-saved-dates.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/relative-saved-command-v5.json": "25c5ae701b44ae288a86c1687bf4ef42f6f73394306d2d587c7726969bf5630c",
+    "tests/fixtures/workspace/relative-saved-dates-v1.json": "e212cf5e2e8a996d65b3303b26ca8c0c8459cf9a78348bb974c3d3aeafebec6b",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "f67e4ea2400f689a500976e90bda9927025de5a1cac2f9e95e37008d619afe87",
+    "workers/chatgpt-mcp/src/task-tools.ts": "858e90c7c5a3155f39342fa8c7f956311198a9ce77b7a906d997718b2e2bed20",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "4b84e182c47def925862db241536c7f0a9efb965ca2098f3982d383d1919e139",
+    "workers/companion-workspace/src/organization-commands.ts": "3df33cca9646372ce15052aca7d5ca1002beaecf7f1f89a9acf43650704a3084",
+    "workers/companion-workspace/src/saved-task-reads.ts": "dd5b4eda0ce14940314c4c37e7fb0162892548d97d3b4861964d3237d40e5141",
+    "workers/companion-workspace/src/tag-executor.ts": "e9c396c235517c19eddc10f5c77817c9e70b8ffce9e516eaa149d16d1f435419",
+    "workers/companion-workspace/src/tag-planner.ts": "7f1b9b01abc3a1be6b4953dab9aa810be8668f7489370e6b361ad047390ae84a",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/relative-saved-dates.test.mjs": "bdc2f84a873c4a80559afd92bbca6bcda5c1c35b97f610620233a1fda663cb49",
+    "workers/companion-workspace/test/saved-view-api.test.mjs": "5db2b3ee709e1388badff729ad3950ab7921be37d31b222d49377e63036fa045",
+    "workers/companion-workspace/test/tag-membership.test.mjs": "ebbade2b2a6f50190b1867e11eaf6979f673d04e6a211164e8ae54fb0aee956b",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/build-identity.generated.ts": "ce30eec557463a0a79e521e5ba998c18b849d76a8bdc4e837aab9af6c52a4278",
+    "workers/shared/group-tag-status.ts": "6aa6d32a7c268024b0f05131a465d01909fdb02255aa989675cb811233485fce",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/saved-task-query.ts": "cbd6bf671f5778a2b20bab6dbb88bfa99cbe7d422c8b9ea7ff7df3f8f9578195",
+    "workers/shared/saved-task-read.ts": "9a2c3429ba130169faa638164b99695e43511c5c8fb61e7e63d58d86afa96621",
+    "workers/shared/saved-task-views.ts": "6f788a3f568391089b4aab71986d737abf5af54a6b227212432d1cb899aac89d",
+    "workers/shared/tag-correspondence.ts": "19ed44c7f2569fbb3dcb7df40d7e71bc4aa11d42ace73aa9f9f2cffcc2cc0616",
+    "workers/shared/tag-membership.ts": "5f99678c975eac136f93bf6091fb4bb43b49ec60419c1406ccc18923226a51c1",
+    "workers/shared/unblocked-todos.ts": "b25665e96fcc01d624d670d0a25e1a09948210c146ab91189ea39f450525584e",
+    "workers/shared/workspace-organization.ts": "731aba96feade5ab8fd9ea45f268e9c7743884519a6997f6b86a77f91378c968"
+  },
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

@@ -96,9 +96,9 @@ try{
    console.error(engine,'upgrade');await bounded(page.goto(origin+'/harness'),'navigation');stage='fixed';assert.equal(await update(page),'installed');
    await page.close();page=await context.newPage();page.setDefaultTimeout(12000);page.setDefaultNavigationTimeout(12000);
    await bounded(page.goto(origin+'/harness'),'navigation');
-   await page.waitForFunction(async()=>{const keys=await caches.keys();return keys.includes('offline-cache-fixture-shell-v2')&&!keys.includes('offline-cache-fixture');});
+   await page.waitForFunction(async()=>{const keys=await caches.keys();return keys.includes('offline-cache-fixture-shell-v3')&&!keys.includes('offline-cache-fixture');});
    await bounded(page.goto(origin+'/dashboard?q=preserved'),'navigation');assert.equal(await page.locator('#shell').textContent(),'Synthetic public shell');
-   const shell=await page.evaluate(async()=>{const r=await (await caches.open('offline-cache-fixture-shell-v2')).match('index.html');return {redirected:r.redirected,type:r.type,header:r.headers.get('X-Shell'),text:await r.text()};});
+   const shell=await page.evaluate(async()=>{const r=await (await caches.open('offline-cache-fixture-shell-v3')).match('index.html');return {redirected:r.redirected,type:r.type,header:r.headers.get('X-Shell'),text:await r.text()};});
    assert.equal(shell.redirected,false);assert.equal(shell.header,'retained');assert.equal(shell.text,html);
    console.error(engine,'upgraded offline');offline=true;
    for(const route of ['/','/todo/tasks?q=offline','/notes']){await bounded(page.goto(origin+route),'navigation');assert.equal(await page.locator('#shell').textContent(),'Synthetic public shell');}
@@ -115,7 +115,7 @@ try{
    assert.equal(await freshPage.locator('#shell').textContent(),'Synthetic public shell');
    offline=true;await bounded(freshPage.reload(),'reload');assert.equal(await freshPage.locator('#shell').textContent(),'Synthetic public shell');
    offline=false;
-   assert.equal(await freshPage.evaluate(async()=>await (await caches.open('offline-cache-fixture-shell-v2')).delete('/index.html')),true);
+   assert.equal(await freshPage.evaluate(async()=>await (await caches.open('offline-cache-fixture-shell-v3')).delete('/index.html')),true);
    await bounded(freshPage.goto(origin+'/dashboard'),'navigation');assert.equal(await freshPage.locator('#shell').textContent(),'Synthetic public shell');
    console.error(engine,'offline cache miss');offline=true;let offlineMiss=false;try{await bounded(freshPage.reload(),'reload');}catch{offlineMiss=true;}
    assert.equal(offlineMiss,true,'missing offline shell must remain an explicit network failure');

@@ -52,6 +52,6 @@ export function tagPreview(before:WorkspaceDocument,after:WorkspaceDocument,auth
   groups:desiredTagMembership(after).groups.filter(group=>JSON.stringify(group)!==JSON.stringify(previous.get(group.entityId))).map(group=>{
    const mapping=before.tagLedger?.mappings.find(row=>row.entityId===group.entityId),members=new Set(group.taskIds);
    const removedTaskIds=[...new Set((before.tagLedger?.intents??[]).filter(intent=>intent.mappingId===mapping?.id&&intent.operation==='setMembership').flatMap(intent=>(intent.members??[]).filter(member=>member.state==='confirmed'&&member.present&&!members.has(member.taskId)).map(member=>member.taskId)))];
-   return {...group,removedTaskIds};
+   return {...group,removedTaskIds:group.unavailableReason?[]:removedTaskIds};
   })};
 }

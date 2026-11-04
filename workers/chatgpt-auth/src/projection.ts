@@ -1,3 +1,4 @@
+import {linkedDailyScheduleContext,reviewLinkedDailySchedule,type LinkedDailyScheduleContext} from '../../shared/linked-daily-schedule.ts';
 import {completionScoreSource,sameCompletionScoreSource,type CompletionScoreSource} from '../../shared/completion-score-source.ts';
 import {observeTaskRecovery} from './task-recovery-observation';
 import {recoveryIntent,type RecoveryReview} from '../../shared/linked-task-recovery.ts';
@@ -12,7 +13,7 @@ import { workspaceJson, workspaceObject, uuid, workspaceSessionToken, workspaceT
 import { selector, remotePatch, remoteTask, remotePatchMatches, type RemoteTask } from "../../shared/projection";
 interface Context { profileId: string; connectionId: string }
 interface Check { token_hash: string; selector: string; task_id: string | null; fingerprint: string | null; kind: string | null; completed: number | null; up: number | null; down: number | null; is_due: number | null; account_json: string | null }
-interface Outcome { sourceContext?:CompletionScoreSource; recovery?:RecoveryReview; kind: "applied" | "refused" | "unknown"; code: string; retryAtUtc?: string; task?: { id: string; kind: string; fingerprint: string; alias: string | null } }
+interface Outcome { sourceContext?:CompletionScoreSource; recovery?:RecoveryReview; kind: "applied" | "refused" | "unknown"; code: string; retryAtUtc?: string; scheduleResult?: {observedAtUtc:string;actual:ReturnType<typeof readDailySchedule>;matchesExpected:boolean}; task?: { id: string; kind: string; fingerprint: string; alias: string | null } }
 const headers = { "cache-control": "no-store" };
 const json = (value: unknown, status = 200) => Response.json(value, { status, headers });
 const fingerprint = (value: unknown): string => { if (typeof value !== "string" || !/^[a-f0-9]{64}$/.test(value)) throw new WorkspaceError("invalid_precondition",422); return value; };
@@ -25,7 +26,7 @@ async function check(env: AuthEnv, who: Context, token: unknown): Promise<Check>
 async function rememberCheck(env: AuthEnv, who: Context, target: string, task: RemoteTask | null, account?: unknown) {
  const token = workspaceSessionToken(); const now = new Date().toISOString();
  await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_projection_checks(token_hash,profile_id,connection_id,selector,task_id,fingerprint,kind,completed,up,down,is_due,account_json,checked_at_utc,expires_at_utc)
- VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(await workspaceTokenHash(token),who.profileId,who.connectionId,target,task?.id ?? null,task?.fingerprint ?? null,task?.kind ?? null,task ? Number(task.completed) : null,task ? Number(task.up) : null,task ? Number(task.down) : null,task?.isDue === null || !task ? null : Number(task.isDue),account ? JSON.stringify(account) : null,now,new Date(Date.now()+90000).toISOString()).run();
+ VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(await workspaceTokenHash(token),who.profileId,who.connectionId,target,task?.id ?? null,task?.fingerprint ?? null,task?.kind ?? null,task ? Number(task.completed) : null,task ? Number(task.up) : null,task ? Number(task.down) : null,task?.isDue === null || !task ? null : Number(task.isDue),account ? JSON.stringify(account) : task?.kind==="daily" ? JSON.stringify({dailySchedule:task.schedule??null}) : null,now,new Date(Date.now()+90000).toISOString()).run();
  return token;
 }
 export async function rateState(env: AuthEnv, who: Context, response: Response, markCredentialFailure = true) {
@@ -47,7 +48,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   who = { profileId: input.profileId, connectionId: uuid(input.connectionId) };
   const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectAdoption","inspectRetirement","inspectDaily","inspectAccount","inspectRecovery","recoverTask","create","update","score","retireSource","reconcile","lookup","scoreReceipt"].includes(operation)) throw new WorkspaceError("invalid_operation");
   const writing = ["create","update","score","retireSource","recoverTask"].includes(operation);
-  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : operation === "scoreReceipt" ? ["attemptId","selector","taskKind","expectedFingerprint","sourceContext"] : operation === "inspectRecovery" ? ["selector","taskKind","occurrenceDate","contextHash"] : writing ? operation === "recoverTask" ? ["selector","checkToken","expectedFingerprint","taskKind","occurrenceDate","contextHash"] : operation === "retireSource" ? ["selector","checkToken","expectedFingerprint","expectedCompleted","workspaceId","conversionId","sourceTaskId","contextHash","irreversibleApproved"] : operation === "create" ? ["selector","checkToken","patch","taskKind","recurrence","accountCheckToken"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate","sourceContext"] : operation === "inspectAccount" ? [] : ["selector"]);
+  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : operation === "scoreReceipt" ? ["attemptId","selector","taskKind","expectedFingerprint","sourceContext"] : operation === "inspectRecovery" ? ["selector","taskKind","occurrenceDate","contextHash"] : writing ? operation === "recoverTask" ? ["selector","checkToken","expectedFingerprint","taskKind","occurrenceDate","contextHash"] : operation === "retireSource" ? ["selector","checkToken","expectedFingerprint","expectedCompleted","workspaceId","conversionId","sourceTaskId","contextHash","irreversibleApproved"] : operation === "create" ? ["selector","checkToken","patch","taskKind","recurrence","accountCheckToken"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch","linkedSchedule","recurrence","accountCheckToken"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate","sourceContext"] : operation === "inspectAccount" ? [] : ["selector"]);
   const profile = await activeProfile(env,who.profileId,who.connectionId);
   // Operational attempt metadata expires after thirty days. Old attempt timestamps cannot authorize a new send.
   await env.HABITICA_INTEGRATION_DB.batch([
@@ -83,6 +84,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   if (quota?.blocked_until_utc && Date.parse(quota.blocked_until_utc)>Date.now()) return json({kind:"refused",code:"rate_limited",retryAtUtc:quota.blocked_until_utc},429);
   let scoreSource:CompletionScoreSource|null=null;
   let reviewedRecovery:RecoveryReview|undefined;
+  let scheduleContext:LinkedDailyScheduleContext|null=null;
   let precondition: Check | undefined; let target = operation === "inspectAccount" ? "account" : selector(args.selector);
   let patch; const creationKind=args.taskKind??"todo";
   if(operation==="create"&&!["todo","habit","daily"].includes(creationKind as string))throw new WorkspaceError("invalid_task_kind",422);
@@ -103,7 +105,20 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    } else {
     target = uuid(target);
     if (precondition.task_id !== target || precondition.fingerprint !== fingerprint(args.expectedFingerprint)) throw new WorkspaceError("external_conflict",409);
-    if (operation === "update") patch = remotePatch(args.patch,false,precondition.kind??undefined);
+    if (operation === "update") {
+     scheduleContext=linkedDailyScheduleContext(args.linkedSchedule);
+     if(scheduleContext){
+      const rule=workspaceRecurrence(args.recurrence),account=await check(env,who,args.accountCheckToken),state=account.account_json?JSON.parse(account.account_json):null;
+      const before=precondition.account_json?JSON.parse(precondition.account_json).dailySchedule:null;
+      if(precondition.kind!=="daily"||!rule||!state||state.needsCron!==false||day(state)!==state.day||scheduleContext.habiticaTaskId!==target||scheduleContext.fingerprint!==precondition.fingerprint||state.timezoneOffset!==scheduleContext.account.timezoneOffset||state.dayStart!==scheduleContext.account.dayStart||!before||!sameDailySchedule(readDailySchedule(before),scheduleContext.before)||!sameDailySchedule(reviewLinkedDailySchedule(scheduleContext.before,rule,state).expectedAfter,scheduleContext.expectedAfter))throw new WorkspaceError("linked_schedule_precondition_changed",409);
+      const fields=workspaceObject(args.patch,["frequency","everyX","startDate","repeat","daysOfMonth","weeksOfMonth"]);
+      patch=remotePatch(fields,false,"daily",true);
+      if(!sameDailySchedule(readDailySchedule(patch),scheduleContext.expectedAfter))throw new WorkspaceError("daily_schedule_mismatch",409);
+     }else{
+      if(args.recurrence!==undefined||args.accountCheckToken!==undefined)throw new WorkspaceError("invalid_request",422);
+      patch=remotePatch(args.patch,false,precondition.kind??undefined);
+     }
+    }
     else if(operation === "retireSource") {
      // Narrow private source-retirement lane; ordinary linked-task deletion remains unavailable.
      uuid(args.workspaceId);uuid(args.conversionId);uuid(args.sourceTaskId);fingerprint(args.contextHash);
@@ -136,7 +151,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    if(typeof input.expectedConsentEpoch!=="string"||input.expectedConsentEpoch!==consent.consent_epoch||input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==current.grant_epoch)throw new WorkspaceError("retirement_authority_changed",409);
   }
   async function recoveryAuthority(){
-   if(operation!=="inspectRecovery"&&operation!=="recoverTask"&&operation!=="inspectAdoption")return;
+   if(operation!=="inspectRecovery"&&operation!=="recoverTask"&&operation!=="inspectAdoption"&&input.requiredGrantEpoch===undefined)return;
    const current=await activeProfile(env,who!.profileId,who!.connectionId);
    if(input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==current.grant_epoch)throw new WorkspaceError("recovery_authority_changed",409);
   }
@@ -148,7 +163,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   const acquired = await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_projection_state(profile_id,connection_id,lease_token,lease_until_utc,next_automated_at_utc) VALUES(?,?,?,?,?)
    ON CONFLICT(profile_id,connection_id) DO UPDATE SET lease_token=excluded.lease_token,lease_until_utc=excluded.lease_until_utc,next_automated_at_utc=excluded.next_automated_at_utc
    WHERE (integration_projection_state.lease_until_utc IS NULL OR integration_projection_state.lease_until_utc<=?)
-   AND (?=0 OR integration_projection_state.next_automated_at_utc IS NULL OR integration_projection_state.next_automated_at_utc<=?)`).bind(who.profileId,who.connectionId,lease,new Date(Date.now()+(["retireSource","recoverTask","inspectRecovery"].includes(operation)?45000:15000)).toISOString(),new Date(Date.now()+30000).toISOString(),now,Number(input.automated),now).run();
+   AND (?=0 OR integration_projection_state.next_automated_at_utc IS NULL OR integration_projection_state.next_automated_at_utc<=?)`).bind(who.profileId,who.connectionId,lease,new Date(Date.now()+(["retireSource","recoverTask","inspectRecovery"].includes(operation)||operation==="update"&&precondition?.kind==="daily"?45000:15000)).toISOString(),new Date(Date.now()+30000).toISOString(),now,Number(input.automated),now).run();
   if (!acquired.meta.changes) return json({kind:"refused",code:"projection_busy",retryAtUtc:new Date(Date.now()+30000).toISOString()},429);
   async function readRecovery(path:string):Promise<unknown>{
    await recoveryAuthority();await upstreamBudget(env,who!.profileId);
@@ -163,6 +178,27 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    await recoveryAuthority();
    if(operation==="inspectRecovery")return json({task:observed.task,review:observed.review,checkToken:await rememberCheck(env,who,target,observed.task,{recovery:observed.review})});
    if(observed.review.reviewHash!==reviewedRecovery!.reviewHash||observed.task.fingerprint!==args.expectedFingerprint)throw new WorkspaceError("recovery_state_changed",409);
+  }
+  if(operation==="update"&&precondition?.kind==="daily"){
+   // Re-observe both account normalization and complete raw fields before one PUT.
+   // Habitica offers no conditional task PUT; a final provider-side race remains possible.
+   const account=workspaceObject(await readRecovery("user")),prefs=workspaceObject(account.preferences);
+   const current=await remoteTask(await readRecovery("tasks/"+encodeURIComponent(target)),credential.habiticaUserId);
+   if(current.kind!=="daily"||current.fingerprint!==precondition.fingerprint||!current.schedule)throw new WorkspaceError("external_edit_review_required",409);
+   if(account.needsCron!==false||!Number.isInteger(prefs.timezoneOffset)||!Number.isInteger(prefs.dayStart))throw new WorkspaceError("daily_precondition_unknown",409);
+   const fresh={timezoneOffset:Number(prefs.timezoneOffset),dayStart:Number(prefs.dayStart)};
+   if(scheduleContext){
+    const rule=workspaceRecurrence(args.recurrence)!;
+    if(fresh.timezoneOffset!==scheduleContext.account.timezoneOffset||fresh.dayStart!==scheduleContext.account.dayStart||!sameDailySchedule(current.schedule,scheduleContext.before)||!sameDailySchedule(reviewLinkedDailySchedule(current.schedule,rule,fresh).expectedAfter,scheduleContext.expectedAfter))throw new WorkspaceError("linked_schedule_precondition_changed",409);
+   }else{
+    // Even a title-only PUT rewrites monthly days from startDate. Unsafe retained rules are read-only.
+    if(fresh.timezoneOffset%60!==0)throw new WorkspaceError("daily_timezone_unrepresentable",409);
+    const zone=fresh.timezoneOffset===0?"UTC":"Etc/GMT"+(fresh.timezoneOffset>0?"+":"-")+Math.abs(fresh.timezoneOffset/60);
+    const local=new Date(Date.parse(current.schedule.startDate)-fresh.timezoneOffset*60000).toISOString().slice(0,10);
+    const names=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"],keys=["su","m","t","w","th","f","s"];
+    const rule=workspaceRecurrence({frequency:current.schedule.frequency,interval:current.schedule.everyX,startDate:local,timeZoneId:zone,weekdays:current.schedule.frequency==="weekly"?names.filter((_,i)=>current.schedule!.repeat[keys[i]]):[],daysOfMonth:current.schedule.frequency==="monthly"?current.schedule.daysOfMonth:[]});
+    if(!rule||!sameDailySchedule(reviewLinkedDailySchedule(current.schedule,rule,fresh).expectedAfter,current.schedule))throw new WorkspaceError("unsupported_retained_daily_schedule",409);
+   }
   }
   await upstreamBudget(env,who.profileId);
   if(operation === "retireSource") {
@@ -231,7 +267,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    if(operation === "retireSource") {const data=workspaceObject(body.data);if(Object.keys(data).length!==0)throw new WorkspaceError("outcome_unknown",502);outcome={kind:"applied",code:"source_retired",task:{id:target,kind:"todo",fingerprint:precondition!.fingerprint!,alias:null}};}
    else if(operation === "recoverTask") {const data=workspaceObject(body.data);if(typeof data.delta!=="number"||!Number.isFinite(data.delta)||data.delta>0)throw new WorkspaceError("outcome_unknown",502);outcome={kind:"applied",code:"task_recovered",task:{id:target,kind:precondition!.kind!,fingerprint:precondition!.fingerprint!,alias:null},recovery:reviewedRecovery};}
    else if (operation === "score") { const data=workspaceObject(body.data); if (typeof data.delta !== "number" || !Number.isFinite(data.delta)) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:target,kind:precondition!.kind!,fingerprint:precondition!.fingerprint!,alias:null},...(scoreSource?{sourceContext:scoreSource}:{})}; }
-   else { const task=await remoteTask(body.data,credential.habiticaUserId); if (operation === "create" ? task.kind!==creationKind||task.alias!==target||!remotePatchMatches(task,patch!) : task.id!==target) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:task.id,kind:task.kind,fingerprint:task.fingerprint,alias:task.alias}}; }
+   else { const task=await remoteTask(body.data,credential.habiticaUserId); if (operation === "create" ? task.kind!==creationKind||task.alias!==target||!remotePatchMatches(task,patch!) : task.id!==target) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:task.id,kind:task.kind,fingerprint:task.fingerprint,alias:task.alias},...(scheduleContext&&task.schedule?{scheduleResult:{observedAtUtc:new Date().toISOString(),actual:task.schedule,matchesExpected:sameDailySchedule(task.schedule,scheduleContext.expectedAfter)}}:{})};if(scheduleContext&&!task.schedule)throw new WorkspaceError("outcome_unknown",502); }
   }
   await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state=?,outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(outcome.kind,JSON.stringify(outcome),who.profileId,who.connectionId,attemptId!).run();
   return json(outcome);
@@ -268,6 +304,7 @@ async function reconcileAttempt(env: AuthEnv, who: Context, input: Record<string
  if (prior.payload_hash!==hash) throw new WorkspaceError("attempt_id_reused",409);
  if (!["dispatched","unknown"].includes(prior.state)) return json(prior.outcome_json?JSON.parse(prior.outcome_json):{kind:"unknown",code:"outcome_unknown"});
  if (lookupOnly) return json({kind:"unknown",code:"outcome_unknown"});
+ if(operation==="update"&&original.linkedSchedule!==undefined)return json({kind:"unknown",code:"schedule_outcome_requires_original_receipt"});
  // Habit scores have no conclusive per-command upstream receipt. Caller assertions never resolve them.
  if (operation==="score"||operation==="recoverTask") return json({kind:"unknown",code:"score_outcome_requires_review"});
  const target=selector(original.selector);

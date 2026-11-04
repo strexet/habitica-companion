@@ -1,0 +1,66 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject IAppSessionController Session
+@inject TimeProvider Clock
+@implements IDisposable
+
+<section class="card-surface todo-stat-section activity-streaks" aria-label="Daily and Habit day series" data-testid="activity-streaks">
+    <h2>Daily and Habit day series</h2>
+    <p>Choose an exact task and local calendar window. Retained Companion observations qualify these day series; game rewards and lifetime records require separate evidence.</p>
+    <div class="todo-stat-filters">
+        <label class="field-row">Exact Daily or Habit<select class="app-input" value="@_task" @onchange="Pick" disabled="@(Choices.Count==0 || _working)" data-testid="streak-task"><option value="">Choose a task</option>
+            @if (_task is {} retained && !PageChoices.Any(t=>t.Id==retained)) { <option value="@retained">@Selected?.Text · @retained</option> }
+            @foreach (var task in PageChoices) { <option value="@task.Id">@task.Text · @task.Kind · @task.Id @(task.IsArchived?"· archived":"")</option> }
+        </select></label>
+        <label class="field-row">IANA time zone<input class="app-input" maxlength="128" value="@_zone" @onchange="ZoneChanged" disabled="@_working" data-testid="streak-zone" /></label>
+        <label class="field-row">From local day<input class="app-input" type="date" value="@_from.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)" @onchange="FromChanged" disabled="@_working" data-testid="streak-from" /></label>
+        <label class="field-row">As-of UTC<input class="app-input" type="datetime-local" step="1" value="@_asOf.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss",CultureInfo.InvariantCulture)" @onchange="AsOfChanged" disabled="@_working" data-testid="streak-asof" /></label>
+    </div>
+    @if (Choices.Count>20) { <div class="action-row"><span>@(_choiceOffset+1)–@Math.Min(_choiceOffset+20,Choices.Count) of @Choices.Count tasks</span><button class="notes-button" data-layout-primary="true" disabled="@(_choiceOffset==0)" @onclick="()=>_choiceOffset=Math.Max(0,_choiceOffset-20)">Previous task choices</button><button class="notes-button" data-layout-primary="true" disabled="@(_choiceOffset+20>=Choices.Count)" @onclick="()=>_choiceOffset+=20">More task choices</button></div> }
+    <p class="activity-context">As of @_asOf.ToString("yyyy-MM-dd HH:mm:ss 'UTC'",CultureInfo.InvariantCulture). Maximum 366 local days. The task type, search and project filters above also restrict task choices.</p>
+    <button class="notes-button" data-layout-primary="true" disabled="@(_working || !Session.State.IsAuthenticated || Todo.IsBusy)" @onclick="Refresh" data-testid="streak-refresh">Refresh statistics</button>
+    @if (_error is {} error) { <p role="alert" data-testid="streak-error">@error</p> }
+    @if (Todo.Snapshot is null) { <p role="status">Activity history is unavailable. Restore or reload the selected Workspace; unavailable data is never a zero series.</p> }
+    else if (_task is null) { <p role="status">@(Choices.Count==0?"No matching Daily or Habit tasks. Review the task filters.":"Choose a task to read the retained day series.")</p> }
+    @if (_result is {} result)
+    {
+        <p class="activity-context">@Selected?.Text · @result.TaskId · @_zone<br />@result.FromDay.ToString("yyyy-MM-dd") through @result.ThroughDay.ToString("yyyy-MM-dd") · workspace revision @result.Revision</p>
+        @if (result.ModeSource=="currentTask") { <p>Direction settings use the current task; historical settings are unavailable. Retained history does not establish complete coverage.</p> }
+        @if (result.Mode=="frequency") { <p data-testid="streak-frequency">Negative-only Habit · activity frequency. A positive streak does not apply.</p> }
+        <dl class="todo-stat-metrics">
+            @if (result.Mode=="streak") { <div><dt>Current day series · @Quality(result.CurrentQuality)</dt><dd data-testid="streak-current">@(result.CurrentStreak?.ToString(CultureInfo.InvariantCulture)??"Unavailable")</dd></div><div><dt>Longest observed in window · @Quality(result.LongestQuality)</dt><dd>@result.LongestObserved</dd></div> }
+            <div><dt>Retained activity days</dt><dd>@result.ActivityDays</dd></div><div><dt>Positive events</dt><dd>@result.PositiveEvents</dd></div><div><dt>Negative events</dt><dd>@result.NegativeEvents</dd></div>
+        </dl>
+        <p>@result.UnknownDays day row(s) have unknown context. An unfinished current day keeps the preceding series open. Skipped or proven paused intervals are neutral. Gaps cannot prove a missed day. Lifetime best is unavailable.</p>
+        <div class="activity-day-list" data-testid="streak-days">@foreach (var day in result.Items) { <article><strong>@day.Day.ToString("yyyy-MM-dd")</strong><span>@Status(day.Status)</span><span>@day.PositiveEvents positive · @day.NegativeEvents negative</span>@if(day.Reason is {} reason){<small>@Reason(reason)</small>}</article> }</div>
+        <div class="action-row"><span>@(_offset+1)–@Math.Min(_offset+result.Items.Count,result.Total) of @result.Total local days</span><button class="notes-button" data-layout-primary="true" disabled="@(_offset==0)" @onclick="Previous" data-testid="streak-previous">Previous days</button><button class="notes-button" data-layout-primary="true" disabled="@(result.NextOffset is null)" @onclick="Next" data-testid="streak-next">More days</button></div>
+    }
+</section>
+@code {
+    [Parameter]public Guid? ProjectId{get;set;}
+    [Parameter]public CompanionTaskKind? Kind{get;set;}
+    [Parameter]public string Query{get;set;}="";
+    private Guid? _task;private string _zone="UTC",_scope="";private DateOnly _from;private DateTimeOffset _asOf;private int _offset,_choiceOffset;private long? _revision;private string? _context,_error;private bool _working,_disposed;private ActivityStreakResult? _result;
+    private IReadOnlyList<CompanionTask> Choices=>Todo.Snapshot?.Document.Tasks.Where(t=>t.Kind!=CompanionTaskKind.Todo&&(Kind is null||t.Kind==Kind)&&(ProjectId is null||t.ProjectId==ProjectId)&&(Query.Length==0||t.Text.Contains(Query,StringComparison.OrdinalIgnoreCase)||t.Notes?.Contains(Query,StringComparison.OrdinalIgnoreCase)==true)).ToArray()??[];
+    private IEnumerable<CompanionTask> PageChoices=>Choices.Skip(_choiceOffset).Take(20);
+    private CompanionTask? Selected=>Choices.FirstOrDefault(t=>t.Id==_task);
+    private string Scope=>$"{Session.State.UserId}:{Todo.Selection}";
+    protected override void OnInitialized(){_asOf=Clock.GetUtcNow();_from=DateOnly.FromDateTime(_asOf.UtcDateTime).AddDays(-29);_scope=Scope;Todo.Changed+=Changed;Session.Changed+=Changed;}
+    protected override void OnParametersSet(){if(_task is not null&&Selected is null){_task=null;_offset=0;_context=null;}_choiceOffset=Math.Min(_choiceOffset,Math.Max(0,(Choices.Count-1)/20*20));Compute();}
+    private void Changed()=>_ = InvokeAsync(()=>{if(_disposed)return;if(_scope!=Scope||!Session.State.IsAuthenticated){_scope=Scope;_task=null;_result=null;_zone="UTC";_asOf=Clock.GetUtcNow();_from=DateOnly.FromDateTime(_asOf.UtcDateTime).AddDays(-29);_choiceOffset=_offset=0;_context=null;_error=null;}if(_revision!=Todo.Revision){_offset=0;_context=null;}Compute();StateHasChanged();});
+    private void Pick(ChangeEventArgs e){_task=Guid.TryParse(e.Value?.ToString(),out var id)&&Choices.Any(t=>t.Id==id)?id:null;if(Selected?.Recurrence is {} recurrence)_zone=recurrence.TimeZoneId;Reset();}
+    private void ZoneChanged(ChangeEventArgs e){_zone=e.Value?.ToString()??"";Reset();}
+    private void FromChanged(ChangeEventArgs e){if(DateOnly.TryParseExact(e.Value?.ToString(),"yyyy-MM-dd",CultureInfo.InvariantCulture,DateTimeStyles.None,out var value)){_from=value;Reset();}else _error="Choose a valid local date.";}
+    private void AsOfChanged(ChangeEventArgs e){if(DateTimeOffset.TryParseExact(e.Value?.ToString(),["yyyy-MM-dd'T'HH:mm","yyyy-MM-dd'T'HH:mm:ss"],CultureInfo.InvariantCulture,DateTimeStyles.AssumeUniversal|DateTimeStyles.AdjustToUniversal,out var value)&&value<=Clock.GetUtcNow()){_asOf=value;Reset();}else{_result=null;_error="Choose a valid UTC instant through the current time.";}}
+    private void Reset(bool refreshClock=false){_offset=0;_context=null;if(refreshClock)_asOf=Clock.GetUtcNow();Compute();}
+    private async Task Refresh(){if(_working)return;_working=true;var scope=Scope;try{await Todo.RefreshSourcesAsync();if(scope==Scope)Reset(true);}finally{_working=false;}}
+    private void Compute(){_error=null;_result=null;_revision=Todo.Revision;if(_task is not {} id||Todo.Snapshot is not {} snapshot)return;try{_result=WorkspaceActivityStreaks.Evaluate(snapshot,new(id,_from,_asOf,_zone,20,_offset,_offset==0?null:_revision,_offset==0?null:_context));_context=_result.Context;}catch(Exception e) when(e is ArgumentException or InvalidOperationException or TimeZoneNotFoundException){_error="The day series is unavailable. Check the exact task, IANA time zone and a range of at most 366 days; refresh after source changes.";}}
+    private void Previous(){_offset=Math.Max(0,_offset-20);Compute();}
+    private void Next(){if(_result?.NextOffset is {} next){_offset=next;Compute();}}
+    private static string Quality(string value)=>value switch{"verified"=>"verified","verifiedInWindow"=>"verified within window","lowerBound"=>"lower bound","notApplicable"=>"not applicable",_=>"unavailable"};
+    private static string Status(string value)=>value switch{"completed"=>"Completed scheduled day","positive"=>"Positive Habit day","activity"=>"Observed activity","noObservedActivity"=>"No retained activity","missed"=>"Known eligible day without completion","neutral"=>"Neutral day","pending"=>"Current day open",_=>"Unknown day"};
+    private static string Reason(string value)=>value switch{"positive_goal_disabled"=>"Positive goal disabled in historical task settings","explicit_skip"=>"Explicitly skipped","current_day_open"=>"Current day has not closed","not_scheduled_or_paused"=>"Not scheduled, paused or archived","no_eligible_day"=>"No eligible task day","terminal_timezone_unavailable" or "historical_timezone_differs"=>"Historical time zone differs; no date reinterpretation","mixed_day_context"=>"Schedule or lifecycle changed within the day","clock_order_unknown"=>"Recorded clock order is unknown",_=>"Retained history does not prove the full interval"};
+    public void Dispose(){_disposed=true;Todo.Changed-=Changed;Session.Changed-=Changed;}
+}

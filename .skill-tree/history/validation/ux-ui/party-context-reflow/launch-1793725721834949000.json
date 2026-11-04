@@ -1,0 +1,9 @@
+{
+  "task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+  "check_id": "party-context-reflow-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T17:24:41.834700+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "ef3c7683e1ab8f112009f3bb4d72e455e53ffe92e355b4c828bb82e9f0c52f30"
+}

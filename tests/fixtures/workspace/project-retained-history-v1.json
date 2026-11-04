@@ -1,0 +1,2214 @@
+{
+  "version": 1,
+  "oracle": "Manually specified current project/event membership and pre-existing neutral retained-event ordering/provenance. No new application or Worker query used.",
+  "sections": [
+    {
+      "kind": "completion",
+      "document": {
+        "schemaVersion": 1,
+        "id": "60000000-0000-4000-8000-000000000001",
+        "revision": 30,
+        "categories": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000010",
+            "name": "Work"
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000011",
+            "name": "Personal"
+          }
+        ],
+        "projects": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000020",
+            "name": "Duplicate project",
+            "categoryId": "60000000-0000-4000-8000-000000000010"
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000021",
+            "name": "Duplicate project",
+            "categoryId": "60000000-0000-4000-8000-000000000011"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000022",
+            "revision": 1,
+            "isArchived": true,
+            "isRemoved": false,
+            "name": "Archived project",
+            "categoryId": null
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000023",
+            "revision": 30,
+            "isArchived": true,
+            "isRemoved": true,
+            "name": "Removed project",
+            "categoryId": null
+          }
+        ],
+        "sections": [],
+        "labels": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000030",
+            "name": "Focus"
+          }
+        ],
+        "goals": [],
+        "tasks": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000101",
+            "text": "Release plan",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "HiddenNeedle Café ΟΣ İSTANBUL ＦＯＣＵＳ",
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [
+              "60000000-0000-4000-8000-000000000030"
+            ],
+            "dependsOn": [],
+            "plannedDate": "2026-10-17",
+            "deadline": "2026-10-19",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000102",
+            "text": "Release review",
+            "kind": "todo",
+            "state": "waiting",
+            "priority": "high",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": "60000000-0000-4000-8000-000000000011",
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-18",
+            "deadline": "2026-10-20",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000103",
+            "text": "Daily check",
+            "kind": "daily",
+            "state": "active",
+            "priority": "urgent",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "café",
+            "categoryId": "60000000-0000-4000-8000-000000000010",
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": "2026-10-17",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            },
+            "habiticaDetails": null
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000104",
+            "text": "Habit repeat",
+            "kind": "habit",
+            "state": "paused",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-18",
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000105",
+            "text": "Renamed current task",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "Current task notes",
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000021",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 10,
+            "isArchived": true,
+            "id": "60000000-0000-4000-8000-000000000106",
+            "text": "Archived HiddenNeedle",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-17",
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000107",
+            "text": "Unscheduled",
+            "kind": "todo",
+            "state": "someday",
+            "priority": "urgent",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000021",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000108",
+            "text": "Paused Daily",
+            "kind": "daily",
+            "state": "paused",
+            "priority": "urgent",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "café",
+            "categoryId": "60000000-0000-4000-8000-000000000010",
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": {
+              "frequency": "daily",
+              "interval": 1,
+              "startDate": "2026-10-19",
+              "timeZoneId": "UTC",
+              "weekdays": [],
+              "daysOfMonth": []
+            },
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": true,
+            "id": "60000000-0000-4000-8000-000000000109",
+            "text": "Renamed archived task",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T12:00:00.1234567Z",
+            "notes": "Current archived notes",
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000022",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000110",
+            "text": "Fraction earlier",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T12:00:00.1234566Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000023",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000111",
+            "text": "Revision tie winner",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000112",
+            "text": "Stable tie fallback",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [
+          {
+            "id": "60000000-0000-4000-8000-000000000601",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "date": "2026-10-17",
+            "state": "completed"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000602",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "date": "2026-10-18",
+            "state": "skipped"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000603",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "date": "2026-10-20",
+            "state": "pending"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000604",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "date": "2026-10-16",
+            "state": "pending"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000605",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000108",
+            "date": "2026-10-19",
+            "state": "skipped"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000606",
+            "revision": 10,
+            "isArchived": true,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "date": "2026-10-21",
+            "state": "pending"
+          }
+        ],
+        "completions": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000300",
+            "taskId": "60000000-0000-4000-8000-000000000105",
+            "commandId": "60000000-0000-4000-8000-000000000301",
+            "completedAtUtc": "2026-10-16T00:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000610",
+            "revision": 10,
+            "isArchived": false,
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "commandId": "60000000-0000-4000-8000-000000000611",
+            "completedAtUtc": "2026-10-17T00:00:00Z",
+            "occurrenceId": "60000000-0000-4000-8000-000000000601"
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000700",
+            "revision": 20,
+            "taskId": "60000000-0000-4000-8000-000000000109",
+            "commandId": "60000000-0000-4000-8000-000000000710",
+            "completedAtUtc": "2026-10-18T12:00:00.1234567Z",
+            "occurrenceId": null,
+            "isArchived": true
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000701",
+            "revision": 19,
+            "taskId": "60000000-0000-4000-8000-000000000110",
+            "commandId": "60000000-0000-4000-8000-000000000711",
+            "completedAtUtc": "2026-10-18T12:00:00.1234566Z",
+            "occurrenceId": null,
+            "isArchived": false
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000702",
+            "revision": 11,
+            "taskId": "60000000-0000-4000-8000-000000000111",
+            "commandId": "60000000-0000-4000-8000-000000000712",
+            "completedAtUtc": "2026-10-17T00:00:00Z",
+            "occurrenceId": null,
+            "isArchived": false
+          },
+          {
+            "id": "60000000-0000-4000-8000-000000000703",
+            "revision": 10,
+            "taskId": "60000000-0000-4000-8000-000000000112",
+            "commandId": "60000000-0000-4000-8000-000000000713",
+            "completedAtUtc": "2026-10-17T00:00:00Z",
+            "occurrenceId": null,
+            "isArchived": false
+          }
+        ],
+        "habitScores": [],
+        "projections": [
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000400",
+            "taskId": "60000000-0000-4000-8000-000000000101",
+            "state": "linked",
+            "habiticaTaskId": "60000000-0000-4000-8000-000000000500"
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000401",
+            "taskId": "60000000-0000-4000-8000-000000000102",
+            "state": "pending",
+            "habiticaTaskId": null
+          },
+          {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000402",
+            "taskId": "60000000-0000-4000-8000-000000000103",
+            "state": "unknownOutcome",
+            "habiticaTaskId": null
+          },
+          {
+            "revision": 10,
+            "isArchived": true,
+            "id": "60000000-0000-4000-8000-000000000404",
+            "taskId": "60000000-0000-4000-8000-000000000104",
+            "state": "linked",
+            "habiticaTaskId": "60000000-0000-4000-8000-000000000504"
+          }
+        ],
+        "organizationHistory": [
+          {
+            "command": {
+              "id": "60000000-0000-4000-8000-000000000980",
+              "workspaceId": "60000000-0000-4000-8000-000000000001",
+              "expectedRevision": 29,
+              "kind": "project",
+              "operation": "remove",
+              "entityId": "60000000-0000-4000-8000-000000000023",
+              "patch": {
+                "removal": {
+                  "taskIds": [
+                    "60000000-0000-4000-8000-000000000110"
+                  ],
+                  "sectionIds": []
+                }
+              }
+            },
+            "payloadHash": "cad0d262678b2057e43b41713405ec6d15d8320decaf887afda9305c9c902737",
+            "acceptedAtUtc": "2026-11-01T00:00:00Z",
+            "snapshot": {
+              "kind": "project",
+              "id": "60000000-0000-4000-8000-000000000023",
+              "revision": 30,
+              "name": "Removed project",
+              "isArchived": true,
+              "isRemoved": true,
+              "categoryId": null,
+              "projectId": null,
+              "position": 0,
+              "taskIds": null
+            }
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": {
+            "id": "60000000-0000-4000-8000-000000000301",
+            "workspaceId": "60000000-0000-4000-8000-000000000001",
+            "expectedRevision": 9,
+            "operation": "completeTask",
+            "taskId": "60000000-0000-4000-8000-000000000105",
+            "patch": null,
+            "direction": null,
+            "count": 1,
+            "occurrenceDate": null,
+            "projectToHabitica": false
+          },
+          "payloadHash": "302e5ae5692510d9d29c92233bd9400a379828933e5d919f238fe5e7603e9538",
+          "acceptedAtUtc": "2026-10-16T00:00:00Z",
+          "projectionState": "notRequested",
+          "effects": [],
+          "confirmedEffects": 0,
+          "failure": "none",
+          "retryAtUtc": null,
+          "lease": null,
+          "dispatchedAtUtc": null,
+          "attempts": 0,
+          "taskSnapshot": {
+            "revision": 10,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000105",
+            "text": "Original café ΟΣ",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-16T00:00:00Z",
+            "notes": "Historical needle",
+            "categoryId": null,
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        },
+        {
+          "command": {
+            "id": "60000000-0000-4000-8000-000000000710",
+            "workspaceId": "60000000-0000-4000-8000-000000000001",
+            "expectedRevision": 18,
+            "operation": "completeTask",
+            "taskId": "60000000-0000-4000-8000-000000000109",
+            "patch": null,
+            "direction": null,
+            "count": 1,
+            "occurrenceDate": null,
+            "projectToHabitica": false
+          },
+          "payloadHash": "e9aa8ba5c88699ee6898d007d9b9a96c183c889773c5b2e464f60cdb3cba7200",
+          "acceptedAtUtc": "2026-10-18T12:00:00.1234567Z",
+          "projectionState": "notRequested",
+          "effects": [],
+          "confirmedEffects": 0,
+          "failure": "none",
+          "retryAtUtc": null,
+          "lease": null,
+          "dispatchedAtUtc": null,
+          "attempts": 0,
+          "taskSnapshot": {
+            "revision": 19,
+            "isArchived": false,
+            "id": "60000000-0000-4000-8000-000000000109",
+            "text": "Archived original",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T12:00:00.1234567Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": "2026-10-16",
+            "deadline": "2026-10-16",
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        }
+      ],
+      "cases": [
+        {
+          "name": "All unfiltered retains old item shape",
+          "filter": {},
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000700",
+              "taskId": "60000000-0000-4000-8000-000000000109",
+              "commandId": "60000000-0000-4000-8000-000000000710",
+              "kind": "todo",
+              "taskText": "Archived original",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "completedAtUtc": "2026-10-18T12:00:00.1234567Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": true,
+              "eventArchived": true
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000701",
+              "taskId": "60000000-0000-4000-8000-000000000110",
+              "commandId": "60000000-0000-4000-8000-000000000711",
+              "kind": "todo",
+              "taskText": "Fraction earlier",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-18T12:00:00.1234566Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000702",
+              "taskId": "60000000-0000-4000-8000-000000000111",
+              "commandId": "60000000-0000-4000-8000-000000000712",
+              "kind": "todo",
+              "taskText": "Revision tie winner",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000610",
+              "taskId": "60000000-0000-4000-8000-000000000103",
+              "commandId": "60000000-0000-4000-8000-000000000611",
+              "kind": "daily",
+              "taskText": "Daily check",
+              "notes": "café",
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": "60000000-0000-4000-8000-000000000601",
+              "occurrenceDate": "2026-10-17",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000703",
+              "taskId": "60000000-0000-4000-8000-000000000112",
+              "commandId": "60000000-0000-4000-8000-000000000713",
+              "kind": "todo",
+              "taskText": "Stable tie fallback",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000300",
+              "taskId": "60000000-0000-4000-8000-000000000105",
+              "commandId": "60000000-0000-4000-8000-000000000301",
+              "kind": "todo",
+              "taskText": "Original café ΟΣ",
+              "notes": "Historical needle",
+              "detailSource": "commandSnapshot",
+              "completedAtUtc": "2026-10-16T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false
+            }
+          ],
+          "matchedCount": 6,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Exact A is current assignment, not accepted snapshot placement",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000020"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000610",
+              "taskId": "60000000-0000-4000-8000-000000000103",
+              "commandId": "60000000-0000-4000-8000-000000000611",
+              "kind": "daily",
+              "taskText": "Daily check",
+              "notes": "café",
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": "60000000-0000-4000-8000-000000000601",
+              "occurrenceDate": "2026-10-17",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000020",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000703",
+              "taskId": "60000000-0000-4000-8000-000000000112",
+              "commandId": "60000000-0000-4000-8000-000000000713",
+              "kind": "todo",
+              "taskText": "Stable tie fallback",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000020",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Exact B retains original title after reassignment",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000021"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000300",
+              "taskId": "60000000-0000-4000-8000-000000000105",
+              "commandId": "60000000-0000-4000-8000-000000000301",
+              "kind": "todo",
+              "taskText": "Original café ΟΣ",
+              "notes": "Historical needle",
+              "detailSource": "commandSnapshot",
+              "completedAtUtc": "2026-10-16T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Archived project and completed archived task remain readable",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000022"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000700",
+              "taskId": "60000000-0000-4000-8000-000000000109",
+              "commandId": "60000000-0000-4000-8000-000000000710",
+              "kind": "todo",
+              "taskText": "Archived original",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "completedAtUtc": "2026-10-18T12:00:00.1234567Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": true,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000022",
+                "projectName": "Archived project",
+                "projectArchived": true,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Exact removed project retains raw identity",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000023"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000701",
+              "taskId": "60000000-0000-4000-8000-000000000110",
+              "commandId": "60000000-0000-4000-8000-000000000711",
+              "kind": "todo",
+              "taskText": "Fraction earlier",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-18T12:00:00.1234566Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Current Unassigned includes removed placement and null",
+          "filter": {
+            "unassigned": true
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000701",
+              "taskId": "60000000-0000-4000-8000-000000000110",
+              "commandId": "60000000-0000-4000-8000-000000000711",
+              "kind": "todo",
+              "taskText": "Fraction earlier",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-18T12:00:00.1234566Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "60000000-0000-4000-8000-000000000702",
+              "taskId": "60000000-0000-4000-8000-000000000111",
+              "commandId": "60000000-0000-4000-8000-000000000712",
+              "kind": "todo",
+              "taskText": "Revision tie winner",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": null,
+                "projectName": null,
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "AND current project and historical title text",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000021",
+            "query": "café",
+            "completedFromUtc": "2026-10-16T00:00:00Z",
+            "completedThroughUtc": "2026-10-16T00:00:00Z"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000300",
+              "taskId": "60000000-0000-4000-8000-000000000105",
+              "commandId": "60000000-0000-4000-8000-000000000301",
+              "kind": "todo",
+              "taskText": "Original café ΟΣ",
+              "notes": "Historical needle",
+              "detailSource": "commandSnapshot",
+              "completedAtUtc": "2026-10-16T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Accepted project does not select a currently reassigned task",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "taskId": "60000000-0000-4000-8000-000000000105"
+          },
+          "items": [],
+          "matchedCount": 0,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Unassigned text and precise UTC bounds",
+          "filter": {
+            "unassigned": true,
+            "query": "Fraction",
+            "completedFromUtc": "2026-10-18T12:00:00.1234566Z",
+            "completedThroughUtc": "2026-10-18T12:00:00.1234566Z"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000701",
+              "taskId": "60000000-0000-4000-8000-000000000110",
+              "commandId": "60000000-0000-4000-8000-000000000711",
+              "kind": "todo",
+              "taskText": "Fraction earlier",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-18T12:00:00.1234566Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Project and Daily kind intersect",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "kind": "daily"
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000610",
+              "taskId": "60000000-0000-4000-8000-000000000103",
+              "commandId": "60000000-0000-4000-8000-000000000611",
+              "kind": "daily",
+              "taskText": "Daily check",
+              "notes": "café",
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": "60000000-0000-4000-8000-000000000601",
+              "occurrenceDate": "2026-10-17",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000020",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Project first guarded page",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "limit": 1
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000610",
+              "taskId": "60000000-0000-4000-8000-000000000103",
+              "commandId": "60000000-0000-4000-8000-000000000611",
+              "kind": "daily",
+              "taskText": "Daily check",
+              "notes": "café",
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": "60000000-0000-4000-8000-000000000601",
+              "occurrenceDate": "2026-10-17",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000020",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 0,
+          "nextOffset": 1,
+          "truncated": true
+        },
+        {
+          "name": "Project second guarded page",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000020",
+            "limit": 1,
+            "offset": 1,
+            "expectedRevision": 30
+          },
+          "items": [
+            {
+              "eventId": "60000000-0000-4000-8000-000000000703",
+              "taskId": "60000000-0000-4000-8000-000000000112",
+              "commandId": "60000000-0000-4000-8000-000000000713",
+              "kind": "todo",
+              "taskText": "Stable tie fallback",
+              "notes": null,
+              "detailSource": "currentTask",
+              "completedAtUtc": "2026-10-17T00:00:00Z",
+              "occurrenceId": null,
+              "occurrenceDate": null,
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "60000000-0000-4000-8000-000000000020",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 1,
+          "nextOffset": null,
+          "truncated": false
+        }
+      ]
+    },
+    {
+      "kind": "habit",
+      "document": {
+        "categories": [],
+        "projects": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "isRemoved": false,
+            "name": "Duplicate project",
+            "categoryId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000021",
+            "revision": 1,
+            "isArchived": false,
+            "isRemoved": false,
+            "name": "Duplicate project",
+            "categoryId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000022",
+            "revision": 1,
+            "isArchived": true,
+            "isRemoved": false,
+            "name": "Archived project",
+            "categoryId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000023",
+            "revision": 30,
+            "isArchived": true,
+            "isRemoved": true,
+            "name": "Removed project",
+            "categoryId": null
+          }
+        ],
+        "sections": [],
+        "labels": [],
+        "goals": [],
+        "tasks": [
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000101",
+            "text": "Renamed İΣ",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "Current-only",
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000021",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": true,
+            "id": "90000000-0000-4000-8000-000000000102",
+            "text": "Archived Habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": "Fallback note",
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000023",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 20,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000103",
+            "text": "Not a Habit",
+            "kind": "todo",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T00:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": true,
+            "id": "90000000-0000-4000-8000-000000000104",
+            "text": "Archived project Habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-20T00:00:00Z",
+            "notes": "Retained legacy details",
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000022",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "revision": 21,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000105",
+            "text": "Unassigned Habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-20T00:00:00Z",
+            "notes": "Retained legacy details",
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [],
+        "habitScores": [
+          {
+            "id": "90000000-0000-4000-8000-000000000501",
+            "revision": 5,
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000701",
+            "direction": "up",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000502",
+            "revision": 5,
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000701",
+            "direction": "up",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000503",
+            "revision": 7,
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000702",
+            "direction": "down",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000504",
+            "revision": 6,
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000703",
+            "direction": "up",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "isArchived": true
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000505",
+            "revision": 8,
+            "taskId": "90000000-0000-4000-8000-000000000102",
+            "commandId": "90000000-0000-4000-8000-000000000704",
+            "direction": "down",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000506",
+            "revision": 4,
+            "taskId": "90000000-0000-4000-8000-000000000102",
+            "commandId": "90000000-0000-4000-8000-000000000705",
+            "direction": "up",
+            "recordedAtUtc": "2026-10-16T00:00:00Z",
+            "isArchived": true
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000507",
+            "revision": 9,
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000706",
+            "direction": "up",
+            "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000508",
+            "revision": 21,
+            "taskId": "90000000-0000-4000-8000-000000000104",
+            "commandId": "90000000-0000-4000-8000-000000000608",
+            "recordedAtUtc": "2026-10-18T12:00:00Z",
+            "direction": "down",
+            "isArchived": false
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000509",
+            "revision": 21,
+            "taskId": "90000000-0000-4000-8000-000000000105",
+            "commandId": "90000000-0000-4000-8000-000000000609",
+            "recordedAtUtc": "2026-10-19T12:00:00Z",
+            "direction": "up",
+            "isArchived": false
+          }
+        ],
+        "projections": [],
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 30,
+        "organizationHistory": [
+          {
+            "command": {
+              "id": "90000000-0000-4000-8000-000000000980",
+              "workspaceId": "90000000-0000-4000-8000-000000000001",
+              "expectedRevision": 29,
+              "kind": "project",
+              "operation": "remove",
+              "entityId": "90000000-0000-4000-8000-000000000023",
+              "patch": {
+                "removal": {
+                  "taskIds": [
+                    "90000000-0000-4000-8000-000000000102"
+                  ],
+                  "sectionIds": []
+                }
+              }
+            },
+            "payloadHash": "95637e34bdc3b3d4c3ee1e44d02866d45d1fd76b7b24e125324c376ee3d49c80",
+            "acceptedAtUtc": "2026-11-01T00:00:00Z",
+            "snapshot": {
+              "kind": "project",
+              "id": "90000000-0000-4000-8000-000000000023",
+              "revision": 30,
+              "name": "Removed project",
+              "isArchived": true,
+              "isRemoved": true,
+              "categoryId": null,
+              "projectId": null,
+              "position": 0,
+              "taskIds": null
+            }
+          }
+        ]
+      },
+      "commands": [
+        {
+          "command": {
+            "id": "90000000-0000-4000-8000-000000000701",
+            "workspaceId": "90000000-0000-4000-8000-000000000001",
+            "expectedRevision": 4,
+            "operation": "scoreHabit",
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "patch": null,
+            "direction": "up",
+            "count": 2,
+            "occurrenceDate": null,
+            "projectToHabitica": false
+          },
+          "payloadHash": "c3d54a11e16a1b8c09d29b2444036c3b140fd01f0e5314ac698682c2deb4d2d2",
+          "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "projectionState": "notRequested",
+          "effects": [],
+          "confirmedEffects": 0,
+          "failure": "none",
+          "retryAtUtc": null,
+          "lease": null,
+          "dispatchedAtUtc": null,
+          "attempts": 0,
+          "taskSnapshot": {
+            "revision": 5,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000101",
+            "text": "Original İΣ Habit",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "notes": "Old target",
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        },
+        {
+          "command": {
+            "id": "90000000-0000-4000-8000-000000000702",
+            "workspaceId": "90000000-0000-4000-8000-000000000001",
+            "expectedRevision": 6,
+            "operation": "scoreHabit",
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "patch": null,
+            "direction": "down",
+            "count": 1,
+            "occurrenceDate": null,
+            "projectToHabitica": false
+          },
+          "payloadHash": "e1aab84f3e141d799d05ee300ed852617779c1cdbce4760fe433b518d9aabe8e",
+          "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "projectionState": "notRequested",
+          "effects": [],
+          "confirmedEffects": 0,
+          "failure": "none",
+          "retryAtUtc": null,
+          "lease": null,
+          "dispatchedAtUtc": null,
+          "attempts": 0,
+          "taskSnapshot": {
+            "revision": 7,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000101",
+            "text": "No old note",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        },
+        {
+          "command": {
+            "id": "90000000-0000-4000-8000-000000000706",
+            "workspaceId": "90000000-0000-4000-8000-000000000001",
+            "expectedRevision": 8,
+            "operation": "scoreHabit",
+            "taskId": "90000000-0000-4000-8000-000000000101",
+            "patch": null,
+            "direction": "up",
+            "count": 1,
+            "occurrenceDate": null,
+            "projectToHabitica": false
+          },
+          "payloadHash": "0a4be1726c8bb08ae973a8c763176ba05777965d4d4aa89127ddeb978a9ded6a",
+          "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "projectionState": "notRequested",
+          "effects": [],
+          "confirmedEffects": 0,
+          "failure": "none",
+          "retryAtUtc": null,
+          "lease": null,
+          "dispatchedAtUtc": null,
+          "attempts": 0,
+          "taskSnapshot": {
+            "revision": 9,
+            "isArchived": false,
+            "id": "90000000-0000-4000-8000-000000000101",
+            "text": "History Σ",
+            "kind": "habit",
+            "state": "active",
+            "priority": "low",
+            "createdAtUtc": "2026-10-01T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+            "notes": "Ｆｏｌｄ",
+            "categoryId": null,
+            "projectId": "90000000-0000-4000-8000-000000000020",
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        }
+      ],
+      "cases": [
+        {
+          "name": "All unfiltered retains old item shape",
+          "filter": {},
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000509",
+              "taskId": "90000000-0000-4000-8000-000000000105",
+              "commandId": "90000000-0000-4000-8000-000000000609",
+              "direction": "up",
+              "taskText": "Unassigned Habit",
+              "notes": "Retained legacy details",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-19T12:00:00Z",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000508",
+              "taskId": "90000000-0000-4000-8000-000000000104",
+              "commandId": "90000000-0000-4000-8000-000000000608",
+              "direction": "down",
+              "taskText": "Archived project Habit",
+              "notes": "Retained legacy details",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-18T12:00:00Z",
+              "taskArchived": true,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000505",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000704",
+              "direction": "down",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+              "taskArchived": true,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000507",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000706",
+              "direction": "up",
+              "taskText": "History Σ",
+              "notes": "Ｆｏｌｄ",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000503",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000702",
+              "direction": "down",
+              "taskText": "No old note",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000504",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000703",
+              "direction": "up",
+              "taskText": "Renamed İΣ",
+              "notes": "Current-only",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": true
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000501",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000701",
+              "direction": "up",
+              "taskText": "Original İΣ Habit",
+              "notes": "Old target",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000502",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000701",
+              "direction": "up",
+              "taskText": "Original İΣ Habit",
+              "notes": "Old target",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000506",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000705",
+              "direction": "up",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-16T00:00:00Z",
+              "taskArchived": true,
+              "eventArchived": true
+            }
+          ],
+          "matchedCount": 9,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Exact B groups current task despite accepted project A",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000021"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000507",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000706",
+              "direction": "up",
+              "taskText": "History Σ",
+              "notes": "Ｆｏｌｄ",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000503",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000702",
+              "direction": "down",
+              "taskText": "No old note",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000504",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000703",
+              "direction": "up",
+              "taskText": "Renamed İΣ",
+              "notes": "Current-only",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000501",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000701",
+              "direction": "up",
+              "taskText": "Original İΣ Habit",
+              "notes": "Old target",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000502",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000701",
+              "direction": "up",
+              "taskText": "Original İΣ Habit",
+              "notes": "Old target",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 5,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Archived project retains archived Habit event",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000022"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000508",
+              "taskId": "90000000-0000-4000-8000-000000000104",
+              "commandId": "90000000-0000-4000-8000-000000000608",
+              "direction": "down",
+              "taskText": "Archived project Habit",
+              "notes": "Retained legacy details",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-18T12:00:00Z",
+              "taskArchived": true,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000022",
+                "projectName": "Archived project",
+                "projectArchived": true,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Exact removed project retains archived task activity",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000023"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000505",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000704",
+              "direction": "down",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+              "taskArchived": true,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000506",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000705",
+              "direction": "up",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-16T00:00:00Z",
+              "taskArchived": true,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Current Unassigned distinguishes removed and null provenance",
+          "filter": {
+            "unassigned": true
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000509",
+              "taskId": "90000000-0000-4000-8000-000000000105",
+              "commandId": "90000000-0000-4000-8000-000000000609",
+              "direction": "up",
+              "taskText": "Unassigned Habit",
+              "notes": "Retained legacy details",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-19T12:00:00Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": null,
+                "projectName": null,
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000505",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000704",
+              "direction": "down",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+              "taskArchived": true,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000506",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000705",
+              "direction": "up",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-16T00:00:00Z",
+              "taskArchived": true,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 3,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Project and explicit down direction intersect",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000021",
+            "direction": "down"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000503",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000702",
+              "direction": "down",
+              "taskText": "No old note",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Project normalized historical notes intersect inclusive UTC tick",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000021",
+            "query": "fold",
+            "recordedFromUtc": "2026-10-17T12:00:00.1234567Z",
+            "recordedThroughUtc": "2026-10-17T12:00:00.1234567Z"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000507",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000706",
+              "direction": "up",
+              "taskText": "History Σ",
+              "notes": "Ｆｏｌｄ",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 1,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Accepted project A does not select current B activity",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000020"
+          },
+          "items": [],
+          "matchedCount": 0,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Unassigned archived exact task filter",
+          "filter": {
+            "unassigned": true,
+            "taskId": "90000000-0000-4000-8000-000000000102"
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000505",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000704",
+              "direction": "down",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+              "taskArchived": true,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000506",
+              "taskId": "90000000-0000-4000-8000-000000000102",
+              "commandId": "90000000-0000-4000-8000-000000000705",
+              "direction": "up",
+              "taskText": "Archived Habit",
+              "notes": "Fallback note",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-16T00:00:00Z",
+              "taskArchived": true,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000023",
+                "projectName": "Removed project",
+                "projectArchived": true,
+                "projectRemoved": true,
+                "unassigned": true,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 2,
+          "offset": 0,
+          "nextOffset": null,
+          "truncated": false
+        },
+        {
+          "name": "Project bounded first page",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000021",
+            "limit": 2
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000507",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000706",
+              "direction": "up",
+              "taskText": "History Σ",
+              "notes": "Ｆｏｌｄ",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000503",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000702",
+              "direction": "down",
+              "taskText": "No old note",
+              "notes": null,
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 5,
+          "offset": 0,
+          "nextOffset": 2,
+          "truncated": true
+        },
+        {
+          "name": "Project guarded continuation",
+          "filter": {
+            "projectId": "90000000-0000-4000-8000-000000000021",
+            "limit": 2,
+            "offset": 2,
+            "expectedRevision": 30
+          },
+          "items": [
+            {
+              "eventId": "90000000-0000-4000-8000-000000000504",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000703",
+              "direction": "up",
+              "taskText": "Renamed İΣ",
+              "notes": "Current-only",
+              "detailSource": "currentTask",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": true,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            },
+            {
+              "eventId": "90000000-0000-4000-8000-000000000501",
+              "taskId": "90000000-0000-4000-8000-000000000101",
+              "commandId": "90000000-0000-4000-8000-000000000701",
+              "direction": "up",
+              "taskText": "Original İΣ Habit",
+              "notes": "Old target",
+              "detailSource": "commandSnapshot",
+              "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+              "taskArchived": false,
+              "eventArchived": false,
+              "currentPlacement": {
+                "projectId": "90000000-0000-4000-8000-000000000021",
+                "projectName": "Duplicate project",
+                "projectArchived": false,
+                "projectRemoved": false,
+                "unassigned": false,
+                "basis": "currentRetainedTaskAssignment"
+              }
+            }
+          ],
+          "matchedCount": 5,
+          "offset": 2,
+          "nextOffset": 4,
+          "truncated": true
+        }
+      ]
+    }
+  ]
+}

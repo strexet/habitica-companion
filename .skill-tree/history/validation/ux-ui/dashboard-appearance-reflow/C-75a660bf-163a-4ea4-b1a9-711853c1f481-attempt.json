@@ -1,0 +1,69 @@
+{
+  "assertion": "Keep dashboard public appearance disclosure, account freshness, action gates and account-switch regressions passing; use native keyboard and geometry as the independent layout oracle.",
+  "attempt_id": "C-75a660bf-163a-4ea4-b1a9-711853c1f481",
+  "check_id": "dashboard-appearance-reflow-behavior",
+  "definition": "0801e1e9007c67d301a66625e18c9227d366c6f71bc0e44fc2ce0d2134586d90",
+  "environment_identity": "515815a3d2fed1ff5b29b9ac8c387d4321afd8cc0ee0c5a64df03610c942ba96",
+  "key": "b8b3e45950c2275d6ca42f11c4f6fd5be1151b7aa76d23dde47acf78621fcd59",
+  "launch": {
+    "assertion": "Keep dashboard public appearance disclosure, account freshness, action gates and account-switch regressions passing; use native keyboard and geometry as the independent layout oracle.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T01:53:43.891903+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T01:48:44.285788+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+      "--logger",
+      "trx;LogFileName=dashboard-appearance-reflow.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "d35aa32cd4483b4a1c9772e68b4cddfb20f21fb399eaba98e93c994c26c712c0",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "fbd0131c7f98a5502b12ae1bef3b7788d0ac817db5b0484d1589962bd3b933c3",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2"
+  },
+  "task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69"
+}

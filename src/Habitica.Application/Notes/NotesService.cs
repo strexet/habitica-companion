@@ -7,11 +7,14 @@ public sealed class NotesService(INotesStore store,TimeProvider? clock=null,Func
     public async Task<NoteSubmission> SubmitAsync(NoteCommand command,CancellationToken token)
     {
         var current=await store.LoadAsync(token)??NotesModel.Empty(store.OwnerScope);
+        if(command.Folder is {Source:not "browser"})return new(false,"folder_source_mismatch",current);
         NotesProjectProof? proof=null;
         var changedProject=command.Project is {} project&&project!=current.Notes.FirstOrDefault(n=>n.Id==command.NoteId)?.Current.Project;
-        if(changedProject&&!current.Receipts.Any(r=>r.CommandId==command.Id))
+        var placement=command.Folder is {} folder&&folder!=current.Notes.FirstOrDefault(n=>n.Id==command.NoteId)?.Current.Folder
+            ?(current.Folders??[]).FirstOrDefault(f=>f.Id==folder.FolderId&&f.Source==folder.Source)?.Project:null;
+        if((changedProject||placement is not null)&&!current.Receipts.Any(r=>r.CommandId==command.Id))
         {
-            proof=projects is null?null:await projects(command.Project!,token);
+            proof=projects is null?null:await projects(changedProject?command.Project!:placement!,token);
             if(proof is null||store is not INotesProjectStore||proof.Authority.OwnerScope!=current.OwnerScope||proof.Authority.Source!="browser"||NotesModel.Scope(proof.LocalAccountScope)!=current.OwnerScope||proof.StoreVersion<1)return new(false,"project_validation_unavailable",current);
         }
         var result=NotesEngine.Apply(current,command,(clock??TimeProvider.System).GetUtcNow(),proof?.Authority);
@@ -26,11 +29,33 @@ public sealed class NotesService(INotesStore store,TimeProvider? clock=null,Func
         }
         catch { return new(false,"acceptance_unknown",current); }
     }
+    public async Task<NoteFolderSubmission> SubmitFolderAsync(NoteFolderCommand command,CancellationToken token)
+    {
+        var current=await store.LoadAsync(token)??NotesModel.Empty(store.OwnerScope);
+        if(command.Source!="browser")return new(false,"folder_source_mismatch",current);
+        NotesProjectProof? proof=null;
+        if(command.Project is not null&&!(current.FolderReceipts??[]).Any(r=>r.CommandId==command.Id))
+        {
+            proof=projects is null?null:await projects(command.Project,token);
+            if(proof is null||store is not INotesProjectStore||proof.Authority.OwnerScope!=current.OwnerScope||proof.Authority.Source!="browser"||NotesModel.Scope(proof.LocalAccountScope)!=current.OwnerScope||proof.StoreVersion<1)return new(false,"project_validation_unavailable",current);
+        }
+        var result=NotesFolders.Apply(current,command,(clock??TimeProvider.System).GetUtcNow(),proof?.Authority);
+        if(!result.Accepted||result.Code=="duplicate")return result;
+        try
+        {
+            var committed=proof is not null?await ((INotesProjectStore)store).TryCommitFolderProjectAsync(current.Revision,result.Notebook,command.FolderId,proof.LocalAccountScope,proof.StoreVersion,token):await store.TryCommitAsync(current.Revision,result.Notebook,token);
+            if(committed)return result;
+            var latest=await store.LoadAsync(token)??NotesModel.Empty(store.OwnerScope);var recovered=NotesFolders.Apply(latest,command,(clock??TimeProvider.System).GetUtcNow());
+            return recovered.Code=="duplicate"?recovered:new(false,"stale_notebook",latest);
+        }
+        catch{return new(false,"acceptance_unknown",current);}
+    }
     public async Task<string> ExportAsync(CancellationToken token)=>NotesJson.Serialize(await store.LoadAsync(token)??NotesModel.Empty(store.OwnerScope));
     public async Task<string> ImportAsync(string json,CancellationToken token)
     {
         var incoming=NotesJson.Deserialize(json);
         if(incoming.OwnerScope!=store.OwnerScope)return "account_mismatch";
+        if((incoming.Folders??[]).Any(f=>f.Source!="browser"))return "folder_source_mismatch";
         var current=await store.LoadAsync(token);
         if(current is not null)return NotesJson.Serialize(current)==NotesJson.Serialize(incoming)?"unchanged":"conflict";
         if(incoming.Revision==0)return "unchanged";

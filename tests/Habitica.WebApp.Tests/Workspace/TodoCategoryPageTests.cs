@@ -47,6 +47,7 @@ public sealed class TodoCategoryPageTests : BunitContext
     {
         var fixture = await SetupAsync();
         var habits = Render<TodoHabitsPage>();
+        Assert.Equal("Habits", Assert.Single(habits.FindAll("h1")).TextContent);
         Assert.Equal("page", habits.Find("a[href='/todo/habits']").GetAttribute("aria-current"));
         Assert.Null(habits.Find("[data-testid='todo-title']").Closest("details"));
         Assert.Contains("Habit row", habits.Find(".todo-direct-list").TextContent);
@@ -57,6 +58,7 @@ public sealed class TodoCategoryPageTests : BunitContext
         Qualification.PageLayoutEvidence.Save("todo-habits-main", habits.Markup, "/todo/habits", "capture-and-score-visible", ["navigation", "form", "actions"], nameof(Habits_and_Dailies_open_their_own_immediate_capture_and_actions));
 
         var dailies = Render<TodoDailiesPage>();
+        Assert.Equal("Dailies", Assert.Single(dailies.FindAll("h1")).TextContent);
         Assert.Equal("page", dailies.Find("a[href='/todo/dailies']").GetAttribute("aria-current"));
         Assert.Null(dailies.Find("[data-testid='todo-title']").Closest("details"));
         Assert.Contains("Daily row", dailies.Find(".todo-direct-list").TextContent);
@@ -67,6 +69,37 @@ public sealed class TodoCategoryPageTests : BunitContext
         Qualification.PageLayoutEvidence.Save("todo-dailies-main", dailies.Markup, "/todo/dailies", "capture-and-complete-visible", ["navigation", "form", "actions"], nameof(Habits_and_Dailies_open_their_own_immediate_capture_and_actions));
         Assert.Empty(fixture.Client.PreparationIds);
         Assert.Empty(fixture.Client.AcceptedIds);
+    }
+
+    [Theory]
+    [InlineData("habits", CompanionTaskKind.Habit, "empty")]
+    [InlineData("dailies", CompanionTaskKind.Daily, "empty")]
+    [InlineData("habits", CompanionTaskKind.Habit, "populated")]
+    [InlineData("dailies", CompanionTaskKind.Daily, "populated")]
+    [InlineData("habits", CompanionTaskKind.Habit, "frozen")]
+    [InlineData("dailies", CompanionTaskKind.Daily, "frozen")]
+    public async Task Category_identity_and_capture_remain_available_across_content_and_authority(string category, CompanionTaskKind kind, string state)
+    {
+        var fixture = await SetupAsync(); var todo = Services.GetRequiredService<TodoWorkspacePresentation>();
+        var rows = state == "empty" ? Array.Empty<CompanionTask>() : fixture.Client.State.Document.Tasks.Select(task => task with { Text = new string('W', 130) + " " + task.Kind }).ToArray();
+        fixture.Client.State = fixture.Client.State with { Document = fixture.Client.State.Document with { Tasks = rows } };
+        if (state == "frozen")
+        {
+            await fixture.Controller.CreateLocalAsync(); var original = fixture.Controller.Snapshot!;
+            var frozen = original with { StoreVersion = original.StoreVersion + 1, Document = original.Document with { Tasks = rows }, Authority = new(WorkspaceAuthorityMode.Frozen, Guid.NewGuid(), null) };
+            Assert.True(await fixture.Database.ForScope(WorkspaceTaskFixture.User).TryCommitAsync(original.StoreVersion, frozen, default));
+            await todo.RefreshSourcesAsync(); await todo.SelectAsync(new(TodoWorkspaceSource.Browser, original.Document.Id));
+        }
+        else await todo.LoadSelectedAsync();
+        var markup = category == "habits" ? Render<TodoHabitsPage>().Markup : Render<TodoDailiesPage>().Markup;
+        var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(markup);
+        Assert.Equal("page", document.QuerySelector($".todo-category-tabs a[href='/todo/{category}']")!.GetAttribute("aria-current"));
+        Assert.Equal(category == "habits" ? "Habits" : "Dailies", Assert.Single(document.QuerySelectorAll("h1")).TextContent);
+        var title = document.QuerySelector("[data-testid='todo-title']")!;
+        Assert.Null(title.Closest("details"));
+        Assert.Equal(state == "frozen", title.Closest("fieldset")!.HasAttribute("disabled"));
+        Assert.Empty(fixture.Client.PreparationIds); Assert.Empty(fixture.Client.AcceptedIds);
+        Qualification.PageLayoutEvidence.Save($"category-{category}-{state}", markup, $"/todo/{category}", state + "-category-capture", ["navigation", "form", "disabled-controls", "long-content"], nameof(Category_identity_and_capture_remain_available_across_content_and_authority));
     }
 
     [Fact]

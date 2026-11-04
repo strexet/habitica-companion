@@ -1,0 +1,10 @@
+{
+  "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+  "additional_owning_sources": [
+    "src/Habitica.WebApp/Integration/PwaPushBrowser.cs",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderFixture.cs"
+  ],
+  "reason": "Actual PwaPushBrowser previously converted module-read failure to unsupported, defeating the required failed/unsupported distinction. Existing unprepared wire state preserves the wire record. The declared component suite now exercises the real adapter module failure and controller observation.",
+  "behavior_control": "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec:32pass",
+  "limits": "Native hydrated route qualifies the disconnected setup-required path. Other capability states use component/controller/rendered fixtures; no real account, service-worker subscription, notification prompt or consent action is qualified."
+}

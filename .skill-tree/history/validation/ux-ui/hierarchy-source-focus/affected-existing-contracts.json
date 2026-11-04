@@ -1,0 +1,61 @@
+{
+  "stale_UI_contracts": [
+    {
+      "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+      "title": "Make global navigation identifiable and keyboard accessible",
+      "key": "accessible-shell",
+      "checks": [
+        {
+          "id": "accessible-shell-behavior",
+          "current": false,
+          "reason": "unresolved revalidation"
+        },
+        {
+          "id": "accessible-shell-rendered",
+          "current": false,
+          "reason": "unresolved revalidation"
+        }
+      ]
+    },
+    {
+      "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+      "title": "Qualify visible full-shell content with current theme geometry",
+      "key": "shell-content-visibility",
+      "checks": [
+        {
+          "id": "shell-content-behavior",
+          "current": false,
+          "reason": "source/definition/environment mismatch or nonpass"
+        },
+        {
+          "id": "shell-content-canaries",
+          "current": false,
+          "reason": "source/definition/environment mismatch or nonpass"
+        },
+        {
+          "id": "shell-content-rendered",
+          "current": false,
+          "reason": "Product checks require an owned execution session with authorization, identity evidence, deadline and cleanup reserve"
+        }
+      ]
+    },
+    {
+      "task_id": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0",
+      "title": "Name canonical Todo hierarchy row controls in Tasks and Projects",
+      "key": "hierarchy-control-names",
+      "checks": [
+        {
+          "id": "hierarchy-control-names-behavior",
+          "current": false,
+          "reason": "source/definition/environment mismatch or nonpass"
+        },
+        {
+          "id": "hierarchy-control-names-rendered",
+          "current": false,
+          "reason": "source/definition/environment mismatch or nonpass"
+        }
+      ]
+    }
+  ],
+  "scope": "Only immutable36UIcontracts inspected. Broader historical release dependencies include legacy outcomes without immutable contracts and remain behind the blocked owner-release gate; no fabricated contract or acceptance."
+}

@@ -1,0 +1,46 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-cc9bd506-b472-43a9-991a-618d5a1350a9",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 18,
+    "expected": 18,
+    "failed": 1,
+    "passed": 17,
+    "skipped": 0
+  },
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "diagnostic_key": "55d13978aa044b7a0e109bedc4658f4cfa8712a219c7d60ac7bb2e23f6e43cf3",
+  "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-components-final-execution.log",
+      "sha256": "ce012291aebe3e3fe82f5831b9e157ad47696f32d3d5a383c8f65d8158b5965c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-components-final.trx",
+      "sha256": "329cb546e0fee9bdc1a35527400b5dcf92d7517d2a4c1d9ba9aa43d455475d91"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "focused_suite_failure",
+  "key": "d605173a6c35748661b5bfab1b79e710143e6ffd8a49997f206354bbdaba950d",
+  "payload_hash": "1ec9f7d55daa21ec706e636390cda9ce6d7127993bb7abd689a7074c4d5b5257",
+  "recorded_at": "2026-11-03T01:53:59.431361+00:00",
+  "result": "fail",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "b2bd7c8889cb0e76d22618b9ea862a096402a0d34bb48ef2805fed190ee3d2f6",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "2f9404c4f7efd16c07cfd5488e48bc8ffb90e297e75fa75bbdff9ddd0e143ef8",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "6a2bcffdc35d496e465e4f9c826273b0121adaa5617b37b353dd0887b9d78307",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "25dde85eeb878b7a724c9a9310a9f1b32388cc09a9dc73ea4b5b3bbd7d9e928a",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "ace89f6d396f4f5362a698d6543850be686312bdfe46785fdd3da7d671814176"
+  },
+  "timing": {
+    "tool_wall_seconds": 6.727510541910306
+  }
+}

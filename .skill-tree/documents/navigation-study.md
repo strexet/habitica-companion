@@ -71,7 +71,7 @@ Detailed UI units can be researched against the contract and existing canonical 
 
 ## Current production navigation and journey pack
 
-The owner Todo structure supersedes the prototype navigation: Today, Habits, Dailies and Tasks are immediately visible under Todo; Projects, Statistics and Sync follow, with Inbox, Planning, Saved lists and History as secondary links. [Current task journey qualification](task-journey-qualification.md) owns exact current-route steps, reproducible synthetic setup, observation forms and explicit device/human handoff. The journey pack local evidence does not close the deferred release gate.
+The compact production drawer places canonical Add task capture above frequent Today, Inbox, Plan and Projects links, followed by direct Habits, Dailies and Tasks. Notes, Settings and Diagnostics stay directly reachable. More planning contains Saved lists, History, Statistics, Sync and the explicitly named Habitica tasks/Rewards cache. Game tools contains Dashboard, Equipment, Pets & Mounts, Party, Quests and Spells. Native disclosure groups reveal the active secondary destination on direct entry and route change; one exact destination exposes the active cue, including nested task routes. A compact brand/account identity replaces the explanatory drawer hero. [Current task journey qualification](task-journey-qualification.md) owns exact current-route steps, reproducible synthetic setup, observation forms and explicit device/human handoff. The journey pack local evidence does not close the deferred release gate.
 
 ## Historical prototype defaults and advanced behavior
 
@@ -93,3 +93,5 @@ Recurrence produces one task/date occurrence; retained completed/skipped dates o
 | Game and party | Preserve direct named game destinations, resource-spending previews, own-account boundaries and permanent departure prohibition. | Shared-party effects and new live rounds remain excluded. |
 
 Local review uses `python3 -m http.server 5189 --bind 127.0.0.1 --directory .skill-tree/prototypes` from the repository root, followed by `http://127.0.0.1:5189/navigation-review.html` in a browser. Stop the review server after the review. No account sign-in is required.
+
+Collapsing an active secondary navigation group retains one current-section marker on the summary. Expanding the group leaves the exact selected link as the only visible current cue. Native qualification asserts a single visible cue after keyboard disclosure collapse; ordinary focus styling remains independent.

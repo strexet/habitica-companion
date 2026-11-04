@@ -1,0 +1,28 @@
+@using Habitica.Domain.Workspace
+<div class="linked-daily-timezone-field">
+<label class="field-row linked-daily-zone">Fixed UTC offset, matching Habitica
+    <select class="app-input" value="@Value" @onchange="Changed" disabled="@(Account is {} account && !LinkedDailyTimeZones.AccountSupported(account))" data-testid="@TestId" aria-describedby="@(TestId + "-help")">
+        @if (!DailyProjectionSchedule.FixedTimeZoneIds.Contains(Value)) { <option value="@Value">@(Value == "Etc/GMT" ? "UTC+00:00" : "Retained unsupported zone")</option> }
+        @foreach (var zone in DailyProjectionSchedule.FixedTimeZoneIds)
+        {
+            <option value="@zone" disabled="@(Account is {} current && (current.DayStart != 0 || DailyProjectionSchedule.FixedOffset(zone) != current.TimezoneOffset))">@LinkedDailyTimeZones.Label(zone)</option>
+        }
+    </select>
+</label>
+<div id="@(TestId + "-help")" data-testid="@(TestId + "-help")">
+    <p>Selected: @LinkedDailyTimeZones.Label(Value) · exact schedule ID: <code>@Value</code>. Fixed offsets do not adjust for daylight saving time.</p>
+    @if (Account is {} observed)
+    {
+        <p>Observed Habitica account: @(observed.TimezoneOffset % 60 == 0 ? LinkedDailyTimeZones.Label(observed.TimezoneOffset == 0 ? "UTC" : $"Etc/GMT{(observed.TimezoneOffset > 0 ? "+" : "-")}{Math.Abs(observed.TimezoneOffset / 60)}") : $"{observed.TimezoneOffset} minutes west of UTC (fractional hour)"); day start @observed.DayStart:00. Fresh server review rechecks account settings.</p>
+        @if (LinkedDailyTimeZones.Failure(Value, Account) is {} failure) { <p role="status">@failure</p> }
+    }
+    else { <p>Account offset is not currently verified. Choose a matching fixed offset; the executor or fresh linked review checks the account before any provider update.</p> }
+</div>
+</div>
+@code {
+    [Parameter] public string Value { get; set; } = "UTC";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public DailyAccountSchedule? Account { get; set; }
+    [Parameter] public string TestId { get; set; } = "daily-zone";
+    private Task Changed(ChangeEventArgs args) => ValueChanged.InvokeAsync(args.Value?.ToString() ?? "");
+}

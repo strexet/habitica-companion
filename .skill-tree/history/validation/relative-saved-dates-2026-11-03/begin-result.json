@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-rules",
+      "parameters": {
+        "report_name": "relative-date-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules",
+        "test_filter": "FullyQualifiedName~Saved|FullyQualifiedName~Relative",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/saved-view-api.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/saved-view-api.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

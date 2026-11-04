@@ -5,6 +5,46 @@ namespace Habitica.WebApp.Tests.Theme;
 public sealed class ColorSchemeCatalogTests
 {
     [Fact]
+    public void Disabled_text_keeps_the_product_floor_on_every_builtin_control_surface()
+    {
+        foreach(var scheme in ColorSchemeCatalog.BuiltInSchemes)
+        {
+            var t=scheme.Tokens;
+            foreach(var surface in new[]{t.CardBackground,t.Surface,t.SurfaceStrong,t.InputBackground})
+            {
+                var backing=Paint(surface,Paint(t.Background,[255d,255d,255d]));
+                var background=Paint(t.DisabledBackground,backing);
+                var foreground=Paint(t.DisabledText,background);
+                var ratio=PaintContrast(foreground,background);
+                Assert.True(ratio>=3,$"{scheme.Id} disabled text on {surface}: {ratio:F3}");
+            }
+        }
+    }
+
+    [Fact]
+    public void Existing_custom_disabled_palette_survives_completion_and_resolution()
+    {
+        var custom=ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultLight,"Stored custom") with
+        {Tokens=ColorSchemeCatalog.DefaultLight.Tokens with {DisabledText="rgba(100, 90, 80, 0.42)",DisabledBackground="#101020",DisabledBorder="#456789"}};
+        Assert.Equal(custom.Tokens.DisabledText,ColorSchemeCatalog.Complete(custom).Tokens.DisabledText);
+        Assert.Equal(custom.Tokens.DisabledBackground,ColorSchemeCatalog.Resolve(custom.Id,[custom]).Tokens.DisabledBackground);
+        Assert.Equal(custom.Tokens.DisabledBorder,ColorSchemeCatalog.Resolve(custom.Id,[custom]).Tokens.DisabledBorder);
+    }
+    private static double[] Paint(string css,double[] backing)
+    {
+        double[] c;
+        if(css.StartsWith('#')){var hex=css[1..];if(hex.Length==3)hex=string.Concat(hex.Select(x=>$"{x}{x}"));c=[Convert.ToInt32(hex[..2],16),Convert.ToInt32(hex[2..4],16),Convert.ToInt32(hex[4..6],16),hex.Length==8?Convert.ToInt32(hex[6..8],16)/255d:1];}
+        else c=System.Text.RegularExpressions.Regex.Matches(css,@"[\d.]+").Select(x=>double.Parse(x.Value,System.Globalization.CultureInfo.InvariantCulture)).ToArray();
+        var a=c.Length==4?c[3]:1;
+        return Enumerable.Range(0,3).Select(i=>c[i]*a+backing[i]*(1-a)).ToArray();
+    }
+    private static double PaintContrast(double[] a,double[] b)
+    {
+        static double L(double[] c)=>c.Select(v=>v/255).Select((v,i)=>(v<=.04045?v/12.92:Math.Pow((v+.055)/1.055,2.4))*new[]{.2126,.7152,.0722}[i]).Sum();
+        var x=L(a);var y=L(b);return (Math.Max(x,y)+.05)/(Math.Min(x,y)+.05);
+    }
+
+    [Fact]
     public void Built_in_schemes_include_required_palettes()
     {
         var schemes = ColorSchemeCatalog.BuiltInSchemes;

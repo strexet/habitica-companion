@@ -1,0 +1,9 @@
+{
+  "task_id": "T-e3859337-1a25-48e6-a37d-817868623ec7",
+  "check_id": "equipment-identity-reflow-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T17:58:27.546694+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "85fe5f8790567ed1abc6e11a83d528b0861e04430bc4fdbac1d39304f6c86fd5"
+}

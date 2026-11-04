@@ -1,3 +1,5 @@
+import {hasRelativeDates,evaluateRelativeDates} from '../../shared/relative-saved-dates.ts';
+import {WorkspaceError} from '../../shared/workspace-http.ts';
 import {journal,type Journal} from './journal.ts';
 import {organizationCommand,organizationCommandHash,retainedAliasClear,removalMatches,currentOrganizationSnapshot,applyOrganizationSnapshot,type OrganizationCommand,type OrganizationEntry} from '../../shared/workspace-organization.ts';
 import {utcTicks} from '../../shared/workspace-domain.ts';
@@ -19,6 +21,7 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  if(document.revision>=Number.MAX_SAFE_INTEGER||state.storeVersion>=Number.MAX_SAFE_INTEGER)return result('invalid',state,null,'revision_exhausted');
  const current=currentOrganizationSnapshot(document,command.kind,command.entityId),patch=command.patch;
  if(command.operation==='create'?current!==null:current===null||(current.isRemoved||current.isArchived&&command.operation!=='remove')&&!retainedAliasClear(command))return result('invalid',state,null,'organization_unavailable');
+ if(patch?.query&&hasRelativeDates(patch.query)){try{evaluateRelativeDates(patch.query,now);}catch(error){return result('invalid',state,null,error instanceof WorkspaceError?error.code:'invalid_saved_task_view');}}
  if(command.operation==='remove'&&!removalMatches(document,command.entityId,patch!.removal!))return result('invalid',state,null,'project_removal_impact_changed');
  if(patch?.categoryId&&!document.categories.some(row=>row.id===patch.categoryId&&!row.isArchived)
     ||patch?.projectId&&!document.projects.some(row=>row.id===patch.projectId&&!row.isArchived)

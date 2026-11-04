@@ -1,0 +1,47 @@
+{
+  "request": {
+    "selectors": [
+      "P-210e1da2-6bef-4a8b-8155-08dffa892bac"
+    ],
+    "dispositions": {
+      "P-210e1da2-6bef-4a8b-8155-08dffa892bac": {
+        "status": "promoted",
+        "reason": "A current rendered Planning regression blocks required native-content acceptance; shared field layouts and existing behavior tests support one scoped required repair."
+      }
+    },
+    "tasks": [
+      {
+        "key": "planning-date-readability",
+        "title": "Keep planning and statistics native dates readable at enlarged text",
+        "body": "Goal:\nKeep Planning, Inbox and Statistics selected native civil dates readable with enlarged text.\n\nCurrent behavior:\nThe active canonical-destination matrix exposes Planning clipping at 360 pixels and 200-percent text. Native selected-date ink fails despite a valid date value. The prior completed date task was scoped to Today. Planning and Statistics use auto-fit field grids, rem-based card/input padding and native date inputs; Statistics shares the same finite-width risk and requires qualification rather than an assumed failure.\n\nDesired behavior:\nRepair the affected field layout and padding so native date segments remain readable. Retain date edits, date bounds, source scope and journal behavior. Qualify all three reused routes in Chromium and WebKit.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `src/Habitica.WebApp/Components/TodoPlanningPanel.razor`\n- `src/Habitica.WebApp/Components/TodoStatisticsPanel.razor`\n- `tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs`\n- `tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs`\n- `tests/browser-qualification/ux-ui-planning-date-journey.mjs`\n\nImplementation constraints:\nUse a scoped layout repair, no global fixed date width or font/zoom reduction. Preserve native inputs, civil-day rules, limits and provider/account boundaries. No task acceptance, external provider, cloud restore, publication or consent change. Existing local synthetic build/test authorization applies. Physical devices, other locales and assistive technology remain unqualified.\n\nValidation:\nThe original parent failure is the layout regression. Use current Release, exact isolated profiles, actual observed appearance, six widths, normal/200-percent text, light and dark schemes including `obsidian-glow`, selected-date pixel comparison, visible native focus and current-source cleanup receipts. Existing meaningful date/filter tests remain required.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"planning-date-readability-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Native civil-date editing retains date limits, filtering, exact source and read-only/command fences.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoPlanningPanel.razor\",\n        \"src/Habitica.WebApp/Components/TodoStatisticsPanel.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoStatisticsPanelTests\",\n        \"report_name\": \"planning-date-readability.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/planning-date-readability/unit\"\n      },\n      \"assertion\": \"Keep independent existing date/filter, invalid-date, timezone-unavailable, current-project and account/source scope regressions passing; no command or date semantics change.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"planning-date-readability-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Selected native dates retain complete visible civil-date segments across the required light/dark phone/desktop normal/enlarged matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoPlanningPanel.razor\",\n        \"src/Habitica.WebApp/Components/TodoStatisticsPanel.razor\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs\",\n        \"tests/browser-qualification/ux-ui-planning-date-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-native-date.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"planning-date-readability\",\n        \"routes\": [\n          \"/todo/plan\",\n          \"/todo/inbox\",\n          \"/todo/statistics\"\n        ],\n        \"cases\": \"Planning/Inbox and Statistics selected date, exact native edit, retained min/max, focused input, no command writes; same-engine ink reference and independent clipped negative controls.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"complete native selected-date paint\",\n            \"visible keyboard focus\",\n            \"bounded primary controls and readable disabled states\",\n            \"normal enabled text contrast\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"Current Release identity, exact cases, native screenshots/ink, actual appearance, isolated synthetic source and owned cleanup.\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/planning-date-readability/browser\"\n      },\n      \"assertion\": \"Require full selected-date ink against an unfocused same-engine full-width reference in every changed route; actual date editing and min/max preserve existing semantics. No value-only or bounding-box-only substitute.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Native civil-date editing retains date limits, filtering, exact source and read-only/command fences.\n- Selected native dates retain complete visible civil-date segments across the required light/dark phone/desktop normal/enlarged matrix.\n\nDocumentation updates:\nUpdate `ux-ui-manifest.md` and `testing.md` with scoped sizing and qualification limits.\n\nResearch provenance:\nParent failure `.skill-tree/artifacts/ux-ui/canonical-destinations/1793709433021989000/failure.json`; selected native image `pixels/chromium-gryphy-light-360-200-hydrated-0-actual.png`. Current Planning/Statistics markup, native date comparison, applicable CSS auto-fit/card/input rules and existing component tests were inspected. No third-party API behavior changes.\n",
+        "parent_pending_ids": [
+          "P-210e1da2-6bef-4a8b-8155-08dffa892bac"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+          "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d"
+        ]
+      }
+    ],
+    "expected_source_hash": "27910ea5ab289e0016ea42a6b8ce81c7a5603224cecc898b491689feb73fa166"
+  },
+  "result": {
+    "created_ids": [
+      "T-b8a05278-292d-4f91-a882-35e0944a742d"
+    ],
+    "dispositions": {
+      "P-210e1da2-6bef-4a8b-8155-08dffa892bac": {
+        "reason": "A current rendered Planning regression blocks required native-content acceptance; shared field layouts and existing behavior tests support one scoped required repair.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-0a4f9995-806a-4292-9704-e26a5d72b5e1",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-210e1da2-6bef-4a8b-8155-08dffa892bac"
+    ],
+    "task_keys": {
+      "planning-date-readability": "T-b8a05278-292d-4f91-a882-35e0944a742d"
+    }
+  }
+}

@@ -1,0 +1,480 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Settings begins with a descriptive heading and current account state plus scannable section navigation.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.log",
+          "sha256": "b2d5b4c6563685212b2d19522a1143129e8fe60cdd926f46351f340ee459c82f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.trx",
+          "sha256": "dd0e9f915685c834c3ddccfa40c35a6eb6c2e7acdf7c93c6c1f47ce32a233351"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/acceptance.json",
+          "sha256": "7849ad9a95bcd13ffdd64e872f7c17c69c022dae77fa4c1f08b0a5de07cec8a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+          "sha256": "34363957896743b875e4f640c066dca952e447764e4370b891b998991b79e343"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Browser backup, private device sync and readable shared Workspace actions identify distinct data scope and preserve consent and safeguards.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.log",
+          "sha256": "b2d5b4c6563685212b2d19522a1143129e8fe60cdd926f46351f340ee459c82f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.trx",
+          "sha256": "dd0e9f915685c834c3ddccfa40c35a6eb6c2e7acdf7c93c6c1f47ce32a233351"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/acceptance.json",
+          "sha256": "7849ad9a95bcd13ffdd64e872f7c17c69c022dae77fa4c1f08b0a5de07cec8a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+          "sha256": "34363957896743b875e4f640c066dca952e447764e4370b891b998991b79e343"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.log",
+          "sha256": "b2d5b4c6563685212b2d19522a1143129e8fe60cdd926f46351f340ee459c82f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.trx",
+          "sha256": "dd0e9f915685c834c3ddccfa40c35a6eb6c2e7acdf7c93c6c1f47ce32a233351"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/acceptance.json",
+          "sha256": "7849ad9a95bcd13ffdd64e872f7c17c69c022dae77fa4c1f08b0a5de07cec8a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-sections/browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+          "sha256": "34363957896743b875e4f640c066dca952e447764e4370b891b998991b79e343"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed out/in, disconnected/cloud/browser, private-sync on/off, each backup mechanism, section navigation, install advice, narrow and long account content. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Settings begins with a descriptive heading and current account state plus scannable section navigation.",
+          "Browser backup, private device sync and readable shared Workspace actions identify distinct data scope and preserve consent and safeguards."
+        ],
+        "id": "settings-sections-behavior",
+        "parameters": {
+          "report_name": "settings-sections.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/settings-sections/unit",
+          "test_filter": "FullyQualifiedName~SettingsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-6c9f51c9-ce44-43c8-bc9f-dc4c4ea5c694",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 16,
+          "expected": 16,
+          "failed": 1,
+          "passed": 15,
+          "skipped": 0
+        },
+        "definition": "80d88965c265964de0222ec3f3a5e3c153d08d0b4deb44a937e24955a8fc0f38",
+        "environment_identity": "d98bfe352917dad58f49ca70334e3b5ba7d7bf8bb1d0d3e6ac77dc86574d5797",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-6c9f51c9-ce44-43c8-bc9f-dc4c4ea5c694.log",
+            "sha256": "a75208e95e279e47ef86cf5efb3c42a736acbd33aeae9fa47d05024b2b9b9736"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-6c9f51c9-ce44-43c8-bc9f-dc4c4ea5c694.trx",
+            "sha256": "902396c4aaec0cc5ea0e8f1aee3e624f4957bb5863ab012b12d17218187edd78"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "0a0a854b1f196adbf9ae2d7e6588cc6babef5449ced494646efa9a7bb0ab0cd9",
+        "payload_hash": "2a90d19e0fe4edb595ad9e0b961298922a895e9a8f624839a4c3f912e59c9ad6",
+        "recorded_at": "2026-11-03T22:58:33.013047+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "eee942a9206e05ebdf776df677a1b92364f26d8140ced1f8b1c23dde1418b377",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "f4928f31818573478179374bcad88db55ae84d31a02aeb07ca69bc87f11ab34d"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.770671708974987
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 16,
+          "expected": 16,
+          "failed": 0,
+          "passed": 16,
+          "skipped": 0
+        },
+        "definition": "80d88965c265964de0222ec3f3a5e3c153d08d0b4deb44a937e24955a8fc0f38",
+        "environment_identity": "d98bfe352917dad58f49ca70334e3b5ba7d7bf8bb1d0d3e6ac77dc86574d5797",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.log",
+            "sha256": "b2d5b4c6563685212b2d19522a1143129e8fe60cdd926f46351f340ee459c82f"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-sections/C-e69d090c-3e8c-4bd7-b2c0-56cd0404bc97.trx",
+            "sha256": "dd0e9f915685c834c3ddccfa40c35a6eb6c2e7acdf7c93c6c1f47ce32a233351"
+          }
+        ],
+        "execution_sessions": {
+          "73b6e68bd65d88cacba40b836bac922c8038a3e20b756721a9305427c499053b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "174d48b37402eb568efbde715ecd3c1438e855099352dddb7554e50014c875ab",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:16:45.206703+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-sections/launch-1793746845206903000.json"
+            ],
+            "profile_id": "b0f7eb54224340b133689b37643441f696f95b09a71aa44b07a8a0e58ec10143",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-sections",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "7e92cae57bfc59ea1a64142d1aef8e32450c55228052f03744d7166a6cf5736a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "174d48b37402eb568efbde715ecd3c1438e855099352dddb7554e50014c875ab",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:18:54.729170+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-sections/launch-1793746974729383000.json"
+            ],
+            "profile_id": "b9fd75e41d3d56ae373bd4087b502b2ea8c4f686d810d9049bbfcd74838f3830",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-sections",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "ee63074f9849d8c43ec016fd6b6070d45d14238521ad2f8dbdd0e2c54ad68592",
+        "payload_hash": "6def894994e137e92286c38eb779eaf4c7e58f546c1d1691c8f7d34263c7c568",
+        "recorded_at": "2026-11-03T23:04:08.917631+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "bc71d988906ee3f7ceb357c4f30c3629caed8d5339b8627ae3ea62326cf74cf0",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "2397068cebb787d13852dccc70ce1fc8a64df461d618c985c3d3ab17a251b9db",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "f74e4deb7b79978c4e62b9a8eea4633752753b60dbb6e2677d859769c6af0373"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.438174792099744
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix."
+        ],
+        "id": "settings-sections-rendered",
+        "parameters": {
+          "cases": "Signed out/in, disconnected/cloud/browser, private-sync on/off, each backup mechanism, section navigation, install advice, narrow and long account content.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/settings-sections/browser",
+          "routes": [
+            "/settings"
+          ],
+          "task_key": "settings-sections"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-aea315d4-761d-4093-9a2a-3b49557ab050",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 505,
+          "expected": 505,
+          "failed": 0,
+          "passed": 505,
+          "skipped": 0
+        },
+        "definition": "80d88965c265964de0222ec3f3a5e3c153d08d0b4deb44a937e24955a8fc0f38",
+        "environment_identity": "56321384f2ba54618f92f8112cc33b5701598b5a07407bedcd76f90f566faf83",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/settings-sections/browser/295351bd-2ce2-496e-be71-08a94ecab26c.json",
+            "sha256": "34363957896743b875e4f640c066dca952e447764e4370b891b998991b79e343"
+          }
+        ],
+        "execution_sessions": {
+          "73b6e68bd65d88cacba40b836bac922c8038a3e20b756721a9305427c499053b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "174d48b37402eb568efbde715ecd3c1438e855099352dddb7554e50014c875ab",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:16:45.206703+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-sections/launch-1793746845206903000.json"
+            ],
+            "profile_id": "b0f7eb54224340b133689b37643441f696f95b09a71aa44b07a8a0e58ec10143",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-sections",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "7e92cae57bfc59ea1a64142d1aef8e32450c55228052f03744d7166a6cf5736a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "2397068cebb787d13852dccc70ce1fc8a64df461d618c985c3d3ab17a251b9db",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:21:29.106048+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/settings-sections/launch-1793747129106293000.json"
+            ],
+            "profile_id": "b9fd75e41d3d56ae373bd4087b502b2ea8c4f686d810d9049bbfcd74838f3830",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/settings-sections",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "2467e30c9a7a0918173bf87aa5c6c9ffa7a9204f8108621b8771ed2b028f96e7",
+        "payload_hash": "3e38fe7e6965dc14bd28cb377c5a0f113370163f03370803d5f20b05d6d332af",
+        "recorded_at": "2026-11-03T23:06:39.024308+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "bc71d988906ee3f7ceb357c4f30c3629caed8d5339b8627ae3ea62326cf74cf0",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "2397068cebb787d13852dccc70ce1fc8a64df461d618c985c3d3ab17a251b9db",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "f74e4deb7b79978c4e62b9a8eea4633752753b60dbb6e2677d859769c6af0373",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 68.7108819577843
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/settings-sections/acceptance.json",
+      "sha256": "7849ad9a95bcd13ffdd64e872f7c17c69c022dae77fa4c1f08b0a5de07cec8a6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/settings-sections/operation-history.json",
+      "sha256": "aacf07f1fd2bd725adf213eda632a8ea8b2a74b4ce3ed8d5ef4e1c59eb77870e"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-243b83eb-c1ab-4926-b54a-6c05dc76c6a7",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Organize Settings around clear account and data-management sections. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0"
+  ],
+  "recorded_at": "2026-11-03T23:06:49.396599+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "cbc25a43538388be4f130d7c25cf55589a6e0c5c5fb169b059c0d81fad571fbf",
+    ".skill-tree/documents/testing.md": "ebfe991e18654d707bcadd3a925cd2cb32c5dc3acf80c8402bc84dda5c3e8c42",
+    ".skill-tree/documents/ux-ui-manifest.md": "5ba5cf1fd90ea1316f55c218e605b86958b45b78a777b0e7462513da739b120a",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "bc71d988906ee3f7ceb357c4f30c3629caed8d5339b8627ae3ea62326cf74cf0",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "2397068cebb787d13852dccc70ce1fc8a64df461d618c985c3d3ab17a251b9db",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "f74e4deb7b79978c4e62b9a8eea4633752753b60dbb6e2677d859769c6af0373",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "2227ab6d797eccd3b72ddabd90bd2cf0c43794eba90c804543f392a4f3e122b0",
+    "tests/browser-qualification/ux-ui-settings-sections-journey.mjs": "985522dd74bb4a677bd26c542a5379af0e371ff48b4885750805b9ed64edc1ee"
+  },
+  "task_id": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+  "title": "Organize Settings around clear account and data-management sections",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed out/in, disconnected/cloud/browser, private-sync on/off, each backup mechanism, section navigation, install advice, narrow and long account content. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Settings begins with a descriptive heading and current account state plus scannable section navigation.",
+        "Browser backup, private device sync and readable shared Workspace actions identify distinct data scope and preserve consent and safeguards."
+      ],
+      "id": "settings-sections-behavior",
+      "parameters": {
+        "report_name": "settings-sections.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/settings-sections/unit",
+        "test_filter": "FullyQualifiedName~SettingsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix."
+      ],
+      "id": "settings-sections-rendered",
+      "parameters": {
+        "cases": "Signed out/in, disconnected/cloud/browser, private-sync on/off, each backup mechanism, section navigation, install advice, narrow and long account content.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/settings-sections/browser",
+        "routes": [
+          "/settings"
+        ],
+        "task_key": "settings-sections"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "80d88965c265964de0222ec3f3a5e3c153d08d0b4deb44a937e24955a8fc0f38"
+}

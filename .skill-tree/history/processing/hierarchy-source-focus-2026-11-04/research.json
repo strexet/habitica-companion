@@ -1,0 +1,37 @@
+{
+  "payload": {
+    "selectors": [
+      "P-d0525af9-8f22-4e09-8255-77161f3742bd"
+    ],
+    "expected_source_hash": "e17eb6ebcf1519393d2b86154ae3e37f3b659aeedb6962ffb7c9ce9984b3d2e2",
+    "dispositions": {
+      "P-d0525af9-8f22-4e09-8255-77161f3742bd": {
+        "status": "promoted",
+        "reason": "New native267be9f5focus trace resolves the previously retained uncertainty: the Tasks heading takes focus after the skip link. Source inspection identifies ClearDraft heading focus during a source-state transition. A deterministic actual-presentation source-change test can establish Red, with existing native shell/hierarchy contracts supplying rendered qualification. Reclassify as a required blocker under the same preserved parent; no new root or duplicate finding."
+      }
+    },
+    "tasks": [
+      {
+        "title": "Preserve user focus during passive hierarchy source restoration",
+        "priority": 108,
+        "parent_pending_ids": [
+          "P-d0525af9-8f22-4e09-8255-77161f3742bd"
+        ],
+        "body": "Goal:\nPrevent passive hierarchy source restoration from stealing established user focus.\n\nCurrent behavior:\nThe saved native trace places focus on Skip to main content, then Tasks and subtasks about300milliseconds later. TodoHierarchyPanel.Changed calls ClearDraft on a selected-source transition; ClearDraft unconditionally schedules heading focus. Source restoration therefore reuses a focus request intended for explicit user actions.\n\nTouch:\n- `src/Habitica.WebApp/Components/TodoHierarchyPanel.razor`\n- `tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs`\n- `src/Habitica.WebApp/State/TodoWorkspacePresentation.cs`\n\nImplementation constraints:\nKeep source-private draft/selection resets, original receipt boundaries, branch navigation, edit and review focus. Separate passive source reset from explicit action focus without delays, retries, global focus suppression, CSS changes or weaker keyboard assertions. Existing canonical focus behavior remains the specification; this repairs unintended source-restoration behavior. Record research, Red/Green, source fingerprints and actual rendered evidence in history. No new feature or revised UX specification is introduced.\n\nValidation:\nUse focused runnable Red before the scoped repair. Revalidate the existing immutable native shell and hierarchy contracts at repaired sources, and inspect current light/dark phone/desktop screenshots. Other completed checks are reused only when actual source/definition/environment/evidence remain current.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"hierarchy-passive-focus-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Workspace source restoration clears hierarchy-local drafts and selection without requesting heading focus after the user has moved to another control.\",\n        \"Explicit branch navigation, draft closure and original-review restoration retain intended focus and unchanged command/source guards.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoHierarchyPanel.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs\",\n        \"src/Habitica.WebApp/State/TodoWorkspacePresentation.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~TodoHierarchyPanelTests|FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests\",\n        \"report_name\": \"hierarchy-source-focus.trx\",\n        \"result_directory\": \".skill-tree/artifacts/hierarchy-source-focus-unit\"\n      },\n      \"assertion\": \"Restore a different actual local workspace through TodoWorkspacePresentation. Require no new heading-focus interop from passive source-state reset, unchanged seeded journals and no accepted commands; then require explicit branch navigation to request focus. Preserve existing hierarchy, edit, review and shell tests with nonzero discovery and no required skips.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"hierarchy-current-rendered-receipts\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"Current native shell and Tasks/Projects hierarchy reports qualify light/dark phone/desktop normal/enlarged focus behavior, including the previously failing skip-link sequence, with actual browser evidence and verified cleanup.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoHierarchyPanel.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs\",\n        \"src/Habitica.WebApp/State/TodoWorkspacePresentation.cs\",\n        \"tests/browser-qualification/ux-ui-navigation-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"required_current_browser_contracts\": [\n          \"T-ea2058ab-c817-4368-9431-b26314f58a2e\",\n          \"T-1fa4460c-6493-446e-9bc3-bd33d976404f\",\n          \"T-2032615d-24ef-4921-9b63-e41f5dd4a3d0\"\n        ]\n      },\n      \"assertion\": \"Verify actual current-source passing browser receipts from the existing immutable accessible-shell, full-shell and Tasks/Projects hierarchy contracts, with complete declared six-width100/200percent light/gryphy-dark/obsidian matrices and owned cleanup. Re-execute both shell contracts after this repair even when older fingerprints omit the hierarchy component. No static or component result substitutes for the required native browser evidence.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Workspace source restoration clears hierarchy-local drafts and selection without requesting heading focus after the user has moved to another control.\n- Explicit branch navigation, draft closure and original-review restoration retain intended focus and unchanged command/source guards.\n- Current native shell and Tasks/Projects hierarchy reports qualify light/dark phone/desktop normal/enlarged focus behavior, including the previously failing skip-link sequence, with actual browser evidence and verified cleanup.\n",
+        "depends_on": [
+          "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+          "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+          "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+        ]
+      }
+    ]
+  },
+  "native_failure": ".skill-tree/artifacts/ux-ui/accessible-shell/1793760781336116000/failure.json",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "d52b878587baf68c22d29b879728db264df49ffc3b884652fe7c2a9b5a13e5f6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "c5b56c52fed9e4df9d0ede5b1b6b1c38427072c6f287e26ce4f2e712de21b030",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863"
+  },
+  "retained_pending_reclassification": "Original identity, root and parent preserved. New evidence changes nonblocking uncertainty into a required reproducible product defect.",
+  "documentation": "Existing focus/branch semantics remain the specification; the history report records the bug repair without changing unrelated canonical documents or qualification recipes."
+}

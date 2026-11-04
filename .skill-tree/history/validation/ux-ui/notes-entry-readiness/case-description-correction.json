@@ -1,0 +1,6 @@
+{
+  "task": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+  "correction": "Replace the copied broad phone-Notes case description with the exact scoped initial-readiness cases. Acceptance criteria, routes, matrix, assertions and existing broader Notes contracts remain unchanged. Original passing reports preserved; task checks re-execute against the corrected nonterminal definition.",
+  "old": "New/open/back, unsaved note, long library, selected project/folder, new folder, failed save, original pending command, reload, phone-to-desktop resize.",
+  "new": "Initial held Notes read with retained notebook; disabled New note and readable loading reason; released keyboard entry; exact unsaved text; original dirty-draft review; unchanged notebook and task journal."
+}

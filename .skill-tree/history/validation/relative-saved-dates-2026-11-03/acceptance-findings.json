@@ -1,0 +1,56 @@
+{
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "decision": "Local relative-date authoring/read acceptance qualified with an explicit relative-tag projection gap.",
+  "checks": {
+    "relative-date-rules": 15,
+    "relative-date-components": 43,
+    "relative-date-wire": 42,
+    "relative-date-rendering": 210
+  },
+  "totalPassed": 310,
+  "implemented": [
+    "Independent planned/deadline presets and explicit stored UTC/IANA timezone retain relative intent across reload.",
+    "One as-of context resolves exact inclusive civil-date bounds; native/Worker cases cover midnight, DST, leap dates, Monday/Sunday and year boundaries.",
+    "Missing dates use internal eligible predicates without deleting dependency source records. Absolute filters remain unchanged on independent fields.",
+    "V5 identity binds both relative fields/timezone; original organization receipts and old absent-field identities remain stable.",
+    "Relative page offsets require exact document revision and evaluation day; rollover fails without fallback and explicit restart captures the current day.",
+    "Actual SDK/D1 reads preserve complete stored document, byte count and store version; relative authoring creates no tasks or provider work.",
+    "Relative tag adapters expose an explicit unavailable reason, retain prior ledger/history and stop old queued work before a new provider request. Absolute groups retain existing reconciliation behavior.",
+    "Current Release Lists/Sync hydrate through real isolated Auth/Workspace Workers/D1 and native IndexedDB. Actual WebAssembly resolves Pacific/Kiritimati local date against an independent Intl date-line oracle.",
+    "Native, typed/component, existing tag reconciliation and210 light/obsidian phone/desktop normal/enlarged-text browser controls pass with no skips."
+  ],
+  "originalFailures": [
+    "The first executable storage Red rejects the new requested relative fields at strict deserialization while8 old saved-list controls pass.",
+    "The first component build lacked the Application namespace import in the new fixture; no tests were discovered, and the attempt was recorded before repair.",
+    "An old invalid-range component assertion expected the superseded fixed-only error text. The assertion now preserves the refused-command oracle with the updated absolute/relative message.",
+    "Actual SDK discovery found legacy tag selection passed relative keys to the fixed filter and failed unknown_field; native tag selection also ignored relative intent. The compatibility slice now fails closed and records the independent full day-bound tag capability as follow-up.",
+    "A retained route-agnostic saved-list consumer also needed an explicit clock and day cursor; focused rollover/restart controls preserve earlier custom/absolute behavior.",
+    "A helper initially matched a related_task_id reference before the actual task ID after intake; the source selector now anchors an exact metadata line. No check launched during the prerequisite/profile-refresh failure."
+  ],
+  "limits": [
+    "No commit, push, migration application, publication, real account or notification/device operation occurred.",
+    "Relative saved-list Habitica tag membership remains explicitly unavailable pending a separately reviewed evaluation-day contract. Original tags, membership and unknown receipt recovery remain retained; full projection is captured as nonblocking follow-up P-34bd63a8-f6d9-4d08-acf3-2a8d13483228.",
+    "Physical devices, assistive technologies, real hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified. Changed-route harnesses block service workers.",
+    "The retained CompanionTaskList consumer has focused component/clock qualification; no separate routed production exposure is claimed."
+  ],
+  "evidence": [
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rules-final-execution.log",
+    ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules/rules-final.trx",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rules-final-receipt.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-consumer-green-execution.log",
+    ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-components/relative-consumer-green.trx",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-consumer-green-receipt.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-tag-wire-execution.log",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-tag-wire-receipt.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rendered-8d8c4ed9-execution.log",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rendered-8d8c4ed9-identity.json",
+    ".skill-tree/artifacts/relative-saved-ui/1793657112331675000/report.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rendered-8d8c4ed9-receipt.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/tag-worker-dry-builds.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/future-validation.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/documentation-validation.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/changed-prose-validation.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-tag-followup-intake.json",
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-tag-followup-result.json"
+  ]
+}

@@ -13,6 +13,64 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class SettingsPageTests : BunitContext
 {
+    [Theory]
+    [InlineData("en-US")]
+    [InlineData("en-GB")]
+    public void Private_sync_timestamp_formats_local_time_and_preserves_UTC_metadata(string cultureName)
+    {
+        var old=System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            var culture=System.Globalization.CultureInfo.GetCultureInfo(cultureName);System.Globalization.CultureInfo.CurrentCulture=culture;
+            var(session,cut)=ConnectionPage();var utc=DateTimeOffset.Parse("2026-04-02T13:04:05Z",System.Globalization.CultureInfo.InvariantCulture);var status=new CloudSyncSectionStatus(CloudSyncSection.UserProfile,"user-profile",CloudSyncDirection.Upload,CloudSyncSectionStatusKind.Succeeded,utc,2048,"Uploaded");
+            session.SetState(session.State with{CloudSyncSectionStatuses=[status]});
+            var row=cut.Find(".sync-section-row");var time=row.QuerySelector("time")!;Assert.NotNull(time);Assert.Equal(utc.ToString("O",System.Globalization.CultureInfo.InvariantCulture),time.GetAttribute("datetime"));
+            var expected=TimeZoneInfo.ConvertTime(utc,TimeZoneInfo.Local).DateTime.ToString("g",culture);Assert.Equal(expected,time.TextContent);Assert.Equal($"2 KB at {expected} (local time)",row.QuerySelector("small")!.TextContent);Assert.DoesNotContain(":g",row.TextContent);Assert.Contains("Uploaded",row.TextContent);Assert.Equal(status,session.State.CloudSyncStatuses.Single());
+            Qualification.PageLayoutEvidence.Save("sync-timestamp-"+cultureName.ToLowerInvariant(),cut.Markup,"/settings","controlled-culture-UTC-metadata-local-display",["form","timestamp","disabled-controls"],nameof(Private_sync_timestamp_formats_local_time_and_preserves_UTC_metadata));
+        }
+        finally{System.Globalization.CultureInfo.CurrentCulture=old;}
+    }
+    [Fact]
+    public void Missing_private_sync_metadata_retains_no_activity_and_no_timestamp_placeholder()
+    {
+        var(session,cut)=ConnectionPage();Assert.Contains("No cloud sync activity in this session.",cut.Markup);Assert.Empty(cut.FindAll(".sync-section-row time"));
+        var status=new CloudSyncSectionStatus(CloudSyncSection.UserProfile,"user-profile",CloudSyncDirection.Download,CloudSyncSectionStatusKind.Failed,DateTimeOffset.Parse("2026-04-02T13:04:05Z"),null,"Synthetic unavailable");session.SetState(session.State with{CloudSyncSectionStatuses=[status]});Assert.Empty(cut.FindAll(".sync-section-row small"));Assert.Contains("Synthetic unavailable",cut.Markup);Assert.Equal(status,session.State.CloudSyncStatuses.Single());
+        Qualification.PageLayoutEvidence.Save("sync-timestamp-missing",cut.Markup,"/settings","missing-payload-metadata-retains-original-status",["form","timestamp","disabled-controls"],nameof(Missing_private_sync_metadata_retains_no_activity_and_no_timestamp_placeholder));
+    }
+
+    [Fact]
+    public void Settings_sections_expose_exact_scopes_without_changing_consent_or_pending_reviews()
+    {
+        var (session, cut) = ConnectionPage();
+        Assert.Equal("Settings", cut.Find("h1").TextContent);
+        Assert.Contains("Signed in", cut.Find("[data-testid='settings-account-summary']").TextContent);
+        Assert.Contains("unverified", cut.Find("[data-testid='settings-account-summary']").TextContent);
+        var links = cut.FindAll("nav[aria-label='Settings sections'] a");
+        Assert.Equal(new[]{"/settings#settings-account", "/settings#settings-appearance", "/settings#settings-shared", "/settings#settings-private", "/settings#settings-browser"}, links.Select(a=>a.GetAttribute("href")));
+        foreach(var link in links) Assert.Equal("-1", cut.Find("#"+link.GetAttribute("href")!.Split('#')[1]).GetAttribute("tabindex"));
+        Assert.True(cut.Markup.IndexOf("settings-account-summary",StringComparison.Ordinal)<cut.Markup.IndexOf("pwa-install-panel",StringComparison.Ordinal));
+        Assert.NotNull(cut.Find("[data-settings-scope='appearance'] [data-testid='pwa-install-panel']"));
+        Assert.NotNull(cut.Find("[data-settings-scope='private'] [data-testid='push-cloud-sync']"));
+        Assert.NotNull(cut.Find("[data-settings-scope='private'] [data-testid='cloud-sync-status']"));
+        Assert.Contains("excludes Notes and Workspace journals",cut.Find("[data-settings-scope='private']").TextContent);
+        Assert.NotNull(cut.Find("[data-settings-scope='browser'] [data-testid='export-local-data']"));
+        Assert.NotNull(cut.Find("[data-settings-scope='browser'] [data-testid='import-local-data']"));
+        Assert.Contains("Notes",cut.Find("[data-settings-scope='browser']").TextContent);
+        Assert.NotNull(cut.Find("[data-settings-scope='shared'] [data-testid='settings-todo-sync']"));
+        Assert.True(cut.Find("[data-testid='integration-enroll']").HasAttribute("disabled"));
+        cut.Find("[data-testid='clear-local-data']").Click();
+        cut.Find("[data-testid='integration-consent']").Change(true);
+        cut.Find("[data-testid='settings-appearance-toggle']").Click();
+        Assert.NotNull(cut.Find("[data-testid='clear-local-review']"));
+        Assert.True(cut.Find("[data-testid='integration-consent']").HasAttribute("checked"));
+        Assert.Equal(0, session.ChatGptEnrollCalls); Assert.Equal(0, session.WorkspaceConnectCalls);
+        Qualification.PageLayoutEvidence.Save("settings-sections-signed-in",cut.Markup,"/settings","separate-scopes-and-original-clear-review",["form","navigation","disabled-controls"],nameof(Settings_sections_expose_exact_scopes_without_changing_consent_or_pending_reviews));
+        session.SetState(SessionViewModel.Empty);
+        cut.WaitForAssertion(()=>Assert.Contains("Signed out",cut.Find("[data-testid='settings-account-summary']").TextContent));
+        Assert.Empty(cut.FindAll("[data-testid='clear-local-review']"));
+        Qualification.PageLayoutEvidence.Save("settings-sections-signed-out",cut.Markup,"/settings","signed-out-scopes",["form","navigation","disabled-controls"],nameof(Settings_sections_expose_exact_scopes_without_changing_consent_or_pending_reviews));
+    }
+
     [Fact]
     public void Pwa_installation_steps_expand_without_signin_or_notification_requests()
     {
@@ -382,4 +440,26 @@ public sealed class SettingsPageTests : BunitContext
             return Task.CompletedTask;
         }
     }
+    [Fact]
+    public void Private_sync_exclusion_controls_name_the_exact_section_and_preserve_other_selections()
+    {
+        var (session,cut)=ConnectionPage();session.SetState(session.State with {CloudSyncExcludedSections=[CloudSyncSection.Diagnostics]});
+        var checkboxes=cut.FindAll(".sync-section-row input[type='checkbox']");Assert.True(checkboxes.Count>1);
+        var names=checkboxes.Select(input=>input.GetAttribute("aria-label")).ToArray();Assert.Equal(names.Length,names.Distinct().Count());
+        foreach(var input in checkboxes)
+        {
+            var row=input.Closest(".sync-section-row")!;Assert.Contains("Exclude",input.GetAttribute("aria-label"));Assert.Contains(row.QuerySelector("strong")!.TextContent,input.GetAttribute("aria-label"));
+            Assert.False(string.IsNullOrWhiteSpace(input.Id));Assert.Equal(input.Id,row.QuerySelector("label")!.GetAttribute("for"));
+        }
+        var diagnostics=cut.FindAll(".sync-section-row input").Single(input=>input.GetAttribute("aria-label")!.Contains("Diagnostics"));Assert.True(diagnostics.HasAttribute("checked"));diagnostics.Change(false);Assert.DoesNotContain(CloudSyncSection.Diagnostics,session.State.ExcludedCloudSyncSections);
+        var other=cut.FindAll(".sync-section-row input").First(input=>!input.GetAttribute("aria-label")!.Contains("Diagnostics"));var label=other.GetAttribute("aria-label");other.Change(true);Assert.Single(session.State.ExcludedCloudSyncSections);
+        cut.FindAll(".sync-section-row input").Single(input=>input.GetAttribute("aria-label")!.Contains("Diagnostics")).Change(true);Assert.Equal(2,session.State.ExcludedCloudSyncSections.Count);
+        cut.FindAll(".sync-section-row input").Single(input=>input.GetAttribute("aria-label")==label).Change(false);Assert.Equal(new[]{CloudSyncSection.Diagnostics},session.State.ExcludedCloudSyncSections);
+        Qualification.PageLayoutEvidence.Save("workspace-names-sync",cut.Markup,"/settings","private-sections-checked-and-unchecked",["checkbox-labels","private-sync"],nameof(Private_sync_exclusion_controls_name_the_exact_section_and_preserve_other_selections));
+        session.SetState(session.State with {IsAuthenticated=false});
+        Assert.True(cut.Find("[data-testid='push-cloud-sync']").HasAttribute("disabled"));
+        Assert.True(cut.Find("[data-testid='download-cloud-sync']").HasAttribute("disabled"));
+        Qualification.PageLayoutEvidence.Save("settings-reflow-signed-out",cut.Markup,"/settings","signed-out-private-sync-gates",["disabled-controls","private-sync","form"],nameof(Private_sync_exclusion_controls_name_the_exact_section_and_preserve_other_selections));
+    }
+
 }

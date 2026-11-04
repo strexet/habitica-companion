@@ -4,6 +4,11 @@ public sealed record DailyAccountSchedule(int TimezoneOffset, int DayStart);
 public sealed record DailyProjectionSchedule(RecurrenceFrequency Frequency, int EveryX, DateTimeOffset StartDate,
     IReadOnlyDictionary<string, bool> Repeat, IReadOnlyList<int> DaysOfMonth, IReadOnlyList<int> WeeksOfMonth)
 {
+    // Derive presentation choices through the same calendar and account policy as projection.
+    public static IReadOnlyList<string> FixedTimeZoneIds { get; } = Enumerable.Range(-14, 29)
+        .Select(hour => hour == 0 ? "UTC" : $"Etc/GMT{(hour > 0 ? "+" : "-")}{Math.Abs(hour)}")
+        .Where(zone => Normalize(new(RecurrenceFrequency.Daily, 1, new(2026, 1, 1), zone, [], []), new(FixedOffset(zone)!.Value, 0)).Schedule is not null)
+        .OrderByDescending(zone => FixedOffset(zone)).ToArray();
     public static string? RuleFailure(RecurrenceRule? rule)
     {
         if (rule is null) return "daily_schedule_required";
@@ -23,7 +28,7 @@ public sealed record DailyProjectionSchedule(RecurrenceFrequency Frequency, int 
         var repeat = Enumerable.Range(0, 7).ToDictionary(i => keys[i], i => rule.Frequency == RecurrenceFrequency.Weekly && rule.Weekdays.Contains((DayOfWeek)i));
         return (new(rule.Frequency, rule.Interval, start, repeat, rule.DaysOfMonth.Order().ToArray(), []), null);
     }
-    private static int? FixedOffset(string zone)
+    public static int? FixedOffset(string zone)
     {
         if (zone is "UTC" or "Etc/GMT") return 0;
         if (!zone.StartsWith("Etc/GMT", StringComparison.Ordinal) || zone.Length is < 9 or > 10 || zone[7] is not ('+' or '-')) return null;

@@ -5,6 +5,7 @@
 @inject InventoryViewModelFactory InventoryViewModelFactory
 @inject IAppSessionController SessionController
 @inject ISnackbar Snackbar
+@inject IJSRuntime Js
 
 <PageTitle>Equipment</PageTitle>
 
@@ -42,10 +43,23 @@
             snapshot,
             SessionController.State.GearCatalogSnapshot,
             SessionController.State.Presets);
+        var ambiguousGearKeys = FindAmbiguousGearKeys(viewModel);
         var recommendation = InventoryViewModelFactory.CreateRecommendation(
             snapshot,
             SessionController.State.GearCatalogSnapshot,
             _optimizationGoal);
+        _visibleOwnedSlots.Clear();
+        var ownedGroups = viewModel.Groups.Concat(viewModel.AccessoryGroups).ToArray();
+        var allOwned = ownedGroups.SelectMany(group=>group.Items).DistinctBy(item=>item.Key,StringComparer.Ordinal).ToArray();
+        var matchingOwned = allOwned.Where(MatchesOwnedFilter).ToArray();
+        var discoveryActive = IsOwnedDiscoveryActive;
+        var pageKeys = matchingOwned.Skip(_ownedPage*OwnedPageSize).Take(OwnedPageSize).Select(item=>item.Key).ToHashSet(StringComparer.Ordinal);
+        var shownGroups = OwnedGroups(viewModel.Groups,discoveryActive,pageKeys);
+        var shownAccessoryGroups = OwnedGroups(viewModel.AccessoryGroups,discoveryActive,pageKeys);
+        foreach(var group in shownGroups)_visibleOwnedSlots.Add("battle:"+group.SlotTitle);
+        if(discoveryActive||_nonBattleEquipmentExpanded)foreach(var group in shownAccessoryGroups)_visibleOwnedSlots.Add("other:"+group.SlotTitle);
+        var shownFrom = matchingOwned.Length==0?0:_ownedPage*OwnedPageSize+1;
+        var shownTo = Math.Min((_ownedPage+1)*OwnedPageSize,matchingOwned.Length);
         var canMutate = SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
@@ -53,6 +67,17 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
+
+        <section class="card-surface inventory-group-card inventory-discovery" aria-label="Find owned equipment" data-testid="inventory-discovery">
+            <h2>Find owned equipment</h2>
+            <p>Search names or item keys, or choose a slot. Equipped gear and optimizer recommendations stay separate.</p>
+            <div class="inventory-discovery-fields">
+                <label class="field-row" for="inventory-owned-query">Search owned equipment<input id="inventory-owned-query" class="app-input" type="search" maxlength="256" value="@_ownedGearQuery" @oninput="OwnedQueryChanged" @onkeydown="OwnedSearchKey" @ref="_ownedSearch" data-testid="inventory-owned-query" /></label>
+                <label class="field-row" for="inventory-owned-slot">Slot or category<select id="inventory-owned-slot" class="app-input" value="@_ownedGearSlot" @onchange="OwnedSlotChanged" data-testid="inventory-owned-slot"><option value="">All slots</option>@foreach(var slot in ownedGroups.Select(group=>group.SlotTitle).Distinct(StringComparer.Ordinal)){<option value="@slot">@(slot=="Two-Handed Weapons"?"Two-handed":slot)</option>}</select></label>
+            </div>
+            <p role="status" aria-live="polite" aria-atomic="true" data-testid="inventory-owned-count">@matchingOwned.Length @(matchingOwned.Length==1?"match":"matches") · @allOwned.Length searchable owned items</p>
+            <div class="action-row inventory-actions"><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ViewOwnedResults" Variant="Variant.Outlined" data-testid="inventory-owned-view">View results</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ResetOwnedFilters" Disabled="@(_ownedGearQuery.Length==0&&_ownedGearSlot.Length==0)" Variant="Variant.Text" data-testid="inventory-owned-reset">Reset filters</MudButton></div>
+        </section>
 
         <section class="inventory-summary-grid">
             <article class="dashboard-stat-card">
@@ -95,7 +120,7 @@
                 @RenderEquippedSet(viewModel.BattleEquipped)
 
                 <div class="preset-save-row">
-                    <input class="app-input" placeholder="Preset name" @bind="_battlePresetName" @bind:event="oninput" />
+                    <label class="field-row" for="battle-preset-name">Battle preset name<input id="battle-preset-name" data-testid="battle-preset-name" class="app-input" placeholder="Preset name" @bind="_battlePresetName" @bind:event="oninput" /></label>
                     <MudButton Color="Color.Primary" Disabled="@(!canMutate || string.IsNullOrWhiteSpace(_battlePresetName))" OnClick="@(() => SavePresetAsync(EquipmentSetKind.Battle))" Variant="Variant.Filled">
                         Save battle gear preset
                     </MudButton>
@@ -160,20 +185,20 @@
                 }
 
                 <div class="preset-save-row">
-                    <input class="app-input" placeholder="Recommendation preset name" @bind="_optimizerPresetName" @bind:event="oninput" data-testid="optimizer-preset-name" />
+                    <label class="field-row" for="optimizer-preset-name">Recommendation preset name<input id="optimizer-preset-name" class="app-input" placeholder="Recommendation preset name" @bind="_optimizerPresetName" @bind:event="oninput" data-testid="optimizer-preset-name" /></label>
                     <div class="action-row inventory-actions">
                         <MudButton Color="Color.Primary"
                                    Disabled="@(!canMutate || !recommendation.HasRecommendation)"
                                    OnClick="@(() => EquipRecommendationAsync(recommendation))"
                                    Variant="Variant.Filled"
-                                   data-testid="equip-optimizer-recommendation">
+                                   aria-label="@($"Equip recommendation for {recommendation.GoalLabel} battle gear")" data-testid="equip-optimizer-recommendation">
                             Equip recommendation
                         </MudButton>
                         <MudButton Color="Color.Secondary"
                                    Disabled="@(!canMutate || !recommendation.HasRecommendation || string.IsNullOrWhiteSpace(_optimizerPresetName))"
                                    OnClick="@(() => SaveRecommendationPresetAsync(recommendation))"
                                    Variant="Variant.Outlined"
-                                   data-testid="save-optimizer-recommendation">
+                                   aria-label="@($"Save recommendation for {recommendation.GoalLabel} battle gear as a preset")" data-testid="save-optimizer-recommendation">
                             Save recommendation
                         </MudButton>
                     </div>
@@ -191,11 +216,14 @@
                     </div>
                     <span class="ui-pill count-pill">@viewModel.BattlePresets.Count</span>
                 </div>
-                @RenderPresetList(viewModel.BattlePresets, canMutate)
+                @RenderPresetList(viewModel.BattlePresets, canMutate, ambiguousGearKeys)
             </article>
         </section>
 
-        @if (viewModel.Groups.Count == 0)
+        <section class="inventory-owned-results" data-testid="inventory-owned-results">
+        <h2 tabindex="-1" @ref="_ownedResultsHeading" data-testid="inventory-owned-heading">Owned equipment</h2>
+        @if(discoveryActive && matchingOwned.Length==0){<p role="status" data-testid="inventory-owned-empty">No owned equipment matches this search and slot. Reset filters to browse all owned equipment.</p><div class="action-row inventory-actions"><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ResetOwnedFilters" Variant="Variant.Outlined" data-testid="inventory-owned-empty-reset">Reset filters and return to search</MudButton></div>}
+        @if (allOwned.Length == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
                 No owned gear is saved yet. Refresh account data after signing in.
@@ -204,12 +232,13 @@
         else
         {
             <div class="inventory-group-grid">
-                @foreach (var group in viewModel.Groups)
+                @foreach (var group in shownGroups)
                 {
-                    var otherItemsExpanded = IsOtherItemsExpanded(group.SlotTitle);
-                    <section class="card-surface inventory-group-card">
+                    var otherItemsExpanded = discoveryActive || IsOtherItemsExpanded(group.SlotTitle);
+                    var slotRefKey="battle:"+group.SlotTitle;
+                    <section class="card-surface inventory-group-card" @key="slotRefKey">
                         <div class="task-group-header">
-                            <h2>@group.SlotTitle</h2>
+                            <h2 id="@OwnedSlotId(group.SlotTitle,false)" tabindex="-1" @ref="_slotHeadings[slotRefKey]">@group.SlotTitle</h2>
                             <span class="ui-pill count-pill">@group.Items.Count</span>
                         </div>
 
@@ -229,11 +258,11 @@
                                                 <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
                                                 <div>
                                                     <strong>@item.DisplayName</strong>
-                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>@if(ambiguousGearKeys.Contains(item.Key)){<span class="dashboard-stat-note">Item reference: @item.Key</span>}
                                                     @RenderStats(item.TotalStats)
                                                 </div>
                                             </div>
-                                            <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
+                                            <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" aria-label="@($"{(item.IsBattleEquipped ? "Equipped battle" : "Equip item")} {GearActionContext(item.Key,item.DisplayName,item.SlotTitle,ambiguousGearKeys)}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
                                                 @(item.IsBattleEquipped ? "Equipped battle" : "Equip item")
                                             </MudButton>
                                         </article>
@@ -242,24 +271,26 @@
                             </div>
                         }
 
+                        @if(!discoveryActive){
                         <div class="other-items-toggle-row">
-                            <MudButton HtmlTag="button" data-testid="@($"toggle-other-items-{group.SlotTitle}")" OnClick="@(() => ToggleOtherItems(group.SlotTitle))" Variant="Variant.Text">
+                            <MudButton HtmlTag="button" data-testid="@($"toggle-other-items-{group.SlotTitle}")" aria-label="@($"{(otherItemsExpanded ? "Hide other items" : $"Show other items ({group.Items.Count})")} for {group.SlotTitle}")" OnClick="@(() => ToggleOtherItems(group.SlotTitle))" Variant="Variant.Text">
                                 @(otherItemsExpanded ? "Hide other items" : $"Show other items ({group.Items.Count})")
                             </MudButton>
                         </div>
 
+                        }
                         @if (otherItemsExpanded)
                         {
                             <div class="inventory-item-list">
                                 @foreach (var item in group.Items)
                                 {
-                                    <article class="inventory-item-card">
+                                    <article class="inventory-item-card" @key="item.Key" data-testid="@($"owned-gear-{item.Key}")">
                                         <div class="task-group-header">
                                             <div class="habitica-item-identity">
                                                 <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
                                                 <div>
                                                     <strong>@item.DisplayName</strong>
-                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>@if(ambiguousGearKeys.Contains(item.Key)){<span class="dashboard-stat-note">Item reference: @item.Key</span>}
                                                 </div>
                                             </div>
                                             <div>
@@ -272,7 +303,7 @@
                                             <p class="panel-copy">@item.Notes</p>
                                         }
                                         <div class="action-row inventory-actions">
-                                            <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
+                                            <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" aria-label="@($"{(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")} {GearActionContext(item.Key,item.DisplayName,item.SlotTitle,ambiguousGearKeys)}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
                                                 @(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")
                                             </MudButton>
                                         </div>
@@ -285,7 +316,7 @@
             </div>
         }
 
-        @if (viewModel.AccessoryGroups.Count > 0)
+        @if (shownAccessoryGroups.Count > 0)
         {
             <section class="accessory-section">
                 <div class="task-group-header">
@@ -293,35 +324,38 @@
                         <p class="section-label">Cosmetic and no-stat items</p>
                         <h2>Other equipment</h2>
                     </div>
-                    <span class="ui-pill count-pill">@viewModel.AccessoryGroups.Sum(group => group.Items.Count)</span>
+                    <span class="ui-pill count-pill">@shownAccessoryGroups.Sum(group => group.Items.Count)</span>
                 </div>
 
+                @if(!discoveryActive){
                 <div class="other-items-toggle-row">
                     <MudButton HtmlTag="button" data-testid="toggle-non-battle-equipment" OnClick="ToggleNonBattleEquipment" Variant="Variant.Text">
-                        @(_nonBattleEquipmentExpanded ? "Hide other equipment" : $"Show other equipment ({viewModel.AccessoryGroups.Sum(group => group.Items.Count)})")
+                        @(_nonBattleEquipmentExpanded ? "Hide other equipment" : $"Show other equipment ({shownAccessoryGroups.Sum(group => group.Items.Count)})")
                     </MudButton>
                 </div>
 
-                @if (_nonBattleEquipmentExpanded)
+                }
+                @if (discoveryActive || _nonBattleEquipmentExpanded)
                 {
                     <div class="inventory-group-grid accessory-group-grid">
-                        @foreach (var group in viewModel.AccessoryGroups)
+                        @foreach (var group in shownAccessoryGroups)
                         {
-                            <section class="card-surface inventory-group-card accessory-group-card">
+                            var slotRefKey="other:"+group.SlotTitle;
+                            <section class="card-surface inventory-group-card accessory-group-card" @key="slotRefKey">
                                 <div class="task-group-header">
-                                    <h3>@group.SlotTitle</h3>
+                                    <h3 id="@OwnedSlotId(group.SlotTitle,true)" tabindex="-1" @ref="_slotHeadings[slotRefKey]">@group.SlotTitle</h3>
                                     <span class="ui-pill count-pill">@group.Items.Count</span>
                                 </div>
 
                                 <div class="inventory-item-list accessory-item-list">
                                     @foreach (var item in group.Items)
                                     {
-                                        <article class="inventory-item-card accessory-item-card">
+                                        <article class="inventory-item-card accessory-item-card" @key="item.Key" data-testid="@($"owned-gear-{item.Key}")">
                                             <div class="habitica-item-identity">
                                                 <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
                                                 <div>
                                                     <strong>@item.DisplayName</strong>
-                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>@if(ambiguousGearKeys.Contains(item.Key)){<span class="dashboard-stat-note">Item reference: @item.Key</span>}
                                                 </div>
                                             </div>
                                             @if (!string.IsNullOrWhiteSpace(item.Notes))
@@ -337,10 +371,51 @@
                 }
             </section>
         }
+        @if(discoveryActive && matchingOwned.Length>0){<div class="action-row inventory-owned-paging"><span>@shownFrom–@shownTo of @matchingOwned.Length shown</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_ownedPage==0)" OnClick="PreviousOwned" Variant="Variant.Text" data-testid="inventory-owned-previous">Previous owned results</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(shownTo>=matchingOwned.Length)" OnClick="NextOwned" Variant="Variant.Text" data-testid="inventory-owned-next">Next owned results</MudButton></div>}
+        </section>
     }
 </div>
 
 @code {
+    private const int OwnedPageSize=20;
+    private string _ownedGearQuery="",_ownedGearSlot="";
+    private int _ownedPage;
+    private string? _ownedAccount,_pendingOwnedSlot;
+    private string[]? _ownedKeys;
+    private GearCatalogSnapshot? _ownedCatalog;
+    private bool _focusOwnedResults,_focusOwnedSearch,_disposed;
+    private ElementReference _ownedSearch,_ownedResultsHeading;
+    private readonly Dictionary<string,ElementReference> _slotHeadings=new(StringComparer.Ordinal);
+    private readonly HashSet<string> _visibleOwnedSlots=new(StringComparer.Ordinal);
+    private bool IsOwnedDiscoveryActive=>!string.IsNullOrWhiteSpace(_ownedGearQuery)||_ownedGearSlot.Length>0;
+    private bool MatchesOwnedFilter(InventoryGearItemViewModel item) => (_ownedGearSlot.Length==0||item.SlotTitle==_ownedGearSlot)
+        && (NormalizeDisplayedName(item.DisplayName).Contains(NormalizeDisplayedName(_ownedGearQuery),StringComparison.OrdinalIgnoreCase)||item.Key.Contains(_ownedGearQuery.Trim(),StringComparison.OrdinalIgnoreCase));
+    private static IReadOnlyList<InventoryGearGroupViewModel> OwnedGroups(IReadOnlyList<InventoryGearGroupViewModel> groups,bool active,IReadOnlySet<string> pageKeys) => !active?groups:groups.Select(group=>group with {Items=group.Items.Where(item=>pageKeys.Contains(item.Key)).DistinctBy(item=>item.Key,StringComparer.Ordinal).ToArray(),BestItems=Array.Empty<InventoryGearItemViewModel>()}).Where(group=>group.Items.Count>0).ToArray();
+    private static string OwnedSlotId(string title,bool other)=>"owned-slot-"+(other?"other-":"battle-")+string.Concat(title.ToLowerInvariant().Select(c=>char.IsLetterOrDigit(c)?c:'-'));
+    private void OwnedQueryChanged(ChangeEventArgs args) { _ownedGearQuery=args.Value?.ToString()??"";_ownedPage=0; }
+    private void OwnedSlotChanged(ChangeEventArgs args) { _ownedGearSlot=args.Value?.ToString()??"";_ownedPage=0; }
+    private void ViewOwnedResults() { _pendingOwnedSlot=_ownedGearSlot.Length==0?null:_ownedGearSlot;_focusOwnedResults=true; }
+    private void OwnedSearchKey(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args) { if(args.Key=="Enter")ViewOwnedResults(); }
+    private void ResetOwnedFilters() { _ownedGearQuery=_ownedGearSlot="";_ownedPage=0;_pendingOwnedSlot=null;_focusOwnedSearch=true; }
+    private void PreviousOwned() { _ownedPage=Math.Max(0,_ownedPage-1);ViewOwnedResults(); }
+    private void NextOwned() { _ownedPage++;ViewOwnedResults(); }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(_disposed)return;
+        try {
+            if(_focusOwnedSearch){_focusOwnedSearch=false;await FocusOwnedAndRevealAsync(_ownedSearch);}
+            else if(_focusOwnedResults){_focusOwnedResults=false;var slot=_pendingOwnedSlot;_pendingOwnedSlot=null;
+                var key=slot is not null&&_visibleOwnedSlots.Contains("battle:"+slot)?"battle:"+slot:"other:"+slot;
+                if(slot is not null&&_visibleOwnedSlots.Contains(key)&&_slotHeadings.TryGetValue(key,out var heading))await FocusOwnedAndRevealAsync(heading);else await FocusOwnedAndRevealAsync(_ownedResultsHeading);}
+        }catch(JSException){}
+    }
+    private async Task FocusOwnedAndRevealAsync(ElementReference reference)
+    {
+        if(_disposed)return;var account=_ownedAccount;
+        await reference.FocusAsync();
+        await using var module=await Js.InvokeAsync<IJSObjectReference>("import","./js/field-focus.js");
+        if(!_disposed&&account==_ownedAccount)await module.InvokeVoidAsync("revealFocusedElement",reference);
+    }
     private string _battlePresetName = string.Empty;
     private string? _pendingRemovePresetId;
     private string? _renamingPresetId;
@@ -352,6 +427,7 @@
 
     protected override void OnInitialized()
     {
+        _ownedAccount=SessionController.State.UserId;_ownedKeys=SessionController.State.UserSnapshot?.Inventory.OwnedGearKeys;_ownedCatalog=SessionController.State.GearCatalogSnapshot;
         SessionController.Changed += HandleStateChanged;
     }
 
@@ -566,7 +642,7 @@
         builder.CloseElement();
     };
 
-    private RenderFragment RenderPresetList(IReadOnlyList<InventoryPresetViewModel> presets, bool canMutate) => builder =>
+    private RenderFragment RenderPresetList(IReadOnlyList<InventoryPresetViewModel> presets, bool canMutate, IReadOnlySet<string> ambiguousGearKeys) => builder =>
     {
         if (presets.Count == 0)
         {
@@ -580,8 +656,11 @@
         builder.OpenElement(3, "div");
         builder.AddAttribute(4, "class", "inventory-preset-list");
         var sequence = 5;
+        var duplicatePresetNames = presets.GroupBy(preset=>NormalizeDisplayedName(preset.Name),StringComparer.OrdinalIgnoreCase).Where(group=>group.Count()>1).Select(group=>group.Key).ToHashSet(StringComparer.OrdinalIgnoreCase);
         foreach (var preset in presets)
         {
+            var duplicateName = duplicatePresetNames.Contains(NormalizeDisplayedName(preset.Name));
+            var presetContext = $"{preset.Name}" + (duplicateName ? $", preset reference {preset.Id}" : "") + $", {preset.Kind.ToString().ToLowerInvariant()} preset";
             builder.OpenElement(sequence++, "article");
             builder.AddAttribute(sequence++, "class", "inventory-item-card");
             builder.OpenElement(sequence++, "div");
@@ -590,6 +669,7 @@
             builder.OpenElement(sequence++, "strong");
             builder.AddContent(sequence++, preset.Name);
             builder.CloseElement();
+            if(duplicateName){builder.OpenElement(sequence++,"span");builder.AddAttribute(sequence++,"class","dashboard-stat-note");builder.AddContent(sequence++,$"Preset reference: {preset.Id} ");builder.CloseElement();}
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
             builder.AddContent(sequence++, $"{preset.Items.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
@@ -624,6 +704,7 @@
                     builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
                     builder.AddContent(sequence++, item.SlotTitle);
                     builder.CloseElement();
+                    if(ambiguousGearKeys.Contains(item.Key)){builder.OpenElement(sequence++,"span");builder.AddAttribute(sequence++,"class","dashboard-stat-note");builder.AddContent(sequence++,$"Item reference: {item.Key}");builder.CloseElement();}
                     if (item.TotalStats != GearStatBlock.Zero)
                     {
                         RenderStats(item.TotalStats)(builder);
@@ -633,7 +714,7 @@
 
                     builder.OpenComponent<MudButton>(sequence++);
                     builder.AddAttribute(sequence++, "HtmlTag", "button");
-                    builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-item-{preset.Id}-{item.Key}" });
+                    builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-item-{preset.Id}-{item.Key}", ["aria-label"] = $"Equip item {GearActionContext(item.Key,item.DisplayName,item.SlotTitle,ambiguousGearKeys)} from {presetContext}" });
                     builder.AddAttribute(sequence++, "Color", Color.Primary);
                     builder.AddAttribute(sequence++, "Disabled", !canMutate);
                     builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => EquipItemAsync(EquipmentSetKind.Battle, item.Key)));
@@ -652,15 +733,21 @@
             {
                 builder.OpenElement(sequence++, "div");
                 builder.AddAttribute(sequence++, "class", "preset-save-row");
+                builder.OpenElement(sequence++, "label");
+                builder.AddAttribute(sequence++, "class", "field-row");
+                builder.AddAttribute(sequence++, "for", $"rename-preset-name-{Uri.EscapeDataString(preset.Id)}");
+                builder.AddContent(sequence++, $"Preset name for {presetContext}");
                 builder.OpenElement(sequence++, "input");
+                builder.AddAttribute(sequence++, "id", $"rename-preset-name-{Uri.EscapeDataString(preset.Id)}");
                 builder.AddAttribute(sequence++, "class", "app-input");
                 builder.AddAttribute(sequence++, "data-testid", $"rename-preset-name-{preset.Id}");
                 builder.AddAttribute(sequence++, "value", BindConverter.FormatValue(_renamePresetName));
                 builder.AddAttribute(sequence++, "oninput", EventCallback.Factory.CreateBinder<string>(this, value => _renamePresetName = value, _renamePresetName));
                 builder.CloseElement();
+                builder.CloseElement();
                 builder.OpenComponent<MudButton>(sequence++);
                 builder.AddAttribute(sequence++, "HtmlTag", "button");
-                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"save-rename-preset-{preset.Id}" });
+                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"save-rename-preset-{preset.Id}", ["aria-label"] = $"Save name for {presetContext}" });
                 builder.AddAttribute(sequence++, "Color", Color.Primary);
                 builder.AddAttribute(sequence++, "Disabled", !canMutate || string.IsNullOrWhiteSpace(_renamePresetName));
                 builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => SaveRenamePresetAsync(preset.Id)));
@@ -674,7 +761,7 @@
             builder.AddAttribute(sequence++, "class", "action-row inventory-actions");
             builder.OpenComponent<MudButton>(sequence++);
             builder.AddAttribute(sequence++, "HtmlTag", "button");
-            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-{preset.Id}", ["aria-label"] = $"Equip {presetContext}" });
             builder.AddAttribute(sequence++, "Color", Color.Primary);
             builder.AddAttribute(sequence++, "Disabled", !canMutate);
             builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => EquipPresetAsync(preset.Id)));
@@ -683,7 +770,7 @@
             builder.CloseComponent();
             builder.OpenComponent<MudButton>(sequence++);
             builder.AddAttribute(sequence++, "HtmlTag", "button");
-            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"rename-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"rename-preset-{preset.Id}", ["aria-label"] = $"Rename {presetContext}" });
             builder.AddAttribute(sequence++, "Disabled", !canMutate);
             builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => BeginRenamePreset(preset)));
             builder.AddAttribute(sequence++, "Variant", Variant.Text);
@@ -691,7 +778,7 @@
             builder.CloseComponent();
             builder.OpenComponent<MudButton>(sequence++);
             builder.AddAttribute(sequence++, "HtmlTag", "button");
-            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"remove-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"remove-preset-{preset.Id}", ["aria-label"] = $"Remove {presetContext}" });
             builder.AddAttribute(sequence++, "Color", Color.Error);
             builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _pendingRemovePresetId = preset.Id));
             builder.AddAttribute(sequence++, "Variant", Variant.Text);
@@ -725,13 +812,14 @@
                 builder.CloseElement();
                 builder.OpenComponent<MudButton>(sequence++);
                 builder.AddAttribute(sequence++, "HtmlTag", "button");
-                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"confirm-remove-preset-{preset.Id}" });
+                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"confirm-remove-preset-{preset.Id}", ["aria-label"] = $"Confirm remove {presetContext}" });
                 builder.AddAttribute(sequence++, "Color", Color.Error);
                 builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => ConfirmRemovePresetAsync(preset.Id)));
                 builder.AddAttribute(sequence++, "Variant", Variant.Filled);
                 builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Confirm remove")));
                 builder.CloseComponent();
                 builder.OpenComponent<MudButton>(sequence++);
+                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string,object>{["aria-label"]=$"Cancel removal of {presetContext}"});
                 builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _pendingRemovePresetId = null));
                 builder.AddAttribute(sequence++, "Variant", Variant.Text);
                 builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Cancel")));
@@ -744,6 +832,19 @@
 
         builder.CloseElement();
     };
+
+    private static string NormalizeDisplayedName(string name) => string.Join(" ",name.Split((char[]?)null,StringSplitOptions.RemoveEmptyEntries));
+    private static IReadOnlySet<string> FindAmbiguousGearKeys(InventoryViewModel model)
+    {
+        var items = model.Groups.Concat(model.AccessoryGroups).SelectMany(group=>group.Items).Select(item=>(item.Key,item.DisplayName,item.SlotTitle))
+            .Concat(model.BattlePresets.Concat(model.CostumePresets).SelectMany(preset=>preset.Items).Select(item=>(item.Key,item.DisplayName,item.SlotTitle)))
+            .Concat(model.BattleEquipped.Items.Concat(model.CostumeEquipped.Items).Select(item=>(item.Key,item.DisplayName,item.SlotTitle)))
+            .DistinctBy(item=>item.Key,StringComparer.Ordinal);
+        return items.GroupBy(item=>NormalizeDisplayedName(item.DisplayName)+"\u001f"+item.SlotTitle,StringComparer.OrdinalIgnoreCase).Where(group=>group.Count()>1)
+            .SelectMany(group=>group.Select(item=>item.Key)).ToHashSet(StringComparer.Ordinal);
+    }
+    private static string GearActionContext(string key,string name,string slot,IReadOnlySet<string> ambiguousKeys) => $"{name}, {slot}"
+        + (ambiguousKeys.Contains(key) ? $", item reference {key}" : "");
 
     private static RenderFragment RenderStats(GearStatBlock stats) => builder =>
     {
@@ -862,12 +963,18 @@
 
     private void HandleStateChanged()
     {
+        if(_disposed)return;
+        var state=SessionController.State;
+        if(_ownedAccount!=state.UserId){_ownedAccount=state.UserId;_ownedGearQuery=_ownedGearSlot="";_ownedPage=0;_pendingOwnedSlot=null;_focusOwnedResults=_focusOwnedSearch=false;}
+        if(!ReferenceEquals(_ownedKeys,state.UserSnapshot?.Inventory.OwnedGearKeys)||!ReferenceEquals(_ownedCatalog,state.GearCatalogSnapshot))_ownedPage=0;
+        _ownedKeys=state.UserSnapshot?.Inventory.OwnedGearKeys;_ownedCatalog=state.GearCatalogSnapshot;
+        if(state.UserSnapshot is null){_pendingOwnedSlot=null;_focusOwnedResults=_focusOwnedSearch=false;}
         _ = InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
     {
-        SessionController.Changed -= HandleStateChanged;
+        _disposed=true;_slotHeadings.Clear();SessionController.Changed -= HandleStateChanged;
     }
 
 }

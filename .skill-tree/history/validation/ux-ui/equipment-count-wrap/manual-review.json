@@ -1,0 +1,17 @@
+{
+  "report": "browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+  "reviewed": [
+    "chromium light360/200 counts",
+    "chromium light1280/100 counts",
+    "webkit obsidian360/200 counts"
+  ],
+  "observations": [
+    "Complete Hatching potions/Quest scrolls words; distinct full-width label rows.",
+    "Exact1234/20/321/42 values and original image fallback context retained; artwork dimensions reserved.",
+    "Rendered matrix includes long labels, int.MaxValue/zero values and disabled stale-state controls."
+  ],
+  "controls": "39 pure geometry controls pass, including independent split-count-word negative.",
+  "limitations": [
+    "Physical devices, AT and real provider data unqualified. No equipment mutation."
+  ]
+}

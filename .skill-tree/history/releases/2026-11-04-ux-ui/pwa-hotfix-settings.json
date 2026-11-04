@@ -1,0 +1,12 @@
+{
+  "name": "pwa-hotfix-settings",
+  "argv": [
+    "node",
+    "deploy/frontend-settings.mjs",
+    "/Users/petr/Projects/habitica-tool/src/Habitica.WebApp/wwwroot/appsettings.json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.079,
+  "deadline_seconds": 30,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/pwa-hotfix-settings.log"
+}

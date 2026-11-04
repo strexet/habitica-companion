@@ -1,0 +1,301 @@
+{
+  "active_run": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe",
+  "current_parent": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+  "current_browser_session": 66969,
+  "helpers": [
+    "/tmp/habitica-ui-flow.py",
+    "/tmp/habitica-ui-node.py"
+  ],
+  "new_completed_this_continuation": {
+    "native-date-reflow": {
+      "task": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+      "outcome": "O-c448ba2f-611b-4f7a-b7ef-95f797e6a04f",
+      "counts": [
+        7,
+        217
+      ]
+    },
+    "workspace-readiness": {
+      "task": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+      "outcome": "O-1f14d2e9-54ab-4d17-9950-de983ac32ead",
+      "counts": [
+        50,
+        505
+      ]
+    },
+    "category-headings": {
+      "task": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+      "outcome": "O-67d674ae-6ff9-48fc-a3e7-98a58a787ad9",
+      "counts": [
+        9,
+        27,
+        577
+      ]
+    },
+    "planning-date-readability": {
+      "task": "T-b8a05278-292d-4f91-a882-35e0944a742d",
+      "outcome": "O-ca82725d-7e90-4cc8-802a-fcaf107fbe77",
+      "counts": [
+        12,
+        361
+      ]
+    },
+    "canonical-destinations": {
+      "task": "T-39daa4c0-239d-445b-b812-62007877b49e",
+      "outcome": "O-47c85023-1ad3-450f-ba13-5a0d95bdd1cb",
+      "counts": [
+        63,
+        577
+      ]
+    },
+    "today-work-first": {
+      "task": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+      "outcome": "O-b50b1d6a-9eb9-447d-8f37-a4de6e974e3a",
+      "counts": [
+        15,
+        721
+      ]
+    },
+    "bounded-companions": {
+      "task": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+      "counts": [
+        47,
+        29,
+        505
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+      "outcome": "O-2a2686af-0790-45e8-b62d-0f96ab42211d"
+    },
+    "dashboard-appearance-reflow": {
+      "task": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+      "outcome": "O-dc509eb5-93dd-4f0f-b0b4-ce64486ac969",
+      "report": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/4ecb0117-274f-41a1-9dbf-489cc142992b.json",
+      "counts": [
+        119,
+        217
+      ]
+    },
+    "dashboard-freshness": {
+      "task": "T-21881802-f186-479d-9111-295192ce2de8",
+      "outcome": "O-2aec50dc-d685-4107-aa4e-9def59d6ab1a",
+      "counts": [
+        121,
+        721
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json"
+    },
+    "daily-form-order": {
+      "task": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+      "outcome": "O-60230074-8c9d-4a63-8240-bc26b81b6d63",
+      "counts": [
+        37,
+        29,
+        577
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json"
+    },
+    "saved-list-errors": {
+      "task": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+      "outcome": "O-011acd01-df4a-4473-8708-b64cd5b65d55",
+      "counts": [
+        47,
+        4,
+        577
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json"
+    },
+    "party-context-reflow": {
+      "task": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+      "outcome": "O-bf3eb7a8-d579-41a3-81dc-b4389cb49fa5",
+      "counts": [
+        35,
+        289
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json"
+    },
+    "equipment-identity-reflow": {
+      "task": "T-e3859337-1a25-48e6-a37d-817868623ec7",
+      "outcome": "O-ed188d60-540e-4104-be8d-fc5bb1858873",
+      "counts": [
+        28,
+        38,
+        289
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json"
+    },
+    "daily-timezones": {
+      "task": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+      "outcome": "O-11d71fba-bc3e-4a7c-9e88-944c3d8322ce",
+      "counts": [
+        56,
+        865
+      ],
+      "report": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json"
+    },
+    "saved-list-layout": {
+      "task": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+      "outcome": "O-476fef39-d9f1-4a2b-98f7-877fe60d5042",
+      "counts": [
+        37,
+        649
+      ],
+      "related_relative_components": 3,
+      "report": ".skill-tree/history/validation/ux-ui/saved-list-layout/browser/645e83fd-003e-49b5-9df2-ec1efd720bc6.json"
+    },
+    "phone-notes-editor": {
+      "task": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+      "outcome": "O-7d6905b5-477b-423c-b5de-1561d61b0634",
+      "counts": [
+        31,
+        937
+      ],
+      "related_unified": 7,
+      "report": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/f16b14c4-f10e-46cf-ae4b-b4754c3ab585.json"
+    }
+  },
+  "current_parent_state": "See current_resume (top-level legacy progress text is historical).",
+  "harness_updates": [
+    "27 pure tests include independent observed-scheme and root-font mismatch controls, plus prior24 controls. Generic runner records and checks actual final journey appearance.",
+    "Category journey applies selected scheme on each real load, waits title/Add natively enabled, finishes screenshot animations, checks native route/history heading focus, draft retention and unchanged journal.",
+    "Navigation journey now seeds exact selected preference so Dashboard/Settings appearance controls do not reset it. Shared native date journey blurs input before ink comparison.",
+    "Native probes now use unique numbered artifact IDs per journey to preserve multi-route evidence.",
+    "WebKit host plain Tab skips buttons; owned native input/button trace proves Option+Tab includes them. Native journeys use that supported path.",
+    "29 pure tests now include owned synthetic-user fixture path boundaries. Optional adapter.synthetic_user_fixture supports one reviewed ux-ui-*.json in the harness directory; runner records its SHA and uses it only for existing synthetic provider GET replies. Every provider write remains blocked. Bounded-companions fixture/journey are installed and qualified.",
+    "Dashboard status fixtures now retain the full Appearance card. Native geometry checks include actual ordinary-word label width and44px target. Synthetic failed user GET now returns400 to avoid transient-retry delays; product calls unchanged. Required Appearance child uses a small wrapper around the shared dashboard journey.",
+    "Native date reference now uses effective :disabled rather than el.disabled, preserves fractional raster placement and actual backdrop below translucent input surfaces (visibility-hidden screenshot retained as actual-backdrop.png). Pixel diagnostic proved prior normal WebKit date false failure: same360 glyph pixels/bounds/color but different hidden-background G channel.97% threshold unchanged. Positive native canary inherits fieldset disability and uses a fixed translucent/pastel180deg gradient to independently exercise backdrop parity; narrow negative retained. Browser runner asserts effective disabled parity. Current29 pure controls pass. These shared changes stale all completed contracts for final matching-source revalidation.",
+    "Native helper now centers input before reading geometry/paint. A new frozen review probe had measured the fixed appbar after review insertion left input partly above viewport (old top -28.7); source/canaries were correct but actualInk0 was an occluded screenshot. Current helper scrolls center with instant behavior and two animation frames before sampling. All controls remain strict.",
+    "Saved-list focus diagnostics: native select lowercase t type-ahead commits Todo in both pinned engines, arrow variants do not; use qualified path. Fixed-header date focus stayed offscreen in real WebKit after2 paint frames despite128px scroll margin and2px outline. Small field-focus.js post-layout reveal now scrolls only still-focused connected enabled controls; Node4 controls cover navigation/user-focus/readiness guards. Current browser logs final focusStates and waits fully unobscured field bounds. Repeated timezone failures kept an unchanged generic alert node; keyed per-review summary now recreates role=alert and includes first specific corrective message. Browser DOM handle regression verifies old alert disconnected.",
+    "33 pure controls now include owned party/content fixture path boundaries. Optional synthetic_party_fixture maps only exact party/member/chat GETs; synthetic_content_fixture maps exact content GET. All fixture paths and SHA hashes recorded in run identity; writes still blocked. Game journey uses same-named members/gear/retained presets with exact contextual names, native disclosure/focus, persistent inputs and unchanged store checks.",
+    "Party child adds explicit retained-state reload and native document width guard including the actual local shared-endpoint warning. CSS wraps shared warning text, adapts Party grids/actions to available width and removes resource-chip accent-gradient override. Manual screenshot rejection of automated pass is retained; no global UI acceptance. /tmp flow read now uses validation_task for immutable completed-contract revalidation, and /tmp/habitica-ui-revalidate.py runs each recipe then accept-revalidation without reopening outcomes.",
+    "Validation helpers share metadata and must run sequentially. Parallel parent unit/Node launch collided on original ui-flow-input.json: Node wrapper received actual dotnet recipe and ran63 tests, then failed TAP parsing. Pending actual dotnet attempt C-637dd236-06b9-491b-b2ad-8daebeb7f690 was reconciled from original console/TRX and recorded truthfully as unit63 pass, not Node. Immutable evidence in game-control-names/metadata-collision-recovery.json. Separate Node33 rerun passed. Helper now uses unique temp request files, but all metadata helpers still run serially.",
+    "Equipment DOM collector ux-ui-equipment-metrics.mjs stages into fixture server through prepare.py and exact owned route. It measures visible gear-name and button-label word width (including text-transform), and intact stat-token ink width/line count. qualification-frame invokes collector plus pure assessEquipmentReadability; native game journey uses same collector and evaluator. Four independent pure controls reject narrow name columns, wrapped tokens and unavailable geometry, accepting full available word area. Pure count now37. Recipe input_paths includes new metrics. New shared inputs stale every completed browser contract for final revalidation.",
+    "Final Equipment oracle is38 pure controls. Width tolerance alone let outlined Save recommendation wrap final N at actual284px versus284.46px word; manual native screenshot rejected automated b762dc5a pass. Collector now records native Range line counts for every fixed action word; each must be one line. Native journey independently constructs an Arial positive word and half-pixel-short negative on owned seed document, requiring actual [1] versus [2] and negative rejection inside old2px tolerance, before any app load. Recipe and sources refreshed; final child38 controls and289 cases match. Preserve every earlier automated pass/failure as explicitly unaccepted research. Current product CSS stacks Equipment art/text, keeps stat tokens intact with rounded rectangle groups, reduces phone nested padding, and extends recommendation action row into card gutters while remaining within border, with .0625rem action inline padding. Final uppercase recommendation words are intact in both filled and outlined actions.",
+    "Game native names compare browser-normalized whitespace and role lookup uses normalized name text. Current normalization is private per component, not a new global formatter. Two additional full Razor fixtures cover whitespace-equivalent member and inventory names. Profile refreshed after data/journey/adapter changes. All old child contracts stale for final revalidation. /tmp metadata helpers remain serial and unique input filenames. Use set-e for shell sequences, or await/check each command before dependent launch. /tmp nativeBrowser helper now recognizes compileSourceTextModule with absent browserCleanup as prerequisite-wait; original broad failure receipt preserved and supplemented."
+  ],
+  "final_revalidation": "Shared source/recipe/adapter changes make previously accepted completed contracts stale. Revalidate at final sources before declaring global UI qualification. The two existing release/security snapshot tasks remain owner-blocked; no synthetic substitution. Consider current UI revalidation before the final UI completion helper advances into the blocked release gate, because automatic advance selects completed-contract revalidation only when every snapshot root is done.",
+  "deferred_pending": [
+    "P-375aba91-d916-46f4-8310-aa7b51810a45",
+    "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7",
+    "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4",
+    "P-612f62db-56ca-44cd-8f23-95609d268da9",
+    "P-5a241695-798e-48df-8a0f-989ba8ceaee8"
+  ],
+  "boundaries": "Continue automatically within snapshot/required dependencies. No subagents, commit, push, deploy, live provider, scheduling or consent. Preserve all pre-existing dirty changes and parked checkpoint pins. Local synthetic build/tests remain authorized. Process captured nonblocking followups once at end and defer implementation.",
+  "capture_recovery": "The latest stale-guidance finding was captured after a prose rejection and completed-parent handoff; official intake followed by atomic typed-provenance correction preserves the completed Today parent. No outcome or implementation scope rewritten.",
+  "prepared_next_task_helpers": [
+    "/tmp/habitica-ui-revalidate.py",
+    "/tmp/habitica-workspace-names-tests.py",
+    "/tmp/habitica-workspace-names-implement.py"
+  ],
+  "current_required_child": null,
+  "next_task_notes": "Unexecuted workspace-names tests now use raw whitespace variants for two visibly identical tasks, assert original task.Text in labels, and emit actual ready C# journals for Todo/Habit/Daily under HABITICA_BROWSER_EVIDENCE. Merge their tasks into one owned browser document (no commands/events) for native journey rather than guessing Daily recurrence schema. Temp implementation computes duplicate-title HashSet once per render using NormalizeDisplayedName. Python syntax checked only; start task, apply tests, intended Red, then implementation and correct normal compile/test issues. Add sources/adapter/journey before qualification; no source changes from those scripts applied yet.",
+  "current_resume": {
+    "task_id": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+    "state": "Projects browse-first begun; current Release browser matrix active PTY66969 after storage fixture-reader correction. NO source edits/builds while active. Latest31 focused pass C-0292b331-83f2-445c-a00a-55e615af5bad.",
+    "changes": [
+      "TodoProjectsPage now has a separate single Projects h1, explicit no-default/All tasks/Manage organization toolbar, unchanged hierarchy/work/Project Notes first, and TodoOrganizationPanel afterward. New panel params UsePageHeading(defaulttrue), ManageOnDemand(defaultfalse), ManagementClosed callback; existing standalone management fixtures remain visible by default. Page uses false/true and focus return to toolbar.",
+      "Only authoring/kind/records body hidden in controlled organization-management div. Original reviews, receipts and unavailable-source messages remain outside optional body. Open does not reset draft; Close disabled while original preview/pending remains; close/reopen preserves alias/name and hierarchy project selection. On source change management closes and old draft reset remains.",
+      "Existing history links gain app-link-button44 sizing. FocusAndReveal helper reused through scoped await-using JS imports; editor falls back to management heading when Snapshot unavailable. Existing source/alias/archive/tag/unknown-receipt logic unchanged.",
+      "C# new2browse tests: explicit empty picker means no project rows, exact Alpha/Beta work, alias close/resume, conflict and exact review, frozen closure, empty creation draft. Additional NotesProject test emits paired projects-browse-journal.json/book.json from typed models and actual Notes engine:26active+1archived project,4tasks(Alpha/Beta/unassigned/archived reference), aliases,1projectfolder and1saved note with history. Actual workspace ID retained in notes links; never rewrite identities or manufacture receipts.",
+      "Adapter projects-browse-first has6fixtures,72native cases, reuse_hydrated_page/coldStart. Native journey selects/clears exact projects, opens exact Notes/folder unsaved draft, checks20/6 management paging, alias conflict/corrected preview/cancel, create preview/cancel, return focus, exact scoped history href and unchanged notebook/journal. Cleanup clears only unsaved synthetic draft via existing metadata controls and clears view selection.",
+      "Docs features/testing/UX updated. research-clarification.json records actual empty Choose project behavior; preserve no-selection/no-project rows and explicit All tasks link, not invent a new all-project query/default."
+    ],
+    "evidence": [
+      "C-b06766c0 unavailable compile: new test used var with multiple declarators; split declarations. Runnable Red C-2a8cce3d:2/30 missing new controls.",
+      "C-5967e4b8:29/30, test incorrectly expected empty value attr for Guid? null. Assert public TodoPlacementPicker.Value null +no rows and exact selectedGuid; application unchanged. Green30 C-6b8ac09c..., added paired fixture green31 C-0292b331...",
+      "2b9329a8 browser first native read stopped: listWorkspaces returns ID strings, journey assumed objects. Corrected all[0] use from actual owner source. Static100percent fixture checks completed; cleanup alltrue. workspace-list-boundary.json."
+    ],
+    "remaining": [
+      "Await66969; inspect original report, cleanup and actual visual/semantic failures before repair/retry. No edits/builds while running.",
+      "After finalpass manual light/dark phone/desktop review; matching-source checks/complete. Auto-next settings-sections T-432e6789-e063-4d66-8316-be4b7bccbd06. Six UI roots remain including current Projects, then2owner-blocked release gates.",
+      "Process5nonblocking findings once at end; do not admit new roots. Final current-source revalidation all completed UI tasks including newly stale Notes class/recipes, before owner-blocked gates. No commit/push/deploy/live provider/consent/scheduling."
+    ],
+    "helpers": [
+      "/tmp/habitica-ui-flow.py",
+      "/tmp/habitica-ui-node.py",
+      "/tmp/habitica-ui-revalidate.py"
+    ]
+  },
+  "current_resume_2026_11_04": {
+    "task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+    "key": "named-reminder-days",
+    "status": "browser running",
+    "pty": 55354,
+    "completed_since_previous": [
+      "Projects T-6b93e557-087a-42d0-bc39-23d0d4acbc13 O-1d8a7dae-39e5-43d7-a8d9-e85a8c26bf96:31unit/577browser cf964016-c9a0-40be-a751-18ec26d83ff5 artifact1793746565192873000. Native status reader corrected for generic original invalid/stale role=status and async text wait. Manual light/dark phone/desktop evidence.",
+      "Settings T-432e6789-e063-4d66-8316-be4b7bccbd06 O-243b83eb-c1ab-4926-b54a-6c05dc76c6a7:16unit/505browser295351bd-2ce2-496e-be71-08a94ecab26c artifact1793747129521301000. Five sections/accountfirst, explicit Settings fragment URLs and ref focus/reveal. Sibling appearance/install cards avoiddoublepadding; groupedcards rootphonegutters. Typed backup scope and labelled file input; controllerhandlersunchanged."
+    ],
+    "current": [
+      "Named weekdays/monthdays replacing numeric comma strings; specific associated emptygroup alerts and focus legend; review name+numeric Sunday0 identity. DraftFromCue/Edit sets exact HashSets sorted forwire. Original controller/consent/UTC/DST/device boundaries unchanged.",
+      "New2behavior tests runnableRed2/34 C-3a06da3b; Green34 C-c10090a1; typed fixtureexportfact Green35 C-63e4d9e6. Initialcompileunavailable missing Todo.RefreshAsync corrected LoadSelectedAsync.",
+      "Named-day browserfixture emits push-days-source.json from actual typed C# journal/reminder readiness/paused weeklyrevision7 and independent hashcontrol, futureSunday2027Jan3 09Z. New native ux-ui-reminder-days-journey.mjs page-only appsettings/HTTP overrides for synthetic loopback Auth8787/Workspace8789, actualclientrecovery/read/previews/discard. No Worker/D1 integration claim and no accepts. C# hashcontrol verifies Node serialization; unchangedsevenfractionUTCcue expected fromcontrolwire.",
+      "Firstbrowserunavailable efe9720d missingdeclared /todo/tasks capture; no browserlaunched. AddedexistingTodoCategoryPageTests capturetodo-tasks-main and nativeTasks/back visit. CurrentPTy55354. 8fixtures =>721expected? 72canaries+576fixture+72native+1=721.",
+      "No edits/builds whilebrowserrunning. Inspect originalfailure/cleanup before anyrepair. Potential synthetic wire/CORS/selector/paint issues to diagnose fromactualevidence; no silent retries.",
+      "Currentnative journeys use page-ownedfixture closure retainedacrosswarmcases; originalschedule replay with exact requestmap, onlyprepare accepted in route mock; local pending checkednull afterdiscard. actualcomponent fieldsetdisablesday/device edit. Native dates start/throughready selectedpaint; componentpendingdates rendered.",
+      "Docs appendedfeatures/UX/testing; helpers completeextras add CSS field-focus docs nativeadapter. All shared CSS/adapters/docs changes stalepriorcompletedcontracts."
+    ],
+    "remaining": [
+      "Finish namedreminder with manualreview andsource-matchedchecks; thenequipmentcounts T-21d74044-9947-4c8c-a030-752b2c9fff1c; syncTimestamp T-4ab8ddce-35ff-4243-bb65-43c4d8185be1; copyunset CORRECTID T-74b55fc6-9e0a-41d7-9816-6e4fe081df80 (prior summary suffixwrong).",
+      "Process5nonblocking onceend withoutadmittingroots. Finalsource revalidation ALL completed UI through /tmp/habitica-ui-revalidate.py beforeownerblockedgates. Fix old navTasksduplicate selectors :not(.nav-capture) as evidence dictates.",
+      "No commit/push/deploy/live provider/consent/scheduling. Preservefrozenrun andfourpinnedoldcheckpoints."
+    ]
+  },
+  "final_validation_resume": {
+    "completed_local_ui_units": 35,
+    "new_required_source_identity_task": "T-13e3754f-774b-443f-8997-e1d677f3c079",
+    "source_identity_stage": "awaiting-validation; Node4/4Green, static closure acceptance waits for all35UIrevalidations",
+    "required_source_identity_red": "C-620721c9-fb2a-4f85-98e8-bd8ae283c908:3failed/4",
+    "required_source_identity_green": "C-75c3cfa8-f16d-4882-a143-b595d837e997:4passed",
+    "registered_adapter_closure": 46,
+    "new_recipe_inputs": 41,
+    "required_task_scope": "Under existing blocked owner-release task; metadata boundary/status preserved through canonical temporary wrapper, installed files untouched.",
+    "new_tool_pending": "P-f6d09ee5-4b46-4dd6-9843-bdd82419df43 processed once/retained; separate package maintenance scope required.",
+    "followup_processing": "PR-edb0232f-548c-4ab6-b918-e9993e00497e promoted5Ready outside snapshot; no new followup admitted.",
+    "final_plan": "36current UI contracts including the required Notes initial-entry repair; source identity child remains awaiting validation. Resume exact matching current receipts only.",
+    "earlier_revalidation": "Old source-identity registration invalidated early receipts. Navigation diagnostic source change invalidates current browser receipts again; current helper reuses only exact matching hashes. Shell-content diagnostic pass current; foundation/accessible-shell must revalidate.",
+    "resume_command": "python3 /tmp/habitica-ui-final-all.py",
+    "next_after_all35": "Run actual adapter-profile-registration static assertion with full final UI receipts; complete required source identity child through canonical metadata; restore blocked owner gate handoff; strict docs/git checks.",
+    "no_scope_expansion": "Do not run owner/device/hosted/consent/publish lanes, implement five deferred UI followups or modify installed package/source SkillTree repo.",
+    "diagnostic_shell_pass": "bdd0da8b-2122-4431-81b9-b7dfd954f32b; added focus identity/geometry/history diagnostics without assertion relaxation. First failure remains retained and intermittent cause unproven.",
+    "current_batch_pty": 21345,
+    "current_batch_order": "Remaining contracts from disabled-readability onward first; foundational three last to avoid repeating early contracts after evidence-backed adapter prerequisite repairs. Frozen task/snapshot order unchanged.",
+    "disabled_adapter_repair": "bb109f25 original timeout: hidden Notes title still exists, so count did not open New note. Visibility now selects existing New action; saved-list hidden authoring uses same guard. No product/assertion changes. Full matrix running; no source edits/tests/builds while active.",
+    "completed_notes_readiness": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+    "next_after_all36": "python3 /tmp/source-identity-task.py green; python3 /tmp/habitica-ui-finalize-source.py; strict future/doc validators and git diff --check; python3 /tmp/habitica-ui-final-report.py; verify pins/cleanup and final handoff. Sourceidentity parent remains incomplete awaiting these final checks; owner gates remain blocked.",
+    "current_batch_state": "34of36UIcontracts current. Notes capture now awaits one ClickAsync and editor render after held load; persistent library state still fails.26focused+433native pass. Only disabled-readability and phone-notes-editor have changed declared source; other34receipts reusable. No product/adapter/recipe change.",
+    "current_notes_readiness_outcome": "O-3f1afe1d-9bf6-4426-9ff5-1d08fc1cf1ec",
+    "final_helpers": [
+      "/tmp/habitica-ui-final-all.py",
+      "/tmp/source-identity-task.py",
+      "/tmp/habitica-ui-finalize-source.py",
+      "/tmp/habitica-ui-final-report.py"
+    ],
+    "remaining": "Only2contracts execute. Then focus static/complete, source identity Green/static/complete, owner blocked handoff, validators/git/report.6UIReadydeferred;37localunits after completion.",
+    "atomic_disabled_repair": "Locator.evaluateAll still resolves node array in separate protocol turn: original5a523911 New note nativeDisabled=false/calls1. Current uses document.querySelectorAll inside page.evaluate, making DOM query+paint+refusal synchronous; no product/assertion weakening. Full24scheme matrix pass at1793753470835741000. Original reports retained.",
+    "canonical_transport_recovery": "Original cb0ec809 late fixture transport timeout and incomplete cleanup retained. Saved matching JSON had no product errors; exact root cause unknown. Both owned leftover profiles tied to64525 andlaunch timestamps verifiedunused+removed. No owned browser processes remained. Fresh exact390/200obsidianChromium probe passed0.507s cleanupalltrue; no source changes. Resume full canonical contract; earlier5current passes reusable.",
+    "new_required_focus_task": "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784",
+    "focus_state": "54/54Green after deterministic53/54Red. Passive source-change ClearDraft requested late heading focus. Split ResetDraft(false) from explicit ClearDraft->ResetDraft(true). No adapter/recipe/canonical-doc change. New task awaits static verification of actual post-repair browser reports.",
+    "affected_UI_contracts": [
+      "accessible-shell",
+      "shell-content-visibility",
+      "hierarchy-control-names"
+    ],
+    "latest_manual_review": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+    "deferred_UI_followups": 6,
+    "new_deferred_UI": "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c; optional Projects management midword layout; PR-9724479e processed once, never admitted.",
+    "latest_capture_correction": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/async-capture-event-correction.json"
+  },
+  "final_handoff": {
+    "phase": "blocked",
+    "local_scope": "25 frozen UI roots and 12 required local repairs complete; 36 UI contracts match current source",
+    "deferred_UI_followups": 6,
+    "reports": [
+      ".skill-tree/history/validation/ux-ui/implement-all-2026-11-03/final-local-report.md",
+      ".skill-tree/history/validation/ux-ui/implement-all-2026-11-03/final-local-report.json",
+      ".skill-tree/history/validation/ux-ui/implement-all-2026-11-03/final-validation-summary.json",
+      ".skill-tree/history/validation/ux-ui/implement-all-2026-11-03/legacy-release-evidence-boundary.json"
+    ],
+    "next_action": "Resolve the existing owner-controlled qualification questions for T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. Local synthetic checks do not accept release/security gates.",
+    "limits": "Owner-controlled client/account/device and release qualification remains unaccepted. Six Ready UI followups remain outside this run. No publication or live provider actions."
+  }
+}

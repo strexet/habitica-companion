@@ -109,4 +109,10 @@ public sealed class CompanionTaskListTests : BunitContext
         Assert.Contains("1 matching tasks", cut.Markup);
         WorkspaceLayoutEvidence.Save("canonical-filter-disabled", cut.Markup);
     }
+
+    private sealed class RelativeClock:TimeProvider{public DateTimeOffset Instant=DateTimeOffset.Parse("2026-11-03T12:00:00Z");public override DateTimeOffset GetUtcNow()=>Instant;}
+    [Fact]public void Relative_saved_selection_preserves_day_cursor_and_requires_explicit_restart_after_rollover()
+    {
+        var clock=new RelativeClock();var tasks=Enumerable.Range(0,25).Select(i=>Task("Relative task "+i) with{PlannedDate=new(2026,11,3)}).ToArray();var view=new WorkspaceSavedTaskView(Guid.NewGuid(),1,"Relative source",new(WorkspaceSavedTaskSource.Tasks,new(PlannedRelative:WorkspaceRelativeDatePreset.Today),"UTC"));var doc=new WorkspaceDocument{Id=Guid.NewGuid(),Revision=10,Tasks=tasks,SavedTaskViews=[view]};var before=WorkspaceJson.Serialize(doc);var cut=Render<CompanionTaskList>(p=>p.Add(x=>x.Document,doc).Add(x=>x.Clock,clock));cut.Find("[data-testid=canonical-saved-list]").Change(view.Id.ToString("D"));Assert.Contains("2026-11-03",cut.Find("[data-testid=saved-relative-evaluation]").TextContent);Assert.Equal(20,cut.FindAll(".companion-task-list button").Count);clock.Instant=clock.Instant.AddDays(1);cut.Find("[data-testid=canonical-next-page]").Click();Assert.Contains("local evaluation day changed",cut.Markup);Assert.Empty(cut.FindAll(".companion-task-list button"));cut.Find("[data-testid=canonical-restart-day]").Click();Assert.Contains("0 matching tasks",cut.Markup);Assert.Contains("2026-11-04",cut.Find("[data-testid=saved-relative-evaluation]").TextContent);Assert.Equal(before,WorkspaceJson.Serialize(doc));
+    }
 }

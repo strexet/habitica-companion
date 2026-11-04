@@ -1,0 +1,41 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-dbb1e9b2-ab6d-4e08-8af5-a0c03ecebc69",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 21,
+    "expected": 21,
+    "failed": 0,
+    "passed": 21,
+    "skipped": 0
+  },
+  "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+  "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+      "sha256": "c7d17f7332a98c71b839882c3ef59e08c4bf7de2a6ec72a7d22bfd3f7ec623ac"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "0d01f3c9d6c8eaaf053bf9a2ca869732c796c96377ebb0a346462309e0610b64",
+  "payload_hash": "48315db8c4e1d85d1162d6f779a848057af36b5d4dbf8634f3f0272474bda0a4",
+  "recorded_at": "2026-11-02T16:53:09.380882+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+    "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+    "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+    "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "timing": {
+    "tool_wall_seconds": 15.277360416948795
+  }
+}
