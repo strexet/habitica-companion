@@ -1,0 +1,83 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-e8936c4c-2ebc-488a-9fd9-fb8448706cba",
+  "classification": "executed-control",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "counts": {
+    "discovered": 114,
+    "expected": 114,
+    "failed": 0,
+    "passed": 114,
+    "skipped": 0
+  },
+  "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+  "environment_identity": "984e06a4c8a85aac2a990ce1aca8e49b0fcb533367ed69659e15379d515eb419",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+      "sha256": "3acd39fc89daa5db70576800d9a48d675fa15761e4155c1a68e3e99c6c72f2e9"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+      "sha256": "3cc7f18134ec4510c9db62a7e9c3cbb71d40233256e96942cf2eefa3d432089e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+      "sha256": "16df54d3a281f2e2ddc175bec31951bd030a96edf462667d6e817bc86762e931"
+    }
+  ],
+  "execution_sessions": {
+    "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:51:06.228668+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-aa673da5",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-c8433df2",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "625f7b23c320f78ae13fc0f18267f7655a07f8b7b30dcc9eaf3a6e686de5148c",
+  "payload_hash": "c1ea50603dec7c67d908761ad8175b304c9c744007831124aacdb71d20ae2fe6",
+  "recorded_at": "2026-11-03T01:38:57.356199+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/folder-adoption-fixture.mjs": "ead55aac7295f5e69702eae0c96a5280ab32a774b4c68011cfba71e5cd48711c",
+    "tests/browser/folder-adoption-ui.mjs": "de98253cfa5ef7707bfe91552f5135d30328b0d9dfc403faee746f474833af3a",
+    "tests/browser/folder-adoption-ui.py": "347a3604e01391260bd0bf87410deb4ba6dea4046400636a9ab2a59e9620d735"
+  },
+  "timing": {
+    "tool_wall_seconds": 50.38583583314903
+  }
+}

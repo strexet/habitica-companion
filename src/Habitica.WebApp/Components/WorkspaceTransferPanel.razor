@@ -1,0 +1,147 @@
+@using System.Text.Json
+@using Habitica.Application.Sync
+@using Habitica.Application.Workspace
+@inject WorkspaceTransferController Transfer
+@inject CompanionConnectionCoordinator Connections
+@inject WorkspaceDataController Workspace
+@inject IAppSessionController Session
+@inject NotesController Notes
+@inject IJSRuntime Js
+@implements IAsyncDisposable
+
+<section id="workspace-transfer" class="card-surface settings-card workspace-transfer-panel" data-testid="workspace-transfer-panel" aria-labelledby="workspace-transfer-title">
+    <p class="section-label">One Workspace</p><h2 id="workspace-transfer-title">Tasks and Notes together</h2>
+    @if (!Session.State.IsAuthenticated) { <p>Sign in to restore your Workspace.</p> }
+    else
+    {
+        <p role="status" data-testid="workspace-shared-state">@StateText</p>
+        @if (Connections.ActiveWorkspaceId is {} id) { <p>Active Workspace: <code>@id</code></p> }
+        <p>Browser is the default until you choose cloud. A cloud move includes saved tasks, projects, history and personal Notes. After confirmation, cloud stays selected across sessions; frozen browser copies remain recovery evidence.</p>
+        <div class="action-row">
+            <MudButton data-layout-primary="true" data-testid="workspace-restore-existing" Disabled="@Busy" OnClick="RestoreAsync" Variant="Variant.Outlined">Restore existing access</MudButton>
+            <MudButton data-layout-primary="true" Disabled="@Busy" OnClick="RefreshAsync" Variant="Variant.Text">Refresh Workspace inventory</MudButton>
+        </div>
+        <p>Restore checks existing approved connections only. It never creates a profile, grants access or enables background execution.</p>
+        @if (Transfer.Accepted)
+        {
+            <p role="status" data-testid="workspace-transfer-confirmed">Original transfer confirmed and acknowledged. Cloud is the active Workspace; browser copies are read-only recovery evidence.</p>
+        }
+        else if (Transfer.HasOriginalTransfer)
+        {
+            <p role="status">Original transfer: <code>@Transfer.TransferId</code>. Browser records are frozen. Recover this transfer before preparing another move.</p>
+            <div class="action-row">
+                <MudButton data-layout-primary="true" data-testid="workspace-transfer-recover" Disabled="@Busy" OnClick="RecoverAsync" Variant="Variant.Filled">Check original transfer receipt</MudButton>
+                <MudButton data-layout-primary="true" data-testid="workspace-transfer-review-again" Disabled="@(Busy || !Transfer.CanCapture)" OnClick="PreviewAsync" Variant="Variant.Outlined">Review original transfer</MudButton>
+            </div>
+        }
+        else
+        {
+            @if(Transfer.InventoryVerified)
+            {
+            <p>Browser inventory: @Transfer.BrowserWorkspaceCount Workspace copy/copies and @Transfer.BrowserNoteCount personal Note(s). Saved command history and trash are included in the review.</p>
+            }
+            else { <p role="status">Browser inventory is unavailable. No completeness conclusion can be drawn until this device can be read.</p> }
+            @if (!_chooseCloud && (!Connections.CloudSelected || Transfer.BrowserWorkspaceCount>0 || Transfer.BrowserNoteCount>0))
+            {
+                <MudButton data-layout-primary="true" data-testid="workspace-choose-cloud" Disabled="@(Busy || !Workspace.IsAvailable || !Transfer.InventoryVerified)" OnClick="ChooseCloud" Variant="Variant.Filled">@(Connections.CloudSelected ? "Review remaining browser data" : "Move Workspace to cloud")</MudButton>
+            }
+        }
+        @if (_chooseCloud)
+        {
+            <aside class="notes-review" aria-label="Cloud move disclosure">
+                <h3 tabindex="-1" @ref="_heading">Choose cloud for this Workspace</h3>
+                <p>The integration server stores encrypted Habitica credentials and can read saved tasks, projects and history. Personal Notes can contain sensitive facts and documents; the server can read titles, Markdown and retained versions. Agent Notes access still requires independent permissions. No chat content is saved automatically.</p>
+                <label class="checkbox-row"><input type="checkbox" @bind="_taskConsent" data-testid="workspace-move-task-consent" /><span>I approve credential storage and server-readable task data for this cloud Workspace.</span></label>
+                <label class="checkbox-row"><input type="checkbox" @bind="_notesConsent" data-testid="workspace-move-notes-consent" /><span>I separately approve server-readable personal Notes and retained versions.</span></label>
+                <p>Save or export private drafts in every open tab first. Continue freezes saved browser records and prepares a review. Nothing is accepted into cloud until you confirm that review. Existing cloud data is preserved; no game effects or executor opt-in are created.</p>
+                <div class="action-row"><MudButton data-layout-primary="true" data-testid="workspace-move-continue" Disabled="@(Busy || !_taskConsent || !_notesConsent || Notes.Dirty || Transfer.UnsavedTaskDrafts>0 || Notes.HasPending)" OnClick="ConnectAndPreviewAsync" Variant="Variant.Filled">Continue to transfer review</MudButton><MudButton data-layout-primary="true" Disabled="@Busy" OnClick="CancelChoice" Variant="Variant.Outlined">Keep current Workspace</MudButton></div>
+            </aside>
+        }
+        @if (Notes.Dirty || Notes.HasPending)
+        { <p role="status">Resolve or export the current Notes draft and original save before transfer. <a href="/notes">Open Notes</a></p> }
+        @if (Transfer.UnsavedTaskDrafts > 0)
+        {
+            <p role="status">@Transfer.UnsavedTaskDrafts unsaved browser task draft(s). Save or export these drafts before moving saved records.</p>
+            <div class="action-row"><MudButton data-layout-primary="true" Disabled="@Busy" OnClick="ExportDraftsAsync" Variant="Variant.Outlined">Export private task drafts</MudButton></div>
+            <label class="checkbox-row"><input type="checkbox" @bind="_discardDrafts" /><span>I have kept a copy or want to discard all unsaved browser task drafts.</span></label>
+            <MudButton data-layout-primary="true" Disabled="@(Busy || !_discardDrafts)" OnClick="DiscardDrafts" Variant="Variant.Outlined">Discard unsaved task drafts</MudButton>
+        }
+        @if (Transfer.ReviewJson is {} text)
+        {
+            using var document=JsonDocument.Parse(text);var review=document.RootElement;var counts=review.GetProperty("counts");var conflicts=review.GetProperty("conflicts");
+            <aside class="notes-review" aria-label="Review Workspace move" data-testid="workspace-transfer-review">
+                <h3 tabindex="-1" @ref="_heading">Review the move</h3>
+                <p>Move @counts.GetProperty("tasks").GetInt32() tasks and @counts.GetProperty("notes").GetInt32() personal Notes from @counts.GetProperty("sources").GetInt32() browser Workspace(s). Retain @counts.GetProperty("sourceCommands").GetInt32() original task commands and @counts.GetProperty("sourceEvents").GetInt32() journal events. Purged Note markers: @counts.GetProperty("purgedNotes").GetInt32().</p>
+                @if(counts.TryGetProperty("folders",out var folderCount))
+                {
+                    <p data-testid="transfer-folder-counts">Source folders: @folderCount.GetInt32() · original folder receipts: @counts.GetProperty("folderReceipts").GetInt32() · existing target folders retained: @counts.GetProperty("existingTargetFolders").GetInt32(). Current and historical note memberships retain exact folder IDs.</p>
+                    <details><summary>Exact destination folder identities</summary>
+                        @foreach(var folder in review.GetProperty("noteFolders").EnumerateArray()){<p data-testid="transfer-folder-identity">@folder.GetProperty("name").GetString() · <code>@folder.GetProperty("id").GetString()</code> · revision @folder.GetProperty("revision").GetInt64() · removed: @folder.GetProperty("isRemoved").GetBoolean()</p>}
+                        @if(review.TryGetProperty("noteFolderMemberships",out var memberships)){@foreach(var membership in memberships.EnumerateArray()){<p data-testid="transfer-folder-membership">Note <code>@membership.GetProperty("noteId").GetString()</code> · current folder: <code>@membership.GetProperty("currentFolderId").GetString()</code> · historical folder IDs: @membership.GetProperty("historicalFolderIds").GetRawText()</p>}}
+                    </details>
+                }
+                <p>Destination Workspace: <code>@review.GetProperty("workspaceId").GetString()</code>. Existing cloud records remain: @counts.GetProperty("existingTargetTasks").GetInt32() tasks and @counts.GetProperty("existingTargetNotes").GetInt32() personal Notes. Imported pending game effects stay paused. This move triggers zero game effects.</p>
+                @if(review.GetProperty("notebookId").ValueKind!=JsonValueKind.Null){<p>Destination Notes notebook: <code>@review.GetProperty("notebookId").GetString()</code>.</p>}
+                <details><summary>Exact source identities and review fingerprint</summary><p>Transfer: <code>@review.GetProperty("transferId").GetString()</code></p><p>Source fingerprint: <code>@review.GetProperty("artifactHash").GetString()</code></p><p>Target store revision: @review.GetProperty("workspaceStoreVersion").GetInt64(). Review expires @review.GetProperty("expiresAtUtc").GetDateTimeOffset().ToLocalTime().ToString("g").</p>
+                    @foreach(var source in review.GetProperty("sources").EnumerateArray()){<p>Source <code>@source.GetProperty("workspaceId").GetString()</code> · revision @source.GetProperty("revision").GetInt64() · archive <code>@source.GetProperty("archiveHash").GetString()</code>.</p>}
+                    @foreach(var mapping in review.GetProperty("mappings").EnumerateArray()){<p>Browser <code>@mapping.GetProperty("sourceWorkspaceId").GetString()</code> → cloud <code>@mapping.GetProperty("targetWorkspaceId").GetString()</code></p>}
+                </details>
+                @if(conflicts.GetArrayLength()>0)
+                {
+                    <p role="status">@conflicts.GetArrayLength() exact identity or alias conflict(s). Nothing is deduplicated by title.</p>
+                    <ul>@foreach(var conflict in conflicts.EnumerateArray()){<li>@conflict.GetProperty("kind").GetString(): <code>@conflict.GetProperty("id").GetString()</code> from <code>@conflict.GetProperty("sourceWorkspaceId").GetString()</code>; retained identity: <code>@conflict.GetProperty("retainedSource").GetString()</code>.</li>}</ul>
+                    @if(!review.GetProperty("ready").GetBoolean())
+                    {
+                        <label class="checkbox-row"><input type="checkbox" @bind="_archiveConflicts" data-testid="workspace-conflict-consent" /><span>Keep the reviewed existing cloud or earlier source identities and retain conflicting source variants in the original archive.</span></label>
+                        <MudButton data-layout-primary="true" Disabled="@(Busy || !_archiveConflicts)" OnClick="ReviewConflictsAsync" Variant="Variant.Outlined" data-testid="workspace-review-conflicts">Review with source variants archived</MudButton>
+                    }
+                }
+                @if(review.GetProperty("ready").GetBoolean())
+                {
+                    <label class="checkbox-row"><input type="checkbox" @bind="_acceptReview" data-testid="workspace-transfer-accept-check" /><span>I reviewed these exact sources, destination, counts and conflict decisions and approve the move.</span></label>
+                    <MudButton data-layout-primary="true" Disabled="@(Busy || !_acceptReview || !Transfer.CanAccept)" OnClick="AcceptAsync" Variant="Variant.Filled" data-testid="workspace-transfer-accept">Confirm move to cloud</MudButton>
+                }
+                <p>After an uncertain reply, check the original transfer receipt. Closing this review keeps the original frozen data and transfer identity for recovery.</p>
+            </aside>
+        }
+        @if(Transfer.TransferId is not null)
+        {
+            <MudButton data-layout-primary="true" Disabled="@Busy" OnClick="ExportOriginalAsync" Variant="Variant.Outlined">Export original transfer archive</MudButton>
+            <p>Exports contain readable private task and Notes data. Explicit Note deletion also erases matching archived Note fragments; a full original archive can then be unavailable. Keep downloaded copies private.</p>
+        }
+        <p>Export, pause and disconnect remain available below. Returning cloud data to browser requires a separate ownership transfer and is not available.</p>
+        @if(Transfer.Message is {} message){<p role="@(Transfer.IsError?"alert":"status")" data-testid="workspace-transfer-message">@message</p>}
+        @if(_message is {} ownMessage){<p role="status">@ownMessage</p>}
+    }
+</section>
+
+@code {
+    private bool _working,_chooseCloud,_taskConsent,_notesConsent,_acceptReview,_archiveConflicts,_discardDrafts,_focus,_disposed;
+    private string? _message,_reviewSeen,_owner;
+    private bool _signedIn;private long _generation;
+    private ElementReference _heading;
+    private IJSObjectReference? _export;
+    private bool Busy=>_working||Transfer.Busy||Session.State.IsBusy||Connections.State==CompanionConnectionState.Loading;
+    private string StateText=>Connections.State switch {
+        CompanionConnectionState.Cloud=>"Cloud Workspace restored and verified.",CompanionConnectionState.CloudUnavailable=>"Cloud remains selected; access is unavailable. Restore existing access without creating a browser fork.",
+        CompanionConnectionState.SettingsConflict=>"Synced account settings conflict. Restore verified existing access before proceeding.",CompanionConnectionState.ConsolidationRequired=>"Multiple browser copies need one reviewed cloud consolidation.",CompanionConnectionState.LegacyRecoveryRequired=>"A browser copy is frozen or transferred. Restore existing cloud access and recover the original transfer.",
+        CompanionConnectionState.StorageUnavailable=>"Account storage is unavailable. Existing records remain preserved.",CompanionConnectionState.Loading=>"Restoring account settings before selecting a writable Workspace.",_=>"Browser is the active Workspace."};
+    protected override async Task OnInitializedAsync(){_owner=Session.State.UserId;_signedIn=Session.State.IsAuthenticated;Transfer.Changed+=Changed;Connections.Changed+=Changed;Session.Changed+=Changed;Notes.Changed+=Changed;await Transfer.RefreshAsync();}
+    private void Changed(){if(_disposed)return;Transfer.Bind();if(_owner!=Session.State.UserId||_signedIn!=Session.State.IsAuthenticated){_owner=Session.State.UserId;_signedIn=Session.State.IsAuthenticated;_generation++;_chooseCloud=_taskConsent=_notesConsent=_acceptReview=_archiveConflicts=_discardDrafts=false;_message=null;}_ = InvokeAsync(StateHasChanged);if(_reviewSeen!=Transfer.ReviewJson){_reviewSeen=Transfer.ReviewJson;_acceptReview=false;_focus=_reviewSeen is not null;}}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;try{await _heading.FocusAsync();}catch(JSException){}}}
+    private void ChooseCloud(){_chooseCloud=true;_focus=true;_taskConsent=_notesConsent=false;}
+    private void CancelChoice(){_chooseCloud=_taskConsent=_notesConsent=false;}
+    private async Task RestoreAsync(){await Run(async()=>{var result=await Session.RestoreExistingConnectionsAsync(true);_message=result.Message;await Transfer.RefreshAsync();});}
+    private Task RefreshAsync()=>Run(()=>Transfer.RefreshAsync());
+    private async Task ConnectAndPreviewAsync(){if(!_taskConsent||!_notesConsent)return;await Run(async()=>{if(!Workspace.ConnectionStatusVerified){var connected=await Workspace.ConnectAsync(true);if(!connected.Succeeded){_message=connected.Message;return;}}if(!Notes.CloudConnected){var connected=await Session.ConnectNotesAsync(true);if(!connected.Succeeded){_message="Cloud Notes access could not be confirmed. Existing records remain preserved.";return;}}_chooseCloud=_taskConsent=_notesConsent=false;await Transfer.PreviewAsync();_focus=Transfer.ReviewJson is not null;});}
+    private Task PreviewAsync()=>Run(()=>Transfer.PreviewAsync());
+    private Task ReviewConflictsAsync()=>Run(()=>Transfer.PreviewAsync(true));
+    private Task AcceptAsync()=>_acceptReview?Run(()=>Transfer.AcceptAsync()):Task.CompletedTask;
+    private Task RecoverAsync()=>Run(()=>Transfer.RecoverAsync());
+    private void DiscardDrafts(){if(!_discardDrafts||Busy)return;Transfer.DiscardTaskDrafts();_discardDrafts=false;}
+    private Task ExportDraftsAsync()=>Run(()=>DownloadAsync("companion-private-task-drafts.json",Transfer.ExportTaskDrafts()));
+    private Task ExportOriginalAsync()=>Run(async()=>{var result=await Transfer.ExportOriginalAsync();_message=result.Message;if(result.Succeeded&&result.Json is {} json)await DownloadAsync("companion-original-transfer.json",json);});
+    private async Task DownloadAsync(string name,string text){var generation=_generation;_export??=await Js.InvokeAsync<IJSObjectReference>("import","./js/diagnosticsExport.js");if(_disposed||generation!=_generation)return;await _export.InvokeVoidAsync("downloadTextFile",name,text,"application/json;charset=utf-8");}
+    private async Task Run(Func<Task> action){if(Busy)return;_working=true;_message=null;try{await action();}catch{_message="The operation could not finish. Preserve the original transfer and recover its receipt.";}finally{_working=false;}}
+    public async ValueTask DisposeAsync(){_disposed=true;Transfer.Changed-=Changed;Connections.Changed-=Changed;Session.Changed-=Changed;Notes.Changed-=Changed;if(_export is not null)await _export.DisposeAsync();}
+}

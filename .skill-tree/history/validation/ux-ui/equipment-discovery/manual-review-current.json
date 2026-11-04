@@ -1,0 +1,18 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/equipment-discovery/1793739387618672000",
+  "reviewed": [
+    "chromium-gryphy-light-360-200-discovery-controls.png",
+    "webkit-obsidian-glow-1280-200-discovery-match.png"
+  ],
+  "observations": [
+    "Search/slot fields, result count and44-pixel actions retain readable type at enlarged phone width.",
+    "Translated matching item names and stat/delta tokens remain readable in obsidian-glow.",
+    "Native full matrix preserves exact303-item snapshot/preset/catalog stores, original folds, goal/drafts and zero provider-write attempts.",
+    "Native slot-caption ink/arrow reserve and settled viewport focus pass for long slots and repeated paging."
+  ],
+  "limits": [
+    "Existing header Sync status clipping remains a separate captured followup.",
+    "Physical devices, native select popovers and assistive technology remain unqualified."
+  ]
+}

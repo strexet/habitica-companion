@@ -1,0 +1,6 @@
+{
+  "original": "339f63b2-81a7-4368-9580-ee61c9d21ead",
+  "observed": "Request filename guard rejected uppercase culture suffix before browser launch. No failure.json/context/server/profile exists; publish/test/prepare processes exited.",
+  "classification": "prerequisite-wait; original helper classified fail without launch-awareness for this guard. Original receipt retained.",
+  "repair": "Use lowercase artifact IDs; actual controlled en-US/en-GB cultures unchanged."
+}

@@ -1,0 +1,63 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-e38aa7bf-591b-4a58-bf8e-352b5453db97",
+  "classification": "executed-control",
+  "cleanup": "Owned loopback server and both persistent browser contexts closed; generated temporary profiles removed. No actual user database, credentials, network service or device permission used.",
+  "counts": {
+    "discovered": 40,
+    "expected": 40,
+    "failed": 0,
+    "passed": 40,
+    "skipped": 0
+  },
+  "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+  "environment_identity": "f8afaf9d6895989bdfd2edfcb72d3a195e56bd78a0108d1170bf528fc1e07ea2",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-execution.log",
+      "sha256": "e0d9d8409a72cf99f9258f241176c641b27d927254a478cd9e0e3057402abce1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-identity.json",
+      "sha256": "1cbd569b3004a81e4886c22e566e5213a066b1992cb34d65148189672cf06a04"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb-1793642605813-76504.json",
+      "sha256": "bcc8f52b5b221e99f194018787bc9351bc6322b43ffc98041dbdc9a01556cb4a"
+    }
+  ],
+  "execution_sessions": {
+    "2310dca79fab06424e86f00983790e2d3d0ef201426776cbc5becdad62403435": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:07:23.086028+00:00",
+      "fixture_identity": "Actual IndexedDB adapter and portable folder wire fixture; isolated generated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-identity.json"
+      ],
+      "profile_id": "notes-folders-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "browser-a327b176",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "1457ced23b8491fcfb6c729bda86de2c616d46c90b9d17a271e7ff7405360b64",
+  "payload_hash": "5d580b0f52499660c4d48aa84c76695775d7edaf3577d2d1ebc64a60f984a7db",
+  "recorded_at": "2026-11-02T18:03:26.033173+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/browser/notes-folders.mjs": "931f902aa63cf7157f162c76ad8067973e5bc0e2772c39336a7d185c1491e643",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+  },
+  "timing": {
+    "tool_wall_seconds": 2.5104298749938607
+  }
+}

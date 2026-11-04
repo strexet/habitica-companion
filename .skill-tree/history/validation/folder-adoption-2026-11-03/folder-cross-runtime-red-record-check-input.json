@@ -1,0 +1,25 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "check_id": "folder-transfer-browser-capture",
+  "attempt_id": "C-a9c50997-2f2c-47b8-9eec-5b5ecfdadb7e",
+  "environment_identity": "4dd45aef6a4341b83faab13b2a3940ce222192ea6d2ddc46021f827b83f4e3c1",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "red",
+  "counts": {
+    "expected": 20,
+    "discovered": 20,
+    "passed": 19,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 5.8506148748565465
+  },
+  "evidence": [
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-red-execution.log",
+    ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-red.trx"
+  ],
+  "failure_category": "expected-behavior"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "bytes_read": 512,
+    "wall_seconds": 4.812
+  },
+  {
+    "path": "/service-worker.js",
+    "status": 200,
+    "bytes_read": 512,
+    "wall_seconds": 0.618
+  },
+  {
+    "path": "/api/sync/invalid/sections",
+    "error_type": "HTTPError",
+    "detail": "HTTP Error 400: Bad Request",
+    "wall_seconds": 0.545
+  }
+]

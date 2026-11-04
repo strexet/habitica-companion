@@ -1,0 +1,17 @@
+[
+  {
+    "worker": "chatgpt-auth",
+    "exit": 0,
+    "seconds": 3.8901980000082403
+  },
+  {
+    "worker": "companion-workspace",
+    "exit": 0,
+    "seconds": 3.6379000421147794
+  },
+  {
+    "worker": "chatgpt-mcp",
+    "exit": 0,
+    "seconds": 4.457347166957334
+  }
+]

@@ -1,0 +1,69 @@
+{
+  "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-3ebf0e79-ce7e-4ba2-bc11-32620de5e7c5",
+  "check_id": "ui-qualification-rendered",
+  "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+  "environment_identity": "e2514d66021998d5d849ade4b3de6328fa3a3df5f631361a47133f447bff342b",
+  "key": "e65ecac25b6c20dd5845ca97a5b7278fe0af23d472c5027bff4d4052a50bc7dd",
+  "launch": {
+    "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-04T00:07:25.163971+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T23:51:25.490670+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "ui-qualification",
+      ".skill-tree/history/validation/ux-ui/ui-qualification/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+      "tests/browser-qualification/ux-ui-notes-metrics.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/testing.md": "22694804154f2aa7f8c048967367dc123cdf1a253b0ba5547a63538214b87773",
+    ".skill-tree/installation/profile.json": "cd6ce379d8a2852d2af4c571bfa7e3ef7bd322a473d199b5d6ff3746397f2976",
+    ".skill-tree/validation-recipes.json": "1905df2c791a86c4af86f05111d9032330819f28cf24bc403a860e795f0995da",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/prepare.py": "bbebcae5500166e49c03c103d924f569b3df76b49bf915fd8a7e5c8e08e7b047",
+    "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "e5682166fc50f3d1cabba7c39d41a3c1c2fdb604408a5c05347c999be818ace2",
+    "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "f6de859b603f456ef509ca3846f297dccdbc43d1e0a0f5bf7e010ac985763f7d",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs": "012a98dffcc0b7de545ceb60a284797be5db052ee4e3c6a38050238895d9f81b",
+    "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8",
+    "tests/browser-qualification/ux-ui.py": "386d778fb3be2e3d5d1ee090d1e7dd5cda210b08c138431dcfbb3a29fc2d64b5"
+  },
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+}

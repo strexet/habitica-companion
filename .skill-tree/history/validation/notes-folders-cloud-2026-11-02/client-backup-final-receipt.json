@@ -1,0 +1,44 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-65c8b502-eae4-477a-a5ed-30e25dbeb8c9",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 14,
+    "expected": 14,
+    "failed": 0,
+    "passed": 14,
+    "skipped": 0
+  },
+  "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+  "environment_identity": "c881be60477cceba14fb61e8d2c37b0a3e937e8b6e5f91c86265774498f51004",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+      "sha256": "0f7782559c7829533cf4fb92f1cc41b2fb8b59b529dad6a4f4ee0107badb1ae7"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+      "sha256": "278e514682f55e821b961a3e3ee62e66754104ed3ecadd204fb6c58157f880de"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "4b24b5773856a5803d0c71943392a10f0085dd0a0ebfc967c35fa75addf248df",
+  "payload_hash": "f199e0f8fade3ec2b18f37bca367d2db6ffabc50dccdb0dfd8bc35791fd58705",
+  "recorded_at": "2026-11-02T16:55:44.768287+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs": "f0067a05649b6720bd2552ce0cdd850308d265318c9c98c5011b2afbe7395087",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "7c56402a1bd4f37c996a6173455e387e1a59e633d76f40e1941f58a0cc09270f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135"
+  },
+  "timing": {
+    "tool_wall_seconds": 6.774415000109002
+  }
+}

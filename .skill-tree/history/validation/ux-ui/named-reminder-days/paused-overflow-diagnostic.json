@@ -1,0 +1,55 @@
+{
+  "original": "5dad5644-0cff-4644-94d2-a93b430e520a",
+  "metrics": [
+    {
+      "tag": "MAIN",
+      "text": "Synthetic Razor output. Component interactions are qualified separately.Task push schedule",
+      "right": 360,
+      "left": 0,
+      "width": 360,
+      "scroll": 450,
+      "client": 360,
+      "columns": "none",
+      "whiteSpace": "normal",
+      "min": "0px"
+    },
+    {
+      "tag": "SECTION",
+      "test": "push-schedule",
+      "text": "Task push schedule\n    Save a review cue first, then review a separate push schedule for t",
+      "right": 344,
+      "left": 16,
+      "width": 328,
+      "scroll": 433,
+      "client": 326,
+      "columns": "294px",
+      "whiteSpace": "normal",
+      "min": "0px"
+    },
+    {
+      "tag": "FIELDSET",
+      "text": "Schedule typeOne time at saved review cueRepeat dailyRepeat weeklyRepeat monthly\n         ",
+      "right": 327,
+      "left": 33,
+      "width": 294,
+      "scroll": 417,
+      "client": 294,
+      "columns": "294px",
+      "whiteSpace": "normal",
+      "min": "0px"
+    },
+    {
+      "tag": "LABEL",
+      "text": "Schedule typeOne time at saved review cueRepeat dailyRepeat weeklyRepeat monthly",
+      "right": 327,
+      "left": 33,
+      "width": 294,
+      "scroll": 417,
+      "client": 294,
+      "columns": "none",
+      "whiteSpace": "normal",
+      "min": "0px"
+    }
+  ],
+  "repair": "WebKit selected one-time caption paint extends native control/label scroll bounds although outer select fits. Short unambiguous One time/Daily/Weekly/Monthly options retain exact values and separate saved-cue explanation/review. Native hydrated caption ink checks reserve24px arrow plus computed padding."
+}

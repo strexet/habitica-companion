@@ -1,0 +1,72 @@
+{
+  "assertion": "Exercise same-name and whitespace-equivalent Todo rows, exact completion/edit/branch targets, native disclosure associations, project scope and disabled original reviews without accepting a command.",
+  "attempt_id": "C-0f0d24c1-f793-4d62-a66b-f6953ef37577",
+  "check_id": "hierarchy-control-names-behavior",
+  "definition": "eb2fac25ccfcb782d6ae137a5490ed82118f7a635d9e5d729ff3618a5b584cad",
+  "environment_identity": "54606df6cceb3a555b3fa4fee53f68ce1e7f0b2fa03a987e108a68d6b0f38848",
+  "key": "e29d249ad7f4e959eb11de94e94333604819c5e969683004db9cc6244b5b6176",
+  "launch": {
+    "assertion": "Exercise same-name and whitespace-equivalent Todo rows, exact completion/edit/branch targets, native disclosure associations, project scope and disabled original reviews without accepting a command.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T19:05:19.088916+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:00:19.814234+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoHierarchyPanelTests",
+      "--logger",
+      "trx;LogFileName=hierarchy-control-names.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/hierarchy-control-names/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "d52b878587baf68c22d29b879728db264df49ffc3b884652fe7c2a9b5a13e5f6",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "93920882393574690cf81fd142d07808ad1509a40484c47a603913cc4f2d99b8",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/Pages/TodoProjectsPage.razor": "ec56d59a5f1411c979299e174b05d16ba57dc65b29cb50e97de39c8191707b83",
+    "src/Habitica.WebApp/Pages/TodoTasksPage.razor": "88e3b0e4261cb7cc5fbddb341d2f3c599e7f7c4d758dc20a432cb18401e1a7a7",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "c5b56c52fed9e4df9d0ede5b1b6b1c38427072c6f287e26ce4f2e712de21b030",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1b547050d27c0ba12d3093e100e281b297a1326ffff9b3ded64ea6ffadff63e8"
+  },
+  "task_id": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+}

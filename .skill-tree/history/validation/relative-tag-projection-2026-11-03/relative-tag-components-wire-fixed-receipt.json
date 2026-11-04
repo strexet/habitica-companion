@@ -1,0 +1,44 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-0bd2f323-5d98-4823-86b4-787e0728378d",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 18,
+    "expected": 18,
+    "failed": 0,
+    "passed": 18,
+    "skipped": 0
+  },
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-components-wire-fixed-execution.log",
+      "sha256": "e476cb3000f11dba2c21d213742b345fb3ae41d368308f2837fcbcee16a5281c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-components-wire-fixed.trx",
+      "sha256": "905d5b8b32ab5d0297707df44c9f3989677cf78dd80613166fc377b092614fe5"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "ea895fd68361a5031ca47a18c30fefc131479f8292b6d5658bb6f109fc404ae4",
+  "payload_hash": "be4c7bbf9edefedd3e75a07c2e7d905cbf817b77a01edeaf526c4d6ebfa4e2cc",
+  "recorded_at": "2026-11-03T01:56:17.789107+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "b2bd7c8889cb0e76d22618b9ea862a096402a0d34bb48ef2805fed190ee3d2f6",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "2f9404c4f7efd16c07cfd5488e48bc8ffb90e297e75fa75bbdff9ddd0e143ef8",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "6a2bcffdc35d496e465e4f9c826273b0121adaa5617b37b353dd0887b9d78307",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "55a7271ea04026560f9fb53317c3f8a61f2b65ee77fa06d50bdd2a7999dccf4f",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "ace89f6d396f4f5362a698d6543850be686312bdfe46785fdd3da7d671814176"
+  },
+  "timing": {
+    "tool_wall_seconds": 6.484731874894351
+  }
+}

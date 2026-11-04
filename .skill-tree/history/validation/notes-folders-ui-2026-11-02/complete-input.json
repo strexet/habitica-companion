@@ -1,0 +1,86 @@
+{
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "outcome": "Shared Notes/project folder controls support reviewed metadata, exact placement and retained content/history, explicit draft/source/privacy boundaries and original receipt recovery. Current component controls and both browser engines qualify the local Release journeys and light/obsidian rendering matrix.",
+  "acceptance": [
+    {
+      "criterion": "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
+      "result": "pass",
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+        ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+        ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+        ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json"
+      ]
+    },
+    {
+      "criterion": "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass.",
+      "result": "pass",
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+        ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+        ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+        ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json"
+      ]
+    }
+  ],
+  "source_fingerprints": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+    "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+    "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+    "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+    "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+    "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+    "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7",
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+    "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "bbaaef2bf8bbf33109f9a4516f7bd56475bbee1fe0f59abe55dbb82dc8b5d770",
+    "workers/shared/diagnostic-catalog.ts": "5f8067683f0e2a354990e7cd7b931348a7557fe0137d3047259bbc827a8c83d5"
+  },
+  "limitations": [
+    "No remote deployment, actual account operation, hosted OAuth, installed-PWA activation, physical-device or assistive-technology qualification was performed.",
+    "Folder-aware Workspace adoption remains the separate nonblocking followup P-1b2a534e-5f45-4f47-b56d-1a3870199b31. A fresh project login/startup path remains outside the two in-app folder journeys."
+  ],
+  "followup_ids": [],
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+    ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+    ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+    ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/ui-findings.json"
+  ]
+}

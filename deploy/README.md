@@ -26,11 +26,13 @@ The production website and all three backends are published. Protected uploads o
 
 Open [Habitica Companion](https://habitica-companion.pages.dev) in a separate browser profile. Follow [Owner account and client connection after publication](#owner-account-and-client-connection-after-publication) below for the exact Habitica credential source, sign-in fields, separate consent controls and ChatGPT/Codex setup. Provide credentials only to the intended sign-in form. The initial pilot covers account/task reads and Companion-only task saves; background execution remains a separate per-account opt-in and gameplay actions retain exact review controls.
 
-The 2026-10-29 coordinated release publishes the recent PWA, Auth, Workspace and MCP implementation, including Notes project associations, task recovery/adoption, reviews, reminders, PWA installation and shared diagnostics. [Release evidence](../skill-tree/history/releases/2026-10-29/README.md) records deployed identities, migrations, checks and remaining qualification. The production Pages Git build retains matching public frontend configuration. Existing credential/profile keys and browser resources remain unchanged; dedicated Web Push keys are provisioned separately.
+The 2026-10-29 coordinated release publishes the recent PWA, Auth, Workspace and MCP implementation, including Notes project associations, task recovery/adoption, reviews, reminders, PWA installation and shared diagnostics. [Release evidence](../.skill-tree/history/releases/2026-10-29/README.md) records deployed identities, migrations, checks and remaining qualification. The production Pages Git build retains matching public frontend configuration. Existing credential/profile keys and browser resources remain unchanged; dedicated Web Push keys are provisioned separately.
+
+The existing-session recovery foundation is published with Auth0013 applied. [Release evidence](../.skill-tree/history/releases/2026-10-30-session-recovery/readme.md) records coherent Workers, the complete Pages Functions upload, stable cloud data and the remaining automatic-bootstrap/adoption/UI work.
 
 ## Disabled callback Auth setup
 
-The initial scoped callback addon was published as version `96a4d62f-9c14-4f68-924d-b46dd03e09f2`. The owner subsequently selected the full recent-feature release: Auth version `7fd550da-895b-4615-8eb5-93378ab0a4bc` now serves the same disabled claim route from repository source. Migration `0012` and both callback service secrets remain retained. The [callback egress contract](../skill-tree/documents/callback-egress.md#published-auth-setup) preserves the initial scope and unfinished hosted qualification. Callback dispatch remains disabled.
+The initial scoped callback addon was published as version `96a4d62f-9c14-4f68-924d-b46dd03e09f2`. The owner subsequently selected the full recent-feature release: Auth version `7fd550da-895b-4615-8eb5-93378ab0a4bc` now serves the same disabled claim route from repository source. Migration `0012` and both callback service secrets remain retained. The [callback egress contract](../.skill-tree/documents/callback-egress.md#published-auth-setup) preserves the initial scope and unfinished hosted qualification. Callback dispatch remains disabled.
 
 ## Agent/operator preparation and publication
 
@@ -116,7 +118,7 @@ Stop new cloud access by disabling enrollment/OAuth and Workspace flags in the m
 
 ## Ordinary production user controls
 
-Production frontend settings use Features:OwnerIsolatedTestingEnabled=false and Features:PartySyncEnabled=true. The same normal defaults apply to source/client construction and generated bundles. Test isolation requires an explicit agent profile; party management and Start New Day remain restricted only in that profile. Supported class spells retain ordinary game checks in both profiles. Party departure remains prohibited everywhere. The frontend permission correction does not activate any optional backend gameplay flag or launch another live test round. Public publication evidence resides in skill-tree/history/validation/production-user-actions.json.
+Production frontend settings use Features:OwnerIsolatedTestingEnabled=false and Features:PartySyncEnabled=true. The same normal defaults apply to source/client construction and generated bundles. Test isolation requires an explicit agent profile; party management and Start New Day remain restricted only in that profile. Supported class spells retain ordinary game checks in both profiles. Party departure remains prohibited everywhere. The frontend permission correction does not activate any optional backend gameplay flag or launch another live test round. Public publication evidence resides in .skill-tree/history/validation/production-user-actions.json.
 
 ## Owner development capability rollout — 2026-10-19
 

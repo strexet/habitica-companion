@@ -1,0 +1,17 @@
+{
+  "label": "migration-auth-build",
+  "started_at_utc": "2026-10-30T15:42:38.033399+00:00",
+  "classification": "executed_control",
+  "command": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth",
+  "deadline_seconds": 100.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 3.4,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

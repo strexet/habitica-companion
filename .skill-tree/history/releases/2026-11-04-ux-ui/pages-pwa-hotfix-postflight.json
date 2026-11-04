@@ -1,0 +1,13 @@
+{
+  "deployment_id": "6d12b727-d035-4f18-b2b1-10aeb4ba91ac",
+  "url": "https://6d12b727.habitica-companion.pages.dev",
+  "stable_url": "https://habitica-companion.pages.dev",
+  "status": "success",
+  "previous": "5c45ec2f-2d13-40f0-a0ec-61279c9d1b70",
+  "runtime_and_bindings_preserved": true,
+  "git_build_output_correct": true,
+  "worker_only_asset_manifest_unchanged": true,
+  "cache_namespace": "shell-v3",
+  "storage_module_dependency_cached": true,
+  "source_sha256": "7970020bd82892b5d476a670e74d7475a06137aa599046ee110979d0e4501815"
+}

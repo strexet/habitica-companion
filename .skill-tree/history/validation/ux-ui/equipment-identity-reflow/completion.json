@@ -1,0 +1,689 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Equipment action targets, preset drafts and disabled gates remain unchanged.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.log",
+          "sha256": "3685c4359539a6a011017e631553da0d428b2225256dc1b22063d360d07be172"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.trx",
+          "sha256": "d79b0a76cb79829ff4a0b653b973ac8a0143a8ce6aaa6d2b6625c3f0bdb0c81f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-48eda6df-67ef-4fac-b5ee-b67a0645f99c.tap",
+          "sha256": "5ddf951c43509feb4fe18e5f5b11dd3738c303c6b8d63b085fb7392a6177a0a7"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/acceptance.json",
+          "sha256": "dc3de013d6b34c6725f14c887a52c8361b6897c49af7dafd62085bb93e001161"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json",
+          "sha256": "604badfaaa069b6fb808d48901b325890dc076d34212d06533100505e3855703"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.log",
+          "sha256": "3685c4359539a6a011017e631553da0d428b2225256dc1b22063d360d07be172"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.trx",
+          "sha256": "d79b0a76cb79829ff4a0b653b973ac8a0143a8ce6aaa6d2b6625c3f0bdb0c81f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-48eda6df-67ef-4fac-b5ee-b67a0645f99c.tap",
+          "sha256": "5ddf951c43509feb4fe18e5f5b11dd3738c303c6b8d63b085fb7392a6177a0a7"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/acceptance.json",
+          "sha256": "dc3de013d6b34c6725f14c887a52c8361b6897c49af7dafd62085bb93e001161"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json",
+          "sha256": "604badfaaa069b6fb808d48901b325890dc076d34212d06533100505e3855703"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Retain Inventory public action targets, persistent preset fields and preview/freshness gates; original rendered screenshots supply the failing layout regression.",
+        "criteria": [
+          "Equipment action targets, preset drafts and disabled gates remain unchanged."
+        ],
+        "id": "equipment-identity-reflow-behavior",
+        "parameters": {
+          "report_name": "equipment-identity-reflow.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/unit",
+          "test_filter": "FullyQualifiedName~InventoryPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PartyPage.razor",
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-071d73ee-2495-4e95-ada3-afa5f2e40da1",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 28,
+          "expected": 28,
+          "failed": 0,
+          "passed": 28,
+          "skipped": 0
+        },
+        "definition": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312",
+        "environment_identity": "fcd86df82970778bee54e520684331494a82fb1873fae9ee35a7fe29940fc65d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.log",
+            "sha256": "3685c4359539a6a011017e631553da0d428b2225256dc1b22063d360d07be172"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.trx",
+            "sha256": "d79b0a76cb79829ff4a0b653b973ac8a0143a8ce6aaa6d2b6625c3f0bdb0c81f"
+          }
+        ],
+        "execution_sessions": {
+          "341df6edb4f4ae58c6619af5fa14193b5d730131400f11d120847a59631ad638": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3551a9ce5531afc681bf91128e2e1b42ee3464f426c546162c390ccfb82eb27d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:50:51.530625+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727291530867000.json"
+            ],
+            "profile_id": "e2d7a14f42a933c1b24fa6e8a1e3bee907988b8cd6cd622e6f7cf7edba0a458f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "6f6a220ed78fed459f473387cc69cbee8e5be94ed58938e89621278511140ddf": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "4d020bd4220eb6253621ba32d056777bdbd977d7a98efab29e9a3fe5b07ac478",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:02:23.921570+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727983921774000.json"
+            ],
+            "profile_id": "052adac80993b16fd38a526415c316ab09677c31509410623f583b6fb29a1fe6",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bebc907924c18a694b8f41fb35fbf863b0bb61c32fd07fa55ab87f0c3e02eb12": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0efb33866ed9c0f4b82c22c45c5c9ae95a2fd6231f7ac1f8a14bed6eafdf65ca",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:44:27.245311+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793726907245509000.json"
+            ],
+            "profile_id": "2bda223160498230e515712662072c3a050b6a25448aee5ef4884dfa020b36f5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "339170a4688170f0294730909009c4f25d44b63b6af0cbae8058a2fd7fcd5a84",
+        "payload_hash": "9ec98d47f9b7c5bffa645bf49c21fa421f8eec6da891af42afcfbe30b89d7872",
+        "recorded_at": "2026-11-03T17:52:54.263432+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.574172291904688
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Inspect full Equipment fixtures and actual hydrated card word width; require each stat label and value to fit an unbroken token. Preserve action names, native focus and unchanged preset/inventory stores across the complete matrix.",
+        "criteria": [
+          "Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix."
+        ],
+        "id": "equipment-identity-reflow-rendered",
+        "parameters": {
+          "cases": "Same-named long gear, preset mini cards, best-item and equipped identity rows, intact stat tokens and disabled equipment controls.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser",
+          "routes": [
+            "/inventory"
+          ],
+          "task_key": "equipment-identity-reflow"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PartyPage.razor",
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-game-user.json",
+          "tests/browser-qualification/ux-ui-game-party.json",
+          "tests/browser-qualification/ux-ui-game-content.json",
+          "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs",
+          "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+          "tests/browser-qualification/prepare.py"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-b5949a81-1ff4-455b-961a-84ab840440fa",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 289,
+          "expected": 289,
+          "failed": 0,
+          "passed": 289,
+          "skipped": 0
+        },
+        "definition": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312",
+        "environment_identity": "9567cce87ad3154527121b96b84aea1de8c9a7b2b57349450bee588c076a2084",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json",
+            "sha256": "604badfaaa069b6fb808d48901b325890dc076d34212d06533100505e3855703"
+          }
+        ],
+        "execution_sessions": {
+          "341df6edb4f4ae58c6619af5fa14193b5d730131400f11d120847a59631ad638": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3551a9ce5531afc681bf91128e2e1b42ee3464f426c546162c390ccfb82eb27d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:50:51.530625+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727291530867000.json"
+            ],
+            "profile_id": "e2d7a14f42a933c1b24fa6e8a1e3bee907988b8cd6cd622e6f7cf7edba0a458f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "6859e756f336e84cafa3d279185840c2cf981002571e992882ddb0d975d11f47": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:11:32.880193+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793728532880670000.json"
+            ],
+            "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "6f6a220ed78fed459f473387cc69cbee8e5be94ed58938e89621278511140ddf": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "4d020bd4220eb6253621ba32d056777bdbd977d7a98efab29e9a3fe5b07ac478",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:02:23.921570+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727983921774000.json"
+            ],
+            "profile_id": "052adac80993b16fd38a526415c316ab09677c31509410623f583b6fb29a1fe6",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bebc907924c18a694b8f41fb35fbf863b0bb61c32fd07fa55ab87f0c3e02eb12": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0efb33866ed9c0f4b82c22c45c5c9ae95a2fd6231f7ac1f8a14bed6eafdf65ca",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:44:27.245311+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793726907245509000.json"
+            ],
+            "profile_id": "2bda223160498230e515712662072c3a050b6a25448aee5ef4884dfa020b36f5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "bb73f38a9226618c8488544b0ecb71a5ef19f08029031cec1e2601ff093742d3",
+        "payload_hash": "fa2bc6f711b65d9d891785b930f7b8ea0328c4e4bb3f5bc49b6d5fb5687531ff",
+        "recorded_at": "2026-11-03T17:58:03.031778+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/prepare.py": "066ca9dcdd8bbdd311928d44041fe70d0745217156cb4d2a89f1255e52f0ce79",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "9af215c78bf46d14b770d28b43d57ebb2d543a1056986216b757bf0f078d4420",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+          "tests/browser-qualification/ux-ui-equipment-metrics.mjs": "4568897c980a129e3546a5074c3e7e0dc2ed68a37b52dc9a17a621d36c3e7767",
+          "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs": "ed1bf379491b42bd999c8a12af12e633a02ed123d6acebe434271c366a98538d",
+          "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs": "c145a23e2aa9a7b9ddd3bdfdc8b22d3bffe490998f8c956dee5a5b77482ec5fa",
+          "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+          "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+          "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+        },
+        "timing": {
+          "tool_wall_seconds": 148.64748775027692
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Independent controls reject glyph-wide name columns, split stat tokens and missing text geometry while accepting full available text width. Existing provider fixture, identity, matrix and cleanup controls remain required.",
+        "criteria": [
+          "Equipment action targets, preset drafts and disabled gates remain unchanged.",
+          "Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix."
+        ],
+        "id": "equipment-identity-reflow-controls",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-6c8fa415-957a-408d-9f1d-2e833ea0a828",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 37,
+          "expected": 37,
+          "failed": 1,
+          "passed": 36,
+          "skipped": 0
+        },
+        "definition": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312",
+        "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-6c8fa415-957a-408d-9f1d-2e833ea0a828.tap",
+            "sha256": "ee2349b6e3096dd1d09d71d874a5cc45f5e64866a9186dc8da79869fb8a7682c"
+          }
+        ],
+        "execution_sessions": {
+          "341df6edb4f4ae58c6619af5fa14193b5d730131400f11d120847a59631ad638": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3551a9ce5531afc681bf91128e2e1b42ee3464f426c546162c390ccfb82eb27d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:50:51.530625+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727291530867000.json"
+            ],
+            "profile_id": "e2d7a14f42a933c1b24fa6e8a1e3bee907988b8cd6cd622e6f7cf7edba0a458f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bebc907924c18a694b8f41fb35fbf863b0bb61c32fd07fa55ab87f0c3e02eb12": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0efb33866ed9c0f4b82c22c45c5c9ae95a2fd6231f7ac1f8a14bed6eafdf65ca",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:44:27.245311+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793726907245509000.json"
+            ],
+            "profile_id": "2bda223160498230e515712662072c3a050b6a25448aee5ef4884dfa020b36f5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "7df0d9c34ba91e357683d378e56ac3b7c598c92e43f67f3d673ae941a2a9145a",
+        "payload_hash": "17e8c4c221f020af17247c2a1c734ebcaf54b9a727afd084fc64d5d542314704",
+        "recorded_at": "2026-11-03T17:40:43.916431+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "0ee5a5f8eaf98b4e9fa227ec9b7aeec86c7e1d5d6254717320545292f0288ef6",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "ca8a8f2f23eb04dca5cdcd3160578565d43ab6b5ba57663e4a19bcd73a659fe5"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.15047966688871384
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-48eda6df-67ef-4fac-b5ee-b67a0645f99c",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 38,
+          "expected": 38,
+          "failed": 0,
+          "passed": 38,
+          "skipped": 0
+        },
+        "definition": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312",
+        "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-48eda6df-67ef-4fac-b5ee-b67a0645f99c.tap",
+            "sha256": "5ddf951c43509feb4fe18e5f5b11dd3738c303c6b8d63b085fb7392a6177a0a7"
+          }
+        ],
+        "execution_sessions": {
+          "341df6edb4f4ae58c6619af5fa14193b5d730131400f11d120847a59631ad638": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3551a9ce5531afc681bf91128e2e1b42ee3464f426c546162c390ccfb82eb27d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:50:51.530625+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727291530867000.json"
+            ],
+            "profile_id": "e2d7a14f42a933c1b24fa6e8a1e3bee907988b8cd6cd622e6f7cf7edba0a458f",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "6f6a220ed78fed459f473387cc69cbee8e5be94ed58938e89621278511140ddf": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "4d020bd4220eb6253621ba32d056777bdbd977d7a98efab29e9a3fe5b07ac478",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:02:23.921570+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793727983921774000.json"
+            ],
+            "profile_id": "052adac80993b16fd38a526415c316ab09677c31509410623f583b6fb29a1fe6",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bebc907924c18a694b8f41fb35fbf863b0bb61c32fd07fa55ab87f0c3e02eb12": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0efb33866ed9c0f4b82c22c45c5c9ae95a2fd6231f7ac1f8a14bed6eafdf65ca",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:44:27.245311+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/launch-1793726907245509000.json"
+            ],
+            "profile_id": "2bda223160498230e515712662072c3a050b6a25448aee5ef4884dfa020b36f5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-identity-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "37942edcf8d1ddfa6be9c077ecc893674ce34b35f71413cfdaee6b1cae3b7199",
+        "payload_hash": "0971b4f192650c232aa67de620b2cc1da7d96bc72c127e3c56f584eff8e8390a",
+        "recorded_at": "2026-11-03T17:51:47.798657+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.14157741563394666
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/acceptance.json",
+      "sha256": "dc3de013d6b34c6725f14c887a52c8361b6897c49af7dafd62085bb93e001161"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/operation-history.json",
+      "sha256": "d4325e5ef68e34cbe91d2cce2bef3f8c9db8540a93e6efd6edf254febb85543f"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-ed188d60-540e-4104-be8d-fc5bb1858873",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep equipment identity text and stat tokens readable in constrained cards. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb"
+  ],
+  "recorded_at": "2026-11-03T18:00:22.773475+00:00",
+  "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+    "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/prepare.py": "066ca9dcdd8bbdd311928d44041fe70d0745217156cb4d2a89f1255e52f0ce79",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "9af215c78bf46d14b770d28b43d57ebb2d543a1056986216b757bf0f078d4420",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1",
+    "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+    "tests/browser-qualification/ux-ui-equipment-metrics.mjs": "4568897c980a129e3546a5074c3e7e0dc2ed68a37b52dc9a17a621d36c3e7767",
+    "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs": "ed1bf379491b42bd999c8a12af12e633a02ed123d6acebe434271c366a98538d",
+    "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+    "tests/browser-qualification/ux-ui-game-names-journey.mjs": "c145a23e2aa9a7b9ddd3bdfdc8b22d3bffe490998f8c956dee5a5b77482ec5fa",
+    "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+    "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+    "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+  },
+  "task_id": "T-e3859337-1a25-48e6-a37d-817868623ec7",
+  "title": "Keep equipment identity text and stat tokens readable in constrained cards",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Retain Inventory public action targets, persistent preset fields and preview/freshness gates; original rendered screenshots supply the failing layout regression.",
+      "criteria": [
+        "Equipment action targets, preset drafts and disabled gates remain unchanged."
+      ],
+      "id": "equipment-identity-reflow-behavior",
+      "parameters": {
+        "report_name": "equipment-identity-reflow.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/unit",
+        "test_filter": "FullyQualifiedName~InventoryPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Inspect full Equipment fixtures and actual hydrated card word width; require each stat label and value to fit an unbroken token. Preserve action names, native focus and unchanged preset/inventory stores across the complete matrix.",
+      "criteria": [
+        "Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix."
+      ],
+      "id": "equipment-identity-reflow-rendered",
+      "parameters": {
+        "cases": "Same-named long gear, preset mini cards, best-item and equipped identity rows, intact stat tokens and disabled equipment controls.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser",
+        "routes": [
+          "/inventory"
+        ],
+        "task_key": "equipment-identity-reflow"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-user.json",
+        "tests/browser-qualification/ux-ui-game-party.json",
+        "tests/browser-qualification/ux-ui-game-content.json",
+        "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+        "tests/browser-qualification/prepare.py"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Independent controls reject glyph-wide name columns, split stat tokens and missing text geometry while accepting full available text width. Existing provider fixture, identity, matrix and cleanup controls remain required.",
+      "criteria": [
+        "Equipment action targets, preset drafts and disabled gates remain unchanged.",
+        "Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix."
+      ],
+      "id": "equipment-identity-reflow-controls",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312"
+}

@@ -1,0 +1,944 @@
+{
+  "admission": {
+    "environment_id": "7d9161717b8666935964ad9f53dbe84a3872a3fb4fc779bb70b915df98185ae8",
+    "flavor": "web",
+    "identity": "0818472ce2193ac8b012a2866abbb4019f40315d2b63b8d27af71c193eace830",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "checks": {
+    "phone-notes-editor-behavior": {
+      "attempt": {
+        "attempt_id": "C-4e4fa265-6d89-427f-934f-8290ad7be887",
+        "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+        "environment_identity": "ac6eb11ebb96aaa64c1e948159728ce8ecd2eb18ea4f5323e14635d22e9d005a",
+        "key": "4c29cf4765123ec9a508de313888302aedc7cf0bef73f5afc5c965c462c8497d",
+        "launch": {
+          "assertion": "Exercise public component/controller behavior with independent expected outcomes: New/open/back, unsaved note, long library, selected project/folder, new folder, failed save, original pending command, reload, phone-to-desktop resize. Require nonzero discovery and no required skips.",
+          "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+          "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+          "cleanup_seconds": 15,
+          "deadline_utc": "2026-11-03T22:28:06.176018+00:00",
+          "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T22:23:06.494387+00:00",
+        "recipe": {
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "-m:1",
+            "-nodeReuse:false",
+            "--filter",
+            "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesFolderPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+            "--logger",
+            "trx;LogFileName=phone-notes-editor.trx",
+            "--results-directory",
+            ".skill-tree/history/validation/ux-ui/phone-notes-editor/unit"
+          ],
+          "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "global.json",
+            "Directory.Build.props",
+            "Directory.Packages.props",
+            "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+            "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+            "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "csharp": "12.0",
+            "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+            "framework": "Blazor WebAssembly net8.0",
+            "sdk_declaration": "8.0.125",
+            "test_frameworks": {
+              "Microsoft.NET.Test.Sdk": "18.4.0",
+              "bunit": "2.7.2",
+              "xunit": "2.9.3"
+            }
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567"
+        }
+      },
+      "receipts": {
+        "C-03830738-865b-45de-977f-01d977c9de47": {
+          "actual_lane": "unit",
+          "attempt_id": "C-03830738-865b-45de-977f-01d977c9de47",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 31,
+            "expected": 31,
+            "failed": 0,
+            "passed": 31,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "bace8527d3d6d0ba46bfe079c39ee5d4a5b83361ccc7d400b33289f667a3c341",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-03830738-865b-45de-977f-01d977c9de47.log",
+              "sha256": "ba8a1f32753de140a0e4d6f2dc75a4426b2a1b75bf02ea5abb9922cdcb91c9c4"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-03830738-865b-45de-977f-01d977c9de47.trx",
+              "sha256": "77e51dcc22e829a105fa3f63e885002194bf98bc4af0d861fc2dc9a97afc783f"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "51947b353b51073d54d274d8298313d1dde65ceab8aa3ce77bcebc7ca3177983",
+          "payload_hash": "30d2b8ff3b2206835d451bd852c5cbb84f5d68dffb42b500e343b056700d7112",
+          "recorded_at": "2026-11-03T22:07:11.190993+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "e2027657d18b64bb7a013ff8cbead4aa748f3ebd3869863abd3e761e02c630cb",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "9049cc2cb3c71c4b31a1f3f4f3df182547e1b373eca83ccd58e970f33140c93d"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.577843333594501
+          }
+        },
+        "C-4e4fa265-6d89-427f-934f-8290ad7be887": {
+          "actual_lane": "unit",
+          "attempt_id": "C-4e4fa265-6d89-427f-934f-8290ad7be887",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 31,
+            "expected": 31,
+            "failed": 0,
+            "passed": 31,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "ac6eb11ebb96aaa64c1e948159728ce8ecd2eb18ea4f5323e14635d22e9d005a",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.log",
+              "sha256": "d7199548a52d49655b4df8e28d228aed72426e391c3e9505c7733e5659a68808"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.trx",
+              "sha256": "b2e3e1268c233d10b7a632f32913be5e1d3d8b44dc10f4d11c8b45bcbcca5a37"
+            }
+          ],
+          "execution_sessions": {
+            "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:35:21.060840+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744361061040000.json"
+              ],
+              "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "4c29cf4765123ec9a508de313888302aedc7cf0bef73f5afc5c965c462c8497d",
+          "payload_hash": "7fd1dd3c9014435779d98c4684085c79002087a4eee5a686895e4276ab92f7fb",
+          "recorded_at": "2026-11-03T22:23:09.956545+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567"
+          },
+          "timing": {
+            "tool_wall_seconds": 3.1008327081799507
+          }
+        },
+        "C-68974a2d-3de1-43c1-b3d8-13023117258e": {
+          "actual_lane": "unit",
+          "attempt_id": "C-68974a2d-3de1-43c1-b3d8-13023117258e",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 30,
+            "expected": 30,
+            "failed": 2,
+            "passed": 28,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "bace8527d3d6d0ba46bfe079c39ee5d4a5b83361ccc7d400b33289f667a3c341",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-68974a2d-3de1-43c1-b3d8-13023117258e.log",
+              "sha256": "079ab1d43f5d8dc4233ab99a429313cc7dfe817b1121da7a028b124d4c48088a"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-68974a2d-3de1-43c1-b3d8-13023117258e.trx",
+              "sha256": "afc6f26cb943c9f84e382b72bbd71518fa5b06931525d19b663dbcc3013ed961"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_category": "expected-behavior",
+          "key": "1e48cf5e1dac825b113c731941d3087288de5974ffeafab96ae4851c2565f365",
+          "payload_hash": "5b352b28fe095183df8cb845d223196b38981791098b739a48e33f84816b61e7",
+          "recorded_at": "2026-11-03T21:55:42.754912+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "53b2193f00b9c575f7a65d50b14fc6058a9539bba9d4292c9958be05195e24a0",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.722575707826763
+          }
+        },
+        "C-b8b7827c-2277-42dd-ae97-139871dac79c": {
+          "actual_lane": "unit",
+          "attempt_id": "C-b8b7827c-2277-42dd-ae97-139871dac79c",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 30,
+            "expected": 30,
+            "failed": 0,
+            "passed": 30,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "bace8527d3d6d0ba46bfe079c39ee5d4a5b83361ccc7d400b33289f667a3c341",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-b8b7827c-2277-42dd-ae97-139871dac79c.log",
+              "sha256": "d4bfd8f0c88380ef81cc77d7a734d722f8be907f0710f1e13cac58eba337107b"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-b8b7827c-2277-42dd-ae97-139871dac79c.trx",
+              "sha256": "5b72a03168f42222c926c12b5d3e80ab39b9ed014f4d860063112a6eb5dff1b5"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "e7b2b47bed6cc0c032cb649db5cd86ed5a1622010ad9105f04fd451b6d7f019d",
+          "payload_hash": "2bbf4406592ff2418c01ce8f5b34688f915602f1d6c371fb1a2e36316592a64b",
+          "recorded_at": "2026-11-03T22:01:00.011549+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "e2027657d18b64bb7a013ff8cbead4aa748f3ebd3869863abd3e761e02c630cb",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "7b45166a88500be0689e62b4e2ef74a833cdfd3ec8cfe137ffa472892d5672e6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.341791541781276
+          }
+        },
+        "C-daa2b10c-5d1c-4182-91a1-8c9cdaad489d": {
+          "actual_lane": "unit",
+          "attempt_id": "C-daa2b10c-5d1c-4182-91a1-8c9cdaad489d",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 31,
+            "expected": 31,
+            "failed": 0,
+            "passed": 31,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "ac6eb11ebb96aaa64c1e948159728ce8ecd2eb18ea4f5323e14635d22e9d005a",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-daa2b10c-5d1c-4182-91a1-8c9cdaad489d.log",
+              "sha256": "0c57028535f38ef1c2d80230d5ec94771c56ee61c7cbb89e932caa99f7c63ec1"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-daa2b10c-5d1c-4182-91a1-8c9cdaad489d.trx",
+              "sha256": "071382aa301b62f61d810edf851f970f21f30cfa91d5ace8716a33992359ce44"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "159a7f03eff74297eb51773ac1fcbe224e7d1cc667f4461e59145bc09d9dc0dd",
+          "payload_hash": "b79eb6fd116fbda40fc7277da7a527347993cc319caa38094fe6806cc2fcda89",
+          "recorded_at": "2026-11-03T22:14:18.159633+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.109167582821101
+          }
+        }
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-68974a2d-3de1-43c1-b3d8-13023117258e",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 30,
+          "expected": 30,
+          "failed": 2,
+          "passed": 28,
+          "skipped": 0
+        },
+        "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+        "environment_identity": "bace8527d3d6d0ba46bfe079c39ee5d4a5b83361ccc7d400b33289f667a3c341",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-68974a2d-3de1-43c1-b3d8-13023117258e.log",
+            "sha256": "079ab1d43f5d8dc4233ab99a429313cc7dfe817b1121da7a028b124d4c48088a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-68974a2d-3de1-43c1-b3d8-13023117258e.trx",
+            "sha256": "afc6f26cb943c9f84e382b72bbd71518fa5b06931525d19b663dbcc3013ed961"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "1e48cf5e1dac825b113c731941d3087288de5974ffeafab96ae4851c2565f365",
+        "payload_hash": "5b352b28fe095183df8cb845d223196b38981791098b739a48e33f84816b61e7",
+        "recorded_at": "2026-11-03T21:55:42.754912+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "53b2193f00b9c575f7a65d50b14fc6058a9539bba9d4292c9958be05195e24a0",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.722575707826763
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-4e4fa265-6d89-427f-934f-8290ad7be887",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 31,
+          "expected": 31,
+          "failed": 0,
+          "passed": 31,
+          "skipped": 0
+        },
+        "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+        "environment_identity": "ac6eb11ebb96aaa64c1e948159728ce8ecd2eb18ea4f5323e14635d22e9d005a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.log",
+            "sha256": "d7199548a52d49655b4df8e28d228aed72426e391c3e9505c7733e5659a68808"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.trx",
+            "sha256": "b2e3e1268c233d10b7a632f32913be5e1d3d8b44dc10f4d11c8b45bcbcca5a37"
+          }
+        ],
+        "execution_sessions": {
+          "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T22:35:21.060840+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744361061040000.json"
+            ],
+            "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+            ],
+            "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "4c29cf4765123ec9a508de313888302aedc7cf0bef73f5afc5c965c462c8497d",
+        "payload_hash": "7fd1dd3c9014435779d98c4684085c79002087a4eee5a686895e4276ab92f7fb",
+        "recorded_at": "2026-11-03T22:23:09.956545+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.1008327081799507
+        }
+      }
+    },
+    "phone-notes-editor-rendered": {
+      "attempt": {
+        "attempt_id": "C-600f7c7d-8c2d-4eff-a0c0-6ab080ef50e8",
+        "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+        "environment_identity": "9a0d904af7cc7f9e54244ec9657df1d44019b0464c1c61803bbd7f890bbd73ba",
+        "key": "4f907cfe31f1fc7286c5aa1487d059dbb5d74f6f5d567b265b291f2cb454de5c",
+        "launch": {
+          "assertion": "Hydrated note journeys and responsive editor geometry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+          "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+          "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+          "cleanup_seconds": 30,
+          "deadline_utc": "2026-11-03T22:43:27.691859+00:00",
+          "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T22:27:27.998487+00:00",
+        "recipe": {
+          "argv": [
+            "python3",
+            "tests/browser-qualification/ux-ui.py",
+            "phone-notes-editor",
+            ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser"
+          ],
+          "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "tests/browser-qualification/ux-ui.py",
+            "tests/browser-qualification/ux-ui.mjs",
+            "tests/browser-qualification/ux-ui-contract.mjs",
+            "tests/browser-qualification/ux-ui-native-date.mjs",
+            "tests/browser-qualification/ux-ui-shared-journey.mjs",
+            "tests/browser-qualification/ux-ui-adapters.json",
+            "tests/browser-qualification/ux-ui-checks.test.mjs",
+            "tests/browser-qualification/prepare.py",
+            "tests/browser-qualification/qualification-core.mjs",
+            "tests/browser-qualification/qualification-frame.mjs",
+            "tests/browser-qualification/qualification-session.mjs",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+            "src/Habitica.WebApp/Habitica.WebApp.csproj",
+            "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+            "tests/browser-qualification/ux-ui-notes-metrics.mjs"
+          ],
+          "lane": "browser",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+            "framework": "Blazor WebAssembly8 Release",
+            "node": "22.x"
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        }
+      },
+      "receipts": {
+        "C-03a995f0-70ab-4fdb-b80c-d402e1e000cd": {
+          "actual_lane": "browser",
+          "attempt_id": "C-03a995f0-70ab-4fdb-b80c-d402e1e000cd",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 937,
+            "expected": 937,
+            "failed": 0,
+            "passed": 937,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "6771ed08a0c8a283ac12d72bf2de65cf5d23e59e397c1a1e3cae998bf862b499",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/59b2ce78-fbab-4277-8db9-676f171dfb05.json",
+              "sha256": "c8aac50436afa9ae48d22eb0697bbf5dab11af3ec33b16920cf23084ee4dc5f5"
+            }
+          ],
+          "execution_sessions": {
+            "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:39:11.392184+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744591392424000.json"
+              ],
+              "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "975c5f552c86ee45f070625921b738ee7f770c627d889ea97a6852d961f8b8e9",
+          "payload_hash": "e82dbb0172a9c244a1ee577d5085755ea6e568f128f2433c56871364e4828355",
+          "recorded_at": "2026-11-03T22:25:30.325432+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 137.77012137509882
+          }
+        },
+        "C-437126b1-a7f3-49bd-8e0d-f9ced8685806": {
+          "actual_lane": "browser",
+          "attempt_id": "C-437126b1-a7f3-49bd-8e0d-f9ced8685806",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "diagnostic_key": "62da2296e1394d3eb60722836905364eb6fc1ec449efd468d129ed669abafeca",
+          "environment_identity": "698f6cb50dadf51c85c85d52a87bbb878e5fcedfe8d9237748ed36ec83169e9d",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-437126b1-a7f3-49bd-8e0d-f9ced8685806-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/0def8623-c58e-46e0-a85d-e83880a13673-failure.json",
+              "sha256": "6d650d10bcf93ebaad403ee781cd76b643988bb71e86a79ea3c05047248c1672"
+            }
+          ],
+          "execution_sessions": {
+            "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:31:57.780576+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744157780789000.json"
+              ],
+              "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "2b7155078f3c9e046d34fec9335093bc0f3b15ebbe2235899fc5c35cdc14068e",
+          "payload_hash": "b93915456eb0aab128074bb44dc4fc4ccec06d45ecdd560737710201ca084639",
+          "recorded_at": "2026-11-03T22:16:22.870894+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 23.996665167156607
+          }
+        },
+        "C-600f7c7d-8c2d-4eff-a0c0-6ab080ef50e8": {
+          "actual_lane": "browser",
+          "attempt_id": "C-600f7c7d-8c2d-4eff-a0c0-6ab080ef50e8",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 937,
+            "expected": 937,
+            "failed": 0,
+            "passed": 937,
+            "skipped": 0
+          },
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "environment_identity": "9a0d904af7cc7f9e54244ec9657df1d44019b0464c1c61803bbd7f890bbd73ba",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/f16b14c4-f10e-46cf-ae4b-b4754c3ab585.json",
+              "sha256": "50ccbad32de043d85f105454d85253f0619eb6c0c7f0d06a99087b3bf1e61b96"
+            }
+          ],
+          "execution_sessions": {
+            "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:43:27.691859+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744847692091000.json"
+              ],
+              "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "4f907cfe31f1fc7286c5aa1487d059dbb5d74f6f5d567b265b291f2cb454de5c",
+          "payload_hash": "ffe6e576399486c7e6de02fd99b2aa05002f0ffb6bf2e0b3580925b68023d1d7",
+          "recorded_at": "2026-11-03T22:29:45.304508+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 136.4242076673545
+          }
+        },
+        "C-dafe0f0c-739d-49b3-94f6-dd789523f272": {
+          "actual_lane": "browser",
+          "attempt_id": "C-dafe0f0c-739d-49b3-94f6-dd789523f272",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "diagnostic_key": "f187b216156414b8db727d115f049f69824a9ccceae08353a9eb1a3d303409a2",
+          "environment_identity": "be8623145a5046125d8952557ae3fb57de881010bf082a8908ecfc82de614543",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-dafe0f0c-739d-49b3-94f6-dd789523f272-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/7efda5ad-a98a-4492-b40b-c5b022cb29a3-failure.json",
+              "sha256": "0a25d1ea88a029af7cf1a7dc3ce1c789e2e5e1eff844aca0f0d720b1c026d681"
+            }
+          ],
+          "execution_sessions": {
+            "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:35:21.060840+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744361061040000.json"
+              ],
+              "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "86705f7db2a25c589daa7c72c52d0e8f442db1ffa118ade17c0585fb4ee38f51",
+          "payload_hash": "c7fbf392e6472859c3f12af5e884c723bdabfc05d446838437379e2a6cedf297",
+          "recorded_at": "2026-11-03T22:19:36.086141+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.986720082815737
+          }
+        },
+        "C-ea89bb61-aa7f-484e-b9c1-55b13e0ca31e": {
+          "actual_lane": "browser",
+          "attempt_id": "C-ea89bb61-aa7f-484e-b9c1-55b13e0ca31e",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+          "diagnostic_key": "4e5d0cb038c82a7251428c65787e09ee8a8dc4bbac088359a449e552e977241f",
+          "environment_identity": "16697dc8e1c79bc68b3e7c354591bfe2ea938fcb9dff8be712dcd88c1816eb63",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-ea89bb61-aa7f-484e-b9c1-55b13e0ca31e-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/ad13195e-5e8c-465d-9639-f84214cb99a6-failure.json",
+              "sha256": "8f60ce1995d9a9d90808f2416e74e54ba543caa9a395e28d1321f1ef17264456"
+            }
+          ],
+          "execution_sessions": {
+            "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+              ],
+              "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "3bd297c23a197a4e23f25719605bc23fb670705b261699d0c5d4209fd871f2b4",
+          "payload_hash": "a0c998028ded321f29f0d6f98aa5b5cacb4e540980727d2173974d6aa21269ba",
+          "recorded_at": "2026-11-03T22:14:42.771306+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+            "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+            "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+            "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 23.45649120816961
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-600f7c7d-8c2d-4eff-a0c0-6ab080ef50e8",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 937,
+          "expected": 937,
+          "failed": 0,
+          "passed": 937,
+          "skipped": 0
+        },
+        "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+        "environment_identity": "9a0d904af7cc7f9e54244ec9657df1d44019b0464c1c61803bbd7f890bbd73ba",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/f16b14c4-f10e-46cf-ae4b-b4754c3ab585.json",
+            "sha256": "50ccbad32de043d85f105454d85253f0619eb6c0c7f0d06a99087b3bf1e61b96"
+          }
+        ],
+        "execution_sessions": {
+          "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T22:43:27.691859+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744847692091000.json"
+            ],
+            "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+            ],
+            "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "4f907cfe31f1fc7286c5aa1487d059dbb5d74f6f5d567b265b291f2cb454de5c",
+        "payload_hash": "ffe6e576399486c7e6de02fd99b2aa05002f0ffb6bf2e0b3580925b68023d1d7",
+        "recorded_at": "2026-11-03T22:29:45.304508+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+          "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "707515147243ff0b127b8f280967bba8b19e2378cda76ba51544c01a322eb567",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 136.4242076673545
+        }
+      }
+    }
+  },
+  "execution_sessions": {
+    "5867e9c503b90b90ef82ba4643d5022e92c0e8856fb8b74944b023e692780669": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "63a97035815e123e5c7a5705d42e9c809354e7012835d040c209f7c1498aaaab",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T22:43:27.691859+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744847692091000.json"
+      ],
+      "profile_id": "671385552b1b78bab860c401374631ca1084961fdf40c27836d6c55464a71bdc",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    },
+    "74793f4a3ad0cca814b58ea6d2975bab9f693ea7d4698d7e46b01a12a61a4f1a": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "bdbcd3097eb2b393f2cef62a027df8f67851bf4949f488a978c355824b85be89",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T22:30:18.316419+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/phone-notes-editor/launch-1793744058316678000.json"
+      ],
+      "profile_id": "1fa69b0e56016f1e2ddbd549ee633e48a674d59267ebfc71db4e2f016945c012",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/phone-notes-editor",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    }
+  },
+  "partial_work": [],
+  "stage": "implementing"
+}

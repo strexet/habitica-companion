@@ -1,0 +1,24 @@
+{
+  "original_report": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/cb0ec809-9ef2-4aa0-9a61-92b80be97794-failure.json",
+  "original_cleanup": "contexts/profiles incomplete; server closed",
+  "original_result": "Matching qualification-result is present in saved HTML with no errors; transport read and cleanup exceeded deadlines. No product assertion failure was established. Exact cause remains unknown.",
+  "post_exit_cleanup": [
+    {
+      "path": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-fkrV2f",
+      "created": 1793755151.6105306,
+      "exact_owned_origin_matched": true,
+      "open_files": false,
+      "removed": true
+    },
+    {
+      "path": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/habitica-ux-ui-IcG2Wj",
+      "created": 1793755151.6105602,
+      "exact_owned_origin_matched": true,
+      "open_files": false,
+      "removed": true
+    }
+  ],
+  "owned_browser_processes_remaining": false,
+  "live_owner_state_touched": false,
+  "next_control": "Fresh owned Chromium transport probe on the exact original fixture; no full UI acceptance from the probe."
+}

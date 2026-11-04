@@ -1,0 +1,12 @@
+{
+  "unchanged": true,
+  "run_id": "WR-5663ac54-9d1e-4145-8792-17c83b2b8bd3",
+  "snapshot_expanded": false,
+  "new_ids_in_snapshot": [],
+  "helper_bookkeeping_removed_only": [
+    "deferred_ids",
+    "processing_results",
+    "phase",
+    "next_action"
+  ]
+}

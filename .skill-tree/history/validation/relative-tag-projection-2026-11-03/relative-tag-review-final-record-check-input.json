@@ -1,0 +1,23 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-review",
+  "attempt_id": "C-4ca5e2c7-fcb6-46d8-bbfa-7514a48de032",
+  "environment_identity": "a25016e09624df2c0f38112cdcaeaeab2b97ad73c6ba9d9acbc22e3cb80319af",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 25,
+    "discovered": 25,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 19.73900395911187
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-review-final-execution.log"
+  ]
+}

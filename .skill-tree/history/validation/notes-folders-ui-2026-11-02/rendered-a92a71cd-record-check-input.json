@@ -1,0 +1,18 @@
+{
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "check_id": "notes-rendered-interactions",
+  "attempt_id": "C-528da31d-17d9-4f7e-be9d-ead80bcaf2c2",
+  "environment_identity": "6a87808ac190e7b752cfbb53fdc55f809d7e9291ba0be5ff5957c84fb4d96d8c",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "fail",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "timing": {
+    "tool_wall_seconds": 15.532491750083864
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-execution.log",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json"
+  ],
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/notes-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/notes-folders-ui/1793642157638128000/step-3.log\n"
+}

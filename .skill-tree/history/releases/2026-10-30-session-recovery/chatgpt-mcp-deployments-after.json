@@ -1,0 +1,156 @@
+[
+  {
+    "id": "75e3989f-b876-4840-9b97-17e9573cb94e",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Automatic deployment on upload.",
+      "workers/triggered_by": "upload"
+    },
+    "versions": [
+      {
+        "version_id": "3b4b2893-4ff1-4143-8308-77eda45212e6",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T11:45:11.903738Z"
+  },
+  {
+    "id": "b0c2b119-0ad4-4fda-94a0-074bdf4346fb",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T16:37:37.350471Z"
+  },
+  {
+    "id": "491b8e82-b27c-45c7-a46e-835bef752581",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Native task lifecycle 70c68d3",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "72029709-e8a0-4b52-b84b-181cb75bbc0d",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-17T04:42:23.4463Z"
+  },
+  {
+    "id": "62be3268-0717-403d-b1b8-7f536c03f508",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Owner development capability rollout aab2b87",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "e15a2de7-5c93-4cf4-83d2-b0c467641eb7",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-19T03:27:15.417442Z"
+  },
+  {
+    "id": "421b0a05-ed1f-42dd-a7f2-4ff60a7c4f54",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "f52d8bf6-acf1-42a6-a641-9eccbb4a4e84",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-20T13:56:19.521036Z"
+  },
+  {
+    "id": "187cbc16-3ece-46b9-aedd-e069692e5ff5",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "31f2b105-8268-49b1-a6ff-1563e9976467",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-23T13:33:31.662597Z"
+  },
+  {
+    "id": "6d538590-23bd-4da5-bb3e-20399e515164",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "fabfa8f8-1321-4242-83d1-a0b546ca2e66",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T17:48:04.894893Z"
+  },
+  {
+    "id": "28e49bf8-0e81-4abe-bcf3-4ad830925fd4",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "d0a90ca2-82cb-46fb-a0b7-414ecf2ee4f3",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T23:39:18.760966Z"
+  },
+  {
+    "id": "0052521f-bd1a-4934-8117-b93b7c3388b2",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Checked recent features and reviewed MCP contracts",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "0c6fdccc-2886-44f3-be61-785921c6340d",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-29T13:27:27.800547Z"
+  },
+  {
+    "id": "a9ae55e7-09e0-4c9c-9e2d-1a2e676e5409",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "450abcfa-f983-4644-9af2-04a18f2be27e",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-30T08:11:08.867139Z"
+  }
+]

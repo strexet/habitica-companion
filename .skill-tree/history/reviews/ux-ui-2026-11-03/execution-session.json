@@ -1,0 +1,53 @@
+{
+  "review_id": "ux-ui-2026-11-03",
+  "scope": "Owner-requested UX/UI review and Pending intake, without implementation admission",
+  "authorization": "Owner explicitly approved local build and synthetic review in the current chat",
+  "assertion": "Inspect current-source rendered layouts, normal/enlarged text, themes and representative component behavior",
+  "cheaper_evidence_limit": "Source and markup alone cannot establish rendered geometry, focus visibility or native date-content readability",
+  "checkout": "/Users/petr/Projects/habitica-tool",
+  "identity_artifacts": [
+    "identity.json",
+    "test-summary.json",
+    "asset-fingerprints.json",
+    "coverage.json",
+    "matrix-selection.json"
+  ],
+  "processes": [
+    {
+      "kind": "Release publish",
+      "exec_session_id": 28311,
+      "exit_code": 0,
+      "output": "/tmp/habitica-ux-ui-review-20261103/publish",
+      "limitation": "wasm-tools optimization workload absent; no production performance claim"
+    },
+    {
+      "kind": "bUnit and web/component tests",
+      "exec_session_id": 47611,
+      "exit_code": 0,
+      "passed": 1029,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "kind": "owned isolated synthetic HTTP server",
+      "exec_session_id": 51638,
+      "address": "127.0.0.1",
+      "port": 5129,
+      "deadline_seconds": 900,
+      "exit_code": 0,
+      "cleanup": "Server exited at the configured deadline; no listener remained on the audit port."
+    }
+  ],
+  "rendered_matrix": {
+    "fixtures": 62,
+    "cases": 1240,
+    "detected_errors": 0,
+    "seeded_cases": 2,
+    "seeded_error_kinds": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ]
+  },
+  "cleanup": "cleanup.json"
+}

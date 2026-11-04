@@ -1,0 +1,114 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- heading "Upcoming" [active] [level=1]
+- link "Add task":
+  - /url: /tasks
+  - generic: Add task
+- text: View
+- combobox "View":
+  - option "Inbox"
+  - option "Anytime"
+  - option "Overdue"
+  - option "Upcoming" [selected]
+  - option "Week"
+  - option "Month"
+- text: Reference day
+- textbox "Reference day": 2026-11-03
+- button "Previous period":
+  - generic: Previous period
+- button "Next period":
+  - generic: Next period
+- link "Open Today":
+  - /url: /todo/today
+- generic "Browser Workspace · rev 1"
+- paragraph:
+  - text: Task creation, field edits and scoring require Habitica correspondence. Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor.
+  - link "Open Todo Sync":
+    - /url: /todo/sync
+- region "Planning results":
+  - paragraph: "Upcoming agenda: reference day and the next 29 days."
+  - paragraph: Selected browser workspace · revision 1 · 2026-11-03–2026-12-02 inclusive
+  - status: No matching tasks in this view.
+  - generic: Showing 0–0 of 0 task/date rows
+  - button "Previous results" [disabled]:
+    - generic: Previous results
+  - button "Next results" [disabled]:
+    - generic: Next results
+  - paragraph: Dates are civil days; weeks run Monday–Sunday. Agenda rows combine planned dates, deadlines and named-zone Daily occurrences. Completed tasks stay in separate history. Lists and manual date controls work without dragging.

@@ -1,0 +1,112 @@
+{
+  "source": "authenticated native Habitica Companion MCP",
+  "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+  "revision": 164,
+  "notebookId": "56f214dc-9e2d-4a22-9257-ffea7ed8b355",
+  "notesRevision": 3,
+  "counts": {
+    "tasks": {
+      "count": 25,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "projects": {
+      "count": 3,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "notes": {
+      "count": 1,
+      "revision": 3,
+      "nextOffset": null,
+      "notebookId": "56f214dc-9e2d-4a22-9257-ffea7ed8b355"
+    },
+    "trashedNotes": {
+      "count": 0,
+      "revision": 3,
+      "nextOffset": null,
+      "notebookId": "56f214dc-9e2d-4a22-9257-ffea7ed8b355"
+    },
+    "categories": {
+      "count": 0,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "labels": {
+      "count": 0,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "goals": {
+      "count": 0,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "views": {
+      "count": 0,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    },
+    "history": {
+      "count": 17,
+      "revision": 164,
+      "nextOffset": null,
+      "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1"
+    }
+  },
+  "totalCanonicalTasks": 32,
+  "archivedCanonicalTasks": 7,
+  "recordsUnchanged": {
+    "nonarchivedTasks": true,
+    "nonarchivedProjects": true,
+    "noteSearchResults": true
+  },
+  "effects": {
+    "requested": 42,
+    "confirmed": 42,
+    "pending": 0,
+    "unknown": 0
+  },
+  "backend": {
+    "state": "coherent",
+    "workers": {
+      "mcp": {
+        "service": "mcp",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        },
+        "buildHash": "814af366208757d981e73db053e7bfb6def10773934ad9279a41c7537cddb677"
+      },
+      "auth": {
+        "service": "auth",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "buildHash": "814af366208757d981e73db053e7bfb6def10773934ad9279a41c7537cddb677",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        }
+      },
+      "workspace": {
+        "service": "workspace",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "buildHash": "814af366208757d981e73db053e7bfb6def10773934ad9279a41c7537cddb677",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        }
+      }
+    }
+  },
+  "allBrowserRecordsTransferred": "unverified: current MCP exposes no browser inventory or original complete cross-store transfer receipt; queued adoption/MCP units own the gap"
+}

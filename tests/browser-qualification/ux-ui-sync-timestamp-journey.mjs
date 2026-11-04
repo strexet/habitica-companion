@@ -1,0 +1,2 @@
+import {runJourney as settings} from './ux-ui-settings-sections-journey.mjs';
+export async function runJourney(context){const result=await settings(context);return {...result,checks:[...result.checks,'actual hydrated Settings private-sync controls remain reachable; no private-sync operation executed'],qualification:result.qualification+' Timestamp values and UTC machine metadata are qualified by actual controlled-culture C# captures; native session has no sync activity, and does not claim successful upload/download.'};}

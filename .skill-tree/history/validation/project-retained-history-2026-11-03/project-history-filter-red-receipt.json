@@ -1,0 +1,45 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-f4778fd2-8a59-486b-b9aa-ac564ebcdcfc",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 47,
+    "expected": 47,
+    "failed": 1,
+    "passed": 46,
+    "skipped": 0
+  },
+  "definition": "b24e5847b7f47e99883355f5d06c7db53b1bd8d0de6f7f29a4353274aa8d1bfc",
+  "environment_identity": "eaf72f12decfed819cf48df3c82b47e795c53c062421e0a402e69c749b8dc0d7",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-filter-red-execution.log",
+      "sha256": "e4c68d8475a8bc349c59c7fd6409340ff373b976314ed9a2060621d646eacb70"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-filter-red.trx",
+      "sha256": "338cc4f2b622f996939c362e943a537a96756ccc86a30d176b73f827b85d9f78"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_category": "expected-behavior",
+  "key": "a23df7bc227f88ec32bffd4826894519415c745c7c8bdf3cbd6e6c5c1d8570cc",
+  "payload_hash": "0af6f6feafee9149ca84dfd040150031dea266f3f0bad5894bb09e17aa281581",
+  "recorded_at": "2026-11-02T22:15:54.800401+00:00",
+  "result": "red",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f7b54b33a5b7739615a4ed5cee70fcd76801cbb06cb58088afc39a1aff9f5fd8",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "c2164eb0c2df671855caf4c9b976cca1da022c103cba3a964a2b9bf3af5d7a08",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs": "15bcef60bc1c1998d658c1e40b66e4aa30028f1dbd622ce2ea08c13ace811311",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs": "1fe5ab20bf52d55d7c2bc6e2b957cdb7859d107c1cc1dbd0ad0b8f520f07ad4b"
+  },
+  "timing": {
+    "tool_wall_seconds": 4.431222457904369
+  }
+}

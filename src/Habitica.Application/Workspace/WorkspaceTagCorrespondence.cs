@@ -2,11 +2,11 @@ using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
 
-public sealed record WorkspaceTagDesiredGroup(WorkspaceEntity Entity,WorkspaceOrganizationKind Kind,string Name,IReadOnlySet<Guid> TaskIds);
+public sealed record WorkspaceTagDesiredGroup(WorkspaceEntity Entity,WorkspaceOrganizationKind Kind,string Name,IReadOnlySet<Guid> TaskIds,string? UnavailableReason=null,WorkspaceRelativeDateEvaluation? Evaluation=null);
 public sealed record WorkspaceTagCorrespondenceResult(bool IdentityCurrent,bool Exact,bool Confirmed,WorkspaceTagIntent? Intent);
 public static class WorkspaceTagCorrespondence
 {
-    public static IReadOnlyList<WorkspaceTagDesiredGroup> Desired(WorkspaceDocument document)
+    public static IReadOnlyList<WorkspaceTagDesiredGroup> Desired(WorkspaceDocument document,Guid? reviewedViewId=null,DateTimeOffset? asOfUtc=null)
     {
         var retired=document.SourceRetirements is {Count:>0}&&WorkspaceSourceRetirements.IsValid(document)?document.SourceRetirements.Select(row=>row.SourceTaskId).ToHashSet():[];
         var tasks=document.Tasks.Where(row=>!retired.Contains(row.Id)).ToArray();
@@ -20,6 +20,8 @@ public static class WorkspaceTagCorrespondence
         foreach(var row in document.Goals)Add(row,WorkspaceOrganizationKind.Goal,row.Name,row.TaskIds);
         foreach(var row in document.SavedTaskViews??[])
         {
+            if(row.Query.HasRelativeDates&&row.Id==reviewedViewId){var evaluation=WorkspaceRelativeDates.Evaluate(row.Query,asOfUtc??default)!;var selected=new HashSet<Guid>();var cursor=0;do{var page=WorkspaceSavedTaskViews.Evaluate(document,row.Id,new(100,cursor,document.Revision),asOfUtc,evaluation.LocalDate);foreach(var task in page.Tasks)if(!retired.Contains(task.Id))selected.Add(task.Id);if(page.NextOffset is not {} next)break;cursor=next;}while(cursor<=document.Tasks.Count);groups.Add(new(row,WorkspaceOrganizationKind.SavedTaskView,row.Name,selected,Evaluation:evaluation));continue;}
+            if(row.Query.HasRelativeDates){groups.Add(new(row,WorkspaceOrganizationKind.SavedTaskView,row.Name,new HashSet<Guid>(),"relative_dates_require_review"));continue;}
             var f=row.Query.Filter;var ids=new HashSet<Guid>();var offset=0;
             do
             {
@@ -34,6 +36,7 @@ public static class WorkspaceTagCorrespondence
     }
     public static WorkspaceTagCorrespondenceResult Inspect(WorkspaceDocument document,WorkspaceTagDesiredGroup group,WorkspaceTagMapping? mapping)
     {
+        if(group.UnavailableReason is not null)return new(false,false,false,null);
         var intents=(document.TagLedger?.Intents??[]).Where(row=>row.MappingId==mapping?.Id&&row.Operation==WorkspaceTagOperation.SetMembership).OrderByDescending(row=>row.DesiredRevision).ThenByDescending(row=>row.Revision).ToArray();
         var intent=intents.FirstOrDefault();var projections=document.Projections.ToLookup(row=>row.TaskId);
         var identity=mapping is {Evidence:not null,HabiticaTagId:not null}&&mapping.DesiredName==group.Name&&mapping.IsArchived==group.Entity.IsArchived&&mapping.DesiredRevision>=group.Entity.Revision;

@@ -1,0 +1,1 @@
+{"phase": "implement", "stop_reason": "Refresh exact native type-copy browser recipe inputs. All previous attempts exited and no fixture remains running.", "next_action": "Refresh and admit the same active run, then run matching native, SDK and rendered-browser controls."}

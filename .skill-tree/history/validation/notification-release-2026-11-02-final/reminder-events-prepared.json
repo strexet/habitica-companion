@@ -1,0 +1,53 @@
+{
+  "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
+  "attempt_id": "C-f8ffe2f9-d1d0-4a47-a3da-6e048481768a",
+  "check_id": "reminder-events",
+  "definition": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c",
+  "environment_identity": "8b445ba6d15d17999fd091c78a0b48b3111e75c9cf8aa6ffee623896e9478740",
+  "key": "febc72eb8557ee438fab7a8f4b03e00ec9ac2bf06dd15ac351cee9fc027bdd6b",
+  "launch": null,
+  "prepared_at": "2026-11-02T13:53:28.392886+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/reminder-events.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/reminder-events.md": "90c940ddb95847b1fb4b95c23b5b48ce1a534d992d11c521469729fb2476ac1e",
+    "deploy/prepare-dev.mjs": "bc6ab6338036850ef6042baa647ce5b37d2d4ca11127737dc30624615ebd2124",
+    "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+    "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+    "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+    "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
+    "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+    "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/companion-workspace/test/reminder-events.test.mjs": "75cb8f334ddd2ebdcc05202a7750e173ab12121edd7fe1977510dd423e630478",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+  },
+  "task_id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+}

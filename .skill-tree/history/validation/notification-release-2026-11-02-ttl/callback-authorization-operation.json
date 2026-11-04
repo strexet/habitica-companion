@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=30000",
+    "workers/chatgpt-auth/test/events.test.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 10.506476083071902
+}

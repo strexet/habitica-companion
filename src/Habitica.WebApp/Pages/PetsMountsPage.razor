@@ -10,7 +10,7 @@
 
 <PageTitle>Pets &amp; Mounts</PageTitle>
 
-<div class="inventory-shell">
+<div class="inventory-shell companion-collection">
     <section class="card-surface dashboard-hero">
         <div>
             <p class="section-label">Pets and mounts</p>
@@ -50,6 +50,10 @@
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
         var catalogPets = GetCatalogPets(snapshot.Inventory);
         var catalogMounts = GetCatalogMounts(snapshot.Inventory);
+        var filteredPets = catalogPets.Where(item => MatchesSearch(item.Key, item.DisplayName) && MatchesPetTypeFilter(item)).ToArray();
+        var filteredMounts = catalogMounts.Where(item => MatchesSearch(item.Key, item.DisplayName) && MatchesMountTypeFilter(item)).ToArray();
+        var filteredPotions = PetsMountsCatalog.HatchingPotions.Where(item => MatchesSearch(item.Key, item.DisplayName)).ToArray();
+        var noCollectionMatches = filteredPets.Length + filteredMounts.Length + filteredPotions.Length == 0;
         var bulkSellPlan = GetBulkSellPlan(snapshot.Inventory).ToArray();
         var safeBulkSellPlan = bulkSellPlan.Where(static item => item.IsSafe).ToArray();
 
@@ -85,7 +89,7 @@
             <input class="app-input"
                    placeholder="Search by name or key"
                    value="@_searchText"
-                   @oninput="eventArgs => _searchText = eventArgs.Value?.ToString() ?? string.Empty"
+                   @oninput="eventArgs => SetCollectionSearch(eventArgs.Value?.ToString() ?? string.Empty)"
                    data-testid="pets-mounts-search" />
             @{
                 var creatureTypeOptions = GetCreatureTypeFilterOptions(catalogPets, catalogMounts);
@@ -93,7 +97,7 @@
             <div class="companion-filter-grid">
                 <label class="field-row compact">
                     <span>Pet type</span>
-                    <select class="app-input" value="@_petTypeFilterKey" @onchange="eventArgs => _petTypeFilterKey = eventArgs.Value?.ToString() ?? string.Empty" data-testid="pet-type-filter">
+                    <select class="app-input" value="@_petTypeFilterKey" @onchange="eventArgs => SetCollectionType(true, eventArgs.Value?.ToString() ?? string.Empty)" data-testid="pet-type-filter">
                         <option value="">All types</option>
                         @foreach (var option in creatureTypeOptions)
                         {
@@ -103,7 +107,7 @@
                 </label>
                 <label class="field-row compact">
                     <span>Mount type</span>
-                    <select class="app-input" value="@_mountTypeFilterKey" @onchange="eventArgs => _mountTypeFilterKey = eventArgs.Value?.ToString() ?? string.Empty" data-testid="mount-type-filter">
+                    <select class="app-input" value="@_mountTypeFilterKey" @onchange="eventArgs => SetCollectionType(false, eventArgs.Value?.ToString() ?? string.Empty)" data-testid="mount-type-filter">
                         <option value="">All types</option>
                         @foreach (var option in creatureTypeOptions)
                         {
@@ -112,6 +116,9 @@
                     </select>
                 </label>
             </div>
+            <p role="status" data-testid="companion-search-results">Matches: @filteredPets.Length pets · @filteredMounts.Length mounts · @filteredPotions.Length potions.</p>
+            @if (noCollectionMatches) { <p data-testid="companion-no-results">No companions or potions match these filters. Reset filters or try another name or key.</p> }
+            <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ResetCollectionFilters" Class="companion-reset-filters" Variant="Variant.Outlined" data-testid="companion-reset-filters">Reset collection filters</MudButton>
         </section>
 
         <section class="card-surface inventory-group-card">
@@ -345,13 +352,13 @@
             }
         </section>
 
-        @foreach (var group in PetsMountsCatalog.Groups)
+        @foreach (var group in PetsMountsCatalog.Groups.Where(group => !HasAnyCollectionFilter || filteredPets.Any(item => item.GroupKey == group.Key) || filteredMounts.Any(item => item.GroupKey == group.Key)))
         {
-            var groupPets = catalogPets
-                .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesPetTypeFilter(item))
+            var groupPets = filteredPets
+                .Where(item => item.GroupKey == group.Key)
                 .ToArray();
-            var groupMounts = catalogMounts
-                .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesMountTypeFilter(item))
+            var groupMounts = filteredMounts
+                .Where(item => item.GroupKey == group.Key)
                 .ToArray();
             var hatchCandidates = GetGroupHatchQueueCandidates(groupPets, snapshot.Inventory).ToArray();
             var feedCandidates = GetGroupFeedQueueCandidates(groupMounts, snapshot.Inventory).ToArray();
@@ -360,24 +367,24 @@
                 <div class="task-group-header">
                     <div>
                         <p class="section-label">Companion group</p>
-                        <h2>@group.DisplayName</h2>
+                        <h2>@group.DisplayName</h2><p class="panel-copy">@groupPets.Length matching pets · @groupMounts.Length matching mounts</p>
                     </div>
                     <div class="task-group-actions companion-group-actions">
                         <MudButton Color="Color.Primary"
                                    Disabled="@(isHatchQueueExecuting || hatchCandidates.Length == 0)"
                                    OnClick="@(() => AddGroupToHatchQueueWithScrollAsync(group.Key, groupPets, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
-                                   data-testid="@($"add-group-hatch-queue-{group.Key}")">
-                            Add All to Hatching Queue
+                                   data-layout-primary="true" data-testid="@($"add-group-hatch-queue-{group.Key}")">
+                            Add all @hatchCandidates.Length matching pets to hatch queue
                         </MudButton>
                         <MudButton Color="Color.Primary"
                                    Disabled="@(isFeedQueueExecuting || feedCandidates.Length == 0)"
                                    OnClick="@(() => AddGroupToFeedQueueWithScrollAsync(group.Key, groupMounts, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
-                                   data-testid="@($"add-group-feed-queue-{group.Key}")">
-                            Add All to Feeding Queue
+                                   data-layout-primary="true" data-testid="@($"add-group-feed-queue-{group.Key}")">
+                            Add all @feedCandidates.Length matching growth plans to feed queue
                         </MudButton>
-                        <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
+                        <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-layout-primary="true" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
                             @(isFolded ? "Show group" : "Hide group")
                         </MudButton>
                         @if (hatchCandidates.Length == 0 && feedCandidates.Length == 0)
@@ -397,15 +404,19 @@
 
                 @if (!isFolded)
                 {
-                    <p class="panel-copy">@BuildMarketHint(group.Key, catalogPets, snapshot.Inventory)</p>
+                    <p class="panel-copy">@BuildMarketHint(group.Key, groupPets, snapshot.Inventory)</p>
                     @if (groupPets.Length == 0 && groupMounts.Length == 0)
                     {
                         <p class="panel-copy">No matching catalog entries are available in this group.</p>
                     }
                     else
                     {
-                        <div class="inventory-item-list">
-                            @foreach (var pet in groupPets)
+                        @if (groupPets.Length > 0)
+                        {
+                        <h3>Pets</h3>
+                        @CollectionPager(group.Key, group.DisplayName, "pets", groupPets.Length)
+                        <div class="inventory-item-list" id="@($"companion-grid-{group.Key}-pets")">
+                            @foreach (var pet in CollectionPage(groupPets, group.Key, "pets", item => item.Key))
                             {
                                 var isOwned = snapshot.Inventory.Pets.ContainsKey(pet.Key);
                                 var hatchStatus = GetHatchStatus(pet, snapshot.Inventory);
@@ -443,7 +454,14 @@
                                 </article>
                             }
 
-                            @foreach (var mount in groupMounts)
+                        </div>
+                        }
+                        @if (groupMounts.Length > 0)
+                        {
+                        <h3>Mounts</h3>
+                        @CollectionPager(group.Key, group.DisplayName, "mounts", groupMounts.Length)
+                        <div class="inventory-item-list" id="@($"companion-grid-{group.Key}-mounts")">
+                            @foreach (var mount in CollectionPage(groupMounts, group.Key, "mounts", item => item.Key))
                             {
                                 var isOwned = snapshot.Inventory.Mounts.GetValueOrDefault(mount.Key);
                                 <article class="inventory-item-card" id="@BuildMountElementId(mount.Key)" data-testid="@($"mount-card-{mount.Key}")">
@@ -481,11 +499,14 @@
                                 </article>
                             }
                         </div>
+                        }
                     }
                 }
             </section>
         }
 
+        @if (!HasAnyCollectionFilter || filteredPotions.Length > 0)
+        {
         <section class="card-surface inventory-group-card" data-testid="pets-mounts-group-hatching-potions">
             <div class="task-group-header">
                 <div>
@@ -498,8 +519,9 @@
             </div>
             @if (!IsGroupFolded("hatching-potions"))
             {
-                <div class="inventory-item-list">
-                    @foreach (var potion in PetsMountsCatalog.HatchingPotions.Where(item => MatchesSearch(item.Key, item.DisplayName)))
+                @CollectionPager("hatching-potions", "Hatching potion inventory", "potions", filteredPotions.Length)
+                <div class="inventory-item-list" id="companion-grid-hatching-potions-potions">
+                    @foreach (var potion in CollectionPage(filteredPotions, "hatching-potions", "potions", item => item.Key))
                     {
                         <article class="inventory-item-card" data-testid="@($"hatching-potion-{potion.Key}")">
                             <div class="habitica-item-identity">
@@ -514,6 +536,7 @@
                 </div>
             }
         </section>
+        }
 
         <section class="card-surface inventory-group-card" id="buy-saddle-block" data-testid="buy-saddle-block">
             <div class="task-group-header">
@@ -541,6 +564,7 @@
                 </label>
             </div>
 
+            <p class="panel-copy" data-testid="companion-sale-scope">The inventory sale preview is separate from collection filters.</p>
             @if (bulkSellPlan.Length == 0)
             {
                 <p class="panel-copy">No eggs, food, or hatching potions are available in the cached inventory snapshot.</p>
@@ -582,6 +606,9 @@
 </div>
 
 @code {
+    private const int CollectionPageSize = 20;
+    private readonly Dictionary<string, int> _collectionPages = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, bool> _filteredFoldedGroups = new(StringComparer.Ordinal);
     private readonly List<PetFeedQueueItem> _feedQueue = new();
     private readonly List<HatchQueueItem> _hatchQueue = new();
     private readonly Dictionary<string, bool> _foldedGroups = new(StringComparer.Ordinal);
@@ -645,6 +672,28 @@
         return $"{label} {progress.Completed} of {progress.Total}";
     }
 
+    private bool HasAnyCollectionFilter => !string.IsNullOrWhiteSpace(_searchText) || !string.IsNullOrWhiteSpace(_petTypeFilterKey) || !string.IsNullOrWhiteSpace(_mountTypeFilterKey);
+    private void ResetCollectionPages() { _collectionPages.Clear(); _filteredFoldedGroups.Clear(); }
+    private void SetCollectionSearch(string value) { _searchText = value; ResetCollectionPages(); }
+    private void SetCollectionType(bool pet, string value) { if (pet) _petTypeFilterKey = value; else _mountTypeFilterKey = value; ResetCollectionPages(); }
+    private void ResetCollectionFilters() { _searchText = _petTypeFilterKey = _mountTypeFilterKey = string.Empty; ResetCollectionPages(); }
+    private int CollectionPageIndex(string group, string kind, int total)
+    {
+        var key = group + ":" + kind;
+        var index = Math.Clamp(_collectionPages.GetValueOrDefault(key), 0, Math.Max(0, (total - 1) / CollectionPageSize));
+        _collectionPages[key] = index; return index;
+    }
+    private IEnumerable<T> CollectionPage<T>(IReadOnlyList<T> items, string group, string kind, Func<T,string> key)
+        => items.OrderBy(key, StringComparer.Ordinal).Skip(CollectionPageIndex(group,kind,items.Count)*CollectionPageSize).Take(CollectionPageSize);
+    private void MoveCollectionPage(string group, string kind, int total, int direction)
+        => _collectionPages[group+":"+kind] = Math.Clamp(CollectionPageIndex(group,kind,total)+direction,0,Math.Max(0,(total-1)/CollectionPageSize));
+    private RenderFragment CollectionPager(string group, string label, string kind, int total) => @<div class="companion-pagination">
+        @{ var page = CollectionPageIndex(group,kind,total); var first = total == 0 ? 0 : page*CollectionPageSize+1; var last = Math.Min(total,(page+1)*CollectionPageSize); }
+        <span role="status" data-testid="@($"companion-range-{group}-{kind}")">Showing @first–@last of @total @kind</span>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(page==0)" OnClick="()=>MoveCollectionPage(group,kind,total,-1)" Variant="Variant.Outlined" aria-label="@($"Previous {label} {kind}")" aria-controls="@($"companion-grid-{group}-{kind}")" data-testid="@($"companion-previous-{group}-{kind}")">Previous @kind</MudButton>
+        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(last>=total)" OnClick="()=>MoveCollectionPage(group,kind,total,1)" Variant="Variant.Outlined" aria-label="@($"Next {label} {kind}")" aria-controls="@($"companion-grid-{group}-{kind}")" data-testid="@($"companion-next-{group}-{kind}")">Next @kind</MudButton>
+    </div>;
+
     private bool MatchesSearch(string key, string displayName)
     {
         return string.IsNullOrWhiteSpace(_searchText)
@@ -654,8 +703,8 @@
 
     private bool IsGroupFolded(string key)
     {
-        return !HasActiveCollectionFilter(key)
-            && (_foldedGroups.TryGetValue(key, out var folded) ? folded : key is not ("base" or "hatching-potions"));
+        return HasActiveCollectionFilter(key) ? _filteredFoldedGroups.GetValueOrDefault(key)
+            : (_foldedGroups.TryGetValue(key, out var folded) ? folded : key is not ("base" or "hatching-potions"));
     }
 
     private bool HasActiveCollectionFilter(string groupKey)
@@ -686,6 +735,7 @@
 
     private async Task ToggleGroupAsync(string key)
     {
+        if (HasActiveCollectionFilter(key)) { _filteredFoldedGroups[key] = !IsGroupFolded(key); return; }
         _foldedGroups[key] = !IsGroupFolded(key);
         await ViewStorage.SetAsync(
             StorageKeys.PetsMountsViewPreferences,
@@ -700,18 +750,20 @@
 
     private static PetCatalogItem[] GetCatalogPets(InventorySnapshot inventory)
     {
+        var known = PetsMountsCatalog.Pets.Select(item => item.Key).ToHashSet(StringComparer.Ordinal);
         return PetsMountsCatalog.Pets
             .Concat(inventory.Pets.Keys
-                .Where(key => PetsMountsCatalog.FindPet(key) is null)
+                .Where(key => !known.Contains(key))
                 .Select(static key => new PetCatalogItem(key, FormatName(key, key), string.Empty, string.Empty, "special")))
             .ToArray();
     }
 
     private static MountCatalogItem[] GetCatalogMounts(InventorySnapshot inventory)
     {
+        var known = PetsMountsCatalog.Mounts.Select(item => item.Key).ToHashSet(StringComparer.Ordinal);
         return PetsMountsCatalog.Mounts
             .Concat(inventory.Mounts.Keys
-                .Where(key => !PetsMountsCatalog.Mounts.Any(item => string.Equals(item.Key, key, StringComparison.Ordinal)))
+                .Where(key => !known.Contains(key))
                 .Select(static key => new MountCatalogItem(key, $"{FormatName(key, key)} mount", "special")))
             .ToArray();
     }

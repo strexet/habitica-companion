@@ -1,0 +1,4 @@
+{
+  "selection_boundary": "Current TodoHierarchyPanel uses an empty Choose project value and returns no project rows until an exact project is chosen. No all-project fallback exists in that picker. Preserve the empty selection and use the explicit All tasks destination for unscoped work; avoid introducing a new default or new query policy under a presentation task.",
+  "test_prerequisites": "C-b06766c0 compile unavailable: a new test used multiple implicit var declarators. Corrected before runnable Red C-2a8cce3d (2 of30 missing new browse/management controls). C-5967e4b8 later found empty Guid? is omitted from the rendered value attribute. Assert the public picker Value null and no task rows, then exact selected Guid, rather than assuming an empty value attribute. No application selection behavior changed."
+}

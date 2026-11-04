@@ -26,6 +26,15 @@ public sealed class NotesStorageTests
         Assert.True(await ((INotesProjectStore)database.ForScope(scope)).TryCommitProjectAsync(0,book,note.Id,account,42,default));Assert.Equal(4,runtime.LastCommit!.Length);Assert.DoesNotContain(account,(string)runtime.LastCommit[2]!);var guard=System.Text.Json.JsonSerializer.Serialize(runtime.LastCommit[3]);Assert.Contains(link.WorkspaceId.ToString("D"),guard);Assert.Contains("42",guard);
         await Assert.ThrowsAsync<ArgumentException>(()=>((INotesProjectStore)database.ForScope(scope)).TryCommitProjectAsync(0,book,note.Id,"foreign-owner",42,default));
     }
+    [Fact]
+    public async Task Folder_only_commit_binds_the_exact_project_target_and_round_trips_version_two_backups()
+    {
+        var runtime=new Runtime();await using var database=new IndexedDbNotesDatabase(runtime);var account="synthetic-folder-project-key";var scope=NotesModel.Scope(account);var id=Guid.NewGuid();var now=DateTimeOffset.Parse("2026-11-02T00:00:00Z");var link=new NoteProjectLink(Guid.NewGuid(),Guid.NewGuid(),"browser",scope);
+        var book=new NotesNotebook(2,scope,1,[],[],[],Folders:[new(id,1,"Hotels","browser",now,now,Project:link)],FolderReceipts:[new(Guid.NewGuid(),new string('a',64),id,1,1)]);
+        var store=(INotesProjectStore)database.ForScope(scope);Assert.True(await store.TryCommitFolderProjectAsync(0,book,id,account,42,default));Assert.Equal(NotesJson.Serialize(book),NotesJson.Serialize((await store.LoadAsync(default))!));
+        var guard=System.Text.Json.JsonSerializer.Serialize(runtime.LastCommit![3]);Assert.Contains(id.ToString("D"),guard);Assert.Contains("folderId",guard);Assert.DoesNotContain("noteId",guard);Assert.DoesNotContain(account,(string)runtime.LastCommit[2]!);
+        await Assert.ThrowsAsync<ArgumentException>(()=>store.TryCommitFolderProjectAsync(0,book,id,"foreign-owner",42,default));
+    }
     private sealed class Runtime:IJSRuntime,IJSObjectReference
     {
         private readonly Dictionary<string,string> _rows=[];public string? ReadOverride{get;set;}public object?[]? LastCommit;

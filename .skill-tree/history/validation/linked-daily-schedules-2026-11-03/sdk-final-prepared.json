@@ -1,0 +1,68 @@
+{
+  "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+  "attempt_id": "C-7510ee5c-b310-444a-8b54-5c49e5a99521",
+  "check_id": "daily-schedule-mcp",
+  "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+  "environment_identity": "0567f0f4b2920e7d6fded3f33623d0047aecb0b243f35820325e3e5820dbde78",
+  "key": "e5fef5039bc967d31ddfa20dbd8f6ab902b099c8c70e8b92c70e55d1c5c5aaa7",
+  "launch": {
+    "assertion": "Lossless linked Daily schedule edits, fresh provider preconditions and original outcome authority.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove actual Auth gateway persistence, fresh refusal or lost acknowledgement behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T20:02:29.823530+00:00",
+    "execution_profile": "linked-daily-schedule-gateway-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T19:58:30.015041+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/linked-daily-schedule.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-mcp/src/task-tools.ts": "fa767047d4af02addd93b378820fca7c6882b6bbe2f2a5e83466868b6f3fb240",
+    "workers/companion-workspace/src/commands.ts": "cd1f692fae2bf806bf06fa76d7b69782fb977a9b3633f025e3ce67c364f265e8",
+    "workers/companion-workspace/src/executor.ts": "593f9d24b1ac6d3e4472e741aadee1dd322796906aab5bd5858cd95b52f2347f",
+    "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+    "workers/companion-workspace/src/journal.ts": "12846580de3cfe78e188b3623f03353cdb329e865a3bd452392c8a78a9c0108e",
+    "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+    "workers/companion-workspace/src/projection-adapter.ts": "0652ae9e311a00408264ca96d345503b5efcaae7b2d0ebc790a1f46798388cbb",
+    "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+    "workers/companion-workspace/src/task-recovery-store.ts": "77c1b8e4eb5e6b0f503f006e1e5faa8c6a976ea2ed1702d973136a5eab6891d3",
+    "workers/companion-workspace/test/linked-daily-schedule.test.mjs": "dcb08442a49de51591ceb24723af776f602869b61264abdfffa24ed761906312",
+    "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+    "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/task-tools.ts": "8f62a8c580b9f72334bba5edd0d7438053171b1b2325a7f9f8e64a712bf56fbf",
+    "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

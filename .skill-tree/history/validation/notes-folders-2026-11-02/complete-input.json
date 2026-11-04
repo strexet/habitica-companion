@@ -1,0 +1,70 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "outcome": "Versioned single-level Notes folders, explicit project-consistent placement, exact history, bounded independent receipts and transactional browser storage are implemented and locally qualified.",
+  "acceptance": [
+    {
+      "criterion": "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+        ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+        ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx"
+      ]
+    },
+    {
+      "criterion": "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+        ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+        ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+        ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx"
+      ]
+    }
+  ],
+  "source_fingerprints": {
+    ".skill-tree/documents/technical.md": "a746313d9b1e8ca278f2a5b52242064294e7530d3fa326638c189c555d9d2b6a",
+    ".skill-tree/documents/testing.md": "329ac6f4cdc8837cd1097e2b7467fb28ed8b74c8a85953a0c8b07ed619754f47",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/browser/notes-folders.mjs": "0e7228423d92827f26332eec6e0697312674969a8d3a1dcfe8d381fdfeeb6708",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "efca467130f365bcae89c3e928722f49282063066249def284d88d130c609aa4",
+    "src/Habitica.Application/Notes/NotesEngine.cs": "e521f4140b3c11c07f613b88e6673527579eea61b7e9ed92017d15ba5bb74436",
+    "src/Habitica.Application/Notes/NotesFolders.cs": "2a467a1d0bc5a25664a00abdb496f8f09f64d48fe1ec6afa2f0ae29db4c45c92",
+    "src/Habitica.Application/Notes/NotesProjects.cs": "4291d06379ee09542e0b65f8df6c6331ccb20059b7cf5800fcaafe19dbfc933f",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "bf6febe210d239bc785aff9e27e919556c4b4d36af157945e084329de76c86aa",
+    "src/Habitica.Application/Notes/NotesService.cs": "2c34dd653f7a08e262be79e950de888b4fa53540618f7f3e30d09f61ddeb2ab9",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "8d3b754844a822dd20b67d5f029355ddf993875a4d8e3fd7eed7db76274fda6f",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "9aad47b90c10ffe714d38d58267557a1242ca1af6f38d47738533582c38fd13c",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "abe8b9f780b66a6644a4244bd5d3efbfbf8089ceee44c68feacabe4b2fbf44eb",
+    ".skill-tree/documents/notes-folders.md": "44029df1372c17660fc5cb10e8899cd04e5d5488feddf10b9a9cbc24e3479003"
+  },
+  "limitations": [
+    "Cloud folder API/MCP transport and folder presentation remain separate required snapshot units. No hosted, physical-device or real user operation was executed."
+  ],
+  "followup_ids": [],
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+    ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+    ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx"
+  ]
+}

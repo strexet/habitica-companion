@@ -1,0 +1,11 @@
+{
+  "name": "hosted-final",
+  "argv": [
+    "node",
+    "/tmp/habitica-hosted-smoke-final-20261104.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 16.033,
+  "deadline_seconds": 240,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/hosted-final.log"
+}

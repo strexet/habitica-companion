@@ -1,0 +1,136 @@
+{
+  "checks": [
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rules",
+      "parameters": {
+        "report_name": "conversion-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+        "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRules.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs",
+        "tests/fixtures/workspace/task-type-copy-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-components",
+      "parameters": {
+        "report_name": "conversion-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/TaskTypeConversionClientTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/task-type-copy.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/conversion-api.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/test/task-type-copy.test.mjs",
+        "workers/shared/task-type-copy.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/task-tools.ts",
+        "workers/companion-workspace/src/task-type-copy.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/index.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/workspace/task-type-copy-v1.json",
+        "workers/companion-workspace/src/preparation-retention.ts",
+        "workers/companion-workspace/src/mcp-epoch.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Release conversion routes preserve exact source identities, explicit field-loss review, original receipt recovery, keyboard focus and readable light/dark phone/desktop normal/enlarged-text layouts without provider mutations.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rendering",
+      "parameters": {},
+      "recipe_id": "task-type-copy-rendered-browser",
+      "sources": [
+        "tests/browser/task-type-copy-ui.py",
+        "tests/browser/task-type-copy-ui.mjs",
+        "tests/browser/linked-daily-fixture.mjs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

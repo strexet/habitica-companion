@@ -1,0 +1,10 @@
+{
+  "archive_hash_matches": true,
+  "queue_and_outcome_bytes_preserved": true,
+  "active_run": null,
+  "archive_and_receipt_protected_from_pruning": true,
+  "prioritized_tasks": 28,
+  "highest_ranked_ready_task": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "diff_whitespace": "pass",
+  "new_controller_started": false
+}

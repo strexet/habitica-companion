@@ -1,0 +1,1073 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Quest workspace
+- heading "Quests" [active] [level=1]
+- paragraph: Review active quest state, shared scroll availability, queue votes, and recent completions.
+- generic: Party data is up to date
+- article:
+  - paragraph: Quest invitation
+  - heading "The CRITICAL BUG" [level=2]
+  - article:
+    - generic "The CRITICAL BUG":
+      - img "The CRITICAL BUG"
+    - text: Collection quest
+    - strong: The CRITICAL BUG
+    - paragraph: Something in the domain of Habitica has gone awry. The Blacksmiths' forges have extinguished, and strange errors are appearing everywhere. With an ominous tremor, an insidious foe worms from the earth... a CRITICAL BUG! You brace yourself as it infects the land, and glitches begin to overtake the Habiticans around you. @starsystemic yells, "We need to help the Blacksmiths get this Bug under control!" It looks like you'll have to make this programmer's pest your top priority.
+    - link "Open in Habitica":
+      - /url: https://habitica.com/party
+      - generic: Open in Habitica
+    - button "Refresh quest state":
+      - generic: Refresh quest state
+    - term: Participant status
+    - definition: 7 accepted, 21 pending, 0 rejected
+    - generic: Rewards
+    - generic: 37 Gold
+    - generic: 275 XP
+    - generic: Beetle (Egg)
+    - generic: Unlocks Beetle Eggs for purchase in the Market
+  - article:
+    - generic: Accepted
+    - strong: "7"
+    - list:
+      - button "Chernobyl Wolves"
+      - button "Jay"
+      - button "Kirby starzz"
+      - button "PinkOtter"
+      - button "rachel 🐝"
+      - button "Scout"
+      - button "Strixetus"
+  - article:
+    - generic: Pending
+    - strong: "21"
+    - list:
+      - button "Artemis"
+      - button "Cerluain"
+      - button "coop-"
+      - button "femmebot"
+      - button "Ira"
+      - button "Jayseph"
+      - button "jena"
+      - button "kahvikissa"
+      - button "LoganSchmogan"
+      - button "Marek50818"
+      - button "Michel Lades"
+      - button "Minnie"
+      - button "Miounne"
+      - button "Nika"
+      - button "nuha :)"
+      - button "Orion"
+      - button "phant"
+      - button "Valora"
+      - button "vrijdag"
+      - button "Yaguel"
+      - button "開山里里民"
+  - article:
+    - generic: Rejected
+    - strong: "0"
+    - paragraph: No members.
+- paragraph: Party quest queue
+- heading "Shared quest planning" [level=2]
+- checkbox "Hide quests I do not own"
+- generic: Hide quests I do not own
+- button "Refresh queue":
+  - generic: Refresh queue
+- heading "Party Quest Queue" [level=3]
+- generic: "0"
+- paragraph: No shared quest queue entries are available yet. Add one of your quest scrolls from the pool below.
+- heading "Quest Pool" [level=3]
+- generic: 58 quests, 60 owners
+- button "Hide quest pool"
+- paragraph: Quest pool is open by default on this workspace. Hide it when you want to focus on the queue.
+- generic: Search quest pool
+- textbox "Search quest pool":
+  - /placeholder: Name, reward, type, or owner
+- article:
+  - generic "A Jaded Jinx":
+    - img "A Jaded Jinx"
+  - text: Boss
+  - strong: A Jaded Jinx
+  - generic: Available from jena, Strixetus
+  - generic: 2 scrolls owned
+  - generic: Rewards
+  - generic: 40 Gold
+  - generic: 400 XP
+  - generic: Jade Hatching Potion
+  - generic: Unlocks Jade Hatching Potion for Purchase in the Market.
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "A Maze of Moss":
+    - img "A Maze of Moss"
+  - text: Collection
+  - strong: A Maze of Moss
+  - generic: Available from Strixetus
+  - generic: 2 scrolls owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Mossy Stone Hatching Potion
+  - generic: Unlocks Mossy Stone Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "A Startling Starry Idea":
+    - img "A Startling Starry Idea"
+  - text: Boss
+  - strong: A Startling Starry Idea
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 450 XP
+  - generic: Black Pearl Hatching Potion
+  - generic: Unlocks Black Pearl Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "A Tangled Yarn":
+    - img "A Tangled Yarn"
+  - text: Boss
+  - strong: A Tangled Yarn
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Yarn (Egg)
+  - generic: Unlocks Yarn Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "A Voyage of Cosmic Concentration":
+    - img "A Voyage of Cosmic Concentration"
+  - text: Boss
+  - strong: A Voyage of Cosmic Concentration
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 90 Gold
+  - generic: 900 XP
+  - generic: Solar System Hatching Potion
+  - generic: Unlocks Solar System Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "A Whirl with a Wind-Up Warrior":
+    - img "A Whirl with a Wind-Up Warrior"
+  - text: Boss
+  - strong: A Whirl with a Wind-Up Warrior
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 425 XP
+  - generic: Wind-Up Hatching Potion
+  - generic: Unlocks Wind-Up Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Attack of the Mundane, Part 1: Dish Disaster!"':
+    - 'img "Attack of the Mundane, Part 1: Dish Disaster!"'
+  - text: Collection
+  - strong: "Attack of the Mundane, Part 1: Dish Disaster!"
+  - generic: Available from Strixetus
+  - generic: 7 scrolls owned
+  - generic: Rewards
+  - generic: 7 Gold
+  - generic: 50 XP
+  - generic: The SnackLess Monster (Scroll)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Bye, Bye, Butterfry":
+    - img "Bye, Bye, Butterfry"
+  - text: Boss
+  - strong: Bye, Bye, Butterfry
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 31 Gold
+  - generic: 200 XP
+  - generic: Caterpillar (Egg)
+  - generic: Unlocks Caterpillar Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Calm the Corrupted Cupid":
+    - img "Calm the Corrupted Cupid"
+  - text: Boss
+  - strong: Calm the Corrupted Cupid
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 75 Gold
+  - generic: 800 XP
+  - generic: Pink Marble Hatching Potion
+  - generic: Unlocks Pink Marble Hatching Potions for purchase in the Market.
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Convincing the Unicorn Queen":
+    - img "Convincing the Unicorn Queen"
+  - text: Boss
+  - strong: Convincing the Unicorn Queen
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 43 Gold
+  - generic: 350 XP
+  - generic: Unicorn (Egg)
+  - generic: Unlocks Unicorn Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Danger in the Depths: Sea Serpent Strike!"':
+    - 'img "Danger in the Depths: Sea Serpent Strike!"'
+  - text: Boss
+  - strong: "Danger in the Depths: Sea Serpent Strike!"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 80 Gold
+  - generic: 800 XP
+  - generic: Sea Serpent (Egg)
+  - generic: Unlocks Sea Serpent Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Dilatory Distress, Part 1: Message in a Bottle"':
+    - 'img "Dilatory Distress, Part 1: Message in a Bottle"'
+  - text: Collection
+  - strong: "Dilatory Distress, Part 1: Message in a Bottle"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 75 XP
+  - generic: Finned Oceanic Armor (Armor)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Egg Hunt":
+    - img "Egg Hunt"
+  - text: Collection
+  - strong: Egg Hunt
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: Plain Egg
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Find the Cub":
+    - img "Find the Cub"
+  - text: Collection
+  - strong: Find the Cub
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 20 Gold
+  - generic: 100 XP
+  - generic: Polar Bear (Pet)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Guide the Turtle":
+    - img "Guide the Turtle"
+  - text: Boss
+  - strong: Guide the Turtle
+  - generic: Available from Nika, Strixetus
+  - generic: 3 scrolls owned
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Turtle (Egg)
+  - generic: Unlocks Turtle Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Help! Harpy!":
+    - img "Help! Harpy!"
+  - text: Boss
+  - strong: Help! Harpy!
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 43 Gold
+  - generic: 350 XP
+  - generic: Parrot (Egg)
+  - generic: Unlocks Parrot Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Invasion of the Motivation Snatchers":
+    - img "Invasion of the Motivation Snatchers"
+  - text: Boss
+  - strong: Invasion of the Motivation Snatchers
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 40 Gold
+  - generic: 500 XP
+  - generic: Alien Hatching Potion
+  - generic: Unlocks Alien Hatching Potion for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Lunar Battle, Part 1: Find the Mysterious Shards"':
+    - 'img "Lunar Battle, Part 1: Find the Mysterious Shards"'
+  - text: Collection
+  - strong: "Lunar Battle, Part 1: Find the Mysterious Shards"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 7 Gold
+  - generic: 50 XP
+  - generic: Lunar Warrior Helm (Headgear)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Lunar Battle, Part 3: The Monstrous Moon"':
+    - 'img "Lunar Battle, Part 3: The Monstrous Moon"'
+  - text: Boss
+  - strong: "Lunar Battle, Part 3: The Monstrous Moon"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 67 Gold
+  - generic: 650 XP
+  - generic: Lunar Scythe (Two-Handed Weapon)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Mayhem in Mistiflying, Part 3: In Which a Mailman is Extremely Rude"':
+    - 'img "Mayhem in Mistiflying, Part 3: In Which a Mailman is Extremely Rude"'
+  - text: Boss
+  - strong: "Mayhem in Mistiflying, Part 3: In Which a Mailman is Extremely Rude"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 650 XP
+  - generic: Pink Cotton Candy (Food)
+  - generic: Roguish Rainbow Message (Main-Hand Item)
+  - generic: Roguish Rainbow Message (Off-Hand Item)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Recidivate, Part 1: The Moonstone Chain"':
+    - 'img "Recidivate, Part 1: The Moonstone Chain"'
+  - text: Collection
+  - strong: "Recidivate, Part 1: The Moonstone Chain"
+  - generic: Available from Nika
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: "Recidivate, Part 2: Recidivate the Necromancer (Scroll)"
+  - button "Add to queue" [disabled]:
+    - generic: Add to queue
+- article:
+  - generic "Rooster Rampage":
+    - img "Rooster Rampage"
+  - text: Boss
+  - strong: Rooster Rampage
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Rooster (Egg)
+  - generic: Unlocks Rooster Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Ruby Rapport":
+    - img "Ruby Rapport"
+  - text: Collection
+  - strong: Ruby Rapport
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Ruby Hatching Potion
+  - generic: Unlocks Ruby Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Stoïkalm Calamity, Part 1: Earthen Enemies"':
+    - 'img "Stoïkalm Calamity, Part 1: Earthen Enemies"'
+  - text: Boss
+  - strong: "Stoïkalm Calamity, Part 1: Earthen Enemies"
+  - generic: Available from Nika
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 500 XP
+  - generic: Skeleton Hatching Potion
+  - generic: Desert Hatching Potion
+  - generic: Mammoth Rider Armor
+  - button "Add to queue" [disabled]:
+    - generic: Add to queue
+- article:
+  - 'generic "Stoïkalm Calamity, Part 2: Seek the Icicle Caverns"':
+    - 'img "Stoïkalm Calamity, Part 2: Seek the Icicle Caverns"'
+  - text: Collection
+  - strong: "Stoïkalm Calamity, Part 2: Seek the Icicle Caverns"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 75 XP
+  - generic: Mammoth Rider Helm (Headgear)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Terror in the Taskwoods, Part 1: The Blaze in the Taskwoods"':
+    - 'img "Terror in the Taskwoods, Part 1: The Blaze in the Taskwoods"'
+  - text: Boss
+  - strong: "Terror in the Taskwoods, Part 1: The Blaze in the Taskwoods"
+  - generic: Available from Nika
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 500 XP
+  - generic: Skeleton Hatching Potion
+  - generic: Red Hatching Potion
+  - generic: Pyromancer's Turban (Headgear)
+  - button "Add to queue" [disabled]:
+    - generic: Add to queue
+- article:
+  - generic "The Amber Alliance":
+    - img "The Amber Alliance"
+  - text: Boss
+  - strong: The Amber Alliance
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Amber Hatching Potion
+  - generic: Unlocks Amber Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Birds of Preycrastination":
+    - img "The Birds of Preycrastination"
+  - text: Boss
+  - strong: The Birds of Preycrastination
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 49 Gold
+  - generic: 425 XP
+  - generic: Falcon (Egg)
+  - generic: Unlocks Falcon Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The CRITICAL BUG":
+    - img "The CRITICAL BUG"
+  - text: Boss
+  - strong: The CRITICAL BUG
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Beetle (Egg)
+  - generic: Unlocks Beetle Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Dilatory Derby":
+    - img "The Dilatory Derby"
+  - text: Boss
+  - strong: The Dilatory Derby
+  - generic: Available from Strixetus
+  - generic: 2 scrolls owned
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Seahorse (Egg)
+  - generic: Unlocks Seahorse Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Fowl Frost":
+    - img "The Fowl Frost"
+  - text: Boss
+  - strong: The Fowl Frost
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 31 Gold
+  - generic: 200 XP
+  - generic: Penguin (Egg)
+  - generic: Unlocks Penguin Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "The Golden Knight, Part 1: A Stern Talking-To"':
+    - 'img "The Golden Knight, Part 1: A Stern Talking-To"'
+  - text: Collection
+  - strong: "The Golden Knight, Part 1: A Stern Talking-To"
+  - generic: Available from Strixetus
+  - generic: 5 scrolls owned
+  - generic: Rewards
+  - generic: 15 Gold
+  - generic: 120 XP
+  - generic: "The Golden Knight Part 2: Gold Knight (Scroll)"
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "The Golden Knight, Part 3: The Iron Knight"':
+    - 'img "The Golden Knight, Part 3: The Iron Knight"'
+  - text: Boss
+  - strong: "The Golden Knight, Part 3: The Iron Knight"
+  - generic: Available from Strixetus
+  - generic: 4 scrolls owned
+  - generic: Rewards
+  - generic: 900 Gold
+  - generic: 1500 XP
+  - generic: Honey (Food)
+  - generic: Golden Hatching Potion
+  - generic: Mustaine's Milestone Mashing Morning Star (Off-hand Weapon)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Guinea Pig Gang":
+    - img "The Guinea Pig Gang"
+  - text: Boss
+  - strong: The Guinea Pig Gang
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 31 Gold
+  - generic: 200 XP
+  - generic: Guinea Pig (Egg)
+  - generic: Unlocks Guinea Pig Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Hedgebeast":
+    - img "The Hedgebeast"
+  - text: Boss
+  - strong: The Hedgebeast
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 30 Gold
+  - generic: 125 XP
+  - generic: Hedgehog (Egg)
+  - generic: Unlocks Hedgehog Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Jelly Regent":
+    - img "The Jelly Regent"
+  - text: Boss
+  - strong: The Jelly Regent
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 31 Gold
+  - generic: 200 XP
+  - generic: Marshmallow Slime (Egg)
+  - generic: Unlocks Marshmallow Slime Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Killer Bunny":
+    - img "The Killer Bunny"
+  - text: Boss
+  - strong: The Killer Bunny
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Bunny (Egg)
+  - generic: Unlocks Bunny Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Legend of the Obscure Opals":
+    - img "The Legend of the Obscure Opals"
+  - text: Collection
+  - strong: The Legend of the Obscure Opals
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 350 XP
+  - generic: Opal Hatching Potion
+  - generic: Unlocks Opal Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Moody Mushroom":
+    - img "The Moody Mushroom"
+  - text: Boss
+  - strong: The Moody Mushroom
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 40 Gold
+  - generic: 500 XP
+  - generic: Fungi Hatching Potion
+  - generic: Unlocks Fungi Hatching Potions for purchase in the Market.
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "The Mystery of the Masterclassers, Part 2: Assembling the a''Voidant"':
+    - 'img "The Mystery of the Masterclassers, Part 2: Assembling the a''Voidant"'
+  - text: Boss
+  - strong: "The Mystery of the Masterclassers, Part 2: Assembling the a'Voidant"
+  - generic: Available from jena
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 1500 XP
+  - generic: Chocolate
+  - generic: Honey
+  - generic: Rotten Meat
+  - generic: Aether Mask (Eyewear)
+  - button "Add to queue" [disabled]:
+    - generic: Add to queue
+- article:
+  - generic "The Night-Owl":
+    - img "The Night-Owl"
+  - text: Boss
+  - strong: The Night-Owl
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Owl (Egg)
+  - generic: Unlocks Owl Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Onyx Odyssey":
+    - img "The Onyx Odyssey"
+  - text: Collection
+  - strong: The Onyx Odyssey
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Onyx Hatching Potion
+  - generic: Unlocks Onyx Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Perfectionist Platypus":
+    - img "The Perfectionist Platypus"
+  - text: Boss
+  - strong: The Perfectionist Platypus
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 100 Gold
+  - generic: 1000 XP
+  - generic: Platypus (egg)
+  - generic: Unlocks Platypus Eggs for Purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Pterror-dactyl":
+    - img "The Pterror-dactyl"
+  - text: Boss
+  - strong: The Pterror-dactyl
+  - generic: Available from jena
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 67 Gold
+  - generic: 650 XP
+  - generic: Pterodactyl (Egg)
+  - generic: Unlocks Pterodactyl Eggs for purchase in the Market
+  - button "Add to queue" [disabled]:
+    - generic: Add to queue
+- article:
+  - generic "The Push-and-Pull Peacock":
+    - img "The Push-and-Pull Peacock"
+  - text: Boss
+  - strong: The Push-and-Pull Peacock
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Peacock (Egg)
+  - generic: Unlocks Peacock Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Rat King":
+    - img "The Rat King"
+  - text: Boss
+  - strong: The Rat King
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 80 Gold
+  - generic: 800 XP
+  - generic: Rat (Egg)
+  - generic: Unlocks Rat Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Serpent of Distraction":
+    - img "The Serpent of Distraction"
+  - text: Boss
+  - strong: The Serpent of Distraction
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 73 Gold
+  - generic: 725 XP
+  - generic: Snake (Egg)
+  - generic: Unlocks Snake Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Silver Solution":
+    - img "The Silver Solution"
+  - text: Collection
+  - strong: The Silver Solution
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Silver Hatching Potion
+  - generic: Unlocks Silver Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Snail of Drudgery Sludge":
+    - img "The Snail of Drudgery Sludge"
+  - text: Boss
+  - strong: The Snail of Drudgery Sludge
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Snail (Egg)
+  - generic: Unlocks Snail Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Spirit of Spring":
+    - img "The Spirit of Spring"
+  - text: Boss
+  - strong: The Spirit of Spring
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 80 Gold
+  - generic: 800 XP
+  - generic: Deer (Egg)
+  - generic: Unlocks Deer Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Tangle Tree":
+    - img "The Tangle Tree"
+  - text: Boss
+  - strong: The Tangle Tree
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 43 Gold
+  - generic: 350 XP
+  - generic: Treeling (Egg)
+  - generic: Unlocks Treeling Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "The Veloci-Rapper":
+    - img "The Veloci-Rapper"
+  - text: Boss
+  - strong: The Veloci-Rapper
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 63 Gold
+  - generic: 575 XP
+  - generic: Velociraptor (Egg)
+  - generic: Unlocks Velociraptor Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Trapper Santa":
+    - img "Trapper Santa"
+  - text: Boss
+  - strong: Trapper Santa
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 20 Gold
+  - generic: 100 XP
+  - generic: Polar Bear (Mount)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Turquoise Treasure Toil":
+    - img "Turquoise Treasure Toil"
+  - text: Collection
+  - strong: Turquoise Treasure Toil
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 50 Gold
+  - generic: 100 XP
+  - generic: Turquoise Hatching Potion
+  - generic: Unlocks Turquoise Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Vice, Part 1: Free Yourself of the Dragon''s Influence"':
+    - 'img "Vice, Part 1: Free Yourself of the Dragon''s Influence"'
+  - text: Boss
+  - strong: "Vice, Part 1: Free Yourself of the Dragon's Influence"
+  - generic: Available from Strixetus
+  - generic: 5 scrolls owned
+  - generic: Rewards
+  - generic: 20 Gold
+  - generic: 100 XP
+  - generic: Vice Part 2 (Scroll)
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Virtual Mayhem with the April Fool: The Beepening"':
+    - 'img "Virtual Mayhem with the April Fool: The Beepening"'
+  - text: Boss
+  - strong: "Virtual Mayhem with the April Fool: The Beepening"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 40 Gold
+  - generic: 500 XP
+  - generic: Virtual Pet Hatching Potion
+  - generic: Unlocks Virtual Pet Hatching Potion for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - 'generic "Waffling with the Fool: Disaster Breakfast!"':
+    - 'img "Waffling with the Fool: Disaster Breakfast!"'
+  - text: Boss
+  - strong: "Waffling with the Fool: Disaster Breakfast!"
+  - generic: Available from Strixetus
+  - generic: 1 scroll owned
+  - generic: Rewards
+  - generic: 40 Gold
+  - generic: 500 XP
+  - generic: Confection Hatching Potion
+  - generic: Unlocks Confection Hatching Potions for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- article:
+  - generic "Wail of the Whale":
+    - img "Wail of the Whale"
+  - text: Boss
+  - strong: Wail of the Whale
+  - generic: Available from Strixetus
+  - generic: 2 scrolls owned
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Whale (Egg)
+  - generic: Unlocks Whale Eggs for purchase in the Market
+  - button "Add to queue":
+    - generic: Add to queue
+- heading "Recently Completed" [level=3]
+- generic: "37"
+- article:
+  - generic "The Indulgent Armadillo":
+    - img "The Indulgent Armadillo"
+  - generic: Completed Nov 3, 03:08
+  - strong: The Indulgent Armadillo
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 20 participants
+  - generic: Rewards
+  - generic: 43 Gold
+  - generic: 350 XP
+  - generic: Armadillo (Egg)
+  - generic: Unlocks Armadillo Eggs for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "A Bright Fluorite Fright":
+    - img "A Bright Fluorite Fright"
+  - generic: Completed Oct 29, 14:07
+  - strong: A Bright Fluorite Fright
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 20 participants
+  - generic: Rewards
+  - generic: 70 Gold
+  - generic: 750 XP
+  - generic: Fluorite Hatching Potion
+  - generic: Unlocks Fluorite Hatching Potions for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "Brazen Beetle Battle":
+    - img "Brazen Beetle Battle"
+  - generic: Completed Oct 24, 14:07
+  - strong: Brazen Beetle Battle
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 22 participants
+  - generic: Rewards
+  - generic: 63 Gold
+  - generic: 575 XP
+  - generic: Bronze Hatching Potion
+  - generic: Unlocks Bronze Hatching Potions for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "The CRITICAL BUG":
+    - img "The CRITICAL BUG"
+  - generic: Completed Oct 22, 09:24
+  - strong: The CRITICAL BUG
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 19 participants
+  - generic: Rewards
+  - generic: 37 Gold
+  - generic: 275 XP
+  - generic: Beetle (Egg)
+  - generic: Unlocks Beetle Eggs for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "The Mootant Cow":
+    - img "The Mootant Cow"
+  - generic: Completed Oct 20, 22:20
+  - strong: The Mootant Cow
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 23 participants
+  - generic: Rewards
+  - generic: 31 Gold
+  - generic: 200 XP
+  - generic: Cow (Egg)
+  - generic: Unlocks Cow Eggs for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "The Trampling Triceratops":
+    - img "The Trampling Triceratops"
+  - generic: Completed Oct 18, 15:33
+  - strong: The Trampling Triceratops
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 20 participants
+  - generic: Rewards
+  - generic: 80 Gold
+  - generic: 800 XP
+  - generic: Triceratops (Egg)
+  - generic: Unlocks Triceratops Eggs for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "Brazen Beetle Battle":
+    - img "Brazen Beetle Battle"
+  - generic: Completed Oct 13, 21:19
+  - strong: Brazen Beetle Battle
+  - text: Owner unknown Auto-detected by Strixetus
+  - generic: 17 participants
+  - generic: Rewards
+  - generic: 63 Gold
+  - generic: 575 XP
+  - generic: Bronze Hatching Potion
+  - generic: Unlocks Bronze Hatching Potions for purchase in the Market
+  - button "Remove":
+    - generic: Remove
+- article:
+  - generic "The Thunder Ram":
+    - img "The Thunder Ram"
+  - generic: Completed Oct 7, 12:58
+  - strong: The Thunder Ram
+  - text: Owner unknown Auto-detected by Nika
+  - generic: 21 participants
+  - generic: Rewards
+  - generic: 25 Gold
+  - generic: 125 XP
+  - generic: Sheep (Egg)
+  - generic: Unlocks Sheep Eggs for purchase in the Market
+  - button "Remove":
+    - generic: Remove

@@ -1,0 +1,6 @@
+{
+  "cause": "The coordinator publishes the selected Browser source after the task panel initial refresh. ConnectionsChanged adopted the identity and forgot the controller snapshot without initiating the selected-source read.",
+  "browser_failure": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/43f73f71-1a62-46cf-8b05-1c0497c188e3-failure.json",
+  "independent_red": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-bcb25fba-2375-4a1a-a304-052a98ad9e22.log",
+  "repair": "Load once on an actual ready source/state transition, defer behind an in-flight presentation operation, preserve original task/link/recovery/organization fences, discard old account/disposed scope and expose failure for explicit reload. No fallback, connection recovery or provider effect."
+}

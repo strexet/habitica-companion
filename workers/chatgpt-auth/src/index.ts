@@ -1,3 +1,5 @@
+import {eventsOperation,clearEvents} from './events';
+import {eventDispatchService} from './event-dispatch';
 import {callbackEgressClaim} from './callback-egress';
 import {pushDispatchRoute} from './push-dispatch';
 import {pushDispatchAvailable} from './push-message';
@@ -11,6 +13,7 @@ import {purgePacing} from './upstream-pacing';
 import {networkBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
 import {keyOperation,purgeKeyJobs} from './key-operations';
+import {recoveryRoute} from './recovery';
 import {managementRoute} from './management';
 import {cronOperation} from './cron';
 import {spellOperation} from './spells';
@@ -41,6 +44,7 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
         return Response.json(await validatedToken(this.env, input.resource, input.token), { headers });
       } catch { return Response.json({ error: "authorization_unavailable" }, { status: 503, headers }); }
     }
+    if (path === "/events" && request.method === "POST") return eventsOperation(request,this.env);
     if (path === "/read" && request.method === "POST") return readOperation(request, this.env);
     // Credential-bearing operations are never exposed by the public handler.
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
@@ -50,6 +54,20 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
 // This binding belongs only to the Workspace Worker; public routes never dispatch named entrypoints.
 export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
+}
+
+// Workspace alone receives this binding. It never returns callback material.
+export class EventDeliveryService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request:Request):Promise<Response>{
+    if(['/dispatch','/receipt'].includes(new URL(request.url).pathname))return eventDispatchService(request,this.env);
+    try{
+      if(new URL(request.url).pathname!=='/cleanup'||request.method!=='POST')return new Response(null,{status:404});
+      const v=workspaceObject(await workspaceJson(request,8192),['profileId','connectionId']);
+      if(typeof v.profileId!=='string'||typeof v.connectionId!=='string')throw new VaultError('invalid_request',422);
+      await activeProfile(this.env,v.profileId,uuid(v.connectionId));await clearEvents(this.env,v.profileId,v.connectionId);
+      return Response.json({cleaned:true},{headers});
+    }catch{return Response.json({cleaned:false},{status:503,headers});}
+  }
 }
 
 export class PushService extends WorkerEntrypoint<AuthEnv> {
@@ -91,12 +109,15 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
       if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId);
       await clearProjectionContext(env,id,connectionId); await clearTagContext(env,id,connectionId);
       await clearPushContext(env,id,connectionId,deleteProfile);
+      await clearEvents(env,id,connectionId);
+      if(deleteProfile)await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_dispatches WHERE profile_id=?').bind(id).run();
       if(env.NOTES_LIFECYCLE){
         const cleanup=await env.NOTES_LIFECYCLE.fetch('https://notes.internal/cleanup',{method:'POST',body:JSON.stringify({profileId:id,connectionId,deleteProfile}),signal:AbortSignal.timeout(10000)});
         if(!cleanup.ok||(await cleanup.json<{cleaned?:boolean}>()).cleaned!==true)throw new Error('Notes cleanup pending.');
       }else if(env.WORKSPACE_ENABLED)throw new Error('Notes cleanup binding unavailable.');
     });
     if (vault) return vault;
+    const recovered=await recoveryRoute(request,env);if(recovered)return recovered;
     const push=await pushRoute(request,env);if(push)return push;
     const tagConsent=await tagConsentRoute(request,env);if(tagConsent)return tagConsent;
     const management=await managementRoute(request,env);if(management)return management;
@@ -127,11 +148,11 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await expirePush(env);await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
+  async scheduled(_event, env): Promise<void> { await expirePush(env);await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_dispatches WHERE rowid IN (SELECT rowid FROM integration_event_dispatches WHERE created_at<? AND receipt_json IS NOT NULL LIMIT 128)').bind(Date.now()-30*86400000).run();await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_callbacks WHERE rowid IN (SELECT rowid FROM integration_event_callbacks WHERE expires_at<? LIMIT 128)').bind(Date.now()-30*86400000).run();await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_recovery_sessions WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT, env);
-    const isManagement = url.pathname === "/enroll" || url.pathname.startsWith("/profiles/");
+    const isManagement = url.pathname === "/enroll" || url.pathname === "/recover" || url.pathname.startsWith("/profiles/");
     const origin = request.headers.get("origin");
     if (isManagement && url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) return Response.json({ error: "invalid_transport" }, { status: 403, headers });
     if (isManagement && origin && origin !== config.pwaOrigin && origin !== config.issuer) return Response.json({ error: "invalid_origin" }, { status: 403, headers });

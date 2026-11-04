@@ -1,0 +1,24 @@
+{
+  "created_ids": [
+    "T-c913de5b-0eff-4973-be07-089ea4391c1b"
+  ],
+  "dispositions": {
+    "P-7b77deae-d804-4dba-af99-262264884301": {
+      "reason": "Current worker and cache fixtures expose an unguarded redirect-bearing shell response path consistent with the owner screenshots and official Pages/Fetch contracts. Produce one priority107 local repair/update task with concrete negative controls, data preservation and explicit physical-device incident limits; no deployment or device success is inferred.",
+      "status": "promoted"
+    },
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2": {
+      "reason": "Current controller, adaptive pacing, recovery journal and accepted synthetic outcomes already cover acknowledged counts, 429/cooldown, unknown dispatch and exact gear recovery. The 2026-10-29 release record reports publication but no live spell reproduction; fresh loaded iPhone build/controller identity and sanitized post-update incident evidence remain missing. Obtain the affected-client observations and a concrete bounded owner profile before any real spell/equipment reproduction. No duplicate implementation or incident closure follows; research: skill-tree/history/processing/ios-startup-2026-10-30/research.md.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-365a2006-2f19-4eb7-b907-ec422455f545",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-7b77deae-d804-4dba-af99-262264884301",
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2"
+  ],
+  "task_keys": {
+    "ios-shell-recovery": "T-c913de5b-0eff-4973-be07-089ea4391c1b"
+  }
+}

@@ -1,0 +1,452 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Owned equipment can be located by displayed name or exact key and reached directly by slot/category.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.log",
+          "sha256": "87a83089e06c478aa05f6314b389b56d382653ac4b01345f57911d3386841c8b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.trx",
+          "sha256": "8bb77dd2a107d855a75d233e411c3806d98015ce3ebc264116623a6cc8e211de"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/acceptance.json",
+          "sha256": "7513b0c850c9120742ada5e775727f1c05d04d1f621bc52366eeb433d273988e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+          "sha256": "68f0a7020d7ca062e914a2261e9df91ad2a1e78f11e6c20ab21546edd42bfc8e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Result filtering preserves equipped identity, optimizer constraints and explicit equipment reviews without mutations.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.log",
+          "sha256": "87a83089e06c478aa05f6314b389b56d382653ac4b01345f57911d3386841c8b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.trx",
+          "sha256": "8bb77dd2a107d855a75d233e411c3806d98015ce3ebc264116623a6cc8e211de"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/acceptance.json",
+          "sha256": "7513b0c850c9120742ada5e775727f1c05d04d1f621bc52366eeb433d273988e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+          "sha256": "68f0a7020d7ca062e914a2261e9df91ad2a1e78f11e6c20ab21546edd42bfc8e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Search, jumps, empty feedback and item-action access pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.log",
+          "sha256": "87a83089e06c478aa05f6314b389b56d382653ac4b01345f57911d3386841c8b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.trx",
+          "sha256": "8bb77dd2a107d855a75d233e411c3806d98015ce3ebc264116623a6cc8e211de"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/acceptance.json",
+          "sha256": "7513b0c850c9120742ada5e775727f1c05d04d1f621bc52366eeb433d273988e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+          "sha256": "68f0a7020d7ca062e914a2261e9df91ad2a1e78f11e6c20ab21546edd42bfc8e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Owned equipment can be located by displayed name or exact key and reached directly by slot/category.",
+          "Result filtering preserves equipped identity, optimizer constraints and explicit equipment reviews without mutations."
+        ],
+        "id": "equipment-discovery-behavior",
+        "parameters": {
+          "report_name": "equipment-discovery.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/equipment-discovery/unit",
+          "test_filter": "FullyQualifiedName~InventoryPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-a7bbe6e7-1eec-4ff0-8226-af21d8c4dfcd",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 30,
+          "expected": 30,
+          "failed": 1,
+          "passed": 29,
+          "skipped": 0
+        },
+        "definition": "2bc12c1b4589e5277550fdc9e2d879478e5c1e656ab8b68713ba1bb14ce714eb",
+        "environment_identity": "d1c4ddb55ad19f6d830c99d763ca703cae4e402321cbb0b5a414594af8b8659d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-a7bbe6e7-1eec-4ff0-8226-af21d8c4dfcd.log",
+            "sha256": "46feee2ce2db37dde168ff7b7d0b71873d61e39fa6b34727a08fa510569e13f7"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-a7bbe6e7-1eec-4ff0-8226-af21d8c4dfcd.trx",
+            "sha256": "9ef9a2140f385687b550bd36dd0cbe97693030851ed7c2a088e130667fedc1c5"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "5b45a0ccda8e3d3dae7de4feb0692635775d162353940e5ea1f444d31b3eb044",
+        "payload_hash": "a0aaefb2c454bb3364414edda66fd5d2f68d65c37d9f33765a8158579eea4907",
+        "recorded_at": "2026-11-03T20:25:17.550036+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "dcdae33737738bdbc1522bf6268752486ad9801c66357568865d789ae0280332",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "7da86a2dc7d35cf4bc929efb1a043a4fe38133f6aa12d77eb53a8f4b616ad041"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.744077541865408
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-09758136-198d-41a4-a525-e1bbc321c2bb",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 31,
+          "expected": 31,
+          "failed": 0,
+          "passed": 31,
+          "skipped": 0
+        },
+        "definition": "2bc12c1b4589e5277550fdc9e2d879478e5c1e656ab8b68713ba1bb14ce714eb",
+        "environment_identity": "d1c4ddb55ad19f6d830c99d763ca703cae4e402321cbb0b5a414594af8b8659d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.log",
+            "sha256": "87a83089e06c478aa05f6314b389b56d382653ac4b01345f57911d3386841c8b"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.trx",
+            "sha256": "8bb77dd2a107d855a75d233e411c3806d98015ce3ebc264116623a6cc8e211de"
+          }
+        ],
+        "execution_sessions": {
+          "5199114387c8946287377be05a315566c0e2ec79687fcde4cbe4d9d04be28274": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "86f74e3b1c2e85d5ec5b01227465574f7f8a915980d5001a846592a274f51f8e",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:09:17.875306+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-discovery/launch-1793739197875561000.json"
+            ],
+            "profile_id": "63aeb7458d11efa48327d4f744b1a940408f7fce230e93dc02c1454612449df2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-discovery",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "c7963139c3d26f5348014705df95699377a98889a0c0a923591283ead3d0dd18",
+        "payload_hash": "fc1ba9a49bdd8b4dd6cbae3778fdb1ff9102e261592d6c1a580f8a45ffa829a7",
+        "recorded_at": "2026-11-03T20:56:27.040606+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "86f74e3b1c2e85d5ec5b01227465574f7f8a915980d5001a846592a274f51f8e",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d8afd99c3fa5beeb791c367c8859beaf97b2ca695873d594f81952be7ba2e80b"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.39851854229346
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Search, jumps, empty feedback and item-action access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Search, jumps, empty feedback and item-action access pass across the required rendered matrix."
+        ],
+        "id": "equipment-discovery-rendered",
+        "parameters": {
+          "cases": "Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser",
+          "routes": [
+            "/inventory"
+          ],
+          "task_key": "equipment-discovery"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-6683b4fd-6e5f-42ab-8ca6-9d92558268f3",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 505,
+          "expected": 505,
+          "failed": 0,
+          "passed": 505,
+          "skipped": 0
+        },
+        "definition": "2bc12c1b4589e5277550fdc9e2d879478e5c1e656ab8b68713ba1bb14ce714eb",
+        "environment_identity": "ca31d4b4e830e4a1b9d1761dd91d1e52bd2686aff0d85aa567a0f082f0fbe187",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+            "sha256": "68f0a7020d7ca062e914a2261e9df91ad2a1e78f11e6c20ab21546edd42bfc8e"
+          }
+        ],
+        "execution_sessions": {
+          "5199114387c8946287377be05a315566c0e2ec79687fcde4cbe4d9d04be28274": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "86f74e3b1c2e85d5ec5b01227465574f7f8a915980d5001a846592a274f51f8e",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:12:27.199707+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-discovery/launch-1793739387199946000.json"
+            ],
+            "profile_id": "63aeb7458d11efa48327d4f744b1a940408f7fce230e93dc02c1454612449df2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-discovery",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "be1c4f434e243278ee9dfefe786c3ff40797ca69b64376c407a788575604d695",
+        "payload_hash": "b2a107e16edc2f98191efe3fec1212c1dd77203da63dc1e0115f101636814057",
+        "recorded_at": "2026-11-03T20:58:14.347297+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "86f74e3b1c2e85d5ec5b01227465574f7f8a915980d5001a846592a274f51f8e",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d8afd99c3fa5beeb791c367c8859beaf97b2ca695873d594f81952be7ba2e80b",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+        },
+        "timing": {
+          "tool_wall_seconds": 105.98511087475345
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/acceptance.json",
+      "sha256": "7513b0c850c9120742ada5e775727f1c05d04d1f621bc52366eeb433d273988e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/operation-history.json",
+      "sha256": "b7d14b19487136cbcca50c1edd109b73b7798430fc4546d6840d22b7443a32df"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-32c37faf-9710-417c-ab49-00ac26d0f8dd",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Add direct discovery for equipment slots and owned items. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2"
+  ],
+  "recorded_at": "2026-11-03T20:59:54.838207+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "86f74e3b1c2e85d5ec5b01227465574f7f8a915980d5001a846592a274f51f8e",
+    "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d8afd99c3fa5beeb791c367c8859beaf97b2ca695873d594f81952be7ba2e80b",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "7d4399eb84ddd1b20e871e48f4afd8e3f4f509476d56395589377f2bfcd32208",
+    "tests/browser-qualification/ux-ui-discovery-content.json": "64551514d217e7e8d2fa8f5f229c3ed1e489569a7e98475f593afa022ea45d71",
+    "tests/browser-qualification/ux-ui-discovery-user.json": "5588d0b728a3aa82e24f6b70dc0f0ab1b40a4322b2928b763deee2cbde6882c2",
+    "tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs": "2072470a290039b3337a153b4459782b70e84ac338f28de0d0705e362ff219cf"
+  },
+  "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+  "title": "Add direct discovery for equipment slots and owned items",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Owned equipment can be located by displayed name or exact key and reached directly by slot/category.",
+        "Result filtering preserves equipped identity, optimizer constraints and explicit equipment reviews without mutations."
+      ],
+      "id": "equipment-discovery-behavior",
+      "parameters": {
+        "report_name": "equipment-discovery.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/equipment-discovery/unit",
+        "test_filter": "FullyQualifiedName~InventoryPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Search, jumps, empty feedback and item-action access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Search, jumps, empty feedback and item-action access pass across the required rendered matrix."
+      ],
+      "id": "equipment-discovery-rendered",
+      "parameters": {
+        "cases": "Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser",
+        "routes": [
+          "/inventory"
+        ],
+        "task_key": "equipment-discovery"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "2bc12c1b4589e5277550fdc9e2d879478e5c1e656ab8b68713ba1bb14ce714eb"
+}

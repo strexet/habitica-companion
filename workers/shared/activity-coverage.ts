@@ -51,14 +51,14 @@ export function validateActivityCoverage(document:WorkspaceDocument,commands:Com
   if(!entry||!task||row.payloadHash!==entry.payloadHash||row.taskId!==entry.command.taskId||row.revision!==entry.command.expectedRevision+1||row.revision!==task.revision
    ||utcTicks(row.recordedAtUtc)!==utcTicks(entry.acceptedAtUtc)||row.kind!==task.kind||row.state!==task.state||row.isArchived!==task.isArchived||!sameRule(row.recurrence,task.recurrence)
    ||!acceptedEvents.has(row.commandId+':'+utcTicks(row.recordedAtUtc))
-   ||['createTodo','createDaily','createHabit'].includes(entry.command.operation)!==(row.previousTaskRevision===0)
+   ||['createTodo','createDaily','createHabit','copyTaskType'].includes(entry.command.operation)!==(row.previousTaskRevision===0)
    ||continuesWitness&&(previousSources.get(row.taskId+':'+row.revision)??0)>row.previousTaskRevision)return fail();
   const current=currentTasks.get(row.taskId)!;if(current.revision<row.revision||current.revision===row.revision&&(current.kind!==row.kind||current.state!==row.state||current.isArchived!==row.isArchived||!sameRule(current.recurrence,row.recurrence)))return fail();
-  const creating=['createTodo','createDaily','createHabit'].includes(entry.command.operation);
-  if(creating&&(row.state!=='active'||row.isArchived||row.kind!==({createTodo:'todo',createDaily:'daily',createHabit:'habit'} as Record<string,string>)[entry.command.operation]||!sameRule(row.recurrence,entry.command.patch?.recurrence??null)))return fail();
+  const creating=['createTodo','createDaily','createHabit','copyTaskType'].includes(entry.command.operation);
+  if(creating&&(row.state!=='active'||row.isArchived||row.kind!==(entry.command.operation==='copyTaskType'?entry.command.patch!.typeCopy!.targetKind:({createTodo:'todo',createDaily:'daily',createHabit:'habit'} as Record<string,string>)[entry.command.operation])||!sameRule(row.recurrence,entry.command.operation==='copyTaskType'?entry.command.patch!.typeCopy!.recurrence??null:entry.command.patch?.recurrence??null)))return fail();
   const before=continuesWitness?taskSnapshots.get(row.taskId+':'+row.previousTaskRevision):undefined,operation=entry.command.operation;
   const expectedState=operation==='pauseTask'?'paused':['resumeTask','restoreTodo'].includes(operation)?'active':operation==='completeTask'&&row.kind==='todo'?'completed':operation==='setTodoState'?entry.command.patch!.todoState!.state:before?.state;
-  if(before&&(row.kind!==before.kind||!sameRule(row.recurrence,operation==='updateTask'?entry.command.patch!.clearRecurrence?null:entry.command.patch!.recurrence??before.recurrence:before.recurrence)||row.isArchived!==(operation==='deleteTask'||operation!=='unarchiveTask'&&before.isArchived)||row.state!==expectedState))return fail();
+  if(before&&(row.kind!==before.kind||!sameRule(row.recurrence,['updateTask','editLinkedDailySchedule'].includes(operation)?entry.command.patch!.clearRecurrence?null:entry.command.patch!.recurrence??before.recurrence:before.recurrence)||row.isArchived!==(operation==='deleteTask'||operation!=='unarchiveTask'&&before.isArchived)||row.state!==expectedState))return fail();
   const completionRows=completions.get(row.commandId)??[],scoreRows=scores.get(row.commandId)??[];
   if(operation==='skipOccurrence'||operation==='completeTask'&&row.kind==='daily'){
    const rows=terminals.get(row.commandId)??[],terminal=rows[0];if(rows.length!==1||terminal.taskId!==row.taskId||terminal.revision!==row.revision||terminal.date!==entry.command.occurrenceDate||terminal.state!==(operation==='skipOccurrence'?'skipped':'completed')||operation==='completeTask'&&completionRows[0]?.occurrenceId!==terminal.id)return fail();

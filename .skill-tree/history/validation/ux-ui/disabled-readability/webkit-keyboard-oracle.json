@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/6c54ee5c-c868-4ce8-9efc-14e3556c826a-failure.json",
+  "observed": "WebKit skipped the targeted Today hyperlink during Tab traversal and focused the native workspace summary. The task was already ready; this is distinct from initial startup timing.",
+  "repair": "Keep the exact two-way keyboard return assertion on a visible native text field. Native field keyboard behavior is the relevant positive control for disabled field styling; link traversal is subject to host keyboard preference and remains separate.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

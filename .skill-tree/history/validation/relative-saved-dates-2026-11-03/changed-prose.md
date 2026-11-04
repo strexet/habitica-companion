@@ -1,0 +1,18 @@
+### Relative dates in saved lists
+
+Status: implemented locally; unpublished. [Relative saved-date rules](relative-saved-dates.md) extend stored planned/deadline intent with explicit presets and UTC/IANA timezone. Application and Worker evaluators report exact as-of/day/bounds, preserve dependency context and reject stale-day/revision pages without mutating tasks. Organization v5 hashes bind the new intent while old absolute commands remain unchanged. `/todo/lists`, typed MCP reads and retained consumers expose interpreted dates, explicit conflict clearing and restart. Relative Habitica tag membership remains visibly unavailable until a separately reviewed day-bound contract exists; existing tags/history and original unknown recovery remain preserved. Independent calendar/hash, native, SDK/D1, typed/component and rendered-browser controls qualify local behavior; real accounts, hosted publication and devices remain separate.
+
+
+## Relative saved-query evaluation
+
+[Relative saved-date queries](relative-saved-dates.md) append null-omitted preset selectors and query timezone without changing old encodings. Organization v5 binds the extension. A pure native/shared policy resolves one supplied UTC instant into local civil-day bounds; public Worker reads capture server UTC. Canonical eligible predicates preserve full dependency source context for missing dates. Relative pages require explicit evaluation day and source revision. No evaluated results or dates are stored back into the definition. Existing tag adapters fail closed for relative groups and stop old pending dispatch before a new provider request; no revision-only tag plan can imply a reviewed day selection. Full day-bound projection remains separately tracked.
+
+
+### Relative saved-list dates
+
+`RelativeSavedTaskViewTests` and `relative-saved-dates.test.mjs` share sixteen independent civil-calendar examples plus a separately constructed v5 hash. Current native, actual SDK/Worker/D1, typed/component and retained tag-membership/reconciliation controls cover date selection, rollover, preserved dependency context, unsupported input and original identity. Relative group projection remains explicitly unavailable; a conversion control proves old queued tag work cannot dispatch or clear upstream membership. `relative-saved-rendered-browser` publishes current assets only to an owned loopback server and checks Lists/Sync in Chromium/WebKit with light/obsidian phone/desktop normal/enlarged text, focus and disabled controls. Actual local recovery, durable relative intent and native IndexedDB are exercised without real accounts or provider writes. Physical/assistive-technology, hosted and service-worker paths remain separate. Details: [relative saved dates](relative-saved-dates.md).
+
+
+### Relative saved-list date controls
+
+`/todo/lists` offers separate planned/deadline presets and explicit UTC/IANA timezone. Fixed fields conflict only with a relative selector on the same date field; conflicting values remain visible until an explicit clear action. Review and result sections display interpreted inclusive bounds, clock and local day. A day-changed continuation renders unavailable and requires explicit restart, never an all-task substitute. Account/source changes clear private selected context. `/todo/sync` identifies relative tag membership as unavailable, disables new sync/adoption and retains original receipt recovery. Light/obsidian phone/desktop normal/enlarged-text and keyboard evidence belongs to `relative-saved-rendered-browser`; routed production/device claims remain separate. See [relative date behavior](relative-saved-dates.md).

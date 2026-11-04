@@ -1,0 +1,410 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The dashboard Appearance action stays readable and keyboard operable without altering theme selection.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.log",
+          "sha256": "f130f7e51d08a1b1730e4f99392ffba78445dcfa58ab3e2d381b05940d172f5f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.trx",
+          "sha256": "19acfefd5eba304d718fd31a4f543a04d823c47363712dee5cf6dc0ac799e0bf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/acceptance.json",
+          "sha256": "5d18f7003a8a270b8a15d4cce0ab395978400ab4bab8009184f5d08a06f0a204"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/4ecb0117-274f-41a1-9dbf-489cc142992b.json",
+          "sha256": "cf0434c36a10ece606886cb92da6264e3db46a39908cb07b79bb8fb1d4596689"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "The full Appearance row and account feedback retain bounded geometry across the required light/dark phone/desktop and normal/enlarged matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.log",
+          "sha256": "f130f7e51d08a1b1730e4f99392ffba78445dcfa58ab3e2d381b05940d172f5f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.trx",
+          "sha256": "19acfefd5eba304d718fd31a4f543a04d823c47363712dee5cf6dc0ac799e0bf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/acceptance.json",
+          "sha256": "5d18f7003a8a270b8a15d4cce0ab395978400ab4bab8009184f5d08a06f0a204"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/4ecb0117-274f-41a1-9dbf-489cc142992b.json",
+          "sha256": "cf0434c36a10ece606886cb92da6264e3db46a39908cb07b79bb8fb1d4596689"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Keep dashboard public appearance disclosure, account freshness, action gates and account-switch regressions passing; use native keyboard and geometry as the independent layout oracle.",
+        "criteria": [
+          "The dashboard Appearance action stays readable and keyboard operable without altering theme selection."
+        ],
+        "id": "dashboard-appearance-reflow-behavior",
+        "parameters": {
+          "report_name": "dashboard-appearance-reflow.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/unit",
+          "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/DashboardPage.razor",
+          "src/Habitica.WebApp/State/AppSessionController.cs",
+          "src/Habitica.WebApp/State/IAppSessionController.cs",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-b6162855-9464-4e78-813c-7ea270bbfc13",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 119,
+          "expected": 119,
+          "failed": 0,
+          "passed": 119,
+          "skipped": 0
+        },
+        "definition": "0801e1e9007c67d301a66625e18c9227d366c6f71bc0e44fc2ce0d2134586d90",
+        "environment_identity": "c1116ad373e0d1bf717fae88fad3b39b57f5b150ce51d9d076a782311a07f32c",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.log",
+            "sha256": "f130f7e51d08a1b1730e4f99392ffba78445dcfa58ab3e2d381b05940d172f5f"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.trx",
+            "sha256": "19acfefd5eba304d718fd31a4f543a04d823c47363712dee5cf6dc0ac799e0bf"
+          }
+        ],
+        "execution_sessions": {
+          "fe3af156463919b39088e91b0ed9526edb4cad3cf658b3ac2ea1267d85808d29": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "39672bf0a12024df156bf3dbf2fae7b52e833a14a020196bf643950d7c966e21",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:44:50.627797+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/launch-1793716130628086000.json"
+            ],
+            "profile_id": "3203970eb2547e844008a9ac0a1074fdfedc8f6af53d825558b3dbd0fbf2615b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-appearance-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "4ec51b7c83e54c214cd13598d709a25c49e3393b63e512a029aefb34c79da51b",
+        "payload_hash": "d4167049898946a82732870faf3143c986762301149aa3e5c57dcd7a417f3fc4",
+        "recorded_at": "2026-11-03T14:30:41.325173+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/DashboardPage.razor": "de03ce475be6b70bc554717c07f8c1bdc16994a1d549743beab4cfaf93e8c5d0",
+          "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+          "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e8a58930ea9a5632609a2090e17a5e74be634d17c48a653e85414711741e81a5",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4"
+        },
+        "timing": {
+          "tool_wall_seconds": 48.05401933309622
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Require the real full Appearance row and toggle to remain within the viewport with at least 44 CSS pixels per target and a label-wide text area. Prove native keyboard focus, open/close behavior and account refresh status in both engines across the complete matrix.",
+        "criteria": [
+          "The full Appearance row and account feedback retain bounded geometry across the required light/dark phone/desktop and normal/enlarged matrix."
+        ],
+        "id": "dashboard-appearance-reflow-rendered",
+        "parameters": {
+          "cases": "Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser",
+          "routes": [
+            "/dashboard"
+          ],
+          "task_key": "dashboard-appearance-reflow"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/DashboardPage.razor",
+          "src/Habitica.WebApp/State/AppSessionController.cs",
+          "src/Habitica.WebApp/State/IAppSessionController.cs",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-32d2f477-6520-414d-8b44-276d77dff230",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 217,
+          "expected": 217,
+          "failed": 0,
+          "passed": 217,
+          "skipped": 0
+        },
+        "definition": "0801e1e9007c67d301a66625e18c9227d366c6f71bc0e44fc2ce0d2134586d90",
+        "environment_identity": "4964891b793534f9853637646c061bc137dd6cedd708bac6e3c48288cf644c81",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/4ecb0117-274f-41a1-9dbf-489cc142992b.json",
+            "sha256": "cf0434c36a10ece606886cb92da6264e3db46a39908cb07b79bb8fb1d4596689"
+          }
+        ],
+        "execution_sessions": {
+          "fe3af156463919b39088e91b0ed9526edb4cad3cf658b3ac2ea1267d85808d29": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:50:26.449683+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/launch-1793716466449901000.json"
+            ],
+            "profile_id": "3203970eb2547e844008a9ac0a1074fdfedc8f6af53d825558b3dbd0fbf2615b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-appearance-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "78e09d1f9060f29eeb8d4aed2a27cb37f57afba2e7f01fa0d1621e46add47721",
+        "payload_hash": "478a77c2f2684607221e365aad4d11578b91cd22ce9bf168f7395039c80b77cb",
+        "recorded_at": "2026-11-03T14:36:23.566187+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/DashboardPage.razor": "de03ce475be6b70bc554717c07f8c1bdc16994a1d549743beab4cfaf93e8c5d0",
+          "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+          "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e8a58930ea9a5632609a2090e17a5e74be634d17c48a653e85414711741e81a5",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "608488087550fd5aa510401b2c86bf66758c2b43e0829958c6bc6cff04123f7a",
+          "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs": "37963208f41c07b4c7bf1c4942ca37d2ce2452e34a9b07b83527c315383c458e",
+          "tests/browser-qualification/ux-ui-dashboard-journey.mjs": "82462474421e89fd738239f9541487db4a3bf8aec32535b92aa8dcd2e50db910"
+        },
+        "timing": {
+          "tool_wall_seconds": 116.20111624989659
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/acceptance.json",
+      "sha256": "5d18f7003a8a270b8a15d4cce0ab395978400ab4bab8009184f5d08a06f0a204"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/operation-history.json",
+      "sha256": "27d0ff3943477cac0d3744f526b145a075ff74276cfe0bf4be3bc43f0770d790"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-dc509eb5-93dd-4f0f-b0b4-ce64486ac969",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep dashboard Appearance actions readable at enlarged phone widths. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-1d47a442-c7d4-420a-99ae-270d1b204653"
+  ],
+  "recorded_at": "2026-11-03T14:36:30.890646+00:00",
+  "related_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+  "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "de03ce475be6b70bc554717c07f8c1bdc16994a1d549743beab4cfaf93e8c5d0",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e8a58930ea9a5632609a2090e17a5e74be634d17c48a653e85414711741e81a5",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "608488087550fd5aa510401b2c86bf66758c2b43e0829958c6bc6cff04123f7a",
+    "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs": "37963208f41c07b4c7bf1c4942ca37d2ce2452e34a9b07b83527c315383c458e",
+    "tests/browser-qualification/ux-ui-dashboard-journey.mjs": "82462474421e89fd738239f9541487db4a3bf8aec32535b92aa8dcd2e50db910"
+  },
+  "task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+  "title": "Keep dashboard Appearance actions readable at enlarged phone widths",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Keep dashboard public appearance disclosure, account freshness, action gates and account-switch regressions passing; use native keyboard and geometry as the independent layout oracle.",
+      "criteria": [
+        "The dashboard Appearance action stays readable and keyboard operable without altering theme selection."
+      ],
+      "id": "dashboard-appearance-reflow-behavior",
+      "parameters": {
+        "report_name": "dashboard-appearance-reflow.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/unit",
+        "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/IAppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Require the real full Appearance row and toggle to remain within the viewport with at least 44 CSS pixels per target and a label-wide text area. Prove native keyboard focus, open/close behavior and account refresh status in both engines across the complete matrix.",
+      "criteria": [
+        "The full Appearance row and account feedback retain bounded geometry across the required light/dark phone/desktop and normal/enlarged matrix."
+      ],
+      "id": "dashboard-appearance-reflow-rendered",
+      "parameters": {
+        "cases": "Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser",
+        "routes": [
+          "/dashboard"
+        ],
+        "task_key": "dashboard-appearance-reflow"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/IAppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "0801e1e9007c67d301a66625e18c9227d366c6f71bc0e44fc2ce0d2134586d90"
+}

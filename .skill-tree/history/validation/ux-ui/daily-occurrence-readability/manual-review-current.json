@@ -1,0 +1,15 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/4a4b25f6-ecc5-48bc-83db-46d3d54163b1.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/daily-occurrence-readability/1793734196101703000",
+  "reviewed": [
+    "pixels/chromium-gryphy-light-360-200-hydrated-0-actual.png",
+    "pixels/webkit-obsidian-glow-360-200-workspace-names-daily-frozen-1-actual.png"
+  ],
+  "observations": [
+    "Selected native civil-date segments remain visible at enlarged phone text, including the disabled original-review state.",
+    "Ordinary row/review words, original44-pixel targets and exact journals retain current native checks."
+  ],
+  "limitations": [
+    "Physical devices, native date popovers, other locales and assistive technology remain unqualified."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-20304b2d-d884-4eb1-8c2c-47dd366d71ae",
+  "check_id": "dashboard-freshness-behavior",
+  "definition": "e30bb7419432f67c640cef7181d52479c8fff1670ddb12f402f0795ca2a7be30",
+  "environment_identity": "7fd2010b7c921f183608adeb712f7dfbc6ea1fc6e4100c175850b84160ce4361",
+  "key": "40062578c533ab74d608304c779ab7578ae49364c367b39263990cf39d36b0ea",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T14:19:07.541909+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T14:14:07.826821+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+      "--logger",
+      "trx;LogFileName=dashboard-freshness.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/dashboard-freshness/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "e526224d408c79bc8d73d2c5ab33ea7e5f387940db7f82a9e3885817df941b9b",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "3a7446a275efc233a4286dc6db7581fed4853c1ddc61afb47afa7e62a8037096",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4"
+  },
+  "task_id": "T-21881802-f186-479d-9111-295192ce2de8"
+}

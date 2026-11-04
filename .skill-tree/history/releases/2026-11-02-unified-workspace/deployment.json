@@ -1,0 +1,23 @@
+{
+  "pages_id": "1dd4e8a2-33ff-454a-9076-2e95967f401e",
+  "pages_status": "success",
+  "worker_versions": {
+    "chatgpt-auth": "736020af-860e-40f3-9679-1715bd25da5e",
+    "companion-workspace": "9dd0d74e-de60-4530-8cac-3b3f54dd47a4",
+    "chatgpt-mcp": "57f72287-d25d-4d8e-ade7-72d2759a421d"
+  },
+  "backend_release": "0.3.0",
+  "tool_schema": "1.2.0",
+  "backend_build_hash": "5974025f3cdcb8e563cffca239ffb6746d4a111e6efb3a180f8cd493f58fd83b",
+  "migration_applied": "Workspace0018-workspace-transfers.sql",
+  "pending_migrations": [],
+  "worker_runtime_settings_unchanged": true,
+  "pages_runtime_build_and_git_settings_unchanged": true,
+  "functions_count": 4,
+  "git_commit_or_push": false,
+  "mcp_cloud_audit": "authenticated native MCP verified; complete cloud inventory pages match before/after",
+  "browser_transfer_completeness": "unverified; owner browser inventory/capture required",
+  "native_mcp_coherent": true,
+  "cloud_records_unchanged": true,
+  "live_anonymous_frontend": "Sign In rendered with no page errors or failed requests"
+}

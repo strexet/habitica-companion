@@ -1,0 +1,325 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Every reviewed local adapter module, local module dependency and declared synthetic fixture input participates in the installed qualification source fingerprint.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-36096d0a-fd26-46ec-acab-e07351c00184.tap",
+          "sha256": "2cb18f996f0e6447c200d31a928c140d38594ae9db86e12a76dd79b137654176"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-c1811556-f5b2-4777-9d49-6aae176a1426-static.json",
+          "sha256": "84a8df368d828f4a797d25ba08243d9d315df50c124c48e8989559428ae425ff"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Controlled temporary source/data mutations make the actual installed workflow reject stale profile evidence; unchanged sources remain reusable and refreshed inputs change the environment identity.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-36096d0a-fd26-46ec-acab-e07351c00184.tap",
+          "sha256": "2cb18f996f0e6447c200d31a928c140d38594ae9db86e12a76dd79b137654176"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-c1811556-f5b2-4777-9d49-6aae176a1426-static.json",
+          "sha256": "84a8df368d828f4a797d25ba08243d9d315df50c124c48e8989559428ae425ff"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "The refreshed profile retains pinned recipes and boundaries, and affected completed local UI contracts receive current-source revalidation without accepting owner-only release gates.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-36096d0a-fd26-46ec-acab-e07351c00184.tap",
+          "sha256": "2cb18f996f0e6447c200d31a928c140d38594ae9db86e12a76dd79b137654176"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-c1811556-f5b2-4777-9d49-6aae176a1426-static.json",
+          "sha256": "84a8df368d828f4a797d25ba08243d9d315df50c124c48e8989559428ae425ff"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise the actual installed workflow recipe_for against disposable source/profile copies: unchanged identity, edited journey, edited synthetic data, changed adapter map and refreshed environment. No original source mutation, browser or provider operation. Require nonzero controls and no required skips.",
+        "criteria": [
+          "Every reviewed local adapter module, local module dependency and declared synthetic fixture input participates in the installed qualification source fingerprint.",
+          "Controlled temporary source/data mutations make the actual installed workflow reject stale profile evidence; unchanged sources remain reusable and refreshed inputs change the environment identity."
+        ],
+        "id": "adapter-source-drift-controls",
+        "parameters": {
+          "test_file": "tests/browser-qualification/source-identity.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui.mjs",
+          ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py",
+          ".skill-tree/installation/source/lib/composer.js",
+          "tests/browser-qualification/source-identity.test.mjs",
+          "tests/browser-qualification/source-identity-fixture.py"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-620721c9-fb2a-4f85-98e8-bd8ae283c908",
+        "classification": "executed-control",
+        "cleanup": "Node/Python controls exited. Disposable copies removed by Node finally; original source/profile never mutated. No browser or provider operation.",
+        "counts": {
+          "discovered": 4,
+          "expected": 4,
+          "failed": 3,
+          "passed": 1,
+          "skipped": 0
+        },
+        "definition": "39e56c9e79bd5fc06ce801309175b7ce50ccf03d03633f06c808ddc77cbdf786",
+        "environment_identity": "08c13534f35d99383c2e66aaa19e761848a892b65598bbd92eadadf171b5fedf",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-620721c9-fb2a-4f85-98e8-bd8ae283c908.tap",
+            "sha256": "d5f3ca3bb9fe851ca74610e3b6b8b06193a50183d72e749c8e73969bc873aae4"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "aba456f430e353b82c03d362165b14bd87f0765ba397778293992b2f4cae68ae",
+        "payload_hash": "18cf3c091e0ccce3013f0f579914757e9184ae244e9c8ab0d1b885f4a0bda16c",
+        "recorded_at": "2026-11-04T00:02:18.853724+00:00",
+        "result": "red",
+        "sources": {
+          ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+          ".skill-tree/installation/profile.json": "cd6ce379d8a2852d2af4c571bfa7e3ef7bd322a473d199b5d6ff3746397f2976",
+          ".skill-tree/installation/source/lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+          ".skill-tree/validation-recipes.json": "1905df2c791a86c4af86f05111d9032330819f28cf24bc403a860e795f0995da",
+          "tests/browser-qualification/source-identity-fixture.py": "55961d67ada00aeff3c84279d0c081c937e55de089196c8bfe6403d787ac4cc2",
+          "tests/browser-qualification/source-identity.test.mjs": "256e10aad248eec3a882afca22d5503bf8a828da7dbc244fbce93cee8fed1e54",
+          "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+          "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.3117328751832247
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-36096d0a-fd26-46ec-acab-e07351c00184",
+        "classification": "executed-control",
+        "cleanup": "Node/Python controls exited. Disposable copies removed by Node finally; original source/profile never mutated. No browser or provider operation.",
+        "counts": {
+          "discovered": 4,
+          "expected": 4,
+          "failed": 0,
+          "passed": 4,
+          "skipped": 0
+        },
+        "definition": "39e56c9e79bd5fc06ce801309175b7ce50ccf03d03633f06c808ddc77cbdf786",
+        "environment_identity": "37aa7b0d437e241f544081993b8db45fcc09060bd6fb026dbd37e02f9b4b094a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-36096d0a-fd26-46ec-acab-e07351c00184.tap",
+            "sha256": "2cb18f996f0e6447c200d31a928c140d38594ae9db86e12a76dd79b137654176"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "63d4b08f501736789ed8d2ff8828c70b808aa6cf061c504d31d9b4156c1b1ca6",
+        "payload_hash": "7824d27796e2628db40c5ae71f27f00a774dba29b8fd73f6768f2b0d29c9d4b9",
+        "recorded_at": "2026-11-04T05:22:18.181895+00:00",
+        "result": "pass",
+        "sources": {
+          ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+          ".skill-tree/installation/profile.json": "ddf27b25ea6b73bde49aa5f4c08b82f9ba5fe7916321f0a14777215db856251f",
+          ".skill-tree/installation/source/lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+          ".skill-tree/validation-recipes.json": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+          "tests/browser-qualification/source-identity-fixture.py": "55961d67ada00aeff3c84279d0c081c937e55de089196c8bfe6403d787ac4cc2",
+          "tests/browser-qualification/source-identity.test.mjs": "256e10aad248eec3a882afca22d5503bf8a828da7dbc244fbce93cee8fed1e54",
+          "tests/browser-qualification/ux-ui-adapters.json": "8fb3ed6e87a3776213446a61154f5f6836e5c8376a01be8031f57b0fc01f228a",
+          "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.5358502906747162
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "The registered and installed recipe include the complete reviewed adapter input closure, preserve pinned execution settings and expose current hashes for every required local input. The source-boundary report records affected UI checks and preserves blocked owner qualification.",
+        "criteria": [
+          "Every reviewed local adapter module, local module dependency and declared synthetic fixture input participates in the installed qualification source fingerprint.",
+          "The refreshed profile retains pinned recipes and boundaries, and affected completed local UI contracts receive current-source revalidation without accepting owner-only release gates."
+        ],
+        "id": "adapter-profile-registration",
+        "parameters": {
+          "review": "Exact adapter input closure, installed profile normalization and pinned recipe preservation; affected UI revalidation remains a separate run obligation."
+        },
+        "recipe_id": "static-inspection",
+        "sources": [
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui.mjs",
+          ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py",
+          ".skill-tree/installation/source/lib/composer.js",
+          ".skill-tree/documents/testing.md"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "The registered and installed recipe include the complete reviewed adapter input closure, preserve pinned execution settings and expose current hashes for every required local input. The source-boundary report records affected UI checks and preserves blocked owner qualification.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-c1811556-f5b2-4777-9d49-6aae176a1426",
+        "classification": "executed-control",
+        "cleanup": "Read-only source/profile/receipt inspection completed; no product process, owner qualification or provider execution.",
+        "definition": "39e56c9e79bd5fc06ce801309175b7ce50ccf03d03633f06c808ddc77cbdf786",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-c1811556-f5b2-4777-9d49-6aae176a1426-static.json",
+            "sha256": "84a8df368d828f4a797d25ba08243d9d315df50c124c48e8989559428ae425ff"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "9ed787f8e5775d546f1c65f362262dfaa5771f97a0607a2d1563d5db4128c858",
+        "payload_hash": "c3f18b019fa83a71246d3542d0dbd50bf04eae437198bf99e69bb7a9f466edd0",
+        "recorded_at": "2026-11-04T05:22:46.743002+00:00",
+        "result": "pass",
+        "sources": {
+          ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+          ".skill-tree/documents/testing.md": "7bf414404ec05ef80e5c34e9fbfb4c0abfcde006332d999da67da777f2d35ca0",
+          ".skill-tree/installation/profile.json": "ddf27b25ea6b73bde49aa5f4c08b82f9ba5fe7916321f0a14777215db856251f",
+          ".skill-tree/installation/source/lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+          ".skill-tree/validation-recipes.json": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+          "tests/browser-qualification/ux-ui-adapters.json": "8fb3ed6e87a3776213446a61154f5f6836e5c8376a01be8031f57b0fc01f228a",
+          "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8"
+        },
+        "timing": {
+          "tool_wall_seconds": 1.910607417114079
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+    "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-36096d0a-fd26-46ec-acab-e07351c00184.tap",
+      "sha256": "2cb18f996f0e6447c200d31a928c140d38594ae9db86e12a76dd79b137654176"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/C-c1811556-f5b2-4777-9d49-6aae176a1426-static.json",
+      "sha256": "84a8df368d828f4a797d25ba08243d9d315df50c124c48e8989559428ae425ff"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/adapter-source-identity/operation-history.json",
+      "sha256": "3a1b2ab731c92867882387d2e626bc109aecdc04ff21f618f56a705f10b3e51b"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-a97a071b-883c-465b-9daa-0f3dc69046e5",
+  "limitations": [
+    "Synthetic current-source browser qualification does not establish physical-device, assistive-technology, independent-user or hosted release acceptance.",
+    "The required hierarchy focus repair has separate controlled and current native shell/hierarchy evidence; original intermittent failures remain preserved."
+  ],
+  "outcome": "Reviewed browser adapter modules, local dependencies and synthetic fixture inputs now participate in qualification source identity. Actual installed-workflow mutation controls reject stale inputs, refreshed inputs change identity, and all36completed local UI contracts have matching current-source revalidation. Owner release gates remain blocked and unaccepted.",
+  "parent_pending_ids": [
+    "P-3293e9dd-24a8-4efe-9133-64af8b19f939"
+  ],
+  "recorded_at": "2026-11-04T05:22:47.300792+00:00",
+  "related_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+  "source_fingerprints": {
+    ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+    ".skill-tree/documents/testing.md": "7bf414404ec05ef80e5c34e9fbfb4c0abfcde006332d999da67da777f2d35ca0",
+    ".skill-tree/installation/profile.json": "ddf27b25ea6b73bde49aa5f4c08b82f9ba5fe7916321f0a14777215db856251f",
+    ".skill-tree/installation/source/lib/composer.js": "b586513bdb41e8e59af4b93212c722bf5173340226cb5da389cf8cd5eff3cf98",
+    ".skill-tree/validation-recipes.json": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+    "tests/browser-qualification/source-identity-fixture.py": "55961d67ada00aeff3c84279d0c081c937e55de089196c8bfe6403d787ac4cc2",
+    "tests/browser-qualification/source-identity.test.mjs": "256e10aad248eec3a882afca22d5503bf8a828da7dbc244fbce93cee8fed1e54",
+    "tests/browser-qualification/ux-ui-adapters.json": "8fb3ed6e87a3776213446a61154f5f6836e5c8376a01be8031f57b0fc01f228a",
+    "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8"
+  },
+  "task_id": "T-13e3754f-774b-443f-8997-e1d677f3c079",
+  "title": "Bind browser adapters and synthetic fixture sources to qualification receipts",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise the actual installed workflow recipe_for against disposable source/profile copies: unchanged identity, edited journey, edited synthetic data, changed adapter map and refreshed environment. No original source mutation, browser or provider operation. Require nonzero controls and no required skips.",
+      "criteria": [
+        "Every reviewed local adapter module, local module dependency and declared synthetic fixture input participates in the installed qualification source fingerprint.",
+        "Controlled temporary source/data mutations make the actual installed workflow reject stale profile evidence; unchanged sources remain reusable and refreshed inputs change the environment identity."
+      ],
+      "id": "adapter-source-drift-controls",
+      "parameters": {
+        "test_file": "tests/browser-qualification/source-identity.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py",
+        ".skill-tree/installation/source/lib/composer.js",
+        "tests/browser-qualification/source-identity.test.mjs",
+        "tests/browser-qualification/source-identity-fixture.py"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "The registered and installed recipe include the complete reviewed adapter input closure, preserve pinned execution settings and expose current hashes for every required local input. The source-boundary report records affected UI checks and preserves blocked owner qualification.",
+      "criteria": [
+        "Every reviewed local adapter module, local module dependency and declared synthetic fixture input participates in the installed qualification source fingerprint.",
+        "The refreshed profile retains pinned recipes and boundaries, and affected completed local UI contracts receive current-source revalidation without accepting owner-only release gates."
+      ],
+      "id": "adapter-profile-registration",
+      "parameters": {
+        "review": "Exact adapter input closure, installed profile normalization and pinned recipe preservation; affected UI revalidation remains a separate run obligation."
+      },
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        ".agents/skills/skill-tree-implement-all/scripts/workflow-state.py",
+        ".skill-tree/installation/source/lib/composer.js",
+        ".skill-tree/documents/testing.md"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "39e56c9e79bd5fc06ce801309175b7ce50ccf03d03633f06c808ddc77cbdf786"
+}

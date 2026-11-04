@@ -1,0 +1,30 @@
+{
+  "recorded_at_utc": "2026-11-02T11:41:15.285113+00:00",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "decision": "Owner-directed validation contract revision before any task acceptance.",
+  "owner_request": "мы можем убрать этот тест и сразу проверять нормальную работу, если мы не можем его выполнить? то есть на проде все должно работать, если ошибок нет? закомить изменения?",
+  "interpretation": "Defer unavailable hosted DNS/TLS failure-injection coverage and select actual normal-delivery checks on existing owned HTTPS hosting. Commit the reviewed task-owned changes. No absence-of-errors or skipped-test pass is inferred.",
+  "original_profile": {
+    "path": ".skill-tree/history/validation/callback-egress-netlify/hosted-profile.json",
+    "sha256": "45bd657dab5afe828c621beea7b972adf3b95ca568352f4941658a2b8ec9c7e8",
+    "preserved": true
+  },
+  "old_queue_sha256": "7bbede7cff34dc6a4493376095f676e6f6f9f23b0210594f536479839c30c316",
+  "revised_queue_sha256": "f2e8136b767b6c3a775801b799695fc6e90b550c91d542568d73651d0c32d4e4",
+  "deferred_pending_id": "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+  "pending_relation_note": "Standalone main Pending retains the selected task and inherited completed root in Current context. Structural followup intake requires an open prioritized root; no existing task identities were rewritten.",
+  "normal_profile": ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json",
+  "retained_obligations": [
+    "Verify current deployed gateway/Auth source hashes, Node22 runtime, audience/issuer, claim database, available Free quota, provider logging and current rollback identities without secret values.",
+    "Prepare an exact isolated synthetic receiver on existing owned HTTPS hosting and bind the receiver deployment identity and cleanup to the profile.",
+    "Persist the original request identity before minting the synthetic grant; observe valid webhook signature and exact callback bytes, successful claim, exactly one delivery and the successful response within the shared deadline.",
+    "Replay the original request without replacement authority; observe no second receiver delivery and preserve the original claim fence.",
+    "Disable the selected gateway/claim lanes and verify shutdown or scoped rollback; retain original claims and reduced receipts."
+  ],
+  "guard_changes": false,
+  "acceptance_recorded": false,
+  "hosted_controls_executed": 0,
+  "subscription_or_message_authorization": false,
+  "next_action": "Prepare the isolated owned HTTP receiver and concrete normal-delivery recipe, verify deployment identities and execute the accepted bounded synthetic gateway/claim flow. No dedicated DNS zone or raw TLS server is required for the selected stage."
+}

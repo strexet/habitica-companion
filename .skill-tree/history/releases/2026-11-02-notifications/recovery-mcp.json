@@ -1,0 +1,22 @@
+{
+  "action": "recovery-mcp",
+  "worker": "habitica-companion-mcp",
+  "previous_version": "08155a9c-7597-4273-907b-862a00c0d8d0",
+  "version": "d8fb17bc-8400-4e5a-9541-a63fab609b82",
+  "state": "active",
+  "events_enabled": true,
+  "source_hashes": {
+    "index.js": "d711c2982ea1341566ac86f0a6e3c9d6be827a93515a00371fef94bca2c90223",
+    "index.js.map": "515bdc16c73300617c9dc4b67d07e57f9df579e3abb581795ec5a34a6ab040df"
+  },
+  "provider_source_hashes": {
+    "index.js": "d711c2982ea1341566ac86f0a6e3c9d6be827a93515a00371fef94bca2c90223",
+    "index.js.map": "3f832ff66975a2dcc9dbf9ecf15575150559297d1f171a20c867dc2e0fd6e999"
+  },
+  "source_map_core_payload_equal": true,
+  "backend_release": "0.3.1",
+  "tool_schema": "1.3.0",
+  "build_hash": "b2c02b0bb823dc81e7f12d89dc8e46ef4098e48d750698685ee924170237d03b",
+  "unrelated_bindings_preserved": true,
+  "new_secret_material_logged": false
+}

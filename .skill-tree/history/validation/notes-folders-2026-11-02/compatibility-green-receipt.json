@@ -1,0 +1,42 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-69c97fdb-37b7-49ce-9c2f-180b50cc0921",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 17,
+    "expected": 17,
+    "failed": 0,
+    "passed": 17,
+    "skipped": 0
+  },
+  "definition": "94373d8f381966b78ea034af24700efad56ddf435174d07a98e6bbac32d1146c",
+  "environment_identity": "4c4f4eb130016c62d954d4bc316b63aa0c751c78c5a67a6f5e7dabb3c24a066a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/compatibility-green-execution.log",
+      "sha256": "5f3f574e170cd8469b45cbd6d9f88b180908d8ab9b153185a182819e4cad86d0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/compatibility-green.trx",
+      "sha256": "807437a9c7097f8118f91b5231a8452f09fbbcc91bb8aae670aede28fd3550f5"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "3a89182a9198ec4d9233467032f6323ed93064c5fba13818199d319442603d87",
+  "payload_hash": "ba979edf15f0f13247d0bcce7086bd343d1bbd42f263e19a953ae900b549fc69",
+  "recorded_at": "2026-11-02T16:29:19.115152+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "d41145902cfdc1ea2b8ddcfb4f138b6b7625b8dd912eb0145230fb83d593ee25",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "d3767a823661d01bdf52466bc22a1bd4fce5625076152e96b417c4b91852a171",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "b8caae5c59507ce06bb893999bbaa0285c3bee6ba160a84f82b04bd5f56ad6b8"
+  },
+  "timing": {
+    "tool_wall_seconds": 7.246360250050202
+  }
+}

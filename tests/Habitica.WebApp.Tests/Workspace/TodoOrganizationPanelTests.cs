@@ -22,6 +22,37 @@ public sealed class TodoOrganizationPanelTests:BunitContext
     private static void Kind(IRenderedComponent<TodoOrganizationPanel> cut,string kind)=>cut.Find("[data-testid='organization-kind']").Change(kind);
     private static void Review(IRenderedComponent<TodoOrganizationPanel> cut,string name){cut.Find("[data-testid='organization-name']").Input(name);cut.Find("form").Submit();}
     [Fact]
+    public async Task Browse_first_page_preserves_explicit_selection_alias_drafts_and_original_review_fences()
+    {
+        var a=new WorkspaceProject(Guid.NewGuid(),1,"Existing alpha",Alias:"alpha");var b=new WorkspaceProject(Guid.NewGuid(),1,"Existing beta",Alias:"beta");
+        var assigned=Task("Alpha assigned work") with{ProjectId=a.Id};var unassigned=Task("Unscoped work");
+        using var f=await Setup(new(){Id=Guid.NewGuid(),Revision=10,Projects=[a,b],Tasks=[assigned,unassigned]});var page=Render<TodoProjectsPage>();
+        Assert.Single(page.FindAll("h1"));Assert.True(page.Find("[data-testid='organization-management']").HasAttribute("hidden"));
+        var hierarchy=page.FindComponent<TodoHierarchyPanel>();Assert.Null(hierarchy.FindComponent<TodoPlacementPicker>().Instance.Value);Assert.Empty(page.FindAll("[data-testid^='tree-row-']"));
+        Save("projects-browse-page",page.Markup,"explicit-empty-selection-before-management",nameof(Browse_first_page_preserves_explicit_selection_alias_drafts_and_original_review_fences));
+        hierarchy.Find("[data-testid='plan-project']").Change(a.Id.ToString());Assert.Single(page.FindAll("[data-testid^='tree-row-']"));Assert.Contains(assigned.Text,page.Find("[data-testid^='tree-row-']").TextContent);
+        Save("projects-browse-selected",page.Markup,"existing-selected-project-work-first",nameof(Browse_first_page_preserves_explicit_selection_alias_drafts_and_original_review_fences));
+        page.Find("[data-testid='projects-manage']").Click();Assert.False(page.Find("[data-testid='organization-management']").HasAttribute("hidden"));
+        var organization=page.FindComponent<TodoOrganizationPanel>();organization.Find($"[data-testid='organization-edit-{a.Id:D}']").Click();organization.Find("[data-testid='organization-alias']").Input("unsaved-alias");
+        organization.Find("[data-testid='organization-close-management']").Click();Assert.True(page.Find("[data-testid='organization-management']").HasAttribute("hidden"));page.Find("[data-testid='projects-manage']").Click();
+        Assert.Equal("unsaved-alias",organization.Find("[data-testid='organization-alias']").GetAttribute("value"));Assert.Equal(a.Id,hierarchy.FindComponent<TodoPlacementPicker>().Instance.Value);
+        organization.Find("[data-testid='organization-alias']").Input("beta");organization.Find("[data-testid='organization-alias-form']").Submit();Assert.Null(f.Organization.Preview);Assert.Contains("alias",page.Markup,StringComparison.OrdinalIgnoreCase);
+        organization.Find("[data-testid='organization-alias']").Input("updated-alpha");organization.Find("[data-testid='organization-alias-form']").Submit();Assert.Equal(a.Id,f.Organization.Preview!.Command.EntityId);Assert.Equal("Existing alpha",f.Organization.Preview.Snapshot.Name);Assert.Equal("updated-alpha",f.Organization.Preview.Snapshot.Alias);
+        Assert.True(organization.Find("[data-testid='organization-close-management']").HasAttribute("disabled"));
+        Save("projects-browse-review",page.Markup,"exact-alias-review-keeps-work-and-fences",nameof(Browse_first_page_preserves_explicit_selection_alias_drafts_and_original_review_fences));
+        organization.FindAll("button").Single(button=>button.TextContent.Trim()=="Cancel organization review").Click();organization.Find("[data-testid='organization-close-management']").Click();
+        hierarchy.Find("[data-testid='plan-project']").Change("");Assert.Empty(page.FindAll("[data-testid^='tree-row-']"));Assert.Equal(new[]{a,b},f.Todo.Snapshot!.Document.Projects);Assert.Empty(f.Api.Acceptances);Assert.Empty(f.Task.Client.AcceptedIds);
+    }
+    [Fact]
+    public async Task Empty_project_page_opens_optional_creation_and_closes_without_a_default_or_command()
+    {
+        using var f=await Setup();var page=Render<TodoProjectsPage>();Assert.True(page.Find("[data-testid='organization-management']").HasAttribute("hidden"));
+        Save("projects-browse-empty",page.Markup,"empty-projects-with-explicit-management-entry",nameof(Empty_project_page_opens_optional_creation_and_closes_without_a_default_or_command));
+        page.Find("[data-testid='projects-manage']").Click();page.Find("[data-testid='organization-name']").Input("Unsaved new project");page.Find("[data-testid='organization-close-management']").Click();page.Find("[data-testid='projects-manage']").Click();Assert.Equal("Unsaved new project",page.Find("[data-testid='organization-name']").GetAttribute("value"));
+        Save("projects-browse-create",page.Markup,"optional-creation-preserves-closed-draft",nameof(Empty_project_page_opens_optional_creation_and_closes_without_a_default_or_command));
+        Assert.Empty(f.Api.Requests);Assert.Empty(f.Todo.Snapshot!.Document.Projects);
+    }
+    [Fact]
     public async Task Optional_native_records_and_Todo_goal_progress_use_reviewed_commands_without_game_effects()
     {
         var active=Task("Active Todo");var completed=Task("Completed Todo") with{State=CompanionTaskState.Completed};var cancelled=Task("Cancelled Todo") with{State=CompanionTaskState.Cancelled};var daily=Task("Daily") with{Kind=CompanionTaskKind.Daily};

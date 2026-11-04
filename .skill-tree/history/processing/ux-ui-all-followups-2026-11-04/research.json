@@ -1,0 +1,168 @@
+{
+  "selection": [
+    "P-375aba91-d916-46f4-8310-aa7b51810a45",
+    "P-612f62db-56ca-44cd-8f23-95609d268da9",
+    "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4",
+    "P-5a241695-798e-48df-8a0f-989ba8ceaee8",
+    "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7"
+  ],
+  "scope": "One end-of-local-UI controller processing pass; produced followups remain outside the frozen snapshot.",
+  "findings": [
+    {
+      "pending": "P-375aba91-d916-46f4-8310-aa7b51810a45",
+      "title": "Keep header sync states readable with enlarged phone text",
+      "priority": 104,
+      "key": "header-sync-labels",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs"
+      ],
+      "filter": "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~AppNavMenuTests",
+      "routes": [
+        "/dashboard",
+        "/todo/today",
+        "/todo/tasks",
+        "/settings"
+      ],
+      "observation": "MainLayout emits failed, stale, cloud-syncing and timestamp labels. The phone slot is bounded by25vw and sync-chip applies nowrap/hidden ellipsis. Current360/200 native screenshots still expose only a prefix. Shared header/main clearance and compact navigation outcomes preserve access but do not establish complete status wording.",
+      "goal": "Expose a complete understandable sync-state label or concise summary with full detail available through an accessible explicit path, while retaining menu and Refresh access.",
+      "criteria": [
+        "Complete sync-state wording remains understandable for fresh, failed, stale and busy states with long times and enlarged phone text.",
+        "Menu and Refresh retain44-pixel targets, visible focus and access; full status/time detail is available without relying only on hover.",
+        "Current light/dark phone/desktop rendered geometry and native disclosure behavior qualify without changing sync decisions."
+      ],
+      "constraints": "Presentation only. Preserve status precedence, refresh ownership, busy guards and cache decisions. Do not weaken fonts, contrast, controls or qualification to hide clipping."
+    },
+    {
+      "pending": "P-612f62db-56ca-44cd-8f23-95609d268da9",
+      "title": "Diagnose and stabilize sign-in overlap in gear-recovery cancellation checks",
+      "priority": 102,
+      "key": "gear-recovery-readiness",
+      "sources": [
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/AppSessionController.GearRecovery.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs"
+      ],
+      "filter": "FullyQualifiedName~AppSessionControllerTests",
+      "routes": null,
+      "observation": "RecoverySetup awaits SignInAsync, while CompleteSignInRefreshAsync continues through an unawaited background path. Recovery refuses State.IsBusy before acquiring the recovery lease. The original119-test prerequisite failed once before browser launch; the observed guard result does not establish a production cause.",
+      "goal": "Establish deterministic synthetic readiness and controlled interleavings around cancellation; identify a fixture race or evidence-backed application defect without weakening recovery assertions.",
+      "criteria": [
+        "Controlled deferred collaborators establish the exact sign-in/background/recovery ordering and explain the observed guard failure or retain an explicit evidence-backed blocker.",
+        "Cancellation retains the original journal, releases busy/lease state, permits no duplicate equip or cast, and preserves account-change guards under deterministic interleavings.",
+        "Focused repeated controls use explicit completion barriers and preserve every original failure; no arbitrary sleep, retry-until-pass or assertion weakening establishes acceptance."
+      ],
+      "constraints": "Investigation precedes any production fix. Use bounded synthetic collaborators and explicit readiness signals. No live equipment, spell, credential or provider operation. An unexplained failure remains open rather than becoming a claimed production diagnosis."
+    },
+    {
+      "pending": "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4",
+      "title": "Clear stale review guidance after known unaccepted task cancellation",
+      "priority": 102,
+      "key": "cancelled-review-guidance",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs"
+      ],
+      "filter": "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TaskTypeConversionPanelTests",
+      "routes": [
+        "/todo/today",
+        "/todo/tasks",
+        "/todo/convert"
+      ],
+      "observation": "WorkspaceTaskController.CancelPreview clears Message and refuses unknown preparation/acceptance. TodoWorkspacePresentation.CancelPreview forwards cancellation without updating the copied Message; RunAsync also retains Message when the controller message becomes null. Current cancelled native previews preserve journals but leave earlier review guidance.",
+      "goal": "After a known unaccepted task preview is cancelled, present guidance consistent with current readiness while retaining original unknown-command fences and unrelated errors.",
+      "criteria": [
+        "Known unaccepted cancellation removes obsolete review-before-saving guidance and leaves the exact journal and draft unchanged.",
+        "Unknown preparation/acceptance still refuses cancellation and retains original request, receipt and refusal guidance; completed receipts and unrelated errors are not silently erased.",
+        "Task, Today and type-copy cancellation render correct readiness and keyboard continuation across the required matrix."
+      ],
+      "constraints": "Update message ownership at the actual known-cancellation boundary. Preserve current controller refusal order, source authority, accepted receipts and draft isolation. No acceptance, replay or source switch is implied."
+    },
+    {
+      "pending": "P-5a241695-798e-48df-8a0f-989ba8ceaee8",
+      "title": "Present concise Party sync failures with separate sanitized diagnostics",
+      "priority": 101,
+      "key": "party-sync-failure-copy",
+      "sources": [
+        "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs",
+        "tests/Functions/cloudflare-party-sync-bridge.test.mjs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs"
+      ],
+      "filter": "FullyQualifiedName~AppSessionControllerTests|FullyQualifiedName~PartyPageTests",
+      "node": "tests/Functions/cloudflare-party-sync-bridge.test.mjs",
+      "routes": [
+        "/party",
+        "/dashboard"
+      ],
+      "observation": "The Party bridge throws descriptive local-host/HTML response errors. The background sign-in error path forwards exception.Message to shared ErrorMessage and sanitized diagnostics, so JSInterop message/stack content appears in the user banner. The prior reflow repair bounds the banner but does not shorten failure copy.",
+      "goal": "Show concise actionable Party-sync guidance while retaining sanitized technical diagnostics separately and preserving cached Party reads and execution fences.",
+      "criteria": [
+        "Local-host unavailable, HTML response, malformed JSON and transport failures produce concise classified user guidance without a raw stack or duplicated implementation details.",
+        "Sanitized diagnostics retain useful failure context without credentials, private headers or unbounded response bodies; cached Party access and sync/mutation guards remain unchanged.",
+        "Party and shared-warning surfaces remain readable with keyboard-reachable relevant actions in the required rendered matrix."
+      ],
+      "constraints": "Scope normalization to the Party-sync failure path. Preserve existing rate-limit, consent, account and mutation boundaries. Do not hide unrelated errors, expose response bodies or imply automatic retry or configuration changes."
+    },
+    {
+      "pending": "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7",
+      "title": "Expose complete retained title and Notes during frozen task reviews",
+      "priority": 100,
+      "key": "frozen-value-inspection",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs"
+      ],
+      "filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoWorkspacePresentationTests",
+      "routes": [
+        "/todo/tasks",
+        "/todo/dailies",
+        "/todo/habits"
+      ],
+      "observation": "TodoTaskPanel retains the exact draft title and Notes inside a disabled fieldset. A native disabled single-line title cannot offer ordinary keyboard scrolling/selection, and current360/200 captures show only a prefix. The3:1 disabled-text outcome qualifies contrast, not complete retained-value inspectability.",
+      "goal": "Offer complete exact retained title and Notes through a keyboard-accessible read-only presentation while editing remains fenced.",
+      "criteria": [
+        "Long retained title and Notes are fully inspectable through wrapped read-only text or an equivalent keyboard-accessible disclosure while native editing remains unavailable.",
+        "Inspection preserves exact private draft values, original pending command ownership and unknown-outcome fences; account/source changes remove prior private content.",
+        "Normal/enlarged light/dark phone/desktop states qualify complete value access, visible focus, disabled refusal and safe text encoding; physical assistive-technology gaps remain explicit."
+      ],
+      "constraints": "Read-only presentation only. Use the current draft and active ownership context, render untrusted text safely and avoid new persistence, clipboard side effects, enabled editing or command dispatch."
+    }
+  ],
+  "source_fingerprints": {
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "bbaaef2bf8bbf33109f9a4516f7bd56475bbee1fe0f59abe55dbb82dc8b5d770",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+    "src/Habitica.WebApp/State/AppSessionController.GearRecovery.cs": "19c31dd71da07bbcbda83f9bd78a4990b91b357728e76765eecc6e025ced9b4e",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js": "d035291fb3bcd59cc2a0a3e400476e476b6ae1d89a90f37a0b6eb4a5d384adf9",
+    "tests/Functions/cloudflare-party-sync-bridge.test.mjs": "b61993279efb052a7f1010adf0ba76fb806589e903868b269f6bba012a7a4815",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs": "e0b6ea6e5c3c237ba1379c76eaeb2efd1bf4e3ac1245119a72eaed7f87e2af90",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "5f422fcc38ac8e712f7d60598858fa2b79fae1e60d47e44fe8b9d986f5205eb5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d"
+  },
+  "evidence_limits": [
+    "Source and retained original artifacts establish scoped followup work; no new defect is claimed fixed.",
+    "The gear-recovery production cause remains unknown; no source fix is assumed.",
+    "Owner-only release gates remain unresolved; no live execution or publication authority."
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-051a8e80-bf8d-4b80-bf4e-a49c3b04353e",
+  "check_id": "today-work-first-behavior",
+  "definition": "025ec611ba572932aad82c0eecb1ceaf1ee0e5da41cc969d29bf05daace7081d",
+  "environment_identity": "33c2b6f6b71ace09920b19d0647b15f68623f57ba484783ad3a5d43482861123",
+  "key": "bd27f51556770ed58cc5150b5d0b2372550268ca6ddf6631944ca4985eec6d3b",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T03:56:15.272041+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T03:51:15.665766+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~TodoReminderPanelTests",
+      "--logger",
+      "trx;LogFileName=today-work-first.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/today-work-first/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "1ee6718b24e52eb2b072f517aa3aaed604debfbf011220cfec1d5b4a39e7d4f9",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+    "src/Habitica.WebApp/State/ForegroundReminderController.cs": "d4396807684ddc82f4b329358816f99a1a633ba853b8dbc7764d6f4a28a0479e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "de909daef74cf92cc6cc58d319a83ad8d7bfe6d7453357a53eaa252a779b151a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b"
+  },
+  "task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa"
+}

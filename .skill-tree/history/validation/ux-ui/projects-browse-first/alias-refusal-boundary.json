@@ -1,0 +1,20 @@
+{
+  "original_failure": "8c1884eb-1356-43e4-ab47-d79b77dd7969",
+  "observed": "Original organization controller reports duplicate alias refusal as role=status generic invalid/unavailable/stale message; no preview created; entered alias remains.",
+  "correction": "Native reader waits for original status and asserts exact refusal category, no preview and retained alias. Product behavior unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "async_observation": {
+    "original": "845408c6-d4a7-4443-87cf-c2a291f5ca3a",
+    "observed": "Existing initial status is present before asynchronous refusal; visibility alone does not wait for changed status.",
+    "correction": "Wait on status matching the original refusal category, then assert retained input and absent preview.",
+    "cleanup": {
+      "contexts": true,
+      "server": true,
+      "profiles": true
+    }
+  }
+}

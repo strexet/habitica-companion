@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-components",
+      "parameters": {
+        "report_name": "history-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components",
+        "test_filter": "FullyQualifiedName~TodoHistory|FullyQualifiedName~History",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/completion-history.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/completion-history.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+}

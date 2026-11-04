@@ -1,0 +1,10 @@
+{
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "fixture": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+  "source_hashes": {
+    "tests/browser/linked-daily-ui.mjs": "64a633ab4915eb61994595e8e57b58a5ef07f259af973cb63e183b1aa59e2873",
+    "tests/browser/linked-daily-ui.py": "e90067bfa2622e312231bea7d9fac5eb1a380e387eae45b48219101de11a22c0",
+    "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f"
+  }
+}

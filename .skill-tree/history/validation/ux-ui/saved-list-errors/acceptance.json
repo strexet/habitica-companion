@@ -1,0 +1,67 @@
+{
+  "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+  "title": "Identify the exact invalid saved-list fields and preserve focus",
+  "operation_history": ".skill-tree/history/validation/ux-ui/saved-list-errors/operation-history.json",
+  "checks": [
+    {
+      "id": "saved-list-errors-behavior",
+      "counts": {
+        "discovered": 47,
+        "expected": 47,
+        "failed": 0,
+        "passed": 47,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.log",
+          "sha256": "8b457ebcdd2f084f33db5a4afcf0d647c17f1dd2686b7e1cc5193d95a1efc5c1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.trx",
+          "sha256": "c5b2d03d9ec63b9bf48e530c6a0cbf0fe9247fad60ed48c9c41d5af5b956a9dd"
+        }
+      ]
+    },
+    {
+      "id": "saved-list-errors-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json",
+          "sha256": "e0fbbd87f86250241a7903d81d3c8906b4658f3cd0f36070fdf804d2801eda26"
+        }
+      ]
+    },
+    {
+      "id": "saved-list-errors-focus-boundary",
+      "counts": {
+        "discovered": 4,
+        "expected": 4,
+        "failed": 0,
+        "passed": 4,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-8f655625-00d7-4ed8-9abf-05ea21b8d30d.tap",
+          "sha256": "c07b8f3a50e496d37bf47fe5997379b106f1fd446d06a7a7bc23399d6faef8f3"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

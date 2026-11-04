@@ -1,0 +1,47 @@
+# Notification Events release 0.3.1
+
+Three selected notification implementation tasks are completed: normal hosted egress, separately reviewed encrypted subscriptions, and durable exact-cue reminder Events. Production availability is enabled without creating a user consent, callback subscription, chat message or task/game effect. Ordinary repository profiles remain default-off. The preserved Implement All snapshot still contains unrelated unselected work.
+
+The website is [Habitica Companion](https://habitica-companion.pages.dev). The verified [plugin archive0.3.1](https://habitica-companion.pages.dev/downloads/habitica-companion-0.3.1.zip) has SHA256 `c6df4283986a347a026e410c317cef3f8a29c02a798a2871f0e651dc80987858`. Host installation remains unknown. Source commits are `cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77` the shorter-refresh repair `7779697`, and original-identity recovery repair `4cd4835`; no Git push occurred.
+
+| Component | Active production identity |
+| --- | --- |
+| Auth | 148f5324-fa99-413a-b477-bafd5b833574 |
+| Workspace | 45c6d965-cbf7-4fb3-9e64-3a08ddb7afe5 |
+| MCP | d8fb17bc-8400-4e5a-9541-a63fab609b82 |
+| Pages | a061255b-d21c-4195-9366-219422259497, success |
+| Netlify gateway | 6ae89d0cebb45b34d03869a8, enabled |
+| Shared backend build | b2c02b0bb823dc81e7f12d89dc8e46ef4098e48d750698685ee924170237d03b |
+| Tool schema | 1.3.0 |
+
+Auth migrations0014/0015 and Workspace migrations0019/0020 are applied with no pending migrations. Existing runtime bindings, credential/profile/push secrets and cron settings are retained; a separate callback vault key and two private service bindings are provisioned. Pages runtime/storage settings, both fail_open values, the public frontend build override and Git build/source settings are preserved. The direct-upload wrangler_config_hash changes as expected. The new consent/subscription/outbox/vault/dispatch tables checked at postflight contain zero production records.
+
+Final local evidence includes10 subscription controls,44 combined Worker/D1/MCP/native TLS/receiver controls,8 Events reminder controls,23 OAuth/vault/management regressions,19 combined push/Events controls and13 deployment-profile controls. The broad Auth run had237/238 passes; the sole outdated fourteen-permission expectation was corrected and the affected current OAuth suite passes. The shorter-TTL defect and original-identity recovery gap have separate runnable Red and passing repair evidence. The final recovery checks pass10/10,44/44 and8/8; failed callback errors expose original operation IDs, and subscription status exposes the latest materialized event ID without replay. OAuth permission rendering covers light/obsidian declarations at360/1280px and100/200percent root text, focus, disabled controls and contrast in actual Worker-rendered local HTML. Physical-device and live OAuth-host interaction are separate.
+
+The hosted synthetic run delivered exactly one signed challenge in2489ms, refused the original replay and observed both gateway/claim disabled before a later explicit production activation. The receiver Worker and the synthetic table are removed; original claim fences remain. Actual gateway logs contained duration metadata and no fixture callback/body/key/signature values. Netlify remains Free with152.9/300 credits remaining after9 deployments; no paid upgrade or new permanent receiver is provisioned. Normal transport qualification uses unchanged callback-claim/gateway source; the later shorter-TTL and original-identity recovery repairs are separately locally qualified and published in all three coherent bundles.
+
+Native authenticated MCP reports coherent0.3.1 Workers, schema1.3.0, Events enabled and compatibility with the explicitly reported staged package. Reporting a package descriptor does not prove host installation. Root HTML, public configuration, Blazor bootstrap and plugin download return HTTP200 with matching published artifact hashes. The production browser-rendering probe remains unqualified: IAB navigation returned ERR_FAILED, and inspection of the browser's internal data error page was blocked by Browser Use URL policy. No bypass was used. Browser failure is not reported as successful rendering or as proof of an application failure.
+
+## First real subscribed-chat check
+
+No Netlify/DNS/VPS setup remains necessary for normal delivery. A separate user/host subscription is required by design.
+
+1. Open the published application in an ordinary browser. Confirm normal startup on the intended device and select the cloud Workspace owning the exact task. Retained browser records are not implicitly transferred by publication.
+2. In a supported ChatGPT Work chat with Cloud selected, refresh the existing Habitica Companion plugin/MCP metadata. Update imported skill files through the host's supported package route when needed; metadata refresh alone does not prove package replacement. Local desktop Codex originating-chat support remains unqualified.
+3. Reauthorize the existing connection when the new permission is requested. Retain `profile:read` and `tasks:read`; explicitly select **Manage separately approved reminder subscriptions** (`events.subscriptions.write`). Enrollment and server keys need no repetition. Never paste callback credentials or API tokens into chat.
+4. Select one existing native task and a saved review cue a few minutes in the future. Ask for Events reminders for that exact task. Review `prepare_event_consent` with the verified Workspace revision, task and cue; accept only the original command/token/hash through `accept_event_consent`. A general task permission or Web Push opt-in is insufficient.
+5. Ask the supported host to subscribe to `task.reminder.due` with the exact reviewed taskId. The host supplies the callback URL/signing secret through MCP Events. `get_event_subscription` must show the original active subscription and verified challenge before a reminder is eligible. Unknown verification is recovered under the verification operation's original identity, never by inventing a replacement callback.
+6. Read `get_event_subscription` for `latestEvent.eventId` when an event is materialized, including an unknown send. Callback errors retain original subscription/operation/request IDs for the same status lookup. Observe the due event and actual chat response separately. Retain the eventId and use `get_event_delivery` for the original transport receipt. HTTP acknowledgment and a rendered response are separate observations. A cue edit needs renewed consent; no recurring Events plan is inferred from a push schedule. A wake can occur on the next scheduled minute; cues missed for an hour expire.
+7. Unsubscribe through the host and confirm no later delivery. Revoke separate task Events consent when no longer wanted. Unknown attempts never replay. Physical-device Web Push permission/enrollment and push-click behavior remain independent user-gesture checks.
+
+The availability/protocol baseline follows [OpenAI MCP Events](https://developers.openai.com/plugins/build/mcp-events). Missing host controls, unsupported desktop mode or a missing actual response remain explicit qualification limits; local tests and a callback2xx do not supply actual host observations.
+
+## Remaining Future and rollback
+
+Future contains2 Pending,11 Prioritized (10 Ready,1 blocked pending answers) and11 Backlog tasks. Notification-related limits are deferred hosted DNS/TLS failure injection (`P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b`) and actual client/mobile qualification under the existing release gate (`T-d76d2a9a-1318-4e63-9bb4-73f620b108cc`). Other remaining groups include Notes folders, organization/task hierarchy workflows and mass-spell recovery. No unrelated task was implemented in the notification release.
+
+Full coordinated code rollback is prepared but unexecuted. For an operational rollback, disable MCP Events first, then the Workspace/Auth Events lanes and callback gateway. The private service cycle requires a disabled Auth bridge without EVENTS_WORKSPACE before restoring the old Workspace, followed by old Auth; inspect named-entrypoint compatibility before changing version pointers. Restore only the exact preserved owned Worker/Pages predecessor versions from baseline.json after checking current version ownership. Keep additive migrations, user records and original uncertainty/claim fences; do not restore or drop a database as a routine code rollback. Recheck the Free deployment budget before another Netlify publication. Protected key backups and raw provider logs remain outside Git in the ignored release artifact directory.
+
+Structured deployment.json, runtime-postflight.json, mcp-final-compatibility.json, pages-settings-postflight.json and public-serving.json retain current results. The final hosted, TTL, documentation and recovery validation directories retain original immutable attempts and matching receipts. A transient30-second aggregate test-file timeout after six passes is retained as a failed executed control; the isolated burst probe and subsequent complete eight-case runs pass.
+
+Repository navigation/checkpoint validation and strict selected-document prose validation pass. An additional repository-wide strict prose sweep reports one pre-existing explicit-entity diagnostic in testing.md:706; testing.md remains unchanged from the completed hosted qualification source fingerprint. The historical audit remains stale without a new audit claim.

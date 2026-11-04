@@ -1,0 +1,9 @@
+{
+  "checkout": "/Users/petr/Projects/habitica-tool",
+  "dist_hashes": {
+    "chatgpt-auth": "6496bf800831c0a4035dee0ede28dba11ad49dc910feca24da7d6c4cebf26fc4",
+    "companion-workspace": "e9156d5469a832218e24701b5962d27fcb45c6a654a4af4f4c67628a31657512",
+    "chatgpt-mcp": "9b80195807a6dc042d08b4ede00541161fedfcf8fd88db5d548cbe9b2c917c3d"
+  },
+  "scope": "Same pinned local synthetic Worker/D1/MCP fixtures; one cache-condition TTL repair"
+}

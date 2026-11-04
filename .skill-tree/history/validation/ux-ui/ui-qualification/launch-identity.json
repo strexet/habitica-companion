@@ -1,0 +1,12 @@
+{
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "check_id": "ui-qualification-rendered",
+  "source_build_identity": "55dbcd0651948fb60fe267c1eb590ac2fcb74aeb2968d7bc3261dc99f05f4e4a",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "authorization": "Owner selected Work Through Next for the shared UI qualification task; prior owner approval includes local build and synthetic review.",
+  "tool_identity": "Pinned .NET8.0.125, Node22.12.0, Playwright1.62.1 with existing Chromium/WebKit and pngjs",
+  "fixture_identity": "Owned nonce-bound loopback server, isolated persistent profiles, local synthetic data and fulfilled provider GET replies only.",
+  "build_identity_policy": "Runner performs current Release publish and captures the actual boot-manifest hash and assets in the runtime report; planned source digest never substitutes for emitted build identity.",
+  "deadline_utc": "2026-11-03T07:43:56.221899+00:00",
+  "cleanup_seconds": 30
+}

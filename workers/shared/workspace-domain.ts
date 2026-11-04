@@ -1,3 +1,4 @@
+import {copyLineage,validCopyLineages,type TaskCopyLineage} from './task-type-copy.ts';
 import {activityCoverage,type ActivityWitness} from './activity-coverage.ts';
 import {linkedRecoveryRows,type LinkedRecoveryReceipt} from './linked-recovery.ts';
 import {recoveryHistoryValid,completionCorrected,type UnarchiveEvent,type OccurrenceCorrection} from './task-recovery.ts';
@@ -18,7 +19,7 @@ export interface Section extends Category { projectId: string; position: number 
 export interface Goal extends Category { taskIds: string[] }
 export interface Recurrence { frequency: "daily" | "weekly" | "monthly"; interval: number; startDate: string; timeZoneId: string; weekdays: string[]; daysOfMonth: number[] }
 export interface CompanionTask extends Entity {
-  executionStage?:TodoExecutionStage; habiticaDetails?: HabiticaTaskDetails | null; text: string; kind: "todo" | "daily" | "habit"; state: "active" | "completed" | "waiting" | "someday" | "paused" | "cancelled"; priority: "low" | "normal" | "high" | "urgent";
+  copyLineage?:TaskCopyLineage; executionStage?:TodoExecutionStage; habiticaDetails?: HabiticaTaskDetails | null; text: string; kind: "todo" | "daily" | "habit"; state: "active" | "completed" | "waiting" | "someday" | "paused" | "cancelled"; priority: "low" | "normal" | "high" | "urgent";
   createdAtUtc: string; updatedAtUtc: string; notes: string | null; categoryId: string | null; projectId: string | null; sectionId: string | null; parentTaskId: string | null;
   labelIds: string[]; dependsOn: string[]; plannedDate: string | null; deadline: string | null; reviewAfterUtc: string | null; staleSinceUtc: string | null; recurrence: Recurrence | null;
 }
@@ -27,7 +28,8 @@ export interface Completion extends Entity { taskId: string; commandId: string; 
 export interface Restoration extends Entity {taskId:string;completionId:string;commandId:string;restoredAtUtc:string}
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
 export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
-export interface WorkspaceDocument { activityCoverage?:ActivityWitness[]; linkedTaskRecoveries?:LinkedRecoveryReceipt[]; unarchives?:UnarchiveEvent[]; occurrenceCorrections?:OccurrenceCorrection[]; reviewEvents?:ReviewEvent[]; sourceRetirements?:SourceRetirement[]; checklistConversions?:ChecklistConversion[]; tagLedger?:TagLedger; schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
+export interface WorkspaceSourceImport {transferId:string;sourceWorkspaceId:string;sourceRevision:number;revisionOffset:number;recordIds:string[]}
+export interface WorkspaceDocument { sourceImports?:WorkspaceSourceImport[]; activityCoverage?:ActivityWitness[]; linkedTaskRecoveries?:LinkedRecoveryReceipt[]; unarchives?:UnarchiveEvent[]; occurrenceCorrections?:OccurrenceCorrection[]; reviewEvents?:ReviewEvent[]; sourceRetirements?:SourceRetirement[]; checklistConversions?:ChecklistConversion[]; tagLedger?:TagLedger; schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
 function optionalId(value: unknown) { return value === undefined || value === null ? null : uuid(value); }
@@ -62,17 +64,18 @@ function recurrence(value: unknown): Recurrence | null {
 }
 export { recurrence as workspaceRecurrence };
 export function workspaceTask(item:unknown,revision:number):CompanionTask {
-    const row = workspaceObject(item, [...baseKeys, "text", "kind", "state", "priority", "createdAtUtc", "updatedAtUtc", "notes", "categoryId", "projectId", "sectionId", "parentTaskId", "labelIds", "dependsOn", "plannedDate", "deadline", "reviewAfterUtc", "staleSinceUtc", "recurrence", "habiticaDetails", "executionStage"]);
+    const row = workspaceObject(item, [...baseKeys, "text", "kind", "state", "priority", "createdAtUtc", "updatedAtUtc", "notes", "categoryId", "projectId", "sectionId", "parentTaskId", "labelIds", "dependsOn", "plannedDate", "deadline", "reviewAfterUtc", "staleSinceUtc", "recurrence", "habiticaDetails", "executionStage", "copyLineage"]);
     const task:CompanionTask = { ...entity(row, revision), habiticaDetails: habiticaDetails(row.habiticaDetails), text: named(row.text, 2048), kind: choice(row.kind, ["todo", "daily", "habit"]), state: choice(row.state, ["active", "completed", "waiting", "someday", "paused", "cancelled"]), priority: choice(row.priority, ["low", "normal", "high", "urgent"]),
       createdAtUtc: utc(row.createdAtUtc), updatedAtUtc: utc(row.updatedAtUtc), notes: row.notes === undefined || row.notes === null ? null : named(row.notes, 10000, true),
       categoryId: optionalId(row.categoryId), projectId: optionalId(row.projectId), sectionId: optionalId(row.sectionId), parentTaskId: optionalId(row.parentTaskId), labelIds: ids(row.labelIds, true), dependsOn: ids(row.dependsOn, true), plannedDate: optDate(row.plannedDate), deadline: optDate(row.deadline), reviewAfterUtc: optUtc(row.reviewAfterUtc), staleSinceUtc: optUtc(row.staleSinceUtc), recurrence: recurrence(row.recurrence) };
     if (utcTicks(task.createdAtUtc) > utcTicks(task.updatedAtUtc) || task.kind !== "todo" && ["completed", "cancelled"].includes(task.state) || task.kind !== "daily" && task.recurrence !== null) return fail();
     if(task.kind!=='habit'&&(task.habiticaDetails?.up!==undefined||task.habiticaDetails?.down!==undefined))return fail();
     const stage=executionStage(row.executionStage);if(stage){if(task.kind!=='todo')return fail();task.executionStage=stage;}
+    const lineage=copyLineage(row.copyLineage,task,revision);if(lineage)task.copyLineage=lineage;
     return task;
 }
 export function workspaceDocument(input: unknown): WorkspaceDocument {
-  const value = workspaceObject(input, ["activityCoverage", "linkedTaskRecoveries", "unarchives", "occurrenceCorrections", "reviewEvents", "sourceRetirements", "checklistConversions", "tagLedger", "schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
+  const value = workspaceObject(input, ["sourceImports", "activityCoverage", "linkedTaskRecoveries", "unarchives", "occurrenceCorrections", "reviewEvents", "sourceRetirements", "checklistConversions", "tagLedger", "schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
@@ -95,6 +98,8 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   });
   const all = [...unarchives,...occurrenceCorrections,...reviewEvents,...views,...categories, ...labels, ...projects, ...sections, ...goals, ...tasks, ...occurrences, ...completions, ...restorations, ...habitScores, ...projections];
   if (all.length + (Array.isArray(value.organizationHistory)?value.organizationHistory.length:0) > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
+  const importedIds=new Set<string>(),importKeys=new Set<string>(),allIds=new Set(all.map(record=>record.id));
+  const sourceImports:WorkspaceSourceImport[]=list(value.sourceImports).map(input=>{const row=workspaceObject(input,['transferId','sourceWorkspaceId','sourceRevision','revisionOffset','recordIds']),transferId=uuid(row.transferId),sourceWorkspaceId=uuid(row.sourceWorkspaceId),sourceRevision=integer(row.sourceRevision),revisionOffset=integer(row.revisionOffset);const key=transferId+':'+sourceWorkspaceId;if(importKeys.has(key)||sourceRevision>revision-revisionOffset||importKeys.size>=1024)return fail();importKeys.add(key);const recordIds=ids(row.recordIds);for(const id of recordIds){if(importedIds.has(id)||!allIds.has(id))return fail();importedIds.add(id);}return {transferId,sourceWorkspaceId,sourceRevision,revisionOffset,recordIds};});
   const categoryIds = new Set(categories.map(item => item.id)); const projectMap = new Map(projects.map(item => [item.id, item])); const sectionMap = new Map(sections.map(item => [item.id, item])); const taskMap = new Map(tasks.map(item => [item.id, item])); const labelIds = new Set(labels.map(item => item.id)); const occurrenceMap = new Map(occurrences.map(item => [item.id, item]));
   for(const view of views){const f=view.query.filter;if(f.categoryId&&!categoryIds.has(f.categoryId)||f.projectId&&!projectMap.has(f.projectId)||f.labelId&&!labelIds.has(f.labelId))return fail();}
   const aliases=projects.flatMap(row=>row.alias===undefined?[]:[row.alias]);if(new Set(aliases).size!==aliases.length)return fail();
@@ -143,11 +148,11 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
     if (projection.correlationAlias && projection.correlationAlias !== `companion_${id.replaceAll("-", "")}_${projection.taskId.replaceAll("-", "")}` || !taskMap.has(projection.taskId) || mapped.has(projection.taskId) || projection.state === "linked" && !projection.habiticaTaskId || projection.habiticaTaskId && external.has(projection.habiticaTaskId)) return fail();
     mapped.add(projection.taskId); if (projection.habiticaTaskId) external.add(projection.habiticaTaskId);
   }
-  const document:WorkspaceDocument={ ...(value.unarchives==null?{}:{unarchives}),...(value.occurrenceCorrections==null?{}:{occurrenceCorrections}),schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, ...(value.restorations==null?{}:{restorations}), ...(value.reviewEvents==null?{}:{reviewEvents}), habitScores, projections };
+  const document:WorkspaceDocument={ ...(value.sourceImports==null?{}:{sourceImports}),...(value.unarchives==null?{}:{unarchives}),...(value.occurrenceCorrections==null?{}:{occurrenceCorrections}),schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, ...(value.restorations==null?{}:{restorations}), ...(value.reviewEvents==null?{}:{reviewEvents}), habitScores, projections };
   const coverage=activityCoverage(value.activityCoverage,document,recurrence,utc);if(coverage)document.activityCoverage=coverage;
   if(value.savedTaskViews!=null)document.savedTaskViews=views;
   if(value.organizationHistory!==undefined&&value.organizationHistory!==null){try{document.organizationHistory=organizationHistory(value.organizationHistory,document,utc);}catch{return fail();}}
-  if(document.projects.some(project=>project.isRemoved&&!document.organizationHistory?.some(entry=>entry.command.operation==='remove'&&entry.command.entityId===project.id&&entry.snapshot.isRemoved)))return fail();
+  if(document.projects.some(project=>project.isRemoved&&!document.organizationHistory?.some(entry=>entry.command.operation==='remove'&&entry.command.entityId===project.id&&entry.snapshot.isRemoved)&&!importedIds.has(project.id)))return fail();
   const ledger=tagLedger(value.tagLedger,document,utc);if(ledger){document.tagLedger=ledger;const entities=[...ledger.mappings,...ledger.intents];const identities=new Set([id,...all.map(row=>row.id)]);for(const row of entities){if(identities.has(row.id))return fail();identities.add(row.id);}if(all.length+entities.length+(document.organizationHistory?.length??0)>100000)return fail();}
   const conversions=checklistConversions(value.checklistConversions,document,workspaceTask,utc);
   if(conversions){document.checklistConversions=conversions;const identities=new Set([id,...all.map(row=>row.id),...(ledger?.mappings??[]).map(row=>row.id),...(ledger?.intents??[]).map(row=>row.id)]);for(const row of conversions){if(identities.has(row.id))return fail();identities.add(row.id);}if(identities.size-1+(document.organizationHistory?.length??0)+conversions.reduce((n,row)=>n+row.receipts.length,0)>100000)return fail();}
@@ -155,7 +160,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   if(retirements){document.sourceRetirements=retirements;const identities=new Set([id,...all.map(row=>row.id),...(ledger?.mappings??[]).map(row=>row.id),...(ledger?.intents??[]).map(row=>row.id),...(conversions??[]).map(row=>row.id)]);for(const row of retirements){if(identities.has(row.id))return fail();identities.add(row.id);}if(identities.size-1+(document.organizationHistory?.length??0)+(conversions??[]).reduce((n,row)=>n+row.receipts.length,0)>100000)return fail();}
   const recoveries=linkedRecoveryRows(value.linkedTaskRecoveries,document,utc);
   if(recoveries){document.linkedTaskRecoveries=recoveries;const identities=new Set([id,...all.map(row=>row.id),...(ledger?.mappings??[]).map(row=>row.id),...(ledger?.intents??[]).map(row=>row.id),...(conversions??[]).map(row=>row.id),...(retirements??[]).map(row=>row.id)]);for(const row of recoveries){if(identities.has(row.id))return fail();identities.add(row.id);}if(identities.size-1+(document.organizationHistory?.length??0)+(conversions??[]).reduce((n,row)=>n+row.receipts.length,0)>100000)return fail();}
-  if(!recoveryHistoryValid(document))return fail();
+  if(!recoveryHistoryValid(document)||!validCopyLineages(document))return fail();
   return document;
 }
 export function emptyWorkspace(id = crypto.randomUUID()): WorkspaceDocument { return workspaceDocument({ schemaVersion: 1, id, revision: 1 }); }

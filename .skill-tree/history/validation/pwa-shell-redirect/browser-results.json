@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "results": [
+    {
+      "engine": "chromium",
+      "version": "151.0.7922.34",
+      "oldRedirectedShell": {
+        "redirected": true,
+        "url": "http://127.0.0.1:50708/",
+        "status": 200
+      },
+      "preFixNavigationFailed": true,
+      "workerOnlyUpgradeSameManifest": true,
+      "repairedShell": {
+        "redirected": false,
+        "type": "default",
+        "header": "retained",
+        "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+      },
+      "offlineRoutes": 3,
+      "freshInstall": true,
+      "failedIntegrityUpdateRefused": true,
+      "missingShellOnlineFallback": true,
+      "missingShellOfflineFailure": true,
+      "canariesPreserved": true,
+      "realPushEnrollment": false,
+      "realPushInspection": false
+    },
+    {
+      "engine": "webkit",
+      "version": "26.5",
+      "oldRedirectedShell": {
+        "redirected": true,
+        "url": "http://127.0.0.1:50708/",
+        "status": 200
+      },
+      "preFixNavigationFailed": true,
+      "workerOnlyUpgradeSameManifest": true,
+      "repairedShell": {
+        "redirected": false,
+        "type": "default",
+        "header": "retained",
+        "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+      },
+      "offlineRoutes": 3,
+      "freshInstall": true,
+      "failedIntegrityUpdateRefused": true,
+      "missingShellOnlineFallback": true,
+      "missingShellOfflineFailure": true,
+      "canariesPreserved": true,
+      "realPushEnrollment": false,
+      "realPushInspection": false
+    }
+  ],
+  "loopbackOnly": true,
+  "publishedWorkerSha256": "6c8d7027ea31d54fb491ff9a71ef1af8286cd787b8e0e23055737a39f0789ec3",
+  "requests": 71
+}

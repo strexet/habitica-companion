@@ -1,0 +1,45 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-0c6375eb-f6a7-4492-8c98-63ae45d500fb",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 24,
+    "expected": 24,
+    "failed": 0,
+    "passed": 24,
+    "skipped": 0
+  },
+  "definition": "918513a422a295c89769cb2d04fa86ba5bc368e2566ec40861dfdbd811ddce0c",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-lineage-model-green-execution.log",
+      "sha256": "7a0714e56492dac99f135dc049c85bb0ee644802710027c3406282d63797ccb5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/copy-lineage-model-green.trx",
+      "sha256": "33f771382b7505b4b55b0ee3804ce320ca03e7db8bbf9cb5f9eb706b7742bf09"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "8f02e2bcd07987a4fb305b803dd5a5f47df0cdcc851868231cf6e2c93346a8fb",
+  "payload_hash": "305e6c0095f65c1948a7d457c55e865216e516f520568e75dd3785c9d22ea6d6",
+  "recorded_at": "2026-11-02T20:18:45.302308+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "03544db15b590577cc6dc4c9020169c8e08c2fd79b2fb3c31c52ac75bb947774",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "03e01c4bcb84f7948a3d9aac5aaf23a45d1758574072117306b003d4d518774f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.771454874891788
+  }
+}

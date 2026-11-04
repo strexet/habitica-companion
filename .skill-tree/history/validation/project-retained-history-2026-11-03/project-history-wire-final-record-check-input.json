@@ -1,0 +1,23 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "check_id": "history-wire",
+  "attempt_id": "C-62a2d07d-6482-4c0b-867d-3850e680f1ba",
+  "environment_identity": "9d4bdd50780e27cd3545db72694a0ef8f4866f7840c1e021be7181d891786e66",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 41,
+    "discovered": 41,
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 8.654727292014286
+  },
+  "evidence": [
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-execution.log"
+  ]
+}

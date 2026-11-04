@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 
 namespace Habitica.Storage;
 
-public sealed class IndexedDbWorkspaceDatabase : IAsyncDisposable
+public sealed class IndexedDbWorkspaceDatabase : IAsyncDisposable, IBrowserWorkspaceSource
 {
     private readonly Lazy<Task<IJSObjectReference>> _module;
 
@@ -17,6 +17,13 @@ public sealed class IndexedDbWorkspaceDatabase : IAsyncDisposable
     {
         if (!Regex.IsMatch(scope, "^[A-Za-z0-9_-]{1,128}$")) throw new ArgumentException("A local account scope is required.", nameof(scope));
         return new ScopedStore(this, scope);
+    }
+
+    public async Task<BrowserWorkspaceSelection> EnsureDefaultAsync(string account, CancellationToken token)
+    {
+        var scope = Guid.Parse(account).ToString("D");
+        var journal = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, []);
+        return await (await _module.Value).InvokeAsync<BrowserWorkspaceSelection>("ensureDefaultWorkspace", token, scope, WorkspaceJournalJson.Serialize(journal));
     }
 
     public async Task<IReadOnlyList<Guid>> ListAsync(string scope, CancellationToken cancellationToken)

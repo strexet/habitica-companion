@@ -13,10 +13,11 @@ export function organizationInput(name:OrganizationTool,input:unknown){
  if(name==='get_project_removal_impact'){
   const value=workspaceObject(input,['projectId','expectedRevision']);return taskFilter({projectId:uuid(value.projectId),...(value.expectedRevision===undefined?{}:{expectedRevision:value.expectedRevision})});
  }
- const value=workspaceObject(input,['limit','offset','expectedRevision',...(name==='list_projects'?['categoryId']:name==='list_project_sections'?['projectId']:[])]);
- const filter=taskFilter(value);
+ const value=workspaceObject(input,['limit','offset','expectedRevision',...(name==='list_projects'?['categoryId','includeRetained']:name==='list_project_sections'?['projectId']:[])]);
+ const {includeRetained,...page}=value;if(includeRetained!==undefined&&typeof includeRetained!=='boolean')throw new WorkspaceError('invalid_filter',422);
+ const filter=taskFilter(page);
  if(name==='list_project_sections')filter.projectId=uuid(value.projectId);
- return filter;
+ return {...filter,...(name==='list_projects'?{includeRetained:includeRetained===true}:{})};
 }
 export function queryOrganization(document:WorkspaceDocument,name:OrganizationTool,input:unknown){
  const filter=organizationInput(name,input);
@@ -32,7 +33,7 @@ export function queryOrganization(document:WorkspaceDocument,name:OrganizationTo
   return {provenance:'companion-canonical',workspaceId:document.id,revision:document.revision,project,removal:projectRemovalFrom(document,project.id),canRemove:!project.isRemoved};
  }
  const source=name==='list_categories'?document.categories:name==='list_projects'?document.projects:name==='list_project_sections'?document.sections:name==='list_labels'?document.labels:document.goals;
- let items=source.filter(value=>!value.isArchived);
+ let items=source.filter(value=>!value.isArchived||name==='list_projects'&&'includeRetained' in filter&&filter.includeRetained===true);
  if(name==='list_projects')items=items.filter(value=>filter.categoryId===undefined||('categoryId' in value&&value.categoryId===filter.categoryId));
  if(name==='list_project_sections'){
   const active=document.projects.some(project=>project.id===filter.projectId&&!project.isArchived);

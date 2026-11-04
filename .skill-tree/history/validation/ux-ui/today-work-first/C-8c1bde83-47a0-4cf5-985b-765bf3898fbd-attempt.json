@@ -1,0 +1,67 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-8c1bde83-47a0-4cf5-985b-765bf3898fbd",
+  "check_id": "today-work-first-behavior",
+  "definition": "777fefd300d686063b8c705272190106a805aaec1e4414512d2c1d5846f9a867",
+  "environment_identity": "441692906a75a8f8869a2b5196b496916a7aa41f7b2960158ec08694eafa904d",
+  "key": "04d38914d40cc5f1fae892e60a4d572a330ed8b2d31ba83bf884368e653f4ca3",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T13:10:20.034888+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T13:05:20.625339+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~TodoReminderPanelTests",
+      "--logger",
+      "trx;LogFileName=today-work-first.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/today-work-first/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "1ee6718b24e52eb2b072f517aa3aaed604debfbf011220cfec1d5b4a39e7d4f9",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "09346f56f217e92f0941cc7601429612d09b179f9ce33f961a1e4357e26572d7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b"
+  },
+  "task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa"
+}

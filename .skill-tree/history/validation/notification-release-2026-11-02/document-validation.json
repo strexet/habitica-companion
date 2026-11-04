@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "errors": [
+    "Stale manifest source digest: .skill-tree/documents/features.md",
+    "Stale manifest source digest: .skill-tree/documents/future.md",
+    "Stale manifest source digest: .skill-tree/documents/originating-chat-reminders.md",
+    "Stale manifest source digest: .skill-tree/documents/technical.md",
+    "Stale manifest source digest: .skill-tree/documents/testing.md",
+    "Queue index source hash is stale",
+    "Queue index differs from task definitions"
+  ],
+  "warnings": [
+    "Latest recorded audit is stale; historical verdicts remain unchanged"
+  ]
+}

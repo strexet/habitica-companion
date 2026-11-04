@@ -8,7 +8,8 @@
     <p>On iPhone or iPad, add this app to the Home Screen and open that installed app before enrolling this device. Allow notifications only from the explicit device button below. Denied permission must be changed in browser or system settings.</p>
     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Push.IsBusy" OnClick="Push.RefreshAsync" Variant="Variant.Outlined" data-testid="push-refresh">Check push setup</MudButton>
     @if(Push.Message is {} message){<p role="status">@message</p>}
-    <p>Browser capability: @Push.Capability.State · Permission: @Push.Capability.Permission · Local receipt storage: @(Push.StorageAvailable?"available":"unavailable or not loaded")</p>
+    <p data-testid="push-capability">Browser capability: @Push.CapabilityText · Permission: @Push.PermissionText · Local receipt storage: @(Push.StorageAvailable?"available":"unavailable or not loaded")</p>
+    @if(Push.RegistrationUnavailableReason is {} reason){<p data-testid="push-enrollment-reason">@reason</p>}
     @if(Push.Status is {} status)
     {
         <p>Account push: @(status.Enabled?"enabled":"off") · Subscription service: @(status.Available?"available":"disabled or unconfigured"). Task delivery has a separate service readiness check.</p>

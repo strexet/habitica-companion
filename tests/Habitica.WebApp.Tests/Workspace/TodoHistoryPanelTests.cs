@@ -41,6 +41,7 @@ public sealed class TodoHistoryPanelTests : BunitContext
         state = Apply(state, WorkspaceOperation.DeleteTask, daily);
         state = state with { Document = state.Document with { Completions = state.Document.Completions.Select(row => row.TaskId == daily ? row with { IsArchived = true } : row).ToArray() } };
         var (f, todo) = await Setup(state); var before = WorkspaceJournalJson.Serialize(f.Client.State); var cut = Render<TodoHistoryPanel>();
+        Assert.Equal("/todo/tasks", cut.Find(".todo-history-header a").GetAttribute("href"));
         Assert.Equal(2, cut.FindAll("[data-testid^='history-row-']").Count); Assert.Contains("Original completion title", cut.Markup); Assert.DoesNotContain("Renamed current task", cut.Markup);
         Assert.Contains("Historical details saved", cut.Markup); Assert.Contains("Recorded UTC: 2026-10-01", cut.Markup); Assert.Contains("Daily civil occurrence date: 2026-10-01", cut.Markup); Assert.Contains("Task archived: Yes", cut.Markup); Assert.Contains("Event archived: Yes", cut.Markup);
         Save("todo-history-completions", cut.Markup, "snapshot-archive-and-civil-labels", nameof(Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes));

@@ -1,0 +1,18 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-rendering",
+  "attempt_id": "C-df3800ca-0324-409e-9ac9-a2e967160dc6",
+  "environment_identity": "7195c6edcc4c7a476ebc49403da4bc65d6795ee91a8804307ad1ee93e1b2da71",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "fail",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "timing": {
+    "tool_wall_seconds": 29.377573416102678
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-execution.log",
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+  ],
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/relative-tag-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/relative-tag-ui/1793671088326705000/step-3.log\n"
+}

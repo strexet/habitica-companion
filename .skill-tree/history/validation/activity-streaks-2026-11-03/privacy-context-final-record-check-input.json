@@ -1,0 +1,24 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-components",
+  "attempt_id": "C-5c2e426c-ac80-4915-9e78-a1767496e05e",
+  "environment_identity": "c95159a7ea87d2c3e7496694636a26aec29dcc713196315eabd161f0734d539f",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 8,
+    "discovered": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 14.444629208184779
+  },
+  "evidence": [
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/privacy-context-final-execution.log",
+    ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/privacy-context-final.trx"
+  ]
+}

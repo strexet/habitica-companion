@@ -1,0 +1,72 @@
+{
+  "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+  "attempt_id": "C-5c44976d-4b96-4405-b9be-a29c63a184f0",
+  "check_id": "daily-schedule-rendering",
+  "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+  "environment_identity": "d221b7089a6691627a548b4d51c61ff0db8ac641a262a213e97f11ec1b60f140",
+  "key": "59fa758bbd12d6c28458074e33dc9fb2524f240dd58df20e3f724a6cfc6b84e4",
+  "launch": null,
+  "prepared_at": "2026-11-02T19:55:50.007943+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/linked-daily-ui.py"
+    ],
+    "execution_notes": "Bounded current Release build and current Razor capture qualify144 light/obsidian phone/desktop100/200-percent layout/focus cases plus2 real hydrated Daily/Sync journeys using exact existing synthetic cloud recovery, isolated Auth/Workspace Workers/D1 and IndexedDB. Synthetic provider observations never leave the fixture; executor disabled, no upstream write, score, Cron, live account, publication or device permission. Own localhost5081 for exact local CORS; fail safely if occupied. Dispose all fixture Workers and profiles.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/linked-daily-ui.py",
+      "tests/browser/linked-daily-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser/linked-daily-fixture.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+    "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d39382b5e7d6edee6a7deaa946d1c7e5ebc901ec14044cd116f3859073a731e8",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/linked-daily-ui.mjs": "25173c9a65de4ec174970221595bf2d71bfdfac894418a0b11226ecf9bbc8aec",
+    "tests/browser/linked-daily-ui.py": "e90067bfa2622e312231bea7d9fac5eb1a380e387eae45b48219101de11a22c0",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/companion-workspace/src/index.ts": "ebd70563fda6cee565ee1ee10b2806bd571ef907cfad937d93c2c89346efa2be",
+    "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+    "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+    "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+    "workers/shared/build-identity.generated.ts": "5286d22daefdc523a829eb2dc57e12f7436e3b93bbfe8cf622a38c311c398448",
+    "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+    "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5"
+  },
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

@@ -1,0 +1,13 @@
+# Shared UI qualification acceptance
+
+Task `T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0` delivers the registered parameterized UX/UI browser recipe, exact task-key/route/state selection, reviewed adapter interface, disabled-value/opacity sampling, native selected-date pixel evidence and owned execution cleanup. Recipe activation refreshes the installed profile and preserves the existing pinned browser and specialist recipes.
+
+The focused measurement/contract suite passes 17 tests. The independent oracle first failed for missing disabled/date behavior, then passed. Additional negative examples reject missing declared dates, incorrect owner/build identity, invalid route/scheme selection and incomplete cleanup; non-date adapters require no invented date journey. Browser-close failure still attempts remaining browsers and server closure while preserving profiles when cleanup cannot be verified.
+
+The final current Release run passes 721 harness assertions: 216 positive/negative paint cases, 432 completed Razor baseline measurements, 72 actual hydrated Today/Tasks journeys and one exact owned-identity guard. Current Razor capture passes 61 component tests without skips. The matrix covers 360/390/430/768/1024/1280-pixel widths, 100/200-percent text, gryphy-light/gryphy-dark/obsidian-glow and Chromium/WebKit.
+
+Final report: `browser/256fca65-9fe5-425d-8cae-5c60aeedbeda.json`. The report retains current boot/assets identity, complete matrix results, selected-state provenance, native image pairs and runtime cleanup. `final-unit.tap`, `final-contract.json` and `acceptance-summary.json` retain focused/static evidence. The required check receipts bind the final sources and environment. Earlier failed attempts remain separate with original diagnostic and cleanup evidence.
+
+Product baseline observations remain separate from harness acceptance. Existing disabled-readability defects belong to `T-4afee12c-2759-40f6-adb4-39b5029a3928`; native Today date clipping belongs to `T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d`. No new Pending issue duplicates the existing tasks. Application Razor/CSS fingerprints match the original audit source identity; no product appearance fix is claimed.
+
+Physical devices, mobile keyboards, assistive technology, hosted OAuth/TLS, installed-PWA/service-worker lifecycle and real provider effects remain unqualified. Native paint uses same-engine reference images, `en-US` browser contexts and an explicit 97-percent ink-retention tolerance; native rendering can still vary by engine/platform. Synthetic GET replies and fixed placeholder artwork supply no live provider or artwork-quality qualification. Both persistent profiles, all contexts and the owned loopback server are closed and removed.

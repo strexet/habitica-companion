@@ -120,19 +120,20 @@ test("token exchange requires exact resource and scope challenges request minimu
 test("consent shows the whole catalogue and issues only chosen supported scopes", async t => {
   const f = await fixture(t); const profile = await enrolled(f); const code = await ticket(f, profile);
   const page = await authPage(f, "profile:read tasks:read"); const first = await page.response.text();
-  for (const label of ["Identify the linked account","Read tasks","Manage Habitica tags","Cast spells","Read personal Notes","Change personal Notes","Read explicitly shared diagnostics"]) assert.ok(first.includes(label));
+  for (const label of ["Identify the linked account","Read tasks","Manage Habitica tags","Cast spells","Read personal Notes","Change personal Notes","Read explicitly shared diagnostics","Manage separately approved reminder subscriptions"]) assert.ok(first.includes(label));
   assert.match(first, /One-time Companion code/);
   assert.ok(first.indexOf('<form method="post">') < first.indexOf('name="code"'));
   assert.ok(first.indexOf('name="code"') < first.indexOf('>Verify code</button>'));
   assert.ok(first.indexOf('>Verify code</button>') < first.indexOf('</form>'));
   assert.ok(first.indexOf('</form>') < first.indexOf('id="permission-preview-title"'));
-  assert.equal((first.match(/type="checkbox"/g) ?? []).length, 13);
-  assert.equal((first.match(/disabled aria-label=/g) ?? []).length, 13);
+  assert.equal((first.match(/type="checkbox"/g) ?? []).length, 15);
+  assert.equal((first.match(/disabled aria-label=/g) ?? []).length, 15);
   assert.equal((first.match(/name="scope"/g) ?? []).length, 0);
   const identified = await form(f, page, { handle: handle(first), decision: "identify", code: code.code, scope: "profile:read tasks:read" });
   assert.equal(identified.status, 200); const html = await identified.text();
   assert.match(html, /name="scope" value="tasks:read" checked/);
   assert.match(html, /name="scope" value="habitica.tags.write"  /);
+  assert.match(html, /name="scope" value="events.subscriptions.write"  /);
   assert.ok(html.indexOf('id="permission-preview-title"') === -1);
   assert.ok(html.indexOf('name="scope" value="habitica.tags.write"') < html.indexOf('>Allow selected access</button>'));
   const allowed = await form(f, page, { handle: handle(html), decision: "approve", scope: "profile:read habitica.tags.write" });
@@ -213,4 +214,12 @@ test('diagnostic permission is independently requested, disclosed and never impl
  assert.match(html,/name="scope" value="diagnostics.read" checked/);assert.match(html,/name="scope" value="notes.read"  /);assert.match(html,/name="scope" value="tasks:read"  /);
  if(process.env.HABITICA_AUTH_BROWSER_EVIDENCE){const {mkdir,writeFile}=await import('node:fs/promises');await mkdir(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,{recursive:true});await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/diagnostic-consent.html',html);await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/diagnostic-identify.html',first);}
  const allowed=await form(f,page,{handle:handle(html),decision:'approve',scope:'profile:read'});assert.equal(allowed.status,302);const callback=new URL(allowed.headers.get('location')),tokens=await exchange(f,{code:callback.searchParams.get('code'),verifier:page.verifier});assert.equal(tokens.status,200);assert.equal((await tokens.json()).scope,'profile:read');
+});
+
+test('migration permission is independently disclosed and never added to an existing read grant',async t=>{
+ const f=await fixture(t),profile=await enrolled(f),code=await ticket(f,profile),page=await authPage(f,'profile:read tasks:read workspace.migrate notes.read notes.write'),first=await page.response.text();
+ const identified=await form(f,page,{handle:handle(first),decision:'identify',code:code.code,scope:'profile:read tasks:read workspace.migrate notes.read notes.write'});assert.equal(identified.status,200);const html=await identified.text();
+ assert.match(html,/Move reviewed browser records into cloud/);assert.match(html,/owner-staged|captured and frozen by the owner/);assert.match(html,/name="scope" value="workspace.migrate" checked/);
+ if(process.env.HABITICA_AUTH_BROWSER_EVIDENCE){const {mkdir,writeFile}=await import('node:fs/promises');const {join}=await import('node:path');await mkdir(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,{recursive:true});const safe=text=>text.replace(/name="handle" value="[^"]+"/g,'name="handle" value="synthetic-disabled"');await writeFile(join(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,'authorization-code.html'),safe(first));await writeFile(join(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,'authorization-permissions.html'),safe(html));}
+ const approved=await form(f,page,{handle:handle(html),decision:'approve',scope:'profile:read tasks:read'});assert.equal(approved.status,302);const callback=new URL(approved.headers.get('location')),token=await exchange(f,{code:callback.searchParams.get('code'),verifier:page.verifier});const verified=await f.internal.fetch('https://auth.internal/validate',{method:'POST',body:JSON.stringify({resource,token:(await token.json()).access_token})});assert.deepEqual((await verified.json()).scope.sort(),['profile:read','tasks:read']);
 });

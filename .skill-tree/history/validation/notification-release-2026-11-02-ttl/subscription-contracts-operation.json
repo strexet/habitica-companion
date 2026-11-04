@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "python3",
+    "tests/Functions/subscription-contracts.py",
+    ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts.json"
+  ],
+  "exit_code": 0,
+  "seconds": 21.329014792107046
+}

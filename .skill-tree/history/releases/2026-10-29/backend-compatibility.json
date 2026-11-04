@@ -1,0 +1,60 @@
+{
+  "backend": {
+    "state": "coherent",
+    "workers": {
+      "mcp": {
+        "service": "mcp",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        },
+        "buildHash": "57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77"
+      },
+      "auth": {
+        "service": "auth",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "buildHash": "57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        }
+      },
+      "workspace": {
+        "service": "workspace",
+        "backendRelease": "0.2.0",
+        "toolSchemaVersion": "1.1.0",
+        "buildHash": "57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.3.0"
+        }
+      }
+    }
+  },
+  "package": {
+    "installation": "unknown",
+    "reportedByClient": {},
+    "packageCompatibility": "unknown",
+    "schemaCompatibility": "unknown"
+  },
+  "guidance": "Backend identity describes these Workers. Client reports never prove installed skills or grant access. Mixed or unavailable Workers require operator review; discovery never retries account operations.",
+  "transport": {
+    "sdk": {
+      "server": "2.4.0",
+      "core": "2.4.0"
+    },
+    "protocolVersions": [
+      "2026-07-28",
+      "2025-11-25",
+      "2025-06-18",
+      "2025-03-26",
+      "2024-11-05",
+      "2024-10-07"
+    ],
+    "legacyMode": "stateless",
+    "events": false
+  }
+}

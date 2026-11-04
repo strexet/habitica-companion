@@ -1,0 +1,450 @@
+[
+  {
+    "depends_on": [],
+    "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+    "line": 75,
+    "parent_pending_ids": [],
+    "priority": 106,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Pending",
+    "title": "Resolve mass spell rate limits and explicit gear recovery"
+  },
+  {
+    "depends_on": [],
+    "id": "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+    "line": 113,
+    "parent_pending_ids": [],
+    "priority": 100,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Pending",
+    "title": "Qualify hosted callback DNS and TLS failure injection"
+  },
+  {
+    "depends_on": [],
+    "id": "P-f6d09ee5-4b46-4dd6-9843-bdd82419df43",
+    "line": 145,
+    "parent_pending_ids": [],
+    "priority": 23,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "relation": "followup",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "status": "Pending",
+    "title": "Preserve optional validation metadata during installed workflow task rewrites"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [],
+    "id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "line": 175,
+    "parent_pending_ids": [
+      "P-9579af1d-3709-4bca-961a-6947585c7747"
+    ],
+    "priority": 115,
+    "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "status": "Ready",
+    "title": "Preserve completed source and planning state for full integration"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9"
+    ],
+    "id": "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+    "line": 226,
+    "parent_pending_ids": [
+      "P-9579af1d-3709-4bca-961a-6947585c7747"
+    ],
+    "priority": 114,
+    "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+    "status": "Ready",
+    "title": "Integrate main and develop with complete source and validation setup"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849"
+    ],
+    "id": "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+    "line": 277,
+    "parent_pending_ids": [
+      "P-9579af1d-3709-4bca-961a-6947585c7747"
+    ],
+    "priority": 113,
+    "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+    "status": "Ready",
+    "title": "Qualify the complete integrated application and backend release"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+    ],
+    "id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+    "line": 363,
+    "parent_pending_ids": [
+      "P-9579af1d-3709-4bca-961a-6947585c7747"
+    ],
+    "priority": 112,
+    "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+    "status": "Ready",
+    "title": "Review and merge the validated integration through develop into main"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e"
+    ],
+    "id": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+    "line": 413,
+    "parent_pending_ids": [
+      "P-9579af1d-3709-4bca-961a-6947585c7747"
+    ],
+    "priority": 111,
+    "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+    "status": "Ready",
+    "title": "Deploy and verify the complete merged main production state"
+  },
+  {
+    "depends_on": [
+      "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+    ],
+    "id": "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
+    "line": 482,
+    "parent_pending_ids": [
+      "P-375aba91-d916-46f4-8310-aa7b51810a45"
+    ],
+    "priority": 104,
+    "processing_run_id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+    "relation": "followup",
+    "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "status": "Ready",
+    "title": "Keep header sync states readable with enlarged phone text"
+  },
+  {
+    "depends_on": [
+      "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+    ],
+    "id": "T-f21b11ff-1224-486a-b729-e2f440f4920b",
+    "line": 616,
+    "parent_pending_ids": [
+      "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4"
+    ],
+    "priority": 102,
+    "processing_run_id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "relation": "followup",
+    "root_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "status": "Ready",
+    "title": "Clear stale review guidance after known unaccepted task cancellation"
+  },
+  {
+    "depends_on": [],
+    "id": "T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a",
+    "line": 752,
+    "parent_pending_ids": [
+      "P-612f62db-56ca-44cd-8f23-95609d268da9"
+    ],
+    "priority": 102,
+    "processing_run_id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+    "relation": "followup",
+    "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "status": "Ready",
+    "title": "Diagnose and stabilize sign-in overlap in gear-recovery cancellation checks"
+  },
+  {
+    "depends_on": [
+      "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+    ],
+    "id": "T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa",
+    "line": 825,
+    "parent_pending_ids": [
+      "P-5a241695-798e-48df-8a0f-989ba8ceaee8"
+    ],
+    "priority": 101,
+    "processing_run_id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+    "relation": "followup",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "status": "Ready",
+    "title": "Present concise Party sync failures with separate sanitized diagnostics"
+  },
+  {
+    "depends_on": [],
+    "id": "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c",
+    "line": 982,
+    "parent_pending_ids": [
+      "P-3663dfd8-1ecc-4dc3-9577-fc0fd9afb49f"
+    ],
+    "priority": 100,
+    "processing_run_id": "PR-9724479e-a259-40ca-9850-0e5e70e1a4b3",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784",
+    "relation": "followup",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "status": "Ready",
+    "title": "Keep Projects management labels readable at enlarged phone widths"
+  },
+  {
+    "depends_on": [
+      "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+    ],
+    "id": "T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44",
+    "line": 1089,
+    "parent_pending_ids": [
+      "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7"
+    ],
+    "priority": 100,
+    "processing_run_id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "relation": "followup",
+    "root_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "status": "Ready",
+    "title": "Expose complete retained title and Notes during frozen task reviews"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+      "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+      "T-34491faa-090e-4d97-b496-1fe947770688",
+      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32",
+      "T-65810da7-9524-45ce-b280-668d04c86441",
+      "T-13e3754f-774b-443f-8997-e1d677f3c079"
+    ],
+    "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "line": 1222,
+    "parent_pending_ids": [
+      "P-29925105-1015-5ced-8844-d56fa47e33c9"
+    ],
+    "priority": 24,
+    "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+    "queue": "Prioritized Next Changes",
+    "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "relation": "subtask",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "status": "Blocked pending answers",
+    "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates"
+  },
+  {
+    "boundary_validation": "before-dependent-work",
+    "depends_on": [
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33",
+      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+    ],
+    "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "line": 1321,
+    "parent_pending_ids": [
+      "P-0ea957c0-5210-5931-b545-82b9f13197db"
+    ],
+    "priority": 24,
+    "processing_run_id": null,
+    "queue": "Prioritized Next Changes",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "status": "Ready",
+    "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout"
+  },
+  {
+    "depends_on": [],
+    "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+    "line": 1539,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Party Quest Workspace Modes"
+  },
+  {
+    "depends_on": [],
+    "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
+    "line": 1576,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Party Quest History Analytics"
+  },
+  {
+    "depends_on": [],
+    "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
+    "line": 1613,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Skill Macro Collection MVP"
+  },
+  {
+    "depends_on": [],
+    "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
+    "line": 1746,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Task Mutation Dry-Run Summaries"
+  },
+  {
+    "depends_on": [],
+    "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
+    "line": 1784,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Settings Danger Zone Confirmation"
+  },
+  {
+    "depends_on": [],
+    "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+    "line": 1818,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Returning User Copy Compression"
+  },
+  {
+    "depends_on": [],
+    "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+    "line": 1853,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Mobile Stat Table Context"
+  },
+  {
+    "depends_on": [],
+    "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
+    "line": 1887,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Compact Spell Card Density Pass"
+  },
+  {
+    "depends_on": [],
+    "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
+    "line": 1925,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Public Plugin Directory Submission"
+  },
+  {
+    "depends_on": [],
+    "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
+    "line": 1952,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "MCP Custom UI"
+  },
+  {
+    "depends_on": [],
+    "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
+    "line": 1974,
+    "parent_pending_ids": [],
+    "priority": 25,
+    "processing_run_id": null,
+    "queue": "Backlog",
+    "related_task_id": null,
+    "relation": "main",
+    "root_task_id": null,
+    "status": "Backlog",
+    "title": "Background Automation"
+  }
+]

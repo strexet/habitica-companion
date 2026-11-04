@@ -1,0 +1,607 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Each invalid saved-list constraint identifies the actual fields and a specific corrective message.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-8f655625-00d7-4ed8-9abf-05ea21b8d30d.tap",
+          "sha256": "c07b8f3a50e496d37bf47fe5997379b106f1fd446d06a7a7bc23399d6faef8f3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.log",
+          "sha256": "8b457ebcdd2f084f33db5a4afcf0d647c17f1dd2686b7e1cc5193d95a1efc5c1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.trx",
+          "sha256": "c5b2d03d9ec63b9bf48e530c6a0cbf0fe9247fad60ed48c9c41d5af5b956a9dd"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/acceptance.json",
+          "sha256": "b41039c8fa4ecf4efabf8a488b0ed2c608c021becf4b89e07f55bae444b922a2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json",
+          "sha256": "e0fbbd87f86250241a7903d81d3c8906b4658f3cd0f36070fdf804d2801eda26"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-8f655625-00d7-4ed8-9abf-05ea21b8d30d.tap",
+          "sha256": "c07b8f3a50e496d37bf47fe5997379b106f1fd446d06a7a7bc23399d6faef8f3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.log",
+          "sha256": "8b457ebcdd2f084f33db5a4afcf0d647c17f1dd2686b7e1cc5193d95a1efc5c1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.trx",
+          "sha256": "c5b2d03d9ec63b9bf48e530c6a0cbf0fe9247fad60ed48c9c41d5af5b956a9dd"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/acceptance.json",
+          "sha256": "b41039c8fa4ecf4efabf8a488b0ed2c608c021becf4b89e07f55bae444b922a2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json",
+          "sha256": "e0fbbd87f86250241a7903d81d3c8906b4658f3cd0f36070fdf804d2801eda26"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-8f655625-00d7-4ed8-9abf-05ea21b8d30d.tap",
+          "sha256": "c07b8f3a50e496d37bf47fe5997379b106f1fd446d06a7a7bc23399d6faef8f3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.log",
+          "sha256": "8b457ebcdd2f084f33db5a4afcf0d647c17f1dd2686b7e1cc5193d95a1efc5c1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.trx",
+          "sha256": "c5b2d03d9ec63b9bf48e530c6a0cbf0fe9247fad60ed48c9c41d5af5b956a9dd"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/acceptance.json",
+          "sha256": "b41039c8fa4ecf4efabf8a488b0ed2c608c021becf4b89e07f55bae444b922a2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json",
+          "sha256": "e0fbbd87f86250241a7903d81d3c8906b4658f3cd0f36070fdf804d2801eda26"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Each invalid saved-list constraint identifies the actual fields and a specific corrective message.",
+          "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus."
+        ],
+        "id": "saved-list-errors-behavior",
+        "parameters": {
+          "report_name": "saved-list-errors.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/saved-list-errors/unit",
+          "test_filter": "FullyQualifiedName~TodoSavedListPanelTests|FullyQualifiedName~RelativeSavedListPanelTests|FullyQualifiedName~TodoPlanningPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+          "src/Habitica.WebApp/Components/TodoPlacementPicker.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e3ace93e-edc4-4a05-83b3-af659ab82ced",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 23,
+          "expected": 23,
+          "failed": 13,
+          "passed": 10,
+          "skipped": 0
+        },
+        "definition": "000169900296986f54d8cc2fde026a177ea50a6552ff1a4e41d85f10e905d1dc",
+        "environment_identity": "e15c3f4e12644df2384297715a481beadcff327c1a7cecc4dd800b4a100cec8b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-e3ace93e-edc4-4a05-83b3-af659ab82ced.log",
+            "sha256": "6c84cb375ef9ca084eace0548d6935deb57e477478015c7612116fa26cd2be34"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-e3ace93e-edc4-4a05-83b3-af659ab82ced.trx",
+            "sha256": "25eba42a71d513b046c609e956f22be722f913211e464c63976dc42dde9e9df2"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "6297c136c552f1ba17863d87af7ade8fe3d001f2846c9454fa0ceadcc0527290",
+        "payload_hash": "94c9f9d1e3106d0f52c9e455a96f9e38e00dcb43b2bcf6754340ae836b234f74",
+        "recorded_at": "2026-11-03T15:25:19.095536+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "aa2e37bd8343f9d6ce6de41ecfa8e44af7541eda7e3dc81641b644f9a2957c67",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "56bc9d13d35195e8f0866cf04d4c77e75afeb0ea43074c93e996c46d8c8e3df4",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "25e5f8195738acb1d1f4792f1a91986f01b5313ecacdf44ceca48a7489e4f519"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.490757332649082
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 47,
+          "expected": 47,
+          "failed": 0,
+          "passed": 47,
+          "skipped": 0
+        },
+        "definition": "440530264fdf69d9dafb1730586ebf9e2ce822fade130361ebc7ec52fb58f426",
+        "environment_identity": "22d5ecc557c49a82b2d4888fba4c1d3aa82e9a53f177604191b61a5b2f888680",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.log",
+            "sha256": "8b457ebcdd2f084f33db5a4afcf0d647c17f1dd2686b7e1cc5193d95a1efc5c1"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819.trx",
+            "sha256": "c5b2d03d9ec63b9bf48e530c6a0cbf0fe9247fad60ed48c9c41d5af5b956a9dd"
+          }
+        ],
+        "execution_sessions": {
+          "49ad58764b1327c4fa0d974d1b63c7778bf3a915012ff8750765c702eb4f6009": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T16:42:16.579592+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/saved-list-errors/launch-1793723176579821000.json"
+            ],
+            "profile_id": "74757db51dcf7d8d57e0b6443d7979906b383f6ee8ad516d1ae0469e31257e0d",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-errors",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "927c357421919eb205649fe5fd4eecb5f35435fdecd896429c87ff96405577a9",
+        "payload_hash": "ddd06b9663dfc27c051eade80f5f6e8daf6c4efc18538662a6d2cc088a25a2ee",
+        "recorded_at": "2026-11-03T16:29:26.039720+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+          "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+          "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "c2838864a9ddf67b802973b6270ee84851b25d44fd26d37852f2767eb4636225",
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "fbcdb465ad1d6e1050b0c78bee54e168651f3023949cf0efeebd03ac24e809f9",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "e756666598cd7d67da15e8de5da1323b2ac87b80457535de69bc2997d151450a"
+        },
+        "timing": {
+          "tool_wall_seconds": 12.058778500184417
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix."
+        ],
+        "id": "saved-list-errors-rendered",
+        "parameters": {
+          "cases": "One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser",
+          "routes": [
+            "/todo/lists"
+          ],
+          "task_key": "saved-list-errors"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Components/TodoPlacementPicker.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "tests/browser-qualification/ux-ui-saved-errors-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-559429c9-7db5-4440-aa74-f9da1c29ce1d",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "440530264fdf69d9dafb1730586ebf9e2ce822fade130361ebc7ec52fb58f426",
+        "environment_identity": "d141bb66f0ff6ef25696540622749fbde9a74d07b97d1254991ba988775175f8",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser/0a67f8a3-43c6-4c32-81b1-bf973eb249a4.json",
+            "sha256": "e0fbbd87f86250241a7903d81d3c8906b4658f3cd0f36070fdf804d2801eda26"
+          }
+        ],
+        "execution_sessions": {
+          "49ad58764b1327c4fa0d974d1b63c7778bf3a915012ff8750765c702eb4f6009": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T16:46:33.707052+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/saved-list-errors/launch-1793723433707247000.json"
+            ],
+            "profile_id": "74757db51dcf7d8d57e0b6443d7979906b383f6ee8ad516d1ae0469e31257e0d",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-errors",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "b5d34a32b25de12d8030c73dda8a7720388978285583ef160ab5b43817faa602",
+        "payload_hash": "0f494d3c92203561350392fe0ca5044393e9fd4dfe6fda3d86d257630c03812b",
+        "recorded_at": "2026-11-03T16:35:33.525550+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+          "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+          "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "c2838864a9ddf67b802973b6270ee84851b25d44fd26d37852f2767eb4636225",
+          "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+          "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "fbcdb465ad1d6e1050b0c78bee54e168651f3023949cf0efeebd03ac24e809f9",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "e756666598cd7d67da15e8de5da1323b2ac87b80457535de69bc2997d151450a",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "27d88356693e0d1e022036dc58cd33ff725bb431a2b29f7b58223088ddc5b6c3",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui-saved-errors-journey.mjs": "3ea0979e8b8f32d9a9ea72d6848907425a34e6ea07f9d0ba2bdcb137609efa76"
+        },
+        "timing": {
+          "tool_wall_seconds": 298.6727330419235
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Reveal only the still-focused connected enabled field after validation layout settles. A user focus change, removal or inherited disability prevents a late viewport jump.",
+        "criteria": [
+          "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus."
+        ],
+        "id": "saved-list-errors-focus-boundary",
+        "parameters": {
+          "test_file": "tests/browser-qualification/saved-list-focus.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js",
+          "tests/browser-qualification/saved-list-focus.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-8f655625-00d7-4ed8-9abf-05ea21b8d30d",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 4,
+          "expected": 4,
+          "failed": 0,
+          "passed": 4,
+          "skipped": 0
+        },
+        "definition": "440530264fdf69d9dafb1730586ebf9e2ce822fade130361ebc7ec52fb58f426",
+        "environment_identity": "c7b94ed3147f32090ea7513414a99a7c4066af7c5ebddbd0afc11cca310b9a1b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/C-8f655625-00d7-4ed8-9abf-05ea21b8d30d.tap",
+            "sha256": "c07b8f3a50e496d37bf47fe5997379b106f1fd446d06a7a7bc23399d6faef8f3"
+          }
+        ],
+        "execution_sessions": {
+          "49ad58764b1327c4fa0d974d1b63c7778bf3a915012ff8750765c702eb4f6009": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "be58eaa0650fcf85fbfdd1f2545ed465b88efd9018f45227a26bc4e9fe3b55f9",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T16:35:34.213672+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/saved-list-errors/launch-1793722774213854000.json"
+            ],
+            "profile_id": "74757db51dcf7d8d57e0b6443d7979906b383f6ee8ad516d1ae0469e31257e0d",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/saved-list-errors",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "2076c3202fc7c09168aefd2d0af9716c67580d92d34813a025dcb7df4ab14900",
+        "payload_hash": "b8eb2e5f2a93ebd151d326745c99a51cb9cb1cf7ce6d3705efdae0fc9c0e35aa",
+        "recorded_at": "2026-11-03T16:24:19.798691+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+          "tests/browser-qualification/saved-list-focus.test.mjs": "7cd3575eaa4f16d66657bd1b8caa9e0a1a52d0585436437210ddbdc41835b4cb"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.12450891686603427
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/acceptance.json",
+      "sha256": "b41039c8fa4ecf4efabf8a488b0ed2c608c021becf4b89e07f55bae444b922a2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/saved-list-errors/operation-history.json",
+      "sha256": "2f312e2ff59da59bd6658bfbb1d2a2ec352040baacd09cab3a46e88bceeb9698"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-011acd01-df4a-4473-8708-b64cd5b65d55",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Identify the exact invalid saved-list fields and preserve focus. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7"
+  ],
+  "recorded_at": "2026-11-03T16:38:07.528161+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+  "source_fingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "c2838864a9ddf67b802973b6270ee84851b25d44fd26d37852f2767eb4636225",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+    "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "fbcdb465ad1d6e1050b0c78bee54e168651f3023949cf0efeebd03ac24e809f9",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "e756666598cd7d67da15e8de5da1323b2ac87b80457535de69bc2997d151450a",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/saved-list-focus.test.mjs": "7cd3575eaa4f16d66657bd1b8caa9e0a1a52d0585436437210ddbdc41835b4cb",
+    "tests/browser-qualification/ux-ui-adapters.json": "27d88356693e0d1e022036dc58cd33ff725bb431a2b29f7b58223088ddc5b6c3",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-saved-errors-journey.mjs": "3ea0979e8b8f32d9a9ea72d6848907425a34e6ea07f9d0ba2bdcb137609efa76"
+  },
+  "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+  "title": "Identify the exact invalid saved-list fields and preserve focus",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Each invalid saved-list constraint identifies the actual fields and a specific corrective message.",
+        "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus."
+      ],
+      "id": "saved-list-errors-behavior",
+      "parameters": {
+        "report_name": "saved-list-errors.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/saved-list-errors/unit",
+        "test_filter": "FullyQualifiedName~TodoSavedListPanelTests|FullyQualifiedName~RelativeSavedListPanelTests|FullyQualifiedName~TodoPlanningPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+        "src/Habitica.WebApp/Components/TodoPlacementPicker.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "src/Habitica.WebApp/wwwroot/js/field-focus.js"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix."
+      ],
+      "id": "saved-list-errors-rendered",
+      "parameters": {
+        "cases": "One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/saved-list-errors/browser",
+        "routes": [
+          "/todo/lists"
+        ],
+        "task_key": "saved-list-errors"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Components/TodoPlacementPicker.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/browser-qualification/ux-ui-saved-errors-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "src/Habitica.WebApp/wwwroot/js/field-focus.js"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Reveal only the still-focused connected enabled field after validation layout settles. A user focus change, removal or inherited disability prevents a late viewport jump.",
+      "criteria": [
+        "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus."
+      ],
+      "id": "saved-list-errors-focus-boundary",
+      "parameters": {
+        "test_file": "tests/browser-qualification/saved-list-focus.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/wwwroot/js/field-focus.js",
+        "tests/browser-qualification/saved-list-focus.test.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "440530264fdf69d9dafb1730586ebf9e2ce822fade130361ebc7ec52fb58f426"
+}

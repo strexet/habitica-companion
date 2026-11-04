@@ -1,0 +1,9 @@
+{
+  "classification": "executed-control",
+  "exit_code": 0,
+  "tool_wall_seconds": 20.639,
+  "hard_deadline_seconds": 150,
+  "cleanup_reserve_seconds": 30,
+  "output": "{\"stage\": \"receiver_ready\", \"runId\": \"d6e008ec-fb83-48c0-9ee7-64467342f9e5\", \"worker\": \"habitica-companion-callback-qualification\"}",
+  "stderr": ""
+}

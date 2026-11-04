@@ -1,0 +1,43 @@
+{
+  "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+  "attempt_id": "C-6cee768b-65a4-4958-bd0e-131d9ed8f051",
+  "check_id": "qualification-canaries",
+  "definition": "1568da998bea317dfbcc93a6c516dd0713e9b99735e62cbfdeddae2b871d0709",
+  "environment_identity": "734f9eb276351f618cd67c8851fbecac974527fa43067e856e0a132d14cdc2b3",
+  "key": "b57bde38ebac61939b5fedede3a2aee3824f9382aeac8d186de5fbe90eb587cc",
+  "launch": {
+    "assertion": "Disabled opacity and native-date visibility reject independent negative examples.",
+    "authorization": "Owner selected Work Through Next for the shared qualification task and previously authorized local build and synthetic review.",
+    "cheaper_evidence_insufficient": "New measurement behavior needs independent executable examples before integration with browser paint.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T07:19:18.269491+00:00",
+    "execution_profile": "Pinned Node22; pure measurement tests only; no browser, server or external request.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T07:14:18.519913+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=15000",
+      "tests/browser-qualification/ux-ui-checks.test.mjs"
+    ],
+    "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "deploy/callback-egress/package.json"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "35b661bfbbfcff4410a874c0bb36aaf3d654462cb0d3b5975d7b7d1dea048af0"
+  },
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+}

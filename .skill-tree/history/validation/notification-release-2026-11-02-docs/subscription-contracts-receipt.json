@@ -1,0 +1,73 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-248608e3-5a89-4e36-8528-9c991a350365",
+  "classification": "executed-control",
+  "cleanup": "Synthetic Worker/D1 fixtures disposed and local native TLS/receiver servers closed. No runtime source, production state, real subscription, chat or game effect changed by documentation qualification.",
+  "counts": {
+    "discovered": 44,
+    "expected": 44,
+    "failed": 0,
+    "passed": 44,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "7c5819bd64a955d23f1ee3dc3deb4eb1256fc2df6736073b44cb297db5247358",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts.json",
+      "sha256": "ac1a58213da46a896a5bf50eacd161872bb689a21ee2f90ff952821ca1f3d0ff"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-build-workspace.log",
+      "sha256": "7ced785490b0269c30c69f8dd5c0a64fafa9cb2f66a54494c5466d2a9bfd5ff6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-build-auth.log",
+      "sha256": "1d5de0bc0ea991b286bbbed0a2d318edfc8730478cf9e158bd64841d060e761b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-build-mcp.log",
+      "sha256": "946f47214ca4f63660ba29d8c4a53328fa1b4dd42e6dc1e3db62b41d4ecd4d50"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-subscription-worker-composition.log",
+      "sha256": "9b9faf28991491b7a08ebc9203dd55508065a36ba385d43dc9bee97ecd43e96e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-gateway-native-tls.log",
+      "sha256": "d45ae0a2c6feeff246350907d152b5d3781b60eb71d9fc4a2ce34c6386e35235"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-independent-receiver.log",
+      "sha256": "7b3dcd1b814f4b8ef37b394226c0dee0214a40cd07fe73e4a15057493678fbe4"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/releases/2026-11-02-notifications/prose-validation-final.log",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "2cc5c6b9b8547c184f16e29dd76d5bfe31f7c95ede2455242ef3a9c0facf0925",
+  "payload_hash": "00b5658400671d4727c947540ba16e54cb035f21afad539dc32f199bb4b2e824",
+  "recorded_at": "2026-11-02T15:05:35.047404+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/event-subscriptions.md": "2896c813d74346e57cf41fb0f12060de963db8557d3607552b697ed1004150f6",
+    "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
+    "workers/chatgpt-auth/src/events.ts": "a406630ba0312dd42b821681e87891282fa76de39d2b75e8143033cb62062c0f",
+    "workers/chatgpt-auth/test/events.test.mjs": "4dfa4873e9dbc523145b10990b914b8ecd2e5ef7aa0a57817c29e8daed1b7461",
+    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+  },
+  "timing": {
+    "tool_wall_seconds": 27.9973172089085
+  }
+}

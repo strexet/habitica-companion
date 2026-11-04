@@ -39,3 +39,11 @@ npm --prefix workers/companion-workspace run build
 ```
 
 Each build checks the generated identity, types and TypeScript before the default-environment Wrangler dry run. Source documentation changes outside the bounded inputs require no identity regeneration. Dry bundles establish no publication, remote migration, host discovery or live-account behavior. Exact release identities and check results belong in structured release evidence under `.skill-tree/history/releases/`.
+
+## Complete main publication
+
+Production Git builds require `HABITICA_PLUGIN_MCP_ENDPOINT` in addition to the public frontend override. `build.sh` creates and verifies the current plugin archive with the exact `CF_PAGES_COMMIT_SHA`; an enabled frontend fails closed when the reviewed public endpoint is absent. Previously published archives remain under `src/Habitica.WebApp/wwwroot/downloads/`.
+
+`tests/release/qualification.py` owns bounded full .NET/Functions, serial Worker, rendered browser/PWA and hosted identity controls. `tests/release/hosted-smoke.mjs` checks fresh signed-out startup in Chromium/WebKit. Physical devices, assistive technology and real account interactions require separate evidence.
+
+`deploy/coordinated-release.py` publishes only explicit committed source to the existing production resources. Run preflight before changes; retain exact predecessor versions and D1 recovery bookmarks privately. Configure Pages public build settings, qualify the integration, publish matching compatible Workers before main triggers a Git build, then build and publish the exact merged main state. The controller preserves live bindings, secret references and runtime flags. Pending migrations stop publication for review. Postflight compares served artifact hashes, Worker source bytes, migration coverage and OAuth discovery. Recovery requires the recorded original versions/bookmarks and a fresh ownership check; the controller never blindly retries an upload with an unknown outcome.

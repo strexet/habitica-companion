@@ -1,0 +1,18 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-rendering",
+  "attempt_id": "C-bd764c5c-7ffa-4fa0-aa95-e86df5e7e216",
+  "environment_identity": "5302dffb3079ede2d5c2dd3ecfac5e3fe0a868e7482ff0d5dedf26282229a9d1",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "fail",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "timing": {
+    "tool_wall_seconds": 29.4245592080988
+  },
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-dc49c1bc-execution.log",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-dc49c1bc-identity.json"
+  ],
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/task-type-copy-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/task-type-copy-ui/1793654219322970000/step-3.log\n"
+}

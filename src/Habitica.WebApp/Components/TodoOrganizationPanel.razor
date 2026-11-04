@@ -3,11 +3,14 @@
 @using System.Globalization
 @inject TodoWorkspacePresentation Todo
 @inject WorkspaceOrganizationController Organization
+@inject IJSRuntime Js
 @implements IDisposable
 
 <section class="card-surface todo-task-panel todo-organization-panel">
-    <div class="task-group-header"><h1 tabindex="-1" @ref="_heading">Projects</h1><a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a></div>
+    <div class="task-group-header">@if(UsePageHeading){<h1 tabindex="-1" @ref="_heading">Projects</h1>}else{<h2 tabindex="-1" @ref="_heading">Organization management</h2>}<a href="/todo/tasks" class="app-link-button" data-layout-primary="true">Tasks and subtasks</a></div>
+    @if(ManageOnDemand && !_managementOpen){<div class="action-row"><button type="button" class="secondary-action-button" data-layout-primary="true" @onclick="OpenManagementAsync" data-testid="organization-open-management">Open management</button></div>}
     <div class="action-row"><MudButton HtmlTag="a" Href="/todo/convert" data-layout-primary="true" Variant="Variant.Outlined">Convert checklist to project</MudButton></div>
+    <p><a class="app-link-button" data-layout-primary="true" href="@HistoryLink(null)" data-testid="projects-retained-history">Retained task history</a></p>
     <p><a href="/todo/sync#habitica-tags">Group tag coverage and recovery</a></p>
     <p class="panel-copy">Organization is optional. Tasks can stay unassigned. Categories, sections, labels and goals help group work without changing Habitica rewards.</p>
     @if (_error is not null) { <p role="alert">@_error</p> }
@@ -58,9 +61,11 @@
     else if (Organization.HasPendingIntent)
     { <p>Preparation is unresolved. Recover the original request instead of creating another change.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="RetryAsync" Variant="Variant.Outlined" data-testid="organization-retry">Recover original organization preview</MudButton> }
     @if (Todo.Snapshot is null)
-    { <p>Choose or reload the workspace below before creating organization records. An original review remains separate from unavailable task data.</p> }
+    { <p>Choose or reload an available Workspace before creating organization records. An original review remains separate from unavailable task data.</p> }
     else
     {
+        <div data-testid="organization-management" hidden="@(ManageOnDemand && !_managementOpen)">
+            @if(ManageOnDemand){<div class="action-row"><button type="button" class="secondary-action-button" data-layout-primary="true" disabled="@ManagementLocked" @onclick="CloseManagementAsync" data-testid="organization-close-management">Close management</button></div>}
         <label class="field-row">Organize<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@FreshDisabled" data-testid="organization-kind">@foreach (var kind in Kinds) { <option value="@kind">@Plural(kind)</option> }</select></label>
         <form @onsubmit="PrepareAsync" @onsubmit:preventDefault><fieldset disabled="@FreshDisabled">
             <h2 tabindex="-1" @ref="_editorHeading">@(_editing is null ? "Create" : "Edit") @_kind</h2>
@@ -104,14 +109,25 @@
                     @if (row.ProjectId is { } ownerProject) { <span>Project: @MetadataName(WorkspaceOrganizationKind.Project,ownerProject) · order @row.Position</span> }
                     @if (_progress.TryGetValue(row.Id,out var progress)) { <span>@(progress.EligibleTodos == 0 ? "Progress unavailable: no eligible Todos." : $"{progress.CompletedTodos} of {progress.EligibleTodos} eligible Todos completed")</span> }
                     <details><summary>Reference</summary><p>@row.Id</p></details>
-                </div><div class="todo-row-actions"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => Edit(row.Id)" Variant="Variant.Text" data-testid="@($"organization-edit-{row.Id:D}")">Edit</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => ArchiveAsync(row.Id)" Variant="Variant.Text" data-testid="@($"organization-archive-{row.Id:D}")">Review archive</MudButton>@if (_kind == WorkspaceOrganizationKind.Project) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => RemoveAsync(row.Id)" Variant="Variant.Text" data-testid="@($"organization-remove-{row.Id:D}")">Review project removal</MudButton> }</div></article>
+                </div><div class="todo-row-actions">@if(_kind==WorkspaceOrganizationKind.Project){<a class="app-link-button" data-layout-primary="true" href="@HistoryLink(row.Id)" data-testid="@($"project-history-{row.Id:D}")">Project task history</a>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => Edit(row.Id)" Variant="Variant.Text" data-testid="@($"organization-edit-{row.Id:D}")">Edit</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => ArchiveAsync(row.Id)" Variant="Variant.Text" data-testid="@($"organization-archive-{row.Id:D}")">Review archive</MudButton>@if (_kind == WorkspaceOrganizationKind.Project) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@FreshDisabled" OnClick="() => RemoveAsync(row.Id)" Variant="Variant.Text" data-testid="@($"organization-remove-{row.Id:D}")">Review project removal</MudButton> }</div></article>
             }
             <div class="action-row"><span>@_total active @Plural(_kind).ToLowerInvariant()</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(FreshDisabled || _offset == 0)" OnClick="Previous" Variant="Variant.Text">Previous records</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(FreshDisabled || _next is null)" OnClick="Next" Variant="Variant.Text">Next records</MudButton></div>
         </section>
+        </div>
     }
 </section>
 
 @code {
+    [Parameter] public bool UsePageHeading {get;set;}=true;
+    [Parameter] public bool ManageOnDemand {get;set;}
+    [Parameter] public EventCallback ManagementClosed {get;set;}
+    private bool _managementOpen;
+    private bool ManagementLocked=>OriginalBusy||Organization.HasPendingIntent||Organization.Preview is not null;
+    public Task OpenManagementAsync(){_managementOpen=true;if(Organization.Preview is not null)_focusReview=true;else _focusEditor=true;return InvokeAsync(StateHasChanged);}
+    private async Task CloseManagementAsync(){if(ManagementLocked)return;_managementOpen=false;_focusEditor=false;await ManagementClosed.InvokeAsync();}
+    private async Task FocusAndRevealAsync(ElementReference target){await target.FocusAsync();await using var module=await Js.InvokeAsync<IJSObjectReference>("import","./js/field-focus.js");if(module is not null)await module.InvokeVoidAsync("revealFocusedElement",target);}
+
+    private string HistoryLink(Guid? project)=>Todo.Selection is {} selection?$"/todo/history?workspaceId={selection.WorkspaceId:D}&source={selection.Source.ToString().ToLowerInvariant()}{(project is {} id?$"&projectId={id:D}":"")}":"/todo/history";
     private Guid _tagReviewId;private bool _tagReviewed;
     private void TagReviewed(Guid id,bool reviewed){_tagReviewId=id;_tagReviewed=reviewed;}
     private bool TagsReady(Guid id,WorkspaceTagChangePreview? preview)=>preview?.RequestsMetadataChanges!=true||_tagReviewId==id&&_tagReviewed;
@@ -137,8 +153,8 @@
     private bool OriginalBusy=>Todo.IsBusy||Organization.IsBusy||Todo.Commands.HasPendingIntent;
     private bool AllReferencesReviewed=>Enumerable.Range(0,(_references.Count+19)/20).All(page=>_reviewedPages.Contains(page*20));
     protected override void OnInitialized(){_source=Todo.Selection;_revision=Todo.Revision;ResetEditor();Todo.Changed+=Changed;Read();}
-    protected override async Task OnAfterRenderAsync(bool firstRender){try{if(_focusReview&&Organization.Preview is not null){_focusReview=false;await _reviewHeading.FocusAsync();}else if(_focusEditor){_focusEditor=false;await _editorHeading.FocusAsync();}}catch(JSException){}}
-    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_offset=0;ResetEditor();_reviewId=null;_reviewedPages.Clear();_referenceOffset=0;_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_offset=_choiceOffset=0;}Read();_ = InvokeAsync(StateHasChanged);}
+    protected override async Task OnAfterRenderAsync(bool firstRender){try{if(_focusReview&&Organization.Preview is not null){_focusReview=false;await FocusAndRevealAsync(_reviewHeading);}else if(_focusEditor){_focusEditor=false;await FocusAndRevealAsync(Todo.Snapshot is null?_heading:_editorHeading);}}catch(JSException){}}
+    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_offset=0;_managementOpen=false;ResetEditor();_reviewId=null;_reviewedPages.Clear();_referenceOffset=0;_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_offset=_choiceOffset=0;}Read();_ = InvokeAsync(StateHasChanged);}
     private void ResetEditor(){_editing=_category=_sectionProject=null;_name="";_alias="";_position="0";_members=[];_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_choiceOffset=0;}
     private void Read()
     {
@@ -169,11 +185,11 @@
     private string MetadataName(WorkspaceOrganizationKind kind,Guid id)=>$"{(Todo.Snapshot is { } snapshot?WorkspaceOrganizationSnapshot.From(snapshot.Document,kind,id)?.Name:null)??"Retained record"} · {id}";
     private static string Plural(WorkspaceOrganizationKind kind)=>kind switch{WorkspaceOrganizationKind.Category=>"Categories",WorkspaceOrganizationKind.Section=>"Sections",WorkspaceOrganizationKind.Label=>"Labels",WorkspaceOrganizationKind.Goal=>"Goals",_=>"Projects"};
     private void ChangeKind(ChangeEventArgs args){if(FreshDisabled||!Enum.TryParse<WorkspaceOrganizationKind>(args.Value?.ToString(),out var kind)||!Kinds.Contains(kind))return;_kind=kind;_offset=0;ResetEditor();Read();}
-    private void New(){ResetEditor();_error=null;_focusEditor=true;Read();}
+    private void New(){ResetEditor();_error=null;_managementOpen=true;_focusEditor=true;Read();}
     private void Edit(Guid id)
     {
         if(FreshDisabled||Todo.Snapshot is null)return;var row=WorkspaceOrganizationSnapshot.From(Todo.Snapshot.Document,_kind,id);if(row is null||row.IsArchived)return;
-        ResetEditor();_editing=id;_name=row.Name;_alias=row.Alias??"";_category=row.CategoryId;_sectionProject=row.ProjectId;_position=row.Position.ToString(CultureInfo.InvariantCulture);_members=row.TaskIds?.ToList()??[];_focusEditor=true;
+        ResetEditor();_editing=id;_name=row.Name;_alias=row.Alias??"";_category=row.CategoryId;_sectionProject=row.ProjectId;_position=row.Position.ToString(CultureInfo.InvariantCulture);_members=row.TaskIds?.ToList()??[];_managementOpen=true;_focusEditor=true;
     }
     private void ReloadEditor(){if(_editing is {} id)Edit(id);else{_draftRevision=Todo.Revision;_draftSource=Todo.Selection;}_error=null;Read();}
     private void SetMember(Guid id,bool selected){if(selected&&!_members.Contains(id)){if(_members.Count>=100){_error="A goal supports at most 100 Todos.";return;}_members.Add(id);}else if(!selected)_members.Remove(id);}
@@ -206,7 +222,7 @@
     private Task ConfirmAsync()=>RunAsync(async()=>{if(Organization.Preview is {} current&&!TagsReady(current.PreparedCommandId,current.TagProjection)&&!Organization.AcceptanceUnknown)throw new InvalidOperationException("Review every tag reference page before confirming.");if(!AllReferencesReviewed&&!Organization.AcceptanceUnknown)throw new InvalidOperationException("Review every reference page before confirming removal.");await Todo.ConfirmOrganizationAsync();if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
     private Task RecoverAsync()=>RunAsync(async()=>{await Todo.RecoverOrganizationAsync();if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
     private Task RetryAsync()=>RunAsync(async()=>{await Todo.RetryOrganizationPreviewAsync();_focusReview=Organization.Preview is not null;if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
-    private void Cancel(){Todo.CancelOrganizationPreview();_error=null;_focusEditor=true;Read();}
+    private void Cancel(){Todo.CancelOrganizationPreview();_error=null;_managementOpen=true;_focusEditor=true;Read();}
     private void AcknowledgePage(ChangeEventArgs args){if(args.Value is true)_reviewedPages.Add(_referenceOffset);else _reviewedPages.Remove(_referenceOffset);}
     private void PreviousReferences()=>_referenceOffset=Math.Max(0,_referenceOffset-20);
     private void NextReferences()=>_referenceOffset=Math.Min(_referenceOffset+20,((_references.Count-1)/20)*20);

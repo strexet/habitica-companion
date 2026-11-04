@@ -1,0 +1,15 @@
+{
+  "created_ids": [],
+  "dispositions": {
+    "P-f6d09ee5-4b46-4dd6-9843-bdd82419df43": {
+      "reason": "The installed package drops optional metadata during canonical dependency/provenance rewrites. The current operation preserves existing flags through a documented canonical-transaction wrapper. A permanent upstream Skill Tree package fix and reviewed installation update require a separate maintenance scope; no source-repository edit or implicit reinstall is authorized by the app UI run. Evidence: .skill-tree/history/processing/ux-ui-adapter-inputs-2026-11-04/metadata-preservation.json.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-41568387-0434-4000-9631-32e33c514a82",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-f6d09ee5-4b46-4dd6-9843-bdd82419df43"
+  ],
+  "task_keys": {}
+}

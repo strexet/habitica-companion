@@ -1,0 +1,10 @@
+{
+  "recorded_at_utc": "2026-11-02T12:22:07.787270+00:00",
+  "application": "Official Netlify CLI26.0.1",
+  "owner_reply": "Разрешаю авторизовать Netlify CLI",
+  "browser_result": "Authorization Granted",
+  "cli_result": "authorized",
+  "usage_scope": "Existing project04629462-d0c6-4a72-bf02-6170cb1c39f8 only for the reviewed notification gateway publication and shutdown.",
+  "credentials_in_evidence": false,
+  "screenshot": ".skill-tree/artifacts/notification-release-2026-11-02/netlify-cli-authorized.png"
+}

@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/749e50a5-2246-4c39-9f70-191df4b72698-failure.json",
+  "cause": "Mud typography transforms button text to uppercase. innerText reflects rendered text, so the case-sensitive mixed-case Customize condition skipped the click. The original DOM still showed the collapsed source label and no select.",
+  "repair": "Read textContent for the source-state label; retain pointer-hit and Done transition assertions before awaiting the native select. No product change.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

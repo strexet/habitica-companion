@@ -1,0 +1,23 @@
+{
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "check_id": "notes-project-regressions",
+  "attempt_id": "C-5235d424-8748-4755-a057-d961d6ca4a6b",
+  "environment_identity": "03f1c8188a2fc14c2b4181fab9770b74a8860b27c8bab6bb320fbe4e9aad1dcb",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 7,
+    "discovered": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 5.938542790943757
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/projects-after-mcp-execution.log"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "workers": {
+    "chatgpt-auth": {
+      "name": "habitica-companion-auth",
+      "version": "736020af-860e-40f3-9679-1715bd25da5e",
+      "source_hashes": {
+        "index.js": "ced93186be22230f0b4875b3296e9dcc7d0142a6cb098dd678189400deb4abd5",
+        "index.js.map": "a310f686b6b2e1471f253840081b000b1d5cf4a25b1a70d231f1c4116f2d7f31"
+      }
+    },
+    "companion-workspace": {
+      "name": "habitica-companion-workspace",
+      "version": "9dd0d74e-de60-4530-8cac-3b3f54dd47a4",
+      "source_hashes": {
+        "index.js": "5461cc7d0f600e66ac48fae614ad0f9dc60c0fb1146f4103280d1ee17fa7bdeb",
+        "index.js.map": "1a5ceedabc6175d54a230ac2bb5d4902fbe3cbaab68bfe37ab850eaeb3f69d67"
+      }
+    },
+    "chatgpt-mcp": {
+      "name": "habitica-companion-mcp",
+      "version": "57f72287-d25d-4d8e-ade7-72d2759a421d",
+      "source_hashes": {
+        "index.js": "5b719fad85bf77faebae46ded966b7d5fd0b836bb30362ee94a424169bab7f89",
+        "index.js.map": "6ce8e9e0c02c4d0e25b2c0f2972f341b07a318d54b85b860250b2f62cb9dbe82"
+      }
+    }
+  },
+  "bookmarks": {
+    "chatgpt-auth": {
+      "bookmark": "000002bc-00000000-00005117-f259e74d5e1f2ebe593b53463df391aa"
+    },
+    "companion-workspace": {
+      "bookmark": "000000a0-00000094-00005117-fbbf8e9a559fc78549c0fc072201a7c0"
+    }
+  }
+}

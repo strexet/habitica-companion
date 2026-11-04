@@ -1,0 +1,11 @@
+{
+  "original": "d7aab402-91e9-4ae4-9f58-c43caee69ed5",
+  "artifact": "1793749036508372000",
+  "observed": "Native metadata Range shows Dependencies split on enlarged phone while exact values and preparation assertions pass.",
+  "repair": "Reduce only phone card/review gutters while a task-type copy review exists. Preserve original font sizes, fields, IDs, labels and controls. Assert whole metadata labels on Convert and reused Tasks/Habits/Dailies reviews.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

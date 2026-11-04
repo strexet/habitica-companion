@@ -1,0 +1,28 @@
+{
+  "runId": "d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+  "requestId": "3edd30a4-99c6-459c-bd88-d313eb815ba8",
+  "stage": "pass",
+  "originalRefusalRecovered": true,
+  "delivery": {
+    "status": 200,
+    "state": "response",
+    "requestId": "3edd30a4-99c6-459c-bd88-d313eb815ba8",
+    "receiverStatus": 200,
+    "wallMs": 2642
+  },
+  "replay": {
+    "status": 503,
+    "state": "unavailable"
+  },
+  "observation": {
+    "webhook_id": "16e05561-d1c1-4d17-bccc-78dbab2baa51",
+    "deliveries": 1,
+    "body_hash": "357281bb568ebff58d768c7395eb441788dc702f1470e593b50b9bf41ea1cb91",
+    "signature_valid": 1
+  },
+  "shutdown": {
+    "gatewayStatus": 503,
+    "claimStatus": 503,
+    "receiverDeliveries": 1
+  }
+}

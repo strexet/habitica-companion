@@ -1,0 +1,444 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Unchecked capability is displayed as not checked without an unsupported-browser claim.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+          "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+          "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/acceptance.json",
+          "sha256": "90027339c27003a035b924d4e2e5b7f7b43d9cfaca8c587890b81030b2159c06"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+          "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Observed capability outcomes and failures remain distinct while permission prompts require the explicit acknowledged device action.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+          "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+          "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/acceptance.json",
+          "sha256": "90027339c27003a035b924d4e2e5b7f7b43d9cfaca8c587890b81030b2159c06"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+          "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+          "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+          "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/acceptance.json",
+          "sha256": "90027339c27003a035b924d4e2e5b7f7b43d9cfaca8c587890b81030b2159c06"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+          "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Unchecked capability is displayed as not checked without an unsupported-browser claim.",
+          "Observed capability outcomes and failures remain distinct while permission prompts require the explicit acknowledged device action."
+        ],
+        "id": "push-capability-state-behavior",
+        "parameters": {
+          "report_name": "push-capability-state.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/push-capability-state/unit",
+          "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/State/PushDeviceController.cs",
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-323aa80a-42db-41bb-9003-476284dc1f0f",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 32,
+          "expected": 32,
+          "failed": 8,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.log",
+            "sha256": "cbf3a11c4209c687395dbadd5cc44c42ea520935d818c8ebde37d95f208c31d0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.trx",
+            "sha256": "9507b6263a6df4e22159acf59d9a9420ec4073208068bb5b4f6c114b6b16ca12"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "c88ce3524eff7e4bac28383db41e8c992e7c0ef5386037467cfc7fcee43691a4",
+        "payload_hash": "185bda516360da359ab65c3bf75b44f520ab14a47aac8cf2d1c586238bfb3ff1",
+        "recorded_at": "2026-11-03T19:54:20.654153+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "0750315a9dd7b99ad44a07243548edc5cf29de1a7fe6006fb1d7a57b24d5cb90",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "2fe2c225bfede92169b62c99cb4e026e2ebcfa633cd6ef8e7f19f791df474622",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.724502415861934
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 32,
+          "expected": 32,
+          "failed": 0,
+          "passed": 32,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+            "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+            "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "66712fd238f58ccad038204119de979a3b9a2b86cf5a16cf3c056dbe4509a706",
+        "payload_hash": "940ecfff46bab5e74deddaafe5f8765f3517dc5476716e882bed6e3c5ee55d36",
+        "recorded_at": "2026-11-03T19:57:26.983024+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.806024541612715
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix."
+        ],
+        "id": "push-capability-state-rendered",
+        "parameters": {
+          "cases": "Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/push-capability-state/browser",
+          "routes": [
+            "/todo/sync"
+          ],
+          "task_key": "push-capability-state"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/State/PushDeviceController.cs",
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 865,
+          "expected": 865,
+          "failed": 0,
+          "passed": 865,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "13f3c8327e9d88e6e9f75d799d520dd9cc8f2d580261770d4e0ddb2e65c292b8",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+            "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+          }
+        ],
+        "execution_sessions": {
+          "341007fb67682d17035f3df4e2952ebc779f94744b19a65544990b861a966564": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "8c138a75133081c6f502db3a3c4a22237e0fa622a0c05740ee8cf1b5a55dc3d2",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/push-capability-state/launch-1793735999598814000.json"
+            ],
+            "profile_id": "aae098d94cd18a820a06e444c424f200783000ee33bce4c6befbd8f95ad7ad49",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/push-capability-state",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "24b56801bc411f54f7aecf2432a646f5e71b42084b2198ed9867b437fd950a7b",
+        "payload_hash": "258c799bfa641c5b061268e68b69e7e99ece9d633f96c0151f236d118eb55a9f",
+        "recorded_at": "2026-11-03T20:02:43.180600+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+        },
+        "timing": {
+          "tool_wall_seconds": 162.44799458328635
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/push-capability-state/acceptance.json",
+      "sha256": "90027339c27003a035b924d4e2e5b7f7b43d9cfaca8c587890b81030b2159c06"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/push-capability-state/operation-history.json",
+      "sha256": "972cd39a2f7744bf159e8553b3928fed782f7548713ce5bf140fa45615d002d0"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-70cd7f3b-4731-47e4-b880-ceb80db9ca40",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Distinguish unchecked push capability from unsupported browsers. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-1ffff778-5db1-447c-95f7-fde01d72e70c"
+  ],
+  "recorded_at": "2026-11-03T20:03:24.137652+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+    "src/Habitica.WebApp/Integration/PwaPushBrowser.cs": "8686201a889686a959b479eae38255c1003ad924b5145a6bece3c891827b37d6",
+    "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderFixture.cs": "65f71267a5ec579a23d313696b24a218a88648ce1c88b285849103231a835138",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "a94a8b774fd18c97f8c5cec6a7a06c0b4fa972f031c956e4d84c2649b792fc39",
+    "tests/browser-qualification/ux-ui-push-capability-journey.mjs": "92188a15ddaec0ac8fe90efd25f796a3458c15c056a37f3e2da0ec9318729a43"
+  },
+  "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+  "title": "Distinguish unchecked push capability from unsupported browsers",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Unchecked capability is displayed as not checked without an unsupported-browser claim.",
+        "Observed capability outcomes and failures remain distinct while permission prompts require the explicit acknowledged device action."
+      ],
+      "id": "push-capability-state-behavior",
+      "parameters": {
+        "report_name": "push-capability-state.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/push-capability-state/unit",
+        "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/State/PushDeviceController.cs",
+        "src/Habitica.WebApp/Components/PushDevicePanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix."
+      ],
+      "id": "push-capability-state-rendered",
+      "parameters": {
+        "cases": "Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/push-capability-state/browser",
+        "routes": [
+          "/todo/sync"
+        ],
+        "task_key": "push-capability-state"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/State/PushDeviceController.cs",
+        "src/Habitica.WebApp/Components/PushDevicePanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad"
+}

@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Show concise Party sync failure guidance without a raw JavaScript stack",
+    "description": "The current hydrated Party route displays the full local-host endpoint JavaScript exception and stack in the shared warning banner. The message repeats setup guidance and implementation details above the route.",
+    "expected_behavior": "Present concise actionable Party sync guidance and retain sanitized technical diagnostics separately, preserving read-only cached Party access and existing execution fences.",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "related_task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+    "relation": "followup",
+    "source": ".skill-tree/artifacts/ux-ui/party-context-reflow/1793725722310643000/chromium-gryphy-dark-360-200-party-reflow.png; cloudflarePartySync.js readJsonResponse and Party state refresh error forwarding.",
+    "priority_reason": "Message quality remains independently actionable after the required viewport wrapping repair.",
+    "expected_source_hash": "e30ec52279e8bb5b5785cce0f02b8f1eb1d7ec295f06f31a6062b140444026ff"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-5a241695-798e-48df-8a0f-989ba8ceaee8",
+    "parent_pending_ids": [],
+    "priority": 101,
+    "processing_run_id": null,
+    "related_task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+    "relation": "followup",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "status": "Pending"
+  }
+}

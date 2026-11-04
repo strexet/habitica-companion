@@ -1,0 +1,19 @@
+{
+  "created_ids": [
+    "T-1fa4460c-6493-446e-9bc3-bd33d976404f"
+  ],
+  "dispositions": {
+    "P-642ba84c-019f-42cb-a8f6-53440c6c147f": {
+      "reason": "A source-proven full-layout fixture/oracle gap blocks trustworthy readiness qualification. The bounded task measures and repairs actual header clearance only when needed.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-dddd6b8b-fbca-48bd-a1f5-765bb86ef1af",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-642ba84c-019f-42cb-a8f6-53440c6c147f"
+  ],
+  "task_keys": {
+    "shell-content-visibility": "T-1fa4460c-6493-446e-9bc3-bd33d976404f"
+  }
+}

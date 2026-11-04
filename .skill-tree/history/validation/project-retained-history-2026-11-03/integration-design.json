@@ -1,0 +1,27 @@
+{
+  "status": "Complete local qualification:49 native,37 components,41 shared/actual SDK and162 browser controls pass. Unpublished.",
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "decisions": [
+    "Append optional projectId and default-false unassigned to completion/Habit filters. Explicit project and unassigned cannot combine. Select exact current retained task.ProjectId, not accepted event snapshot placement.",
+    "Current Unassigned includes null placement and retained references to logically removed projects. Exact removed-project selection still matches the raw retained project ID. Archived but not removed projects remain assigned. Labels must distinguish all three cases and preserve exact IDs when names collide.",
+    "Keep original completion/Habit timestamp, accepted snapshot/current fallback text/notes, archive flags, restoration/correction references and precise stable ordering unchanged. Project/text/task/direction/kind/UTC predicates combine with AND before full counts/paging.",
+    "Expose optional currentPlacement metadata only for project/unassigned-filtered result rows. Include exact current project ID/name/archive/removal flags, unassigned state and currentRetainedTaskAssignment basis; never claim event-time project membership. Old unfiltered result encodings remain unchanged.",
+    "Missing exact project identities fail explicitly rather than silently broadening or implying an empty successful selection. Existing revision-bound paging continues unchanged.",
+    "The History route receives exact UUID project/unassigned selection plus optional Workspace/source guards from Projects links. Malformed or mismatched scope remains unavailable. Manual filter changes are explicit new reads; account/source changes clear private row/selection state.",
+    "Add per-project and general retained-history navigation to Projects. History selectors include retained archived/removed identities and disambiguate duplicate names by UUID. Existing exact-event restoration, linked/unknown refusal, original command recovery and separate extended recovery stay unchanged.",
+    "The existing archived/terminal recovery browser retains independent filters and clear scope wording. The new project selector applies to completion/Habit events, avoiding a duplicate recovery page or new recovery mutation contract.",
+    "Qualification requires independent cross-runtime current-versus-accepted-placement cases, full counts/stale pages, archived/removed/unassigned cases, original restore recovery, scoped navigation, actual local SDK/D1 and current Release light/obsidian phone/desktop normal/enlarged-text browser routes. No publication, real account, provider mutation or device operation is authorized by development qualification.",
+    "The browser history selector exposes retained archived/removed identities, while default list_projects exposes active records only. Extend the existing reviewed read-only list_projects tool and native parity helper with explicit includeRetained=true, preserving default active behavior and revision-bound paging. Agent workflows can choose duplicate/retired exact IDs without permanent browser automation."
+  ],
+  "sources": [
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+    "workers/shared/completion-history.ts",
+    "workers/shared/habit-history.ts",
+    "workers/companion-workspace/src/completion-history.ts",
+    "workers/companion-workspace/src/habit-history.ts",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+    "src/Habitica.WebApp/Pages/TodoHistoryPage.razor"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "started_at_utc": "2026-10-30T08:08:48.853244+00:00",
+  "deadline_seconds": 60,
+  "cleanup_reserve_seconds": 5,
+  "wall_seconds": 0.061,
+  "command": [
+    "node",
+    "../../deploy/frontend-settings.mjs",
+    "wwwroot/appsettings.json"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/src/Habitica.WebApp",
+  "exit_code": 0
+}

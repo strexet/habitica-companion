@@ -445,6 +445,102 @@
         "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime"
       },
       "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases."
+    },
+    "release-dotnet": {
+      "lane": "unit",
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "dotnet",
+        "{report_directory}"
+      ],
+      "input_paths": [
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "toolchain": {
+        "dotnet": "8.0.125",
+        "node": "22.x",
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit"
+      },
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations."
+    },
+    "release-workers": {
+      "lane": "integration",
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "workers",
+        "{report_directory}"
+      ],
+      "input_paths": [
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "toolchain": {
+        "dotnet": "8.0.125",
+        "node": "22.x",
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit"
+      },
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations."
+    },
+    "release-browser": {
+      "lane": "browser",
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "browser",
+        "{report_directory}"
+      ],
+      "input_paths": [
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "toolchain": {
+        "dotnet": "8.0.125",
+        "node": "22.x",
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit"
+      },
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations."
+    },
+    "release-hosted": {
+      "lane": "server",
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "hosted",
+        "{report_directory}"
+      ],
+      "input_paths": [
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "toolchain": {
+        "dotnet": "8.0.125",
+        "node": "22.x",
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit"
+      },
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations."
+    },
+    "release-hosted-browser": {
+      "lane": "browser",
+      "argv": [
+        "node",
+        "tests/release/hosted-smoke.mjs",
+        "{report_directory}"
+      ],
+      "input_paths": [
+        "tests/release/hosted-smoke.mjs"
+      ],
+      "toolchain": {
+        "node": "22.x",
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit"
+      },
+      "execution_notes": "Fresh signed-out public contexts, exact stable production origin, routed cold startup, activated service worker and Chromium offline relaunch. No real account, provider write, permission or physical-device acceptance. Both contexts close;240-second deadline."
     }
   }
 }

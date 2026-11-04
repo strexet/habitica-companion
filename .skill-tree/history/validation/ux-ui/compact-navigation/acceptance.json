@@ -1,0 +1,50 @@
+{
+  "task_id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+  "title": "Make primary planning navigation reachable without a long drawer scan",
+  "operation_history": ".skill-tree/history/validation/ux-ui/compact-navigation/operation-history.json",
+  "checks": [
+    {
+      "id": "compact-navigation-behavior",
+      "counts": {
+        "discovered": 40,
+        "expected": 40,
+        "failed": 0,
+        "passed": 40,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.log",
+          "sha256": "f50058288b75ff599941b9242abae9e7515da8905df21585d4af9067d21da7b6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.trx",
+          "sha256": "3c87ba8b4866f4da62a53b44aad71a95d34bb78575cb6b22927f0d268529f949"
+        }
+      ]
+    },
+    {
+      "id": "compact-navigation-rendered",
+      "counts": {
+        "discovered": 649,
+        "expected": 649,
+        "failed": 0,
+        "passed": 649,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+          "sha256": "67dddbd5e232a33c9410262243006a93af02cb965bf4e3b37deebb5292127dbc"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

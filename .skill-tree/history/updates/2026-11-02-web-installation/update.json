@@ -1,0 +1,155 @@
+{
+  "source_commit": "c52cd2779fb586272737951afa79f543b679b822",
+  "target_head": "f9f71b5190086d17192642545ea3dc55610eed07",
+  "flavor": "web",
+  "provider": "codex",
+  "backup": "/Users/petr/.codex/backups/skill-tree/habitica-tool-2026-11-02-95cb170c",
+  "queue_before": {
+    "Pending Queue": 1,
+    "Prioritized Next Changes": 14,
+    "Backlog": 12
+  },
+  "active_run_before": null,
+  "task_ids_preserved": true,
+  "original_validation_prose_preserved": true,
+  "acceptance_preserved": true,
+  "project_tasks_resumed": false,
+  "product_commands_executed": false,
+  "unavailable_required_recipes": {
+    "consenting-team-qualification": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "production-log-qualification": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "activity-rendered-browser": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "desktop-host-qualification": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "physical-device-qualification": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "subscription-contracts-execution-profile": "The task-specific test fixture does not exist; implementation must supply the assertion and a concrete supported recipe before acceptance.",
+    "notes-indexeddb-browser": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "notes-rendered-browser": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed.",
+    "netlify-hosted-controls": "The original validation contract requires an exact owned hosted/browser/device profile and applicable authorization; no generic or weaker substitute is installed."
+  },
+  "live_path_updates": [
+    ".gitignore",
+    "AGENTS.md",
+    "README.md",
+    "deploy/README.md",
+    "deploy/callback-egress/prepare-source.mjs",
+    "deploy/callback-egress/test/package.test.mjs",
+    "plugin/README.md",
+    ".skill-tree/documents/ai-app-testing.md",
+    ".skill-tree/documents/callback-egress.md",
+    ".skill-tree/documents/companion-first-mcp-research.md",
+    ".skill-tree/documents/cron.md",
+    ".skill-tree/documents/deploy-cloudflare-pages.md",
+    ".skill-tree/documents/documents-snapshot.md",
+    ".skill-tree/documents/features.md",
+    ".skill-tree/documents/future.md",
+    ".skill-tree/documents/habitica-api.md",
+    ".skill-tree/documents/habitica-tool-references.md",
+    ".skill-tree/documents/linked-task-recovery.md",
+    ".skill-tree/documents/mcp-protocol-compatibility.md",
+    ".skill-tree/documents/navigation-study.md",
+    ".skill-tree/documents/notes-project-links.md",
+    ".skill-tree/documents/project.md",
+    ".skill-tree/documents/repository-map.md",
+    ".skill-tree/documents/rules.md",
+    ".skill-tree/documents/task-adoption.md",
+    ".skill-tree/documents/technical.md",
+    ".skill-tree/documents/testing.md",
+    ".skill-tree/documents/ux-ui-manifest.md",
+    ".skill-tree/skill-tree.json",
+    "tests/browser/pwa-shell.mjs"
+  ],
+  "historical_prefix_mapping": {
+    "skill-tree/": ".skill-tree/"
+  },
+  "legacy_customization": "Completed-root intake extension retained in backup; exact current upstream packages installed.",
+  "source_working_tree_snapshot": "5103a1091316c3dab4fca558b5dd2fa228b97dd5885c21f17569f6a69c09e337",
+  "source_uncommitted_fixes_included": [
+    "UTF 1.6.0 resolved compatibility rule",
+    "BOM-prefixed static JSON parsing",
+    "Corresponding source fixtures and compact evidence"
+  ],
+  "version": "0.2.0",
+  "installation_identity": "5d9fae3400d9a9df3596ec55c11d3986d7bc6b38b4df99e617565376bc90e578",
+  "environment_identity": "690677f58887ed320d877e6081902c4b718c7b80729e3a780d8095d1e713428a",
+  "packages": [
+    "skill-tree-add-pending-task",
+    "skill-tree-create-documents-snapshot",
+    "skill-tree-implement-all",
+    "skill-tree-implement-next-future-task",
+    "skill-tree-process-future-pending",
+    "skill-tree-repo-documentation",
+    "skill-tree-repo-documentation-audit",
+    "skill-tree-work-through-next"
+  ],
+  "profile_gaps": [],
+  "queue_after": {
+    "Pending Queue": 1,
+    "Prioritized Next Changes": 14,
+    "Backlog": 12
+  },
+  "active_run_after": null,
+  "task_progress_after": {},
+  "historical_files_preserved_byte_for_byte": 1758,
+  "legacy_package_files_preserved": 81,
+  "other_baseline_files_preserved_or_reviewed": 1079,
+  "unexpected_baseline_changes": [],
+  "git_index_byte_preserved": true,
+  "staged_patch_preserved": true,
+  "checks": [
+    {
+      "check": "manager-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "queue-refresh",
+      "exit_code": 0
+    },
+    {
+      "check": "queue-validation",
+      "exit_code": 0
+    },
+    {
+      "check": "metadata-validation",
+      "exit_code": 0
+    },
+    {
+      "check": "installation-note-prose",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax deploy/callback-egress/prepare-source.mjs",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax deploy/callback-egress/test/package.test.mjs",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax tests/browser/pwa-shell.mjs",
+      "exit_code": 0
+    },
+    {
+      "check": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "check": "manager verification from independent working directory",
+      "exit_code": 0
+    },
+    {
+      "check": "final metadata validation",
+      "exit_code": 0
+    }
+  ],
+  "qualification": "Installation, deterministic composition, metadata, syntax and preservation checks only. No product tests, builds, browser/server, deployment or live-service operation.",
+  "commit_created": false,
+  "source_qualification": {
+    "python_tests": 114,
+    "node_tests": 62,
+    "all_passed": true,
+    "report": ".skill-tree/history/updates/2026-11-02-web-installation/source-qualification.json",
+    "includes_bom_and_utf_1_6_0_controls": true,
+    "actual_unity_execution": false
+  },
+  "latest_canonical_source_match_verified": true
+}

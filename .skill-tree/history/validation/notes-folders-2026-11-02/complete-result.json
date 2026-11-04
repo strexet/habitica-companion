@@ -1,0 +1,521 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+          "sha256": "1f9788e9cefd05beab3b99229f60db09609cd98200b47c646eae63582539f5b9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+          "sha256": "84ff895eed96be1c0548f031850e099230629658ce99e1a2c0865a99c3247724"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+          "sha256": "0def8e8c963591b348672ca75c394f5306f52901e991eb39f299c4bd0a2cd68a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+          "sha256": "bbf57701000947d7ffc4c9ea821bce44ee8c5c302eecce23e290561188c9b601"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+          "sha256": "8ce8a099615e66e46fbbf2d1d0eb3eb0193771b01e304729eb91d4c08134a805"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+          "sha256": "a20ae8bd393688c18154d0c71e9d4b40e377fef212a43a9a8735fa5f11ef783b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx",
+          "sha256": "a717caf3f79e857956b4b2496751eec8aa3552f75d6f0895fa36e3088b2f9054"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+          "sha256": "1f9788e9cefd05beab3b99229f60db09609cd98200b47c646eae63582539f5b9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+          "sha256": "84ff895eed96be1c0548f031850e099230629658ce99e1a2c0865a99c3247724"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+          "sha256": "0def8e8c963591b348672ca75c394f5306f52901e991eb39f299c4bd0a2cd68a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+          "sha256": "bbf57701000947d7ffc4c9ea821bce44ee8c5c302eecce23e290561188c9b601"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+          "sha256": "8ce8a099615e66e46fbbf2d1d0eb3eb0193771b01e304729eb91d4c08134a805"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+          "sha256": "a20ae8bd393688c18154d0c71e9d4b40e377fef212a43a9a8735fa5f11ef783b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx",
+          "sha256": "a717caf3f79e857956b4b2496751eec8aa3552f75d6f0895fa36e3088b2f9054"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+        "criteria": [
+          "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+          "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+        ],
+        "id": "notes-local-model",
+        "parameters": {
+          "report_name": "notes-local-model.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model",
+          "test_filter": "FullyQualifiedName~Notes",
+          "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
+          "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
+          "src/Habitica.Domain/Notes/NotesModel.cs",
+          "src/Habitica.Application/Notes/NotesEngine.cs",
+          "src/Habitica.Application/Notes/NotesFolders.cs",
+          "src/Habitica.Application/Notes/NotesService.cs",
+          "src/Habitica.Application/Notes/NotesQueries.cs",
+          "src/Habitica.Application/Notes/NotesProjects.cs",
+          "src/Habitica.Application/Notes/INotesCloudClient.cs",
+          "tests/fixtures/notes/notes-folder-wire-v3.json"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-23b15de0-fd82-490e-9223-4d5eb39eb3ab",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 17,
+          "expected": 17,
+          "failed": 1,
+          "passed": 16,
+          "skipped": 0
+        },
+        "definition": "94373d8f381966b78ea034af24700efad56ddf435174d07a98e6bbac32d1146c",
+        "environment_identity": "4c4f4eb130016c62d954d4bc316b63aa0c751c78c5a67a6f5e7dabb3c24a066a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/compatibility-red-execution.log",
+            "sha256": "ef40eb42d5c2090a5b64a22e7c4892e5da28434288aa9ba704d81cf775ef6cad"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/notes-local-model.trx",
+            "sha256": "84e073a9bfab44b3f626fbe09b3404af80dda8573c4923b914e1d99d14eb8e9e"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "019a23c06db9d34e38a0fd7c1f236a87afc177c572cb94f9e0dfba7f82c05227",
+        "payload_hash": "f092f9b884f7d38ffa5a09b24d64dbbb1dbcdbdfe64595bee2c22b8dfeb8604d",
+        "recorded_at": "2026-11-02T16:27:19.234015+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "99f5cfd03db029ca3268a33293ca1f6166cc85b150386be55bc881c340a285ec",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "d3767a823661d01bdf52466bc22a1bd4fce5625076152e96b417c4b91852a171",
+          "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "b8caae5c59507ce06bb893999bbaa0285c3bee6ba160a84f82b04bd5f56ad6b8"
+        },
+        "timing": {
+          "tool_wall_seconds": 8.476562874857336
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-fbe1169b-538d-4567-b535-139eb2dc9397",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 27,
+          "expected": 27,
+          "failed": 0,
+          "passed": 27,
+          "skipped": 0
+        },
+        "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+        "environment_identity": "4e8ce1973efb8b0ecb1a4b72e382df333b7225d0ce614616222aba5707a23e23",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+            "sha256": "bbf57701000947d7ffc4c9ea821bce44ee8c5c302eecce23e290561188c9b601"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+            "sha256": "8ce8a099615e66e46fbbf2d1d0eb3eb0193771b01e304729eb91d4c08134a805"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "a31d8e88254e3002b123d1d1c7a211e9a8c046c02cf0a98a72c21a758f9aaaf0",
+        "payload_hash": "ff7c41124888f5ffc4196985a719ed15f54acb94750e2c28ff0e36b7d63d38ce",
+        "recorded_at": "2026-11-02T16:35:20.118872+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Notes/INotesCloudClient.cs": "efca467130f365bcae89c3e928722f49282063066249def284d88d130c609aa4",
+          "src/Habitica.Application/Notes/NotesEngine.cs": "e521f4140b3c11c07f613b88e6673527579eea61b7e9ed92017d15ba5bb74436",
+          "src/Habitica.Application/Notes/NotesFolders.cs": "2a467a1d0bc5a25664a00abdb496f8f09f64d48fe1ec6afa2f0ae29db4c45c92",
+          "src/Habitica.Application/Notes/NotesProjects.cs": "4291d06379ee09542e0b65f8df6c6331ccb20059b7cf5800fcaafe19dbfc933f",
+          "src/Habitica.Application/Notes/NotesQueries.cs": "bf6febe210d239bc785aff9e27e919556c4b4d36af157945e084329de76c86aa",
+          "src/Habitica.Application/Notes/NotesService.cs": "2c34dd653f7a08e262be79e950de888b4fa53540618f7f3e30d09f61ddeb2ab9",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "8d3b754844a822dd20b67d5f029355ddf993875a4d8e3fd7eed7db76274fda6f",
+          "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "9aad47b90c10ffe714d38d58267557a1242ca1af6f38d47738533582c38fd13c",
+          "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+        },
+        "timing": {
+          "tool_wall_seconds": 5.172591082984582
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+        "criteria": [
+          "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+          "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+        ],
+        "id": "notes-storage-contracts",
+        "parameters": {
+          "report_name": "notes-storage-contracts.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts",
+          "test_filter": "FullyQualifiedName~Notes",
+          "test_project": "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
+          "src/Habitica.Domain/Notes/NotesModel.cs",
+          "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-53524de6-08d4-46d8-ac00-fc5b212290c8",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 3,
+          "expected": 3,
+          "failed": 0,
+          "passed": 3,
+          "skipped": 0
+        },
+        "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+        "environment_identity": "76e60181f5b687aee476975cfadbde0392fb4c2f5ab0b18a83e28deea95af88b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+            "sha256": "a20ae8bd393688c18154d0c71e9d4b40e377fef212a43a9a8735fa5f11ef783b"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx",
+            "sha256": "a717caf3f79e857956b4b2496751eec8aa3552f75d6f0895fa36e3088b2f9054"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "801123130c746ad0dabe1ea7a137ba2ae8cfbccbaecbc7896b3877a3f0bb6a6e",
+        "payload_hash": "3f0d854b910ff52959d0f788bb8a9cda06ec88920ae6f5a0854a94c97b822851",
+        "recorded_at": "2026-11-02T16:36:11.398272+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+          "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+          "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "abe8b9f780b66a6644a4244bd5d3efbfbf8089ceee44c68feacabe4b2fbf44eb"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.8620817081537098
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+        "criteria": [
+          "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+          "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+        ],
+        "id": "notes-indexeddb",
+        "parameters": {},
+        "recipe_id": "notes-indexeddb-browser",
+        "sources": [
+          ".skill-tree/documents/testing.md",
+          ".skill-tree/documents/technical.md",
+          "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "tests/browser/notes-folders.mjs",
+          "tests/fixtures/notes/notes-folder-wire-v3.json"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-6525d8f7-db79-4b5c-9f65-4aeb39fd7968",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both persistent browser contexts closed; generated temporary profiles removed. No actual user database, credentials, network service or device permission used.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 0,
+          "passed": 40,
+          "skipped": 0
+        },
+        "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+        "environment_identity": "988ddd8a1fc7ffde289dfa608d5f7cf09d881d7bb2c4c47b919141fc11e57474",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+            "sha256": "1f9788e9cefd05beab3b99229f60db09609cd98200b47c646eae63582539f5b9"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+            "sha256": "84ff895eed96be1c0548f031850e099230629658ce99e1a2c0865a99c3247724"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+            "sha256": "0def8e8c963591b348672ca75c394f5306f52901e991eb39f299c4bd0a2cd68a"
+          }
+        ],
+        "execution_sessions": {
+          "105f7f1657df7336b43deb8c400ffd53b216ed8fb7ab572652611a021e5377f8": {
+            "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T16:40:39.864838+00:00",
+            "fixture_identity": "Actual IndexedDB adapter and portable folder wire fixture; isolated generated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+            "identity_evidence": [
+              ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json"
+            ],
+            "profile_id": "notes-folders-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "browser-ad161e74",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "2836be16ba26da14bb98c7f73653f98f19041a080a04ccc291ddc2fc46ba0bf1",
+        "payload_hash": "32b2ba5fcc4d2cc8725af1b2a8915a3d26e8c0772cae0d9dec90a5128c4a7978",
+        "recorded_at": "2026-11-02T16:36:43.762208+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/technical.md": "a746313d9b1e8ca278f2a5b52242064294e7530d3fa326638c189c555d9d2b6a",
+          ".skill-tree/documents/testing.md": "329ac6f4cdc8837cd1097e2b7467fb28ed8b74c8a85953a0c8b07ed619754f47",
+          "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+          "tests/browser/notes-folders.mjs": "0e7228423d92827f26332eec6e0697312674969a8d3a1dcfe8d381fdfeeb6708",
+          "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.3229652079753578
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-execution.log",
+      "sha256": "1f9788e9cefd05beab3b99229f60db09609cd98200b47c646eae63582539f5b9"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-ad161e74-identity.json",
+      "sha256": "84ff895eed96be1c0548f031850e099230629658ce99e1a2c0865a99c3247724"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb.json",
+      "sha256": "0def8e8c963591b348672ca75c394f5306f52901e991eb39f299c4bd0a2cd68a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/local-final-execution.log",
+      "sha256": "bbf57701000947d7ffc4c9ea821bce44ee8c5c302eecce23e290561188c9b601"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/local-final.trx",
+      "sha256": "8ce8a099615e66e46fbbf2d1d0eb3eb0193771b01e304729eb91d4c08134a805"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/storage-final-execution.log",
+      "sha256": "a20ae8bd393688c18154d0c71e9d4b40e377fef212a43a9a8735fa5f11ef783b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-final.trx",
+      "sha256": "a717caf3f79e857956b4b2496751eec8aa3552f75d6f0895fa36e3088b2f9054"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-b8fd90fd-f9c9-440e-9590-98a4165652ff",
+  "limitations": [
+    "Cloud folder API/MCP transport and folder presentation remain separate required snapshot units. No hosted, physical-device or real user operation was executed."
+  ],
+  "outcome": "Versioned single-level Notes folders, explicit project-consistent placement, exact history, bounded independent receipts and transactional browser storage are implemented and locally qualified.",
+  "parent_pending_ids": [
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+  ],
+  "recorded_at": "2026-11-02T16:37:31.757434+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "source_fingerprints": {
+    ".skill-tree/documents/notes-folders.md": "44029df1372c17660fc5cb10e8899cd04e5d5488feddf10b9a9cbc24e3479003",
+    ".skill-tree/documents/technical.md": "a746313d9b1e8ca278f2a5b52242064294e7530d3fa326638c189c555d9d2b6a",
+    ".skill-tree/documents/testing.md": "329ac6f4cdc8837cd1097e2b7467fb28ed8b74c8a85953a0c8b07ed619754f47",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "efca467130f365bcae89c3e928722f49282063066249def284d88d130c609aa4",
+    "src/Habitica.Application/Notes/NotesEngine.cs": "e521f4140b3c11c07f613b88e6673527579eea61b7e9ed92017d15ba5bb74436",
+    "src/Habitica.Application/Notes/NotesFolders.cs": "2a467a1d0bc5a25664a00abdb496f8f09f64d48fe1ec6afa2f0ae29db4c45c92",
+    "src/Habitica.Application/Notes/NotesProjects.cs": "4291d06379ee09542e0b65f8df6c6331ccb20059b7cf5800fcaafe19dbfc933f",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "bf6febe210d239bc785aff9e27e919556c4b4d36af157945e084329de76c86aa",
+    "src/Habitica.Application/Notes/NotesService.cs": "2c34dd653f7a08e262be79e950de888b4fa53540618f7f3e30d09f61ddeb2ab9",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "8d3b754844a822dd20b67d5f029355ddf993875a4d8e3fd7eed7db76274fda6f",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "9aad47b90c10ffe714d38d58267557a1242ca1af6f38d47738533582c38fd13c",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "abe8b9f780b66a6644a4244bd5d3efbfbf8089ceee44c68feacabe4b2fbf44eb",
+    "tests/browser/notes-folders.mjs": "0e7228423d92827f26332eec6e0697312674969a8d3a1dcfe8d381fdfeeb6708",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+  },
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "title": "Add versioned Notes folders and local persistence",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-local-model",
+      "parameters": {
+        "report_name": "notes-local-model.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
+        "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.Application/Notes/NotesEngine.cs",
+        "src/Habitica.Application/Notes/NotesFolders.cs",
+        "src/Habitica.Application/Notes/NotesService.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "src/Habitica.Application/Notes/NotesProjects.cs",
+        "src/Habitica.Application/Notes/INotesCloudClient.cs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-storage-contracts",
+      "parameters": {
+        "report_name": "notes-storage-contracts.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts",
+        "test_filter": "FullyQualifiedName~Notes",
+        "test_project": "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+      "criteria": [
+        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+      ],
+      "id": "notes-indexeddb",
+      "parameters": {},
+      "recipe_id": "notes-indexeddb-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md",
+        "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/browser/notes-folders.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306"
+}

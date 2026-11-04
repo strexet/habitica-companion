@@ -1,0 +1,69 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-4bfdb8ca-f3a7-44c7-a71b-35ac440669d9",
+  "check_id": "disabled-readability-behavior",
+  "definition": "373cdf67be8c3d7858b06968f5acf0d281abb276d50ca498db1a30848b7c4c6f",
+  "environment_identity": "e455d131d0a74a6dcc927b2db219fc25f88b7c99615703229997fdaac9929efe",
+  "key": "d7a120efd44fa8112e013ecdb958a15ec9a22682ca533d6a302f4e80767d931f",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T09:52:40.234397+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T09:47:40.493645+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~ColorSchemeCatalogTests",
+      "--logger",
+      "trx;LogFileName=disabled-readability.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/disabled-readability/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "f557e894bbcb91905e831658e9b13be7ec0bb04ac17c4502fc7947cbe093eb68",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+    "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "36d9a2bbcec9e1e530c97df1f1b891a35c47859b30a4d3c78c30dc0b12eff225",
+    "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9"
+  },
+  "task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928"
+}

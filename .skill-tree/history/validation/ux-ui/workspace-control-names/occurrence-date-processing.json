@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67"
+    ],
+    "dispositions": {
+      "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67": {
+        "status": "promoted",
+        "reason": "A selected native occurrence value clips in the parent matrix; exact field ownership and existing interaction tests support a required bounded layout repair."
+      }
+    },
+    "tasks": [
+      {
+        "key": "daily-occurrence-readability",
+        "title": "Keep selected Daily occurrence dates readable with enlarged phone text",
+        "body": "Goal:\nKeep repeated Daily occurrence inputs readable with enlarged phone text.\n\nCurrent behavior:\nHydrated Chromium at360 pixels and200-percent text retains only0.720626 of selected2026-11-04 occurrence ink against the0.97 acceptance floor. Creation-date padding is already scoped separately; occurrence inputs retain generic padding inside compact row fields.\n\nDesired behavior:\nRepair occurrence field layout/padding so native civil-date segments remain visible. Preserve exact task/date drafts, labels, native input semantics and original completion review fences.\n\nTouch:\n- `src/Habitica.WebApp/Components/TodoTaskPanel.razor`\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs`\n- `tests/browser-qualification/ux-ui-occurrence-date-journey.mjs`\n- `tests/browser-qualification/ux-ui-workspace-names-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nNo font/zoom reduction, global fixed date width, recurrence, provider or completion policy changes. Keep native inputs, exact occurrence draft identities and original command gates. Existing local synthetic execution authorization applies. Physical devices, native popovers, other locales and assistive technology remain unqualified.\n\nValidation:\nUse the retained current-source failing native date report as the layout regression. Run existing meaningful component checks and current Release native value comparisons across all declared widths, normal/enlarged text and three light/dark schemes including obsidian-glow. Preserve the0.97 floor, exact journal and cleanup evidence.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"daily-occurrence-readability-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Exact Daily occurrence drafts, review dates, disabled fences and unchanged journals remain covered by component interaction checks.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~TodoTaskPanelTests\",\n        \"report_name\": \"daily-occurrence-readability.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/daily-occurrence-readability/unit\"\n      },\n      \"assertion\": \"Retain exact Daily occurrence drafts, review targets and original fences; current failing native screenshot is the layout regression.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"daily-occurrence-readability-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Selected Daily occurrence dates retain complete native value paint across the required light/dark phone/desktop normal/enlarged matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui-native-date.mjs\",\n        \"tests/browser-qualification/ux-ui-occurrence-date-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"daily-occurrence-readability\",\n        \"routes\": [\n          \"/todo/dailies\"\n        ],\n        \"cases\": \"Same-named Daily ready and original-review-disabled states, selected creation and occurrence dates with full native ink.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser\"\n      },\n      \"assertion\": \"Require selected native occurrence date ink against same-engine full-width references for both exact task records across the full matrix. Preserve native date editing, explicit review targets, keyboard focus and unchanged journals.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Exact Daily occurrence drafts, review dates, disabled fences and unchanged journals remain covered by component interaction checks.\n- Selected Daily occurrence dates retain complete native value paint across the required light/dark phone/desktop normal/enlarged matrix.\n\nDocumentation updates:\nRecord scoped occurrence-field layout and qualification limits in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\nOriginal parent report `.skill-tree/history/validation/ux-ui/workspace-control-names/browser/39113b80-a108-459f-a3d4-dac92e7057d6-failure.json`; native Chromium actual/reference images in artifact1793732871826209000. Current row markup, generic compact field and input padding inspected. WebKit same selected occurrence retained0.973122; no cross-engine inference.\n",
+        "parent_pending_ids": [
+          "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "266a8daa1d6d9706cb4cabaa302418367dea8b7213e4bf05cb6af81d36d9f875"
+  },
+  "result": {
+    "created_ids": [
+      "T-b1d64983-0be2-4d15-90c2-7720b34ab073"
+    ],
+    "dispositions": {
+      "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67": {
+        "reason": "A selected native occurrence value clips in the parent matrix; exact field ownership and existing interaction tests support a required bounded layout repair.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-7ce155ae-ee9c-4a73-ba33-e8d93d7e4060",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67"
+    ],
+    "task_keys": {
+      "daily-occurrence-readability": "T-b1d64983-0be2-4d15-90c2-7720b34ab073"
+    }
+  }
+}

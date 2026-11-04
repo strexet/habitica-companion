@@ -1,0 +1,71 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-0c2c92a1-8d93-4578-816e-90d4615b11d4",
+  "check_id": "disabled-readability-behavior",
+  "definition": "8043792b13d47923c86f9092c2a0bb456a5482d757bf58b0090bd84026dedcda",
+  "environment_identity": "5dbace4bb4fdc7e252c5c9d2933220cc18f7b793f1f2fe5df227eaa06c77e95c",
+  "key": "efeb4014ec7d496f1fea55bfe9cd340c577d8ddbc4a78efd9fc20b2afc542758",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T00:47:51.073363+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T00:42:51.400944+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~ColorSchemeCatalogTests|FullyQualifiedName~InventoryPageTests|FullyQualifiedName~SettingsPageTests",
+      "--logger",
+      "trx;LogFileName=disabled-readability.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/disabled-readability/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "9ba23913528ef5bb032b089ca79261ac55eea83b14a5948987abd6068a07f374",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "7604589ef7fa091594038f18c45265328c529ccd67937ff3e798983992d0556f",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+    "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "36d9a2bbcec9e1e530c97df1f1b891a35c47859b30a4d3c78c30dc0b12eff225",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+  },
+  "task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928"
+}

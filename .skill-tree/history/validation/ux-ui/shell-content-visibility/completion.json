@@ -1,0 +1,622 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.log",
+          "sha256": "765d33318f7eb8c35f3313ad3fcd3bdb40b748d28f0066054e392c339f00681a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.trx",
+          "sha256": "b0e35a70ebe8237b316e03064ea4156282c4d304c66bd110ab0d754c9c8b440b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-81c4095b-4712-4ab7-a07d-97b187100ad7.tap",
+          "sha256": "26333bed8570a0f773dc69cbcbe02f345d2f7a4892803952f7b69552faf1ad1b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/acceptance.json",
+          "sha256": "ca0534359c2d1f6598be7b3415d8af477fe52aec900a64c7f561d2a7a1ded523"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/ab0e0f3b-c825-4ccf-a945-4c297f6415a6.json",
+          "sha256": "7799f783e8fb19fd3ab933e367bb72da5c7a61e7199167c46544c74319692047"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.log",
+          "sha256": "765d33318f7eb8c35f3313ad3fcd3bdb40b748d28f0066054e392c339f00681a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.trx",
+          "sha256": "b0e35a70ebe8237b316e03064ea4156282c4d304c66bd110ab0d754c9c8b440b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-81c4095b-4712-4ab7-a07d-97b187100ad7.tap",
+          "sha256": "26333bed8570a0f773dc69cbcbe02f345d2f7a4892803952f7b69552faf1ad1b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/acceptance.json",
+          "sha256": "ca0534359c2d1f6598be7b3415d8af477fe52aec900a64c7f561d2a7a1ded523"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/ab0e0f3b-c825-4ccf-a945-4c297f6415a6.json",
+          "sha256": "7799f783e8fb19fd3ab933e367bb72da5c7a61e7199167c46544c74319692047"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.log",
+          "sha256": "765d33318f7eb8c35f3313ad3fcd3bdb40b748d28f0066054e392c339f00681a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.trx",
+          "sha256": "b0e35a70ebe8237b316e03064ea4156282c4d304c66bd110ab0d754c9c8b440b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-81c4095b-4712-4ab7-a07d-97b187100ad7.tap",
+          "sha256": "26333bed8570a0f773dc69cbcbe02f345d2f7a4892803952f7b69552faf1ad1b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/acceptance.json",
+          "sha256": "ca0534359c2d1f6598be7b3415d8af477fe52aec900a64c7f561d2a7a1ded523"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/ab0e0f3b-c825-4ccf-a945-4c297f6415a6.json",
+          "sha256": "7799f783e8fb19fd3ab933e367bb72da5c7a61e7199167c46544c74319692047"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.",
+        "criteria": [
+          "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+          "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+        ],
+        "id": "shell-content-behavior",
+        "parameters": {
+          "report_name": "shell-content-visibility.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/unit",
+          "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui.mjs",
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/App.razor"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-2f629c88-49cb-4d53-8cab-097abefb1ba8",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 24,
+          "expected": 24,
+          "failed": 0,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "704efffe91afca8613b76f1d786c29714e0aba44d7802202482a2caba33849bb",
+        "environment_identity": "240843e00f3bc86be29da13d408e25feb32116b395f605d6b9b6ca65f02b7461",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.log",
+            "sha256": "765d33318f7eb8c35f3313ad3fcd3bdb40b748d28f0066054e392c339f00681a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-2f629c88-49cb-4d53-8cab-097abefb1ba8.trx",
+            "sha256": "b0e35a70ebe8237b316e03064ea4156282c4d304c66bd110ab0d754c9c8b440b"
+          }
+        ],
+        "execution_sessions": {
+          "5f6a592d7fb3a47624ebec16f6282b691bff914df155581fc24d1c98bd01ef2f": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:20:47.573776+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793696687574232000.json"
+            ],
+            "profile_id": "99dd7e5e2b957a1d9cbedda945bdf604222042c4c42ae0e48501d10515fbcbf3",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bcc5ecd9200b8dec5b729a64d9fe4bd0c11f4d0f25814ae5bf800b70d8da8729": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:14:09.801036+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793696289801519000.json"
+            ],
+            "profile_id": "e788e16c08ceefcb99d6be048ad0e12a67663ec2eee3d609da39e7ad250d4681",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "bfbc444336a543cec90051020cd0a5a704a48f532ea0b6463cc696ad1d5cdc3c",
+        "payload_hash": "e4666f1edfcc2511fabb1dd3dbbf73ccfa2416f6c8a00eeac6f9fbc6bbf716b3",
+        "recorded_at": "2026-11-03T09:11:27.297530+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "cae517ce966a782e6a85602cf6fe21df9264eebf89733af7ae9d36505f5f6ebd",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9",
+          "tests/browser-qualification/ux-ui-adapters.json": "938ca398263af7b7e9bfc08596239087dca8e4502393cb764e4ebcf96605541a",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs": "7c7af51a60f332b4dafa79645169caed41f5eaca1a5cadf61e4f2433bf3db8e9",
+          "tests/browser-qualification/ux-ui.mjs": "54785cdeff998b8ddab31c03a1688eef58014f98d9301baec2ed2d835e8922fa"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.542470916872844
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Independent header/main rectangles detect complete and partial header overlap while clear and horizontally separate content passes.",
+        "criteria": [
+          "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+        ],
+        "id": "shell-content-canaries",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-a830c20e-ae8b-4e08-bb92-98c1586babc3",
+        "classification": "executed-control",
+        "cleanup": "Pure geometry tests exited; no browser/server was launched.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 3,
+          "passed": 17,
+          "skipped": 0
+        },
+        "definition": "5567fb555339cfedd5100c57eb46768dfb5fee728cc99088405e876b19c65263",
+        "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-a830c20e-ae8b-4e08-bb92-98c1586babc3.tap",
+            "sha256": "c5c164c8436a5c1f85d7ec8a54ed3d6313db146fa8e241e14ae514e4610bf0a0"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "340964de2b3ff4ec5f5cf377344e43999336c3285da6afc02d5160b4a4b3df32",
+        "payload_hash": "6a43a684df23933c61391825ee0f257233ff3f7cf2bc466c75a0b596713106cf",
+        "recorded_at": "2026-11-03T08:52:25.034206+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "7f79769dbb095603f397616e0325e844d4580f59e4f4806cec833e325d3a40fe"
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-81c4095b-4712-4ab7-a07d-97b187100ad7",
+        "classification": "executed-control",
+        "cleanup": "Pure Node geometry examples completed without browser/server execution.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 0,
+          "passed": 20,
+          "skipped": 0
+        },
+        "definition": "704efffe91afca8613b76f1d786c29714e0aba44d7802202482a2caba33849bb",
+        "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/C-81c4095b-4712-4ab7-a07d-97b187100ad7.tap",
+            "sha256": "26333bed8570a0f773dc69cbcbe02f345d2f7a4892803952f7b69552faf1ad1b"
+          }
+        ],
+        "execution_sessions": {
+          "5f6a592d7fb3a47624ebec16f6282b691bff914df155581fc24d1c98bd01ef2f": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:20:47.573776+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793696687574232000.json"
+            ],
+            "profile_id": "99dd7e5e2b957a1d9cbedda945bdf604222042c4c42ae0e48501d10515fbcbf3",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bcc5ecd9200b8dec5b729a64d9fe4bd0c11f4d0f25814ae5bf800b70d8da8729": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:14:09.801036+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793696289801519000.json"
+            ],
+            "profile_id": "e788e16c08ceefcb99d6be048ad0e12a67663ec2eee3d609da39e7ad250d4681",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "186d0c9308d7c420c42b45530bce7a7a26ed0255955020b829b1411a5d8faa28",
+        "payload_hash": "fee100875bdd0e9637661531805eb66fb35edf5b94b85cd34ae38aaa2f546ab1",
+        "recorded_at": "2026-11-03T09:12:18.880267+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "7f79769dbb095603f397616e0325e844d4580f59e4f4806cec833e325d3a40fe"
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Actual App theme geometry, visibly exposed full-shell body controls and hydrated main/header clearance pass the declared seven-route six-width light/dark matrix without product effects.",
+        "criteria": [
+          "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+          "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.",
+          "Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup."
+        ],
+        "id": "shell-content-rendered",
+        "parameters": {
+          "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser",
+          "routes": [
+            "/dashboard",
+            "/todo/today",
+            "/todo/tasks",
+            "/settings",
+            "/todo/habits",
+            "/todo/dailies",
+            "/todo/sync"
+          ],
+          "task_key": "shell-content-visibility"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui.mjs",
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/App.razor"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-f3cd69c3-ee38-4f89-a0ab-de3a6d45e6fc",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 1369,
+          "expected": 1369,
+          "failed": 0,
+          "passed": 1369,
+          "skipped": 0
+        },
+        "definition": "704efffe91afca8613b76f1d786c29714e0aba44d7802202482a2caba33849bb",
+        "environment_identity": "c3e8c09e42aced293f29c8d2c2b7817c192e071bbf604f6343ae6fe7f2bb172f",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/ab0e0f3b-c825-4ccf-a945-4c297f6415a6.json",
+            "sha256": "7799f783e8fb19fd3ab933e367bb72da5c7a61e7199167c46544c74319692047"
+          }
+        ],
+        "execution_sessions": {
+          "5f6a592d7fb3a47624ebec16f6282b691bff914df155581fc24d1c98bd01ef2f": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:28:19.029408+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793697139029616000.json"
+            ],
+            "profile_id": "99dd7e5e2b957a1d9cbedda945bdf604222042c4c42ae0e48501d10515fbcbf3",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bcc5ecd9200b8dec5b729a64d9fe4bd0c11f4d0f25814ae5bf800b70d8da8729": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:14:09.801036+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/shell-content-visibility/launch-1793696289801519000.json"
+            ],
+            "profile_id": "e788e16c08ceefcb99d6be048ad0e12a67663ec2eee3d609da39e7ad250d4681",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/shell-content-visibility",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "f5d3e361f9df010e36b4b7ed4b08e42dd3e1c2ba4713ba65c4274dc91ade8935",
+        "payload_hash": "05da4df89b962a652a682c12d4059d3daaa23eecdc91ce8f167d53823367acfa",
+        "recorded_at": "2026-11-03T09:21:28.843443+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "cae517ce966a782e6a85602cf6fe21df9264eebf89733af7ae9d36505f5f6ebd",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9",
+          "tests/browser-qualification/ux-ui-adapters.json": "938ca398263af7b7e9bfc08596239087dca8e4502393cb764e4ebcf96605541a",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs": "7c7af51a60f332b4dafa79645169caed41f5eaca1a5cadf61e4f2433bf3db8e9",
+          "tests/browser-qualification/ux-ui.mjs": "54785cdeff998b8ddab31c03a1688eef58014f98d9301baec2ed2d835e8922fa"
+        },
+        "timing": {
+          "tool_wall_seconds": 548.747731792042
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/acceptance.json",
+      "sha256": "ca0534359c2d1f6598be7b3415d8af477fe52aec900a64c7f561d2a7a1ded523"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-6db017a1-7489-4b22-8d67-58d20206751f",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Qualify visible full-shell content with current theme geometry. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-642ba84c-019f-42cb-a8f6-53440c6c147f"
+  ],
+  "recorded_at": "2026-11-03T09:27:12.002732+00:00",
+  "related_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "cae517ce966a782e6a85602cf6fe21df9264eebf89733af7ae9d36505f5f6ebd",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9",
+    "tests/browser-qualification/ux-ui-adapters.json": "938ca398263af7b7e9bfc08596239087dca8e4502393cb764e4ebcf96605541a",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "7f79769dbb095603f397616e0325e844d4580f59e4f4806cec833e325d3a40fe",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "7c7af51a60f332b4dafa79645169caed41f5eaca1a5cadf61e4f2433bf3db8e9",
+    "tests/browser-qualification/ux-ui.mjs": "54785cdeff998b8ddab31c03a1688eef58014f98d9301baec2ed2d835e8922fa"
+  },
+  "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+  "title": "Qualify visible full-shell content with current theme geometry",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.",
+      "criteria": [
+        "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+      ],
+      "id": "shell-content-behavior",
+      "parameters": {
+        "report_name": "shell-content-visibility.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/unit",
+        "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/App.razor"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Independent header/main rectangles detect complete and partial header overlap while clear and horizontally separate content passes.",
+      "criteria": [
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text."
+      ],
+      "id": "shell-content-canaries",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Actual App theme geometry, visibly exposed full-shell body controls and hydrated main/header clearance pass the declared seven-route six-width light/dark matrix without product effects.",
+      "criteria": [
+        "Full-shell fixtures include geometry variables rendered by the actual App theme provider and visible primary body content.",
+        "The oracle rejects app-bar occlusion and current shared layout keeps the main landmark and body controls below the header at normal and enlarged text.",
+        "Current Release Chromium/WebKit shell journeys and light/dark responsive evidence pass with exact theme/build provenance and verified cleanup."
+      ],
+      "id": "shell-content-rendered",
+      "parameters": {
+        "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings",
+          "/todo/habits",
+          "/todo/dailies",
+          "/todo/sync"
+        ],
+        "task_key": "shell-content-visibility"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui.mjs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/App.razor"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "704efffe91afca8613b76f1d786c29714e0aba44d7802202482a2caba33849bb"
+}

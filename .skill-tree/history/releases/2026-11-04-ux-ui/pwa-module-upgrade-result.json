@@ -1,0 +1,67 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "engine": "chromium",
+      "oldCache": {
+        "key": "offline-cache-HXBE2TWC-shell-v2",
+        "hasDexie": false
+      },
+      "preFixOfflineStartupFailed": true,
+      "newCache": {
+        "key": "offline-cache-HXBE2TWC-shell-v3",
+        "hasDexie": true
+      },
+      "repairedOfflineBlazorStartup": true,
+      "retained": {
+        "local": "retained",
+        "record": "retained",
+        "cache": "retained"
+      },
+      "pass": true
+    },
+    {
+      "engine": "webkit",
+      "oldCache": {
+        "key": "offline-cache-HXBE2TWC-shell-v2",
+        "hasDexie": false
+      },
+      "preFixOfflineStartupFailed": true,
+      "newCache": {
+        "key": "offline-cache-HXBE2TWC-shell-v3",
+        "hasDexie": true
+      },
+      "repairedOfflineBlazorStartup": true,
+      "retained": {
+        "local": "retained",
+        "record": "retained",
+        "cache": "retained"
+      },
+      "pass": true
+    }
+  ],
+  "networkOutage": "Owned loopback server closes requests; no browser offline emulation.",
+  "sameAssetManifest": true,
+  "oldWorker": "Published shell-v2 predecessor",
+  "newWorker": "Current shell-v3 with mjs dependencies",
+  "cleanup": "Owned contexts, browsers and server closed",
+  "misses": [
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/vendor/dexie.mjs",
+    "/service-worker.js",
+    "/service-worker.js",
+    "/service-worker.js"
+  ]
+}

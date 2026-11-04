@@ -1,0 +1,6 @@
+{
+  "previous_pass": ".skill-tree/history/validation/ux-ui/category-headings/browser/e13d3507-e7bf-4140-a50b-2675ca2625cb.json",
+  "finding": "Hydrated screenshots captured the short interval between presentation Ready and release of the component busy fieldset, plus ordinary palette transitions.",
+  "repair": "Wait for both title and Add controls to be natively enabled before route assertions; finish finite screenshot animations with the existing Playwright static snapshot policy. Preserve native h1 focus, history, unsaved draft, journal and observed appearance requirements.",
+  "cleanup": "Previous full matrix contexts/server/profiles all closed; no accepted task outcome yet."
+}

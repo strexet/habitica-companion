@@ -1,0 +1,28 @@
+{
+  "scope": "Isolated Skill Tree web installation commit",
+  "version": "0.2.0",
+  "source_commit": "c52cd2779fb586272737951afa79f543b679b822",
+  "source_working_tree_snapshot": "5103a1091316c3dab4fca558b5dd2fa228b97dd5885c21f17569f6a69c09e337",
+  "source_qualification": {
+    "python_tests": 114,
+    "node_tests": 62,
+    "all_passed": true,
+    "report": ".skill-tree/history/updates/2026-11-02-web-installation/source-qualification.json",
+    "includes_bom_and_utf_1_6_0_controls": true,
+    "actual_unity_execution": false
+  },
+  "flavor": "web",
+  "provider": "codex",
+  "existing_product_changes_included": false,
+  "working_tree_files_modified_for_commit": false,
+  "project_tasks_resumed": false,
+  "head_checkpoint_id": "WR-5663ac54-9d1e-4145-8792-17c83b2b8bd3",
+  "head_stop_reason_preserved": true,
+  "untracked_product_recipes_excluded": {
+    "pwa-shell-browser": [
+      "tests/browser/pwa-shell.mjs"
+    ]
+  },
+  "untracked_product_check_sources_excluded": {},
+  "historical_files": "Only HEAD-tracked historical files move, with unchanged bytes. Existing uncommitted history remains outside the commit."
+}

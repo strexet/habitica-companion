@@ -1,0 +1,6 @@
+{
+  "process_metadata": "pid,ppid,comm only",
+  "remaining_workerd_processes": [],
+  "operation": "The30-second test-file control ended; inspect fixture children before another control.",
+  "root_cause": "The D1 proxy did not retain a replacement bind method. The harness now returns an explicit wrapper and races readiness against early operation completion."
+}

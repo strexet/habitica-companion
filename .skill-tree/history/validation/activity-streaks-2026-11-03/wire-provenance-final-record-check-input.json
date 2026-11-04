@@ -1,0 +1,23 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-wire",
+  "attempt_id": "C-250bdcc8-5d26-4dd0-a152-7d13f5ede7d7",
+  "environment_identity": "dbef3285f85298430713c176ab329720dda85e1ebff0f11aa28870449ef4bde7",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 21,
+    "discovered": 21,
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The pure Node controls exited. No server, Miniflare/D1 instance, account or external request was used.",
+  "timing": {
+    "tool_wall_seconds": 0.28797941701486707
+  },
+  "evidence": [
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log"
+  ]
+}

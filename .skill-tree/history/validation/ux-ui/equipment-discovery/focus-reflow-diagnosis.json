@@ -1,0 +1,8 @@
+{
+  "first_report": "browser/6465c0de-352f-4488-98f2-6d092d9da0f6-failure.json",
+  "first_observation": "Enlarged WebKit previous-page action focuses the correct Weapon heading, but viewport anchoring leaves that heading about16551px above the viewport.",
+  "bounded_control": "browser/53fb8987-6168-458b-87bf-858ec04abcfd-failure.json",
+  "new_evidence": "Waiting for active heading, visible focus and viewport clearance for12seconds still timed out. Persistent post-render viewport anchoring requires a source repair.",
+  "repair": "Reuse existing field-focus.js revealFocusedElement after FocusAsync; two animation frames allow reflow, and connected/current-focus guards prevent late scroll after user focus moves. Release each imported module reference in the same async call; skip after account change/disposal.",
+  "acceptance": "The strengthened settled-visible-focus oracle remains required; no task acceptance from either failed control."
+}

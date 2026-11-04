@@ -1,0 +1,21 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "bytes_read": 1356
+  },
+  {
+    "path": "/appsettings.json",
+    "status": 200,
+    "bytes_read": 583
+  },
+  {
+    "path": "/service-worker.js",
+    "status": 200,
+    "bytes_read": 2048
+  },
+  {
+    "path": "/api/sync/invalid/sections",
+    "status": 400
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "origin": "https://habitica-companion.pages.dev",
+  "checks": [
+    {
+      "path": "service-worker.js",
+      "transport_error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+    }
+  ],
+  "ok": false
+}

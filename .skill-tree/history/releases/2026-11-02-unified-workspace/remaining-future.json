@@ -1,0 +1,171 @@
+{
+  "counts": {
+    "Pending Queue": 1,
+    "Prioritized Next Changes": 14,
+    "Backlog": 12
+  },
+  "tasks": [
+    {
+      "id": "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+      "title": "Resolve mass spell rate limits and explicit gear recovery",
+      "queue": "Pending Queue",
+      "priority": 106
+    },
+    {
+      "id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "title": "Qualify the selected Netlify callback gateway deployment",
+      "queue": "Prioritized Next Changes",
+      "priority": 101
+    },
+    {
+      "id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "title": "Browse and manage standalone and project Notes folders",
+      "queue": "Prioritized Next Changes",
+      "priority": 100
+    },
+    {
+      "id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "title": "Expose reviewed Notes folder workflows through MCP",
+      "queue": "Prioritized Next Changes",
+      "priority": 100
+    },
+    {
+      "id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "title": "Persist Notes folders through the cloud owner API",
+      "queue": "Prioritized Next Changes",
+      "priority": 100
+    },
+    {
+      "id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "title": "Add versioned Notes folders and local persistence",
+      "queue": "Prioritized Next Changes",
+      "priority": 100
+    },
+    {
+      "id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "title": "Deliver due task reminder events with durable original receipts",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "title": "Implement Auth-owned callback secrets and reviewed event subscriptions",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates",
+      "queue": "Prioritized Next Changes",
+      "priority": 24
+    },
+    {
+      "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "title": "Show coverage-aware Daily and Habit activity streaks",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "title": "Edit supported linked Daily schedules with explicit reconciliation",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "title": "Convert task types through reviewed linked copies",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "title": "Evaluate saved lists with explicit relative-date predicates",
+      "queue": "Prioritized Next Changes",
+      "priority": 99
+    },
+    {
+      "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout",
+      "queue": "Prioritized Next Changes",
+      "priority": 24
+    },
+    {
+      "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "title": "Add project-filtered retained task history navigation",
+      "queue": "Prioritized Next Changes",
+      "priority": 25
+    },
+    {
+      "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+      "title": "Party Quest Workspace Modes",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
+      "title": "Party Quest History Analytics",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
+      "title": "Skill Macro Collection MVP",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
+      "title": "Task Mutation Dry-Run Summaries",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
+      "title": "Settings Danger Zone Confirmation",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+      "title": "Returning User Copy Compression",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+      "title": "Mobile Stat Table Context",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
+      "title": "Compact Spell Card Density Pass",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
+      "title": "Public Plugin Directory Submission",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
+      "title": "MCP Custom UI",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
+      "title": "Background Automation",
+      "queue": "Backlog",
+      "priority": 25
+    },
+    {
+      "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
+      "title": "Align inherited documentation prose with current document rules",
+      "queue": "Backlog",
+      "priority": 25
+    }
+  ]
+}

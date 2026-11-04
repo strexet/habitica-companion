@@ -11,6 +11,7 @@ public interface INotesStore
 public interface INotesProjectStore:INotesStore
 {
     Task<bool> TryCommitProjectAsync(long expectedRevision,NotesNotebook notebook,Guid noteId,string workspaceAccountScope,long workspaceStoreVersion,CancellationToken token);
+    Task<bool> TryCommitFolderProjectAsync(long expectedRevision,NotesNotebook notebook,Guid folderId,string workspaceAccountScope,long workspaceStoreVersion,CancellationToken token)=>Task.FromResult(false);
 }
 public interface INotesStoreFactory {INotesStore ForScope(string scope);}
 public sealed class IndexedDbNotesDatabase(IJSRuntime runtime) : IAsyncDisposable,INotesStoreFactory
@@ -34,9 +35,16 @@ public sealed class IndexedDbNotesDatabase(IJSRuntime runtime) : IAsyncDisposabl
             if(notebook.OwnerScope!=scope||NotesModel.Scope(workspaceAccountScope)!=scope||link.Source!="browser"||!NotesModel.ValidProject(link,scope))throw new ArgumentException("Project owner/source mismatch.");
             return await (await database._module.Value).InvokeAsync<bool>("commitNotes",token,scope,expectedRevision,NotesJson.Serialize(notebook),new{accountScope=workspaceAccountScope,workspaceId=link.WorkspaceId.ToString("D"),projectId=link.ProjectId.ToString("D"),noteId=noteId.ToString("D"),workspaceStoreVersion});
         }
+        public async Task<bool> TryCommitFolderProjectAsync(long expectedRevision,NotesNotebook notebook,Guid folderId,string workspaceAccountScope,long workspaceStoreVersion,CancellationToken token)
+        {
+            var link=(notebook.Folders??[]).Single(f=>f.Id==folderId&&!f.IsRemoved).Project??throw new ArgumentException("Folder project required.");
+            if(notebook.OwnerScope!=scope||NotesModel.Scope(workspaceAccountScope)!=scope||link.Source!="browser"||!NotesModel.ValidProject(link,scope))throw new ArgumentException("Folder project owner/source mismatch.");
+            return await (await database._module.Value).InvokeAsync<bool>("commitNotes",token,scope,expectedRevision,NotesJson.Serialize(notebook),new{accountScope=workspaceAccountScope,workspaceId=link.WorkspaceId.ToString("D"),projectId=link.ProjectId.ToString("D"),folderId=folderId.ToString("D"),workspaceStoreVersion});
+        }
         public async Task<bool> TryCommitAsync(long expectedRevision,NotesNotebook notebook,CancellationToken token)
         {
             if(notebook.OwnerScope!=scope||expectedRevision<0||notebook.Revision<=expectedRevision||expectedRevision>0&&notebook.Revision!=expectedRevision+1)throw new ArgumentException("Notes revision/account mismatch.");
+            if((notebook.Folders??[]).Any(f=>f.Source!="browser"))throw new ArgumentException("Folder source mismatch.");
             var json=NotesJson.Serialize(notebook);
             return await (await database._module.Value).InvokeAsync<bool>("commitNotes",token,scope,expectedRevision,json);
         }

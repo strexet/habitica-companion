@@ -1,0 +1,67 @@
+{
+  "task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "title": "Name repeated game controls and equipment preset inputs",
+  "operation_history": ".skill-tree/history/validation/ux-ui/game-control-names/operation-history.json",
+  "checks": [
+    {
+      "id": "game-control-names-behavior",
+      "counts": {
+        "discovered": 65,
+        "expected": 65,
+        "failed": 0,
+        "passed": 65,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.log",
+          "sha256": "4b0523fa68be0d5e3adaf7afb47892176ae59fd368dee7986b340dce8bafa2bf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.trx",
+          "sha256": "ace98d201ce8fd5b128326d8b56e16c372c79db7e4af1f7dfea23bb81459369a"
+        }
+      ]
+    },
+    {
+      "id": "game-control-names-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/d7c9c016-5625-47b4-b82f-9d8e951471dc.json",
+          "sha256": "95785830deff5f02fed3fae28d357810e49def36c00de15904e57a538b98ac13"
+        }
+      ]
+    },
+    {
+      "id": "game-control-names-fixture-boundary",
+      "counts": {
+        "discovered": 38,
+        "expected": 38,
+        "failed": 0,
+        "passed": 38,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41.tap",
+          "sha256": "d0f212c245ce00c9b7cd21565b23ae07cddb2b3c6fd113973ce298cca5176f0a"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

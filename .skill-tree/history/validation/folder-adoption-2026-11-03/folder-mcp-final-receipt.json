@@ -1,0 +1,64 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-5a2256f7-092f-48c2-b766-35a406c758ca",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 10,
+    "expected": 10,
+    "failed": 0,
+    "passed": 10,
+    "skipped": 0
+  },
+  "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+  "environment_identity": "68edf64f6ccffb254d884864681513af598ade54a5dcf0b659545830263dc83f",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+      "sha256": "6d4ded5b9f8e42aeec86aa546f89c53539bada51660ba038c646cf7ca25e4dc5"
+    }
+  ],
+  "execution_sessions": {
+    "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:51:06.228668+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-aa673da5",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-c8433df2",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "77285a277623a512b21e93629b2420487dd85d0eb6e720264c6f680eb7ec8016",
+  "payload_hash": "0b2cd050de2c3c570d9941e0ca7ed2a8c292c00c5be9d8d2a7e6cbadd63763d1",
+  "recorded_at": "2026-11-03T01:40:21.125018+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-mcp/src/workspace-transfer-tools.ts": "01e39d4a6b10d98372f148dcd1e4efff640460464ceddab391d5813991695971",
+    "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "26063dd8aba145f2ac7df36e377c39bddee5e3fe7d7e603eaea06a0ff2749876",
+    "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a"
+  },
+  "timing": {
+    "tool_wall_seconds": 9.062133833067492
+  }
+}

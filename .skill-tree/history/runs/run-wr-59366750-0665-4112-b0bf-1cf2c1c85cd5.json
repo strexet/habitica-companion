@@ -1,0 +1,50 @@
+{
+  "completed_ids": [
+    "T-be29adc1-276c-417d-8f3d-434e34d17a0d",
+    "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723",
+    "T-fcb3bef0-1d46-433f-bf15-d90b7f359048",
+    "T-726f81ba-4130-4b59-b793-686298251e6c"
+  ],
+  "completion_refs": {
+    "T-726f81ba-4130-4b59-b793-686298251e6c": "O-46573a48-b88b-4413-8e87-6dba6b9ad6a3",
+    "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723": "O-50d59b45-67ba-4e72-9238-238cfaef5bf0",
+    "T-be29adc1-276c-417d-8f3d-434e34d17a0d": "O-5d135ecd-b9c2-4d11-a21c-ac91ca132c13",
+    "T-fcb3bef0-1d46-433f-bf15-d90b7f359048": "O-9138e0e8-744e-482b-9c9d-ae7176ebba5c"
+  },
+  "current_task_id": null,
+  "cycle_signature": "c75361d970b2298a1bf14c424c14bd45e0565e5d550ff7ca1f39e56f9afd70fa",
+  "deferred_ids": [],
+  "finished_at": "2026-11-02T04:34:27.851912+00:00",
+  "history_refs": [
+    "skill-tree/history/validation/unified-workspace/baseline.json",
+    "skill-tree/history/validation/unified-workspace/transfer-final-runtime.log",
+    "skill-tree/history/validation/unified-workspace/migration-sdk-regressions.log",
+    "skill-tree/history/validation/unified-workspace/migration-oauth-regressions.log"
+  ],
+  "id": "WR-59366750-0665-4112-b0bf-1cf2c1c85cd5",
+  "limits": {},
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [
+    "Settings restoration accepted; multi-store transfer accepted; reviewed MCP adoption accepted. Three of four requested units complete in WR-59366750-0665-4112-b0bf-1cf2c1c85cd5.",
+    "MCP six-tool family and independently disclosed workspace.migrate scope implemented. Backend/package 0.3.0, tool schema 1.2.0. Local SDK 27 fixtures and OAuth 22 fixtures pass; package build/verify pass. No installed-host activation claimed.",
+    "Root UI in progress: readonly shared Workspace disclosures replace Task/Notes pickers; new WorkspaceTransferPanel supports owner disclosure, independent consents, exact review/conflicts/receipt recovery and private drafts. Settings existing-only restoration replaces consent-gated renewal. Startup now defers browser selection until initial account metadata refresh finishes.",
+    "Current full WebApp regression running. Required next: repair expected interaction tests; add coordinated synthetic end-to-end/component fixtures; capture/render every affected route in light and obsidian phone/desktop normal/200%; rerun affected server identity after new preview source hashes/counts. Then documentation/acceptance/root finish and authorized production deployment + MCP cloud data audit.",
+    "Production remains foundation recovery release 0.2.0. New Workspace 0018 not remotely applied. Do not overwrite prior release evidence; stage all four Pages Functions in config-free upload CWD. No commits/push authorized."
+  ],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-726f81ba-4130-4b59-b793-686298251e6c",
+    "T-be29adc1-276c-417d-8f3d-434e34d17a0d",
+    "T-b56ed4eb-6a2a-4d48-8d2f-c1ee5729b723",
+    "T-fcb3bef0-1d46-433f-bf15-d90b7f359048"
+  ],
+  "root_task_id": "T-726f81ba-4130-4b59-b793-686298251e6c",
+  "snapshot": [
+    "T-726f81ba-4130-4b59-b793-686298251e6c"
+  ],
+  "started_at": "2026-10-30T14:29:16.003307+00:00",
+  "stop_reason": null
+}

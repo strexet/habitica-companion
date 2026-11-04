@@ -40,12 +40,14 @@ test('runtime origins reject partial bindings and stay consistent for all enviro
 for(const fail of [false,true])test('actual Pages build preserves full settings and restores source on '+(fail?'publish failure':'success'),()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'companion-build-'));try{
   fs.mkdirSync(path.join(dir,'src/Habitica.WebApp/wwwroot'),{recursive:true});fs.mkdirSync(path.join(dir,'deploy'));fs.mkdirSync(path.join(dir,'bin'));fs.mkdirSync(path.join(dir,'dotnet'));
-  for(const file of ['build.sh','deploy/frontend-settings.mjs'])fs.copyFileSync(path.join(root,file),path.join(dir,file));
+  fs.cpSync(path.join(root,'plugin'),path.join(dir,'plugin'),{recursive:true});
+  for(const file of ['build.sh','deploy/frontend-settings.mjs','deploy/package-plugin.py','deploy/build-plugin-download.py','deploy/plugin-requirements.json'])fs.copyFileSync(path.join(root,file),path.join(dir,file));
   const source=path.join(dir,'src/Habitica.WebApp/wwwroot/appsettings.json');const original=JSON.stringify({Habitica:{XClientHeader:'old'},Features:{PartySyncEnabled:true,FutureOption:7},ChatGptIntegration:{Enabled:false,AuthBaseUrl:''}});fs.writeFileSync(source,original);
   const settings=path.join(dir,'override.json');fs.writeFileSync(settings,JSON.stringify({ChatGptIntegration:{Enabled:true,AuthBaseUrl:'https://auth.dev.example.org'}}));
   for(const [file,body] of [['bin/curl',"#!/bin/sh\nprintf '#!/bin/sh\\nexit 0\\n'\n"],['bin/npm','#!/bin/sh\nexit 0\n'],['dotnet/dotnet',`#!/bin/sh\nif [ "$1" = "--version" ]; then exit 0; fi\nmkdir -p output/wwwroot\ncp src/Habitica.WebApp/wwwroot/appsettings.json output/wwwroot/appsettings.json\nexit ${fail?42:0}\n`]]){fs.writeFileSync(path.join(dir,file),body);fs.chmodSync(path.join(dir,file),0o755);}
-  let status=0;try{execFileSync('sh',['build.sh'],{cwd:dir,timeout:10000,env:{...process.env,PATH:path.join(dir,'bin')+':'+process.env.PATH,HABITICA_X_CLIENT_HEADER:'creator-dev',HABITICA_FRONTEND_SETTINGS_FILE:settings},stdio:'pipe'});}catch(error){status=error.status;}
+  let status=0;try{execFileSync('sh',['build.sh'],{cwd:dir,timeout:10000,env:{...process.env,PATH:path.join(dir,'bin')+':'+process.env.PATH,HABITICA_X_CLIENT_HEADER:'creator-dev',HABITICA_FRONTEND_SETTINGS_FILE:settings,CF_PAGES_COMMIT_SHA:'a'.repeat(40),HABITICA_PLUGIN_MCP_ENDPOINT:'https://mcp.dev.example.org/mcp'},stdio:'pipe'});}catch(error){status=error.status;}
   assert.equal(status,fail?42:0);assert.equal(fs.readFileSync(source,'utf8'),original);const published=JSON.parse(fs.readFileSync(path.join(dir,'output/wwwroot/appsettings.json')));assert.equal(published.Features.FutureOption,7);assert.equal(published.ChatGptIntegration.Enabled,true);assert.equal(published.Habitica.XClientHeader,'creator-dev');
+  if(!fail){const version=JSON.parse(fs.readFileSync(path.join(dir,'plugin/plugin.json'))).version;assert.ok(fs.existsSync(path.join(dir,'output/wwwroot/downloads/habitica-companion-'+version+'.zip')),'Successful production builds must include the current verified plugin download');}
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
@@ -54,7 +56,7 @@ test('normal app source defaults never inherit agent test restrictions',()=>{con
 test('explicit development profile enables implemented availability while retaining identities and consent boundaries',()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'companion-development-'));try{
   const selected={...input(),featureProfile:'development'},result=writeDev(selected,path.join(dir,'generated'));
-  for(const config of Object.values(result.configs))for(const [flag,value] of Object.entries(config.vars))if(flag.endsWith('_ENABLED'))assert.equal(value,!['CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED'].includes(flag),flag);
+  for(const config of Object.values(result.configs))for(const [flag,value] of Object.entries(config.vars))if(flag.endsWith('_ENABLED'))assert.equal(value,!['EVENTS_ENABLED','CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED'].includes(flag),flag);
   assert.equal(result.settings.CompanionWorkspace.PartyPlanningEnabled,true);assert.equal(result.settings.Features.OwnerIsolatedTestingEnabled,false);assert.equal(result.settings.Features.PartySyncEnabled,true);
   assert.equal(result.configs['chatgpt-auth'].vars.CREDENTIAL_CURRENT_KEY_VERSION,'1');assert.equal(result.configs['chatgpt-auth'].d1_databases[0].database_id,input().authDatabaseId);
   const plan=JSON.parse(fs.readFileSync(path.join(dir,'generated/deployment-plan.json')));assert.equal(plan.featureProfile,'development');assert.equal(plan.cloudGameEffectsEnabled,true);assert.equal(plan.liveCronEnabled,true);assert.equal(plan.perAccountExecutorConsentRequired,true);
@@ -78,3 +80,5 @@ test('ordinary capability profiles keep separately provisioned Web Push disabled
 test('callback egress requires separate operator provisioning in every ordinary profile',()=>{
  for(const profile of ['pilot','development'])assert.equal(deploymentFlags({CALLBACK_EGRESS_ENABLED:true},profile).CALLBACK_EGRESS_ENABLED,false);
 });
+
+test('Events require independent provisioning in pilot and development profiles',()=>{for(const profile of ['pilot','development'])assert.equal(deploymentFlags({EVENTS_ENABLED:true},profile).EVENTS_ENABLED,false);});

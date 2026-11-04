@@ -1,0 +1,43 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-4f0435af-ec04-4c93-91ee-c5a0656b5b79",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 11,
+    "expected": 11,
+    "failed": 0,
+    "passed": 11,
+    "skipped": 0
+  },
+  "definition": "24fd9642ce199d8cd6446f4a3c172cf404e97e716d070f3e1b1e33f84823a6bf",
+  "environment_identity": "48899f02e0f7eeb9ce45692f0a3e6ccdcf3843bd99aaf10acc3d70ebe83d131c",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-native-first-execution.log",
+      "sha256": "f12bb3c018b3b28f1005f5b61de5d87cc750e8960b0275b35eeae36edfc906ff"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/folder-transfer/folder-transfer.trx",
+      "sha256": "a2a097bbe2024abcbe1a1e60174f83565e057fdc3fc55ee28d1e319a0080885a"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "8e9b7d11fec1d8443d8f5ec1bd558dc911a8a1b963250fb4f55da64490562385",
+  "payload_hash": "6d642240ac939be0efb4a8d30aeed31fbb8e31505bbc52f3a293090b3aa6c7ee",
+  "recorded_at": "2026-11-03T01:28:55.094019+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "1d8a77bdc28065b2e9f372b54b93e37a3f9202f51fba60d11b4f9d04a158b30d",
+    "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+    "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "28cab844c6c48e4c5fb51ef542654cbae268e60b71006767e1bf4d904e671f9f",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "76a7c351a3cc492c05c34f844ddbeb7dbeecc70dcee5df6f5aafa376ab705477"
+  },
+  "timing": {
+    "tool_wall_seconds": 15.908245207974687
+  }
+}

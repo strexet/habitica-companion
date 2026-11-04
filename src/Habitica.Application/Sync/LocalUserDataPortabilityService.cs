@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Habitica.Storage;
+using Habitica.Application.Workspace;
 using Habitica.Domain.Diagnostics;
 
 namespace Habitica.Application.Sync;
@@ -31,10 +32,11 @@ public sealed class LocalUserDataPortabilityService
         var records = new List<LocalUserDataRecord>();
         foreach (var key in StorageKeys.PortableDataKeys)
         {
+            if (key == StorageKeys.CompanionPreferences && !Guid.TryParse(userId, out _)) continue;
             var json = await _keyValueStorage.GetRawJsonAsync(key, cancellationToken);
             if (!string.IsNullOrWhiteSpace(json))
             {
-                records.Add(new LocalUserDataRecord(key, ExportSafeJson(key, json)));
+                records.Add(new LocalUserDataRecord(key, key == StorageKeys.CompanionPreferences ? CompanionPreferencesJson.OnlyAccount(json, userId!) : ExportSafeJson(key, json)));
             }
         }
 
@@ -77,11 +79,12 @@ public sealed class LocalUserDataPortabilityService
         var records = bundle.Records
             .GroupBy(static record => record.Key, StringComparer.Ordinal)
             .Select(static group => group.Last())
-            .ToDictionary(static record => record.Key, static record => record.JsonText, StringComparer.Ordinal);
+            .ToDictionary(static record => record.Key, record => record.Key==StorageKeys.CompanionPreferences
+                ? CompanionPreferencesJson.OnlyAccount(record.JsonText,bundle.UserId??throw new JsonException("Account identity required.")) : record.JsonText, StringComparer.Ordinal);
 
         if (mode == LocalDataImportMode.Override)
         {
-            foreach (var key in StorageKeys.PortableDataKeys.Where(key => !records.ContainsKey(key)))
+            foreach (var key in StorageKeys.PortableDataKeys.Where(key => key != StorageKeys.CompanionPreferences && !records.ContainsKey(key)))
             {
                 await _keyValueStorage.RemoveAsync(key, cancellationToken);
             }
@@ -110,7 +113,7 @@ public sealed class LocalUserDataPortabilityService
                 continue;
             }
 
-            await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
+            await WriteRecordAsync(record.Key, nextJson, cancellationToken);
             importedCount++;
         }
 
@@ -163,7 +166,7 @@ public sealed class LocalUserDataPortabilityService
             return;
         }
 
-        await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
+        await WriteRecordAsync(record.Key, nextJson, cancellationToken);
     }
 
     public async Task ClearSectionAsync(string storageKey, CancellationToken cancellationToken)
@@ -173,11 +176,26 @@ public sealed class LocalUserDataPortabilityService
 
     public string Serialize(LocalUserDataBundle bundle)
     {
-        return JsonSerializer.Serialize(bundle with { Records = bundle.Records.Select(record => record with { JsonText = ExportSafeJson(record.Key, record.JsonText) }).ToArray() }, JsonOptions);
+        return JsonSerializer.Serialize(bundle with { Records = bundle.Records.Select(record => record with { JsonText = record.Key == StorageKeys.CompanionPreferences ? (Guid.TryParse(bundle.UserId, out _) ? CompanionPreferencesJson.OnlyAccount(record.JsonText, bundle.UserId!) : CompanionPreferencesJson.Write(CompanionPreferencesJson.Empty())) : ExportSafeJson(record.Key, record.JsonText) }).ToArray() }, JsonOptions);
     }
 
     private static string ExportSafeJson(string key, string json) => key == StorageKeys.DiagnosticsLogEntries
-        ? DiagnosticsLogSanitizer.SanitizeJson(json) : json;
+        ? DiagnosticsLogSanitizer.SanitizeJson(json) : key == StorageKeys.CompanionPreferences ? CompanionPreferencesJson.Write(CompanionPreferencesJson.Read(json)) : json;
+
+    private async Task WriteRecordAsync(string key, string json, CancellationToken token)
+    {
+        if (key != StorageKeys.CompanionPreferences) { await _keyValueStorage.SetRawJsonAsync(key, json, token); return; }
+        for (var attempt = 0; attempt < 3; attempt++)
+        {
+            var old = await _keyValueStorage.GetRawJsonAsync(key, token);
+            var merged = CompanionPreferencesJson.Merge(old, json);
+            if (_keyValueStorage is ICompanionPreferencesStorage atomic)
+            { if (!await atomic.TryCommitCompanionPreferencesAsync(old, merged, token)) continue; }
+            else await _keyValueStorage.SetRawJsonAsync(key, merged, token);
+            return;
+        }
+        throw new InvalidOperationException("Companion preferences changed concurrently; no settings were overwritten.");
+    }
 
     public LocalUserDataBundle Deserialize(string jsonText)
     {
@@ -239,6 +257,7 @@ public sealed class LocalUserDataPortabilityService
             StorageKeys.PartyCronHistory => MergePartyCronHistory(localJson, incomingJson),
             StorageKeys.TaskOrderPreferences => MergeTaskOrderPreferences(localJson, incomingJson),
             StorageKeys.ColorSchemePreferences => MergeColorSchemes(localJson, incomingJson),
+            StorageKeys.CompanionPreferences => CompanionPreferencesJson.Merge(localJson, incomingJson),
             StorageKeys.LatestTaskSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestUserSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestPartySnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),

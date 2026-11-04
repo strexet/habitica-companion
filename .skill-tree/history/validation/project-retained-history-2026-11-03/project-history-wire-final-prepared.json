@@ -1,0 +1,63 @@
+{
+  "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+  "attempt_id": "C-62a2d07d-6482-4c0b-867d-3850e680f1ba",
+  "check_id": "history-wire",
+  "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+  "environment_identity": "9d4bdd50780e27cd3545db72694a0ef8f4866f7840c1e021be7181d891786e66",
+  "key": "119b8786c5a555bb6697251319d526a19ea8f3f4fafab93e8a6d3dbd6f536c85",
+  "launch": {
+    "assertion": "Relative saved-date parity, one explicit clock/timezone context, guarded pagination and no task/provider mutations.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 definition authoring, interpreted date bounds or stale-day refusal.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T22:47:27.683910+00:00",
+    "execution_profile": "linked-conversion-wire-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T22:43:27.875095+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/project-retained-history.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/completion-history.ts": "b58abaf1fd81c0d183e652ccb93960bfc870e3c7bca7966d2494837b75249194",
+    "workers/companion-workspace/src/habit-history.ts": "9054ded4e6e304b7922d76ef5efe3dfeeab762dfc31e59bd5c64ae4b4e43b68e",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/test/completion-history.test.mjs": "f110f8e6454d614b59fb90b6275ceafce89abc014b43290723205f2736d536f2",
+    "workers/companion-workspace/test/habit-history.test.mjs": "3327e8d2ca58c0561be6230907f056ad6c5578896d8816f9534de48a3172ce4f",
+    "workers/companion-workspace/test/organization-query.test.mjs": "a71f6dc5e0487d4d617546d145fb7994e69358c9c8ced81aa36155a9505d0477",
+    "workers/companion-workspace/test/project-retained-history.test.mjs": "fecd16598226826dc9f586abec0f27886bf4f619a1e654eb59f44a12333d6da6",
+    "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547",
+    "workers/shared/completion-history.ts": "20f2580f3c0b903384962dc2b4c222b65a3c69854157d701bf860482e9eb5a82",
+    "workers/shared/habit-history.ts": "48dd802053e925342ce7199fc4f99312f97610421fc0ce5ed23280ea0fccf4a1",
+    "workers/shared/history-projects.ts": "06fcc947ca3887e8d67cef9cd6ef8abf8d054f21625c4e68187f5d06f48630e8",
+    "workers/shared/organization-query.ts": "302f01840a84dda2fb6f4cbbcbfd859a548c75105c5765dfa57005c8bda7d646",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4"
+  },
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+}

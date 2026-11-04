@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep equipment identity text and stat tokens readable in constrained cards",
+    "description": "Manual review of the current enlarged-phone Equipment screenshots shows gear names and stat values squeezed into glyph-wide columns beside artwork. Nested preset cards are especially narrow even though the document has no horizontal overflow.",
+    "expected_behavior": "Allow equipment artwork and identity text to stack when necessary, use the available text width, and wrap complete stat tokens without splitting labels or numeric values into vertical glyphs.",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/game-control-names/1793726429958835000/webkit-obsidian-glow-game-inventory-context.png; current habitica-item-identity grid and inventory-stat-value rules.",
+    "priority_reason": "Long names and stat values fail the parent rendered readability acceptance despite bounded outer geometry.",
+    "expected_source_hash": "3f326ef68543e43627241838de8b20adf1cc8451b6f68f485b997e44cdf6ae89"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "relation": "blocker",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "status": "Pending"
+  }
+}

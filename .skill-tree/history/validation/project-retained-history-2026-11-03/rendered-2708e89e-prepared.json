@@ -1,0 +1,53 @@
+{
+  "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+  "attempt_id": "C-e9ce5b1d-b3f0-4d0b-96eb-32fb6293cd67",
+  "check_id": "history-rendering",
+  "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+  "environment_identity": "c30378ee1685f58533b8fc4e768d98fd7c754b77c4597051ebc47c1916e55707",
+  "key": "bb5ef81d6b3aeca2accddd64e7c93429ed80dde8504fdf1001ae59b8bde64272",
+  "launch": null,
+  "prepared_at": "2026-11-02T22:42:16.311819+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/project-history-ui.py"
+    ],
+    "execution_notes": "Bounded current Release, actual project/history Razor states,160 light/obsidian phone/desktop normal/enlarged-text layout/focus cases and2 actual hydrated scoped navigation/original-receipt journeys under Chromium/WebKit with isolated Auth/Workspace/D1 and IndexedDB. No real account, provider writes, device permissions or publication. Service workers blocked.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/project-history-ui.py",
+      "tests/browser/project-history-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser/project-history-fixture.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "072f7e7e5d3284b83f894bd9e1c2f5563826d46c7d34118ea94a0e88746c43a3",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/project-history-fixture.mjs": "5c56c9ebc1c9d8489d293706d6cb7dfc87516d8258e33aa94075b42c1c47c9b8",
+    "tests/browser/project-history-ui.mjs": "67829a381d4b283ec952a364b650bf2aac7492879e50503d7fc1e6e69f0e82e7",
+    "tests/browser/project-history-ui.py": "1519d9ad8a5ce78356fdcda941434904d1a2300ab89acc91a618ae15bbccbcfc",
+    "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+    "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547"
+  },
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+}

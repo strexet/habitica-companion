@@ -1,0 +1,37 @@
+{
+  "labels": [
+    "folder-wire-final",
+    "folder-mcp-final",
+    "folder-cross-runtime-green",
+    "rendered-aa673da5"
+  ],
+  "checks": {
+    "wire": 25,
+    "mcp": 10,
+    "nativeComponents": 20,
+    "browser": 114
+  },
+  "totalPassed": 169,
+  "outcome": "Reviewed Workspace adoption preserves schema2 folder identities, tombstones, current/historical memberships and separate causal baselines across schema1/schema2 targets. Exact source folder receipts remain accessible through independently authorized MCP reads and hashed metadata after Note body purge. Browser capture validates owner/source and exact inventory before atomic authority freeze, preserving accepted snapshot/event timestamp encodings. All169 native/component/shared/SDK/D1/Release-browser controls pass without real account/provider operations.",
+  "extra_sources": [
+    ".skill-tree/documents/notes-folder-adoption.md",
+    "src/Habitica.Domain/Notes/NotesModel.cs",
+    "workers/shared/transfer-note-parts.ts",
+    "workers/companion-workspace/src/index.ts",
+    "tests/fixtures/workspace-transfer/folder-adoption-accepted.json",
+    "tests/fixtures/workspace-transfer/folder-browser-inventory.json",
+    "plugin/skills/habitica-notes/SKILL.md"
+  ],
+  "limitations": [
+    "No commit, push, publication, real account transfer, real provider operation or notification qualification occurred.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified; changed-route harnesses block service workers.",
+    "One unprepared exploratory local probe executed during initial model investigation; the probe grants no acceptance and final source-bound prepared controls supersede the observation."
+  ],
+  "repairs": [
+    "Initial Red rejected schema2 folder metadata while20 legacy transfer controls passed.",
+    "One fixture omitted project authority for a new folder membership; the fixture now supplies the same exact project proof required in production.",
+    "Actual hydrated capture identified a pre-existing C#/IndexedDB mismatch: UTC timestamps in accepted task snapshots changed from Z to +00:00 on serialization. A focused behavioral Red reproduced the rewrite; capture now changes authority/recovery fields while retaining immutable accepted content.",
+    "IndexedDB capture compares exact Notes inventory bytes in the same transaction before finalizing fences.",
+    "Original folder receipt reads use a hashed metadata template to survive explicit body purge without restoring erased personal content."
+  ]
+}

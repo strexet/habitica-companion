@@ -1,0 +1,7 @@
+{
+  "attempt": "C-990c298b-b3fb-43b7-b7b6-630ffd51e657",
+  "report": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/ddc26696-d34c-4f04-81b2-7bedf251495b-failure.json",
+  "observation": "The executed browser recipe failed in the prerequisite119-test capture step. No browser was launched and no browser cleanup was necessary. The original immutable failed receipt uses executed-control for the recipe as a whole; this supplementary record narrows the actual execution boundary. This attempt supplies no browser or acceptance evidence.",
+  "followup": "P-612f62db-56ca-44cd-8f23-95609d268da9",
+  "retry": "A single unchanged retry passed all119 tests and the complete browser matrix. No assertion was removed or weakened."
+}

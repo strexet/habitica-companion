@@ -1,0 +1,22 @@
+using System.Net;
+using System.Text.Json;
+using Habitica.Application.Workspace;
+using Habitica.Domain.Workspace;
+using Habitica.WebApp.Integration;
+namespace Habitica.WebApp.Tests.Integration;
+public sealed class TaskTypeConversionClientTests
+{
+    private sealed class Handler(Func<HttpRequestMessage,Task<HttpResponseMessage>> respond):HttpMessageHandler{protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken token)=>respond(request);}
+    private static HttpResponseMessage Json(object value)=>new(HttpStatusCode.OK){Content=new StringContent(WorkspaceTaskApiJson.Serialize(value),System.Text.Encoding.UTF8,"application/json")};
+    [Fact]public async Task Native_type_conversion_allocates_server_identity_and_uses_original_typed_receipts_without_game_calls()
+    {
+        var now=DateTimeOffset.UtcNow;var source=new CompanionTask(Guid.NewGuid(),1,"Exact source",CompanionTaskKind.Todo,CompanionTaskState.Active,CompanionPriority.High,now.AddDays(-1),now.AddDays(-1),Notes:"Exact notes");var doc=new WorkspaceDocument{Id=Guid.NewGuid(),Revision=10,Tasks=[source]};var intent=new WorkspaceCommand(Guid.NewGuid(),doc.Id,10,WorkspaceOperation.CopyTaskType,Guid.NewGuid(),new(TypeCopy:new(source.Id,1,CompanionTaskKind.Habit,false)));var prepared=intent with{Id=Guid.NewGuid(),TaskId=Guid.NewGuid()};var reviewed=WorkspaceTaskTypeCopyPolicy.Review(doc,prepared.Patch!.TypeCopy!,prepared.TaskId,now);var accepted=WorkspaceCommandEngine.Accept(new(doc,10,[],[]),prepared,now);var receipt=Habitica.WebApp.State.WorkspaceTaskController.Receipt(accepted.Entry!,Guid.NewGuid());var preview=new WorkspaceCommandPreview(prepared.Id,receipt.CorrelationId,now.AddMinutes(10),false,prepared,false,false,TypeCopyPreview:reviewed);bool corrupt=false;var tools=new List<string>();
+        using var vaultHttp=new HttpClient(new Handler(_=>Task.FromResult(Json(new{profileId="prf_"+new string('a',43),managementToken=new string('m',43)}))));var vault=new ChatGptIntegrationClient(vaultHttp,"https://auth.invalid/");
+        using var http=new HttpClient(new Handler(async request=>{if(request.RequestUri!.AbsolutePath=="/connect")return Json(new{workspaceId=doc.Id,sessionToken=new string('s',43),consentVersion="workspace-v1",expiresAtUtc=now.AddHours(1)});using var input=JsonDocument.Parse(await request.Content!.ReadAsStringAsync());var tool=input.RootElement.GetProperty("tool").GetString()!;tools.Add(tool);if(tool=="prepare_task_command"){Assert.False(input.RootElement.GetProperty("arguments").TryGetProperty("taskId",out _));return Json(corrupt?preview with{Command=prepared with{Patch=new(TypeCopy:prepared.Patch!.TypeCopy! with{CopyOrganization=true})}}:preview);}return Json(corrupt?receipt with{CopyLineage=receipt.CopyLineage! with{PayloadHash=new string('f',64)}}:receipt);}));
+        var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");Assert.True((await client.ConnectAsync(new(Guid.NewGuid().ToString("D"),"synthetic-only"),default)).Succeeded);var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.True(result.Succeeded,result.Message);Assert.True((await client.AcceptCommandAsync(result.Value!,default)).Succeeded);Assert.Contains("copy_task_type",tools);Assert.NotNull((await client.ReadCommandAsync(prepared.Id,default)).Value!.CopyLineage);corrupt=true;Assert.False((await client.PrepareCommandAsync(Guid.NewGuid(),intent,default)).Succeeded);var bad=await client.AcceptCommandAsync(preview,default);Assert.False(bad.Succeeded);Assert.True(bad.OutcomeUnknown);
+    }
+    [Fact]public void Native_copy_review_rejects_forged_source_target_or_loss_list_even_with_valid_identities()
+    {
+        var now=DateTimeOffset.UtcNow;var source=new CompanionTask(Guid.NewGuid(),1,"Source",CompanionTaskKind.Daily,CompanionTaskState.Active,CompanionPriority.High,now.AddDays(-1),now.AddDays(-1));var doc=new WorkspaceDocument{Id=Guid.NewGuid(),Revision=10,Tasks=[source]};var choice=new WorkspaceTaskTypeCopy(source.Id,1,CompanionTaskKind.Todo,false);var id=Guid.NewGuid();var review=WorkspaceTaskTypeCopyPolicy.Review(doc,choice,id,now);Assert.True(WorkspaceTaskTypeCopyPolicy.ReviewMatches(doc,choice,id,review));foreach(var forged in new[]{review with{Source=source with{Notes="False before"}},review with{Target=review.Target! with{Text="Unrequested title"}},review with{ResetFields=[]}})Assert.False(WorkspaceTaskTypeCopyPolicy.ReviewMatches(doc,choice,id,forged));
+    }
+}

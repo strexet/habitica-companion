@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "errors": [
+    ".skill-tree/documents/testing.md:706:613: Explicit entity required: it"
+  ],
+  "warnings": [
+    "Latest recorded audit is stale; historical verdicts remain unchanged"
+  ]
+}

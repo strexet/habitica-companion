@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=30000",
+    "workers/companion-workspace/test/reminder-events.test.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 15.940440500155091
+}

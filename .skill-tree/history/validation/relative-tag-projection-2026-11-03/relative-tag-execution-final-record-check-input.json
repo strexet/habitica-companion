@@ -1,0 +1,24 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-execution",
+  "attempt_id": "C-1245edc5-505e-44be-a34f-d92db3b3f76b",
+  "environment_identity": "e4db5272e61c678dfac0c41ab99ef6e60b9a51ed270d3e93f6d92ae81f4b415f",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "fail",
+  "counts": {
+    "expected": 34,
+    "discovered": 34,
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 30.077241958118975
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-execution-final-execution.log"
+  ],
+  "failure_signature": "error: 'test timed out after 30000ms'"
+}

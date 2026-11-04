@@ -1,0 +1,10 @@
+{
+  "original_failure": "ddbbfb3b-101c-437b-b962-89cbf88d8518",
+  "observed": "Original image onerror ran: img inline display none and fallback inline display inline-flex. Flex item computed display is blockified to flex, so literal computed inline-flex reader was incorrect.",
+  "correction": "Require actual onerror inline states and nonhidden computed fallback, then exact geometry, labels/counts and unchanged snapshot. Product source unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

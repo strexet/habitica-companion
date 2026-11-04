@@ -22,6 +22,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Func<Task<Habitica.Application.Notes.NotesCloudResult<bool>>>? NotesConnectAction { get; set; }
     public Task<Habitica.Application.Notes.NotesCloudResult<bool>> ConnectNotesAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) => consentAcknowledged && NotesConnectAction is not null ? NotesConnectAction() : Task.FromResult(new Habitica.Application.Notes.NotesCloudResult<bool>(false, false, "unavailable"));
 
+    public int ExistingRecoveryCalls {get;private set;}
+    public Func<Task<Habitica.Application.Integration.IntegrationLinkResult>>? ExistingRecoveryAction {get;set;}
+    public Task<Habitica.Application.Integration.IntegrationLinkResult> RestoreExistingConnectionsAsync(bool legacyAcknowledged,CancellationToken token=default)
+    { ExistingRecoveryCalls++;return ExistingRecoveryAction?.Invoke()??Task.FromResult(new Habitica.Application.Integration.IntegrationLinkResult(false,"Existing recovery fixture unavailable.")); }
     public int WorkspaceConnectCalls { get; private set; }
     public Func<Task<Habitica.Application.Workspace.WorkspaceActionResult>>? WorkspaceConnectAction { get; set; }
     public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return WorkspaceConnectAction?.Invoke() ?? Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }

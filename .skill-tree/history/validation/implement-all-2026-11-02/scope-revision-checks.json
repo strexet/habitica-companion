@@ -1,0 +1,53 @@
+[
+  {
+    "argv": [
+      "python3",
+      ".agents/skills/skill-tree-implement-all/scripts/validate-document-rules.py",
+      ".skill-tree/documents/future.md",
+      ".skill-tree/documents/callback-egress.md",
+      ".skill-tree/history/validation/implement-all-2026-11-02/operator-setup.md"
+    ],
+    "exit_code": 0,
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "diagnostics": []
+  },
+  {
+    "argv": [
+      "python3",
+      ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+      ".skill-tree/documents/future.md",
+      "--strict",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "ok": true,
+    "errors": []
+  },
+  {
+    "argv": [
+      "python3",
+      ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+      ".",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Latest recorded audit is stale; historical verdicts remain unchanged"
+    ]
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

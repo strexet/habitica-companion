@@ -1,0 +1,12 @@
+{
+  "name": "chatgpt-auth-full-serial",
+  "argv": [
+    "bash",
+    "-c",
+    "node --experimental-strip-types --test --test-concurrency=1 --test-timeout=60000 test/*.test.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 187.381,
+  "deadline_seconds": 1200,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/chatgpt-auth-full-serial.log"
+}

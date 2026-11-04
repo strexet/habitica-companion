@@ -1,0 +1,467 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The selected day and daily task groups precede optional reminder configuration in visual and keyboard order.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.log",
+          "sha256": "38893063e090ea6226618014169634282de03de89b1182f76044968a641559a4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.trx",
+          "sha256": "4362d03f05e79df6cfce386cd0491fcf271165fc3448713bb3c8d27de467722c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/acceptance.json",
+          "sha256": "1398ad2c25fe676ecbc86fbd4e5e203b1708ff9362707c6d800512bbc3b4bb4e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/browser/9a2c18ad-0fb5-4d66-8f51-9b28054aa199.json",
+          "sha256": "33dc3dd91733428c1cb8e5299572d0d7ae7201da4f62db51723438cc7b1204ec"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Urgent readiness and command fences remain visible and reminder disclosure preserves configuration and consent.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.log",
+          "sha256": "38893063e090ea6226618014169634282de03de89b1182f76044968a641559a4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.trx",
+          "sha256": "4362d03f05e79df6cfce386cd0491fcf271165fc3448713bb3c8d27de467722c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/acceptance.json",
+          "sha256": "1398ad2c25fe676ecbc86fbd4e5e203b1708ff9362707c6d800512bbc3b4bb4e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/browser/9a2c18ad-0fb5-4d66-8f51-9b28054aa199.json",
+          "sha256": "33dc3dd91733428c1cb8e5299572d0d7ae7201da4f62db51723438cc7b1204ec"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Daily work and reminder access remain promptly reachable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.log",
+          "sha256": "38893063e090ea6226618014169634282de03de89b1182f76044968a641559a4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.trx",
+          "sha256": "4362d03f05e79df6cfce386cd0491fcf271165fc3448713bb3c8d27de467722c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/acceptance.json",
+          "sha256": "1398ad2c25fe676ecbc86fbd4e5e203b1708ff9362707c6d800512bbc3b4bb4e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/browser/9a2c18ad-0fb5-4d66-8f51-9b28054aa199.json",
+          "sha256": "33dc3dd91733428c1cb8e5299572d0d7ae7201da4f62db51723438cc7b1204ec"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "The selected day and daily task groups precede optional reminder configuration in visual and keyboard order.",
+          "Urgent readiness and command fences remain visible and reminder disclosure preserves configuration and consent."
+        ],
+        "id": "today-work-first-behavior",
+        "parameters": {
+          "report_name": "today-work-first.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/today-work-first/unit",
+          "test_filter": "FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~TodoReminderPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+          "src/Habitica.WebApp/Components/TodoReminderPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/State/ForegroundReminderController.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-5395c570-51db-416f-90cb-bb1ad3fc073e",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 15,
+          "expected": 15,
+          "failed": 2,
+          "passed": 13,
+          "skipped": 0
+        },
+        "definition": "777fefd300d686063b8c705272190106a805aaec1e4414512d2c1d5846f9a867",
+        "environment_identity": "441692906a75a8f8869a2b5196b496916a7aa41f7b2960158ec08694eafa904d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-5395c570-51db-416f-90cb-bb1ad3fc073e.log",
+            "sha256": "3edbd108479035676fd95e6767c64ed47e26b597b49fc73f6eb8e2275b2cf9f7"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-5395c570-51db-416f-90cb-bb1ad3fc073e.trx",
+            "sha256": "cdb5c052818b44f3764e6f8c83875d13b01e15f12acebf32434d90ef7f1f6ca7"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "1271976cf91c0028aa4acf9f937efa869876ebebd5baae27cfb1b9374276d329",
+        "payload_hash": "1afcefca112fd4fd9e3c84fc4f1f913c15b55c6adc279a90b2cde3b7d2b2fd3a",
+        "recorded_at": "2026-11-03T13:04:37.894456+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "08f13f231e3f2f1babeb4f0b66d8eaecd290e6885352682f9318e3fa5f409e21",
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "09346f56f217e92f0941cc7601429612d09b179f9ce33f961a1e4357e26572d7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.546120958169922
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-9e913040-852c-4ab1-976e-f3dcf318ec39",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 15,
+          "expected": 15,
+          "failed": 0,
+          "passed": 15,
+          "skipped": 0
+        },
+        "definition": "025ec611ba572932aad82c0eecb1ceaf1ee0e5da41cc969d29bf05daace7081d",
+        "environment_identity": "441692906a75a8f8869a2b5196b496916a7aa41f7b2960158ec08694eafa904d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.log",
+            "sha256": "38893063e090ea6226618014169634282de03de89b1182f76044968a641559a4"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.trx",
+            "sha256": "4362d03f05e79df6cfce386cd0491fcf271165fc3448713bb3c8d27de467722c"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "d1ce275ce7d5a883e6d35467e7b315765f660d4df7958849ae8853394e75dfb1",
+        "payload_hash": "1d182551982d6fba383b6939a60063e39554d925dd41feff4dd1a31aadd41d99",
+        "recorded_at": "2026-11-03T13:09:07.638504+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "1ee6718b24e52eb2b072f517aa3aaed604debfbf011220cfec1d5b4a39e7d4f9",
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+          "src/Habitica.WebApp/State/ForegroundReminderController.cs": "d4396807684ddc82f4b329358816f99a1a633ba853b8dbc7764d6f4a28a0479e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "bf429e0e14e7e8e595ff71af3d2a8b5308fe012a85d96769934cde728a53f881",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "de909daef74cf92cc6cc58d319a83ad8d7bfe6d7453357a53eaa252a779b151a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.755524916108698
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Daily work and reminder access remain promptly reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Daily work and reminder access remain promptly reachable across the required rendered matrix."
+        ],
+        "id": "today-work-first-rendered",
+        "parameters": {
+          "cases": "Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/today-work-first/browser",
+          "routes": [
+            "/todo/today"
+          ],
+          "task_key": "today-work-first"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+          "src/Habitica.WebApp/Components/TodoReminderPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/State/ForegroundReminderController.cs",
+          "tests/browser-qualification/ux-ui-today-work-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-c5ff8d6d-528d-45a3-bb53-771cdf1b6ccd",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 721,
+          "expected": 721,
+          "failed": 0,
+          "passed": 721,
+          "skipped": 0
+        },
+        "definition": "025ec611ba572932aad82c0eecb1ceaf1ee0e5da41cc969d29bf05daace7081d",
+        "environment_identity": "db89144356acc01f680002c0f7c3583d1f3defba773ae9fd4a833e1d01bd7ab7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/today-work-first/browser/9a2c18ad-0fb5-4d66-8f51-9b28054aa199.json",
+            "sha256": "33dc3dd91733428c1cb8e5299572d0d7ae7201da4f62db51723438cc7b1204ec"
+          }
+        ],
+        "execution_sessions": {
+          "a89a02b016ebb4a61450f9c5c273dabec67d6ee0eee9dc40643fdcfd4d80d43c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "bf429e0e14e7e8e595ff71af3d2a8b5308fe012a85d96769934cde728a53f881",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T13:26:00.516202+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/today-work-first/launch-1793711400516376000.json"
+            ],
+            "profile_id": "08bd7cc372dea66c92f7644799cef989e7a38ec65b5989ce8aff660e5ab1fc3a",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/today-work-first",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "9a8c626cac5d8bba39fdd1044a65c20ecd48c0e87a1312ae32234c660e752c25",
+        "payload_hash": "a3ce94a66c23ff7459e9ba4ee242ea3d804ff2dbf5cc50b4a7d9ee295793591a",
+        "recorded_at": "2026-11-03T13:14:11.950213+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "1ee6718b24e52eb2b072f517aa3aaed604debfbf011220cfec1d5b4a39e7d4f9",
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+          "src/Habitica.WebApp/State/ForegroundReminderController.cs": "d4396807684ddc82f4b329358816f99a1a633ba853b8dbc7764d6f4a28a0479e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "bf429e0e14e7e8e595ff71af3d2a8b5308fe012a85d96769934cde728a53f881",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "de909daef74cf92cc6cc58d319a83ad8d7bfe6d7453357a53eaa252a779b151a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "d9cae32acb7791737a6057fd88a32e7a91d7d6bb3838160a2859146ad7597c3e",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+          "tests/browser-qualification/ux-ui-today-work-journey.mjs": "b26d25cc1bfd4cc00b50ed87b27e12fa1b7b455d4b5b264382933f140aa53c45"
+        },
+        "timing": {
+          "tool_wall_seconds": 250.37032170803286
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/today-work-first/acceptance.json",
+      "sha256": "1398ad2c25fe676ecbc86fbd4e5e203b1708ff9362707c6d800512bbc3b4bb4e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/today-work-first/operation-history.json",
+      "sha256": "66a017b60ac68e0ad40a0d22304356228558c42d8f2914a78d2efc410a0904e5"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-b50b1d6a-9eb9-447d-8f37-a4de6e974e3a",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Put daily work before optional reminder setup on Today. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539"
+  ],
+  "recorded_at": "2026-11-03T13:15:06.006660+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "1ee6718b24e52eb2b072f517aa3aaed604debfbf011220cfec1d5b4a39e7d4f9",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "9c9e612db83d5198f0de8014afc475e2aa60ffc9fbf20ea3826b0deeb8edfaf9",
+    "src/Habitica.WebApp/State/ForegroundReminderController.cs": "d4396807684ddc82f4b329358816f99a1a633ba853b8dbc7764d6f4a28a0479e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "bf429e0e14e7e8e595ff71af3d2a8b5308fe012a85d96769934cde728a53f881",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "de909daef74cf92cc6cc58d319a83ad8d7bfe6d7453357a53eaa252a779b151a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "55d281f16bf31b6a2f1a6678b9a9ebc929943a60e5e082f809af3ece25b55c7b",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "d9cae32acb7791737a6057fd88a32e7a91d7d6bb3838160a2859146ad7597c3e",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+    "tests/browser-qualification/ux-ui-today-work-journey.mjs": "b26d25cc1bfd4cc00b50ed87b27e12fa1b7b455d4b5b264382933f140aa53c45"
+  },
+  "task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+  "title": "Put daily work before optional reminder setup on Today",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "The selected day and daily task groups precede optional reminder configuration in visual and keyboard order.",
+        "Urgent readiness and command fences remain visible and reminder disclosure preserves configuration and consent."
+      ],
+      "id": "today-work-first-behavior",
+      "parameters": {
+        "report_name": "today-work-first.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/today-work-first/unit",
+        "test_filter": "FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~TodoReminderPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/Components/TodoReminderPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/State/ForegroundReminderController.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Daily work and reminder access remain promptly reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Daily work and reminder access remain promptly reachable across the required rendered matrix."
+      ],
+      "id": "today-work-first-rendered",
+      "parameters": {
+        "cases": "Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/today-work-first/browser",
+        "routes": [
+          "/todo/today"
+        ],
+        "task_key": "today-work-first"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/Components/TodoReminderPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/State/ForegroundReminderController.cs",
+        "tests/browser-qualification/ux-ui-today-work-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "025ec611ba572932aad82c0eecb1ceaf1ee0e5da41cc969d29bf05daace7081d"
+}

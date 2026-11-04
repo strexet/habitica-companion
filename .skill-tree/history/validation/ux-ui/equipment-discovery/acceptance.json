@@ -1,0 +1,50 @@
+{
+  "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+  "title": "Add direct discovery for equipment slots and owned items",
+  "operation_history": ".skill-tree/history/validation/ux-ui/equipment-discovery/operation-history.json",
+  "checks": [
+    {
+      "id": "equipment-discovery-behavior",
+      "counts": {
+        "discovered": 31,
+        "expected": 31,
+        "failed": 0,
+        "passed": 31,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.log",
+          "sha256": "87a83089e06c478aa05f6314b389b56d382653ac4b01345f57911d3386841c8b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/C-09758136-198d-41a4-a525-e1bbc321c2bb.trx",
+          "sha256": "8bb77dd2a107d855a75d233e411c3806d98015ce3ebc264116623a6cc8e211de"
+        }
+      ]
+    },
+    {
+      "id": "equipment-discovery-rendered",
+      "counts": {
+        "discovered": 505,
+        "expected": 505,
+        "failed": 0,
+        "passed": 505,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-discovery/browser/e859e86c-382c-495b-bcc8-f1c11d6d3291.json",
+          "sha256": "68f0a7020d7ca062e914a2261e9df91ad2a1e78f11e6c20ab21546edd42bfc8e"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

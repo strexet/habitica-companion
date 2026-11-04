@@ -1,0 +1,12 @@
+{
+  "parent_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "dependency_task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+  "dependency_prerequisite": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "reason": "The readiness route matrix includes Today and requires readable native input contents. Existing finding F20 records a clipped selected day at360/200; the day-control grid/input rules remain unchanged by disabled-colour repair. Reuse the existing frozen native-date task and require its pixel evidence before accepting the parent route matrix. Date reflow consumes the shared disabled-text repair; neither edge expands the initial task identity snapshot.",
+  "source_evidence": [
+    ".skill-tree/history/reviews/ux-ui-2026-11-03/report.md",
+    "src/Habitica.WebApp/wwwroot/css/app.css (.todo-day-controls grid and shrinking input)",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor"
+  ],
+  "next_control": "Run the registered native-date browser check before the layout fix to reproduce clipping against the current build; preserve date semantics and avoid generic fixed input widths."
+}

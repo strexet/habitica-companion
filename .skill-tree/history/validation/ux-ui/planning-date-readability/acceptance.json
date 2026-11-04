@@ -1,0 +1,50 @@
+{
+  "task_id": "T-b8a05278-292d-4f91-a882-35e0944a742d",
+  "title": "Keep planning and statistics native dates readable at enlarged text",
+  "operation_history": ".skill-tree/history/validation/ux-ui/planning-date-readability/operation-history.json",
+  "checks": [
+    {
+      "id": "planning-date-readability-behavior",
+      "counts": {
+        "discovered": 12,
+        "expected": 12,
+        "failed": 0,
+        "passed": 12,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.log",
+          "sha256": "4e587c9b752e1497c9c2ced9c7622b270ece623155b0e0e788e03e67cc195fc0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.trx",
+          "sha256": "0b0e3b9ebc9b49f72baa863f84897b87104cab0b86ceb489a7feaa2840d2b023"
+        }
+      ]
+    },
+    {
+      "id": "planning-date-readability-rendered",
+      "counts": {
+        "discovered": 361,
+        "expected": 361,
+        "failed": 0,
+        "passed": 361,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser/6ff76cf4-c98d-43c9-9b04-664e3cec7dcb.json",
+          "sha256": "06ab5b6185f6f708e86267b72aeb3bcecf29f572659d79505f322a86f64280a5"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

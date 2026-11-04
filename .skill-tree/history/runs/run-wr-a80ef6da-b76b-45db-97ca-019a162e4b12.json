@@ -1,0 +1,39 @@
+{
+  "admission": {
+    "environment_id": "572da2706616bd897eb655029adfb5a24cc7dda8c4382cb0da58944a55f2a4c5",
+    "flavor": "web",
+    "identity": "e9405d6fafdebbce66181272bfaef75d364e1f8d5506f1068586e60ada5c08c7",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "admitted_groups": {},
+  "admitted_task_ids": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "completed_ids": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "completion_refs": {
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0": "O-b3430299-e9d2-4647-8f0c-803a5ee96864"
+  },
+  "current_task_id": null,
+  "cycle_signature": "d80b302475d0663563084dac14efa4f36ac4b9f6184b064d47113618bf868852",
+  "deferred_ids": [],
+  "finished_at": "2026-11-03T07:50:47.747483+00:00",
+  "id": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12",
+  "limits": {},
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "root_task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "snapshot": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "started_at": "2026-11-03T07:08:31.397643+00:00",
+  "stop_reason": null
+}

@@ -1,0 +1,418 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The selected native civil date remains visibly readable at narrow phone widths and enlarged text.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.log",
+          "sha256": "e032dc1f451bd5a68f258e15cd6bc25b6571b737ce3e786d0ab83ef5c512ab63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.trx",
+          "sha256": "4b37b654c5ba1cc7af7bea7395189f0d253517d3334e03e497187ac7b1a0ec98"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/acceptance.json",
+          "sha256": "880b6767c0471f0b323357c8f92e715ff04628d5c6e5dc40128c23fca144de90"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser/7c09483f-9693-4abd-baf3-c3977a40541b.json",
+          "sha256": "6eeaa55b6e5576e7ec570e12e5e9f335aa9b823c3bb4a5a20af49dd53eed20ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Date editing and Today reset preserve exact selected-day semantics and useful keyboard focus.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.log",
+          "sha256": "e032dc1f451bd5a68f258e15cd6bc25b6571b737ce3e786d0ab83ef5c512ab63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.trx",
+          "sha256": "4b37b654c5ba1cc7af7bea7395189f0d253517d3334e03e497187ac7b1a0ec98"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/acceptance.json",
+          "sha256": "880b6767c0471f0b323357c8f92e715ff04628d5c6e5dc40128c23fca144de90"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser/7c09483f-9693-4abd-baf3-c3977a40541b.json",
+          "sha256": "6eeaa55b6e5576e7ec570e12e5e9f335aa9b823c3bb4a5a20af49dd53eed20ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.log",
+          "sha256": "e032dc1f451bd5a68f258e15cd6bc25b6571b737ce3e786d0ab83ef5c512ab63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.trx",
+          "sha256": "4b37b654c5ba1cc7af7bea7395189f0d253517d3334e03e497187ac7b1a0ec98"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/acceptance.json",
+          "sha256": "880b6767c0471f0b323357c8f92e715ff04628d5c6e5dc40128c23fca144de90"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser/7c09483f-9693-4abd-baf3-c3977a40541b.json",
+          "sha256": "6eeaa55b6e5576e7ec570e12e5e9f335aa9b823c3bb4a5a20af49dd53eed20ba"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "The selected native civil date remains visibly readable at narrow phone widths and enlarged text.",
+          "Date editing and Today reset preserve exact selected-day semantics and useful keyboard focus."
+        ],
+        "id": "native-date-reflow-behavior",
+        "parameters": {
+          "report_name": "native-date-reflow.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/native-date-reflow/unit",
+          "test_filter": "FullyQualifiedName~TodoTodayPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-cb650f61-5760-4d36-8d15-df9a92ee925f",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 7,
+          "expected": 7,
+          "failed": 0,
+          "passed": 7,
+          "skipped": 0
+        },
+        "definition": "2ccea1c0ac1486e97d269ba815dbe9d67ea6876e59971276824f6c0d200126e6",
+        "environment_identity": "9b6c24891358f48bcfdf951af7434b178104180c2eb7227c4cde3e91600ad011",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.log",
+            "sha256": "e032dc1f451bd5a68f258e15cd6bc25b6571b737ce3e786d0ab83ef5c512ab63"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.trx",
+            "sha256": "4b37b654c5ba1cc7af7bea7395189f0d253517d3334e03e497187ac7b1a0ec98"
+          }
+        ],
+        "execution_sessions": {
+          "e357d005388cf5ef876e43ba2c535e299dd63b553ee88b5cf09be26cd0ab06a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:11:47.718059+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/native-date-reflow/launch-1793706947718338000.json"
+            ],
+            "profile_id": "87c940418a1b27e9443a3f879c245720776eb67f4fe73c62b8b5a82347c1daad",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/native-date-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "9685b5957d442fada8d6987bc3144db2cf9716ba8e6e52ff454dce563a2f747e",
+        "payload_hash": "a89afea3b0d223137fe9b6108f58e8ebe05e286dbd3eeb1f8dd97f1d296c0b29",
+        "recorded_at": "2026-11-03T11:57:22.078007+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "c0ba4b06add5951c259124bf45ef85b748104f11d3dd79768538c0f39dbd2059",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.658373833168298
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit."
+        ],
+        "id": "native-date-reflow-rendered",
+        "parameters": {
+          "cases": "Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser",
+          "routes": [
+            "/todo/today"
+          ],
+          "task_key": "native-date-reflow"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/browser-qualification/ux-ui-date-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-37200db6-b214-4d0b-8ac5-1ee575a09745",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 217,
+          "expected": 217,
+          "failed": 0,
+          "passed": 217,
+          "skipped": 0
+        },
+        "definition": "2ccea1c0ac1486e97d269ba815dbe9d67ea6876e59971276824f6c0d200126e6",
+        "environment_identity": "8f8191868c9617cec5eba96909c496318b28b153adf2ea22556225483abb6fbf",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser/7c09483f-9693-4abd-baf3-c3977a40541b.json",
+            "sha256": "6eeaa55b6e5576e7ec570e12e5e9f335aa9b823c3bb4a5a20af49dd53eed20ba"
+          }
+        ],
+        "execution_sessions": {
+          "e357d005388cf5ef876e43ba2c535e299dd63b553ee88b5cf09be26cd0ab06a7": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:13:24.373959+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/native-date-reflow/launch-1793707044374210000.json"
+            ],
+            "profile_id": "87c940418a1b27e9443a3f879c245720776eb67f4fe73c62b8b5a82347c1daad",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/native-date-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "d936c8c903091f524f80b7993a4b5ea1b0b9a600ece6e97f9b5e67672d84a360",
+        "payload_hash": "d14c03392f2dd84d8a13759303ae35de8e65b0238466c502b589af0b09fcc529",
+        "recorded_at": "2026-11-03T12:00:01.319261+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "c0ba4b06add5951c259124bf45ef85b748104f11d3dd79768538c0f39dbd2059",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "53fe4aad5bc83c2a46d559a72bdd858d8ab508fb78aac4aef3f9045614841428",
+          "tests/browser-qualification/ux-ui-date-journey.mjs": "e51aa8b7ac65ea6eb4bf32e50d102393fa82eef577b61cb4a7133e38b2fed5cb"
+        },
+        "timing": {
+          "tool_wall_seconds": 155.9131120420061
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-4afee12c-2759-40f6-adb4-39b5029a3928"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/acceptance.json",
+      "sha256": "880b6767c0471f0b323357c8f92e715ff04628d5c6e5dc40128c23fca144de90"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/operation-history.json",
+      "sha256": "65efd2a9ac5bcadaefa09d27ebd0f60c139dd904b0141404175219302758f9cf"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-c448ba2f-611b-4f7a-b7ef-95f797e6a04f",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep selected native dates readable with enlarged text. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-b302aa68-7d63-4f74-9aa7-338c56700923"
+  ],
+  "recorded_at": "2026-11-03T12:00:09.182678+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "c0ba4b06add5951c259124bf45ef85b748104f11d3dd79768538c0f39dbd2059",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "53fe4aad5bc83c2a46d559a72bdd858d8ab508fb78aac4aef3f9045614841428",
+    "tests/browser-qualification/ux-ui-date-journey.mjs": "e51aa8b7ac65ea6eb4bf32e50d102393fa82eef577b61cb4a7133e38b2fed5cb"
+  },
+  "task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+  "title": "Keep selected native dates readable with enlarged text",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "The selected native civil date remains visibly readable at narrow phone widths and enlarged text.",
+        "Date editing and Today reset preserve exact selected-day semantics and useful keyboard focus."
+      ],
+      "id": "native-date-reflow-behavior",
+      "parameters": {
+        "report_name": "native-date-reflow.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/native-date-reflow/unit",
+        "test_filter": "FullyQualifiedName~TodoTodayPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit."
+      ],
+      "id": "native-date-reflow-rendered",
+      "parameters": {
+        "cases": "Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser",
+        "routes": [
+          "/todo/today"
+        ],
+        "task_key": "native-date-reflow"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/browser-qualification/ux-ui-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "2ccea1c0ac1486e97d269ba815dbe9d67ea6876e59971276824f6c0d200126e6"
+}

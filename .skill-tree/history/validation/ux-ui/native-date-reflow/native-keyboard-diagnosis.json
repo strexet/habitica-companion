@@ -1,0 +1,6 @@
+{
+ "attempt": "951f7f20-cdd9-43ed-8d29-c00731d55639",
+ "finding": "The value-paint assertion passed at the first phone case. The WebKit Today keyboard assertion failed after assuming one Tab exits all native date segments and its calendar affordance.",
+ "repair": "Bound native traversal to eight Tab presses and require actual Today focus, visible outline and Enter reset. Keep the native type and date semantics unchanged.",
+ "cleanup": "The original failure report records contexts, server and profiles cleaned."
+}

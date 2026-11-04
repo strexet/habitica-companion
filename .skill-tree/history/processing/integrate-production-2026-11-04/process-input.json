@@ -1,0 +1,75 @@
+{
+  "dispositions": {
+    "P-9579af1d-3709-4bca-961a-6947585c7747": {
+      "reason": "Current Git, source, provider policy, deployment and validation evidence support five ordered executable integration and publication tasks. The selected scope covers completed work, with independent account/device gates and unrelated unfinished features excluded.",
+      "status": "promoted"
+    }
+  },
+  "selectors": [
+    "P-9579af1d-3709-4bca-961a-6947585c7747"
+  ],
+  "tasks": [
+    {
+      "body": "Goal:\n- Freeze and commit the completed dirty source and evidence before integrating diverged branches.\n\nTouch:\n- Current tracked/untracked completed work, Git source inventory, canonical workflow registry and integration evidence.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- Inspect the complete candidate file list, excluded ignored secrets and exact source hashes. Preserve the previous controller before explicit registry adoption. The owner authorizes the scoped snapshot commit; no remote branch is updated during preservation.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"preserved-source\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\"\n      ],\n      \"sources\": [\n        \".gitignore\",\n        \"AGENTS.md\",\n        \".skill-tree/documents/build-and-release.md\"\n      ],\n      \"parameters\": {},\n      \"assertion\": \"A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.\n",
+      "boundary_validation": "before-dependent-work",
+      "key": "preserve",
+      "parent_pending_ids": [
+        "P-9579af1d-3709-4bca-961a-6947585c7747"
+      ],
+      "priority": 115,
+      "title": "Preserve completed source and planning state for full integration"
+    },
+    {
+      "body": "Goal:\n- Merge completed main work into the current develop lineage and resolve code, documentation, task history and tooling conflicts.\n\nTouch:\n- Git merge result, affected application/Worker/configuration/tests, canonical queue event export and scoped release-validation tooling.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- Keep one implementation branch for the selected run. Compare conflicts with both parents and the preserved working payload. Keep the canonical queue authoritative and integrate retained histories semantically. Prepare pinned full-suite/browser/hosted validation recipes and worktree-local outputs; missing runtime prerequisites receive concrete repair before qualification.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"integrated-source\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.\"\n      ],\n      \"sources\": [\n        \"Habitica.sln\",\n        \"workers/release-inputs.json\",\n        \".skill-tree/documents/build-and-release.md\"\n      ],\n      \"parameters\": {},\n      \"assertion\": \"The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- The integration branch contains both main and develop ancestry, preserves completed feature behavior, resolves every conflict and has a reproducible scoped validation setup.\n",
+      "boundary_validation": "before-dependent-work",
+      "depends_on": [
+        "@preserve"
+      ],
+      "key": "integrate",
+      "parent_pending_ids": [
+        "P-9579af1d-3709-4bca-961a-6947585c7747"
+      ],
+      "priority": 114,
+      "title": "Integrate main and develop with complete source and validation setup"
+    },
+    {
+      "body": "Goal:\n- Build and qualify the complete integrated source before any target-branch update.\n\nTouch:\n- Current solution, Functions, all three Workers, relevant hydrated UI journeys, PWA lifecycle and release evidence.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- The preceding integration task supplies the scoped recipes. Run Worker suites separately from .NET and other Worker suites. Use synthetic providers and exact source/build identity. Repair actual merge defects and rerun affected checks; stale original receipts never establish current integrated acceptance. Physical-device and actual-account qualification remain separate.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"integrated-dotnet\",\n      \"recipe_id\": \"release-dotnet\",\n      \"criteria\": [\n        \"The integrated source passes all current .NET and Functions controls with nonzero discovery, zero required skips and preserved original failures.\"\n      ],\n      \"sources\": [\n        \"Habitica.sln\",\n        \"tests/release/qualification.py\"\n      ],\n      \"parameters\": {\n        \"report_directory\": \".skill-tree/history/validation/integrate-production/dotnet\"\n      },\n      \"assertion\": \"The integrated source passes all current .NET and Functions controls with nonzero discovery, zero required skips and preserved original failures.\",\n      \"timing\": \"before-dependent-work\"\n    },\n    {\n      \"id\": \"integrated-workers\",\n      \"recipe_id\": \"release-workers\",\n      \"criteria\": [\n        \"All three matching Worker bundles build and the complete synthetic Auth and Workspace suites pass without provider effects or weakened assertions.\"\n      ],\n      \"sources\": [\n        \"workers/release-inputs.json\",\n        \"tests/release/qualification.py\"\n      ],\n      \"parameters\": {\n        \"report_directory\": \".skill-tree/history/validation/integrate-production/workers\"\n      },\n      \"assertion\": \"All three matching Worker bundles build and the complete synthetic Auth and Workspace suites pass without provider effects or weakened assertions.\",\n      \"timing\": \"before-dependent-work\"\n    },\n    {\n      \"id\": \"integrated-browser\",\n      \"recipe_id\": \"release-browser\",\n      \"criteria\": [\n        \"Current Release browser qualification verifies affected shared and task flows, light/dark phone/desktop enlarged text, native storage and service-worker lifecycle with owned cleanup.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/wwwroot/service-worker.published.js\",\n        \"tests/release/qualification.py\"\n      ],\n      \"parameters\": {\n        \"report_directory\": \".skill-tree/history/validation/integrate-production/browser\"\n      },\n      \"assertion\": \"Current Release browser qualification verifies affected shared and task flows, light/dark phone/desktop enlarged text, native storage and service-worker lifecycle with owned cleanup.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- The integrated source passes all current .NET and Functions controls with nonzero discovery, zero required skips and preserved original failures.\n- All three matching Worker bundles build and the complete synthetic Auth and Workspace suites pass without provider effects or weakened assertions.\n- Current Release browser qualification verifies affected shared and task flows, light/dark phone/desktop enlarged text, native storage and service-worker lifecycle with owned cleanup.\n",
+      "boundary_validation": "before-dependent-work",
+      "depends_on": [
+        "@integrate"
+      ],
+      "key": "qualify",
+      "parent_pending_ids": [
+        "P-9579af1d-3709-4bca-961a-6947585c7747"
+      ],
+      "priority": 113,
+      "title": "Qualify the complete integrated application and backend release"
+    },
+    {
+      "body": "Goal:\n- Create or reconcile the integration PR, review the complete diff, resolve actionable findings and merge the checked develop result into main.\n\nTouch:\n- GitHub repository strexet/habitica-companion, develop/main PRs, scoped commits, branch refs and publication evidence.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- Use the existing provider and owner authorization for PRs, commits, pushes and merges. Recheck required policy, approvals and CI at the actual head. Report absent CI honestly. Preserve both branch histories and compare production source hashes. Main publication can trigger a Pages build; coordinate matching backend availability and public frontend settings.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"merged-targets\",\n      \"recipe_id\": \"static-inspection\",\n      \"criteria\": [\n        \"Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.\"\n      ],\n      \"sources\": [\n        \".skill-tree/documents/build-and-release.md\",\n        \"tests/release/qualification.py\"\n      ],\n      \"parameters\": {},\n      \"assertion\": \"Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.\n",
+      "boundary_validation": "before-dependent-work",
+      "depends_on": [
+        "@qualify"
+      ],
+      "key": "merge",
+      "parent_pending_ids": [
+        "P-9579af1d-3709-4bca-961a-6947585c7747"
+      ],
+      "priority": 112,
+      "title": "Review and merge the validated integration through develop into main"
+    },
+    {
+      "body": "Goal:\n- Publish the complete main release to the existing production site and matching services, then verify source identity and operational readiness.\n\nTouch:\n- Cloudflare Pages habitica-companion, existing Auth/MCP/Workspace Workers, migration preflight, public plugin artifacts and release records.\n\nImplementation constraints:\n- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.\n- The owner explicitly authorizes production publication and necessary additive migrations. Inspect actual deployed resources, preserve consent and runtime capabilities, retain recovery bookmarks and exact predecessor versions, and avoid irreversible account/key operations. Validate the stable origin after any Git-connected build and keep a concrete release/rollback handoff.\n\nValidation:\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"production-identity\",\n      \"recipe_id\": \"release-hosted\",\n      \"criteria\": [\n        \"Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities.\"\n      ],\n      \"sources\": [\n        \"deploy/coordinated-release.py\",\n        \"tests/release/qualification.py\"\n      ],\n      \"parameters\": {\n        \"report_directory\": \".skill-tree/history/validation/integrate-production/hosted\"\n      },\n      \"assertion\": \"Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities.\",\n      \"timing\": \"before-dependent-work\"\n    },\n    {\n      \"id\": \"production-browser\",\n      \"recipe_id\": \"release-hosted-browser\",\n      \"criteria\": [\n        \"Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits.\"\n      ],\n      \"sources\": [\n        \"tests/release/hosted-smoke.mjs\",\n        \"src/Habitica.WebApp/wwwroot/service-worker.published.js\"\n      ],\n      \"parameters\": {\n        \"report_directory\": \".skill-tree/history/validation/integrate-production/hosted-browser\"\n      },\n      \"assertion\": \"Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities.\n- Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits.\n",
+      "boundary_validation": "before-dependent-work",
+      "depends_on": [
+        "@merge"
+      ],
+      "key": "deploy",
+      "parent_pending_ids": [
+        "P-9579af1d-3709-4bca-961a-6947585c7747"
+      ],
+      "priority": 111,
+      "title": "Deploy and verify the complete merged main production state"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "assertion": "Retain Inventory public action targets, persistent preset fields and preview/freshness gates; original rendered screenshots supply the failing layout regression.",
+  "attempt_id": "C-407260a1-7de1-49c6-a0bc-8539d3221f3a",
+  "check_id": "equipment-identity-reflow-behavior",
+  "definition": "b8373396bce0d4634a75492fed78a49286443ad416312d718cd7adb1ed0ee312",
+  "environment_identity": "2ae8b13c2e14e81de2dcea578d0922d5cebcecd4c50028d49fa046fe7d417310",
+  "key": "51b66e066555b41cd06177054fab45bf6d695f0d7fed2144d0305efc315d1263",
+  "launch": {
+    "assertion": "Retain Inventory public action targets, persistent preset fields and preview/freshness gates; original rendered screenshots supply the failing layout regression.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T02:09:16.724466+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T02:04:17.072576+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~InventoryPageTests",
+      "--logger",
+      "trx;LogFileName=equipment-identity-reflow.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+    "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "9ba23913528ef5bb032b089ca79261ac55eea83b14a5948987abd6068a07f374",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+  },
+  "task_id": "T-e3859337-1a25-48e6-a37d-817868623ec7"
+}

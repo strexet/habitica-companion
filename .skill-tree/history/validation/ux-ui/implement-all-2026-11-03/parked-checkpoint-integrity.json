@@ -1,0 +1,29 @@
+{
+  "pins": [
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "exists": true,
+      "bytes": 94143,
+      "sha256": "2cb877ab833487960ec8e7cffd94aa5605078a46a2e70199a4b93cb151adef5a"
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+      "exists": true,
+      "bytes": 2031,
+      "sha256": "3c613af1db9771130a3520eb37ceb6923ebbddf1cf6189a11b89dcd6d938042b"
+    },
+    {
+      "path": ".skill-tree/history/runs/suspended-wr-58676666-0043-43fa-b934-02eff3e3ead6-2026-10-19.json",
+      "exists": true,
+      "bytes": 84437,
+      "sha256": "8ef38980e1b9548daeeeecde0fbecbc9e62784b96537481a63fb9b07c346b056"
+    },
+    {
+      "path": ".skill-tree/history/runs/owner-handoff-4aa3ced0-8469-45b5-90ce-c0bd51c19114.json",
+      "exists": true,
+      "bytes": 28074,
+      "sha256": "7f876d6efc1a206b9cb73e2ba5cf280baf2e5a2618e93d5be37f0fcf56c48853"
+    }
+  ],
+  "prior_deferred_release_gate": "unaccepted; no old run resumed"
+}

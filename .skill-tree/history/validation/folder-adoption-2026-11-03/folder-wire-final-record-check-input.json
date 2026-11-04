@@ -1,0 +1,23 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "check_id": "folder-transfer-wire",
+  "attempt_id": "C-a399c797-9000-4b3e-a743-72bd5378a779",
+  "environment_identity": "cde3909afc94b2437a7ea67bda6a38460a9506553cb72b08bbc64afc12cf415b",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 25,
+    "discovered": 25,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 18.466786250006407
+  },
+  "evidence": [
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log"
+  ]
+}

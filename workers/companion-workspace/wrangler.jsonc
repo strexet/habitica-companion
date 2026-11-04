@@ -22,7 +22,8 @@
     "PARTY_ENABLED": false,
     "SPELLS_ENABLED": false,
     "CRON_ENABLED": false,
-    "PUSH_REMINDERS_ENABLED": false
+    "PUSH_REMINDERS_ENABLED": false,
+    "EVENTS_ENABLED": false
   },
   "d1_databases": [
     {
@@ -62,6 +63,11 @@
       "binding": "AUTH_PUSH",
       "service": "habitica-chatgpt-auth-local",
       "entrypoint": "PushService"
+    },
+    {
+      "binding": "AUTH_EVENTS",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "EventDeliveryService"
     }
   ],
   "env": {
@@ -74,7 +80,8 @@
         "PARTY_ENABLED": false,
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
-        "PUSH_REMINDERS_ENABLED": false
+        "PUSH_REMINDERS_ENABLED": false,
+        "EVENTS_ENABLED": false
       },
       "d1_databases": [
         {
@@ -114,6 +121,11 @@
           "binding": "AUTH_PUSH",
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "PushService"
+        },
+        {
+          "binding": "AUTH_EVENTS",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "EventDeliveryService"
         }
       ],
       "triggers": {
@@ -131,7 +143,8 @@
         "PARTY_ENABLED": false,
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
-        "PUSH_REMINDERS_ENABLED": false
+        "PUSH_REMINDERS_ENABLED": false,
+        "EVENTS_ENABLED": false
       },
       "d1_databases": [
         {
@@ -171,6 +184,11 @@
           "binding": "AUTH_PUSH",
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "PushService"
+        },
+        {
+          "binding": "AUTH_EVENTS",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "EventDeliveryService"
         }
       ],
       "triggers": {

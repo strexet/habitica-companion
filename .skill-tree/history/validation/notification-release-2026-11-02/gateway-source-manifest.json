@@ -1,0 +1,12 @@
+{
+  "nodeTarget": "22",
+  "cliVersion": "26.0.1",
+  "functionSha256": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+  "sourceHashes": {
+    "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+    "deploy/callback-egress/netlify/functions/callback-egress.mts": "01f75d7742c5352eb9eecc8aaa0e4912d1bba9a1f55e75e0bd84f4ec4c8fe65c"
+  },
+  "syntheticQualificationOnly": true
+}

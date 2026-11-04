@@ -1,0 +1,226 @@
+{
+  "purpose": "Determine native select commit behavior on the owned macOS headless engines; synthetic standalone control only.",
+  "results": [
+    {
+      "engine": "chromium",
+      "keys": [
+        "ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "Space",
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": " ",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "Alt+ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "Alt",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "t"
+      ],
+      "value": "Todo",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "t",
+          "value": "Daily"
+        },
+        {
+          "type": "input",
+          "value": "Todo"
+        },
+        {
+          "type": "change",
+          "value": "Todo"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "T"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "T",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "keys": [
+        "type UTC",
+        "Tab"
+      ],
+      "value": "UTC",
+      "active": ""
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "ArrowUp",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "Space",
+        "ArrowUp",
+        "Enter"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": " ",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "Alt+ArrowUp"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "Alt",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "t"
+      ],
+      "value": "Todo",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "t",
+          "value": "Daily"
+        },
+        {
+          "type": "input",
+          "value": "Todo"
+        },
+        {
+          "type": "change",
+          "value": "Todo"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "T"
+      ],
+      "value": "Daily",
+      "active": "kind",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "T",
+          "value": "Daily"
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "keys": [
+        "type UTC",
+        "Tab"
+      ],
+      "value": "UTC",
+      "active": ""
+    }
+  ],
+  "cleanup": true
+}

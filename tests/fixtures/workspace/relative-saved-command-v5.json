@@ -1,0 +1,56 @@
+{
+  "oracle": "Independent Python UTF8 length-prefixed field construction without application or Worker helpers.",
+  "command": {
+    "id": "81000000-0000-4000-8000-000000000001",
+    "workspaceId": "81000000-0000-4000-8000-000000000002",
+    "expectedRevision": 10,
+    "kind": "savedTaskView",
+    "operation": "create",
+    "entityId": "81000000-0000-4000-8000-000000000003",
+    "patch": {
+      "name": "Relative Today",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "beforeToday"
+        },
+        "timeZoneId": "America/New_York"
+      }
+    }
+  },
+  "payloadHash": "c1f3d0af26fb419936aa8ffa91783372422c1e45581dbb8bae568ce5c7749963",
+  "fields": [
+    "81000000-0000-4000-8000-000000000001",
+    "81000000-0000-4000-8000-000000000002",
+    "10",
+    "savedTaskView",
+    "create",
+    "81000000-0000-4000-8000-000000000003",
+    "1",
+    "Relative Today",
+    null,
+    "0",
+    null,
+    null,
+    null,
+    "1",
+    "tasks",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    "America/New_York",
+    "today",
+    "beforeToday"
+  ]
+}

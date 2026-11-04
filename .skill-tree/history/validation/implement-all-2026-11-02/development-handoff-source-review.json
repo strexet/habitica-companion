@@ -1,0 +1,176 @@
+{
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "completed_snapshot_count": 12,
+  "snapshot_count": 14,
+  "followups_deferred": [
+    "T-925d1068-d6c5-4334-8438-3996c46b5455",
+    "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+  ],
+  "source_observations": [
+    {
+      "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+      "outcome_id": "O-41ccfdf9-5fc4-4ecd-812c-1db654ef06e2",
+      "changed_sources": [
+        ".skill-tree/documents/callback-egress.md",
+        ".skill-tree/documents/features.md",
+        ".skill-tree/documents/technical.md",
+        ".skill-tree/documents/testing.md"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "outcome_id": "O-35d232e0-34ca-4ea1-ba69-f45cc20570c9",
+      "changed_sources": [
+        ".skill-tree/documents/event-subscriptions.md",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/chatgpt-mcp/src/tools.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/shared/events.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+      "outcome_id": "O-477dcb28-6c15-422a-8082-b620f9ddd6d4",
+      "changed_sources": [
+        ".skill-tree/documents/reminder-events.md"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+      "outcome_id": "O-b8fd90fd-f9c9-440e-9590-98a4165652ff",
+      "changed_sources": [
+        ".skill-tree/documents/notes-folders.md",
+        ".skill-tree/documents/technical.md",
+        ".skill-tree/documents/testing.md",
+        "src/Habitica.Application/Notes/INotesCloudClient.cs",
+        "src/Habitica.Application/Notes/NotesQueries.cs",
+        "tests/browser/notes-folders.mjs"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+      "outcome_id": "O-6820d4e0-f998-4968-b397-b46d62ec3ae5",
+      "changed_sources": [
+        ".skill-tree/documents/notes-folders.md",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+      "outcome_id": "O-cc257fcc-fb2d-411b-b719-6cb2fb427a63",
+      "changed_sources": [
+        ".skill-tree/documents/notes-folders.md",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+      "outcome_id": "O-1c1a5bae-dcb5-4451-895f-fde1ff5e521e",
+      "changed_sources": [
+        ".skill-tree/documents/technical.md",
+        ".skill-tree/documents/testing.md",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "outcome_id": "O-93b4af73-0351-46ec-8cb1-0a53ebc086f3",
+      "changed_sources": [
+        ".skill-tree/documents/features.md",
+        ".skill-tree/documents/technical.md",
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/ux-ui-manifest.md",
+        "plugin/skills/habitica-activity-review/SKILL.md",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/shared/task-tools.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "outcome_id": "O-6d0ab2a7-dea8-45d7-bb36-77106500c192",
+      "changed_sources": [
+        ".skill-tree/documents/features.md",
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/ux-ui-manifest.md",
+        "plugin/skills/habitica-task-management/SKILL.md",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/index.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/workspace-domain.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "outcome_id": "O-8edcb3f6-d48b-4cfd-87a2-4235c48467be",
+      "changed_sources": [
+        "plugin/skills/habitica-task-management/SKILL.md",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "outcome_id": "O-5611de29-f238-4c8d-9da0-b3074bb0706e",
+      "changed_sources": [
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "status": "recorded-acceptance-retained; affected-source-revalidation-required-before-release"
+    },
+    {
+      "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "outcome_id": "O-99a92009-8a08-4be3-a83d-4cfa11f28355",
+      "changed_sources": [],
+      "status": "current-recorded-source-footprint"
+    }
+  ],
+  "limits": [
+    "Static source-footprint comparison only. Historical test verdicts remain unchanged.",
+    "The active run remains unfinished because the owner deferred the remaining live gate. Shared-source revalidation is required at the applicable continuation/release boundary; no new publication acceptance is claimed."
+  ]
+}

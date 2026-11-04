@@ -1,0 +1,337 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/callback-authorization-final.log",
+          "sha256": "cf1feef579745b11ce299339477b9cc5ebb7c1a0ffe0acdbf1d0ddeea8b10a91"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+          "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-auth.log",
+          "sha256": "0530a44aea28d66a3b0dbc77e576ff6909feee523322ba61121466ba52bf4c30"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-mcp.log",
+          "sha256": "165204583420a5163438b4a7e4bb40dcaa12b705f77d86b1360a9673cba03692"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-workspace.log",
+          "sha256": "b8d830d9cad52e929b8058c4155b5316f5b227bdcda8e3ac7dcf827e5be0d23f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-gateway-native-tls.log",
+          "sha256": "426e8a47b80196118e1ff69b3a4a19a076fe926488edd805f70acf1b8e37cf03"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-independent-receiver.log",
+          "sha256": "2ccc5696bed6b01169c0270cdb892dd03e0225397f8b9940a7bf0db454de5ae8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-subscription-worker-composition.log",
+          "sha256": "1e9fc652e50fa45796e366d5e0e9da49a11ffc668d843a974a2ce6088fa1aaa8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json",
+          "sha256": "599850d3adc018654d8e7a7008a457170b84805977c9ee4e47a38f984956e87d"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/callback-authorization-final.log",
+          "sha256": "cf1feef579745b11ce299339477b9cc5ebb7c1a0ffe0acdbf1d0ddeea8b10a91"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+          "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-auth.log",
+          "sha256": "0530a44aea28d66a3b0dbc77e576ff6909feee523322ba61121466ba52bf4c30"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-mcp.log",
+          "sha256": "165204583420a5163438b4a7e4bb40dcaa12b705f77d86b1360a9673cba03692"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-workspace.log",
+          "sha256": "b8d830d9cad52e929b8058c4155b5316f5b227bdcda8e3ac7dcf827e5be0d23f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-gateway-native-tls.log",
+          "sha256": "426e8a47b80196118e1ff69b3a4a19a076fe926488edd805f70acf1b8e37cf03"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-independent-receiver.log",
+          "sha256": "2ccc5696bed6b01169c0270cdb892dd03e0225397f8b9940a7bf0db454de5ae8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-subscription-worker-composition.log",
+          "sha256": "1e9fc652e50fa45796e366d5e0e9da49a11ffc668d843a974a2ce6088fa1aaa8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json",
+          "sha256": "599850d3adc018654d8e7a7008a457170b84805977c9ee4e47a38f984956e87d"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+        "criteria": [
+          "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+          "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+        ],
+        "id": "callback-authorization",
+        "parameters": {
+          "test_file": "workers/chatgpt-auth/test/events.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/chatgpt-auth/test/events.test.mjs",
+          "workers/chatgpt-auth/package.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-8031de5e-250e-488c-a512-7ac2c7f5a85a",
+        "classification": "executed-control",
+        "cleanup": "All synthetic Miniflare Workers and isolated D1 instances disposed by test hooks; dry builds completed; native local TLS servers closed. No real subscription or provider callback in this local qualification. OAuth preview viewport restored; temporary static fixture server remains bounded for the remaining visual review.",
+        "counts": {
+          "discovered": 9,
+          "expected": 9,
+          "failed": 0,
+          "passed": 9,
+          "skipped": 0
+        },
+        "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+        "environment_identity": "007151c21dba4eecdc7394bd29184e3c6053b939f3dac64215b183f78d9aee39",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/callback-authorization-final.log",
+            "sha256": "cf1feef579745b11ce299339477b9cc5ebb7c1a0ffe0acdbf1d0ddeea8b10a91"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+            "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "51bb14b9210f02f56a8a77d247dd5415035d8482bfcf8b80edcbaab1ffff8876",
+        "payload_hash": "0a2c65f5899aecc8908bcf11cd97ea2beec712278ce76f7c384bb9bce17dc5ff",
+        "recorded_at": "2026-11-02T13:18:58.415221+00:00",
+        "result": "pass",
+        "sources": {
+          "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+          "workers/chatgpt-auth/test/events.test.mjs": "ea4d9348dec68f16ff55a8879d94f2c7c73f46cd4a89b6079632f9e4062d99c2"
+        },
+        "timing": {
+          "tool_wall_seconds": 10.718303916975856
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+        "criteria": [
+          "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+          "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+        ],
+        "id": "subscription-contracts",
+        "parameters": {
+          "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json"
+        },
+        "recipe_id": "subscription-contracts-execution-profile",
+        "sources": [
+          "workers/shared/events.ts",
+          "workers/chatgpt-auth/src/events.ts",
+          "workers/companion-workspace/src/events.ts",
+          "workers/chatgpt-auth/test/events.test.mjs",
+          "tests/Functions/subscription-contracts.py",
+          ".skill-tree/documents/event-subscriptions.md"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-164610ef-a37e-4994-9c57-74466953e94c",
+        "classification": "executed-control",
+        "cleanup": "All synthetic Miniflare Workers and isolated D1 instances disposed by test hooks; dry builds completed; native local TLS servers closed. No real subscription or provider callback in this local qualification. OAuth preview viewport restored; temporary static fixture server remains bounded for the remaining visual review.",
+        "counts": {
+          "discovered": 43,
+          "expected": 43,
+          "failed": 0,
+          "passed": 43,
+          "skipped": 0
+        },
+        "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+        "environment_identity": "5b22ae70330b53e41215e72a309355c39cf183296395a6b2cf1913c5ef2810b2",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json",
+            "sha256": "599850d3adc018654d8e7a7008a457170b84805977c9ee4e47a38f984956e87d"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-workspace.log",
+            "sha256": "b8d830d9cad52e929b8058c4155b5316f5b227bdcda8e3ac7dcf827e5be0d23f"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-auth.log",
+            "sha256": "0530a44aea28d66a3b0dbc77e576ff6909feee523322ba61121466ba52bf4c30"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-build-mcp.log",
+            "sha256": "165204583420a5163438b4a7e4bb40dcaa12b705f77d86b1360a9673cba03692"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-subscription-worker-composition.log",
+            "sha256": "1e9fc652e50fa45796e366d5e0e9da49a11ffc668d843a974a2ce6088fa1aaa8"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-gateway-native-tls.log",
+            "sha256": "426e8a47b80196118e1ff69b3a4a19a076fe926488edd805f70acf1b8e37cf03"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts-independent-receiver.log",
+            "sha256": "2ccc5696bed6b01169c0270cdb892dd03e0225397f8b9940a7bf0db454de5ae8"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+            "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "6f91942c6e872129658c351b3ceffffc41bb617266b4856f9cc768544543b661",
+        "payload_hash": "a076f2148a970708adcb740e600a359816ff3d2bfa4d42764c550b6bb75426de",
+        "recorded_at": "2026-11-02T13:18:58.656849+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+          "tests/Functions/subscription-contracts.py": "58f14945972e6174f25200d709113a1bb4951d91b07544872d660e9527a9a042",
+          "workers/chatgpt-auth/src/events.ts": "e0d933b482e2a7c36ca66287268eaf3c25b19ff9efa0a0f9569aa2aa60fbc555",
+          "workers/chatgpt-auth/test/events.test.mjs": "ea4d9348dec68f16ff55a8879d94f2c7c73f46cd4a89b6079632f9e4062d99c2",
+          "workers/companion-workspace/src/events.ts": "ff0f1d94952116d7f0db7c31f8bdd2a22f417c90617e6681122b74c2696c9a94",
+          "workers/shared/events.ts": "5145a89f1888e628361f01399148674292e1f33e8f939e76cb86db5df8d498fe"
+        },
+        "timing": {
+          "tool_wall_seconds": 26.373
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"
+  ],
+  "disposition": "completed",
+  "evidence": [],
+  "followup_ids": [],
+  "id": "O-35d232e0-34ca-4ea1-ba69-f45cc20570c9",
+  "limitations": [
+    "Ordinary rollout flags remain false. No real host subscription, chat response or physical device is qualified by synthetic composition.",
+    "Dedicated hosted DNS/TLS failure injection remains deferred. Gateway normal hosted delivery was qualified separately; final coordinated release must revalidate affected completed contracts."
+  ],
+  "outcome": "Implemented independently reviewed exact-task Events consent, Auth-only encrypted callback secrets, opaque durable Workspace subscription lifecycle and authenticated MCP Events methods. Signed verification, deterministic original identity, rotation, expiry, revoke and concurrent unsubscribe controls pass actual local Worker/D1/MCP and native TLS composition.",
+  "parent_pending_ids": [
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+  ],
+  "recorded_at": "2026-11-02T13:18:58.869537+00:00",
+  "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "source_fingerprints": {
+    ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+    "workers/chatgpt-auth/migrations/0014-event-callbacks.sql": "a1c7e79cfaa22af1656f616c0d56f3e55195693b751459b531de10fca57de9db",
+    "workers/chatgpt-auth/src/events.ts": "e0d933b482e2a7c36ca66287268eaf3c25b19ff9efa0a0f9569aa2aa60fbc555",
+    "workers/chatgpt-mcp/src/tools.ts": "123b451de2e048a81db8602c80ae423ce5d76047c6f9a5018dd20ba4a2e08cb6",
+    "workers/companion-workspace/migrations/0019-event-subscriptions.sql": "75d41f42a05e1b10dfea634e51f73dabe19a59ff4f2e68185ede2ee021352e57",
+    "workers/companion-workspace/src/events.ts": "ff0f1d94952116d7f0db7c31f8bdd2a22f417c90617e6681122b74c2696c9a94",
+    "workers/shared/events.ts": "5145a89f1888e628361f01399148674292e1f33e8f939e76cb86db5df8d498fe"
+  },
+  "task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+  "title": "Implement Auth-owned callback secrets and reviewed event subscriptions",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+      "criteria": [
+        "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+        "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+      ],
+      "id": "callback-authorization",
+      "parameters": {
+        "test_file": "workers/chatgpt-auth/test/events.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "workers/chatgpt-auth/package.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+      "criteria": [
+        "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+        "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+      ],
+      "id": "subscription-contracts",
+      "parameters": {
+        "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json"
+      },
+      "recipe_id": "subscription-contracts-execution-profile",
+      "sources": [
+        "workers/shared/events.ts",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "tests/Functions/subscription-contracts.py",
+        ".skill-tree/documents/event-subscriptions.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd"
+}

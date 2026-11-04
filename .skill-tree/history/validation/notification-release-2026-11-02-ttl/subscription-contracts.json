@@ -1,0 +1,60 @@
+{
+  "scope": "local-synthetic-composition-no-real-host",
+  "results": [
+    {
+      "name": "build-workspace",
+      "exit_code": 0,
+      "seconds": 2.807,
+      "tests": 0,
+      "passed": 0,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-build-workspace.log"
+    },
+    {
+      "name": "build-auth",
+      "exit_code": 0,
+      "seconds": 2.64,
+      "tests": 0,
+      "passed": 0,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-build-auth.log"
+    },
+    {
+      "name": "build-mcp",
+      "exit_code": 0,
+      "seconds": 2.789,
+      "tests": 0,
+      "passed": 0,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-build-mcp.log"
+    },
+    {
+      "name": "subscription-worker-composition",
+      "exit_code": 0,
+      "seconds": 11.067,
+      "tests": 22,
+      "passed": 22,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-subscription-worker-composition.log"
+    },
+    {
+      "name": "gateway-native-tls",
+      "exit_code": 0,
+      "seconds": 0.755,
+      "tests": 18,
+      "passed": 18,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-gateway-native-tls.log"
+    },
+    {
+      "name": "independent-receiver",
+      "exit_code": 0,
+      "seconds": 1.231,
+      "tests": 4,
+      "passed": 4,
+      "skipped": 0,
+      "log": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-independent-receiver.log"
+    }
+  ],
+  "result": "pass"
+}

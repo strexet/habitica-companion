@@ -1,3 +1,5 @@
+import {acceptTypeCopy} from './task-type-copy.ts';
+import {scheduleContextMatches,type LinkedDailyScheduleResult} from '../../shared/linked-daily-schedule.ts';
 import {activityWitness} from '../../shared/activity-coverage.ts';
 import {validateLinkedRecoveryHashes} from '../../shared/linked-recovery.ts';
 import {hasGameFence,applyUnarchive,unarchiveReferencesAvailable} from '../../shared/task-recovery.ts';
@@ -13,7 +15,7 @@ import { WorkspaceError } from "../../shared/workspace-http.ts";
 import {expandRecurrence} from '../../shared/recurrence-calendar.ts';
 import {applyPlanning,planningReferencesAvailable} from '../../shared/task-planning.ts';
 export interface CommandEntry {
- command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
+ scheduleResult?:LinkedDailyScheduleResult; command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
  projectionState: string; effects: string[]; confirmedEffects: number; failure: string;
  retryAtUtc: string | null; lease: {owner:string;token:string;expiresAtUtc:string} | null; dispatchedAtUtc: string | null; attempts: number; taskSnapshot?: CompanionTask | null;
 }
@@ -25,6 +27,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if(document.organizationHistory?.some(entry=>entry.command.id===command.id)||document.linkedTaskRecoveries?.some(entry=>entry.id===command.id))throw new WorkspaceError('command_id_reused',409);
  if (command.expectedRevision !== document.revision) throw new WorkspaceError("stale_revision", 409);
  if (document.revision === Number.MAX_SAFE_INTEGER) throw new WorkspaceError("revision_exhausted", 409);
+ if(command.operation==='copyTaskType')return acceptTypeCopy(document,command,now);
  const result = structuredClone(document); const revision = ++result.revision;
  const previousTaskRevision=document.tasks.find(task=>task.id===command.taskId)?.revision??0;
  let task = result.tasks.find(task => task.id === command.taskId); const patch = command.patch;
@@ -81,7 +84,11 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if(command.operation==='createDaily'&&command.projectToHabitica){const failure=dailyRuleFailure(patch?.recurrence);if(failure)throw new WorkspaceError(failure,422);if(patch?.deadline!==null)throw new WorkspaceError('unsupported_daily_fields',422);}
  const editsRecurrence=Boolean(patch?.recurrence||patch?.clearRecurrence);
  if(editsRecurrence&&(isTaskCreation(command.operation)?command.operation!=='createDaily'||patch!.clearRecurrence:task!.kind!=='daily'))throw new WorkspaceError('recurrence_requires_daily',422);
- if(editsRecurrence&&!isTaskCreation(command.operation)&&(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null)))throw new WorkspaceError('unsupported_projection',422);
+ if(editsRecurrence&&!isTaskCreation(command.operation)&&command.operation!=='editLinkedDailySchedule'&&(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null)))throw new WorkspaceError('unsupported_projection',422);
+ if(command.operation==='editLinkedDailySchedule'){
+  const context=patch?.linkedSchedule;
+  if(!command.projectToHabitica||task!.kind!=='daily'||task!.state!=='active'||!context||!patch!.recurrence||!scheduleContextMatches(context,patch!.recurrence)||mapping?.state!=='linked'||mapping.habiticaTaskId!==context.habiticaTaskId||mapping.fingerprint!==context.fingerprint||Date.parse(context.observedAtUtc)>Date.parse(now)||Date.parse(now)-Date.parse(context.observedAtUtc)>90000||history.some(entry=>entry.effects.length>0&&!['confirmed','cancelled'].includes(entry.projectionState)))throw new WorkspaceError('linked_schedule_review_required',409);
+ }
  if (command.operation === "deleteTask" && (command.projectToHabitica || mapping && (mapping.state !== "unlinked" || mapping.habiticaTaskId !== null))) throw new WorkspaceError("unsupported_projection", 422);
  if (command.operation === "completeTask" && (task!.kind === "habit" || ["completed", "cancelled", "paused"].includes(task!.state))) throw new WorkspaceError("task_not_completable", 422);
  if (command.operation === "scoreHabit" && (task!.kind !== "habit" || task!.state !== "active")) throw new WorkspaceError("habit_not_active", 422);
@@ -109,7 +116,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
    occurrence.state='skipped';occurrence.revision=revision;occurrence.terminalCommandId=command.id;
   }
   if (command.operation === "deleteTask") task!.isArchived = true;
-  if (command.operation === "updateTask") { task!.recurrence=patch!.clearRecurrence?null:patch!.recurrence??task!.recurrence; task!.habiticaDetails=mergeDetails(task!.habiticaDetails,patch!.habiticaDetails); task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
+  if (["updateTask","editLinkedDailySchedule"].includes(command.operation)) { task!.recurrence=patch!.clearRecurrence?null:patch!.recurrence??task!.recurrence; task!.habiticaDetails=mergeDetails(task!.habiticaDetails,patch!.habiticaDetails); task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
   if (command.operation === "completeTask") {
    let occurrenceId = null;
    if (task!.kind === "daily") {
@@ -126,7 +133,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  const effects: string[] = [];
  if (requested) {
   if (!mapping?.habiticaTaskId || command.operation==='ensureProjection') effects.push("create");
-  if (command.operation === "updateTask") effects.push("update");
+  if (["updateTask","editLinkedDailySchedule"].includes(command.operation)) effects.push("update");
   if (command.operation === "completeTask") effects.push("scoreUp");
   if (command.operation === "scoreHabit") for (let i = 0; i < command.count; i++) effects.push(command.direction === "up" ? "scoreUp" : "scoreDown");
  }

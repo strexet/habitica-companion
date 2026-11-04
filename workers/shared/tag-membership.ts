@@ -1,9 +1,11 @@
+import {hasRelativeDates,evaluateRelativeDates,type RelativeDateEvaluation} from './relative-saved-dates.ts';
 import type {WorkspaceDocument,CompanionTask,Entity} from './workspace-domain.ts';
 import {queryTasks} from './task-query.ts';
 import {queryUnblockedTodos} from './unblocked-todos.ts';
 import type {TagGroupKind} from './tag-projection.ts';
+import {querySavedTaskView} from './saved-task-query.ts';
 import type {SavedTaskQuery} from './saved-task-views.ts';
-export interface DesiredTagGroup {entityId:string;kind:TagGroupKind;name:string;archived:boolean;removed:boolean;taskIds:string[];retainMembership:boolean}
+export interface DesiredTagGroup {entityId:string;kind:TagGroupKind;name:string;archived:boolean;removed:boolean;taskIds:string[];retainMembership:boolean;unavailableReason?:string;evaluation?:RelativeDateEvaluation}
 export interface DesiredTagMembership {sourceRevision:number;groups:DesiredTagGroup[]}
 
 // A saved selection is materialized completely from one immutable source snapshot.
@@ -18,7 +20,7 @@ function selection(document:WorkspaceDocument,query:SavedTaskQuery):string[]{
  if(offset>document.tasks.length)throw new Error('tag_selection_paging_invalid');
  return ids;
 }
-export function desiredTagMembership(document:WorkspaceDocument):DesiredTagMembership{
+export function desiredTagMembership(document:WorkspaceDocument,review?:{entityId:string;asOfUtc:string}):DesiredTagMembership{
  const retired=new Set((document.sourceRetirements??[]).map(row=>row.sourceTaskId)),tasks=document.tasks.filter(task=>!retired.has(task.id));
  const groups:DesiredTagGroup[]=[],projects=new Map(document.projects.map(project=>[project.id,project])),sections=new Map(document.sections.map(section=>[section.id,section]));
  const historical=(task:CompanionTask)=>task.isArchived||task.state==='completed'||task.state==='cancelled';
@@ -30,6 +32,10 @@ export function desiredTagMembership(document:WorkspaceDocument):DesiredTagMembe
  add(document.categories,'category',(task,row)=>(task.categoryId??(task.projectId&&!projects.get(task.projectId)?.isRemoved?projects.get(task.projectId)?.categoryId:null))===row.id);
  add(document.labels,'label',(task,row)=>task.labelIds.includes(row.id));
  for(const row of document.goals)groups.push({entityId:row.id,kind:'goal',name:row.name,archived:row.isArchived,removed:false,retainMembership:row.isArchived,taskIds:row.taskIds.filter(id=>!retired.has(id))});
- for(const row of document.savedTaskViews??[])groups.push({entityId:row.id,kind:'savedTaskView',name:row.name,archived:row.isArchived,removed:false,retainMembership:row.isArchived,taskIds:selection(document,row.query).filter(id=>!retired.has(id))});
+ for(const row of document.savedTaskViews??[]){const relative=hasRelativeDates(row.query),reviewed=relative&&review?.entityId===row.id&&!row.isArchived;let evaluation:RelativeDateEvaluation|undefined,taskIds:string[]=[];
+  if(reviewed){evaluation=evaluateRelativeDates(row.query,review!.asOfUtc)!;let offset=0;do{const page=querySavedTaskView(document,row.id,{limit:100,offset,expectedRevision:document.revision,...(offset?{expectedEvaluationDay:evaluation.localDate}:{})},review!.asOfUtc);taskIds.push(...page.tasks.map(t=>t.id));if(page.nextOffset===null)break;offset=page.nextOffset;}while(offset<=document.tasks.length);}
+  else if(!relative)taskIds=selection(document,row.query);
+  groups.push({entityId:row.id,kind:'savedTaskView',name:row.name,archived:row.isArchived,removed:false,retainMembership:row.isArchived||relative&&!reviewed,taskIds:taskIds.filter(id=>!retired.has(id)),...(relative&&!reviewed?{unavailableReason:'relative_dates_require_review'}:{}),...(evaluation?{evaluation}:{})});}
+
  return {sourceRevision:document.revision,groups};
 }

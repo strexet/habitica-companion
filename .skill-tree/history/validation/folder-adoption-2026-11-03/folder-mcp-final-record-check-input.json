@@ -1,0 +1,23 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "check_id": "folder-transfer-mcp",
+  "attempt_id": "C-5a2256f7-092f-48c2-b766-35a406c758ca",
+  "environment_identity": "68edf64f6ccffb254d884864681513af598ade54a5dcf0b659545830263dc83f",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 10,
+    "discovered": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "timing": {
+    "tool_wall_seconds": 9.062133833067492
+  },
+  "evidence": [
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log"
+  ]
+}

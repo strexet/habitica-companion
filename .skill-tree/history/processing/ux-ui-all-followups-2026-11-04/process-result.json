@@ -1,0 +1,47 @@
+{
+  "created_ids": [
+    "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
+    "T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a",
+    "T-f21b11ff-1224-486a-b729-e2f440f4920b",
+    "T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa",
+    "T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44"
+  ],
+  "dispositions": {
+    "P-375aba91-d916-46f4-8310-aa7b51810a45": {
+      "reason": "Current source and retained original evidence establish independently executable scoped followup work. Research: .skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json. Implementation remains deferred outside the frozen snapshot.",
+      "status": "promoted"
+    },
+    "P-5a241695-798e-48df-8a0f-989ba8ceaee8": {
+      "reason": "Current source and retained original evidence establish independently executable scoped followup work. Research: .skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json. Implementation remains deferred outside the frozen snapshot.",
+      "status": "promoted"
+    },
+    "P-612f62db-56ca-44cd-8f23-95609d268da9": {
+      "reason": "Current source and retained original evidence establish independently executable scoped followup work. Research: .skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json. Implementation remains deferred outside the frozen snapshot.",
+      "status": "promoted"
+    },
+    "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7": {
+      "reason": "Current source and retained original evidence establish independently executable scoped followup work. Research: .skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json. Implementation remains deferred outside the frozen snapshot.",
+      "status": "promoted"
+    },
+    "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4": {
+      "reason": "Current source and retained original evidence establish independently executable scoped followup work. Research: .skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json. Implementation remains deferred outside the frozen snapshot.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-375aba91-d916-46f4-8310-aa7b51810a45",
+    "P-612f62db-56ca-44cd-8f23-95609d268da9",
+    "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4",
+    "P-5a241695-798e-48df-8a0f-989ba8ceaee8",
+    "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7"
+  ],
+  "task_keys": {
+    "cancelled-review-guidance": "T-f21b11ff-1224-486a-b729-e2f440f4920b",
+    "frozen-value-inspection": "T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44",
+    "gear-recovery-readiness": "T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a",
+    "header-sync-labels": "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
+    "party-sync-failure-copy": "T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa"
+  }
+}

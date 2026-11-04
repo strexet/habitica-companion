@@ -1,0 +1,7 @@
+{
+  "original_failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/36d616d6-6d2e-4934-bc9e-16175192c75e-failure.json",
+  "original_dom_state": "The captured task route still reported data-readiness=loading. The journey waited only for status presence, allowing startup focus changes to race the keyboard assertion.",
+  "repair": "Wait for ready before interactions. Keep the exact keyboard-return assertion and add target/active-element diagnostics. Qualify one profile per engine only; failed six-profile cleanup is not accepted.",
+  "cleanup_recovery": ".skill-tree/history/validation/ux-ui/disabled-readability/cleanup-recovery-36d616d6.json",
+  "bounded_cost": "The full24-palette matrix is8times the normal3-palette matrix. Use explicit1200-second browser/1500-second controller operation deadlines,30-second cleanup reserve, and a28-minute launch deadline. No count or product case is dropped."
+}

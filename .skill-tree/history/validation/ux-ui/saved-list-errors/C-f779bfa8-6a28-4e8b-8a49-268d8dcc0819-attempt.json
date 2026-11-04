@@ -1,0 +1,73 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-f779bfa8-6a28-4e8b-8a49-268d8dcc0819",
+  "check_id": "saved-list-errors-behavior",
+  "definition": "440530264fdf69d9dafb1730586ebf9e2ce822fade130361ebc7ec52fb58f426",
+  "environment_identity": "22d5ecc557c49a82b2d4888fba4c1d3aa82e9a53f177604191b61a5b2f888680",
+  "key": "927c357421919eb205649fe5fd4eecb5f35435fdecd896429c87ff96405577a9",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T16:34:13.251415+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T16:29:13.563462+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoSavedListPanelTests|FullyQualifiedName~RelativeSavedListPanelTests|FullyQualifiedName~TodoPlanningPanelTests",
+      "--logger",
+      "trx;LogFileName=saved-list-errors.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/saved-list-errors/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "c2838864a9ddf67b802973b6270ee84851b25d44fd26d37852f2767eb4636225",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "71670fc1cc2afdba487a94bbd21dd39efcbcaa1c560416edc6c7d148a34dcf3f",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+    "src/Habitica.WebApp/wwwroot/js/field-focus.js": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "fbcdb465ad1d6e1050b0c78bee54e168651f3023949cf0efeebd03ac24e809f9",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "e756666598cd7d67da15e8de5da1323b2ac87b80457535de69bc2997d151450a"
+  },
+  "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18"
+}

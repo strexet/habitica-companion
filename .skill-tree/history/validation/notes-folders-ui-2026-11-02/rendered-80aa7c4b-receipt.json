@@ -1,0 +1,217 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-77e4b362-73e2-44ab-a828-dca5b9f9f5fb",
+  "classification": "executed-control",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+  "counts": {
+    "discovered": 128,
+    "expected": 128,
+    "failed": 0,
+    "passed": 128,
+    "skipped": 0
+  },
+  "definition": "941c9347866bc70bdb42add0947d62ab914e413bdc97aabfa8698154e5ac9e51",
+  "environment_identity": "632e4111ba4f7bc29ec7c82bdbb0bf30e1d972200a4dfbaf36732e7e3717421d",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+      "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+      "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+      "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+    }
+  ],
+  "execution_sessions": {
+    "070c67ceb1713e7b0dcf032a7db708c76b07977f072b498e7b22d608eaad2f8f": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:05:20.884689+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-73405771",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "0bac21ec6fa358e100490671d37ae6b9eeb5e67c33c91dc1192a35a75c92cf43": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:00:46.860981+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-f7f8772b",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "20cd940ad79ea8d0b933ab24c21aa1457b7ca2d1c2ba6db95d8870a1f1bdc24e": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:13:13.850942+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-80aa7c4b",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "2b4bef75e55b04a1e39c5ab3495742d32eb738ec26a934763c6477d39817837c": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:04:15.788382+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-190834ec",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "5d292971958ce7a31f25286b943923d6a945da2e84c8ccb064563061032f78a7": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:07:04.903723+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-fcd7fc07",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "a71f29dc920e69c324c15ac47edf964890282a075022dad52ee08fa026b84465": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T17:57:29.489984+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-b78ab176",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "b2b0ffe235be458b7e113f1fbfaaaf2eb6e2a7a879d47311e799543f8f49a4dc": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:08:22.872096+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-405e8094",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "c0fe8bbc2cdf9a752f962576142e2f44a385a134d32776066bef7c5220a7eb82": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T17:58:55.205734+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-7a947400",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "c9dfea4260e21314566030860a1e218fb9ef592fcb437ff0b249ce286accafde": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:01:42.629054+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-6f176039",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "cbd60e1253880928b2fa6f2a604285642bdbc897783b21f04bf3119eaedf038b": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:02:21.968044+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-ba9f4a18",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "fc69fc0773a82ac50e993acb03950f1345e8f2deecd1de4d27d5b60667f4b374": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:08:57.360415+00:00",
+      "fixture_identity": "Current Release Blazor routes, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json"
+      ],
+      "profile_id": "notes-folders-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-a92a71cd",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "a94c4f666dddb8d402a7964eec89c88099585080d769351c8fcaf56e69de889a",
+  "payload_hash": "6b30bce1362c536e51f68c75e804b88c7de855f8d0321dd5aff5b60f8138652d",
+  "recorded_at": "2026-11-02T18:00:37.043618+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+    "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+    "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+    "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+    "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+    "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+    "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+    "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+  },
+  "timing": {
+    "tool_wall_seconds": 22.581186749972403
+  }
+}

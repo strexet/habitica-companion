@@ -1,0 +1,11 @@
+{
+  "source": "functions",
+  "file_hashes": {
+    "api/party-sync/[partyId].js": "a6cc2baa4305abaf3d143b3811823a70c22cff38ead728d21d2920280c817618",
+    "api/sync/[syncId].js": "312814287702de5ffcd99b8052621a095e2a4a08ec6c80e9c5c56a3ea7bba800",
+    "api/sync/[syncId]/sections.js": "46b1fee6d50f0474ee586f8443f39fa991dbde35c5ba1304f594d6b6c441a284",
+    "api/sync/[syncId]/section/[sectionKey].js": "21c4078b4715479172ee46a4b9495228b203d534fd62fc3945f17abd09d8b0c7"
+  },
+  "unchanged_source": true,
+  "staged_with_pages_upload": true
+}

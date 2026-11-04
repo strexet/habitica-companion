@@ -1,0 +1,97 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-fadec9e5-be4f-436c-a4d0-277b62ca4a28",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 5,
+    "expected": 5,
+    "failed": 0,
+    "passed": 5,
+    "skipped": 0
+  },
+  "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+  "environment_identity": "55406b9e6b3c299e3b8c8be7a95c3019d8157ee4af9b072aef7fa22424947157",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-execution.log",
+      "sha256": "53b247c650ed777b1642734e8d4823943a58c2046dacced0194f7df11b694c9a"
+    }
+  ],
+  "execution_sessions": {
+    "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-9ce9568b",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-50291c1f",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "cf4b67b90c4c845f01018c8691a35c196414d6757f574b20ad1856e6e15b10c8": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T20:05:21.308242+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-d9fcee07-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-d9fcee07",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "ebcca08432d37358bb067d77a18b5ef598fd8862934f8533bc8073be152066cd": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T20:08:49.800560+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-98e22785",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "1dc8d3430d226ee7c39f8a187672d71d96884c57126922af40182121de2dda44",
+  "payload_hash": "70b8114e6fbb86e3caaceca34e567eab5a681ca026d2eccbc97df5e9e4484e70",
+  "recorded_at": "2026-11-02T19:58:29.718684+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/linked-daily-schedule-v1.json": "b7bf77dea01f949414db3b4c0cdda44b2f58801c5ed74ff86f6b45e1ffb2475c",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs": "b1f91d0eb79ef7167796a7d6b9647ef1c6bbfb97f569a24a37070f04a6e70f89",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "timing": {
+    "tool_wall_seconds": 3.540564249968156
+  }
+}

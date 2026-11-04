@@ -1,0 +1,7 @@
+{
+  "observed": "Installed composer prepends registry input_path and adds static qualification marker; direct unnormalized dictionary comparison was an incorrect static oracle.",
+  "owner_source": ".skill-tree/installation/source/lib/composer.js:89-93",
+  "correction": "Compare the exact installed normalized contract, preserving all argv/toolchain/execution/input fields and explicit qualification marker.",
+  "product_change": false,
+  "external_execution": false
+}

@@ -11,5 +11,6 @@ public enum CloudSyncSection
     PartyCronHistory = 6,
     Diagnostics = 7,
     SyncMetadata = 8,
-    ColorSchemes = 9
+    ColorSchemes = 9,
+    CompanionPreferences = 10
 }

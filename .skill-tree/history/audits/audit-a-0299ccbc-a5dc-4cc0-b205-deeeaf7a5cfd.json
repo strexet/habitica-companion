@@ -1,0 +1,469 @@
+{
+  "base_commit": "198e5fa299af7e3fb9daa56f6a5a051993456196",
+  "checks": [
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/repository-structure.log",
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+        ".",
+        "--format",
+        "json"
+      ],
+      "errors": 0,
+      "exit_code": 0,
+      "id": "repository-structure",
+      "result": "pass",
+      "warnings": 1
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/future-strict.log",
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+        ".skill-tree/documents/future.md",
+        "--strict",
+        "--format",
+        "json"
+      ],
+      "errors": 0,
+      "exit_code": 0,
+      "id": "future-strict",
+      "result": "pass",
+      "warnings": 0
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/small-docs-prose.log",
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py",
+        "--warnings-as-errors",
+        "README.md",
+        ".skill-tree/documents/dependencies.md",
+        ".skill-tree/documents/repository-map.md",
+        ".skill-tree/documents/build-and-release.md"
+      ],
+      "errors": 0,
+      "exit_code": 0,
+      "id": "small-docs-prose",
+      "result": "pass",
+      "warnings": 0
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/corpus-prose.log",
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py",
+        ".skill-tree/documents"
+      ],
+      "errors": 273,
+      "exit_code": 1,
+      "id": "corpus-prose",
+      "result": "fail",
+      "warnings": 169
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/diff-check.log",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "id": "diff-check",
+      "result": "pass"
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/worker-build-identity.log",
+      "assertion": "Generated Worker identity matches unchanged bounded runtime inputs. No Worker build executed.",
+      "command": [
+        "python3",
+        "workers/scripts/generate-build-identity.py",
+        "--check"
+      ],
+      "id": "worker-build-identity",
+      "result": "pass"
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/static-consistency.json",
+      "assertions": {
+        "active_run_preserved": true,
+        "local_markdown_targets": 179,
+        "missing_targets": [],
+        "new_backlog_tasks": 1,
+        "original_tasks": 27,
+        "plugin_skill_count": 6,
+        "queue_preservation": "pass",
+        "task_progress_preserved": true,
+        "worker_lock_pins": "pass"
+      },
+      "id": "static-consistency",
+      "result": "pass"
+    },
+    {
+      "artifact": ".skill-tree/artifacts/documentation-audit-20261102/changed-line-prose.json",
+      "assertions": {
+        "added_or_replaced_lines": 105,
+        "changed_markdown_files": 9,
+        "diagnostics": [],
+        "ok": true
+      },
+      "id": "changed-line-prose",
+      "result": "pass"
+    }
+  ],
+  "corrections": [
+    "README.md",
+    ".skill-tree/documents/project.md",
+    ".skill-tree/documents/technical.md",
+    ".skill-tree/documents/features.md",
+    ".skill-tree/documents/dependencies.md",
+    ".skill-tree/documents/repository-map.md",
+    ".skill-tree/documents/build-and-release.md",
+    ".skill-tree/documents/deploy-cloudflare-pages.md"
+  ],
+  "coverage": [
+    {
+      "area": "document inventory and navigation",
+      "depth": "All canonical Markdown files checked for local link existence and prose diagnostics; required documents, manifest/index and installed package resources checked by the repository validator. External URLs and heading fragments were not fetched or validated."
+    },
+    {
+      "area": "required core documentation",
+      "depth": "README, rules, project, dependency, map and build documents reviewed; architecture/features/testing and queue reviewed through focused current-contract, status and qualification sections. Large feature/formula inventories were sampled, not exhaustively verified."
+    },
+    {
+      "area": "startup and credential boundaries",
+      "depth": "Program registration, browser credential adapter, Auth enrollment guard, MCP authorization/transport and current Tasks/Todo/Notes/Settings composition inspected statically."
+    },
+    {
+      "area": "configuration and packaging",
+      "depth": "Pinned .NET/Node/NuGet/npm declarations, Worker direct resolved lock pins, disabled checked-in flags, enabled public production override, build scripts, plugin placeholder and six skill files inspected."
+    },
+    {
+      "area": "recent specialized contracts",
+      "depth": "MCP protocol, PWA shell, Notes project links, existing connection recovery, unified adoption and callback documentation sampled against available source/test or recorded evidence. Specialized unmodified documents receive navigation/prose coverage only unless named in the focused source coverage."
+    },
+    {
+      "area": "test evidence",
+      "depth": "Representative existing Notes, recovery, protocol and PWA fixtures inspected as source. Historical release results remain recorded evidence for original builds; no product suite rerun."
+    }
+  ],
+  "coverage_gaps": [
+    "Product builds, .NET/Worker tests, browser servers and interaction/layout/theme checks were not executed because the changed deliverable contains documentation and workflow metadata only.",
+    "No UI route or runtime asset changed. Light/dark, phone/desktop, enlarged text, focus, geometry and contrast receive no new qualification from the static audit.",
+    "Live Habitica, OAuth hosts, Cloudflare deployment state, callback DNS/TLS, Push delivery, installed plugins, physical devices and assistive technologies remain unverified. Recorded releases establish historical publication evidence only.",
+    "The audit does not exhaustively rederive Habitica formulas, Cron semantics, every feature/API operation, external references or every specialized contract. Source fingerprints identify inspected files without implying full behavioral coverage.",
+    "The inherited prose finding and current-contract consolidation finding remain open in Backlog. A passing structural validator does not establish complete prose or semantic consistency.",
+    "The pre-record repository validator passes with the expected stale prior-audit warning. Manifest refresh and final repository validation follow audit persistence. Detailed ignored diagnostic artifacts may expire independently of compact recorded assertions."
+  ],
+  "findings": [
+    {
+      "evidence": [
+        "src/Habitica.WebApp/wwwroot/appsettings.json",
+        "deploy/production.frontend.json",
+        "workers/chatgpt-auth/src/vault.ts"
+      ],
+      "id": "F-source-production-configuration-boundary",
+      "observation": "README, project scope, technical architecture and feature status distinguish disabled source defaults, the enabled production frontend override and source-bound publication evidence. Browser persistence and separate encrypted Auth vault consent remain explicit.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        "workers/chatgpt-mcp/package.json",
+        "workers/chatgpt-mcp/package-lock.json",
+        ".skill-tree/installation/profile.json"
+      ],
+      "id": "F-installed-mcp-and-workflow-dependencies",
+      "observation": "Dependency documentation identifies server/core/client SDK 2.4.0 and the separate legacy SDK 1.32.1 development fixture. The installed web profile and managed update path own Skill Tree identity instead of an obsolete generic-package source revision.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        "README.md",
+        "build.sh",
+        "deploy/frontend-settings.mjs",
+        "workers/scripts/generate-build-identity.py"
+      ],
+      "id": "F-local-run-and-worker-build-contract",
+      "observation": "README returns to the repository root before solution restore/run and uses the committed npm lock. Build documentation describes public frontend override selection and generated identity prerequisites for matching Worker dry bundles.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        "src/Habitica.WebApp/Program.cs",
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.WebApp/Pages/TodoTasksPage.razor",
+        "workers/companion-workspace/src/index.ts",
+        "workers/chatgpt-mcp/src/index.ts"
+      ],
+      "id": "F-current-module-and-feature-discovery",
+      "observation": "Repository discovery includes Workspace, shared build identity, six plugin skills, installed web tooling and current Todo/Notes route composition. Feature prose limits the no-mutation claim to the four bootstrap read tools and separates domain responsibilities from integrated authoring.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        "plugin/skills/habitica-account-review/SKILL.md",
+        "plugin/skills/habitica-activity-review/SKILL.md",
+        "plugin/skills/habitica-daily-review/SKILL.md",
+        "plugin/skills/habitica-diagnostics/SKILL.md",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "plugin/skills/habitica-task-management/SKILL.md"
+      ],
+      "id": "F-plugin-qualification-skill-count",
+      "observation": "The deployment host-qualification checklist requires all six packaged skills. Package installation, discovery and model activation remain separate unrun observations.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        ".skill-tree/documents/technical.md",
+        ".skill-tree/documents/features.md"
+      ],
+      "id": "F-current-document-freshness-labels",
+      "observation": "Technical and feature documents omit obsolete global last-updated labels. The new bounded audit records source fingerprints and explicit coverage rather than implying comprehensive current runtime qualification.",
+      "status": "corrected"
+    },
+    {
+      "evidence": [
+        ".skill-tree/documents/future.md"
+      ],
+      "id": "F-inherited-document-prose",
+      "observation": "The canonical-document corpus reports 273 prose errors and 169 review warnings, compared with 278 errors and 170 warnings at baseline. The existing Backlog identity retains the inherited cleanup; changed audit lines and the complete README/build/dependency/map documents pass scoped diagnostics.",
+      "status": "open",
+      "task_id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8"
+    },
+    {
+      "evidence": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/deploy-cloudflare-pages.md",
+        "workers/release-inputs.json",
+        "plugin/plugin.json",
+        ".skill-tree/history/releases/2026-10-29/deployment.json"
+      ],
+      "id": "F-current-contract-versus-milestone-evidence",
+      "observation": "Canonical testing, feature and deployment documents retain historical milestone counts, qualification statements and rollout sequences beside current contracts. The deployment prerequisites retain the 0001-through-0007 migration list and a Notes 0.2.0 candidate despite later recorded migrations and current backend/package 0.3.0. A dedicated Backlog task requires source-bound consolidation without rewriting historical verdicts.",
+      "status": "open",
+      "task_id": "B-7d51333a-052f-5df8-b69d-f60deefe6851"
+    }
+  ],
+  "id": "A-0299ccbc-a5dc-4cc0-b205-deeeaf7a5cfd",
+  "recorded_at": "2026-11-02T10:04:51.576513+00:00",
+  "review_note": "Final diff review keeps the Backlog promotion policy at queue scope and binds the backend/package assertion to both release-input and plugin descriptors. Validation reruns preserve the same stable finding identities.",
+  "scope": "repository-documentation-current-contracts-static-sample",
+  "source_fingerprints": {
+    ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
+    ".skill-tree/documents/ai-app-testing.md": "4eb21502503cdd6c6afb6ab9cb902775bbd1e3d13ebe77234adef3dba29d35f9",
+    ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+    ".skill-tree/documents/callback-egress.md": "7082549d493402181bb171f16dbcccddafe8dea5b5cfce0a4e9d98c513f13a3c",
+    ".skill-tree/documents/companion-discovery.md": "cb5a5b3a22a106f96ac86243c9a101b1dadfd88ca406f78091c08e80647535b1",
+    ".skill-tree/documents/companion-first-mcp-research.md": "ee152cd23df0d62cbb6ace69c522d5ed5e4d73628d486267f5207ad068b122e6",
+    ".skill-tree/documents/companion-workspace-contract.md": "0dd5dff3f3634f625dc226a2992eef9b55f300fea9133b3d58d90ea32abb85b0",
+    ".skill-tree/documents/cron.md": "e1f001df7d91426e1e38736ad6b5db5c855f0a9a94e77abc2bf291d2b27ba0bd",
+    ".skill-tree/documents/dependencies.md": "ea099e9f7ef40b472e6ded3f858fb0927c6673c06b9d5167941608678a28ef0c",
+    ".skill-tree/documents/deploy-cloudflare-pages.md": "2c62a5801ba1c364e0fba75e7e59ba396e45ad05594b1d8ba8f2b3f65f132bef",
+    ".skill-tree/documents/documents-snapshot.md": "b99942b24c48c0694c8ca448cd76a18d0e3195688eb6b71ed850e585143cc186",
+    ".skill-tree/documents/features.md": "1fa6216c3c9656e5f1c577d9bebd7cb5c207072da07020778ad7a0e1846750b1",
+    ".skill-tree/documents/foreground-reminders.md": "e2340cd85c2c6c41d46478617c1693406c55ea760ca07f0d5c469777ffb63a1c",
+    ".skill-tree/documents/future.md": "b3515e80a4799431120e5d19a4d9cfacb0af8be20f83276e122a5cef75e4a06c",
+    ".skill-tree/documents/habitica-api.md": "1c5e7a8131e678d695de534334f54095767db3c9506cd02a7dd8393b101c9551",
+    ".skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
+    ".skill-tree/documents/habitica-tool-references.md": "d1db99b0de95a46a6304a53e2b5bf6ba11b7c1a8983c0aac0e3c4c4c7bde1be5",
+    ".skill-tree/documents/history-recovery.md": "1ae3b015b079baeb19737c88f38c31a8288459582001af9f80866f9f24187a53",
+    ".skill-tree/documents/linked-task-recovery.md": "08c40c7a6957acba4ff435f5051b7f2d028c1ade06df058664bda1413eae1c6f",
+    ".skill-tree/documents/mcp-protocol-compatibility.md": "86a771502d5ecbc1801b9fd9db40bd5751c04cf94294dc2933f6f8eb279edc0e",
+    ".skill-tree/documents/navigation-study.md": "d3f380bc2d94edcd5c419f2739d45dcf87a599e2cb86c8a72f997253b0459995",
+    ".skill-tree/documents/notes-project-links.md": "1a1515c491f02b805c977cd1149ee9e2ea37153906a79142bdfc5fd24b20ef41",
+    ".skill-tree/documents/ordinary-task-intent.md": "b781bda71b6513aadc0356a6133c7e22185f5ec0b49b160f6d6565d97b6a62e4",
+    ".skill-tree/documents/originating-chat-reminders.md": "cba6bb50e224ab5b368ae1d279fb31a7bd90e96e859d7534f6dfdfc240d0b529",
+    ".skill-tree/documents/project.md": "a7d89b4bb06405c986d7d1c7ccc53d5701cbfb8633ef6e3d440d39b6dc02feac",
+    ".skill-tree/documents/push-reminder-ui.md": "0c77d60628869861334aa4a2e6bbb807423050d892eacebed4f1309f1e612733",
+    ".skill-tree/documents/push-subscriptions.md": "1e7307fa71145b855d5fcae02f33cfd067860c00ee0a66b96576bedfa6a001dc",
+    ".skill-tree/documents/pwa-installation.md": "173acf712f221007acc24eb6e2d4ce16f6be762475e6b7bbee017fef82a2ab58",
+    ".skill-tree/documents/repository-map.md": "3b5fec402477e833016f93f12baba7d7dd5425cef1383c66e3cb35787a2083c3",
+    ".skill-tree/documents/retained-recovery-discovery.md": "5a21f9fff6ef37f68937de3d93161648034de4668bda2c4535677c47b03b0bdf",
+    ".skill-tree/documents/rules.md": "ac4b75210530d7d06a0be02298c1f4f9f0f234cabd52f83c2395c4719a73e4c0",
+    ".skill-tree/documents/scheduled-push-reminders.md": "c8bab8f5221c86dc2b1c57e17d98b4f80dab753aebaef141dc6fbd56a630af8e",
+    ".skill-tree/documents/session-recovery.md": "4afbd7361da580f58dab00e3038f287102ef6b873652114161efd12ad9e7f516",
+    ".skill-tree/documents/shared-diagnostics.md": "5bb9b02ec14a2f469ac48a82cdaf48409621ffa0e9d67a9faeb6a2c5f8e72681",
+    ".skill-tree/documents/skill-tree-installation.md": "519bbdce08ee7e6f8b4cb82fd9145f4c59351a391b98e469db6d7d0f6e414e72",
+    ".skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
+    ".skill-tree/documents/task-activity-coverage.md": "620ab3b7c523e370011dd56532c042d6d3fa634c467f66a2eaa314839ccf7bc1",
+    ".skill-tree/documents/task-adoption.md": "3e1a25418d4d66e8a61aed949666cfad7753b28c910e9c43dc1511a47a464620",
+    ".skill-tree/documents/task-journey-qualification.md": "73324d1724f66a0b8103c380785a12b8d5a3c44ca48db5a8f9029b18e7ba459b",
+    ".skill-tree/documents/task-reviews.md": "44dce20b4d559a7f7e14987d20859f144f22b5aa5c9504f0e002bf43836163ec",
+    ".skill-tree/documents/technical.md": "00239961df09a096b7d699a7788825ddd4e2cfac2ba4a01fc345e639468f385a",
+    ".skill-tree/documents/testing.md": "b6e6a3b22934e3e029392fdc0d2e48053fcafb7cc90ebd7b960fc7cccd545407",
+    ".skill-tree/documents/unified-workspace.md": "beba0244ff8b6b24c4fc47be06e29fee81727fde9fb38881afa83a199d2eccca",
+    ".skill-tree/documents/ux-ui-manifest.md": "6decb1888a5471954c3614f087a8106aa673fc1ea96856523e073e08d344e39c",
+    ".skill-tree/history/audits/audit-a-32acdc54-2271-4116-83ca-87242d0c5337.json": "9c947d981f1755404b72ae538402d70e9f71e0efbbd4a4d4ecedb0d4c180b5ce",
+    ".skill-tree/history/releases/2026-10-29/deployment.json": "e887d3219d3561f1c58b778f0da808a2f8a0e2541b13fb9fe8e2af22ba6ca49e",
+    ".skill-tree/installation/profile.json": "58f9211b9a49e42eab09ef3073353d719e72edfb9d23b3eb425fab3d30b31750",
+    "AGENTS.md": "bff598f13caa16b442d38e64549b7299e25c392a12eb57511ada47dca7f6ff44",
+    "Directory.Build.props": "efc75c2ec58a3644f8d66d0749108ef9361ffff26c109feedbf4235b9dd24885",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "README.md": "21e2d498b2a922fe78525de1290eef154d29469e6e9bd39e1e8ba336c0ae2cad",
+    "build.sh": "8060223198fd0c560754927c34173cd2776a8fb20b4c244128d14672b6817052",
+    "deploy/callback-egress/package.json": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+    "deploy/frontend-settings.mjs": "4b3d4deb794f0fb2ed5056ccceb6c6ba64e755003958d0e8dfeaec4b962f8b35",
+    "deploy/production.frontend.json": "62a898a8b2fc07e66418840cd832a9770789918774308dd34ede37d0ce3b2d6f",
+    "global.json": "9fd12b1529d47d4b26921fc36fc85fe821f2ab83149b5c52994d97e41d117d6c",
+    "plugin/mcp.json": "c566ed638a68dd62edf09a8b8456a73dc91e60b2c5821659fd4b0f4f9a7b9689",
+    "plugin/plugin.json": "ad5f5c69c5ce5a8a0e545841a498d0e0264f0bac4c5934311ecab05860fe69b0",
+    "plugin/skills/habitica-account-review/SKILL.md": "e018e99619f4187cd92ded5eb55052c059152b88d3f5a098a59b05a37c55818c",
+    "plugin/skills/habitica-activity-review/SKILL.md": "59837183dce6a45b18e5ffda4a0224b58241fe16af19b1e4417392a4ef44353b",
+    "plugin/skills/habitica-daily-review/SKILL.md": "dc53e260b5006dc0bc2e6cf20da4935a9f285a15144ee9a4df64b281facda691",
+    "plugin/skills/habitica-diagnostics/SKILL.md": "927a89573cc6e29cc3cd7d3b7fa66579a507ab0bb158af298b41c5793db40c39",
+    "plugin/skills/habitica-notes/SKILL.md": "890ba94faefcffdf5f1fa3e427bd1c14c2013a84f7fca834a4b5f63e3efbef1e",
+    "plugin/skills/habitica-task-management/SKILL.md": "a34474f8f3b4452b90e0bc06902336912ddc70d51310774abf592f593cbf3050",
+    "run-app.sh": "be58ac40fbd1f6414d9df2aaa686bdd1f4b5839233e8648a1cbbd0b8f72fc0b0",
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "93099f9ea2c3962f8bd6e3191fbe028ba40275d46ecf5cd11fb42cdf55082ab4",
+    "src/Habitica.Storage/CredentialStore.cs": "3acd0f1fa551768a55dee5b95e4e20293e80a70016224f38405f927a8da44ff4",
+    "src/Habitica.WebApp/Pages/NotesPage.razor": "96a11cb1feea7bcde5988c4240a87c7766ae17e495681d8949ba6960825f4b3e",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "7a8a67e0032eee4e2134132375587c94b910c5c0e0dd9b0d3d41b773660ce476",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "edc03453d97e50ad64ccc15fe769e3844b0c3a2a8c0ce9446304a6e5387624a8",
+    "src/Habitica.WebApp/Pages/TodoTasksPage.razor": "88e3b0e4261cb7cc5fbddb341d2f3c599e7f7c4d758dc20a432cb18401e1a7a7",
+    "src/Habitica.WebApp/Program.cs": "4a59fdc1483c3d02770176371f05459bc81c038b9aa26984965f036369fc9ae7",
+    "src/Habitica.WebApp/package-lock.json": "5aa1533f6dfb042df98b0e435b2a40d7d22aa5a33bcb81666a57d6f30a8137e0",
+    "src/Habitica.WebApp/package.json": "214cc3d44c28eebc447028224fef5d4387cb922397fcb87b773f97524b7ea0ad",
+    "src/Habitica.WebApp/wwwroot/appsettings.json": "b99fac96f92290247c713310ac5a5bd279ca3659906174c13e7a34d58914e64a",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+    "tests/Habitica.Application.Tests/Notes/NoteProjectTests.cs": "4264e2ef9c3f2c50919ca71879be4e44d53a84343c055249faec60132b988e79",
+    "tests/Habitica.WebApp.Tests/Integration/ConnectionRecoveryTests.cs": "5d1df1882796b2c0e6a1a3314ad6d7c9852638335ef9b54716ae2f20e2cd9f99",
+    "tests/browser/pwa-shell.mjs": "44abe8f31f3f13659771af088b7fbef7c0f9a788b3d1f8b6f81c69a74fbc6cc5",
+    "workers/chatgpt-auth/package-lock.json": "fc3d5e89b1e6391bfe2acbf688c8ece7d0e2cb6ac098179512bc0875d489d792",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/index.ts": "a144f0e4490ccc834940c66f71b633cf8384cd5e4e1adb1f8ba0289d845fc1ed",
+    "workers/chatgpt-auth/src/vault.ts": "c6bd7c9086aea059c47237c6d948f2a94f14e768e812de2bb3c0e9469ab21ce8",
+    "workers/chatgpt-auth/test/mcp2.test.mjs": "e523f8ba622b0b5f1c2c2288f2374cba6fb59ee2a54b969d926f29e4eb2b7734",
+    "workers/chatgpt-auth/wrangler.jsonc": "127f46a52e8d6faab302264b37ce972be62bb1c5f07e6613f21a9b2998a53571",
+    "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
+    "workers/chatgpt-mcp/package.json": "87aa23dd438efcfef334b03bdd8197b6b2b77d873f9e75dfbcd9685c97fc2bab",
+    "workers/chatgpt-mcp/src/index.ts": "11a60a7661598a1deb2beb9a32bc262797019d0e755a72289baaa0347fbb7480",
+    "workers/chatgpt-mcp/src/tools.ts": "ff1f1c3dad8347491bb25d26ddd211c708e0621302e22cf4c65eb7b0af4f3fab",
+    "workers/chatgpt-mcp/wrangler.jsonc": "d55620f5fb0759d4fcd19844ebc6075147b2ac7372d91215eabb2a3bc342fe86",
+    "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/index.ts": "f640ac15d775995b28b9ee0089b76c3259d6999dfed5758e1dc8f9ee1cdd98ad",
+    "workers/companion-workspace/wrangler.jsonc": "c6ce3e7141962ecb61b6e0ff1c6b13fad544c3ce31e5b1c84f7d75a0c76b2d2d",
+    "workers/release-inputs.json": "8e5d070e890b2d444f6cc82ab6828cb1b14c5d221f423962d12fb511c8fcb0f2",
+    "workers/scripts/generate-build-identity.py": "46b8d606e995250eee89aeda029afd263da6a10d84bd0c95824556a8af548965",
+    "wrangler.toml": "fbfd9d2381800c930e9b9a42d575ee35f7b5e984bda1c2a3427a2b637205e8e6"
+  },
+  "sources": [
+    ".node-version",
+    ".skill-tree/documents/ai-app-testing.md",
+    ".skill-tree/documents/build-and-release.md",
+    ".skill-tree/documents/callback-egress.md",
+    ".skill-tree/documents/companion-discovery.md",
+    ".skill-tree/documents/companion-first-mcp-research.md",
+    ".skill-tree/documents/companion-workspace-contract.md",
+    ".skill-tree/documents/cron.md",
+    ".skill-tree/documents/dependencies.md",
+    ".skill-tree/documents/deploy-cloudflare-pages.md",
+    ".skill-tree/documents/documents-snapshot.md",
+    ".skill-tree/documents/features.md",
+    ".skill-tree/documents/foreground-reminders.md",
+    ".skill-tree/documents/future.md",
+    ".skill-tree/documents/habitica-api.md",
+    ".skill-tree/documents/habitica-deeplinks.md",
+    ".skill-tree/documents/habitica-tool-references.md",
+    ".skill-tree/documents/history-recovery.md",
+    ".skill-tree/documents/linked-task-recovery.md",
+    ".skill-tree/documents/mcp-protocol-compatibility.md",
+    ".skill-tree/documents/navigation-study.md",
+    ".skill-tree/documents/notes-project-links.md",
+    ".skill-tree/documents/ordinary-task-intent.md",
+    ".skill-tree/documents/originating-chat-reminders.md",
+    ".skill-tree/documents/project.md",
+    ".skill-tree/documents/push-reminder-ui.md",
+    ".skill-tree/documents/push-subscriptions.md",
+    ".skill-tree/documents/pwa-installation.md",
+    ".skill-tree/documents/repository-map.md",
+    ".skill-tree/documents/retained-recovery-discovery.md",
+    ".skill-tree/documents/rules.md",
+    ".skill-tree/documents/scheduled-push-reminders.md",
+    ".skill-tree/documents/session-recovery.md",
+    ".skill-tree/documents/shared-diagnostics.md",
+    ".skill-tree/documents/skill-tree-installation.md",
+    ".skill-tree/documents/skill-tree-workflow-proposals.md",
+    ".skill-tree/documents/task-activity-coverage.md",
+    ".skill-tree/documents/task-adoption.md",
+    ".skill-tree/documents/task-journey-qualification.md",
+    ".skill-tree/documents/task-reviews.md",
+    ".skill-tree/documents/technical.md",
+    ".skill-tree/documents/testing.md",
+    ".skill-tree/documents/unified-workspace.md",
+    ".skill-tree/documents/ux-ui-manifest.md",
+    ".skill-tree/history/audits/audit-a-32acdc54-2271-4116-83ca-87242d0c5337.json",
+    ".skill-tree/history/releases/2026-10-29/deployment.json",
+    ".skill-tree/installation/profile.json",
+    "AGENTS.md",
+    "Directory.Build.props",
+    "Directory.Packages.props",
+    "README.md",
+    "build.sh",
+    "deploy/callback-egress/package.json",
+    "deploy/frontend-settings.mjs",
+    "deploy/production.frontend.json",
+    "global.json",
+    "plugin/mcp.json",
+    "plugin/plugin.json",
+    "plugin/skills/habitica-account-review/SKILL.md",
+    "plugin/skills/habitica-activity-review/SKILL.md",
+    "plugin/skills/habitica-daily-review/SKILL.md",
+    "plugin/skills/habitica-diagnostics/SKILL.md",
+    "plugin/skills/habitica-notes/SKILL.md",
+    "plugin/skills/habitica-task-management/SKILL.md",
+    "run-app.sh",
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+    "src/Habitica.Storage/CredentialStore.cs",
+    "src/Habitica.WebApp/Pages/NotesPage.razor",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor",
+    "src/Habitica.WebApp/Pages/TasksPage.razor",
+    "src/Habitica.WebApp/Pages/TodoTasksPage.razor",
+    "src/Habitica.WebApp/Program.cs",
+    "src/Habitica.WebApp/package-lock.json",
+    "src/Habitica.WebApp/package.json",
+    "src/Habitica.WebApp/wwwroot/appsettings.json",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+    "tests/Habitica.Application.Tests/Notes/NoteProjectTests.cs",
+    "tests/Habitica.WebApp.Tests/Integration/ConnectionRecoveryTests.cs",
+    "tests/browser/pwa-shell.mjs",
+    "workers/chatgpt-auth/package-lock.json",
+    "workers/chatgpt-auth/package.json",
+    "workers/chatgpt-auth/src/index.ts",
+    "workers/chatgpt-auth/src/vault.ts",
+    "workers/chatgpt-auth/test/mcp2.test.mjs",
+    "workers/chatgpt-auth/wrangler.jsonc",
+    "workers/chatgpt-mcp/package-lock.json",
+    "workers/chatgpt-mcp/package.json",
+    "workers/chatgpt-mcp/src/index.ts",
+    "workers/chatgpt-mcp/src/tools.ts",
+    "workers/chatgpt-mcp/wrangler.jsonc",
+    "workers/companion-workspace/package-lock.json",
+    "workers/companion-workspace/package.json",
+    "workers/companion-workspace/src/index.ts",
+    "workers/companion-workspace/wrangler.jsonc",
+    "workers/release-inputs.json",
+    "workers/scripts/generate-build-identity.py",
+    "wrangler.toml"
+  ],
+  "summary": {
+    "active_run_preserved": true,
+    "artifact_policy": "Detailed diagnostics remain in ignored artifacts; compact findings, assertions and source fingerprints remain in the audit record.",
+    "base_worktree": "clean",
+    "canonical_markdown_documents_in_inventory": 43,
+    "classification": "bounded static documentation audit",
+    "corrected_findings": 6,
+    "current_state_documents_changed": 8,
+    "new_backlog_tasks": 1,
+    "open_findings": 2,
+    "original_task_count": 27,
+    "product_execution": false,
+    "product_source_changes": false,
+    "task_progress_preserved": true
+  },
+  "task_links": [
+    "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
+    "B-7d51333a-052f-5df8-b69d-f60deefe6851"
+  ]
+}

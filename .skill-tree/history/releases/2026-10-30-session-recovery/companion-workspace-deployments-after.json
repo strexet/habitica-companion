@@ -1,0 +1,141 @@
+[
+  {
+    "id": "6ece1be6-9cb9-487b-ba22-142828837469",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Automatic deployment on upload.",
+      "workers/triggered_by": "upload"
+    },
+    "versions": [
+      {
+        "version_id": "30beea24-6e50-4154-b246-b2b57b8be0f4",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-16T11:44:54.052046Z"
+  },
+  {
+    "id": "16d93e51-34b8-41d4-988b-82af9858733c",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Native task lifecycle 70c68d3",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "43b3c4db-2e3e-4186-9dab-ac6e686d7bf9",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-17T04:42:09.042722Z"
+  },
+  {
+    "id": "d1a7df83-0e95-4e07-a106-ed42a180370e",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Owner development capability rollout aab2b87",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "07f04ca4-d4a3-45ec-b4a4-4ae2e81b059a",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-19T03:26:59.528037Z"
+  },
+  {
+    "id": "5fcb564c-befb-4b1e-acbc-a1ed321e45aa",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "063c484b-eb00-4b5f-b789-7c77f3eb4829",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-20T13:56:02.845499Z"
+  },
+  {
+    "id": "29255d01-ecf4-4649-ab1c-6e6e66412da5",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "732ba1a4-6a46-4697-8d7b-90436c42a311",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-23T13:32:09.28222Z"
+  },
+  {
+    "id": "7d90053c-8ed3-4194-9d5c-47f37078bb77",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "9319ee20-304d-4279-b73a-914922bfb504",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T17:47:49.897596Z"
+  },
+  {
+    "id": "8611116b-9ddf-4141-8b8f-bbb9e2600618",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "4338cd63-10c1-46f0-98a9-6a4b4dcf43e0",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-24T23:39:02.033894Z"
+  },
+  {
+    "id": "27153a86-2d8c-4563-b8da-aa8ef7299728",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/message": "Checked recent features; consent-gated reminder schedules and recovery",
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "1ed64582-45eb-4004-9424-5f312705ca62",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-29T13:27:10.132444Z"
+  },
+  {
+    "id": "8c49514e-a3c4-4421-bc6c-9e82bf1500cd",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "c352b2cf-4a01-48c3-ada1-44c8b74b1c70",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-10-30T08:10:53.18161Z"
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+  "title": "Put daily work before optional reminder setup on Today",
+  "operation_history": ".skill-tree/history/validation/ux-ui/today-work-first/operation-history.json",
+  "checks": [
+    {
+      "id": "today-work-first-behavior",
+      "counts": {
+        "discovered": 15,
+        "expected": 15,
+        "failed": 0,
+        "passed": 15,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.log",
+          "sha256": "38893063e090ea6226618014169634282de03de89b1182f76044968a641559a4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/C-9e913040-852c-4ab1-976e-f3dcf318ec39.trx",
+          "sha256": "4362d03f05e79df6cfce386cd0491fcf271165fc3448713bb3c8d27de467722c"
+        }
+      ]
+    },
+    {
+      "id": "today-work-first-rendered",
+      "counts": {
+        "discovered": 721,
+        "expected": 721,
+        "failed": 0,
+        "passed": 721,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/today-work-first/browser/9a2c18ad-0fb5-4d66-8f51-9b28054aa199.json",
+          "sha256": "33dc3dd91733428c1cb8e5299572d0d7ae7201da4f62db51723438cc7b1204ec"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

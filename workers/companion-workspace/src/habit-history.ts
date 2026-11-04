@@ -27,5 +27,5 @@ export async function habitHistory(env:WorkspaceEnv,row:WorkspaceRow,input:unkno
    return {commandId:String(value.command_id),taskId:String(value.task_id),operation:String(value.operation),direction:value.direction===null?null:String(value.direction),snapshot:snapshot as CompanionTask|null};
   });
   return queryHabitHistory(document,commands,input);
- }catch(error){if(error instanceof WorkspaceError&&['stale_revision','history_unavailable'].includes(error.code))throw error;throw new WorkspaceError('history_unavailable',503);}
+ }catch(error){if(error instanceof WorkspaceError&&['stale_revision','history_unavailable','history_project_not_found'].includes(error.code))throw error;throw new WorkspaceError('history_unavailable',503);}
 }

@@ -1,0 +1,18 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "check_id": "folder-transfer-rendering",
+  "execution": {
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+    "profile_id": "folder-adoption-ui-browser-v1",
+    "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+    "cleanup_seconds": 30,
+    "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22",
+    "session_identity": "rendered-c8433df2",
+    "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+    "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "identity_evidence": [
+      ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+    ]
+  }
+}

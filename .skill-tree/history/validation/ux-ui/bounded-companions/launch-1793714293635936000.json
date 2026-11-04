@@ -1,0 +1,9 @@
+{
+  "task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+  "check_id": "bounded-companions-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T14:14:13.635673+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "38a700268eb54f065da923eb34afe647d99f1e117a5f8d71da5b764ab02c1f31"
+}

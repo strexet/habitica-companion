@@ -1,0 +1,24 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "check_id": "notes-storage-contracts",
+  "attempt_id": "C-eb5fc900-3942-4dd5-bccb-6e5bd41eda10",
+  "environment_identity": "76e60181f5b687aee476975cfadbde0392fb4c2f5ab0b18a83e28deea95af88b",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 3,
+    "discovered": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 1.7142019160091877
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-2026-11-02/storage-revalidation-execution.log",
+    ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/storage-revalidation.trx"
+  ]
+}

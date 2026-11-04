@@ -1,0 +1,10 @@
+{
+  "original_report": "7efda5ad-a98a-4492-b40b-c5b022cb29a3-failure.json",
+  "observed_failure": "Native Range geometry split the fixed continue word in note-discard across two lines at360/200, gryphy-light. Native100-percent route/version/back/project cases had completed.",
+  "repair": "Scoped Notes review padding decreases to.5rem and review action padding to.25rem. Editor action padding is.5rem. Font sizes, labels,44-pixel minimum targets and every review/receipt guard remain unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

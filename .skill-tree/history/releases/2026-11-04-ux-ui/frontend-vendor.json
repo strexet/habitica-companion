@@ -1,0 +1,12 @@
+{
+  "name": "frontend-vendor",
+  "argv": [
+    "npm",
+    "run",
+    "sync:vendor"
+  ],
+  "exit_code": 0,
+  "seconds": 0.297,
+  "deadline_seconds": 60,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/frontend-vendor.log"
+}

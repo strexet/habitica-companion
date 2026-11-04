@@ -1,0 +1,594 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Readable offset labels map exactly to supported normalized linked identities and account constraints.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.log",
+          "sha256": "98085cd33a988e71e1fc3ff3a3433fd1ee2fcb9ea18f4ae11d225af74b0cee07"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.trx",
+          "sha256": "315e89d668d23cd4f1b03207055c434d97161f14b59a11727b3de31128b9fb2b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/acceptance.json",
+          "sha256": "ab5d04b3b4e5f47edf80bb3d545315fc53382ce592795a34978a67709c5cad88"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json",
+          "sha256": "95fa99e7abfad9d099b202b8fd9d54b6f75dc9911046ee215760e74d9257e6a1"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Unsupported linked account settings remain explicit refusals and native IANA recurrence support remains intact.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.log",
+          "sha256": "98085cd33a988e71e1fc3ff3a3433fd1ee2fcb9ea18f4ae11d225af74b0cee07"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.trx",
+          "sha256": "315e89d668d23cd4f1b03207055c434d97161f14b59a11727b3de31128b9fb2b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/acceptance.json",
+          "sha256": "ab5d04b3b4e5f47edf80bb3d545315fc53382ce592795a34978a67709c5cad88"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json",
+          "sha256": "95fa99e7abfad9d099b202b8fd9d54b6f75dc9911046ee215760e74d9257e6a1"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.log",
+          "sha256": "98085cd33a988e71e1fc3ff3a3433fd1ee2fcb9ea18f4ae11d225af74b0cee07"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.trx",
+          "sha256": "315e89d668d23cd4f1b03207055c434d97161f14b59a11727b3de31128b9fb2b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/acceptance.json",
+          "sha256": "ab5d04b3b4e5f47edf80bb3d545315fc53382ce592795a34978a67709c5cad88"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json",
+          "sha256": "95fa99e7abfad9d099b202b8fd9d54b6f75dc9911046ee215760e74d9257e6a1"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Readable offset labels map exactly to supported normalized linked identities and account constraints.",
+          "Unsupported linked account settings remain explicit refusals and native IANA recurrence support remains intact."
+        ],
+        "id": "daily-timezones-behavior",
+        "parameters": {
+          "report_name": "daily-timezones.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/daily-timezones/unit",
+          "test_filter": "FullyQualifiedName~TodoRecurringEditorTests|FullyQualifiedName~TodoTaskPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+          ".skill-tree/documents/linked-daily-schedules.md",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-10ae1381-4981-444f-9a45-a7d8590e8cfb",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 51,
+          "expected": 51,
+          "failed": 3,
+          "passed": 48,
+          "skipped": 0
+        },
+        "definition": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad",
+        "environment_identity": "82151b20c7853aaca45f82114396922c54ccbbed0190bbc859b615fec4e71d13",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-10ae1381-4981-444f-9a45-a7d8590e8cfb.log",
+            "sha256": "fe0c2338a52e94c676976fbdce763cdef65181174ab9c951de56de56612ccc1a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-10ae1381-4981-444f-9a45-a7d8590e8cfb.trx",
+            "sha256": "5978c474512484dc23bfedd2fdeed95310c12ef67d8c4ca31f9d8e77e554dbe4"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "f3b00fde4860c3414e796792c3690c4a22bfe7c3dcd0f20c3e1e025dfe1d5505",
+        "payload_hash": "69bd06e8a6a2a5fb3bf95601046c90ddfc89ab1051952fc69805a26c5ce1ce72",
+        "recorded_at": "2026-11-03T21:05:42.298944+00:00",
+        "result": "red",
+        "sources": {
+          ".skill-tree/documents/linked-daily-schedules.md": "bce951dac0900083a910d1284d61ab37d99a0ea936cefd3d441b41e5506816d3",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "e4946a36897578ad4d045c711f08f3cd607231979948ef659f5100dcb69cdea8",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3268a178067216adde514c2ea63e4e162023f71927b93d34d59f48a47fea4ef6"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.024413334205747
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 56,
+          "expected": 56,
+          "failed": 0,
+          "passed": 56,
+          "skipped": 0
+        },
+        "definition": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad",
+        "environment_identity": "82151b20c7853aaca45f82114396922c54ccbbed0190bbc859b615fec4e71d13",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.log",
+            "sha256": "98085cd33a988e71e1fc3ff3a3433fd1ee2fcb9ea18f4ae11d225af74b0cee07"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-timezones/C-efb17a46-3da1-4fa8-b9c6-a5962f3fc3ec.trx",
+            "sha256": "315e89d668d23cd4f1b03207055c434d97161f14b59a11727b3de31128b9fb2b"
+          }
+        ],
+        "execution_sessions": {
+          "660d3dadd778ed637db7ea4d94df35e96990571d15a29f3fe9f0297ddc14a3fd": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d00665c30544f3c3ef64f66745293cc6465ce22d63e2df07abf75849d3819cf9",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:34:29.083961+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740709084167000.json"
+            ],
+            "profile_id": "b9500d4d7dba8c338100abbd29d4ae4b737483f1bf5c289df5e3dfbeb7529522",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "b5a5ecf9f528bc2bbaf3982694ea26995b8311935b5ff51d4fb374a71e536773": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:41:39.068207+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793741139068532000.json"
+            ],
+            "profile_id": "291df9e1cfaff6da9374554ab8a16a8cc1b5b9454aff50c5a74cc657ca829170",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d7dfb0d9d2608758b41ba496cf635f3aaddd361cee34bdbf7b78cd1fadc94e82": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:38:35.975008+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740955975187000.json"
+            ],
+            "profile_id": "00b37a49fc880a68f3ff0583e325d1e5308f0fe38b0c40756773fdbac082320d",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "fd79d30dd55ed9be82001e373487202bccbefdf23375af2cb43fb87175ed9682": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "11c5204eb80bd6e63f355c87ac838411f290cf45787d7eeb9142eb16c19365de",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:29:15.288707+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740395288923000.json"
+            ],
+            "profile_id": "9eecb0e375823ec9527fa2d9d5f752cc171d82b4da1473488ab6f7e5bf2879b0",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "6d04016b30dcda181efe24452e1ecdcd3811832ef1822be4b16f0429a97c77be",
+        "payload_hash": "853ac3b817bb036e75402649f3dc97c8683627f9d0e701a863317dd23a62b747",
+        "recorded_at": "2026-11-03T21:26:55.081118+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/linked-daily-schedules.md": "b800ab6cee87edef01a11cd59244afedd33bc2c6855830ce1395bbc0d65c72bb",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9a3de34c5d1b7d06748f96b197d34681128f196bf5c0eda7facdaae968544567",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "4d51a34a6949cbb94a26681df145c08b7ca4eb9d138c066218ce01cb82651fc3",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.910678792279214
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix."
+        ],
+        "id": "daily-timezones-rendered",
+        "parameters": {
+          "cases": "UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/daily-timezones/browser",
+          "routes": [
+            "/todo/dailies",
+            "/todo/tasks",
+            "/todo/sync"
+          ],
+          "task_key": "daily-timezones"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+          ".skill-tree/documents/linked-daily-schedules.md",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-4dcd6075-7920-46b1-ae54-aa64a98542c5",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 865,
+          "expected": 865,
+          "failed": 0,
+          "passed": 865,
+          "skipped": 0
+        },
+        "definition": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad",
+        "environment_identity": "fe590fa9ff36d4b746b44264d563c35dd985507e65a795fb4c87f37fe34eee4a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-timezones/browser/cc77224a-2a28-47ed-b590-0a150c7d2c6f.json",
+            "sha256": "95fa99e7abfad9d099b202b8fd9d54b6f75dc9911046ee215760e74d9257e6a1"
+          }
+        ],
+        "execution_sessions": {
+          "660d3dadd778ed637db7ea4d94df35e96990571d15a29f3fe9f0297ddc14a3fd": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d00665c30544f3c3ef64f66745293cc6465ce22d63e2df07abf75849d3819cf9",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:34:29.083961+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740709084167000.json"
+            ],
+            "profile_id": "b9500d4d7dba8c338100abbd29d4ae4b737483f1bf5c289df5e3dfbeb7529522",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "b5a5ecf9f528bc2bbaf3982694ea26995b8311935b5ff51d4fb374a71e536773": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:41:39.068207+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793741139068532000.json"
+            ],
+            "profile_id": "291df9e1cfaff6da9374554ab8a16a8cc1b5b9454aff50c5a74cc657ca829170",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d7dfb0d9d2608758b41ba496cf635f3aaddd361cee34bdbf7b78cd1fadc94e82": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:38:35.975008+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740955975187000.json"
+            ],
+            "profile_id": "00b37a49fc880a68f3ff0583e325d1e5308f0fe38b0c40756773fdbac082320d",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "fd79d30dd55ed9be82001e373487202bccbefdf23375af2cb43fb87175ed9682": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "11c5204eb80bd6e63f355c87ac838411f290cf45787d7eeb9142eb16c19365de",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:29:15.288707+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793740395288923000.json"
+            ],
+            "profile_id": "9eecb0e375823ec9527fa2d9d5f752cc171d82b4da1473488ab6f7e5bf2879b0",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "feb01a6ae944ae74c81633cba815a06889828f12e2146296f432d3680e4aeead": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T21:42:56.597325+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-timezones/launch-1793741216597542000.json"
+            ],
+            "profile_id": "7ac24cc161a229b3d4dc533525ec521a7486545f61dbc29466cf663a2166d32b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-timezones",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "76614de42cc002e4344244b465c5a4ed4df5eab862dba0cb0148d1799dbee652",
+        "payload_hash": "521a7c39cdaec339b8eede8ea13890460c0523a3ce8fad9bf00f23ef5d1b5bd1",
+        "recorded_at": "2026-11-03T21:29:54.777263+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/linked-daily-schedules.md": "b800ab6cee87edef01a11cd59244afedd33bc2c6855830ce1395bbc0d65c72bb",
+          "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9a3de34c5d1b7d06748f96b197d34681128f196bf5c0eda7facdaae968544567",
+          "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "4d51a34a6949cbb94a26681df145c08b7ca4eb9d138c066218ce01cb82651fc3",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6"
+        },
+        "timing": {
+          "tool_wall_seconds": 177.01816566567868
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-timezones/acceptance.json",
+      "sha256": "ab5d04b3b4e5f47edf80bb3d545315fc53382ce592795a34978a67709c5cad88"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-timezones/operation-history.json",
+      "sha256": "47ce13eb085e073ba186d517484cc84735db47deca46470625c2183f4bf8e0be"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-11d71fba-bc3e-4a7c-9e88-944c3d8322ce",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Offer understandable supported timezone choices for linked Dailies. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330"
+  ],
+  "recorded_at": "2026-11-03T21:31:08.856133+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "6ce1f16c6d78fba4c2c7ff594ebb640f512e82964ad1dcf76736a05f66ea777e",
+    ".skill-tree/documents/linked-daily-schedules.md": "b800ab6cee87edef01a11cd59244afedd33bc2c6855830ce1395bbc0d65c72bb",
+    ".skill-tree/documents/testing.md": "f1e266f00b11c7ce87598b5b872b02e480570a0de47c212c69c28665b017ec3e",
+    ".skill-tree/documents/ux-ui-manifest.md": "7e36b10471397d0ffdc32ecb344945a6316e86772e3fd13687ce745544cb0bb3",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9a3de34c5d1b7d06748f96b197d34681128f196bf5c0eda7facdaae968544567",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.WebApp/Components/LinkedDailyTimeZonePicker.razor": "d25c8b01e424731012c3a84c875064e235765fd035da6abf7f45b310fe563ff5",
+    "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "7b10d5866681477a0ac4824d3f4b90a8e2fed23f2683da855c70bc9eae47f3d7",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+    "src/Habitica.WebApp/State/LinkedDailyTimeZones.cs": "20c86a02145916a47b93daaabd46e24db360552b301a1b8a1bdd83c313981012",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e506e639b477caa8dc8eaa219fcb30c3b1be2878fd042c399a9acf0c194364f3",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "4d51a34a6949cbb94a26681df145c08b7ca4eb9d138c066218ce01cb82651fc3",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "1d2e9638672cd2311806ae50e25b0f86f87fe1fb32dcea68036989436232dfc6",
+    "tests/browser-qualification/ux-ui-adapters.json": "ebe0739e4081ad2ab8327a297e05bc4b23af02db6402284155640ef172196c75",
+    "tests/browser-qualification/ux-ui-daily-order-journey.mjs": "ef8b387fa47abc25625750d68f237ab6fdce465d35ba1ffcc31a233c28bf4020",
+    "tests/browser-qualification/ux-ui-daily-timezones-journey.mjs": "06c7feaac92e4dd2d5c751f1972d640a9d343f4ef16b0a6a10e29089a93b01d5",
+    "tests/browser-qualification/ux-ui-daily-timezones-user.json": "c394d32a5065758e0039e0b1e659216b9d4073ec43c0a3efd25556c825d31c85",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "f6de859b603f456ef509ca3846f297dccdbc43d1e0a0f5bf7e010ac985763f7d"
+  },
+  "task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+  "title": "Offer understandable supported timezone choices for linked Dailies",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Readable offset labels map exactly to supported normalized linked identities and account constraints.",
+        "Unsupported linked account settings remain explicit refusals and native IANA recurrence support remains intact."
+      ],
+      "id": "daily-timezones-behavior",
+      "parameters": {
+        "report_name": "daily-timezones.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/daily-timezones/unit",
+        "test_filter": "FullyQualifiedName~TodoRecurringEditorTests|FullyQualifiedName~TodoTaskPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        ".skill-tree/documents/linked-daily-schedules.md",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix."
+      ],
+      "id": "daily-timezones-rendered",
+      "parameters": {
+        "cases": "UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/daily-timezones/browser",
+        "routes": [
+          "/todo/dailies",
+          "/todo/tasks",
+          "/todo/sync"
+        ],
+        "task_key": "daily-timezones"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        ".skill-tree/documents/linked-daily-schedules.md",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad"
+}

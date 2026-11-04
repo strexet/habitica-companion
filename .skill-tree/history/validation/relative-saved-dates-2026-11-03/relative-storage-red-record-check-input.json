@@ -1,0 +1,25 @@
+{
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "check_id": "relative-date-rules",
+  "attempt_id": "C-8ff266ea-7d3b-49fb-bf2b-191747a06d0f",
+  "environment_identity": "30ad1b054e6db91c3df0b59ccf758c66907f0c12902472825debf2a1045f634a",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "red",
+  "counts": {
+    "expected": 9,
+    "discovered": 9,
+    "passed": 8,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 4.5262385830283165
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-storage-red-execution.log",
+    ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules/relative-storage-red.trx"
+  ],
+  "failure_category": "expected-behavior"
+}

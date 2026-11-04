@@ -1,0 +1,68 @@
+{
+  "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+  "revision": 162,
+  "matchedCount": 10,
+  "nextOffset": null,
+  "tasks": [
+    {
+      "id": "fe2403b8-ab96-489f-b6ac-5e72f9dee4a9",
+      "text": "P0 · BUG: массовый каст заклинаний — HTTP 429 и восстановление экипировки",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "c5b0f069-3adb-4944-b340-e2a84cb63a87",
+      "text": "Создание и редактирование задач в ChatGPT без лишних подтверждений",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "675a4d06-069a-4e3b-97db-757b943aaa4f",
+      "text": "PWA: установка Habitica Companion на iPhone",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "c40993ea-8947-4584-8b40-c3950f307eab",
+      "text": "R&D: сообщения из Companion в ChatGPT / Codex",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "e439af5c-2082-4ca8-87a9-5553155d9142",
+      "text": "Push-напоминания для iPhone PWA",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "d4e0f2b1-8f48-4101-bc25-82aa347f7c4d",
+      "text": "R&D: автоматический вызов Companion в любом чате ChatGPT",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "c446b243-3900-496a-8a19-0cbf53d03632",
+      "text": "Поддержка сокращения «дд» (due date) в ChatGPT и Codex",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "c3212899-31eb-49c5-85a8-517443479876",
+      "text": "P3 · Раздел выполненных задач (после поддержки проектов)",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "df808294-5a0c-4d4e-86cf-1133fbdc85ec",
+      "text": "Предоставить ChatGPT/Codex безопасный доступ к диагностике Companion через MCP",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    },
+    {
+      "id": "339ca108-d559-44b2-815a-8afd9fa3617a",
+      "text": "Notes: привязка заметок к проектам без изменения существующего хранения",
+      "state": "completed",
+      "projectId": "c5f8a175-2bee-484a-9b72-018737dc10fd"
+    }
+  ]
+}

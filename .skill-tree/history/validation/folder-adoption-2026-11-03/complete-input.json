@@ -1,0 +1,83 @@
+{
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "outcome": "Reviewed Workspace adoption preserves schema2 folder identities, tombstones, current/historical memberships and separate causal baselines across schema1/schema2 targets. Exact source folder receipts remain accessible through independently authorized MCP reads and hashed metadata after Note body purge. Browser capture validates owner/source and exact inventory before atomic authority freeze, preserving accepted snapshot/event timestamp encodings. All169 native/component/shared/SDK/D1/Release-browser controls pass without real account/provider operations.",
+  "acceptance": [
+    {
+      "criterion": "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze.",
+      "result": "pass",
+      "evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-receipt.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-receipt.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-execution.log",
+        ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-green.trx",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-receipt.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+        ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-receipt.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/acceptance-config.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/future-validation.json",
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/documentation-validation.json"
+      ]
+    }
+  ],
+  "limitations": [
+    "No commit, push, publication, real account transfer, real provider operation or notification qualification occurred.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified; changed-route harnesses block service workers.",
+    "One unprepared exploratory local probe executed during initial model investigation; the probe grants no acceptance and final source-bound prepared controls supersede the observation."
+  ],
+  "source_fingerprints": {
+    ".skill-tree/documents/notes-folder-adoption.md": "5c3c52181ce42934c13859e7762d4209be025727d3402fd69dd72abb18acf573",
+    "plugin/skills/habitica-notes/SKILL.md": "7ea4a8fdaec2a2d3c372fe9a30400c73713d5111e2a33cffd12505dba98dbe6f",
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "f1a7e5e20e4c84a4d92cb051bc66f05500f5bc8440706950af9ac15f6737a456",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "36123a120f3bf3583000dca9a1dfba9593a1af98d65d9951e6d0e32a8d2a11cf",
+    "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+    "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/folder-adoption-fixture.mjs": "ead55aac7295f5e69702eae0c96a5280ab32a774b4c68011cfba71e5cd48711c",
+    "tests/browser/folder-adoption-ui.mjs": "de98253cfa5ef7707bfe91552f5135d30328b0d9dfc403faee746f474833af3a",
+    "tests/browser/folder-adoption-ui.py": "347a3604e01391260bd0bf87410deb4ba6dea4046400636a9ab2a59e9620d735",
+    "tests/fixtures/workspace-transfer/folder-adoption-accepted.json": "7416f95e4d68154e6355f1b95f171d88e447a82d86d6fe7e1f5d7b4c28ecefac",
+    "tests/fixtures/workspace-transfer/folder-browser-inventory.json": "2c0f6cb3244409dceab069a944f5e3b5d203c1cdf1e6acd3ea5507e36d248e52",
+    "workers/chatgpt-mcp/src/workspace-transfer-tools.ts": "01e39d4a6b10d98372f148dcd1e4efff640460464ceddab391d5813991695971",
+    "workers/companion-workspace/src/index.ts": "2dbc2d34aa2f07be13ab172598a752c97991bfc346a3c8a44f9d3f55262ba72b",
+    "workers/companion-workspace/src/workspace-transfer-api.ts": "bd9d7ac7527cda0038861e89e3f9f47de1e5d3ba25510f50a578103d61d3bf2b",
+    "workers/companion-workspace/test/folder-adoption.test.mjs": "834ea714372ab40d0a92df08c44027a54a6984eebdbe5d39fb6b915407a1cbfe",
+    "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "26063dd8aba145f2ac7df36e377c39bddee5e3fe7d7e603eaea06a0ff2749876",
+    "workers/companion-workspace/test/workspace-transfer.test.mjs": "50550f02290d6e3ca8302ccf7364f32c21040ed65ab0ea9d1b2b8a05f654857b",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "e967818a732c4c000aeb019259a4a08b7b77b9f13e3dc9b1e5e20697a038e199",
+    "workers/shared/transfer-note-parts.ts": "c8f3744582dd5eff10ababc7c18a7fcf49888d121186823f5cddce58a01946dc",
+    "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a",
+    "workers/shared/workspace-transfer.ts": "8a5bc0fefe8c98489a854e182e18be77042c7cce1b9f5d804b772927f8904e58"
+  },
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-receipt.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-receipt.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-execution.log",
+    ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-green.trx",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-receipt.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+    ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-receipt.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/acceptance-config.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/future-validation.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/documentation-validation.json"
+  ]
+}

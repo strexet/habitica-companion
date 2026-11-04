@@ -1,0 +1,76 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-a9c50997-2f2c-47b8-9eec-5b5ecfdadb7e",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 20,
+    "expected": 20,
+    "failed": 1,
+    "passed": 19,
+    "skipped": 0
+  },
+  "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+  "environment_identity": "4dd45aef6a4341b83faab13b2a3940ce222192ea6d2ddc46021f827b83f4e3c1",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-red-execution.log",
+      "sha256": "3955a0232cc572dd862371c377395dc56851f7e619698ea47a7961b52f79e967"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-red.trx",
+      "sha256": "17c4096f0d81b207f6ceb79ed42201790cd0c3c0b3049093716a2a3eac962c6e"
+    }
+  ],
+  "execution_sessions": {
+    "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:48:01.886265+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-bad323f6-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-bad323f6",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+      ],
+      "profile_id": "folder-adoption-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-c8433df2",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "failure_category": "expected-behavior",
+  "key": "e11548027dfc110591e105d80153d2ddb002b5fba4021bc288aa60012a71c819",
+  "payload_hash": "c6f59726c35bc1fb88fcc6a94f6d03531ce6f9b611146b6c28a86e95edbc25ed",
+  "recorded_at": "2026-11-03T01:37:39.348828+00:00",
+  "result": "red",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "1d8a77bdc28065b2e9f372b54b93e37a3f9202f51fba60d11b4f9d04a158b30d",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "1f6acbdd580e2850675af40eb54921ffc78dcedd520ee137f65ba4bf9a047c56",
+    "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+    "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+    "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+    "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547"
+  },
+  "timing": {
+    "tool_wall_seconds": 5.8506148748565465
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "action": "installed",
+  "changed": [
+    ".skill-tree/installation/profile.json",
+    ".skill-tree/documents/future.json"
+  ],
+  "facts": {
+    "capabilities": {
+      "playwright-test": {
+        "package": "@playwright/test",
+        "state": "absent",
+        "version": null
+      }
+    },
+    "node": "22",
+    "package_manager": "npm",
+    "packages": {},
+    "test_assemblies": [],
+    "ui": []
+  },
+  "gaps": []
+}
+

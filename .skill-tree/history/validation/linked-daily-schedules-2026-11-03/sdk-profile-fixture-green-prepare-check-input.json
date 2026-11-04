@@ -1,0 +1,13 @@
+{
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "check_id": "daily-schedule-mcp",
+  "launch": {
+    "assertion": "Lossless linked Daily schedule edits, fresh provider preconditions and original outcome authority.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove actual Auth gateway persistence, fresh refusal or lost acknowledgement behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "deadline_utc": "2026-11-02T19:45:45.219674+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "linked-daily-schedule-gateway-local-v1"
+  }
+}

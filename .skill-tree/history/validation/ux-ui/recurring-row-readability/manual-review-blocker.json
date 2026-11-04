@@ -1,0 +1,11 @@
+{
+  "automated_report": "browser/723db63c-db14-4ce1-b794-3e3dc7479238.json",
+  "accepted": false,
+  "evidence": ".skill-tree/artifacts/ux-ui/recurring-row-readability/1793733174550324000/chromium-gryphy-dark-360-200-workspace-names-daily.png",
+  "finding": "The OCCURRENCES word wraps the final S onto a separate line in the disabled Schedule / occurrences action. Outer geometry and selected date checks passed, but do not cover intact ordinary action words.",
+  "repair": "Add native Range word-line assertions on rendered row-action labels and reduce scoped phone action padding while preserving44-pixel targets.",
+  "limitations": "No terminal task acceptance from the earlier automated pass.",
+  "second_unaccepted_report": "browser/e6ba380e-8b16-42d4-b003-9f013b0f70b6.json",
+  "second_finding": "WebKit obsidian360/200 Habit original review splits CONFIRM after CONFIR, leaving M on the second line. Row action words and targets pass. Extend the scoped reduced padding and native word assertion to review controls.",
+  "second_evidence": ".skill-tree/artifacts/ux-ui/recurring-row-readability/1793733539996368000/webkit-obsidian-glow-360-200-workspace-names-habit.png"
+}

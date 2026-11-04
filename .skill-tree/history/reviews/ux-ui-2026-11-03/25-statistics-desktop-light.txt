@@ -1,0 +1,214 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Todo
+- heading "Statistics" [active] [level=1]
+- link "Open tasks":
+  - /url: /tasks
+- text: Period
+- combobox "Period":
+  - option "Last 7 days" [selected]
+  - option "Last 30 days"
+  - option "Last year"
+- text: Through UTC day
+- textbox "Through UTC day": 2026-11-03
+- text: Task type
+- combobox "Task type":
+  - option "All task types" [selected]
+  - option "Tasks"
+  - option "Dailies"
+  - option "Habits"
+- text: Search current titles or notes
+- textbox "Search current titles or notes"
+- paragraph: 2026-10-28 through 2026-11-03, inclusive UTC dates.
+- paragraph: Retained history only. Missing history is unknown; zero retained records never proves zero activity. Daily charts use recorded completion time, separate from the scheduled civil date. No lifetime streak or reward total is inferred.
+- region "Companion statistics":
+  - heading "Companion accepted activity" [level=2]
+  - paragraph:
+    - text: Selected Browser workspace · revision 1.
+    - link "Workspace access and sync":
+      - /url: /todo/sync
+  - text: Companion project (current membership)
+  - combobox "Companion project (current membership)":
+    - option "All projects" [selected]
+  - paragraph: 0 current task(s) match these title, type and project filters.
+  - term: Completion events
+  - definition: "0"
+  - term: Todo restorations
+  - definition: "0"
+  - term: Positive Habit events
+  - definition: "0"
+  - term: Negative Habit events
+  - definition: "0"
+  - paragraph: 0 retained events have archival flags. Restorations stay separate from recorded completions; neither reverses a claimed Habitica reward.
+  - status: No retained dated activity matches this period and current task filters.
+  - figure "Companion activity 0 retained record(s)":
+    - strong: Companion activity
+    - generic: 0 retained record(s)
+    - region "Companion activity chart; scroll for all buckets":
+      - 'generic "10-28: 0"':
+        - strong: "0"
+        - generic: 10-28
+      - 'generic "10-29: 0"':
+        - strong: "0"
+        - generic: 10-29
+      - 'generic "10-30: 0"':
+        - strong: "0"
+        - generic: 10-30
+      - 'generic "10-31: 0"':
+        - strong: "0"
+        - generic: 10-31
+      - 'generic "11-01: 0"':
+        - strong: "0"
+        - generic: 11-01
+      - 'generic "11-02: 0"':
+        - strong: "0"
+        - generic: 11-02
+      - 'generic "11-03: 0"':
+        - strong: "0"
+        - generic: 11-03
+    - paragraph: Recorded completion and positive/negative Habit events; no Habitica cache points are mixed into this chart.
+  - heading "Habitica effects requested by these commands" [level=3]
+  - paragraph: 0 confirmed of 0 requested effects · 0 unknown command(s) · 0 blocked command(s).
+  - paragraph: Retained commands accepted in the selected period; historical commands can be absent. Confirmation is the current observed state. Effects include create/update/score, not gold or experience totals. A Companion save alone confirms no game effect.
+  - heading "Current project and goal progress" [level=3]
+  - paragraph: Current membership and status, not historical as-of progress. Only nonarchived, noncancelled Todos enter denominators. Archived historical tasks remain in activity counts. Search/type/project filters apply to current membership.
+  - paragraph: No retained projects or goals.
+- region "Habitica cache statistics":
+  - heading "Separate Habitica cache" [level=2]
+  - paragraph: "Snapshot: 2026-11-03 05:27 UTC · Fresh."
+  - paragraph: This cache is separate from Companion. The project filter does not apply here. Current record counts are not historical as-of counts. Cached value changes are neither completion counts nor gold/experience.
+  - term: Current cached tasks
+  - definition: "20"
+  - term: Current completed Todos
+  - definition: "0"
+  - term: Period history points
+  - definition: "0"
+  - term: Sum of per-task value movement
+  - definition: Unavailable
+  - paragraph: 0 tasks retain points in this period. Value movement uses first-to-last values within each of 0 tasks with at least two points; missing segments are unknown.
+  - figure "Task-history histogram 0 retained record(s)":
+    - strong: Task-history histogram
+    - generic: 0 retained record(s)
+    - region "Task-history histogram chart; scroll for all buckets":
+      - 'generic "10-28: 0"':
+        - strong: "0"
+        - generic: 10-28
+      - 'generic "10-29: 0"':
+        - strong: "0"
+        - generic: 10-29
+      - 'generic "10-30: 0"':
+        - strong: "0"
+        - generic: 10-30
+      - 'generic "10-31: 0"':
+        - strong: "0"
+        - generic: 10-31
+      - 'generic "11-01: 0"':
+        - strong: "0"
+        - generic: 11-01
+      - 'generic "11-02: 0"':
+        - strong: "0"
+        - generic: 11-02
+      - 'generic "11-03: 0"':
+        - strong: "0"
+        - generic: 11-03
+    - paragraph: Cached Habitica history points in the selected UTC period; retained points do not establish complete coverage.
+  - figure "Month activity 103 retained record(s)":
+    - strong: Month activity
+    - generic: 103 retained record(s)
+    - region "Month activity chart; scroll for all buckets":
+      - 'generic "2026-06: 41"':
+        - strong: "41"
+        - generic: 2026-06
+      - 'generic "2026-07: 48"':
+        - strong: "48"
+        - generic: 2026-07
+      - 'generic "2026-08: 14"':
+        - strong: "14"
+        - generic: 2026-08
+      - 'generic "2026-09: 0"':
+        - strong: "0"
+        - generic: 2026-09
+      - 'generic "2026-10: 0"':
+        - strong: "0"
+        - generic: 2026-10
+      - 'generic "2026-11: 0"':
+        - strong: "0"
+        - generic: 2026-11
+    - paragraph: Six UTC calendar months ending on the selected day; the first month can have incomplete retained history.

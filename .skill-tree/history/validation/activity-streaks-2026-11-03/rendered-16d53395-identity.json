@@ -1,0 +1,10 @@
+{
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "fixture": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+  "source_hashes": {
+    "tests/browser/activity-ui.mjs": "3fefdcb95a3fc47f9c374886a4019d912a1aefb92f1c44e46fb1626f7339b418",
+    "tests/browser/activity-ui.py": "c7796537d8282ec304b5d031c6c056ee95cb7e61bda597899abf682187d37fc0",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "7926146cbdea90816ba1f871df6db27887c8b8bb36f322bdf1b520fb3019c8e8",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f"
+  }
+}

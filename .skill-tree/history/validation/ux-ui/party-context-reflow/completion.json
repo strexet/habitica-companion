@@ -1,0 +1,425 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Party disclosure behavior, names and stable regions remain unchanged.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.log",
+          "sha256": "7750f58550097c2c85e06a447a34977614560dd2478ed8bef7daed94f2b26332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.trx",
+          "sha256": "d0fffc78af616f7b327a2a04332c7b00d9c2a5b845ff2ae51fef977e7f31ad35"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/acceptance.json",
+          "sha256": "8ed1b76149892e583370a91075048b7de5a452b2877d30babd6f317770b741e5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json",
+          "sha256": "833a736861709da5070e5ef84bda44feaee48f776c812baf32a0662ce4af50bd"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Party summary and member grids, public context and actions retain bounded readable geometry throughout the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.log",
+          "sha256": "7750f58550097c2c85e06a447a34977614560dd2478ed8bef7daed94f2b26332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.trx",
+          "sha256": "d0fffc78af616f7b327a2a04332c7b00d9c2a5b845ff2ae51fef977e7f31ad35"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/acceptance.json",
+          "sha256": "8ed1b76149892e583370a91075048b7de5a452b2877d30babd6f317770b741e5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json",
+          "sha256": "833a736861709da5070e5ef84bda44feaee48f776c812baf32a0662ce4af50bd"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Preserve public Party disclosure, exact member identity and existing filters/quest gates; the original rendered regression supplies the failing layout oracle.",
+        "criteria": [
+          "Party disclosure behavior, names and stable regions remain unchanged."
+        ],
+        "id": "party-context-reflow-behavior",
+        "parameters": {
+          "report_name": "party-context-reflow.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/party-context-reflow/unit",
+          "test_filter": "FullyQualifiedName~PartyPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PartyPage.razor",
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3c509d0e-7e6f-4c75-85e4-d2345151f0df",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 35,
+          "expected": 35,
+          "failed": 0,
+          "passed": 35,
+          "skipped": 0
+        },
+        "definition": "1d942ac93d92dbe8eb9834743ee873454ecdd6f7c8a8e56f6095dca93dce1d95",
+        "environment_identity": "434f8be6946b2f4f4d7255b20b70446b68ff97abe49d67454bc7d6c3d654e803",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.log",
+            "sha256": "7750f58550097c2c85e06a447a34977614560dd2478ed8bef7daed94f2b26332"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.trx",
+            "sha256": "d0fffc78af616f7b327a2a04332c7b00d9c2a5b845ff2ae51fef977e7f31ad35"
+          }
+        ],
+        "execution_sessions": {
+          "918f82f2be392c6eb25da9766ca4193d37a7317713cca6bff1637f7efce39576": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "ef3c7683e1ab8f112009f3bb4d72e455e53ffe92e355b4c828bb82e9f0c52f30",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:24:41.834700+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/party-context-reflow/launch-1793725721834949000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/party-context-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "476f2e6e72c7b1aa55e8a7c434b043245c7fbdc15f0fbff7cf63ec2f3a8b66a8",
+        "payload_hash": "d2f94d826dcf1f3e775488a136185bdf7b0144845d106bd9fa3516dd8f354955",
+        "recorded_at": "2026-11-03T17:13:01.983192+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.5034532081335783
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "The real Party overview, summary grid and member controls stay within the viewport at all required widths, root text sizes and schemes. Native keyboard opens/closes the exact member region and retains visible focus.",
+        "criteria": [
+          "Party summary and member grids, public context and actions retain bounded readable geometry throughout the required rendered matrix."
+        ],
+        "id": "party-context-reflow-rendered",
+        "parameters": {
+          "cases": "Same-named long member identities, public references, closed/open details, summary and action reflow.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser",
+          "routes": [
+            "/party"
+          ],
+          "task_key": "party-context-reflow"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PartyPage.razor",
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-game-user.json",
+          "tests/browser-qualification/ux-ui-game-party.json",
+          "tests/browser-qualification/ux-ui-game-content.json",
+          "tests/browser-qualification/ux-ui-party-reflow-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-af14de15-206f-45c4-9bb2-f7b0bf936fb4",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 289,
+          "expected": 289,
+          "failed": 0,
+          "passed": 289,
+          "skipped": 0
+        },
+        "definition": "1d942ac93d92dbe8eb9834743ee873454ecdd6f7c8a8e56f6095dca93dce1d95",
+        "environment_identity": "e891080d13a7c31bcd3ee5017d6ed5203c4b43dc388049e701e339ae03573809",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json",
+            "sha256": "833a736861709da5070e5ef84bda44feaee48f776c812baf32a0662ce4af50bd"
+          }
+        ],
+        "execution_sessions": {
+          "918f82f2be392c6eb25da9766ca4193d37a7317713cca6bff1637f7efce39576": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:31:57.893175+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/party-context-reflow/launch-1793726157893416000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/party-context-reflow",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "226c9f4b77747d31e13f9e3a7136ffda8c7966035d19bc7e5f3da7556bdd5f09",
+        "payload_hash": "706a1c26b20a655e0e897e40ee72e6426265cdd49b24caca8dca19b17346c896",
+        "recorded_at": "2026-11-03T17:18:11.356413+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "7f91081bedaecbd115bce129b7a343e2c2c1e5bf4dda656833cc11273d4612bb",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+          "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs": "3e27483268560e3b28982b9dafc61fbe38e3182e4981bf07c6411b124eeffb58",
+          "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+          "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+          "tests/browser-qualification/ux-ui-party-reflow-journey.mjs": "644648c6fbd04bf8a0255a9f3323f26429cf37a096bb288b0e29a48be4374888",
+          "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+        },
+        "timing": {
+          "tool_wall_seconds": 132.0097697088495
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/acceptance.json",
+      "sha256": "8ed1b76149892e583370a91075048b7de5a452b2877d30babd6f317770b741e5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/operation-history.json",
+      "sha256": "98d293dcc0739c1f17dc9426877f8695ddff719e227637c94494584929329dcb"
+    }
+  ],
+  "followup_ids": [
+    "P-5a241695-798e-48df-8a0f-989ba8ceaee8"
+  ],
+  "id": "O-bf3eb7a8-d579-41a3-81dc-b4389cb49fa5",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep Party grids and disclosure actions bounded with enlarged text. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-610488a7-9f77-4420-b83c-83396a2f68b1"
+  ],
+  "recorded_at": "2026-11-03T17:18:54.457008+00:00",
+  "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+    "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "7f91081bedaecbd115bce129b7a343e2c2c1e5bf4dda656833cc11273d4612bb",
+    "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+    "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+    "tests/browser-qualification/ux-ui-game-names-journey.mjs": "3e27483268560e3b28982b9dafc61fbe38e3182e4981bf07c6411b124eeffb58",
+    "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+    "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+    "tests/browser-qualification/ux-ui-party-reflow-journey.mjs": "644648c6fbd04bf8a0255a9f3323f26429cf37a096bb288b0e29a48be4374888",
+    "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+  },
+  "task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+  "title": "Keep Party grids and disclosure actions bounded with enlarged text",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Preserve public Party disclosure, exact member identity and existing filters/quest gates; the original rendered regression supplies the failing layout oracle.",
+      "criteria": [
+        "Party disclosure behavior, names and stable regions remain unchanged."
+      ],
+      "id": "party-context-reflow-behavior",
+      "parameters": {
+        "report_name": "party-context-reflow.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/party-context-reflow/unit",
+        "test_filter": "FullyQualifiedName~PartyPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "The real Party overview, summary grid and member controls stay within the viewport at all required widths, root text sizes and schemes. Native keyboard opens/closes the exact member region and retains visible focus.",
+      "criteria": [
+        "Party summary and member grids, public context and actions retain bounded readable geometry throughout the required rendered matrix."
+      ],
+      "id": "party-context-reflow-rendered",
+      "parameters": {
+        "cases": "Same-named long member identities, public references, closed/open details, summary and action reflow.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser",
+        "routes": [
+          "/party"
+        ],
+        "task_key": "party-context-reflow"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-user.json",
+        "tests/browser-qualification/ux-ui-game-party.json",
+        "tests/browser-qualification/ux-ui-game-content.json",
+        "tests/browser-qualification/ux-ui-party-reflow-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "1d942ac93d92dbe8eb9834743ee873454ecdd6f7c8a8e56f6095dca93dce1d95"
+}

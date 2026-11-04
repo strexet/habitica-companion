@@ -1,0 +1,67 @@
+{
+  "task_id": "T-e3859337-1a25-48e6-a37d-817868623ec7",
+  "title": "Keep equipment identity text and stat tokens readable in constrained cards",
+  "operation_history": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/operation-history.json",
+  "checks": [
+    {
+      "id": "equipment-identity-reflow-behavior",
+      "counts": {
+        "discovered": 28,
+        "expected": 28,
+        "failed": 0,
+        "passed": 28,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.log",
+          "sha256": "3685c4359539a6a011017e631553da0d428b2225256dc1b22063d360d07be172"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-071d73ee-2495-4e95-ada3-afa5f2e40da1.trx",
+          "sha256": "d79b0a76cb79829ff4a0b653b973ac8a0143a8ce6aaa6d2b6625c3f0bdb0c81f"
+        }
+      ]
+    },
+    {
+      "id": "equipment-identity-reflow-rendered",
+      "counts": {
+        "discovered": 289,
+        "expected": 289,
+        "failed": 0,
+        "passed": 289,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json",
+          "sha256": "604badfaaa069b6fb808d48901b325890dc076d34212d06533100505e3855703"
+        }
+      ]
+    },
+    {
+      "id": "equipment-identity-reflow-controls",
+      "counts": {
+        "discovered": 38,
+        "expected": 38,
+        "failed": 0,
+        "passed": 38,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/C-48eda6df-67ef-4fac-b5ee-b67a0645f99c.tap",
+          "sha256": "5ddf951c43509feb4fe18e5f5b11dd3738c303c6b8d63b085fb7392a6177a0a7"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

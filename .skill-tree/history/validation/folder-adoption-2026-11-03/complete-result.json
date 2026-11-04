@@ -1,0 +1,827 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log",
+          "sha256": "7f125a2c82fb609eee79edba92ef4ab85557fce2f39b43d83638b07562e1a35f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-receipt.json",
+          "sha256": "2907413c29d3c86a96f0fb37d58a634875c106e41d7c12ef71130ec2679abf94"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+          "sha256": "6d4ded5b9f8e42aeec86aa546f89c53539bada51660ba038c646cf7ca25e4dc5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-receipt.json",
+          "sha256": "9765e9565b887dcae4db6d2f32a42b889dcb04e1e693409cbe5665820149b2ad"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-execution.log",
+          "sha256": "a1dd2b79898f58c4ea8ee2f443ddca72eb0aea208449f5276b75c59aece3c429"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-green.trx",
+          "sha256": "176eab33a8f2d8e2f7ef516583d9d1200e409f2816f7f10c07e8968bd32b2323"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-receipt.json",
+          "sha256": "2e4000b3564966c6458a2f67242edb523b8473b64f7fca7616b5528bb0dd88e2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+          "sha256": "3acd39fc89daa5db70576800d9a48d675fa15761e4155c1a68e3e99c6c72f2e9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+          "sha256": "3cc7f18134ec4510c9db62a7e9c3cbb71d40233256e96942cf2eefa3d432089e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+          "sha256": "16df54d3a281f2e2ddc175bec31951bd030a96edf462667d6e817bc86762e931"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-receipt.json",
+          "sha256": "38742f4a978c76746bf78a3d23b1ed8fcf4d4fbe75282cfd332835b8602cca54"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/acceptance-config.json",
+          "sha256": "726539eb1960afe02f24e946097641197d753ffea585032add1f9c57f76a858c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/future-validation.json",
+          "sha256": "9e92655892c405434481f0e0c2cd18bc92137ecb175ed62d1eba4ed4301dc439"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Cover legacy and schema2 source/target combinations, folder membership/receipt provenance, collisions, capacity, exact project mappings and atomic original-receipt recovery.",
+        "criteria": [
+          "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+        ],
+        "id": "folder-transfer-wire",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/folder-adoption.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/shared/workspace-transfer.ts",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/shared/workspace-transfer-tools.ts",
+          "workers/companion-workspace/src/workspace-transfer-api.ts",
+          "workers/companion-workspace/test/workspace-transfer.test.mjs",
+          "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+          "workers/companion-workspace/test/folder-adoption.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "integration",
+        "attempt_id": "C-eb88042d-3851-4ebc-8a50-9dc5cb801b49",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 1,
+          "passed": 20,
+          "skipped": 0
+        },
+        "definition": "24fd9642ce199d8cd6446f4a3c172cf404e97e716d070f3e1b1e33f84823a6bf",
+        "environment_identity": "bb0b43ca15589c8ea46437f9a326fc201a7eaaa6f3e94ccd4b3b38052aaea15a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-merge-red-execution.log",
+            "sha256": "ad71da2cb24f0bbdb62ab02d9c014e66b229c0acdcc779d5e00eb1b5a6b6a237"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "8cbb70f718035390724256dd7fd6b0d93dfd9d42c809f5e3eda5b1bdb7a54167",
+        "payload_hash": "ccbea40a9921a71a6d7800856a94a42fd0cd19bc1ad4d490ac2431d824ace9b5",
+        "recorded_at": "2026-11-03T01:26:00.342936+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "93099f9ea2c3962f8bd6e3191fbe028ba40275d46ecf5cd11fb42cdf55082ab4",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "5f5dbcb57f2b8371c838caabc46ceadbb6043d60468795f8b8ca515bca938300",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "28cab844c6c48e4c5fb51ef542654cbae268e60b71006767e1bf4d904e671f9f",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "3eb613883ecd7f454c7ef106ac4b9a9bf178ffe65e09d804eb6b332bf55ee098",
+          "workers/companion-workspace/src/workspace-transfer-api.ts": "4b02eae0d00785dd9263c66b97eaa5949bcbcdd5b7d04a8d8fc26385009314db",
+          "workers/companion-workspace/test/folder-adoption.test.mjs": "c8cc1b8f68c3f3888d79edd31b1e74416308ccb2b5d25ac8ba45d82556ed92ac",
+          "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "103e5318bca6c722113dc47c9baa8fc26ef68b53b87f3f39887d99a15ab5f09b",
+          "workers/companion-workspace/test/workspace-transfer.test.mjs": "50550f02290d6e3ca8302ccf7364f32c21040ed65ab0ea9d1b2b8a05f654857b",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018",
+          "workers/shared/workspace-transfer-tools.ts": "6b46e054a5b2fdeb65b37453e8d8f66ca86dfcb31b30bcc7e51b8adb532e3889",
+          "workers/shared/workspace-transfer.ts": "cec11b795b864c3c55f442b070313c20601a78e2e383670b6e82ef6ef1810caa"
+        },
+        "timing": {
+          "tool_wall_seconds": 17.36866308306344
+        }
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-a399c797-9000-4b3e-a743-72bd5378a779",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 25,
+          "expected": 25,
+          "failed": 0,
+          "passed": 25,
+          "skipped": 0
+        },
+        "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+        "environment_identity": "cde3909afc94b2437a7ea67bda6a38460a9506553cb72b08bbc64afc12cf415b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log",
+            "sha256": "7f125a2c82fb609eee79edba92ef4ab85557fce2f39b43d83638b07562e1a35f"
+          }
+        ],
+        "execution_sessions": {
+          "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:51:06.228668+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-aa673da5",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c8433df2",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "2fb8ca16b892c1f8fa3babed931ea21944ff8a99643f6460ca03c5fbc0e8d9f1",
+        "payload_hash": "fde3e8861c313a3a591a24a7418bbee15805a50bfea17e0e8d37813fed64c059",
+        "recorded_at": "2026-11-03T01:40:11.497243+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "f1a7e5e20e4c84a4d92cb051bc66f05500f5bc8440706950af9ac15f6737a456",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+          "workers/companion-workspace/src/workspace-transfer-api.ts": "bd9d7ac7527cda0038861e89e3f9f47de1e5d3ba25510f50a578103d61d3bf2b",
+          "workers/companion-workspace/test/folder-adoption.test.mjs": "834ea714372ab40d0a92df08c44027a54a6984eebdbe5d39fb6b915407a1cbfe",
+          "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "26063dd8aba145f2ac7df36e377c39bddee5e3fe7d7e603eaea06a0ff2749876",
+          "workers/companion-workspace/test/workspace-transfer.test.mjs": "50550f02290d6e3ca8302ccf7364f32c21040ed65ab0ea9d1b2b8a05f654857b",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "e967818a732c4c000aeb019259a4a08b7b77b9f13e3dc9b1e5e20697a038e199",
+          "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a",
+          "workers/shared/workspace-transfer.ts": "8a5bc0fefe8c98489a854e182e18be77042c7cce1b9f5d804b772927f8904e58"
+        },
+        "timing": {
+          "tool_wall_seconds": 18.466786250006407
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Reviewed MCP preview/accept/receipt and exact source-record reads preserve original folder receipts and require existing migration permission.",
+        "criteria": [
+          "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+        ],
+        "id": "folder-transfer-mcp",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+          "workers/shared/workspace-transfer-tools.ts",
+          "workers/chatgpt-mcp/src/workspace-transfer-tools.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-5a2256f7-092f-48c2-b766-35a406c758ca",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 10,
+          "expected": 10,
+          "failed": 0,
+          "passed": 10,
+          "skipped": 0
+        },
+        "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+        "environment_identity": "68edf64f6ccffb254d884864681513af598ade54a5dcf0b659545830263dc83f",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+            "sha256": "6d4ded5b9f8e42aeec86aa546f89c53539bada51660ba038c646cf7ca25e4dc5"
+          }
+        ],
+        "execution_sessions": {
+          "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:51:06.228668+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-aa673da5",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c8433df2",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "77285a277623a512b21e93629b2420487dd85d0eb6e720264c6f680eb7ec8016",
+        "payload_hash": "0b2cd050de2c3c570d9941e0ca7ed2a8c292c00c5be9d8d2a7e6cbadd63763d1",
+        "recorded_at": "2026-11-03T01:40:21.125018+00:00",
+        "result": "pass",
+        "sources": {
+          "workers/chatgpt-mcp/src/workspace-transfer-tools.ts": "01e39d4a6b10d98372f148dcd1e4efff640460464ceddab391d5813991695971",
+          "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "26063dd8aba145f2ac7df36e377c39bddee5e3fe7d7e603eaea06a0ff2749876",
+          "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.062133833067492
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Prove unsupported schema2 capture refuses before FreezeAsync; supported capture reviews exact folders and restores original transfer after interruption without a second writable authority.",
+        "criteria": [
+          "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+        ],
+        "id": "folder-transfer-browser-capture",
+        "parameters": {
+          "report_name": "folder-transfer.trx",
+          "result_directory": ".skill-tree/artifacts/validation/folder-transfer",
+          "test_filter": "FullyQualifiedName~WorkspaceTransfer|FullyQualifiedName~UnifiedWorkspaceFlow",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs",
+          "src/Habitica.Domain/Notes/NotesModel.cs",
+          "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-a9c50997-2f2c-47b8-9eec-5b5ecfdadb7e",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 1,
+          "passed": 19,
+          "skipped": 0
+        },
+        "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+        "environment_identity": "4dd45aef6a4341b83faab13b2a3940ce222192ea6d2ddc46021f827b83f4e3c1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-red-execution.log",
+            "sha256": "3955a0232cc572dd862371c377395dc56851f7e619698ea47a7961b52f79e967"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-red.trx",
+            "sha256": "17c4096f0d81b207f6ceb79ed42201790cd0c3c0b3049093716a2a3eac962c6e"
+          }
+        ],
+        "execution_sessions": {
+          "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:48:01.886265+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-bad323f6-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-bad323f6",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c8433df2",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "e11548027dfc110591e105d80153d2ddb002b5fba4021bc288aa60012a71c819",
+        "payload_hash": "c6f59726c35bc1fb88fcc6a94f6d03531ce6f9b611146b6c28a86e95edbc25ed",
+        "recorded_at": "2026-11-03T01:37:39.348828+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "1d8a77bdc28065b2e9f372b54b93e37a3f9202f51fba60d11b4f9d04a158b30d",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "1f6acbdd580e2850675af40eb54921ffc78dcedd520ee137f65ba4bf9a047c56",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+          "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+          "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547"
+        },
+        "timing": {
+          "tool_wall_seconds": 5.8506148748565465
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-4a9c67ce-872f-401e-8ab2-f084c2cf1312",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 0,
+          "passed": 20,
+          "skipped": 0
+        },
+        "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+        "environment_identity": "4dd45aef6a4341b83faab13b2a3940ce222192ea6d2ddc46021f827b83f4e3c1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-execution.log",
+            "sha256": "a1dd2b79898f58c4ea8ee2f443ddca72eb0aea208449f5276b75c59aece3c429"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-green.trx",
+            "sha256": "176eab33a8f2d8e2f7ef516583d9d1200e409f2816f7f10c07e8968bd32b2323"
+          }
+        ],
+        "execution_sessions": {
+          "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:48:01.886265+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-bad323f6-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-bad323f6",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c8433df2",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "b8af83b687f753fbe8fdab73f858e80345bb3064f58f6c69d634c9e5ee2db679",
+        "payload_hash": "8c66b85ccca8c8fa49183c6a84a03cfbb7e745e0809f81a9e5406c2173bd9d41",
+        "recorded_at": "2026-11-03T01:38:06.094236+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "f1a7e5e20e4c84a4d92cb051bc66f05500f5bc8440706950af9ac15f6737a456",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "36123a120f3bf3583000dca9a1dfba9593a1af98d65d9951e6d0e32a8d2a11cf",
+          "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+          "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+          "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+          "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547"
+        },
+        "timing": {
+          "tool_wall_seconds": 16.012407792033628
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Rendered exact folder review, original receipt recovery and authority freeze qualify across both engines and required layout/text/theme cases.",
+        "criteria": [
+          "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+        ],
+        "id": "folder-transfer-rendering",
+        "parameters": {},
+        "recipe_id": "folder-adoption-rendered-browser",
+        "sources": [
+          "tests/browser/folder-adoption-ui.py",
+          "tests/browser/folder-adoption-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj",
+          "tests/browser/folder-adoption-fixture.mjs",
+          "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-e8936c4c-2ebc-488a-9fd9-fb8448706cba",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+        "counts": {
+          "discovered": 114,
+          "expected": 114,
+          "failed": 0,
+          "passed": 114,
+          "skipped": 0
+        },
+        "definition": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4",
+        "environment_identity": "984e06a4c8a85aac2a990ce1aca8e49b0fcb533367ed69659e15379d515eb419",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+            "sha256": "3acd39fc89daa5db70576800d9a48d675fa15761e4155c1a68e3e99c6c72f2e9"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+            "sha256": "3cc7f18134ec4510c9db62a7e9c3cbb71d40233256e96942cf2eefa3d432089e"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+            "sha256": "16df54d3a281f2e2ddc175bec31951bd030a96edf462667d6e817bc86762e931"
+          }
+        ],
+        "execution_sessions": {
+          "6569275660fdf366e90ad095500f2759daabe31961675882e604279b94ead4ae": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:51:06.228668+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-aa673da5",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "a8745b16cbb556611c42cbb6c94c963d38fbdd9a91592a3ad3030849552f2cfc": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T01:45:10.032251+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-c8433df2-identity.json"
+            ],
+            "profile_id": "folder-adoption-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c8433df2",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "625f7b23c320f78ae13fc0f18267f7655a07f8b7b30dcc9eaf3a6e686de5148c",
+        "payload_hash": "c1ea50603dec7c67d908761ad8175b304c9c744007831124aacdb71d20ae2fe6",
+        "recorded_at": "2026-11-03T01:38:57.356199+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/folder-adoption-fixture.mjs": "ead55aac7295f5e69702eae0c96a5280ab32a774b4c68011cfba71e5cd48711c",
+          "tests/browser/folder-adoption-ui.mjs": "de98253cfa5ef7707bfe91552f5135d30328b0d9dfc403faee746f474833af3a",
+          "tests/browser/folder-adoption-ui.py": "347a3604e01391260bd0bf87410deb4ba6dea4046400636a9ab2a59e9620d735"
+        },
+        "timing": {
+          "tool_wall_seconds": 50.38583583314903
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-execution.log",
+      "sha256": "7f125a2c82fb609eee79edba92ef4ab85557fce2f39b43d83638b07562e1a35f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-wire-final-receipt.json",
+      "sha256": "2907413c29d3c86a96f0fb37d58a634875c106e41d7c12ef71130ec2679abf94"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-execution.log",
+      "sha256": "6d4ded5b9f8e42aeec86aa546f89c53539bada51660ba038c646cf7ca25e4dc5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-mcp-final-receipt.json",
+      "sha256": "9765e9565b887dcae4db6d2f32a42b889dcb04e1e693409cbe5665820149b2ad"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-execution.log",
+      "sha256": "a1dd2b79898f58c4ea8ee2f443ddca72eb0aea208449f5276b75c59aece3c429"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/folder-transfer/folder-cross-runtime-green.trx",
+      "sha256": "176eab33a8f2d8e2f7ef516583d9d1200e409f2816f7f10c07e8968bd32b2323"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/folder-cross-runtime-green-receipt.json",
+      "sha256": "2e4000b3564966c6458a2f67242edb523b8473b64f7fca7616b5528bb0dd88e2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-execution.log",
+      "sha256": "3acd39fc89daa5db70576800d9a48d675fa15761e4155c1a68e3e99c6c72f2e9"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-identity.json",
+      "sha256": "3cc7f18134ec4510c9db62a7e9c3cbb71d40233256e96942cf2eefa3d432089e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/folder-adoption-ui/1793669886515043000/report.json",
+      "sha256": "16df54d3a281f2e2ddc175bec31951bd030a96edf462667d6e817bc86762e931"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/rendered-aa673da5-receipt.json",
+      "sha256": "38742f4a978c76746bf78a3d23b1ed8fcf4d4fbe75282cfd332835b8602cca54"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/acceptance-config.json",
+      "sha256": "726539eb1960afe02f24e946097641197d753ffea585032add1f9c57f76a858c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/future-validation.json",
+      "sha256": "9e92655892c405434481f0e0c2cd18bc92137ecb175ed62d1eba4ed4301dc439"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/folder-adoption-2026-11-03/documentation-validation.json",
+      "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-1206c82c-f856-48a4-a000-6262cb03547f",
+  "limitations": [
+    "No commit, push, publication, real account transfer, real provider operation or notification qualification occurred.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified; changed-route harnesses block service workers.",
+    "One unprepared exploratory local probe executed during initial model investigation; the probe grants no acceptance and final source-bound prepared controls supersede the observation."
+  ],
+  "outcome": "Reviewed Workspace adoption preserves schema2 folder identities, tombstones, current/historical memberships and separate causal baselines across schema1/schema2 targets. Exact source folder receipts remain accessible through independently authorized MCP reads and hashed metadata after Note body purge. Browser capture validates owner/source and exact inventory before atomic authority freeze, preserving accepted snapshot/event timestamp encodings. All169 native/component/shared/SDK/D1/Release-browser controls pass without real account/provider operations.",
+  "parent_pending_ids": [
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31"
+  ],
+  "recorded_at": "2026-11-03T01:40:46.364421+00:00",
+  "related_task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "root_task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "source_fingerprints": {
+    ".skill-tree/documents/notes-folder-adoption.md": "5c3c52181ce42934c13859e7762d4209be025727d3402fd69dd72abb18acf573",
+    "plugin/skills/habitica-notes/SKILL.md": "7ea4a8fdaec2a2d3c372fe9a30400c73713d5111e2a33cffd12505dba98dbe6f",
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "f1a7e5e20e4c84a4d92cb051bc66f05500f5bc8440706950af9ac15f6737a456",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "36123a120f3bf3583000dca9a1dfba9593a1af98d65d9951e6d0e32a8d2a11cf",
+    "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+    "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor": "6a9fed5f9234ad286c0a6c9c4f0f890683fc5e3ad91cac828cf39619c2bae842",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "1325555a9eb9837ed1c326488d5ecdbb1aa46b704fdc1700cbaf0e30d0c48beb",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "46e63ff58d5225554ae6ffb1058039e91d69160a097c2a7108f89464a94d5839",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs": "d2efa8f2e20fcb991bee4b1333392a96807675167844299b4ed158f048d6b547",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/folder-adoption-fixture.mjs": "ead55aac7295f5e69702eae0c96a5280ab32a774b4c68011cfba71e5cd48711c",
+    "tests/browser/folder-adoption-ui.mjs": "de98253cfa5ef7707bfe91552f5135d30328b0d9dfc403faee746f474833af3a",
+    "tests/browser/folder-adoption-ui.py": "347a3604e01391260bd0bf87410deb4ba6dea4046400636a9ab2a59e9620d735",
+    "tests/fixtures/workspace-transfer/folder-adoption-accepted.json": "7416f95e4d68154e6355f1b95f171d88e447a82d86d6fe7e1f5d7b4c28ecefac",
+    "tests/fixtures/workspace-transfer/folder-browser-inventory.json": "2c0f6cb3244409dceab069a944f5e3b5d203c1cdf1e6acd3ea5507e36d248e52",
+    "workers/chatgpt-mcp/src/workspace-transfer-tools.ts": "01e39d4a6b10d98372f148dcd1e4efff640460464ceddab391d5813991695971",
+    "workers/companion-workspace/src/index.ts": "2dbc2d34aa2f07be13ab172598a752c97991bfc346a3c8a44f9d3f55262ba72b",
+    "workers/companion-workspace/src/workspace-transfer-api.ts": "bd9d7ac7527cda0038861e89e3f9f47de1e5d3ba25510f50a578103d61d3bf2b",
+    "workers/companion-workspace/test/folder-adoption.test.mjs": "834ea714372ab40d0a92df08c44027a54a6984eebdbe5d39fb6b915407a1cbfe",
+    "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "26063dd8aba145f2ac7df36e377c39bddee5e3fe7d7e603eaea06a0ff2749876",
+    "workers/companion-workspace/test/workspace-transfer.test.mjs": "50550f02290d6e3ca8302ccf7364f32c21040ed65ab0ea9d1b2b8a05f654857b",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "e967818a732c4c000aeb019259a4a08b7b77b9f13e3dc9b1e5e20697a038e199",
+    "workers/shared/transfer-note-parts.ts": "c8f3744582dd5eff10ababc7c18a7fcf49888d121186823f5cddce58a01946dc",
+    "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a",
+    "workers/shared/workspace-transfer.ts": "8a5bc0fefe8c98489a854e182e18be77042c7cce1b9f5d804b772927f8904e58"
+  },
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455",
+  "title": "Preserve Notes folder notebooks during reviewed Workspace adoption",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Cover legacy and schema2 source/target combinations, folder membership/receipt provenance, collisions, capacity, exact project mappings and atomic original-receipt recovery.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/folder-adoption.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/workspace-transfer.ts",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/shared/workspace-transfer-tools.ts",
+        "workers/companion-workspace/src/workspace-transfer-api.ts",
+        "workers/companion-workspace/test/workspace-transfer.test.mjs",
+        "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+        "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+        "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+        "workers/companion-workspace/test/folder-adoption.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Reviewed MCP preview/accept/receipt and exact source-record reads preserve original folder receipts and require existing migration permission.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+        "workers/shared/workspace-transfer-tools.ts",
+        "workers/chatgpt-mcp/src/workspace-transfer-tools.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Prove unsupported schema2 capture refuses before FreezeAsync; supported capture reviews exact folders and restores original transfer after interruption without a second writable authority.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-browser-capture",
+      "parameters": {
+        "report_name": "folder-transfer.trx",
+        "result_directory": ".skill-tree/artifacts/validation/folder-transfer",
+        "test_filter": "FullyQualifiedName~WorkspaceTransfer|FullyQualifiedName~UnifiedWorkspaceFlow",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+        "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+        "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Rendered exact folder review, original receipt recovery and authority freeze qualify across both engines and required layout/text/theme cases.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-rendering",
+      "parameters": {},
+      "recipe_id": "folder-adoption-rendered-browser",
+      "sources": [
+        "tests/browser/folder-adoption-ui.py",
+        "tests/browser/folder-adoption-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/folder-adoption-fixture.mjs",
+        "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a86c423254b4da96069dd7bc6f117aa60404009d9c9bf56f896e8cb4599d5ff4"
+}

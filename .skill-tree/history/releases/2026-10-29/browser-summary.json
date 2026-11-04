@@ -1,0 +1,14 @@
+{
+  "summary": {
+    "cases": 2488,
+    "errors": 0,
+    "harnessErrors": 0,
+    "prerequisiteUnavailable": 0,
+    "measurementUnavailable": 0,
+    "unqualifiedSurfaces": 0,
+    "errorKinds": []
+  },
+  "full_results": "browser-results.json.gz",
+  "raw_sha256": "71e107d4e79833361c8d479e0ced1483c302d6b179a052bf9f9107b292f6cc8a",
+  "compressed_sha256": "69c8df0a61a333a529edc31f9c86a213e8fa81cc502b9d354fde59031bf08c62"
+}

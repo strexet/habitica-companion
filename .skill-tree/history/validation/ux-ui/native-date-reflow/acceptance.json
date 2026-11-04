@@ -1,0 +1,50 @@
+{
+  "task_id": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+  "title": "Keep selected native dates readable with enlarged text",
+  "operation_history": ".skill-tree/history/validation/ux-ui/native-date-reflow/operation-history.json",
+  "checks": [
+    {
+      "id": "native-date-reflow-behavior",
+      "counts": {
+        "discovered": 7,
+        "expected": 7,
+        "failed": 0,
+        "passed": 7,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.log",
+          "sha256": "e032dc1f451bd5a68f258e15cd6bc25b6571b737ce3e786d0ab83ef5c512ab63"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/C-cb650f61-5760-4d36-8d15-df9a92ee925f.trx",
+          "sha256": "4b37b654c5ba1cc7af7bea7395189f0d253517d3334e03e497187ac7b1a0ec98"
+        }
+      ]
+    },
+    {
+      "id": "native-date-reflow-rendered",
+      "counts": {
+        "discovered": 217,
+        "expected": 217,
+        "failed": 0,
+        "passed": 217,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/native-date-reflow/browser/7c09483f-9693-4abd-baf3-c3977a40541b.json",
+          "sha256": "6eeaa55b6e5576e7ec570e12e5e9f335aa9b823c3bb4a5a20af49dd53eed20ba"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

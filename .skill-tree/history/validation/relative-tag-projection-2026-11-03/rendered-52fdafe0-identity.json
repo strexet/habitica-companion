@@ -1,0 +1,10 @@
+{
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "fixture": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+  "source_hashes": {
+    "tests/browser/relative-tag-ui.mjs": "8fbd772c4945938cc4c3d6ea5928718d50df985f46875e60a7c0e55a71e58672",
+    "tests/browser/relative-tag-ui.py": "7d9c428ac5cd774b7854bd7d2455bcbf48b37d5c20a21a01e800c01bfe559ba2",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "208d9ac128f6dc3b996aebaea771531a5e4fba7f4fd5a728261b82329e6a8bad",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4"
+  }
+}

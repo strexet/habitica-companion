@@ -1,0 +1,82 @@
+{
+  "assertion": "Saved-list editing preserves relative intent, exposes explicit interpreted bounds and timezone, refuses conflicting dates and stale-day paging, recovers original definitions and clears private account data.",
+  "attempt_id": "C-3e578282-cf32-45c8-a32b-50ef5a3e03ed",
+  "check_id": "relative-date-components",
+  "definition": "15f987faaed0a5946c6f19d1b8f688afacd45833f6e37a4a6767b2da736afbc3",
+  "environment_identity": "6445409e8d291f20a153c1d7de36d92b38c112f3f61ed962d3010228a9b74fa4",
+  "key": "966b8e8fc1d41d4f454143c75f1357521cebec83c93b0a5d1e9dbed962e55b5d",
+  "launch": {
+    "assertion": "Relative saved definitions preserve intent and resolve date fields from one explicit UTC clock and IANA timezone, with stable guarded paging.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable date boundaries, current task selection, guarded pagination or no read mutations.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T22:06:18.649018+00:00",
+    "execution_profile": "relative-saved-dates-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T21:58:18.837264+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~SavedList|FullyQualifiedName~SavedView|FullyQualifiedName~WorkspaceTagPanel",
+      "--logger",
+      "trx;LogFileName=relative-date-components.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-components"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/IWorkspaceSavedTaskViewApi.cs": "34de00903f970a4bdf304e604680eea95e5b935ee1523ceb58866a54095443ff",
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "9b08d714f865e1a0aa4ae2906cd8bbd8e57769bb07a0963c7d9ced560b7e916f",
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "src/Habitica.WebApp/Components/RelativeSavedDateSummary.razor": "142f4d548186305c3f98338c8599e90aadc3b306438da6d3cf8b95772933939e",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "aa2e37bd8343f9d6ce6de41ecfa8e44af7541eda7e3dc81641b644f9a2957c67",
+    "src/Habitica.WebApp/Components/TodoSavedQuerySummary.razor": "493206fac451f09a7f85ea27e96c67bc110c88479324216b419f09c1f9bd6480",
+    "src/Habitica.WebApp/Components/WorkspaceTagChangeReview.razor": "a78bf7d6caa8e8b5f95a89e4fc58355663a143f4acbb12c8741870415d0ba4d8",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "1a416444cffd7ea2786872748f2c956aebbf94d05bf5c555bfed19c637645770",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.SavedViews.cs": "75285676efafed0a0aecb5411acf7c29a9a250ff4c2f8f61288b3c7168f4f8d0",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "56bc9d13d35195e8f0866cf04d4c77e75afeb0ea43074c93e996c46d8c8e3df4",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "5e2d80e4bbba94f37feeb21febb99d4f78be1bd3d0f076391da12adbc6ec91df",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/RelativeSavedViewClientTests.cs": "160bd198ffb98dc9c96e11fd033e762724931900c739a5000cce7fafb4addd14",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceSavedViewClientTests.cs": "1fccd28e345ed8882f10c9e9ad3d74be20a8471de133c95d0db5a36a3d21b33c",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "a11711486450a70fdebc48daa97d93655937ac2af90faac97c8ffb17ae9dcba7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "ff1d3f36bba2402c09ae96c8055407847564cb46c92c2b1259d1f85143f5452e",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "2044b3715067f8124ec11178edefbb07f9ee6e1b14ceecf8c7cf3d8a723fbba0"
+  },
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

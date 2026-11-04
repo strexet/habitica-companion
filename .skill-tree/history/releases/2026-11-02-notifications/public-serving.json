@@ -1,0 +1,51 @@
+{
+  "observations": [
+    {
+      "url": "https://habitica-companion.pages.dev/",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "bytes": 1356,
+      "sha256": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+      "matchesPublishedArtifact": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/appsettings.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 583,
+      "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+      "configuration": {
+        "Habitica": {
+          "XClientHeader": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+        },
+        "ChatGptIntegration": {
+          "AuthBaseUrl": "https://habitica-companion-auth.strexet.workers.dev",
+          "Enabled": true
+        },
+        "Features": {
+          "PartySyncEnabled": true,
+          "HabiticaRequestDelayMilliseconds": 0,
+          "CloudSyncExcludedSections": [
+            "diagnostics"
+          ],
+          "AdminUserIds": [],
+          "OwnerIsolatedTestingEnabled": false
+        },
+        "CompanionWorkspace": {
+          "BaseUrl": "https://habitica-companion-workspace.strexet.workers.dev",
+          "PartyPlanningEnabled": true
+        }
+      },
+      "matchesPublishedArtifact": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/_framework/blazor.webassembly.js",
+      "status": 200,
+      "type": "application/javascript",
+      "bytes": 60300,
+      "sha256": "82f1df9e775f12ed6d45fd2b15be7df3cad6abb213228b4e684f3e00c6ca61b7",
+      "matchesPublishedArtifact": true
+    }
+  ],
+  "browserRendering": "unqualified: IAB navigation ERR_FAILED; its internal data error page is not accessible under Browser Use URL policy"
+}

@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/5dfb44a9-b545-47ed-b8d4-38a08dd23daf-failure.json",
+  "diagnosis": "The generic h1 wait reached a route with the already-planned missing category heading. Page-heading repair belongs to T-97df06dc-6edd-499a-b9bc-3c495668d2b4; disabled paint acceptance does not establish heading conformance.",
+  "repair": "Use each route actual readiness marker. Open the existing Settings appearance disclosure to expose an enabled native form control without selecting or saving a palette. Native selects join text fields as positive keyboard controls.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

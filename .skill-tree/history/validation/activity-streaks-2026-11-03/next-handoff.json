@@ -1,0 +1,48 @@
+{
+  "body": "### Edit supported linked Daily schedules with explicit reconciliation\n\n```yaml\nid: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9\npriority: 99\nstatus: Ready\nparent_pending_ids: [\"P-438c79fe-385d-4657-be24-85fad9a49c31\", \"P-3736aa26-c58b-402d-a736-ff6ce23907bd\"]\nprocessing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989\nroot_task_id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9\nrelated_task_id: null\nrelation: main\ndepends_on: [\"T-aa82feee-97b1-4f14-8b5a-d642cca014e3\", \"T-68cb7da7-62e9-4136-b5c5-07da20f97c30\", \"T-07d27408-3019-423f-a5de-4cda1f9e2818\"]\n```\n\nGoal:\n- Make linked recurrence authoring available where the current Habitica schedule has a lossless supported mapping.\nCurrent behavior:\n- Canonical Daily recurrence and native authoring exist; HabiticaTaskDetails contains difficulty/attribute/checklist only, and lifecycle edits reject linked work.\nDesired behavior:\n- A reviewed linked Daily schedule edit displays separate Companion and Habitica semantics and records fresh verified schedule normalization.\nTouch:\n- Habitica task schedule parsing, Auth update allowlist/preconditions, Workspace projection engine, schedule history, recurrence editor, MCP contracts and shared fixtures.\nDiscovery allowance:\n- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.\nOut of scope:\n- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.\nImplementation constraints:\n- Support only losslessly represented daily/weekly/monthly day-of-month rules. Bind fresh account timezone/dayStart and upstream frequency/everyX/repeat/startDate/daysOfMonth facts; unsupported yearly, weeks-of-month and mixed rules remain explicitly read-only rather than discarded. Preserve actual Habitica normalized fields and record schedule epochs. Preview current/next dates and warn that native pause/skip does not pause Habitica penalties. Do not change native-only pause into an upstream resting setting, auto-score past dates, run Cron or dispatch while outcome is unknown. Revalidate official controller/update semantics before editing the allowlist.\n- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.\nQuestions and required clarifications:\n- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.\nValidation:\n- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"daily-schedule-rules\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.\",\n        \"Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Schedule\",\n        \"report_name\": \"daily-schedule-rules.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules\"\n      },\n      \"assertion\": \"- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"daily-schedule-wire\",\n      \"recipe_id\": \"worker-focused-tests\",\n      \"criteria\": [\n        \"Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.\",\n        \"Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.\"\n      ],\n      \"sources\": [\n        \"workers/companion-workspace/test/recurrence-commands.test.mjs\",\n        \"workers/companion-workspace/package.json\"\n      ],\n      \"parameters\": {\n        \"test_file\": \"workers/companion-workspace/test/recurrence-commands.test.mjs\"\n      },\n      \"assertion\": \"- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.\n- Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.\nDocumentation updates:\n- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.\nRisks:\n- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.\n\n",
+  "checks": [
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rules",
+      "parameters": {
+        "report_name": "daily-schedule-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules",
+        "test_filter": "FullyQualifiedName~Schedule",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/recurrence-commands.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "priority": 99,
+  "root_task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "title": "Edit supported linked Daily schedules with explicit reconciliation"
+}

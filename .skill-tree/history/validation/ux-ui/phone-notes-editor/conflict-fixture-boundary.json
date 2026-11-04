@@ -1,0 +1,9 @@
+{
+  "original_report": "ad13195e-5e8c-465d-9639-f84214cb99a6-failure.json",
+  "diagnosis": "The conflict fixture intentionally preserves an editable private draft and disables only Save until explicit stored-revision recovery. The new adapter incorrectly required disabled native title/body values for that state. Remove that incorrect declaration; keep disabled-text sampling for the actual disabled Save and require frozen title/body for original unknown acceptance. No application guard or oracle threshold changes.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

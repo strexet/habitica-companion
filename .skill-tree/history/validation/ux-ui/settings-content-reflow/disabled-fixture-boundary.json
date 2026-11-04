@@ -1,0 +1,11 @@
+{
+  "original_report": "browser/ef785e99-c2cc-4407-9124-47816110e033-failure.json",
+  "observation": "The extracted session-actions fixture has no disabled text-bearing control, so the required disabled sample check correctly rejected the declaration. No disabled contrast defect was inferred.",
+  "repair": "Use full Settings markup in authenticated and signed-out states; public component assertions verify upload/download remain disabled without authentication.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "original_receipt": "Retained unchanged."
+}

@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep Party grids and disclosure actions bounded with enlarged text",
+    "description": "The current 360-pixel enlarged-text Party fixture overflows to 592 pixels. The detail grid uses an 18-rem minimum; the member Details action also has a fixed seven-rem minimum wider than the available card content.",
+    "expected_behavior": "Keep Party summary, member details and actions within the available width at normal and enlarged text without hiding content or reducing text size.",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/game-control-names/1793725405172118000/failure.json and failure.png; app.css party-detail-grid and party-member-actions rules.",
+    "priority_reason": "The rendered changed-route check cannot pass while an existing grid and action exceed the phone viewport.",
+    "expected_source_hash": "b043c4a6bb293dcf9b5c8dec607e8b8ff42df3adc94a881c514f68fdbf2e5ec3"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-610488a7-9f77-4420-b83c-83396a2f68b1",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "relation": "blocker",
+    "root_task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+    "status": "Pending"
+  }
+}

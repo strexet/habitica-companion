@@ -1,0 +1,25 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-rules",
+  "attempt_id": "C-a1ff023a-3daf-4c6a-8cf8-4676c20a44c9",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "red",
+  "counts": {
+    "expected": 26,
+    "discovered": 26,
+    "passed": 25,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 6.378684916999191
+  },
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/atomic-copy-compile-repaired-execution.log",
+    ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/atomic-copy-compile-repaired.trx"
+  ],
+  "failure_category": "expected-behavior"
+}

@@ -1,0 +1,8 @@
+{
+  "operation": "netlify-verify-disabled",
+  "classification": "executed-control",
+  "exit_code": 0,
+  "tool_wall_seconds": 2.6,
+  "deadline_seconds": 25,
+  "cleanup_reserve_seconds": 10
+}

@@ -1,0 +1,27 @@
+{
+  "created_ids": [
+    "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+    "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+    "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+    "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac"
+  ],
+  "dispositions": {
+    "P-9579af1d-3709-4bca-961a-6947585c7747": {
+      "reason": "Current Git, source, provider policy, deployment and validation evidence support five ordered executable integration and publication tasks. The selected scope covers completed work, with independent account/device gates and unrelated unfinished features excluded.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-29d81efe-837a-4d24-8135-018611823297",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-9579af1d-3709-4bca-961a-6947585c7747"
+  ],
+  "task_keys": {
+    "deploy": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+    "integrate": "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+    "merge": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+    "preserve": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "qualify": "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+  }
+}

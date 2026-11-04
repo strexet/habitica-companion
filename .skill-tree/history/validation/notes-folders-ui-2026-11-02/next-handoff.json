@@ -1,0 +1,69 @@
+{
+  "body": "### Show coverage-aware Daily and Habit activity streaks\n\n```yaml\nid: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f\npriority: 99\nstatus: Ready\nparent_pending_ids: [\"P-438c79fe-385d-4657-be24-85fad9a49c31\"]\nprocessing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed\nroot_task_id: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f\nrelated_task_id: null\nrelation: main\ndepends_on: [\"T-aa82feee-97b1-4f14-8b5a-d642cca014e3\", \"T-b92d23ba-8586-4869-a6b8-f8eb180f1b02\"]\nboundary_validation: before-dependent-work\n```\n\nGoal:\n- Present useful streak statistics with explicit limits and no invented lifetime records.\nCurrent behavior:\n- Retained completion/Habit event reads exist; statistics and history UI are planned, but current history cannot establish contiguous completeness.\nDesired behavior:\n- Bounded streak reads and statistics distinguish verified scheduled-day Daily runs, positive-Habit calendar-day runs and unknown/lower-bound history.\nTouch:\n- Workspace activity queries, shared recurrence/calendar helpers, MCP read definitions, statistics/history view models and browser components.\nDiscovery allowance:\n- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.\nOut of scope:\n- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.\nImplementation constraints:\n- Use explicit UTC as-of plus the displayed IANA timezone. Habit days with at least one positive event count once; negative events remain separate and do not erase a positive day. Negative-only habits display activity frequency rather than a positive streak. Daily streaks count scheduled dates; skipped/paused intervals are neutral and missing eligible dates break a run only inside proven coverage. Current unfinished days retain the previous run until the local day closes. Historical schedules/corrections determine prior dates. Label lower bounds and refuse lifetime-best claims without complete coverage; no game effects or synthetic backfill.\n- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.\nQuestions and required clarifications:\n- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.\nValidation:\n- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"activity-rules\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.\",\n        \"Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Activity|FullyQualifiedName~Streak\",\n        \"report_name\": \"activity-rules.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules\"\n      },\n      \"assertion\": \"- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"activity-components\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.\",\n        \"Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Statistics\",\n        \"report_name\": \"activity-components.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components\"\n      },\n      \"assertion\": \"- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"activity-rendering\",\n      \"recipe_id\": \"activity-rendered-browser\",\n      \"criteria\": [\n        \"Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.\",\n        \"Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.\"\n      ],\n      \"sources\": [\n        \".skill-tree/documents/testing.md\",\n        \".skill-tree/documents/technical.md\"\n      ],\n      \"parameters\": {},\n      \"assertion\": \"- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.\",\n      \"timing\": \"before-dependent-work\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.\n- Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.\nDocumentation updates:\n- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.\nRisks:\n- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.\n\n",
+  "checks": [
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rules",
+      "parameters": {
+        "report_name": "activity-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules",
+        "test_filter": "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-components",
+      "parameters": {
+        "report_name": "activity-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components",
+        "test_filter": "FullyQualifiedName~Statistics",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+      "criteria": [
+        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
+        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
+      ],
+      "id": "activity-rendering",
+      "parameters": {},
+      "recipe_id": "activity-rendered-browser",
+      "sources": [
+        ".skill-tree/documents/testing.md",
+        ".skill-tree/documents/technical.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "phase": "implement",
+  "priority": 99,
+  "root_task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "title": "Show coverage-aware Daily and Habit activity streaks"
+}

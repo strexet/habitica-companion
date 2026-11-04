@@ -1,0 +1,19 @@
+{
+  "original_failure": "6c405fed-461b-44fe-9316-ac9aef315b08",
+  "artifact": "1793748246596726000",
+  "classification": "expected-behavior layout Red",
+  "observed": [
+    "Actual count labels collapse to0px columns; Hatching/potions break8/7lines at360/200.",
+    "Shared stat-card strong typography overrides count-specific intended size; large numeric values wrap2/4lines."
+  ],
+  "repair": [
+    "Count-chip flex wrap reserves art/count and gives full row to label.",
+    "Scoped direct count strong restores original count-specific1rem size with unbroken numeric paint; large values can move below art.",
+    "Natural label word wrapping remains scoped to count summaries."
+  ],
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

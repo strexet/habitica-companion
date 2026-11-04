@@ -23,6 +23,51 @@ public sealed class TodoRecurringEditorTests:BunitContext
     private static void Reload(IRenderedComponent<TodoTaskPanel> cut)=>cut.Find("[data-testid='recurring-reload']").Click();
     private static void Save(string name,string markup,string state,string test)=>Qualification.PageLayoutEvidence.Save(name,markup,"/tasks",state,["form","actions","confirmation","disabled-controls","error","navigation"],test);
     [Theory]
+    [InlineData("Etc/GMT")][InlineData("Etc/GMT-7")]
+    public async Task Linked_editor_uses_fixed_offset_choices_and_preserves_saved_identity(string zone)
+    {
+        var task=Daily("Linked fixed Daily") with{Recurrence=Rule with{TimeZoneId=zone}};
+        var document=new WorkspaceDocument{Id=Guid.NewGuid(),Revision=10,Tasks=[task],Projections=[new(Guid.NewGuid(),1,task.Id,ProjectionState.Linked,Guid.NewGuid().ToString(),Fingerprint:new string('a',64))]};
+        using var f=await Setup(document);TodoRecurringReview? reviewed=null;var cut=Render<TodoRecurringEditor>(p=>p.Add(x=>x.TaskId,task.Id).Add(x=>x.Reviewed,value=>reviewed=value));
+        Assert.Equal(zone,cut.Find("select[data-testid='recurring-zone']").GetAttribute("value"));Assert.Contains("Fixed offsets",cut.Markup);Assert.DoesNotContain("IANA",cut.Markup);
+        Assert.Contains("daylight saving",cut.Find("[data-testid='recurring-zone-help']").TextContent);Assert.Empty(cut.FindAll("[data-testid='recurring-zone'] option[value='Europe/Paris']"));
+        cut.Find("[data-testid='recurring-zone']").Change("Etc/GMT+5");cut.Find("form").Submit();Assert.Equal("Etc/GMT+5",reviewed!.Recurrence!.TimeZoneId);Assert.Equal(WorkspaceOperation.EditLinkedDailySchedule,reviewed.Operation);
+        var parent=Render<TodoTaskPanel>(p=>p.Add(x=>x.Kind,CompanionTaskKind.Daily));Open(parent,task.Id);
+        Qualification.PageLayoutEvidence.Save("daily-timezones-linked-"+(zone=="Etc/GMT"?"alias":"east"),parent.Markup,"/todo/dailies","linked-fixed-editor-with-exact-retained-id",["form","actions","disabled-controls"],nameof(Linked_editor_uses_fixed_offset_choices_and_preserves_saved_identity));
+        Assert.Empty(f.Task.Client.AcceptedIds);Assert.Empty(f.Task.Client.PreparationIds);
+    }
+    [Theory]
+    [InlineData("UTC",0,true,null)]
+    [InlineData("Etc/GMT-7",-420,true,null)]
+    [InlineData("Etc/GMT+5",300,true,null)]
+    [InlineData("Etc/GMT-14",-840,true,null)]
+    [InlineData("Etc/GMT+12",720,true,null)]
+    [InlineData("Etc/GMT-7",0,false,"daily_timezone_mismatch")]
+    [InlineData("Etc/GMT-7",-330,false,"daily_timezone_mismatch")]
+    [InlineData("Etc/GMT+13",780,false,"invalid_recurrence")]
+    [InlineData("Europe/Paris",0,false,"daily_timezone_unrepresentable")]
+    public void Fixed_zone_selection_preserves_existing_policy(string zone,int offset,bool supported,string? failure)
+    {
+        var rule=Rule with{TimeZoneId=zone};var result=DailyProjectionSchedule.Normalize(rule,new(offset,0));
+        Assert.Equal(supported,result.Schedule is not null);Assert.Equal(failure,result.Failure);
+        Assert.Equal("daily_account_day_unrepresentable",DailyProjectionSchedule.Normalize(rule with{TimeZoneId="UTC"},new(0,4)).Failure);
+    }
+    [Fact]
+    public async Task Native_timezone_help_retains_IANA_authoring_without_linked_instructions()
+    {
+        var task=Daily() with{Recurrence=Rule};using var f=await Setup(new(){Id=Guid.NewGuid(),Revision=10,Tasks=[task]});var cut=Render<TodoTaskPanel>(p=>p.Add(x=>x.Kind,CompanionTaskKind.Daily));Open(cut,task.Id);
+        Assert.Equal("input",cut.Find("[data-testid='recurring-zone']").TagName.ToLowerInvariant());
+        Assert.Contains("IANA",cut.Find("[data-testid='recurring-zone-help']").TextContent);
+        Assert.DoesNotContain("Linked rules require",cut.Find("[data-testid='recurring-editor']").TextContent);
+        cut.Find("[data-testid='recurring-zone']").Change("America/New_York");cut.Find("[data-testid='recurring-editor'] form").Submit();Assert.Equal("America/New_York",f.Task.Controller.Preview!.Command.Patch!.Recurrence!.TimeZoneId);
+        Qualification.PageLayoutEvidence.Save("daily-timezones-native",cut.Markup,"/todo/dailies","native-IANA-review",["form","actions","disabled-controls"],nameof(Native_timezone_help_retains_IANA_authoring_without_linked_instructions));
+        cut.Find("[data-testid='todo-cancel']").Click();Assert.Empty(f.Task.Client.AcceptedIds);
+        var evidence=Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");if(!string.IsNullOrEmpty(evidence))File.WriteAllText(Path.Combine(evidence,"daily-timezones-journal.json"),WorkspaceJournalJson.Serialize(f.Todo.Snapshot!));
+        var tasks=Render<TodoTaskPanel>();Qualification.PageLayoutEvidence.Save("daily-timezones-tasks",tasks.Markup,"/todo/tasks","ordinary-task-capture-unchanged",["form","actions"],nameof(Native_timezone_help_retains_IANA_authoring_without_linked_instructions));
+        var sync=Render<TodoTaskPanel>(p=>p.Add(x=>x.ShowCapture,false).Add(x=>x.ShowTaskList,false).Add(x=>x.ExpandSourcePicker,true));
+        Qualification.PageLayoutEvidence.Save("daily-timezones-sync",sync.Markup,"/todo/sync","existing-source-fences",["actions","disabled-controls"],nameof(Native_timezone_help_retains_IANA_authoring_without_linked_instructions));
+    }
+    [Theory]
     [InlineData("Daily")][InlineData("Weekly")][InlineData("Monthly")]
     public async Task Complete_schedule_replacement_reviews_all_fields_and_preserves_independent_task_data(string frequency)
     {

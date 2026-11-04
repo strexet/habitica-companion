@@ -1,0 +1,9 @@
+{
+  "original_report": "2b9329a8-3200-4a32-beee-507d4cbe1930-failure.json",
+  "diagnosis": "listWorkspaces(scope) returns exact workspace ID strings. The journey incorrectly treated entries as objects and attempted an undefined workspace read. Use the returned ID directly; storage and application code remain unchanged. Static100-percent fixture checks completed before the first native read.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

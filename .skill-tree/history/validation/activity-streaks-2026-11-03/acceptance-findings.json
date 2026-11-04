@@ -1,0 +1,136 @@
+{
+  "taskId": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "delivered": [
+    "Exact bounded Daily/Habit day-series reads with explicit UTC as-of and IANA timezone.",
+    "Historical schedules, lifecycle, direction goals and occurrence corrections retain exact causality; unknown gaps never become proven misses.",
+    "Negative-only goals expose frequency; historical disabled-positive intervals remain neutral after later goal changes.",
+    "Original source/revision/context fences, legacy goal-source labels and unavailable lifetime best remain explicit.",
+    "Reviewed read-only MCP parity and native statistics controls preserve private account/source filters."
+  ],
+  "evidenceBoundaries": [
+    "Portable C#/Node examples, synthetic local SDK/D1, component interactions, static Razor measurements and actual hydrated Release routes remain distinct.",
+    "No remote deployment, actual account operation, installed-PWA, physical-device or assistive-technology qualification."
+  ],
+  "runnableRed": [
+    "scheduled-daily-red: seventeen discovered, sixteen passing, one intended missing-series failure.",
+    "historical-habit-goal-red: twenty discovered, nineteen passing, one intended historical-negative-goal classification failure."
+  ],
+  "repairs": [
+    "The statistics component passes the actual parent query rather than a string literal.",
+    "Historical direction goals use accepted task snapshots at as-of; missing snapshots have an explicit currentTask label.",
+    "Account/source changes clear private task, timezone, range, as-of and paging context."
+  ],
+  "fixtureCorrections": [
+    "WebApp test output explicitly copies the new neutral JSON.",
+    "MCP grant-epoch metadata is observed before the unchanged canonical-read baseline. The statistics read creates no command or effect.",
+    "Native datetime-local fill uses the canonical minute value when seconds are zero; the same UTC instant is retained.",
+    "A copied launch label/lane was corrected to the actual task and pure Node lane; original rejected input and original execution remain retained."
+  ],
+  "finalChecks": {
+    "activity-components": {
+      "attemptId": "C-d4f5dfc2-8f86-4041-a0eb-594aafc356dc",
+      "counts": {
+        "discovered": 8,
+        "expected": 8,
+        "failed": 0,
+        "passed": 8,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/components-frozen-final-execution.log",
+          "sha256": "13190cef34de4328195770396f86069c539ab76e7b641e5ebead6ff0992265a0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/components-frozen-final.trx",
+          "sha256": "ced68a8d0a3ce0048d4d3a6cd79d1fc45f57a21d7f12a4c1e1df32467921c155"
+        }
+      ]
+    },
+    "activity-mcp": {
+      "attemptId": "C-daf2ec96-35d1-408b-91b7-485c5ba3985c",
+      "counts": {
+        "discovered": 3,
+        "expected": 3,
+        "failed": 0,
+        "passed": 3,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-final-execution.log",
+          "sha256": "6d63cc7dddb21ef198f9018c8c10ce54b7c0b79297abf48bf3f2d9536c21d459"
+        }
+      ]
+    },
+    "activity-rendering": {
+      "attemptId": "C-f77bc2c9-33a5-4d4e-9d9b-c4d5cf2efeb4",
+      "counts": {
+        "discovered": 114,
+        "expected": 114,
+        "failed": 0,
+        "passed": 114,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+          "sha256": "168afbcae8d3cbfcd05e35e0675e47a3080dc4bdb46d927069fc81eabacf8722"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+          "sha256": "653d83eb4c3f92683c9d4324acbbb434aefe7614be3a36a4e39dc5091a5b89ac"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json",
+          "sha256": "02ee44e36dd24a7e3aee39523720666f8af4950398c40c0b034ed58d5aee31ef"
+        }
+      ]
+    },
+    "activity-rules": {
+      "attemptId": "C-139cb022-caba-49e6-91d0-83d3663929b0",
+      "counts": {
+        "discovered": 21,
+        "expected": 21,
+        "failed": 0,
+        "passed": 21,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/rules-frozen-fixture-final-execution.log",
+          "sha256": "bee6b0dbe8230f7aef2e2b6ba94b77798e78515f863ee42dae45b6d22b8db97d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/rules-frozen-fixture-final.trx",
+          "sha256": "5c2a58974b06198f4b7d5bb583934a692f9ff150a2fbcc580f03c1d28214cdbc"
+        }
+      ]
+    },
+    "activity-wire": {
+      "attemptId": "C-250bdcc8-5d26-4dd0-a152-7d13f5ede7d7",
+      "counts": {
+        "discovered": 21,
+        "expected": 21,
+        "failed": 0,
+        "passed": 21,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+          "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+        }
+      ]
+    }
+  }
+}

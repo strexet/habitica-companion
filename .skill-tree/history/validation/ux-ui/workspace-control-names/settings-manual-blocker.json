@@ -1,0 +1,7 @@
+{
+  "report": "browser/7e3309b9-8b28-4de1-bd1a-4180a374e9de.json",
+  "accepted": false,
+  "evidence": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793734487921245000/chromium-gryphy-light-360-200-workspace-names-sync.png",
+  "finding": "Nested Settings padding leaves action labels and private-sync record context in narrow columns. Export and Upload split final letters. Inner-list-only fixture omitted actual owning geometry.",
+  "required_task": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+}

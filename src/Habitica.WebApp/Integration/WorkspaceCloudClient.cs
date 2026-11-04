@@ -184,10 +184,22 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             ["expectedRevision"] = intent.ExpectedRevision, ["direction"] = command.GetProperty("direction"), ["count"] = intent.Count,
             ["occurrenceDate"] = command.GetProperty("occurrenceDate"), ["projectToHabitica"] = intent.ProjectToHabitica
         };
-        if (intent.Operation is not (WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit)) args["taskId"] = intent.TaskId;
+        if (intent.Operation is not (WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit or WorkspaceOperation.CopyTaskType)) args["taskId"] = intent.TaskId;
         var result = await CallTaskAsync<WorkspaceCommandPreview>("prepare_task_command", args, cancellationToken);
         if (result.Succeeded && result.Value is { } preview && (preview.Command.WorkspaceId != intent.WorkspaceId || preview.PreparedCommandId != preview.Command.Id || preview.Command.Operation != intent.Operation || preview.CorrelationId == Guid.Empty || preview.PreparedCommandId == Guid.Empty))
             return new(false, null, "The command preview could not be validated.", true);
+        if(result.Succeeded&&result.Value is {} linked&&intent.Operation==WorkspaceOperation.EditLinkedDailySchedule
+            && (linked.Command.TaskId!=intent.TaskId||linked.Command.ExpectedRevision!=intent.ExpectedRevision||!linked.MayAffectHabitica||!linked.Command.ProjectToHabitica||linked.Command.Patch?.LinkedSchedule is not {} context||!context.IsValid(linked.Command.Patch.Recurrence)
+                ||WorkspaceCommandIdentity.Hash(linked.Command with{Id=intent.Id,Patch=linked.Command.Patch with{LinkedSchedule=null}})!=WorkspaceCommandIdentity.Hash(intent)))
+            return new(false,null,"The linked schedule preview did not match the exact requested rule. Recover the original request.",true);
+        if(result.Succeeded&&result.Value is {} copied&&intent.Operation==WorkspaceOperation.CopyTaskType
+            &&(copied.MayAffectHabitica||copied.TagProjection?.RequestsMetadataChanges==true||copied.TypeCopyPreview is not {Ready:true} typeReview||typeReview.Source is null||typeReview.Target is null
+                ||typeReview.Source.Id!=intent.Patch!.TypeCopy!.SourceTaskId||typeReview.Source.Revision!=intent.Patch.TypeCopy.SourceRevision||typeReview.Target.Id!=copied.Command.TaskId||typeReview.Target.Kind!=intent.Patch.TypeCopy.TargetKind
+                ||copied.Command.TaskId==intent.Patch.TypeCopy.SourceTaskId||WorkspaceCommandIdentity.Hash(copied.Command with{Id=intent.Id,TaskId=intent.TaskId})!=WorkspaceCommandIdentity.Hash(intent)))
+            return new(false,null,"The native type-copy review did not match the exact requested source and target. Recover the original request.",true);
+        if(result.Succeeded&&result.Value is {SavedInCompanion:true} originalCopy&&intent.Operation==WorkspaceOperation.CopyTaskType
+            &&(originalCopy.Receipt is not {} copyReceipt||!ValidCopyReceipt(copyReceipt)||!CopyReceiptMatches(originalCopy.Command,copyReceipt)))
+            return new(false,null,"The original native copy receipt did not match. Retain the original command ID.",true);
         if (result.Value is { TagProjection: { } tags } && !tags.IsValid()) return new(false, null, "The tag metadata preview is invalid.", true);
         if (result.Succeeded && result.Value is {} recovery && intent.Operation is WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence
             && (recovery.MayAffectHabitica || recovery.TagProjection?.RequestsMetadataChanges == true || WorkspaceCommandIdentity.Hash(recovery.Command with { Id = intent.Id }) != WorkspaceCommandIdentity.Hash(intent)))
@@ -201,10 +213,15 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
     public async Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken cancellationToken)
     {
         if (WorkspaceId != preview.Command.WorkspaceId) return new(false, null, "The workspace connection changed.");
-        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", WorkspaceOperation.SkipOccurrence => "skip_occurrence", WorkspaceOperation.PauseTask => "pause_task", WorkspaceOperation.ResumeTask => "resume_task", WorkspaceOperation.PlanTask => "plan_task", WorkspaceOperation.UnarchiveTask => "unarchive_task", WorkspaceOperation.CorrectOccurrence => "correct_occurrence", WorkspaceOperation.RestoreTodo => "restore_todo", WorkspaceOperation.RelateTodo => "relate_todo", WorkspaceOperation.SetTodoState => "set_todo_state", WorkspaceOperation.SetTodoStage => "set_todo_stage", WorkspaceOperation.ReviewTask => "review_task", WorkspaceOperation.EnsureProjection => "ensure_task_projection", _ => throw new InvalidOperationException("Unsupported command.") };
+        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.CopyTaskType => "copy_task_type", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.EditLinkedDailySchedule => "edit_linked_daily_schedule", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", WorkspaceOperation.SkipOccurrence => "skip_occurrence", WorkspaceOperation.PauseTask => "pause_task", WorkspaceOperation.ResumeTask => "resume_task", WorkspaceOperation.PlanTask => "plan_task", WorkspaceOperation.UnarchiveTask => "unarchive_task", WorkspaceOperation.CorrectOccurrence => "correct_occurrence", WorkspaceOperation.RestoreTodo => "restore_todo", WorkspaceOperation.RelateTodo => "relate_todo", WorkspaceOperation.SetTodoState => "set_todo_state", WorkspaceOperation.SetTodoStage => "set_todo_stage", WorkspaceOperation.ReviewTask => "review_task", WorkspaceOperation.EnsureProjection => "ensure_task_projection", _ => throw new InvalidOperationException("Unsupported command.") };
         var result = await CallTaskAsync<WorkspaceMutationReceipt>(tool, new { commandId = preview.PreparedCommandId }, cancellationToken, preview.PreparedCommandId);
         if (result.Succeeded && result.Value is { } receipt && (receipt.TaskId != preview.Command.TaskId || receipt.Operation != System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(preview.Command.Operation.ToString())))
             return new(false, null, "The command receipt identity did not match. Check the original command before retrying.", true);
+        if(result.Succeeded&&result.Value is {} copiedReceipt&&preview.Command.Operation==WorkspaceOperation.CopyTaskType&&!CopyReceiptMatches(preview.Command,copiedReceipt))
+            return new(false,null,"The original native copy lineage did not match the reviewed command. Retain the original ID.",true);
+        if(result.Succeeded&&result.Value is {} scheduleReceipt&&preview.Command.Operation==WorkspaceOperation.EditLinkedDailySchedule
+            &&(scheduleReceipt.ScheduleEpoch is not {} epoch||WorkspaceCommandIdentity.Hash(preview.Command with {Patch=preview.Command.Patch! with {Recurrence=epoch.NativeRule,LinkedSchedule=epoch.Context}})!=WorkspaceCommandIdentity.Hash(preview.Command)))
+            return new(false,null,"The original schedule epoch did not match the reviewed command. Keep the original ID.",true);
         return result;
     }
 
@@ -305,6 +322,8 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             var value = WorkspaceTaskApiJson.Deserialize<T>(await BoundedTextAsync(response.Content, cancellationToken));
             if (generation != _generation) return new(false, default, "The account session changed; the response was discarded.", true);
             if (value is WorkspaceMutationReceipt receipt && (receipt.CommandId != expectedCommandId || receipt.TaskId == Guid.Empty || receipt.CorrelationId == Guid.Empty || !receipt.SavedInCompanion
+                || !ValidCopyReceipt(receipt)
+                || !ValidScheduleReceipt(receipt)
                 || receipt.ConfirmedProjectionCount < 0 || receipt.TotalProjectionCount is < 0 or > 11 || receipt.ConfirmedProjectionCount > receipt.TotalProjectionCount
                 || receipt.AcceptedEventCount is < 0 or > 10 || receipt.FailurePosition is { } position && (position < 1 || position > receipt.TotalProjectionCount)
                 || !new[] { "pending", "confirmed", "blocked", "UnknownOutcome", "notRequested", "cancelled" }.Contains(receipt.HabiticaProjectionStatus)
@@ -319,6 +338,21 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch { return new(false, default, "Command outcome is unknown. Reuse the original request or command ID to check its receipt.", true); }
+    }
+    private static bool CopyReceiptMatches(WorkspaceCommand command,WorkspaceMutationReceipt receipt)=>command.Patch?.TypeCopy is {} choice&&receipt.CopyLineage is {} line
+        &&line.CommandId==command.Id&&line.TargetTaskId==command.TaskId&&line.PayloadHash==WorkspaceCommandIdentity.Hash(command)&&line.InitialTargetRevision==command.ExpectedRevision+1
+        &&line.SourceSnapshot.Id==choice.SourceTaskId&&line.SourceSnapshot.Revision==choice.SourceRevision&&line.TargetKind==choice.TargetKind&&line.CopyOrganization==choice.CopyOrganization&&WorkspaceTaskTypeCopyPolicy.RulesEqual(line.Recurrence,choice.Recurrence);
+    private bool ValidCopyReceipt(WorkspaceMutationReceipt receipt)
+    {
+        if(receipt.Operation!="copyTaskType")return receipt.CopyLineage is null;
+        return receipt.CopyLineage is {} line&&line.HasValidShape()&&line.SourceWorkspaceId==WorkspaceId&&line.TargetTaskId==receipt.TaskId&&line.CommandId==receipt.CommandId
+            &&receipt.HabiticaProjectionStatus=="notRequested"&&receipt.TotalProjectionCount==0&&receipt.ConfirmedProjectionCount==0&&receipt.AcceptedEventCount==0&&!receipt.OutcomeUnknown;
+    }
+    private static bool ValidScheduleReceipt(WorkspaceMutationReceipt receipt)
+    {
+        if(receipt.Operation!="editLinkedDailySchedule")return receipt.ScheduleEpoch is null;
+        if(receipt.ScheduleEpoch is not {} epoch||epoch.Context is null||epoch.NativeRule is null||!epoch.Context.IsValid(epoch.NativeRule)||epoch.NativeEffectiveAtUtc==default||epoch.NativeEffectiveAtUtc.Offset!=TimeSpan.Zero||epoch.Context.ObservedAtUtc>epoch.NativeEffectiveAtUtc||epoch.NativeEffectiveAtUtc-epoch.Context.ObservedAtUtc>TimeSpan.FromSeconds(90)||receipt.TotalProjectionCount!=1||receipt.AcceptedEventCount!=0)return false;
+        return epoch.Result is not {} result||result.IsValid(epoch.Context)&&result.ObservedAtUtc>=epoch.NativeEffectiveAtUtc&&receipt.ConfirmedProjectionCount==1&&receipt.HabiticaProjectionStatus==(result.MatchesExpected?"confirmed":"blocked");
     }
     private HttpRequestMessage Request(HttpMethod method, string path)
     {

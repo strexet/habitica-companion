@@ -4,7 +4,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 const root=path.resolve(import.meta.dirname,'../..');
-const destination=path.join(root,'skill-tree/artifacts/callback-egress/source');
+const destination=path.join(root,'.skill-tree/artifacts/callback-egress/source');
 if(fs.existsSync(destination))throw Error('Source bundle already exists; select another artifact directory after review.');
 const archive=path.join(destination,'../callback-egress-source.zip');
 if(fs.existsSync(archive))throw Error('Source archive already exists; refusing to retain stale archive entries.');
@@ -17,4 +17,4 @@ for(const file of files){const bytes=fs.readFileSync(path.join(root,file));const
 fs.copyFileSync(path.join(root,own,'netlify.toml'),path.join(destination,'netlify.toml'));
 fs.writeFileSync(path.join(destination,'source-manifest.json'),JSON.stringify({version:'callback-egress-v1',files:hashes,publication:false},null,2)+'\n');
 execFileSync('zip',['-qr','../callback-egress-source.zip','.'],{cwd:destination,timeout:10000});
-console.log('Prepared skill-tree/artifacts/callback-egress/callback-egress-source.zip; no publication.');
+console.log('Prepared .skill-tree/artifacts/callback-egress/callback-egress-source.zip; no publication.');

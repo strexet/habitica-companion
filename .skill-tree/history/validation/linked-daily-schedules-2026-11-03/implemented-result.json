@@ -1,0 +1,218 @@
+{
+  "checks": [
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rules",
+      "parameters": {
+        "report_name": "daily-schedule-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules",
+        "test_filter": "FullyQualifiedName~Schedule",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+        "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs",
+        "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+        "tests/fixtures/workspace/linked-daily-command-v12.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/recurrence-commands.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/task-recovery-store.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/executor.ts",
+        "workers/companion-workspace/src/projection-adapter.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/projection.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/linked-daily-command-v12.json",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-gateway",
+      "parameters": {
+        "test_file": "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/projection.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/workspace-domain.ts",
+        "tests/fixtures/workspace/linked-daily-schedule-v1.json",
+        "workers/chatgpt-auth/package.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-components",
+      "parameters": {
+        "report_name": "daily-schedule-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-components",
+        "test_filter": "FullyQualifiedName~LinkedDailySchedule|FullyQualifiedName~TodoRecurringEditor",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/linked-daily-schedule.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/linked-daily-schedule.test.mjs",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/task-recovery-store.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/executor.ts",
+        "workers/companion-workspace/src/projection-adapter.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/daily-projection.ts",
+        "workers/shared/projection.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/linked-daily-command-v12.json",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rendering",
+      "parameters": {},
+      "recipe_id": "linked-daily-rendered-browser",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/browser/linked-daily-ui.py",
+        "tests/browser/linked-daily-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "workers/shared/build-identity.generated.ts",
+        "workers/shared/linked-daily-schedule.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/companion-workspace/src/linked-daily-schedule-api.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/chatgpt-auth/src/projection.ts",
+        "workers/companion-workspace/src/index.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

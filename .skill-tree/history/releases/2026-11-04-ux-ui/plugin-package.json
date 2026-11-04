@@ -1,0 +1,22 @@
+{
+  "name": "plugin-package",
+  "argv": [
+    "python3",
+    "deploy/package-plugin.py",
+    "build",
+    "--source",
+    "plugin",
+    "--target",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/plugin",
+    "--source-revision",
+    "d6de9811e71f93eb0f73854ebf216aa6115905ca",
+    "--requirements",
+    "deploy/plugin-requirements.json",
+    "--endpoint",
+    "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+  ],
+  "exit_code": 0,
+  "seconds": 0.132,
+  "deadline_seconds": 60,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/plugin-package.log"
+}

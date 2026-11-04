@@ -23,8 +23,8 @@ public sealed class WorkspaceOperationsTests : BunitContext
     {
         var f=Setup();f.Client.Connected=false;
         var cut=Render<WorkspaceSettingsPanel>();
-        Assert.Contains("unverified",cut.Find("[data-testid='workspace-unverified']").TextContent);
-        Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
+        Assert.Contains("unavailable",cut.Find("[data-testid='workspace-unverified']").TextContent);
+        Assert.False(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
         Assert.Empty(cut.FindAll("[data-testid='workspace-executor-enable']"));
         Assert.Equal(0,f.Session.WorkspaceConnectCalls);Assert.Equal(0,f.Client.ConnectionStatusReads);
         WorkspaceLayoutEvidence.Save("workspace-fresh-tab",cut.Markup);
@@ -34,10 +34,10 @@ public sealed class WorkspaceOperationsTests : BunitContext
     public void Explicit_recovery_rereads_retained_executor_state_without_enabling_it()
     {
         var f = Setup(); f.Client.Connected = false; f.Client.ConnectionStatusVerified = false;
-        f.Session.WorkspaceConnectAction = () =>
+        f.Session.ExistingRecoveryAction = () =>
         {
-            f.Client.Connected = true;
-            return Task.FromResult(new WorkspaceActionResult(true, "Tab access renewed"));
+            f.Client.Connected = true;f.Client.ConnectionStatusVerified=true;f.Client.ExecutorEnabled=true;
+            return Task.FromResult(new Habitica.Application.Integration.IntegrationLinkResult(true,"Existing access recovered"));
         };
         f.Client.ConnectionStatusAction = () =>
         {
@@ -45,9 +45,8 @@ public sealed class WorkspaceOperationsTests : BunitContext
             return Task.FromResult(new WorkspaceActionResult(true, "Existing executor verified"));
         };
         var cut = Render<WorkspaceSettingsPanel>();
-        cut.Find("[data-testid='workspace-consent']").Change(true);
         cut.Find("[data-testid='workspace-connect']").Click();
-        Assert.Equal(1, f.Session.WorkspaceConnectCalls); Assert.Equal(1, f.Client.ConnectionStatusReads);
+        Assert.Equal(1, f.Session.ExistingRecoveryCalls); Assert.Equal(0, f.Session.WorkspaceConnectCalls); Assert.Equal(0, f.Client.ConnectionStatusReads);
         Assert.Contains("enabled", cut.Find("[data-testid='workspace-executor-state']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='workspace-executor-pause']"));
         Assert.Empty(cut.FindAll("[data-testid='workspace-executor-enable']"));
@@ -74,15 +73,14 @@ public sealed class WorkspaceOperationsTests : BunitContext
     public async Task Account_replacement_hides_a_late_workspace_action_message()
     {
         var f=Setup();f.Client.Connected=false;
-        var response=new TaskCompletionSource<WorkspaceActionResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-        f.Session.WorkspaceConnectAction=()=>response.Task;
+        var response=new TaskCompletionSource<Habitica.Application.Integration.IntegrationLinkResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+        f.Session.ExistingRecoveryAction=()=>response.Task;
         var cut=Render<WorkspaceSettingsPanel>();
-        cut.Find("[data-testid='workspace-consent']").Change(true);
         var action=cut.InvokeAsync(()=>cut.Find("[data-testid='workspace-connect']").Click());await Task.Yield();
         await cut.InvokeAsync(()=>f.Session.SetState(f.Session.State with {UserId=Guid.NewGuid().ToString()}));
         response.SetResult(new(false,"Private old workspace connection"));await action.WaitAsync(TimeSpan.FromSeconds(3));
         cut.WaitForAssertion(()=>Assert.DoesNotContain("Private old workspace connection",cut.Markup));
-        Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
+        Assert.False(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
     }
 
     [Fact]

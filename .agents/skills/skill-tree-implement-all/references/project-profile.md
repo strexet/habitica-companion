@@ -19,7 +19,7 @@ Flavor: web. Static compatibility only; execution remains unqualified.
     "ui": []
   },
   "gaps": [],
-  "instruction_profile_id": "69aebd197236f859586b896286cf07241f2e7c125b9613742d04c45c64d42c27",
+  "instruction_profile_id": "2879072101a2e28e5d0a503da0f1b491026152e977618bad2ee49ce8271846f0",
   "recipes": {
     "activity-rendered-browser": {
       "argv": [
@@ -307,6 +307,112 @@ Flavor: web. Static compatibility only; execution remains unqualified.
       "toolchain": {
         "browser": "Existing pinned Playwright Chromium/WebKit cache",
         "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "release-browser": {
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "browser",
+        "{report_directory}"
+      ],
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit",
+        "dotnet": "8.0.125",
+        "node": "22.x"
+      }
+    },
+    "release-dotnet": {
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "dotnet",
+        "{report_directory}"
+      ],
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "lane": "unit",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit",
+        "dotnet": "8.0.125",
+        "node": "22.x"
+      }
+    },
+    "release-hosted": {
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "hosted",
+        "{report_directory}"
+      ],
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "lane": "server",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit",
+        "dotnet": "8.0.125",
+        "node": "22.x"
+      }
+    },
+    "release-hosted-browser": {
+      "argv": [
+        "node",
+        "tests/release/hosted-smoke.mjs",
+        "{report_directory}"
+      ],
+      "execution_notes": "Fresh signed-out public contexts, exact stable production origin, routed cold startup, activated service worker and Chromium offline relaunch. No real account, provider write, permission or physical-device acceptance. Both contexts close;240-second deadline.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/release/hosted-smoke.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit",
+        "node": "22.x"
+      }
+    },
+    "release-workers": {
+      "argv": [
+        "python3",
+        "tests/release/qualification.py",
+        "workers",
+        "{report_directory}"
+      ],
+      "execution_notes": "Explicit owner-authorized complete integration qualification. Serial synthetic local suites; hosted lane reads the exact committed production identity. Bounded commands and retained original reports; no account mutations.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/release/qualification.py",
+        "deploy/coordinated-release.py",
+        "deploy/build-plugin-download.py"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit",
+        "dotnet": "8.0.125",
+        "node": "22.x"
       }
     },
     "subscription-contracts-execution-profile": {

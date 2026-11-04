@@ -1,0 +1,65 @@
+{
+  "actual_lane": "server",
+  "attempt_id": "C-44225172-6cde-4b13-93e2-9fd5f715b990",
+  "classification": "executed-control",
+  "cleanup": "Active Auth baseline736020af-860e-40f3-9679-1715bd25da5e has callback flagfalse. Netlify production/dev flags are observed false and the disabled source deployment is ready. Receiver is isolated, contains zero observations and retains the finite cutoff.",
+  "definition": "98c4f43b158832e4a635b0f8bdfb2c29044b3ca352c06e55f9b681faffbfc511",
+  "diagnostic_key": "10e2daeb41ea22816cda2c6b08578405291ba1c6545af2e1e8acae1d838629cf",
+  "environment_identity": "cf458a6f7c70b031868523501356ecea428f759b821536257bd3cbaedf6c9963",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/first-refused-delivery.json",
+      "sha256": "7f70be12a88aeee022d282b535595106e823e1e540c71704c4e95390576c3911"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/failed-original-recovery.json",
+      "sha256": "0d403ff2a790c98ae8dedd72ce9be69f100b1d2b187205779863a68dbe9c5e01"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/netlify-linked-gate-contexts.json",
+      "sha256": "db0db62a905c585f20bb0ea783340c9245a7e35ff29e0792aed9fffc3ce80a8f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/normal-delivery-operations.json",
+      "sha256": "e2cc2ec6e30b624ed625c1bd272c286eee3bcf47ac07abbbac7ccaa700cbab79"
+    }
+  ],
+  "execution_sessions": {
+    "85482a53d110fa73cb397da1f2c452f5f119bc5e7f9524beaef6bec2feed8de1": {
+      "authorization": "Direct owner publication request, retained hosted scope and explicit Netlify CLI authorization in the current chat.",
+      "build_identity": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T12:34:30.496710+00:00",
+      "fixture_identity": "Exact isolated signed receiver, synthetic-only D1 observation table and run d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notification-release-2026-11-02/receiver-deployment.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/gateway-source-manifest.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json"
+      ],
+      "profile_id": "normal-delivery-d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "tool_identity": "Node22.12.0; Netlify CLI26.0.1; pinned Cloudflare compatibility2026-10-12"
+    }
+  },
+  "failure_signature": "gateway_unavailable_before_claim_unlinked_cli_setter",
+  "key": "2b954abac60421366affb89ab6afee207e978160e24b0f4224610d6638a23e7b",
+  "payload_hash": "3bf7287f2e405e092556a9aad66ff41b4b5d8918c254234ef21aa955eea0a04a",
+  "recorded_at": "2026-11-02T12:30:45.172193+00:00",
+  "result": "fail",
+  "sources": {
+    ".skill-tree/documents/technical.md": "5c8108e11ba33376539b2a621b6ffe7ece8ae7050fc7574213e9258a1ade5188",
+    ".skill-tree/documents/testing.md": "c9628ea1882bbb19d13f9e20880e62f2b51e81b33a39da256e37c1ed5ae8fdd8",
+    "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "tests/Functions/callback-receiver.test.mjs": "e8fc2401efd82c8d68bd9cbaf7abb56b56dbe35f52b1138ac479864b9cc1edf7",
+    "tests/hosted/callback-receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+    "tests/hosted/normal-delivery.mjs": "4b40ce3da580f21097554799eb501004996f87e4f96fc855dc4a31f55ca77216",
+    "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93"
+  },
+  "timing": {}
+}

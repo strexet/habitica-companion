@@ -1,0 +1,6 @@
+{
+  "provider_code": 10162,
+  "diagnosis": "Unsupported source-map module Content-Type; pinned Wrangler uses application/source-map. The API refused both uploads before version creation.",
+  "active_version_unchanged": "736020af-860e-40f3-9679-1715bd25da5e",
+  "repair": "Only source-map multipart MIME corrected; reviewed runtime source bytes and original protected key material retained."
+}

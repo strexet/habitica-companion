@@ -1,0 +1,105 @@
+{
+  "acceptance": [
+    {
+      "criterion": "A fresh authorized client obtains access to the same retained stores and verified settings without enrollment. Invalid recovery changes no profile/store/consent. One tab recovery preserves another healthy tab; revocation blocks old and recovered access.",
+      "evidence": [
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/existing-connection-recovery/readme.md",
+          "sha256": "0f292336a0f06e3a76353d101a00c801dcca42e5e170d8dae91248700c962cc5"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/existing-connection-recovery/reviewed-auth-tests.log",
+          "sha256": "cf3758935d3877800dad17a9fc7e12e4c006ae0ea55ac90d3e831a6d3f5a8e5d"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/existing-connection-recovery/workspace-regression-tests.log",
+          "sha256": "d7229581a3f910ab80fde4afe500f7d44c3b47cf42b024aa839cad53a9b78654"
+        },
+        {
+          "available": true,
+          "path": "skill-tree/history/validation/existing-connection-recovery/client-tests-final.log",
+          "sha256": "a216be6320e79993a35ac8ddeca53855d629d8daf47d383a74f355dbcb28aaa7"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/existing-connection-recovery/readme.md",
+      "sha256": "0f292336a0f06e3a76353d101a00c801dcca42e5e170d8dae91248700c962cc5"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/existing-connection-recovery/repository-validation.json",
+      "sha256": "1d284d4bee8c8c4912e1416dff0260b67fdb16f5c2359a981cef56d091476b42"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/existing-connection-recovery/scope-switch.json",
+      "sha256": "9934ed9d2428197a0b7130875b1e90b5643eb0a446fd4e273ce6a0acb0fefca4"
+    },
+    {
+      "available": true,
+      "path": "skill-tree/history/validation/existing-connection-recovery/timing.json",
+      "sha256": "d00d1a6d1d5b5dcba15a9f27e8e3f5ab3b16606154c4831372e8249fbd3c7238"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-02799b2d-666e-439f-b181-f90422759157",
+  "limitations": [
+    "Automatic sign-in/private-sync bootstrap, durable account preferences, browser-to-cloud record adoption, MCP adoption tools and final single-Workspace UI are outside the selected foundation unit.",
+    "No real account, physical device, assistive technology, hosted migration, publication or installed-host qualification ran. Auth0013 remains unapplied remotely.",
+    "The historical repository audit remains stale; current metadata/prose/dependency checks pass."
+  ],
+  "outcome": "Implemented existing-only Auth, Workspace and Notes session recovery with non-authorizing descriptors, explicit legacy bootstrap, independent bounded management sessions, retained consent/records/grants and race-safe authority/cleanup checks. Typed clients and synthetic acceptance pass; automatic startup/sync and single-Workspace UI remain separate prioritized work.",
+  "parent_pending_ids": [
+    "P-66d0b256-307b-4a9d-babd-13d6e7edd9f6"
+  ],
+  "recorded_at": "2026-10-30T08:02:03.347366+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-1481b473-244b-4918-b498-775fd1efcaf4",
+  "source_fingerprints": {
+    "skill-tree/documents/companion-first-mcp-research.md": "d430ce8c91203fd0b4b43a4ce14ae7c1336ba100e338c1a92b8e2a80c0ae941d",
+    "skill-tree/documents/companion-workspace-contract.md": "08545b8264bfeaae6a0ca061bb1d9641f358bbb0a9f0cdf315552ed602b4d0be",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "f9b536a1911d8fa436c57425de31a19ccd94faaeed2fd1107670fff8384020b4",
+    "skill-tree/documents/features.md": "2db08eac72593cc1feb19a01bde09de3674e41ddbbdded7f849b141f425d7a79",
+    "skill-tree/documents/session-recovery.md": "59d557924410b7f718e04e1a44e893cf259d4f7aa9934a707ed4573770441b8b",
+    "skill-tree/documents/technical.md": "d8485f371a283ccd260cc55137ce387313743d89d36237e93ad879d4c75907f2",
+    "skill-tree/documents/testing.md": "af26ebf25e06944abbc963eca09fde645f479007a82e968917c804862a2dcc09",
+    "src/Habitica.Application/Integration/IChatGptIntegrationClient.cs": "bb46d47b82d59267ef69dcb65949a19036d87406451951d90251ad2fc47ba0b4",
+    "src/Habitica.Application/Integration/IntegrationRecovery.cs": "b03e5619e8fece9be6d7b720b13b2f7393c57ca50a3dfac89a32acc8f16c342d",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "8ec9856fb46ac32e8eabbe2cf4fef2d59d8486f6b661e92469acc979bafb5bdf",
+    "src/Habitica.Application/Workspace/IWorkspaceCloudClient.cs": "9407c911d753ef55978f3db7796cece662b6b2ae23a248efafbb3fda3956232c",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.Recovery.cs": "ceb72b7a07560d80d4a52d010358f092d63db12bdfe7800a64585a25aac30e9e",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.cs": "ef9d9cb1bd5d11ae5fd9a0cf050a52132bb07bc87af60c1a3a530a43ff3d8712",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.Recovery.cs": "e4713869f631f13a6eba825b60d8f949377f654e760917f63b9451d9328ceebc",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "3a34200cc6d3e81e0e25c0e07d504141a4943ecf88d1c82647ca164949e7c56c",
+    "src/Habitica.WebApp/Integration/RecoveryHttp.cs": "fbda68c4254c293125ba0e58138cb462a5c89a153719929ddf6eb27681d86ce1",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Recovery.cs": "6eb5abe01d0088f3676c5210656bec42f8d84074feabdecd595ddfea0c07212f",
+    "tests/Habitica.WebApp.Tests/Integration/ConnectionRecoveryTests.cs": "5d1df1882796b2c0e6a1a3314ad6d7c9852638335ef9b54716ae2f20e2cd9f99",
+    "workers/chatgpt-auth/migrations/0013-recovery-sessions.sql": "c48d78ea84f0dcebb1760b75f9655404b2a67e7732e21f8eea41a3cccd78e14d",
+    "workers/chatgpt-auth/src/index.ts": "a144f0e4490ccc834940c66f71b633cf8384cd5e4e1adb1f8ba0289d845fc1ed",
+    "workers/chatgpt-auth/src/recovery.ts": "05f419504bfca1b3cf3d48c61269044e08a690e9cff71dfdd4fabb412eabebfe",
+    "workers/chatgpt-auth/src/vault.ts": "c6bd7c9086aea059c47237c6d948f2a94f14e768e812de2bb3c0e9469ab21ce8",
+    "workers/chatgpt-auth/src/workspace-identity.ts": "2d9278d79d7e072df77050611eb48e056edde13e95364d18ba26ff8a262f6484",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "5a48a0fa83d95fca87a22b563ce77c5a8f9f04c9d695e0cdf5875814e9b67df5",
+    "workers/chatgpt-auth/test/recovery.test.mjs": "edd65b0ed3ebc064265291fa99a33502dc253dd7f2f74a5d8b5b03b6abd3a2e8",
+    "workers/chatgpt-auth/test/vault.test.mjs": "2c24178cd0545136d614ca183ad0ed013ec59a8f007abf354447853c021cea47",
+    "workers/companion-workspace/src/executor.ts": "47fc3348bf42f85651b88efde73ca98c7e1b7b6123a7e0b4ec4c566e681014f1",
+    "workers/companion-workspace/src/index.ts": "f398a922eedfe3cc9f8592120ae1680c0e3daa72e83ade8f25d0fff22b11347f",
+    "workers/companion-workspace/src/notes-api.ts": "55acd4af5d9ba57caeec918e16cef3e90f590acf508c825b9de0c23ba59f8af9",
+    "workers/shared/build-identity.generated.ts": "bb963ea86d1af69d99856d579d6c6cc60dfd551042b0da567a233cffc4b734d2",
+    "workers/shared/connection-recovery.ts": "a02156b62a6dd64cdc3ccdbc30116eef2199402e5ee94fbdb997299a774e2969"
+  },
+  "task_id": "T-1481b473-244b-4918-b498-775fd1efcaf4",
+  "title": "Restore existing integration, Workspace and Notes sessions without enrollment"
+}

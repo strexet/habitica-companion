@@ -4,7 +4,7 @@ using Habitica.Domain.Workspace;
 
 namespace Habitica.WebApp.State;
 
-public sealed record NotesProjectReview(NoteCommand Command,NoteProjectLink? Before,NoteProjectLink? After,string BeforeLabel,string AfterLabel);
+public sealed record NotesProjectReview(NoteCommand Command,NoteProjectLink? Before,NoteProjectLink? After,string BeforeLabel,string AfterLabel,NoteFolderLink? FolderBefore=null,NoteFolderLink? FolderAfter=null);
 public sealed partial class NotesController
 {
     private readonly TodoWorkspacePresentation? _projects;
@@ -32,18 +32,19 @@ public sealed partial class NotesController
     }
     public bool ChooseProject(Guid? id)
     {
-        EnsureAccount();if(!CanWrite||HasConflict||ProjectReview is not null||Selected?.Current.IsTrashed==true)return false;
+        EnsureAccount();if(!CanWrite||HasConflict||FolderReview is not null||ProjectReview is not null||Selected?.Current.IsTrashed==true)return false;
         var link=id is {} project?ProjectLink(project):null;if(id is not null&&link is null)return false;
         Draft.Project=link;Changed?.Invoke();return true;
     }
-    public NotesQueryPage? Search(string query,bool trash,int offset,long? revision,NotesProjectFilter? filter=null)
-        =>CanRead&&Book is not null?NotesQueries.Search(Book,query,trash,offset,revision,filter):null;
+    public NotesQueryPage? Search(string query,bool trash,int offset,long? revision,NotesProjectFilter? filter=null,NotesFolderFilter? folders=null)
+        =>CanRead&&Book is not null?NotesQueries.Search(Book,query,trash,offset,revision,filter,folders):null;
     public Task AcceptProjectAsync(CancellationToken token=default)=>Observe("notes-save",async()=>
     {
         EnsureAccount();if(ProjectReview is not {} review||!CanWrite||HasPending)return;
         if(HasConflict||Book!.Revision!=review.Command.ExpectedNotebookRevision||SelectedId!=(_editorNoteRevision==0?null:review.Command.NoteId)
             ||(review.Command.Title??_originalTitle)!=Draft.Title||(review.Command.Markdown??_originalMarkdown)!=Draft.Markdown
-            ||Draft.Project!=review.After||review.After is not null&&!EligibleProject(review.After))
+            ||Draft.Project!=review.After||DraftFolder!=review.FolderAfter||review.After!=review.Before&&review.After is not null&&!EligibleProject(review.After)
+            ||review.FolderAfter!=review.FolderBefore&&review.FolderAfter is {} folder&&!FolderSelectable(folder.FolderId))
         {ProjectReview=null;Say("The note or project context changed. Your draft was preserved; refresh and review again.",true);return;}
         await SubmitAsync(review.Command,token);
     });

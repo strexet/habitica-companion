@@ -1,0 +1,50 @@
+{
+  "body": "### Evaluate saved lists with explicit relative-date predicates\n\n```yaml\nid: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d\npriority: 99\nstatus: Ready\nparent_pending_ids: [\"P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78\"]\nprocessing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed\nroot_task_id: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d\nrelated_task_id: null\nrelation: main\ndepends_on: [\"T-66aec83d-1d40-4c42-87ec-6566e1ac3769\"]\n```\n\nGoal:\n- Keep Today/overdue/upcoming saved lists useful after dates advance.\nCurrent behavior:\n- SavedTaskPredicates stores fixed DateOnly ranges; saved-view evaluation delegates the fixed query to canonical filters.\nDesired behavior:\n- Optional typed relative predicates evaluate from one explicit clock/timezone context per query and return the evaluated bounds.\nTouch:\n- WorkspaceSavedTaskView models/validators, query identity, organization save/history, C#/Worker read evaluators, saved-list editor and MCP read results.\nDiscovery allowance:\n- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.\nOut of scope:\n- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.\nImplementation constraints:\n- Adopt presets Today, BeforeToday, NextSevenDays inclusive of today, ThisWeek Monday through Sunday and NoDate. Planned and deadline predicates remain separate and cannot silently override an absolute range on the same field. Store relative intent, not a frozen date. Capture one UTC as-of and explicit IANA timezone; bind pagination to the document revision and evaluation-day context. Clock/day changes invalidate old cursors. Reads remain side-effect free and unavailable timezones fail explicitly. Existing absolute saved lists remain unchanged.\n- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.\nQuestions and required clarifications:\n- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.\nValidation:\n- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"relative-date-rules\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.\",\n        \"Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks.\"\n      ],\n      \"sources\": [\n        \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"Directory.Packages.props\",\n        \"tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs\",\n        \"tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs\",\n        \"src/Habitica.Domain/Workspace/WorkspaceDocument.cs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~Saved|FullyQualifiedName~Relative\",\n        \"report_name\": \"relative-date-rules.trx\",\n        \"result_directory\": \".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules\"\n      },\n      \"assertion\": \"- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"relative-date-wire\",\n      \"recipe_id\": \"worker-focused-tests\",\n      \"criteria\": [\n        \"Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.\",\n        \"Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks.\"\n      ],\n      \"sources\": [\n        \"workers/companion-workspace/test/saved-view-api.test.mjs\",\n        \"workers/companion-workspace/package.json\"\n      ],\n      \"parameters\": {\n        \"test_file\": \"workers/companion-workspace/test/saved-view-api.test.mjs\"\n      },\n      \"assertion\": \"- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.\n- Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks.\nDocumentation updates:\n- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.\nRisks:\n- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.\n\n",
+  "checks": [
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-rules",
+      "parameters": {
+        "report_name": "relative-date-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules",
+        "test_filter": "FullyQualifiedName~Saved|FullyQualifiedName~Relative",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/saved-view-api.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/saved-view-api.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "priority": 99,
+  "root_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "title": "Evaluate saved lists with explicit relative-date predicates"
+}

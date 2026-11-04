@@ -1,0 +1,50 @@
+{
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "title": "Explain workspace readiness and disabled editor recovery",
+  "operation_history": ".skill-tree/history/validation/ux-ui/workspace-readiness/operation-history.json",
+  "checks": [
+    {
+      "id": "workspace-readiness-behavior",
+      "counts": {
+        "discovered": 50,
+        "expected": 50,
+        "failed": 0,
+        "passed": 50,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+          "sha256": "58b6e4f86b586b7e58f3fd11dfb8993dbd912a8a29aeae7887dbdd68f1e6131a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.trx",
+          "sha256": "782f9e0310b3902939758b0c61c400925947f7206034fb0bde7f798bb1ab12fc"
+        }
+      ]
+    },
+    {
+      "id": "workspace-readiness-rendered",
+      "counts": {
+        "discovered": 505,
+        "expected": 505,
+        "failed": 0,
+        "passed": 505,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+          "sha256": "232988bf94656f4dd56d628f923ff09b046a0ea8295c1d95c5c7e6eea541c5fa"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

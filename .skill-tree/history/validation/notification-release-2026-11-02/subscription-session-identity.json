@@ -1,0 +1,13 @@
+{
+  "checkout": "/Users/petr/Projects/habitica-tool",
+  "scope": "Synthetic local Workers, D1, MCP and native local TLS; no provider keys or real callbacks",
+  "node": "v22.12.0",
+  "fingerprints": {
+    "workers/chatgpt-auth/src/events.ts": "e0d933b482e2a7c36ca66287268eaf3c25b19ff9efa0a0f9569aa2aa60fbc555",
+    "workers/companion-workspace/src/events.ts": "ff0f1d94952116d7f0db7c31f8bdd2a22f417c90617e6681122b74c2696c9a94",
+    "workers/shared/events.ts": "5145a89f1888e628361f01399148674292e1f33e8f939e76cb86db5df8d498fe",
+    "workers/chatgpt-auth/package-lock.json": "fc3d5e89b1e6391bfe2acbf688c8ece7d0e2cb6ac098179512bc0875d489d792",
+    "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
+    "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37"
+  }
+}

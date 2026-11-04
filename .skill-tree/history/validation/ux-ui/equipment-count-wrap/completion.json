@@ -1,0 +1,413 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Count-summary labels wrap at word boundaries without crowding the artwork or count.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.log",
+          "sha256": "c45577c0e13e6a48d4187ea25db13ac0c0e761f27b7dc29ce060c2089d57f886"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.trx",
+          "sha256": "bdb80d199511be8b4421e3c0e69cd7e29758c9a50ddccac40117357a7e8027d2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/acceptance.json",
+          "sha256": "32a66b5dcd2bac00a4a74764c79fd834714851f784778c0dd94febbdd0f7419a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+          "sha256": "04105b74f75c5a30855a8fa58dcb3c1ff46d06b6d85033c2d53f6737f204e4e4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Summary values and image fallbacks remain accurate at narrow card widths.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.log",
+          "sha256": "c45577c0e13e6a48d4187ea25db13ac0c0e761f27b7dc29ce060c2089d57f886"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.trx",
+          "sha256": "bdb80d199511be8b4421e3c0e69cd7e29758c9a50ddccac40117357a7e8027d2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/acceptance.json",
+          "sha256": "32a66b5dcd2bac00a4a74764c79fd834714851f784778c0dd94febbdd0f7419a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+          "sha256": "04105b74f75c5a30855a8fa58dcb3c1ff46d06b6d85033c2d53f6737f204e4e4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Desktop and phone summary geometry pass the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.log",
+          "sha256": "c45577c0e13e6a48d4187ea25db13ac0c0e761f27b7dc29ce060c2089d57f886"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.trx",
+          "sha256": "bdb80d199511be8b4421e3c0e69cd7e29758c9a50ddccac40117357a7e8027d2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/acceptance.json",
+          "sha256": "32a66b5dcd2bac00a4a74764c79fd834714851f784778c0dd94febbdd0f7419a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+          "sha256": "04105b74f75c5a30855a8fa58dcb3c1ff46d06b6d85033c2d53f6737f204e4e4"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hatching potions and longer localized labels, large counts, narrow desktop cards, phone cards, image unavailable and enlarged text. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Count-summary labels wrap at word boundaries without crowding the artwork or count.",
+          "Summary values and image fallbacks remain accurate at narrow card widths."
+        ],
+        "id": "equipment-count-wrap-behavior",
+        "parameters": {
+          "report_name": "equipment-count-wrap.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/unit",
+          "test_filter": "FullyQualifiedName~InventoryPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-8045ba4b-6297-45bc-8152-67d4de95721a",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 32,
+          "expected": 32,
+          "failed": 0,
+          "passed": 32,
+          "skipped": 0
+        },
+        "definition": "a2f02fedfdc789fdb96cbb956e5719fdbee41a8480b01cf21b2010e3025ca46a",
+        "environment_identity": "eda98bcd6ea2bed9f91dbd0a4862ab3fe254ace27a74629dd57353b538a88e31",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.log",
+            "sha256": "c45577c0e13e6a48d4187ea25db13ac0c0e761f27b7dc29ce060c2089d57f886"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.trx",
+            "sha256": "bdb80d199511be8b4421e3c0e69cd7e29758c9a50ddccac40117357a7e8027d2"
+          }
+        ],
+        "execution_sessions": {
+          "f3f0a61aaad55eaf8453f2a268aa63141b92311dc7feb7182f92ae6792dc0bb0": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:40:06.184503+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-count-wrap/launch-1793748246184724000.json"
+            ],
+            "profile_id": "0c5b46b97438d535d5b585c5b5897b84776c45593676abb131174b0cf43c1701",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-count-wrap",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "054a868187066be20da5fb03c3cf30d4e1814b985ee3de482959dd9be9e630f8",
+        "payload_hash": "7080759014391e157f3c6a8c9affc668db30b417c720d5c289505afd8bf5d08e",
+        "recorded_at": "2026-11-03T23:25:16.736248+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "9ba23913528ef5bb032b089ca79261ac55eea83b14a5948987abd6068a07f374"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.347923958208412
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Desktop and phone summary geometry pass the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Desktop and phone summary geometry pass the required rendered matrix."
+        ],
+        "id": "equipment-count-wrap-rendered",
+        "parameters": {
+          "cases": "Hatching potions and longer localized labels, large counts, narrow desktop cards, phone cards, image unavailable and enlarged text.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser",
+          "routes": [
+            "/inventory"
+          ],
+          "task_key": "equipment-count-wrap"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/InventoryPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-aa0842a3-5671-4281-81ea-1f242e171ed0",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 361,
+          "expected": 361,
+          "failed": 0,
+          "passed": 361,
+          "skipped": 0
+        },
+        "definition": "a2f02fedfdc789fdb96cbb956e5719fdbee41a8480b01cf21b2010e3025ca46a",
+        "environment_identity": "3dc29387caeda0da1b4c86db42f69d551b7b8f26cfab81f6ba68d5f27057965e",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+            "sha256": "04105b74f75c5a30855a8fa58dcb3c1ff46d06b6d85033c2d53f6737f204e4e4"
+          }
+        ],
+        "execution_sessions": {
+          "f3f0a61aaad55eaf8453f2a268aa63141b92311dc7feb7182f92ae6792dc0bb0": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:41:18.234339+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/equipment-count-wrap/launch-1793748318234595000.json"
+            ],
+            "profile_id": "0c5b46b97438d535d5b585c5b5897b84776c45593676abb131174b0cf43c1701",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/equipment-count-wrap",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "62e64d0054ff24fd1dc003ffc4608458df00a4d2653afea9ba157662d96380b3",
+        "payload_hash": "593acb0e850eb814c9bd3b7ec6d1dee6db2cf8a2fb92ff289494e6671be4c7d3",
+        "recorded_at": "2026-11-03T23:26:00.941580+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "9ba23913528ef5bb032b089ca79261ac55eea83b14a5948987abd6068a07f374",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 41.51583995902911
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/acceptance.json",
+      "sha256": "32a66b5dcd2bac00a4a74764c79fd834714851f784778c0dd94febbdd0f7419a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/operation-history.json",
+      "sha256": "c86e94b639eb153ae15a3dd0851436a208ce32e53d77c7b813c2c436d6e8bf97"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-5e98818a-9667-4c3b-96ad-1d6c2db64c53",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Prevent mid-word wrapping in equipment count summaries. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-ae822766-780c-4584-a33f-d8978ee060c0"
+  ],
+  "recorded_at": "2026-11-03T23:26:47.326771+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+  "source_fingerprints": {
+    ".skill-tree/documents/testing.md": "0aeb31d20919e295ca32abc28c9861616a032727be2ef41c461c8c727ed4b66d",
+    ".skill-tree/documents/ux-ui-manifest.md": "46208308d0847409df34c9229cae1413e23c91893922f803d5a38c1932caa4da",
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "44576503e18329dc3689e057ce5d6745b09542a3a70009114c8542ca0d9e9a18",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "50852de32eb25e0ea36b38d550e172586246254e6cfee81f81f5da407e748545",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "9ba23913528ef5bb032b089ca79261ac55eea83b14a5948987abd6068a07f374",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "c90a3fedb95aa7e1a860b7da73b922fc8de4d75db49a4b93f1e2285a2b2d3369",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "e5682166fc50f3d1cabba7c39d41a3c1c2fdb604408a5c05347c999be818ace2",
+    "tests/browser-qualification/ux-ui-counts-user.json": "a95ade547072ae782bc798142523a0df433840b4e7b3f4d9ed98b2de5451d46b",
+    "tests/browser-qualification/ux-ui-equipment-counts-journey.mjs": "355b0982ddb800f0dab18046fc9776f456e72853d3b31edf248ee61578a54711",
+    "tests/browser-qualification/ux-ui-equipment-metrics.mjs": "6045d502af3293c90c39e0fe7bba13fca3095d8139698f3a85275098585be0b4"
+  },
+  "task_id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+  "title": "Prevent mid-word wrapping in equipment count summaries",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hatching potions and longer localized labels, large counts, narrow desktop cards, phone cards, image unavailable and enlarged text. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Count-summary labels wrap at word boundaries without crowding the artwork or count.",
+        "Summary values and image fallbacks remain accurate at narrow card widths."
+      ],
+      "id": "equipment-count-wrap-behavior",
+      "parameters": {
+        "report_name": "equipment-count-wrap.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/unit",
+        "test_filter": "FullyQualifiedName~InventoryPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Desktop and phone summary geometry pass the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Desktop and phone summary geometry pass the required rendered matrix."
+      ],
+      "id": "equipment-count-wrap-rendered",
+      "parameters": {
+        "cases": "Hatching potions and longer localized labels, large counts, narrow desktop cards, phone cards, image unavailable and enlarged text.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser",
+        "routes": [
+          "/inventory"
+        ],
+        "task_key": "equipment-count-wrap"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a2f02fedfdc789fdb96cbb956e5719fdbee41a8480b01cf21b2010e3025ca46a"
+}

@@ -1,0 +1,7 @@
+{
+  "report": "browser/d78349a4-524d-41fe-a661-313bed43aab0.json",
+  "accepted": false,
+  "evidence": ".skill-tree/artifacts/ux-ui/compact-navigation/1793736680318935000/webkit-obsidian-glow-1280-100-compact-inventory.png",
+  "finding": "Manually collapsing the active Game tools group hides the selected Equipment link without a retained visible section cue. Existing native check observed the exact active link before collapse.",
+  "repair": "Retain one visible current-section indicator on the collapsed active group, with the expanded group showing only the exact active link cue. Add a native visible-cue assertion."
+}

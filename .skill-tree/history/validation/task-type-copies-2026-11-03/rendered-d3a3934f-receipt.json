@@ -1,0 +1,84 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-97b09522-387e-4371-8fab-ec6693dfbc9c",
+  "classification": "executed-control",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "counts": {
+    "discovered": 242,
+    "expected": 242,
+    "failed": 0,
+    "passed": 242,
+    "skipped": 0
+  },
+  "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+  "environment_identity": "a9f43ca996275fbb0fbc8370990b66afb9d74bfc5a9bcf72ca7ed4efef7d49e1",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+      "sha256": "1fa33bfb863f8bae90ddb86d426c0ce0e48a98ca668bef1890456f54f437d389"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+      "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+      "sha256": "6e2f6dc7dcb3dd3f366673fa93ed127e888c7c8862870bd14900217cb9bd6a35"
+    }
+  ],
+  "execution_sessions": {
+    "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+      "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+      ],
+      "profile_id": "task-type-copy-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-cc1d0534",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "98b596d0d132005637fc2ae4a942a4d40a3abf3f793088dbd21b6adf169e6d9a": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T21:39:34.919507+00:00",
+      "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json"
+      ],
+      "profile_id": "task-type-copy-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-d3a3934f",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "aebceea973cb2fcfe3d47d20e29072456b775b4e1e38ca9fc31c76b0db86069c",
+  "payload_hash": "983ed669649b4644f11c855b31a5e3dd3ecdcf6dfd21305d824532fe0681bf10",
+  "recorded_at": "2026-11-02T21:27:23.925201+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "af072ba805b19786316606a9764fb19c3b6070344b55d484c824591f4bf775b7",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+    "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+    "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528"
+  },
+  "timing": {
+    "tool_wall_seconds": 47.96193470899016
+  }
+}

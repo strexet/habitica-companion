@@ -1,0 +1,50 @@
+{
+  "task_id": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+  "title": "Keep Party grids and disclosure actions bounded with enlarged text",
+  "operation_history": ".skill-tree/history/validation/ux-ui/party-context-reflow/operation-history.json",
+  "checks": [
+    {
+      "id": "party-context-reflow-behavior",
+      "counts": {
+        "discovered": 35,
+        "expected": 35,
+        "failed": 0,
+        "passed": 35,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.log",
+          "sha256": "7750f58550097c2c85e06a447a34977614560dd2478ed8bef7daed94f2b26332"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/C-3c509d0e-7e6f-4c75-85e4-d2345151f0df.trx",
+          "sha256": "d0fffc78af616f7b327a2a04332c7b00d9c2a5b845ff2ae51fef977e7f31ad35"
+        }
+      ]
+    },
+    {
+      "id": "party-context-reflow-rendered",
+      "counts": {
+        "discovered": 289,
+        "expected": 289,
+        "failed": 0,
+        "passed": 289,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json",
+          "sha256": "833a736861709da5070e5ef84bda44feaee48f776c812baf32a0662ce4af50bd"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}
