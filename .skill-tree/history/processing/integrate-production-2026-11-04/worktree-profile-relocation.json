@@ -1,0 +1,8 @@
+{
+  "source_root": "/Users/petr/Projects/habitica-tool",
+  "execution_root": "/Users/petr/Projects/.agent-workspaces/habitica-complete-production",
+  "shared_git_identity_verified": true,
+  "all_package_bundle_and_bridge_hashes_verified": true,
+  "previous_receipt_sha256": "cd6b3d2570d3ef604ef7dc926f81dd0f9c645ffa8dcde5674629c9c47dc81716",
+  "action": "Explicit reviewed receipt relocation followed by fresh owned composition; no policy or runner qualification is inherited."
+}

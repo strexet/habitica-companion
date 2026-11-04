@@ -1,0 +1,13 @@
+{
+  "paths": [
+    ".gitignore",
+    "AGENTS.md",
+    ".agents/skills",
+    ".skill-tree/installation",
+    ".skill-tree/validation-recipes.json",
+    ".skill-tree/documents/build-and-release.md"
+  ],
+  "purpose": "Restore the existing reviewed installed web package, canonical-path build documentation and private-runtime exclusions into the legacy develop checkout. No application code or queue copy is changed.",
+  "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_commit": "6434dccc2a1900a7517f999d05d49fc55f896680"
+}

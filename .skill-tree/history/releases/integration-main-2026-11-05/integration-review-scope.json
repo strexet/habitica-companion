@@ -1,0 +1,16 @@
+{
+  "head": "918f5c795a445fe3c9bee83436a2af8bcde09829",
+  "base": "d03bc1baff3674519d1c27b9f40c608d1f034d3f",
+  "full_file_inventory_sha256": "a6dd8abcae18682892996f3f802de4f2e304b5e2b775b3b8bb7550899f151414",
+  "file_count": 4820,
+  "novel_release_diff_sha256": "fd836b787501e6582a514761433f3510db7da822b353b2a9236d23fe5be03656",
+  "review_basis": [
+    "Full parent conflict inventory and retained blob identities",
+    "Complete product-source comparison against the previously reviewed completed snapshot",
+    "Named test correspondence against every develop test case",
+    "Inspection of all novel release tooling and build behavior",
+    "Fresh full local qualification:3072 application/backend tests and1156 rendered browser/native PWA cases pass without required skips."
+  ],
+  "self_review": true,
+  "independent_approval": false
+}
