@@ -42,27 +42,33 @@
       "E-57486ff9-6f01-460e-b014-a0e45415d23b",
       "E-c1a4a003-795a-47a8-b4c7-4beab3724357",
       "E-7c3c7f69-0791-4b14-95fa-dfc3d9055caf",
-      "E-658944d3-44e7-4cd7-bb15-389a00e71541"
+      "E-658944d3-44e7-4cd7-bb15-389a00e71541",
+      "E-a2fe5dc1-6b90-4059-861f-5d7f54c42e98",
+      "E-da077ca6-ef31-4ef9-a773-4ede944ddad4",
+      "E-060703ea-e396-435d-8ebd-5ee1e15d4c48",
+      "E-9449c2c2-0976-4cbf-ab4d-87fb85877561",
+      "E-34a902ef-2dfa-480f-b945-998caad411d3",
+      "E-cd43bafc-4af0-419f-91a1-a626b74f46cf",
+      "E-3a4bfe2a-672a-463f-98d2-0348c48c596c",
+      "E-a4f7c028-5420-4613-a831-674e27f4d78b",
+      "E-132f76b3-5ad1-4c3c-a053-20a3f316d708",
+      "E-70b6f47c-681b-40d8-a75d-ac4c0526fb5a",
+      "E-7fc7fb8d-298d-4c3e-870a-f4ba7c0b4c02",
+      "E-92750f3c-7022-430d-b3be-bb05631b5f01",
+      "E-f8243477-94ac-4e5f-ab53-072518adb709",
+      "E-6da37521-6a2c-43a7-b3d0-e2f2640ef7ad",
+      "E-38223e34-85e7-4334-9de7-0cada27e2c48",
+      "E-6b3f7e90-7a69-473e-8c75-f9d9cb57f47b"
     ],
     "claims": {
-      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
-      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe",
       "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe"
     },
     "event_sequences": {
-      "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f": 40
+      "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f": 56
     },
     "queue_id": "Q-41cd2562-cb8a-4826-a1c4-e50c694fa593",
-    "resources": {
-      "cloudflare:8c962c94f28f5bdd298024365e0dea40:habitica-companion:production": {
-        "host": "MacBook-Pro-Petr.local",
-        "pid": 23440,
-        "purpose": "Exclusive owner-authorized coordinated complete-main publication and identity verification",
-        "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
-        "token": "01401b54-e7eb-4704-b7ae-5af5399796d1"
-      }
-    },
+    "resources": {},
     "runs": {
       "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe": {
         "admission": {
@@ -8415,15 +8421,19 @@
         "completed_ids": [
           "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
           "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
-          "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+          "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+          "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+          "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac"
         ],
         "completion_refs": {
+          "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac": "O-b55adbf5-0ecd-42da-a899-7bf01aa3a606",
           "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849": "O-6a84ad6d-55e4-4733-82fd-b532ad2413b5",
+          "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e": "O-5c3921e2-10a1-4e53-ae8b-8bf41a134a54",
           "T-7bba9311-6e90-492e-a7bb-df656c3d26a9": "O-325ece0c-5938-4227-af96-a40c9f9f9cbc",
           "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4": "O-cd8cce65-6c37-4376-856c-082fc673bd28"
         },
-        "current_task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
-        "cycle_signature": "0a1cef5b4748ece7593b630eb4453ab8bd02cf1fd5321135bc274addc8d44f70",
+        "current_task_id": null,
+        "cycle_signature": "9699d5f2dcf086864c9524a851025ee14be35d52a2e5db41dd0eb59ad446ec53",
         "deferred_ids": [],
         "delivery": {
           "authorization": {
@@ -8435,17 +8445,50 @@
             "production_target_branch": "main",
             "target_branch": "develop"
           },
-          "implementation": "in-progress",
+          "deployment": {
+            "build_identity": {
+              "backendRelease": "0.3.2",
+              "buildHash": "61eea7185acd134b17a956b0a74674013ebd7d46902142691d071895d4cff568",
+              "supportedPackage": {
+                "maximumExclusive": "0.4.0",
+                "minimum": "0.2.0"
+              },
+              "toolSchemaVersion": "1.3.0"
+            },
+            "commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+            "pages": {
+              "id": "1b8ee6fc-3490-47a3-b61c-790d6083c715",
+              "previous": "861054ed-0cda-4bef-81c3-6160d2b70ccd",
+              "url": "https://1b8ee6fc.habitica-companion.pages.dev"
+            },
+            "public_origin": "https://habitica-companion.pages.dev",
+            "workers": {
+              "chatgpt-auth": "dde51db1-1a56-42d5-adda-35a3edda7d0b",
+              "chatgpt-mcp": "e6af24ce-57af-4e8d-a30d-1cb725947071",
+              "companion-workspace": "175065cc-1a18-4070-9ad2-1dcb4850608f"
+            }
+          },
+          "implementation": "completed",
+          "merge_commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+          "order_completed": true,
+          "post_publication_verification": "19 hosted identity controls and fresh Chromium/WebKit startup pass; original independent host gate remains unaccepted.",
+          "production_target_branch": "main",
+          "prs": [
+            "https://github.com/strexet/habitica-companion/pull/2",
+            "https://github.com/strexet/habitica-companion/pull/3"
+          ],
           "publication": "not-requested",
-          "status": "implementation-in-progress"
+          "status": "merged",
+          "target_branch": "develop"
         },
+        "finished_at": "2026-11-04T18:19:36.672086+00:00",
         "id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
         "limits": {},
         "mode": "all",
-        "next_action": "implement",
+        "next_action": null,
         "partial_work": [],
         "pending_ids": [],
-        "phase": "implement",
+        "phase": "completed",
         "processing_results": [],
         "required_ids": [
           "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
@@ -8509,7 +8552,7 @@
             }
           ]
         },
-        "root_task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+        "root_task_id": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
         "snapshot": [
           "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
           "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
@@ -8535,20 +8578,8 @@
     "schema": 1
   },
   "schema": 3,
-  "source_hash": "697d8bd838b6c33014bef55bf6a59b5bc53d0dc307cfa1b215a6a1de74b7bed5",
-  "task_progress": {
-    "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e": {
-      "admission": {
-        "environment_id": "af9f68bcdc3e91d2c0e44a61d1d5b5817541f980fbcd8a776bdc06451b4822a3",
-        "flavor": "web",
-        "identity": "f2be948f5b28a7b4f69ab03435296469aeb6015c74b4ae544e15a65f0020523f"
-      },
-      "checks": {},
-      "partial_work": [],
-      "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
-      "stage": "implementing"
-    }
-  },
+  "source_hash": "2c29836fa3c12bba2aa025040e2bd12e638fc573914c036b2c4f0ac2295e1956",
+  "task_progress": {},
   "tasks": [
     {
       "depends_on": [],
@@ -8593,49 +8624,11 @@
       "title": "Preserve optional validation metadata during installed workflow task rewrites"
     },
     {
-      "boundary_validation": "before-dependent-work",
-      "depends_on": [
-        "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
-      ],
-      "id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
-      "line": 175,
-      "parent_pending_ids": [
-        "P-9579af1d-3709-4bca-961a-6947585c7747"
-      ],
-      "priority": 112,
-      "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
-      "status": "Ready",
-      "title": "Review and merge the validated integration through develop into main"
-    },
-    {
-      "boundary_validation": "before-dependent-work",
-      "depends_on": [
-        "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e"
-      ],
-      "id": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
-      "line": 225,
-      "parent_pending_ids": [
-        "P-9579af1d-3709-4bca-961a-6947585c7747"
-      ],
-      "priority": 111,
-      "processing_run_id": "PR-29d81efe-837a-4d24-8135-018611823297",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
-      "status": "Ready",
-      "title": "Deploy and verify the complete merged main production state"
-    },
-    {
       "depends_on": [
         "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
       ],
       "id": "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
-      "line": 294,
+      "line": 175,
       "parent_pending_ids": [
         "P-375aba91-d916-46f4-8310-aa7b51810a45"
       ],
@@ -8653,7 +8646,7 @@
         "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
       ],
       "id": "T-f21b11ff-1224-486a-b729-e2f440f4920b",
-      "line": 428,
+      "line": 309,
       "parent_pending_ids": [
         "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4"
       ],
@@ -8669,7 +8662,7 @@
     {
       "depends_on": [],
       "id": "T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a",
-      "line": 564,
+      "line": 445,
       "parent_pending_ids": [
         "P-612f62db-56ca-44cd-8f23-95609d268da9"
       ],
@@ -8687,7 +8680,7 @@
         "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
       ],
       "id": "T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa",
-      "line": 637,
+      "line": 518,
       "parent_pending_ids": [
         "P-5a241695-798e-48df-8a0f-989ba8ceaee8"
       ],
@@ -8703,7 +8696,7 @@
     {
       "depends_on": [],
       "id": "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c",
-      "line": 794,
+      "line": 675,
       "parent_pending_ids": [
         "P-3663dfd8-1ecc-4dc3-9577-fc0fd9afb49f"
       ],
@@ -8721,7 +8714,7 @@
         "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
       ],
       "id": "T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44",
-      "line": 901,
+      "line": 782,
       "parent_pending_ids": [
         "P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7"
       ],
@@ -8751,7 +8744,7 @@
         "T-13e3754f-774b-443f-8997-e1d677f3c079"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 1034,
+      "line": 915,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -8776,7 +8769,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1133,
+      "line": 1014,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -8792,7 +8785,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1351,
+      "line": 1232,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8806,7 +8799,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1388,
+      "line": 1269,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8820,7 +8813,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1425,
+      "line": 1306,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8834,7 +8827,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1558,
+      "line": 1439,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8848,7 +8841,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1596,
+      "line": 1477,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8862,7 +8855,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1630,
+      "line": 1511,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8876,7 +8869,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1665,
+      "line": 1546,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8890,7 +8883,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1699,
+      "line": 1580,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8904,7 +8897,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1737,
+      "line": 1618,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8918,7 +8911,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1764,
+      "line": 1645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -8932,7 +8925,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1786,
+      "line": 1667,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
