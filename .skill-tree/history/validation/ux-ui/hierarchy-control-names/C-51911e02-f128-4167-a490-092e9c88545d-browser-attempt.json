@@ -1,0 +1,70 @@
+{
+  "assertion": "Use real Task and Project hierarchy fixtures and native public controls to prove distinct accessible names, exact selected records, stable content identities, visible keyboard focus and unchanged journals across the entire declared matrix.",
+  "attempt_id": "C-51911e02-f128-4167-a490-092e9c88545d",
+  "check_id": "hierarchy-control-names-rendered",
+  "definition": "eb2fac25ccfcb782d6ae137a5490ed82118f7a635d9e5d729ff3618a5b584cad",
+  "environment_identity": "4c790374bcf65eff539db60fe0e3dd9c4c3e29dc85abada0100a369aa754d41c",
+  "key": "818f037063da4abd3fd47b039b9e4a2a72413a04c16a09a6265df8526ad7d034",
+  "launch": {
+    "assertion": "Use real Task and Project hierarchy fixtures and native public controls to prove distinct accessible names, exact selected records, stable content identities, visible keyboard focus and unchanged journals across the entire declared matrix.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T19:17:25.764138+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:01:26.076412+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "hierarchy-control-names",
+      ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "d52b878587baf68c22d29b879728db264df49ffc3b884652fe7c2a9b5a13e5f6",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "93920882393574690cf81fd142d07808ad1509a40484c47a603913cc4f2d99b8",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/Pages/TodoProjectsPage.razor": "ec56d59a5f1411c979299e174b05d16ba57dc65b29cb50e97de39c8191707b83",
+    "src/Habitica.WebApp/Pages/TodoTasksPage.razor": "88e3b0e4261cb7cc5fbddb341d2f3c599e7f7c4d758dc20a432cb18401e1a7a7",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "c5b56c52fed9e4df9d0ede5b1b6b1c38427072c6f287e26ce4f2e712de21b030",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1b547050d27c0ba12d3093e100e281b297a1326ffff9b3ded64ea6ffadff63e8",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "520909541c1af565c20773c26fe40eb1f141bb67087fd0f5b25d98e77453a30b",
+    "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs": "5ea41830e5c9c1226614648c6df4034d5571c52350ee19ff509122f8bad00190",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "b45d81f240e416e9048f5d46304b400ec34cd9c445843245ed60d2e7f9ddaea0"
+  },
+  "task_id": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+}

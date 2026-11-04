@@ -1,0 +1,12 @@
+{
+  "atomic_rejection": "Unmodified helper drops optional header fields during dependency rewrite; before-dependent-work parent then fails validation before writes.",
+  "workaround": "Canonical process transaction invoked with rewrite_meta wrapper passing through the already present OPTIONAL_FIELDS. Installed files remain unchanged.",
+  "preserved": {
+    "boundary_validation": "before-dependent-work",
+    "status": "Blocked pending answers",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+  },
+  "required_child": "T-13e3754f-774b-443f-8997-e1d677f3c079",
+  "installed_helper_sha256": "912f83f1b00ce51612560fcd5b3170b284bd52dad10dca6028c1c7f376f04249",
+  "scope": "No owner question, validation timing, acceptance or publication boundary changed."
+}

@@ -1,0 +1,25 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "check_id": "notes-local-model",
+  "attempt_id": "C-23b15de0-fd82-490e-9223-4d5eb39eb3ab",
+  "environment_identity": "4c4f4eb130016c62d954d4bc316b63aa0c751c78c5a67a6f5e7dabb3c24a066a",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "red",
+  "counts": {
+    "expected": 17,
+    "discovered": 17,
+    "passed": 16,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 8.476562874857336
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-2026-11-02/compatibility-red-execution.log",
+    ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/notes-local-model.trx"
+  ],
+  "failure_category": "expected-behavior"
+}

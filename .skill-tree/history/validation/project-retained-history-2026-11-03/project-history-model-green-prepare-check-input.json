@@ -1,0 +1,13 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "check_id": "history-rules",
+  "launch": {
+    "assertion": "Project-filtered retained completion and Habit events use current canonical assignment without changing accepted event details, original recovery or stable revision-bound pages.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish current-versus-historical project selection, archive/unassigned semantics or original restore receipt recovery.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "deadline_utc": "2026-11-02T22:27:46.741042+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "project-retained-history-local-v1"
+  }
+}

@@ -1,6 +1,7 @@
 @page "/todo/convert"
 @page "/todo/convert/{SourceTaskId:guid}"
 
-<PageTitle>Convert checklist</PageTitle>
+<PageTitle>Task copies and checklist conversion</PageTitle>
+<TaskTypeCopyPanel SourceTaskId="SourceTaskId" />
 <WorkspaceChecklistConversionPanel SourceTaskId="SourceTaskId" />
 @code { [Parameter] public Guid? SourceTaskId {get;set;} }

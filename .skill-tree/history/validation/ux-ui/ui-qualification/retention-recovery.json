@@ -1,0 +1,14 @@
+{
+  "operation": "Restore an older incomplete suspended archive after finish-helper retention pruning.",
+  "source": "Tracked HEAD bytes; pre-task status confirms the archive had no working-tree edits.",
+  "restored_path": ".skill-tree/history/runs/suspended-wr-58676666-0043-43fa-b934-02eff3e3ead6-2026-10-19.json",
+  "sha256": "8ef38980e1b9548daeeeecde0fbecbc9e62784b96537481a63fb9b07c346b056",
+  "bytes": 84437,
+  "retention_pins_added": [
+    ".skill-tree/history/runs/suspended-wr-58676666-0043-43fa-b934-02eff3e3ead6-2026-10-19.json",
+    ".skill-tree/history/runs/owner-handoff-4aa3ced0-8469-45b5-90ce-c0bd51c19114.json"
+  ],
+  "archive_bytes_match_original": true,
+  "active_run": null,
+  "qualification_acceptance_unchanged": true
+}

@@ -1,5 +1,23 @@
 @page "/todo/projects"
+@inject IJSRuntime Js
 
 <PageTitle>Projects</PageTitle>
-<TodoOrganizationPanel />
+<div class="task-group-header projects-page-heading">
+    <div><h1>Projects</h1><p class="panel-copy">Choose a project to browse existing tasks and Notes. No project is selected automatically.</p></div>
+    <div class="action-row"><a href="/todo/tasks" class="secondary-action-button" data-layout-primary="true">All tasks</a><button type="button" class="secondary-action-button" data-layout-primary="true" @onclick="OpenManagement" @ref="_manageButton" data-testid="projects-manage">Manage organization</button></div>
+</div>
 <TodoHierarchyPanel ProjectMode="true" CompactHeading="true" />
+<TodoOrganizationPanel @ref="_organization" UsePageHeading="false" ManageOnDemand="true" ManagementClosed="ManagementClosed" />
+
+@code {
+    private TodoOrganizationPanel? _organization;
+    private ElementReference _manageButton;
+    private bool _focusManagement;
+    private Task OpenManagement()=>_organization?.OpenManagementAsync()??Task.CompletedTask;
+    private void ManagementClosed()=>_focusManagement=true;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!_focusManagement)return;_focusManagement=false;
+        try{await _manageButton.FocusAsync();await using var module=await Js.InvokeAsync<IJSObjectReference>("import","./js/field-focus.js");if(module is not null)await module.InvokeVoidAsync("revealFocusedElement",_manageButton);}catch(JSException){}
+    }
+}

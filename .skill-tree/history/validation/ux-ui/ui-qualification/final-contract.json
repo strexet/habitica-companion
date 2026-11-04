@@ -1,0 +1,37 @@
+{
+  "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+  "result": "pass",
+  "argv": [
+    "python3",
+    "tests/browser-qualification/ux-ui.py",
+    "{task_key}",
+    "{report_directory}"
+  ],
+  "lane": "browser",
+  "recipe_paths_available": true,
+  "specialist_recipes": [
+    "activity-rendered-browser",
+    "dotnet-focused-tests",
+    "folder-adoption-rendered-browser",
+    "linked-daily-rendered-browser",
+    "netlify-hosted-controls",
+    "node-focused-tests",
+    "notes-indexeddb-browser",
+    "notes-rendered-browser",
+    "project-history-rendered-browser",
+    "pwa-shell-browser",
+    "relative-saved-rendered-browser",
+    "relative-tag-rendered-browser",
+    "subscription-contracts-execution-profile",
+    "task-type-copy-rendered-browser",
+    "webapp-release-build",
+    "worker-focused-tests"
+  ],
+  "profile_identity": "e9405d6fafdebbce66181272bfaef75d364e1f8d5506f1068586e60ada5c08c7",
+  "scoped_document_prose": "pass",
+  "sources": {
+    ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f",
+    ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+    ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e"
+  }
+}

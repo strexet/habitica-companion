@@ -1,0 +1,16 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/push-capability-state/1793736000006507000",
+  "reviewed": [
+    "chromium-obsidian-glow-push-capability-available-granted.png",
+    "chromium-gryphy-light-1280-200-push-capability.png"
+  ],
+  "observations": [
+    "Granted observed-state component shows distinct capability/permission and retains explicit device consent and original controls.",
+    "Hydrated disconnected check retains not-checked labels and explains required integration without a permission prompt.",
+    "Native focus and primary target remain visible."
+  ],
+  "limitations": [
+    "Connected-account capability probes, installed-device/service-worker enrollment, real permission prompts, physical devices and assistive technology remain unqualified."
+  ]
+}

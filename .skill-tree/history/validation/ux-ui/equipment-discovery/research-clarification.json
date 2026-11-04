@@ -1,0 +1,8 @@
+{
+  "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+  "source_clarification": "Existing Equipment UI is battle-only; existing tests explicitly prohibit costume UI. Discovery preserves the exact stored battle and costume snapshots and does not introduce costume actions.",
+  "rendering": "Search uses existing view-model displayed names/keys/slots. Query/slot reveal matching owned rows;20-item filtered pages avoid expanding hundreds of cards. Original category fold preferences, equipped identity, optimizer and preset drafts remain separate.",
+  "focus": "Typing and slot selection retain focus. Explicit View results or Enter jumps to the selected visible category or results heading; empty reset returns to search.",
+  "wire": "No new Habitica endpoint, formula or provider command. Synthetic native fixture includes303 owned records and a fixed content catalogue.",
+  "compile_boundary": "C-5bbd3f6a-3b8e-4bb9-bf6f-59b8ccdd03a8 did not execute tests because quoted Razor reference expressions failed compilation. Original log/unavailable receipt retained; corrected with scoped reference keys and stable keyed slot sections."
+}

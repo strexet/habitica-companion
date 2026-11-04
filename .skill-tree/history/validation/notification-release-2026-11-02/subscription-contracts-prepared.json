@@ -1,0 +1,47 @@
+{
+  "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+  "attempt_id": "C-164610ef-a37e-4994-9c57-74466953e94c",
+  "check_id": "subscription-contracts",
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "5b22ae70330b53e41215e72a309355c39cf183296395a6b2cf1913c5ef2810b2",
+  "key": "6f91942c6e872129658c351b3ceffffc41bb617266b4856f9cc768544543b661",
+  "launch": null,
+  "prepared_at": "2026-11-02T13:14:33.595639+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/Functions/subscription-contracts.py",
+      ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json"
+    ],
+    "execution_notes": "Serial dry builds then nonzero synthetic Worker/MCP/D1, independent receiver and native local TLS tests. No hosted callbacks or user subscription.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/Functions/subscription-contracts.py",
+      "workers/chatgpt-auth/src/events.ts",
+      "workers/companion-workspace/src/events.ts",
+      "workers/shared/events.ts",
+      "workers/chatgpt-auth/test/events.test.mjs",
+      "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+      "workers/chatgpt-auth/wrangler.jsonc",
+      "workers/companion-workspace/wrangler.jsonc",
+      "workers/chatgpt-mcp/wrangler.jsonc",
+      "deploy/callback-egress/src/gateway.mjs"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "node": "22.x",
+      "python": "3.x",
+      "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+    "tests/Functions/subscription-contracts.py": "58f14945972e6174f25200d709113a1bb4951d91b07544872d660e9527a9a042",
+    "workers/chatgpt-auth/src/events.ts": "e0d933b482e2a7c36ca66287268eaf3c25b19ff9efa0a0f9569aa2aa60fbc555",
+    "workers/chatgpt-auth/test/events.test.mjs": "ea4d9348dec68f16ff55a8879d94f2c7c73f46cd4a89b6079632f9e4062d99c2",
+    "workers/companion-workspace/src/events.ts": "ff0f1d94952116d7f0db7c31f8bdd2a22f417c90617e6681122b74c2696c9a94",
+    "workers/shared/events.ts": "5145a89f1888e628361f01399148674292e1f33e8f939e76cb86db5df8d498fe"
+  },
+  "task_id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
+}

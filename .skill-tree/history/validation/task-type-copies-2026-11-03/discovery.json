@@ -1,0 +1,17 @@
+{
+  "scope": "Implement the frozen task-type copy root locally; no commit, publication, provider mutation, device permission or change to the deferred real chat/device gate.",
+  "architecture": [
+    "Use a separate zero-game-effect native typed command that allocates exactly one target ID and retains explicit immutable source/target lineage. Preserve existing checklist-to-project conversion behavior rather than forcing task-kind copies through a project/checklist payload.",
+    "Require exact source revision and root revision; bind selected target kind, explicit Daily recurrence and an explicit retain-valid-source-organization choice. No same-kind duplicate or in-place kind rewrite.",
+    "Retain source title, notes and native urgency. Reset target state, game metadata/mapping, event history, stage, relationships/goals and scheduling/review dates; Daily recurrence is an explicit new choice.",
+    "Preserve the source during conversion. Optional source archival remains a separate existing reviewed action; the conversion flow does not combine archival or grant new archive authority.",
+    "New canonical lineage needs C#/TypeScript archive, hash, journal and transfer/discovery inspection; metadata creation alone is not acceptance.",
+    "UI and reviewed MCP must share prepare/accept/original receipt semantics. Browser-only native copies do not acquire cloud/game execution authority."
+  ],
+  "next": "Implement and qualify the pure reviewed-copy model after the retained runnable behavioral Red, then integrate exact native command/lineage and reviewed transport/UI.",
+  "modelEvidence": {
+    "pass": ".skill-tree/history/validation/task-type-copies-2026-11-03/canonical-source-model-green-receipt.json",
+    "counts": 22,
+    "provisionalInvalidFixtureRed": true
+  }
+}

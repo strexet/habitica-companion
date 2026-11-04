@@ -1,0 +1,72 @@
+{
+  "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+  "attempt_id": "C-cdf387ab-afe3-4ec9-b67b-ab4d2c215430",
+  "check_id": "activity-rules",
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "97721387fe8b57f73811f49a67f736aa269204872dbe776641c9159d7762b7b1",
+  "key": "36d53001a3a30f15a292d2210aa730cdbbad731cfd250bd365d1ebc79de13132",
+  "launch": {
+    "assertion": "Notes folder compatibility, exact retained content and original receipt recovery under isolated local fixtures.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish serializable versioned journal compatibility or service/CAS behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T18:49:49.111349+00:00",
+    "execution_profile": "notes-folders-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T18:41:49.478548+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
+      "--logger",
+      "trx;LogFileName=activity-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "5879b448b049e9b496e676c4533c10e201177173c00f65ff3acb913d94c3cbcd",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "878e7818dcd00a93ec4cb38382cb55432ed148d4ec3a8fa68058dac7946df782",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs": "cf341ca70acd019beea75b24b1c6d45e4cc3709ab539c79eda65cbedafbcd77b",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

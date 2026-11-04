@@ -113,7 +113,9 @@ public static class WorkspaceOrganizationCommands
         }
         var alias=patch?.Alias is not null||patch?.ClearAlias==true;
         if(alias)fields.AddRange([patch?.Alias,patch?.ClearAlias==true?"1":"0"]);
-        var body=(alias?"companion-organization-command-v4\n":removal?"companion-organization-command-v3\n":extended?"companion-organization-command-v2\n":"companion-organization-command-v1\n")+string.Concat(fields.Select(value=>value is null?"-1:":Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture)+":"+value));
+        var relative=patch?.Query?.HasRelativeDates==true;
+        if(relative){var f=patch!.Query!.Filter;fields.AddRange([patch.Query.TimeZoneId,f.PlannedRelative is {} planned?Name(planned):null,f.DeadlineRelative is {} deadline?Name(deadline):null]);}
+        var body=(relative?"companion-organization-command-v5\n":alias?"companion-organization-command-v4\n":removal?"companion-organization-command-v3\n":extended?"companion-organization-command-v2\n":"companion-organization-command-v1\n")+string.Concat(fields.Select(value=>value is null?"-1:":Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture)+":"+value));
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body))).ToLowerInvariant();
     }
 }

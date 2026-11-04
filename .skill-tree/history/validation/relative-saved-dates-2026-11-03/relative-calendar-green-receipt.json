@@ -1,0 +1,51 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-a7e9f80d-5025-4a8b-92b3-0d5562bb344e",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 13,
+    "expected": 13,
+    "failed": 0,
+    "passed": 13,
+    "skipped": 0
+  },
+  "definition": "a4751734d00ce500134c7ab008b028f2709a5ed12b5013a373dc613bc3b0c0a4",
+  "environment_identity": "30ad1b054e6db91c3df0b59ccf758c66907f0c12902472825debf2a1045f634a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-calendar-green-execution.log",
+      "sha256": "d3102d788bab3c6e3a63a8a6efb743a6c599c7a3e6f010558f83f1b92bc5f52f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules/relative-calendar-green.trx",
+      "sha256": "c77f5e4523ddb6dfee200d429c8e8d8ac562fe7e32e59eb22ba10a3fcc5cd11d"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "ea4e31ce43148a5f20eb8fd271e892e714dd7d3732892e996ce99c7863f5f28e",
+  "payload_hash": "791668198e4a3591c8de0d47503ca82800f9e47b22981310a069e994c8884ddc",
+  "recorded_at": "2026-11-02T21:35:33.812017+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceOrganizationEngine.cs": "6a7255c268851cf628c63475203d42aa880860123eb0ff97c48b71f84c543b93",
+    "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs": "c2c9e0eefb13e65bfd88b6ee50c6941df108db94e68efd783e7fd7548b954723",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs": "7398a2e7699125b40b0a858b03be3b35b1d4061f5544a69daea94648e5e6f904",
+    "src/Habitica.Application/Workspace/WorkspaceUnblockedTodos.cs": "0cc3fd55bb7cba9bf2c9c648dc419648c41b410e28b8df6875cd6a07aef23f5f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs": "7b1070fe28ed96c382e2aff664df483fe021b8050d4f0e6d74ca061a95f7e8ac",
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/RelativeSavedTaskViewTests.cs": "2bd7dff82a9401d3e9d288b1d82d9b946c7a63cf2e92b63d1a94129a5eb69c6b",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs": "43a897582ba97469eb329c80c04f18a852e573cc27f087a3ebbcb297fb0862d9",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs": "c950c6923a4fb3902cad6de948d6372c751dcde5850634aa62081dcc2446d65f",
+    "tests/fixtures/workspace/relative-saved-dates-v1.json": "e212cf5e2e8a996d65b3303b26ca8c0c8459cf9a78348bb974c3d3aeafebec6b"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.330033875070512
+  }
+}

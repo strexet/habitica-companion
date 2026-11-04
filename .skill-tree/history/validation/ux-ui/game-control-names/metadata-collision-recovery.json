@@ -1,0 +1,14 @@
+{
+  "attempt_id": "C-637dd236-06b9-491b-b2ad-8daebeb7f690",
+  "observation": "Two helper processes shared one request file. The Node wrapper received the prepared dotnet recipe, ran that exact recipe, then rejected non-TAP output before recording. The other prepare refused the writer lock.",
+  "recovery": "Record the actual unit-lane recipe, original console output and current63-test TRX. No Node pass is inferred from dotnet output; the Node control is rerun separately.",
+  "source_log": ".skill-tree/history/validation/ux-ui/game-control-names/C-637dd236-06b9-491b-b2ad-8daebeb7f690.tap",
+  "counts": {
+    "expected": 63,
+    "discovered": 63,
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0
+  },
+  "boundary": "No browser/provider operation and no product change occurred. No pending attempt or failed receipt is removed."
+}

@@ -1,0 +1,25 @@
+{
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "check_id": "day-bound-tag-rendering",
+  "attempt_id": "C-4f93e464-8741-4257-a4be-131de710ca94",
+  "environment_identity": "c1cb579dd7e2e127bcb619ecc93f41d6a36d6ccf97ecfd72a5048ba6616fb1b2",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 50.845342667074874
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-583850f7-execution.log",
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-583850f7-identity.json",
+    ".skill-tree/artifacts/relative-tag-ui/1793671863899740000/report.json"
+  ],
+  "counts": {
+    "expected": 162,
+    "discovered": 162,
+    "passed": 162,
+    "failed": 0,
+    "skipped": 0
+  }
+}

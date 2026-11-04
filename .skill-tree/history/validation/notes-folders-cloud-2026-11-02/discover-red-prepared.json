@@ -1,0 +1,49 @@
+{
+  "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+  "attempt_id": "C-8bb10d01-824e-466d-b389-2272fa732cb4",
+  "check_id": "notes-owner-api",
+  "definition": "5357e3f9f3464d53d584dd28ddd8b7ae3a927824462479d29c1a359d45a372db",
+  "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+  "key": "e9f12c34cf20697bad1bd07783f6d3be18fdeb7bd1d66c171dff0b7d5524f4e2",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T16:42:56.981796+00:00",
+    "execution_profile": "notes-folders-cloud-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T16:38:57.144073+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/notes.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/test/notes.test.mjs": "d4f9050e83b9ca86d2161de43803846b9b72a111d1799289e6a52cb193613a9c"
+  },
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
+}

@@ -1,0 +1,48 @@
+{
+  "workers": {
+    "chatgpt-auth": {
+      "version": "148f5324-fa99-413a-b477-bafd5b833574",
+      "events_enabled": true,
+      "secret_names": [
+        "CALLBACK_EGRESS_CLAIM_KEY",
+        "CALLBACK_EGRESS_GRANT_KEY",
+        "CALLBACK_VAULT_KEY_V1",
+        "CREDENTIAL_KEY_V1",
+        "CREDENTIAL_KEY_V2",
+        "PROFILE_ID_KEY",
+        "PUSH_VAPID_PRIVATE_JWK",
+        "PUSH_VAULT_KEY_V1"
+      ],
+      "callback_egress_enabled": true,
+      "workspace_entrypoint": "EventSubscriptionService"
+    },
+    "companion-workspace": {
+      "version": "45c6d965-cbf7-4fb3-9e64-3a08ddb7afe5",
+      "events_enabled": true,
+      "secret_names": [],
+      "auth_entrypoint": "EventDeliveryService"
+    },
+    "chatgpt-mcp": {
+      "version": "d8fb17bc-8400-4e5a-9541-a63fab609b82",
+      "events_enabled": true,
+      "secret_names": []
+    }
+  },
+  "new_owned_record_counts": {
+    "integration_event_callbacks": 0,
+    "integration_event_dispatches": 0,
+    "workspace_event_consents": 0,
+    "workspace_event_subscriptions": 0,
+    "workspace_event_outbox": 0
+  },
+  "migrations": {
+    "chatgpt-auth": {
+      "applied_count": 15,
+      "pending": []
+    },
+    "companion-workspace": {
+      "applied_count": 20,
+      "pending": []
+    }
+  }
+}

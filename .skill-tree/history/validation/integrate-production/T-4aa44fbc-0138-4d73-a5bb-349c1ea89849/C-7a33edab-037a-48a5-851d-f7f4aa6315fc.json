@@ -1,0 +1,55 @@
+{
+  "both_parent_ancestries": true,
+  "commit": "918f5c795a445fe3c9bee83436a2af8bcde09829",
+  "conflicts": 0,
+  "feature_delta": [
+    "plugin/plugin.json",
+    "src/Habitica.WebApp/wwwroot/downloads/habitica-companion-0.3.1-ux-ui-20261104.zip",
+    "src/Habitica.WebApp/wwwroot/downloads/habitica-companion-0.3.1-ux-ui-20261104.zip.identity.json",
+    "src/Habitica.WebApp/wwwroot/downloads/habitica-companion-0.3.1.identity.json",
+    "src/Habitica.WebApp/wwwroot/downloads/habitica-companion-0.3.1.zip",
+    "workers/release-inputs.json",
+    "workers/shared/build-identity.generated.ts"
+  ],
+  "focused_build_red_green": {
+    "green": "git-build-download-green.tap",
+    "red": "git-build-download-red.tap"
+  },
+  "limits": "Static source/profile qualification; runtime suites follow as a separate task.",
+  "pass": true,
+  "recipes": [
+    "release-browser",
+    "release-dotnet",
+    "release-hosted",
+    "release-hosted-browser",
+    "release-workers"
+  ],
+  "review": {
+    "develop_missing_named_tests": [
+      {
+        "old": "Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access",
+        "reason": "Existing-only restoration reuses approved consent; fresh enrollment remains disabled without explicit consent.",
+        "replacement": "Fresh_session_restores_existing_access_without_replaying_new_enrollment_consent"
+      },
+      {
+        "old": "ConnectedWorkspaceRenewalRequiresExplicitDataConsent",
+        "reason": "The completed recovery contract preserves existing consent rather than manufacturing a new enrollment.",
+        "replacement": "Connected_Workspace_restoration_uses_existing_only_recovery"
+      },
+      {
+        "old": "Unblocked_source_resets_incompatible_fields_and_evaluates_dependencies_and_stage",
+        "reason": "The case is replaced by the later source/relative-definition coverage.",
+        "replacement": "Current saved-list and relative-date controls preserve expanded definitions, dependency and stage semantics."
+      }
+    ],
+    "duplicate_methods_removed": [
+      "Explicit_optimizer_goal_survives_session_refresh_without_equipping",
+      "Invalid_optimizer_goal_returns_to_intelligence_without_equipping",
+      "Optimizer_defaults_to_intelligence_without_equipping",
+      "Optimizer_exports_long_labels_and_disabled_actions"
+    ],
+    "full_fresh_validation_required": true,
+    "integration_delta_from_reviewed_source": "Automatic merge duplicated optimizer regression methods at another insertion position. The preserved snapshot already contains every added optimizer case; restored one complete copy.",
+    "product_source_matches_completed_snapshot": true
+  }
+}

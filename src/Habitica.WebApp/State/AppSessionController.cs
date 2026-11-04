@@ -380,9 +380,10 @@ public sealed partial class AppSessionController : IAppSessionController
 
     private Dictionary<RefreshDomain, DomainRefreshState> MarkDomainsFetching(
         IReadOnlyList<(RefreshDomain Domain, RefreshPriority Priority)> requests,
-        RefreshReason reason)
+        RefreshReason reason,
+        bool preserveHistory = true)
     {
-        var domainStates = State.DomainStates is null
+        var domainStates = !preserveHistory || State.DomainStates is null
             ? new Dictionary<RefreshDomain, DomainRefreshState>()
             : new Dictionary<RefreshDomain, DomainRefreshState>(State.DomainStates);
         foreach (var request in requests)
@@ -4587,6 +4588,7 @@ public sealed partial class AppSessionController : IAppSessionController
         try
         {
             var credentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
+            var accountChanged = !string.Equals(State.UserId, credentials.UserId, StringComparison.Ordinal);
             ResetPrivateSyncSession();
             if (!string.Equals(_currentCredentials?.UserId, credentials.UserId, StringComparison.Ordinal))
             {
@@ -4632,7 +4634,7 @@ public sealed partial class AppSessionController : IAppSessionController
                 GearCatalogSnapshot: State.GearCatalogSnapshot,
                 DiagnosticsLogEntries: await _diagnosticsLogStore.GetRecentAsync(cancellationToken),
                 IncludeStalePartyMembersInQuestForecasts: _includeStalePartyMembersInQuestForecasts,
-                DomainStates: MarkDomainsFetching(domainRequests, RefreshReason.AppBoot),
+                DomainStates: MarkDomainsFetching(domainRequests, RefreshReason.AppBoot, preserveHistory: !accountChanged),
                 CloudSyncSectionStatuses: State.CloudSyncSectionStatuses,
                 CloudSyncExcludedSections: _cloudSyncExcludedSections.ToArray()));
             _ = CompleteSignInRefreshAsync(credentials);

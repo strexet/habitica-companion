@@ -1,0 +1,6 @@
+{
+  "instruction": "Owner explicitly selects T-925d1068-d6c5-4334-8438-3996c46b5455 then T-3df6a931-b7e8-40c5-a2e4-895477cac3c5 for standalone implementation. Real notification qualification remains deferred.",
+  "existing_processing_receipt": "PR-7817cae4-44e6-4db8-83e1-84f339ff64e4",
+  "parked_run_sha256": "a26a01397620b8b9ba710d90a991b29dad3dc7c4d7a2f14c2bde4101ff28aebe",
+  "restore": "Restore the exact original active run after the two selected standalone units; retain current task_progress/outcomes and queue."
+}

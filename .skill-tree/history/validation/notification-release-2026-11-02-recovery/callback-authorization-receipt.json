@@ -1,0 +1,34 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-51369518-0be0-49b3-a4aa-b1d04f7f743d",
+  "classification": "executed-control",
+  "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
+  "counts": {
+    "discovered": 10,
+    "expected": 10,
+    "failed": 0,
+    "passed": 10,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/callback-authorization-execution.log",
+      "sha256": "8ce4d7e32bfb189c7cc10d986e0d20301b1c3dce5d813e5c204307f9233b7793"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "8c4bcda231b2af3802d8e75de7cbe0448268abef13c06df67622144ddaf90e02",
+  "payload_hash": "353c4ac691495a56e42bc344e8cfe52d9cd66e31086d4da31175d0ea80841ff9",
+  "recorded_at": "2026-11-02T15:34:42.647156+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c"
+  },
+  "timing": {
+    "tool_wall_seconds": 12.216597124934196
+  }
+}

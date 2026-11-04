@@ -1,0 +1,12 @@
+{
+  "completed_task": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "outcome_id": "O-b3430299-e9d2-4647-8f0c-803a5ee96864",
+  "finished_run": "WR-a80ef6da-b76b-45db-97ca-019a162e4b12",
+  "active_run": null,
+  "unrelated_task_bodies_preserved": true,
+  "prior_outcomes_preserved": true,
+  "application_ui_source_drift": [],
+  "remaining_prioritized": 27,
+  "remaining_review_fix_tasks": 25,
+  "new_controller_started": false
+}

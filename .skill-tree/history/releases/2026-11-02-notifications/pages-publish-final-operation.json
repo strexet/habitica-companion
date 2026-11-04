@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "pages",
+    "deploy",
+    "/Users/petr/Projects/habitica-tool/output/wwwroot",
+    "--project-name",
+    "habitica-companion",
+    "--branch",
+    "main",
+    "--commit-hash",
+    "cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77",
+    "--commit-message",
+    "Notification Events 0.3.1",
+    "--commit-dirty=true"
+  ],
+  "exit_code": 0,
+  "seconds": 24.0154191670008,
+  "deadline_seconds": 300,
+  "cleanup_reserve_seconds": 15,
+  "selected_account": "8c962c94f28f5bdd298024365e0dea40"
+}

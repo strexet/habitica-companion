@@ -1,0 +1,721 @@
+{
+  "active_run": {
+    "completed_ids": [
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "T-1f306466-4618-4f88-b14b-589b295acbd2",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "T-fed75824-e410-4bca-8664-5039742424da",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "T-6b956777-ed98-4783-a353-5e490de79444",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593",
+      "T-3b645995-38ad-44e6-b98a-df63e8174dac",
+      "T-ce88de57-a6d2-42ed-b55c-15799b5d0335",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "T-c981605b-e7e9-460c-9ef6-deab60d421e9",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "T-aba3cf27-e492-4d20-89ba-5161b7521bc4",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "T-4b332426-b30d-4e73-a465-3d1f80eb0746",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-0c8220b8-32cb-4146-a686-311ec22100d5",
+      "T-585977fb-27b2-45fb-9923-058427da448d",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3"
+    ],
+    "completion_refs": {
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b": "O-a4c08d20-ba94-4594-b92a-ede2b316780b",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818": "O-4203a794-8216-43bc-84a8-eaddd14f1479",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a": "O-7b5372f3-5961-47d3-84a1-7393ce3aebf2",
+      "T-0c8220b8-32cb-4146-a686-311ec22100d5": "O-c420ce11-025d-4082-a623-0e7512deed83",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b": "O-b16ed77c-1912-4feb-b5af-020c9ea39b67",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30": "O-b78adb21-abc3-4f00-a2f4-fd8bbc95c71e",
+      "T-13c008e0-2062-4846-ab4b-0f331a280f0b": "O-ae7f0df3-3e93-4c3b-ab0f-931439379260",
+      "T-16e42ae4-a6b0-49fa-a482-2a260601a288": "O-f44a409d-2b38-42d9-8b11-1d21f792856c",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113": "O-ac3eddd3-7e3a-4a05-9ad6-fd163b59aab3",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a": "O-5244b126-8695-489b-9ef2-c7681532da7c",
+      "T-1f306466-4618-4f88-b14b-589b295acbd2": "O-4a011e0d-d1f9-48bf-9b2b-c4c0fd2c6a61",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0": "O-84e3ae1b-cb0e-4dfb-8902-324f6d4bbf5d",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd": "O-ca43959c-314e-43a7-b6bf-310a8a5344f9",
+      "T-3b645995-38ad-44e6-b98a-df63e8174dac": "O-a3d8dfde-4d38-4c64-b123-ba1bb62a0950",
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b": "O-d9a8756b-7fa6-4565-90b5-1987238c28e7",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3": "O-3a3f3f3f-2c04-441b-adf1-95619add2a28",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11": "O-83304995-b6b0-4377-a795-408b134ddaa9",
+      "T-4b332426-b30d-4e73-a465-3d1f80eb0746": "O-36006522-9792-4db7-bc48-fda5a21cb340",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929": "O-4f22cda2-9d83-43bd-a9f0-990be8918143",
+      "T-585977fb-27b2-45fb-9923-058427da448d": "O-44b15416-86a3-4953-9c1b-f632a34a2a7a",
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54": "O-2fe87b8c-6c97-4095-ad3a-0ae6d8dcc7e5",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c": "O-fbeec3fd-f9d0-4d22-9c51-49dff413c43f",
+      "T-6706aad6-b870-484b-80c3-e56c29431556": "O-32b7080a-d0be-4194-850d-84998b6ecf0e",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080": "O-3f1fa446-e6dd-40ed-b775-5fb633d92cc5",
+      "T-6b956777-ed98-4783-a353-5e490de79444": "O-a96172c6-ebc5-4e74-bbf8-47d664ca96f4",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440": "O-f27cf34d-bbd4-45d1-ade2-7efbe92ff8f2",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2": "O-ceb5e365-b76c-4dc8-930b-a7ed8b91411b",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774": "O-85b9f430-72c7-4869-bad8-2b5d54cff66a",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985": "O-7b2b5725-07dd-4ab3-8eb8-6d3ace180da9",
+      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25": "O-0417f718-d14a-4403-bf2c-d176c19a716d",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593": "O-5c8edad6-c3fe-4dcf-8d3e-b18d58093c20",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f": "O-57b825bf-7d2c-42e8-9dbb-17469cb7f29d",
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c": "O-cbbc31fe-d1e9-4548-b1c5-1ee4d13b0366",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94": "O-43c64132-e988-4884-8679-00bc9633f9f5",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3": "O-43ea7e20-58ad-4401-bd4c-9ed31d0cda24",
+      "T-aba3cf27-e492-4d20-89ba-5161b7521bc4": "O-a14c9b1b-8c00-4ed5-b516-60caf456826f",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2": "O-1bbc423a-14de-4b89-834e-fa21ef5a86af",
+      "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0": "O-e055503b-5728-40ca-828b-2768821cc2ca",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81": "O-c523ec9f-1bff-419d-896a-406c7cffce45",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02": "O-9302773e-f7de-4ab8-a81f-760fa4efa0ad",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c": "O-3d5c9e56-f1b1-4e13-a992-98c281f2e32c",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c": "O-8e330b90-5477-4ee2-b755-88983737b0d4",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492": "O-2795bdf1-6d13-4c4f-8857-c0125f4745b8",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9": "O-2c32a1ae-82c9-4d49-8a76-0f17f543e629",
+      "T-c981605b-e7e9-460c-9ef6-deab60d421e9": "O-39ef5dd3-6ab9-46fd-958b-68bba6806a35",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094": "O-87bd1c09-e4ba-4843-9e2b-eea9355c83cd",
+      "T-ce88de57-a6d2-42ed-b55c-15799b5d0335": "O-6a36403a-e1b2-4b45-8ea6-f77779cad5b0",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89": "O-208fa976-8b93-4e61-b6e9-b210078811ff",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0": "O-ec892911-b04b-4887-a678-5171b70fafa7",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d": "O-cb5f20f3-a2fd-4f53-bc19-f1097010a7b9",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0": "O-e35cf500-42f9-48ff-957c-aa28fce5927f",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510": "O-97d77954-0421-4bad-90f3-221b21734976",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd": "O-ea7bedfe-d272-43fe-ba16-6fc08d253a5a",
+      "T-fed75824-e410-4bca-8664-5039742424da": "O-108c3a14-4734-461f-bc55-7a110332ef67"
+    },
+    "current_task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "cycle_signature": "ae63c3a54b9f249a2eccc78de3dfb5abaabf2ca4141b3ae998a6d7a6696e4a3b",
+    "deferred_ids": [
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593",
+      "T-3b645995-38ad-44e6-b98a-df63e8174dac",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+      "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+      "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+      "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+      "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+      "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+    ],
+    "history_refs": [
+      "skill-tree/history/validation/push-reminder-ui/result.json",
+      "skill-tree/history/validation/originating-chat-reminders/result.json",
+      "skill-tree/history/validation/ordinary-task-intent/result.json",
+      "skill-tree/history/validation/implement-all-sequencing/owner-release-deferral.json",
+      "skill-tree/history/validation/private-auth-task-recovery/result.json",
+      "skill-tree/history/validation/completion-score-source/result.json",
+      "skill-tree/history/validation/linked-task-recovery/design.json",
+      "skill-tree/documents/linked-task-recovery.md",
+      "skill-tree/history/validation/linked-task-recovery/result.json",
+      "skill-tree/history/validation/history-recovery/matrix-results.json",
+      "skill-tree/history/validation/history-recovery/negative-controls.json",
+      "skill-tree/history/validation/recovery-record-discovery/result.json",
+      "skill-tree/history/validation/history-recovery/matrix-final-results.json",
+      "skill-tree/history/validation/history-recovery/keyboard-focus.json",
+      "skill-tree/history/validation/history-recovery/result.json",
+      "skill-tree/history/validation/task-activity-coverage/result.json",
+      "skill-tree/history/intake/codev-2026-10-28/source-tasks.json",
+      "skill-tree/history/intake/codev-2026-10-28/completion-plan.json",
+      "skill-tree/history/intake/codev-2026-10-28/project-after.json",
+      "skill-tree/history/intake/codev-2026-10-28/result.json",
+      "skill-tree/history/processing/pending-2026-10-28/result.json",
+      "skill-tree/history/processing/pending-2026-10-28/research.md",
+      "skill-tree/history/processing/pending-2026-10-28/owner-decisions.json",
+      "skill-tree/history/processing/pending-2026-10-28/decided-processing-receipt.json"
+    ],
+    "id": "WR-db3533db-230a-4c61-a88b-0db609cb6ff5",
+    "limits": {
+      "repair_used": 85,
+      "retry_used": 101
+    },
+    "mode": "all",
+    "next_action": "Await owner choice after standalone processing: select an exact Ready unit through Work Through Next with an explicit focus decision for the existing controller, resume the saved Implement All selection, research the retained P0 evidence, or stop.",
+    "owner_deferred_priorities": {
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c": 97,
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc": 100
+    },
+    "partial_work": [
+      "37/50 initial snapshot roots accepted;45completed IDs including8additional dependencies. RunWR-db3533db-230a-4c61-a88b-0db609cb6ff5 remains active and incomplete. No new run was started.",
+      "Latest accepted roots: push UI T-1f1eb5fd-febd-44fc-b475-69121e11400a with required contrastT-4b332426-b30d-4e73-a465-3d1f80eb0746; originating-chat researchT-6a8db6be-b721-4b88-b62b-c6566d759080; ordinary create/edit guidanceT-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c. Evidence under skill-tree/history/validation/{push-reminder-ui,originating-chat-reminders,ordinary-task-intent}/result.json.",
+      "Push current3192unique UI cases,812Web/266Application/175Auth/592Workspace,31Node,8realIndexedDB;21currentPush controls. Chat research10offlinecontrols. Ordinary guidance21SDK/API/package+7packageintegrity and3matchingWorker dry-run builds. Publication, real account/provider/device operations and commits were not performed.",
+      "Production Events followupP-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192 captured, processed once andretained pending separate MCP2/callback-secret design; implementation deferred outside initialsnapshot.",
+      "Next advance refuses blocked release subtaskT-d76d2a9a-1318-4e63-9bb4-73f620b108cc underrootT-96866c8f-9554-55d8-a638-6d8b5afaf21c. A sequencing question is pending in the user UI. Do not infer live authorization from prior history or generic continuation; do not mark the release gate complete or silently skip the blocked selection. Browser fixture servers are cleaned/stopped; expired error tab27 received URL-policy rejection and must not be retried.",
+      "Owner explicitly chose to defer release gate and continue other available original tasks. Release gate and dependent security-rollout root temporarily ordered after remaining available snapshot work; original priorities100/97 retained for restoration. No task marked complete, no snapshot expansion or live authorization.",
+      "Task journeys validated:812 component tests and1344 rendered cases plus two seeded detectors. Completion payload wording corrected after document prose rejection; no task/dependency blocker remains. Prior cycle was invoked after rejected completion and is not an implementation no-progress result.",
+      "Accepted initial tasks T-13c008e0 diagnostics scoped gate, T-06336249 task journeys and T-2355607b native task recovery in this continuation. Initial snapshot completion40/50; no commit/deployment. Evidence in diagnostics-scoped-serialization, task-journeys and native-task-recovery directories.",
+      "Current root T-0a2f12ac linked recovery requires new private Auth primitive. Captured and processed P-4a4f9ec5 into required T-0c8220b8 priority106 via PR-7b19ca2b; advance selects the child. Ordinary non-Habit down scoring remains refused until distinct recovery contract exists. Official scoreTask/controller/tasks-index source rechecked2026-10-27; no real provider operation.",
+      "Owner release deferral still applies. Restore original gate/root priorities100/97 after other eligible original work; keep real release gates incomplete. Latest native task recovery281Application,59typed cloud,608Workspace tests and final scoped MCP control plus3matchingWorker dry-run builds pass. Initial parallel Cron timeout resolved at unchanged30-second timeout with concurrency4; failure evidence retained.",
+      "Required private Auth recovery T-0c8220b8 accepted with199Auth and24focused controls. Required source provenance T-585977fb accepted with202Auth,10executor and4source-binding controls plus3matchingWorker dry-run builds. Evidence private-auth-task-recovery and completion-score-source.",
+      "Current selected root T-0a2f12ac remains incomplete. Design at skill-tree/history/validation/linked-task-recovery/design.json records native post-receipt flow, source proof, strict legacy limits, dedicated canonical fence and planned MCP/browser adapters. No parent model/action/API code implemented yet. Initial snapshot remains40/50 complete.",
+      "Linked recovery parent now has shared/C# causal receipt and hash validation, local migration0014 plus durable original attempt/fence/finalizer, reviewed MCP tools, private recovery account authority and typed browser adapter. Synthetic composition19/19, typed cloud68/68 and neutral C#4/4 pass; earlier full .NET suite passed before final stricter paired-history checks. Current code remains unaccepted pending final regressions and source/evidence review.",
+      "Canonical review found that removing a linked receipt could leave a restoration source with game effects. Added symmetric C#/TypeScript journal checks requiring the paired causal linked receipt; final neutral rejection tests cover removal. No live/deployment/commit operation occurred.",
+      "Accepted linked recovery root T-0a2f12ac with634Workspace,202Auth,1322.NET tests across six suites; final App285 repair rerun passes, all source and acceptance evidence is retained in linked-task-recovery/result.json. Initial snapshot41/50 complete,52IDs including11additional required dependencies.",
+      "Advance selected initial root T-8545fa1a extended history recovery UI. Partial implementation adds native unarchive/correction browser command input/review, a scoped original linked recovery state in TodoWorkspacePresentation, a typed original-command discovery field in get_linked_task_recovery, new TodoExtendedRecoveryPanel and TodoRecoveryBrowser, history entry points and responsive CSS. Current UI changes are not accepted; first scoped compilation/test control is running.",
+      "History UI design: source/account changes clear private state, unresolved recovery blocks workspace switching and normal task/organization preparation, active original commands can be rediscovered by exact completion after reopening history, and manual original-ID lookup never sends another score. Native archived-reference repair remains a concrete unavailable reason; no silent cleanup or unlinked copy.",
+      "Corrected aggregate count from the authoritative snapshot:41/50 initial roots and51total accepted IDs, including10additional required dependencies. Earlier52/11 totals were a counting error.",
+      "Partial history recovery UI now compiles and passes97focused tests; the earlier full Web suite835passed before final unconfirmed/revision copy and three additional refusal controls. Final captures18states are at /tmp/habitica-history-recovery-final-captures; current local publish is /tmp/habitica-history-recovery-final-published. Baseline15states yielded1260matrix cases with zero errors; both seeded controls detected overflow/overlap/contrast. Baseline evidence saved under history-recovery/matrix-results.json and negative-controls.json. Final changed review/copy/refusal states still need fresh matrix and keyboard/visual checks.",
+      "Required MCP browse parity gap captured as P-4baa7729 and processed via PR-05a1194a into T-b1f5eaa4 priority106. list_companion_tasks excludes archived records; get_task_recovery requires exact ID. Child adds bounded read-only archivedTasks/terminalOccurrences discovery only, with no new mutation/provider/activation scope. Parent UI remains incomplete.",
+      "Temporary browser tabs32matrix and33uncertainty are in IAB2; local server wrapper session45881, log /tmp/habitica-history-recovery-server.log, original deadline660seconds with5second cleanup reserve. Stop/close these owned fixtures when no longer needed; existing old blocked tabs remain untouched.",
+      "Required read-only discovery child T-b1f5eaa4 accepted. Evidence recovery-record-discovery/result.json records5pure,7focusedSDK/query/native-MCP,7package and3matchingWorker builds. Broad640current cases had638passes plus2Miniflare proxy transport failures; exact affected lifecycle files passed24/24 sequentially with unchanged source/pins/timeouts. Initial snapshot41/50;52total accepted IDs including11additional dependencies.",
+      "Current history UI passes875Web tests,73typedCloud tests and45extended recovery cases including33actual shared-page combinations across11additional routes. Shared task-panel tests preserve original native/linked command identity on Tasks, Dailies, Habits, Sync, Reminders, Inbox, Plan, Today, Projects, task hierarchy and saved lists. Fixture-only compile/constructor/DI issues were repaired; failures remain in /tmp logs. Current Release publish /tmp/habitica-history-recovery-release-final passes.",
+      "Final primary history matrix18states1512cases passes with zero errors; current uncertain copy, expired/unverified/stale refusals and original receipt controls are covered. Matrix saved in history-recovery/matrix-final-results.json. Native Tab skipped disabled confirmation, focused original receipt with2pxoutline/88pxheight inObsidian200text; Enter/Space toggled original-command disclosure. Screenshots and keyboard JSON are retained. Native static HTML evidence is not Blazor dispatch or device qualification.",
+      "Two fresh additional-route fixture batches hold33shared states: /tmp/habitica-history-recovery-shared-batch1 (17fixtures) and batch2(16fixtures), prepared with current publish. Owned server wrappers sessions in active turn use ports17963/17964 with660second deadlines. Run their full theme/width/text matrices, record limitations and source evidence, then accept parent and continue initial snapshot. Primary18states have empty secondary archive queries; the later canonical-fold search change leaves those measured rendered states unchanged and has a dedicated component test.",
+      "T-aa82feee causal witnesses and full-journal interval reads implemented. Focused controls pass; legacy fixtures now explicitly omit unproven coverage. Complete final regressions before acceptance.",
+      "T-aa82feee accepted with causal witnesses and explicit unknown intervals. Initial snapshot accepted 43/50; total accepted 54 including 11 required children. Final evidence: 1386 C#, 657 unique Workspace cases and 202 Auth cases across broad/isolated passing controls; three matching Worker dry runs.",
+      "Owner requested a separate codev Companion intake: preserve initial snapshot, import unfinished exact project tasks into Pending, then complete imported source tasks through original reviewed receipts. T-3c84f362 is selected but no streak implementation has begun.",
+      "Owner codev intake captured three independent main Pending tasks at priorities 106/100/100, outside frozen Implement All implementation scope. All three exact source Todos are completed in Companion at workspace revision 162. Original effect receipt 0 is confirmed; receipts 1 and 2 remain pending and require original-ID verification. Expired second preparation was known unaccepted and was replaced by a fresh reviewed command.",
+      "Owner codev intake finished: three independent Pending records retained, three source Todos completed and all three original Habitica projections confirmed. Expired review had a known unaccepted outcome before replacement. No imported task was promoted or implemented.",
+      "Standalone Process Pending PR-cc5061a4-7801-422f-b5c3-9cdb86d4c235 researched all eight entries: five Ready definitions from four Pending origins, one retained-counterpart condition resolved and three blocked intake records retained. Original snapshot, selected streak root, accepted outcomes, limits and release deferral preserved. No product implementation or validation run started.",
+      "Owner lifecycle answers processed through PR-9722057b-0549-4478-8c12-6ee286276060. Across eight original Pending entries: ten Ready definitions from six origins, one retained-counterpart condition resolved, only P0 deployed/device incident confirmation remains Pending. Original frozen snapshot, selected streak task, accepted outcomes, limits and release deferral preserved. No implementation, package upgrade, consent change or live callback operation started."
+    ],
+    "pending_ids": [
+      "P-129cb3e4-32db-4017-8afd-38df70a8f595",
+      "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3",
+      "P-b86975e7-8188-44e9-b50f-3e8179b0037d",
+      "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+      "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+      "P-52452102-f6d7-41ac-9355-1310f5095a67",
+      "P-bd2aa668-3032-42ae-be85-54aac29c92f5",
+      "P-45cdf111-910f-455d-bbb5-89bc00de4bbe",
+      "P-8e196ade-395e-4737-a1eb-2172488bddc4",
+      "P-3cc3df2c-829a-424b-b48e-604943066969",
+      "P-faacd161-0ba5-4a35-866f-c446ebb62b61",
+      "P-f2ff223e-b03f-40e5-bb8f-f9c72c68a76a",
+      "P-34d00801-80f0-4356-b457-7a8b57679d9e",
+      "P-448a1e7c-aa58-4419-9f91-65afdb608312",
+      "P-0d4ef9e0-923d-4154-9dd5-8acc6c5f6fc5",
+      "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192",
+      "P-4a4f9ec5-ff9d-4d78-a57d-90aa1c714249",
+      "P-517c8fba-db97-472b-a88a-ff6673bf76c0",
+      "P-4baa7729-5f77-45d1-a530-07f7f9b18fd3",
+      "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+      "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+      "P-da73f47f-e30c-4174-9f46-b14984ce1bf9"
+    ],
+    "phase": "awaiting-selection",
+    "processing_results": [
+      {
+        "created_ids": [
+          "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+        ],
+        "dispositions": {
+          "P-129cb3e4-32db-4017-8afd-38df70a8f595": {
+            "reason": "Source inspection confirms eight fixed tag observer operation identifiers omitted from the sanitizer whitelist; existing synthetic diagnostic/export boundaries support a separate bounded repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+        ],
+        "task_keys": {
+          "tag-diagnostic-operation-names": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+        }
+      },
+      {
+        "created_ids": [
+          "T-1f306466-4618-4f88-b14b-589b295acbd2"
+        ],
+        "dispositions": {
+          "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3": {
+            "reason": "Rendered current-source Spells fixtures reproduce clipped controls at360px/200-percent text across schemes. Existing mobile tracks and min-content sizing require a narrow CSS correction before root acceptance; generic geometry diagnostics remain unchanged.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-91fdaf67-b4c5-42c7-b93d-71090492b4dd",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3"
+        ],
+        "task_keys": {
+          "spell-enlarged-controls": "T-1f306466-4618-4f88-b14b-589b295acbd2"
+        }
+      },
+      {
+        "created_ids": [
+          "T-16e42ae4-a6b0-49fa-a482-2a260601a288"
+        ],
+        "dispositions": {
+          "P-b86975e7-8188-44e9-b50f-3e8179b0037d": {
+            "reason": "The built-in obsidian-glow ID exists; the owner supplied the full replacement palette and required dark plus light UI checks for the active Todo root.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-173b8406-444b-4f43-9d27-e616064cb107",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-b86975e7-8188-44e9-b50f-3e8179b0037d"
+        ],
+        "task_keys": {
+          "obsidian-todo-theme": "T-16e42ae4-a6b0-49fa-a482-2a260601a288"
+        }
+      },
+      {
+        "created_ids": [
+          "T-94f00380-c668-4b87-8b6d-4a50f947d593"
+        ],
+        "dispositions": {
+          "P-52452102-f6d7-41ac-9355-1310f5095a67": {
+            "reason": "Current Worker consent HTML lists only requested scopes and returns raw JSON on authorization failures; Settings presents a long code guide. The installed OAuth provider permits a reviewed grant containing any supported scope, including optional scopes outside the incoming request. Current security bindings and tests provide a direct implementation path.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-899c7c23-529f-4553-8bb2-f8b9afb34922",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-52452102-f6d7-41ac-9355-1310f5095a67"
+        ],
+        "task_keys": {
+          "plugin-auth-journey": "T-94f00380-c668-4b87-8b6d-4a50f947d593"
+        }
+      },
+      {
+        "created_ids": [
+          "T-3b645995-38ad-44e6-b98a-df63e8174dac"
+        ],
+        "dispositions": {
+          "P-bd2aa668-3032-42ae-be85-54aac29c92f5": {
+            "reason": "Browser fixture and source inspection confirm the code button is below twelve permission rows and requested rows stay highlighted after unchecking. The OAuth code and grant contract remain unchanged.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-3ed00e11-dfce-43c6-b729-1feb926a6847",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-bd2aa668-3032-42ae-be85-54aac29c92f5"
+        ],
+        "task_keys": {
+          "plugin-auth-review-ux": "T-3b645995-38ad-44e6-b98a-df63e8174dac"
+        }
+      },
+      {
+        "created_ids": [
+          "T-ce88de57-a6d2-42ed-b55c-15799b5d0335"
+        ],
+        "dispositions": {
+          "P-3cc3df2c-829a-424b-b48e-604943066969": {
+            "reason": "Current CSS and rendered Inventory fixtures confirm unbounded minimum tracks; a scoped responsive repair is required for root qualification.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-cb87faed-ea4c-4970-89a5-2dd51801ad19",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-3cc3df2c-829a-424b-b48e-604943066969"
+        ],
+        "task_keys": {
+          "inventory-enlarged-controls": "T-ce88de57-a6d2-42ed-b55c-15799b5d0335"
+        }
+      },
+      {
+        "created_ids": [
+          "T-c981605b-e7e9-460c-9ef6-deab60d421e9"
+        ],
+        "dispositions": {
+          "P-faacd161-0ba5-4a35-866f-c446ebb62b61": {
+            "reason": "Current OAuth source preserves the detailed Notes notice after identity verification; the regression asserts the obsolete initial-page placement.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-01ba9b39-5002-4b20-8ca5-94aca5e5a30f",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-faacd161-0ba5-4a35-866f-c446ebb62b61"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-aba3cf27-e492-4d20-89ba-5161b7521bc4"
+        ],
+        "dispositions": {
+          "P-f2ff223e-b03f-40e5-bb8f-f9c72c68a76a": {
+            "reason": "Settings source and rendered measurements confirm a scoped navigation contrast failure; the existing outlined control treatment preserves theme ownership.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-7192fbd6-935a-4553-8d36-afd80f7b8380",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-f2ff223e-b03f-40e5-bb8f-f9c72c68a76a"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-34d00801-80f0-4356-b457-7a8b57679d9e": {
+            "reason": "Owner selection is required between the concrete Auth-owned and Workspace-owned Web Push secret-custody contracts. Current Auth-only credential custody and the generic Ready subscription contract do not establish the new credential purpose and lifecycle.",
+            "status": "retained"
+          }
+        },
+        "id": "PR-87635f64-7e0b-4c2a-9499-238cfb9808f8",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-34d00801-80f0-4356-b457-7a8b57679d9e"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-34d00801-80f0-4356-b457-7a8b57679d9e": {
+            "reason": "The owner selected the Auth-owned vault contract: Auth retains push endpoint/auth secrets and separate keys; Workspace retains opaque identities and reminder state. The selected proposal defines independent consent and lifecycle; real secrets, publication and live delivery remain separate.",
+            "status": "resolved"
+          }
+        },
+        "id": "PR-4c647b0d-a7f9-4ff0-92bb-4e1380315a7d",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-34d00801-80f0-4356-b457-7a8b57679d9e"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-448a1e7c-aa58-4419-9f91-65afdb608312": {
+            "reason": "The inspected Ready task T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25 already owns the exact matrix/frame startup timing, stale-message, deadline and cold/warm detector contract inside the original frozen snapshot. The new intake is deduplicated; the startup investigation remains incomplete. Preserve existing task provenance and add the investigation as an explicit required dependency of voluntary review acceptance.",
+            "status": "resolved"
+          }
+        },
+        "id": "PR-29506012-3781-423c-b4df-f610391f4afa",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-448a1e7c-aa58-4419-9f91-65afdb608312"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-4b332426-b30d-4e73-a465-3d1f80eb0746"
+        ],
+        "dispositions": {
+          "P-0d4ef9e0-923d-4154-9dd5-8acc6c5f6fc5": {
+            "reason": "Inspected enabled-state markup, computed colors and current matrix establish a required bounded Settings presentation blocker.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-716816f3-76cc-4626-8bdd-7d96c555ad31",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-0d4ef9e0-923d-4154-9dd5-8acc6c5f6fc5"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192": {
+            "reason": "Separate production implementation requires reviewed MCP2 compatibility and an explicit callback URL/signing-secret ownership, consent, rotation and deletion decision. The prior Auth-vault answer covers Web Push only. Current offline research does not authorize the new lifecycle or live host tests.",
+            "status": "retained"
+          }
+        },
+        "id": "PR-b9197ff9-f3d8-48aa-bad4-67d746db5cad",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-0c8220b8-32cb-4146-a686-311ec22100d5"
+        ],
+        "dispositions": {
+          "P-4a4f9ec5-ff9d-4d78-a57d-90aa1c714249": {
+            "reason": "A distinct private Auth recovery capability is required; existing ordinary projection intentionally refuses non-Habit down scoring. Source, existing storage/lifecycle and synthetic gateway harness were inspected.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-7b19ca2b-4661-4aec-b83f-2225d66f16a3",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-4a4f9ec5-ff9d-4d78-a57d-90aa1c714249"
+        ],
+        "task_keys": {
+          "private-auth-task-recovery": "T-0c8220b8-32cb-4146-a686-311ec22100d5"
+        }
+      },
+      {
+        "created_ids": [
+          "T-585977fb-27b2-45fb-9923-058427da448d"
+        ],
+        "dispositions": {
+          "P-517c8fba-db97-472b-a88a-ff6673bf76c0": {
+            "reason": "Inspected executor request cleanup, journal attempt tokens and Auth receipt shape. A durable canonical binding and exact original-attempt reader are required before linked recovery can verify source completion.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-9e7ab186-f506-46fb-b5fd-d81732080464",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-517c8fba-db97-472b-a88a-ff6673bf76c0"
+        ],
+        "task_keys": {
+          "canonical-score-source-proof": "T-585977fb-27b2-45fb-9923-058427da448d"
+        }
+      },
+      {
+        "created_ids": [
+          "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0"
+        ],
+        "dispositions": {
+          "P-4baa7729-5f77-45d1-a530-07f7f9b18fd3": {
+            "reason": "Inspected archived task exclusion, exact-ID recovery reads, retained UI browsing and existing reviewed mutation receipts. A bounded read-only discovery tool is required for the same agent workflow.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-05a1194a-f796-4ce6-8b41-dc1e74887f07",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-4baa7729-5f77-45d1-a530-07f7f9b18fd3"
+        ],
+        "task_keys": {
+          "retained-recovery-discovery": "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0"
+        }
+      },
+      {
+        "created_ids": [
+          "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+          "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+          "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+          "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+          "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"
+        ],
+        "dispositions": {
+          "P-172ac0de-69a2-4bc3-bcd6-1117848875d6": {
+            "reason": "Source and tests conflate unaccepted stale/expired reviews with uncertain accepted effects, and the browser keeps uncertainty sticky. Create atomic terminal non-acceptance and typed original recovery without relaxing review conditions or replaying native work.",
+            "status": "promoted"
+          },
+          "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec": {
+            "reason": "Current browser bundles and original server receipts do not supply consented remote browser-log ingestion. Production storage location and retention remain an explicit owner choice: seven-day bounded Workspace storage after previewed upload, or a fifteen-minute temporary share. No answer has been received; no storage policy is inferred. See skill-tree/history/processing/pending-2026-10-28/decision-proposals.md. Browser sharing task T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b and diagnostic-name fix T-56a7a511-0ebf-41f8-8e1f-65ae87399459 remain separate existing work.",
+            "status": "retained"
+          },
+          "P-45cdf111-910f-455d-bbb5-89bc00de4bbe": {
+            "reason": "Browser-only exact adoption lacks a reviewed MCP preview/accept/original-receipt workflow. Create one bounded shared contract and migration parity inventory; existing migration controls remain independent.",
+            "status": "promoted"
+          },
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192": {
+            "reason": "Official MCP Events still requires MCP2.0 /2026-07-28, while installed SDK1.32.1 supports protocols only through2025-11-25. A separate callback URL/signing-secret ownership, consent, rotation and deletion selection remains unanswered; Web Push vault consent is not reused. Production protocol compatibility, connection-safe egress and actual host reply qualification remain unproven. See skill-tree/history/processing/pending-2026-10-28/decision-proposals.md and originating-chat-reminders.md.",
+            "status": "retained"
+          },
+          "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa": {
+            "reason": "The exact retained source read at workspace revision164 shows both named archived completed targets linked to distinct native IDs, storedCorrespondence true, no pending commands and requiresHistoricalMatch false; the obsolete source is already archived. The original missing-correspondence condition is resolved as retained canonical evidence. No fresh native verification or whole conversion readiness is claimed. Agent adoption parity remains P-45cdf111-910f-455d-bbb5-89bc00de4bbe and false tag invalidation remains P-8e196ade-395e-4737-a1eb-2172488bddc4. Evidence: skill-tree/history/processing/pending-2026-10-28/retained-migration-observation.json.",
+            "status": "resolved"
+          },
+          "P-8e196ade-395e-4737-a1eb-2172488bddc4": {
+            "reason": "Current Worker status and both retirement policies invalidate stored tag membership solely on global workspace revision changes. Replace the false invalidation with scoped complete desired-evidence validation.",
+            "status": "promoted"
+          },
+          "P-8e7323df-2f47-4e19-864d-821ed108e7f2": {
+            "reason": "Local implementations T-b89fac23-3ac2-4c64-8560-be7a5d796a81, T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0 and existing foreground/server pacing cover the requested counters, quota handling and explicit gear recovery. No duplicate feature unit is needed. Closure of the reported deployed iPhone incident still requires the currently loaded PWA build and fresh sanitized device evidence; any live spell reproduction needs a separately bounded owner profile. Existing local evidence and release gate T-d76d2a9a-1318-4e63-9bb4-73f620b108cc do not establish that incident closure. See skill-tree/history/processing/pending-2026-10-28/research.md.",
+            "status": "retained"
+          },
+          "P-da73f47f-e30c-4174-9f46-b14984ce1bf9": {
+            "reason": "The current Notes model, storage, read filters and MCP commands have no project association. Split compatible versioned model/API/MCP work from dependent Notes/project UI work while preserving one Pending origin.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-cc5061a4-7801-422f-b5c3-9cdb86d4c235",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-8e7323df-2f47-4e19-864d-821ed108e7f2",
+          "P-45cdf111-910f-455d-bbb5-89bc00de4bbe",
+          "P-8e196ade-395e-4737-a1eb-2172488bddc4",
+          "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+          "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+          "P-da73f47f-e30c-4174-9f46-b14984ce1bf9",
+          "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+        ],
+        "task_keys": {
+          "notes-project-contract": "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+          "notes-project-ui": "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+          "reviewed-task-adoption": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+          "scoped-tag-evidence": "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+          "tag-review-outcomes": "T-ee09583d-26dc-4291-880a-0b7a4801842e"
+        }
+      },
+      {
+        "created_ids": [
+          "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+          "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+          "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+          "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+          "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+        ],
+        "dispositions": {
+          "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec": {
+            "reason": "Owner selected Workspace D1, separate diagnostic consent, preview-only uploads, seven-day deletion and strict quotas. Promote a bounded storage/read contract and dependent browser sharing UI without enabling consent or uploading actual logs.",
+            "status": "promoted"
+          },
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192": {
+            "reason": "Owner selected Auth-only encrypted callback URL/signing-secret ownership, Workspace opaque subscription/receipt state and separate consent/revocation cleanup. Official SDK v2 supplies an explicit2026-07-28 migration path. Split required protocol compatibility, protected vault/subscription lifecycle and dependent reminder delivery; live host response remains separately unqualified.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-9722057b-0549-4478-8c12-6ee286276060",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+          "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+        ],
+        "task_keys": {
+          "diagnostics-share-ui": "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+          "diagnostics-store-read": "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+          "event-subscriptions-vault": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+          "mcp2-compatibility": "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+          "reminder-event-delivery": "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+        }
+      }
+    ],
+    "required_ids": [
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "T-1f306466-4618-4f88-b14b-589b295acbd2",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "T-fed75824-e410-4bca-8664-5039742424da",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "T-6b956777-ed98-4783-a353-5e490de79444",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "T-ce88de57-a6d2-42ed-b55c-15799b5d0335",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "T-c981605b-e7e9-460c-9ef6-deab60d421e9",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "T-aba3cf27-e492-4d20-89ba-5161b7521bc4",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "T-4b332426-b30d-4e73-a465-3d1f80eb0746",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-0c8220b8-32cb-4146-a686-311ec22100d5",
+      "T-585977fb-27b2-45fb-9923-058427da448d",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-b1f5eaa4-7ee5-4886-9c6e-156d86f326a0",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+    ],
+    "root_task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "snapshot": [
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "T-fed75824-e410-4bca-8664-5039742424da",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "T-6b956777-ed98-4783-a353-5e490de79444",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
+      "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+    ],
+    "started_at": "2026-10-21T11:45:48.821286+00:00",
+    "stop_reason": null
+  },
+  "format": "owner-selected-focus-checkpoint",
+  "reason": "Owner explicitly invoked Work Through Next for T-081b9081-8405-4fe8-9375-101cdd1b148e after standalone processing disclosed focus outside the frozen Implement All snapshot. Preserve unfinished run for explicit later resumption.",
+  "recorded_at": "2026-10-28T12:18:50.825297+00:00",
+  "selected_task_id": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+  "source_hash": "c30c2ebb1631d388fc8748fef9510f3b054ccc8e98047ce10978a764f7a7d98a"
+}

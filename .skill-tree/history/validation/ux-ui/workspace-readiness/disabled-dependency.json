@@ -1,0 +1,9 @@
+{
+  "parent_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "dependency_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "reason": "The actual task-panel fixture fails the required disabled-text product floor. The existing initially frozen task owns the repair; no duplicate task or snapshot expansion is needed.",
+  "evidence": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/345d76b0-5a97-4323-a255-f0b159bb0ead-failure.json",
+  "observed_ratio": 2.216562667757382,
+  "minimum": 3,
+  "scope": "Existing admitted initial snapshot identity reused with an explicit dependency edge."
+}

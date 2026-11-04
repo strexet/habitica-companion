@@ -1,0 +1,11 @@
+{
+  "name": "chatgpt-auth-full",
+  "argv": [
+    "npm",
+    "test"
+  ],
+  "exit_code": 1,
+  "seconds": 52.475,
+  "deadline_seconds": 1200,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/chatgpt-auth-full.log"
+}

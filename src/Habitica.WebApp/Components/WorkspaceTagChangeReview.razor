@@ -7,7 +7,7 @@
         <h4>Group tag metadata</h4>
         @if (!tags.ScopeAllowed || !tags.ConsentEnabled) { <p>Native changes can be saved. Tag metadata will require separate permission and a new review; saving does not grant tag access.</p> }
         else { <p>Review the complete group membership below. Tag metadata gives no game rewards. Background execution has a separate opt-in.</p> }
-        @foreach (var group in tags.Groups) { <p><strong>@group.Name</strong> · @group.Kind · @(group.RetainMembership?"Keep archived tag membership":$"Ensure named tag; {group.TaskIds.Count} desired task links, {group.RemovedTaskIds.Count} managed removals")</p> }
+        @foreach (var group in tags.Groups) { <p><strong>@group.Name</strong> · @group.Kind · @(group.UnavailableReason is not null?"Relative dates require a separate day-bound membership review; existing tags remain unchanged":group.RetainMembership?"Keep archived tag membership":$"Ensure named tag; {group.TaskIds.Count} desired task links, {group.RemovedTaskIds.Count} managed removals")</p> }
         @if (_rows.Count>0)
         {
             <ul>@foreach (var row in _rows.Skip(_offset).Take(20)) { <li><strong>@TaskName(row.TaskId)</strong> · @row.GroupName · @(row.Present?"Add or retain tag":"Remove managed tag") · @row.TaskId</li> }</ul>

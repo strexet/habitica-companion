@@ -1,0 +1,73 @@
+{
+  "assertion": "Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.",
+  "attempt_id": "C-8d565491-3bde-49e6-a820-6b4431bbbf55",
+  "check_id": "shell-content-behavior",
+  "definition": "704efffe91afca8613b76f1d786c29714e0aba44d7802202482a2caba33849bb",
+  "environment_identity": "82c65cb2c631718803acdbbe38ac5b0c34efe17c4ea861692df6a41b7995a5dc",
+  "key": "5dbad74b096132857d6cf7ea1bc60e77012367e78405558744a88935e659447e",
+  "launch": {
+    "assertion": "Current App theme output is present in full-shell captures; primary body markers remain exported and existing menu/skip behavior stays intact. Independent geometry canaries separately prove rejection of covered content.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T00:16:51.411754+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T00:11:51.730854+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+      "--logger",
+      "trx;LogFileName=shell-content-visibility.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/shell-content-visibility/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "399153641d2f95f9f322476a234fafaa929b6f33c19316807ecb61589401966e",
+    "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8"
+  },
+  "task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f"
+}

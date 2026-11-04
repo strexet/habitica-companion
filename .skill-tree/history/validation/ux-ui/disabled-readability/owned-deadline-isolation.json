@@ -1,0 +1,11 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/4172435a-e0c1-4ff6-8719-bca7faed0c52-failure.json",
+  "observed": "The1200-second browser deadline stopped the run after44 completed engine/palette pairs: all24 Chromium palettes and20 WebKit palettes.538 hydrated journeys and3228 baseline measurements were retained; the matrix remained incomplete and unaccepted.",
+  "source_cost": "One page alternated static documents and the running app. The journey explicitly navigated to seed and cold-started Blazor for each case, repeatedly downloading/initializing the owned Release.",
+  "repair": "The disabled-readability adapter declares a separate retained app page. Each engine still cold-starts once, keeps synthetic session/preferences isolated and traverses every required route/case. Static fixtures run on the other page and permit real responsive layout settlement. Exact full coverage and a single cold start per engine worker are asserted. No partial result is reused for acceptance and no deadline is enlarged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: New/open/back, unsaved note, long library, selected project/folder, new folder, failed save, original pending command, reload, phone-to-desktop resize. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-b8b7827c-2277-42dd-ae97-139871dac79c",
+  "check_id": "phone-notes-editor-behavior",
+  "definition": "4e5651ac4efbbdf5a86b31d1759505d90f5e5ed14a2f3d0331829c5f955e4463",
+  "environment_identity": "bace8527d3d6d0ba46bfe079c39ee5d4a5b83361ccc7d400b33289f667a3c341",
+  "key": "e7b2b47bed6cc0c032cb649db5cd86ed5a1622010ad9105f04fd451b6d7f019d",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: New/open/back, unsaved note, long library, selected project/folder, new folder, failed save, original pending command, reload, phone-to-desktop resize. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T22:05:45.109290+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T22:00:45.935222+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesFolderPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+      "--logger",
+      "trx;LogFileName=phone-notes-editor.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/phone-notes-editor/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "e2027657d18b64bb7a013ff8cbead4aa748f3ebd3869863abd3e761e02c630cb",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7b45166a88500be0689e62b4e2ef74a833cdfd3ec8cfe137ffa472892d5672e6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "20049e312fa6ad9aaacf5a988ec9b6645e021cbbbeea64b21367c79c89cbd35c",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51"
+  },
+  "task_id": "T-25c6623e-1818-4e23-b920-cd3833fa7a21"
+}

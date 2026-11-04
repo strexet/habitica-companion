@@ -101,3 +101,8 @@ Thumbs.db
 /.skill-tree/installation/.last-transaction.json
 /.skill-tree/installation/.staging/
 /.skill-tree/installation/.backups/
+
+# Reviewed public plugin releases survive production Git builds.
+!src/Habitica.WebApp/wwwroot/downloads/
+!src/Habitica.WebApp/wwwroot/downloads/*.zip
+!src/Habitica.WebApp/wwwroot/downloads/*.json

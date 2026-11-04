@@ -1,0 +1,10 @@
+{
+  "candidate_file_count": 3022,
+  "execution_profile_verified_for_exact_worktree": true,
+  "old_controller_stop_preserved": true,
+  "pass": true,
+  "protected_value_scan": "No current owner API token, Cloudflare session token, local secret values or private-key material in the candidate payload. Synthetic fixture credentials remain test data.",
+  "public_production_changed": false,
+  "snapshot_commit": "6434dccc2a1900a7517f999d05d49fc55f896680",
+  "verified_frozen_blob_count": 3022
+}

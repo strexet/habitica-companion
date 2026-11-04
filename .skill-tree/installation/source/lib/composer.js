@@ -2,6 +2,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
+const bindings=require('./execution-bindings.js');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 function stable(value) {
  if(Array.isArray(value)) return value.map(stable);
@@ -42,7 +43,7 @@ function resolveProfile(source,root,flavor) {
  root=fs.realpathSync(root);
  const registry=readJson(source,'config/flavors.json'),rules=readJson(source,'config/capabilities.json');
  if(!registry.flavors[flavor])throw Error('Unknown flavor: '+flavor);
- const fixed=['package.json','package-lock.json','npm-shrinkwrap.json','yarn.lock','pnpm-lock.yaml','bun.lock','bun.lockb','.nvmrc','.node-version','pyproject.toml','pytest.ini','Cargo.toml','ProjectSettings/ProjectVersion.txt','ProjectSettings/EditorSettings.asset','ProjectSettings/ProjectSettings.asset','Packages/manifest.json','Packages/packages-lock.json','.skill-tree/validation-recipes.json'];
+ const fixed=['package.json','package-lock.json','npm-shrinkwrap.json','yarn.lock','pnpm-lock.yaml','bun.lock','bun.lockb','.nvmrc','.node-version','pyproject.toml','pytest.ini','Cargo.toml','ProjectSettings/ProjectVersion.txt','ProjectSettings/EditorSettings.asset','ProjectSettings/ProjectSettings.asset','Packages/manifest.json','Packages/packages-lock.json','.skill-tree/validation-recipes.json','.skill-tree/worktree-profile.json'];
  const discovered=inventory(root,rules.inventory),inputs={};
  for(const rel of [...new Set([...fixed,...discovered])].sort()){inputs[rel]=inputDigest(root,rel);}
  const facts={test_assemblies:[],ui:[]},recipes={},gaps=[];
@@ -87,9 +88,12 @@ function resolveProfile(source,root,flavor) {
   else if(!facts.test_assemblies.length)gaps.push({key:'test-foundation',reason:'UTF exists without a discovered test assembly.',recommendation:'Configure the existing UTF framework and one meaningful EditMode test assembly; preserve package pins.'});
  } else if(!Object.values(recipes).some(r=>['unit','integration','browser'].includes(r.lane)))gaps.push({key:'test-foundation',reason:'No usable foundational test command is declared.',recommendation:'Research existing tools, select or configure a compatible foundational test framework, add one meaningful smoke test, document focused commands and refresh the profile.'});
  const explicit=readJson(root,'.skill-tree/validation-recipes.json',null);
+ const execution_bindings=explicit?bindings.resolveBindings(root,explicit):{};
+ for(const binding of Object.values(execution_bindings))for(const rel of [binding.locator,binding.review_path])inputs[rel]=inputDigest(root,rel);
  if(explicit){if(explicit.schema!==1||!explicit.recipes)throw Error('Unsupported static validation recipe format');for(const [id,recipe] of Object.entries(explicit.recipes)){
   if(!/^[a-z][a-z0-9-]*$/.test(id)||!Array.isArray(recipe.argv)||!recipe.argv.length||recipe.argv.some(v=>typeof v!=='string')||!rules.lanes.includes(recipe.lane))throw Error('Invalid or unsupported static recipe lane: '+id);
   if(recipes[id])throw Error('Recipe collision: '+id);
+  if(recipe.execution_binding&&(!execution_bindings[recipe.execution_binding]||!['unity-editmode','unity-playmode'].includes(recipe.lane)||recipe.editor_version!==execution_bindings[recipe.execution_binding].pins.editor_version))throw Error('Recipe requires a matching reviewed Unity execution binding: '+id);
   recipes[id]={...recipe,input_paths:['.skill-tree/validation-recipes.json',...(recipe.input_paths||[])],qualification:'owner-declared static recipe; runner unqualified'};
   for(const rel of recipe.input_paths||[]){inputs[rel]=inputDigest(root,rel);}
  }
@@ -102,8 +106,12 @@ function resolveProfile(source,root,flavor) {
   facts.capabilities[id]={state,package:rule.package,version:pkg?.version||null};
   if(['ambiguous','unsupported'].includes(state))gaps.push({key:'unavailable-specialization',capability:id,reason:'The bundled version-specific fixture contract is unavailable; declared commands require owned qualification.'});
  }
- const environment_id=hash(json({flavor,inputs,facts,recipes}));
- return {format:'skill-tree-profile',schema:1,composer_version:registry.composer_version,flavor,project_root:root,inputs,inventory:discovered,facts,recipes,gaps,environment_id,qualification:'static compatibility only; product execution unqualified'};
+ const worktree_environment=readJson(root,'.skill-tree/worktree-profile.json',{schema:1,required_files:[],isolated_directories:[],exclusive_resources:[]});
+ if(worktree_environment.schema!==1)throw Error('Unsupported worktree environment declaration');
+ for(const key of ['required_files','isolated_directories'])for(const rel of worktree_environment[key]||[])safe(root,rel);
+ if((worktree_environment.exclusive_resources||[]).some(key=>typeof key!=='string'||!key))throw Error('Explicit runtime resource identities required');
+ const environment_id=hash(json({flavor,inputs,facts,recipes,execution_bindings,worktree_environment}));
+ return {format:'skill-tree-profile',schema:1,composer_version:registry.composer_version,flavor,project_root:root,inputs,inventory:discovered,facts,recipes,gaps,environment_id,execution_bindings,worktree_environment,qualification:'static compatibility only; product execution unqualified'};
 }
 function mergeSections(common,additions,replaceable=[]) {
  const result=common.map(s=>({...s}));
@@ -147,7 +155,7 @@ function compose(source,profile,selected=null) {
   const domainFiles={};for(const [dest,src] of Object.entries(recipe.resources))domainFiles[dest]=read(source,src);
   files=mergeResources(files,domainFiles,recipe.replacements||{});
   for(const item of active){const extra={};for(const [dest,src] of Object.entries(item.resources))extra[dest]=read(source,src);files=mergeResources(files,extra,item.replacements||{});}
-  files['references/project-profile.md']='# Concrete Project Profile\n\nFlavor: '+profile.flavor+'. Static compatibility only; execution remains unqualified.\n\n```json\n'+json({instruction_profile_id:hash(json({flavor:profile.flavor,facts:profile.facts,recipes:profile.recipes,gaps:profile.gaps})),facts:profile.facts,recipes:profile.recipes,gaps:profile.gaps})+'```\n';
+  files['references/project-profile.md']='# Concrete Project Profile\n\nFlavor: '+profile.flavor+'. Static compatibility only; execution remains unqualified.\n\n```json\n'+json({instruction_profile_id:hash(json({flavor:profile.flavor,facts:profile.facts,recipes:profile.recipes,gaps:profile.gaps})),facts:profile.facts,recipes:profile.recipes,gaps:profile.gaps,worktree_environment:profile.worktree_environment})+'```\n';
   files['SKILL.md']='---\nname: '+name+'\ndescription: '+JSON.stringify('['+profile.flavor+'] '+op.description)+'\nlicense: MIT\n---\n\n# '+op.title+'\n\nFlavor: '+profile.flavor+'. Read the [concrete project profile](references/project-profile.md).\n\n'+sections.map(s=>s.text).join('\n\n')+'\n';
   files['agents/openai.yaml']='interface:\n  display_name: '+JSON.stringify(op.title+' ('+profile.flavor+')')+'\n  short_description: '+JSON.stringify(profile.flavor+' Skill Tree workflow')+'\n';
   for(const [rel,content] of Object.entries(files)){if(typeof content!=='string')throw Error('Missing composition resource: '+rel);safe(source,rel);}

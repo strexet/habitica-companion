@@ -1,0 +1,11 @@
+{
+  "existing_task_metadata_preserved": 15,
+  "new_pending_count": 24,
+  "active_checkpoint_changed_fields": [
+    "phase",
+    "pending_ids"
+  ],
+  "active_checkpoint_root_snapshot_stop_reason_next_action_preserved": true,
+  "task_progress_preserved": true,
+  "ui_source_fingerprints_match": true
+}

@@ -1,0 +1,5 @@
+{
+  "finding": "Controlled invalid-revision reload shows generic uncertain-save/receipt advice although the operation was a read and no original command exists.",
+  "screenshot": ".skill-tree/artifacts/ux-ui/workspace-readiness/1793707349512775000/chromium-gryphy-light-360-200-readiness-tasks.png",
+  "action": "Stop the owned browser matrix, preserve its interrupted receipt, add a public reload exception regression and distinguish read-only load errors from mutation uncertainty."
+}

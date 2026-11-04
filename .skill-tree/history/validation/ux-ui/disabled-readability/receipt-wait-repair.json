@@ -1,0 +1,11 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/cc53c894-58ba-436e-ac8f-8ed08b9a57cf-failure.json",
+  "observed": "The first4 palettes completed under both engines. The run had112 hydrated journeys and664 baseline measurements when the10-second attached-receipt wait expired. Its retained inventory document contains the exact matching case receipt with errors=[] and unqualifiedSurfaces=[]; it is not accepted from that failed run.",
+  "load_factor": "A focused dotnet build/test overlapped the browser run. Host contention is a possible factor, not a proven product defect. No further build will overlap a browser run.",
+  "repair": "Use a single bounded30-second wait for an exact session/engine/palette/width/text/fixture receipt. Fatal frame errors also emit terminal receipts. Record inspection elapsed time for diagnosis. Keep overall operation deadlines and no retries within a case.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

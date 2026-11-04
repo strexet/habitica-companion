@@ -42,7 +42,7 @@ public sealed class UnifiedWorkspaceFlowTests:BunitContext
             return Task.FromResult(values.Any(value=>value.Authority?.Mode is WorkspaceAuthorityMode.Frozen or WorkspaceAuthorityMode.Cloud)?new BrowserWorkspaceSelection(null,values.Length>1,true):new(values.Length==1?values[0].Document.Id:null,values.Length>1,false));
         }
         public Task<BrowserTransferInventory> InventoryAsync(string account,string scope,CancellationToken token)=>Task.FromResult(new BrowserTransferInventory(tasks.Js.Rows.Where(pair=>pair.Key.Scope==account).Select(pair=>pair.Value).ToArray(),notes.Stores.GetValueOrDefault(scope)?.Book is {} book?NotesJson.Serialize(book):null,Pending));
-        public Task<BrowserTransferState> FreezeAsync(string account,string scope,Guid id,Guid target,IReadOnlyList<BrowserTransferPlan> plans,CancellationToken token)
+        public Task<BrowserTransferState> FreezeAsync(string account,string scope,Guid id,Guid target,IReadOnlyList<BrowserTransferPlan> plans,CancellationToken token,string? expectedNotesJson=null)
         {
             if(Pending is {} existing)return Task.FromResult(JsonSerializer.Deserialize<BrowserTransferState>(existing,Json)!);Captures++;
             foreach(var plan in plans){var value=WorkspaceJournalJson.Deserialize(plan.FrozenJson);tasks.Js.Rows[(account,value.Document.Id.ToString("D"))]=plan.FrozenJson;}
@@ -66,6 +66,8 @@ public sealed class UnifiedWorkspaceFlowTests:BunitContext
             if(_receipt is not null)return Task.FromResult(new WorkspaceActionResult(true,"Original accepted receipt",_receipt));
             var review=JsonNode.Parse(Fixture("review.json"))!;review["transferId"]=id;review["artifactHash"]=Hash(_artifact!);review["ready"]=!Conflict||archiveConflicts;review["archiveConflicts"]=archiveConflicts;review["expiresAtUtc"]=DateTimeOffset.UtcNow.AddMinutes(10);review["reviewHash"]=null;
             if(Conflict)review["conflicts"]=JsonSerializer.SerializeToNode(new[]{new{kind="tasks",id=Guid.NewGuid(),sourceWorkspaceId="synthetic-source",retainedSource="cloud"}});
+            review["counts"]!["folders"]=1;review["counts"]!["folderReceipts"]=2;review["counts"]!["existingTargetFolders"]=1;
+            review["noteFolders"]=JsonSerializer.SerializeToNode(new[]{new{id=Guid.Parse("30000000-0000-4000-8000-000000000099"),name="Exact retained folder Ж",revision=2,isRemoved=false}});
             review["reviewHash"]=Hash(review.ToJsonString());_review=review.ToJsonString();return Task.FromResult(new WorkspaceActionResult(true,"Synthetic exact review",_review));
         }
         public Task<WorkspaceActionResult> AcceptTransferAsync(Guid id,string reviewHash,CancellationToken token)

@@ -1,0 +1,67 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-250bdcc8-5d26-4dd0-a152-7d13f5ede7d7",
+  "classification": "executed-control",
+  "cleanup": "The pure Node controls exited. No server, Miniflare/D1 instance, account or external request was used.",
+  "counts": {
+    "discovered": 21,
+    "expected": 21,
+    "failed": 0,
+    "passed": 21,
+    "skipped": 0
+  },
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "dbef3285f85298430713c176ab329720dda85e1ebff0f11aa28870449ef4bde7",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/wire-provenance-final-execution.log",
+      "sha256": "937808d70a50db3066fea73c58ae2e2256de40e44851836627b7c129876e9952"
+    }
+  ],
+  "execution_sessions": {
+    "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+      "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+      ],
+      "profile_id": "activity-streaks-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-a207941a",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+      "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+      ],
+      "profile_id": "activity-streaks-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-16d53395",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "dd32d0073910ebe98cf3f9bed62192aa2ef009db2990f6c604b616772645fca9",
+  "payload_hash": "f84cd96a8caba690fa20d698970d192a093dcb6ec352ce4fadfeebdb6afba83c",
+  "recorded_at": "2026-11-02T18:56:25.812921+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+    "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+    "workers/companion-workspace/test/activity-streaks.test.mjs": "76d418dc946ec283463f920f2de3449cb205483fc03bcc1225151774826bf82c",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f"
+  },
+  "timing": {
+    "tool_wall_seconds": 0.28797941701486707
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-9e15dbfb-52e2-405b-8ff7-e7b70ce71387",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 37,
+    "expected": 37,
+    "failed": 4,
+    "passed": 33,
+    "skipped": 0
+  },
+  "definition": "90972774c538c971e88fa0f7a0d6cb03be9f39bfd00d59b0efbe12d34660ff2c",
+  "diagnostic_key": "38c74679eb54ab48ecad30ac1d364ccc404c9ba7e1bd66cb1ee478a5680ac8fd",
+  "environment_identity": "3faab00121393ef8ece332c5c40f04f6f91db81ecc4880b433dbb79f7f591a9c",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-ui-first-execution.log",
+      "sha256": "a5eb249b28cbe3ea6e441cb9dac994c2e32b57397f38c363e416b77e9425a06d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-ui-first.trx",
+      "sha256": "4e524c90100316cffdf585ae9f73788794fe7cdfe46cf14f19a6c3ac9370c6f4"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "activity_suite_failure_history-components",
+  "key": "5dbd13cc1182a601a2448a5ae29cd2cd18ce3fa57bcbaced4080dc3fb403d185",
+  "payload_hash": "cef8b4382dbe2948a859eeaf92248cd4072ea017a9c163b0b808606ee1c0cca5",
+  "recorded_at": "2026-11-02T22:33:00.788007+00:00",
+  "result": "fail",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f6f13184d35eae86bfce657c1ebe688ccea53877026f2da7f4b7328084c1ed70",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "37b0a2abaa0264e36e999c698131ef751e37016a8da433380e1b80c60743fe60",
+    "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs": "63fc342aa3fffad40e1af498a8fc8ac7166d21418fe77ea1a603b0ae9c2a4433",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+    "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "072f7e7e5d3284b83f894bd9e1c2f5563826d46c7d34118ea94a0e88746c43a3",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "c7d3df0b16e1c04e777829717d542192aeec9345e243fed1382de688b2ee8448",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "e804b8156d602ae53c2c0b21fc315da4aa22fb2fb8f033c4ad3ff93e37f6e062",
+    "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9"
+  },
+  "timing": {
+    "tool_wall_seconds": 14.055189291015267
+  }
+}

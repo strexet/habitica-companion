@@ -1,0 +1,658 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Daily capture follows title, required schedule fields and primary action in DOM and visual order.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.log",
+          "sha256": "0eee49c683f27d552c4062b22210ea0e43628e8062648e92a311a76aafa6b192"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.trx",
+          "sha256": "022e84537054b017b81fb4dd7708cf7c4be39c3b4fd797d83274a85628ab10fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6.tap",
+          "sha256": "f99bfacd5693297c534f2ec0aa0fe5b5b03be7427c2d83e4566c6d9a403ee984"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/acceptance.json",
+          "sha256": "dd43c92e13b0f7113f61dc6a3c3789e55664656c4835ad1956dc79420cbeab5c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json",
+          "sha256": "caf6fa4c4c879d85b3d7535ee6b3a75bb0ef492439387d1923bb252015346033"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Incomplete Daily capture remains rejected while valid Daily and title-first Todo/Habit behavior retain existing contracts.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.log",
+          "sha256": "0eee49c683f27d552c4062b22210ea0e43628e8062648e92a311a76aafa6b192"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.trx",
+          "sha256": "022e84537054b017b81fb4dd7708cf7c4be39c3b4fd797d83274a85628ab10fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6.tap",
+          "sha256": "f99bfacd5693297c534f2ec0aa0fe5b5b03be7427c2d83e4566c6d9a403ee984"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/acceptance.json",
+          "sha256": "dd43c92e13b0f7113f61dc6a3c3789e55664656c4835ad1956dc79420cbeab5c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json",
+          "sha256": "caf6fa4c4c879d85b3d7535ee6b3a75bb0ef492439387d1923bb252015346033"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Tab order, errors, native fields and primary actions pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.log",
+          "sha256": "0eee49c683f27d552c4062b22210ea0e43628e8062648e92a311a76aafa6b192"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.trx",
+          "sha256": "022e84537054b017b81fb4dd7708cf7c4be39c3b4fd797d83274a85628ab10fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6.tap",
+          "sha256": "f99bfacd5693297c534f2ec0aa0fe5b5b03be7427c2d83e4566c6d9a403ee984"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/acceptance.json",
+          "sha256": "dd43c92e13b0f7113f61dc6a3c3789e55664656c4835ad1956dc79420cbeab5c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json",
+          "sha256": "caf6fa4c4c879d85b3d7535ee6b3a75bb0ef492439387d1923bb252015346033"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Daily capture follows title, required schedule fields and primary action in DOM and visual order.",
+          "Incomplete Daily capture remains rejected while valid Daily and title-first Todo/Habit behavior retain existing contracts."
+        ],
+        "id": "daily-form-order-behavior",
+        "parameters": {
+          "report_name": "daily-form-order.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/daily-form-order/unit",
+          "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoRecurringEditorTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor",
+          "src/Habitica.WebApp/State/DailyCreationDraft.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 37,
+          "expected": 37,
+          "failed": 0,
+          "passed": 37,
+          "skipped": 0
+        },
+        "definition": "fd64ebdc4780f324216e4d12ff826fc38b94e2307aed0744282cc1aa2207e4d4",
+        "environment_identity": "1cc2f67bbbc4cc1d06a1472f8d24f3ea9629106066541367544d68a56c085f5d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.log",
+            "sha256": "0eee49c683f27d552c4062b22210ea0e43628e8062648e92a311a76aafa6b192"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e0ddfe33-a243-46c8-b9fd-83a6546f50bb.trx",
+            "sha256": "022e84537054b017b81fb4dd7708cf7c4be39c3b4fd797d83274a85628ab10fa"
+          }
+        ],
+        "execution_sessions": {
+          "15ea887dff7f464811e970a5215e52c84d73a884d44fa78bfdf841376307d02c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:15:10.648797+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793717950648989000.json"
+            ],
+            "profile_id": "0d77e8bb7cd04a9442abea8ffdf0fafa16527687dcf583ebe48aa19f1a2d81c2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "9cbf93939d13eeb2d5b315bcdb55f0f9012220bd292ac2e744f0761156e53745": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:29:45.353610+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718825353880000.json"
+            ],
+            "profile_id": "09dac75e3aaf408208d039f9c32b71b57c2bb9ea26b807e8c562dfbaafb51f2c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "dd1d1433ffa570425af8073ff3e6efe63bbd728b2cfcff02a180e0311a4eef0e": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:20:04.338015+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718244338242000.json"
+            ],
+            "profile_id": "5147eb5619d0805da6dce25f78e2f462dd17661589aa28ad30977905db43ebfb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "5c928672565ed90658cd5fa40f31da58561b6815b65ec3ae5ae84e7f30b27a6b",
+        "payload_hash": "03b2a6c71c16bd7b4f37af8119af46c319c39df8af15573a2886678e05c775e7",
+        "recorded_at": "2026-11-03T15:16:03.547057+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "c2f9427dd84102597d19d22afb6f3f2d7690f827c9ad4a65112ba69491cfc104",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "fce7844ad567f4141d9584c3e9652ab22c569c7702385fce2c036bdce147cdf7",
+          "src/Habitica.WebApp/State/DailyCreationDraft.cs": "c2647fa90441784e2688e56baa21f4653d03aacdf6caee30ecaf8d0b624f8b2a",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1f6e264467941cda8da68dbc2b286464e51d0248cf68c38c2944020e32cf084d"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.8251175419427454
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Tab order, errors, native fields and primary actions pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Tab order, errors, native fields and primary actions pass across the required rendered matrix."
+        ],
+        "id": "daily-form-order-rendered",
+        "parameters": {
+          "cases": "Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/daily-form-order/browser",
+          "routes": [
+            "/todo/dailies",
+            "/todo/tasks",
+            "/todo/habits"
+          ],
+          "task_key": "daily-form-order"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor",
+          "src/Habitica.WebApp/State/DailyCreationDraft.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-daily-order-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-2394108b-9e61-47b5-8b82-756e8e7f7ce2",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "fd64ebdc4780f324216e4d12ff826fc38b94e2307aed0744282cc1aa2207e4d4",
+        "environment_identity": "43a6c63602cba63fca4517eff0bf0be59cd93320bb26d9a23ba711e6ca7c1944",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-form-order/browser/ceee0908-a661-4b27-9d93-896b94253712.json",
+            "sha256": "caf6fa4c4c879d85b3d7535ee6b3a75bb0ef492439387d1923bb252015346033"
+          }
+        ],
+        "execution_sessions": {
+          "15ea887dff7f464811e970a5215e52c84d73a884d44fa78bfdf841376307d02c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:15:10.648797+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793717950648989000.json"
+            ],
+            "profile_id": "0d77e8bb7cd04a9442abea8ffdf0fafa16527687dcf583ebe48aa19f1a2d81c2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "4903fb546a4c89cb6ca4e7daca9170bf062390e09322eac83d62b1aa8c0ad367": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:32:29.520831+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718989521042000.json"
+            ],
+            "profile_id": "9086a01c318356b049906940d879f7c9cc7e7061b1fb279acc771b181d6f5999",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "9cbf93939d13eeb2d5b315bcdb55f0f9012220bd292ac2e744f0761156e53745": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:29:45.353610+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718825353880000.json"
+            ],
+            "profile_id": "09dac75e3aaf408208d039f9c32b71b57c2bb9ea26b807e8c562dfbaafb51f2c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "dd1d1433ffa570425af8073ff3e6efe63bbd728b2cfcff02a180e0311a4eef0e": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:20:04.338015+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718244338242000.json"
+            ],
+            "profile_id": "5147eb5619d0805da6dce25f78e2f462dd17661589aa28ad30977905db43ebfb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "f05972f01a99703f44a143cf0236c672b4f78106c705efcdf3b304c11e81abf2",
+        "payload_hash": "48746cc4f1c82a3a33b67815fd40e640bd7e939bae2606bdf1e0855f89cbe591",
+        "recorded_at": "2026-11-03T15:20:28.973898+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "c2f9427dd84102597d19d22afb6f3f2d7690f827c9ad4a65112ba69491cfc104",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "fce7844ad567f4141d9584c3e9652ab22c569c7702385fce2c036bdce147cdf7",
+          "src/Habitica.WebApp/State/DailyCreationDraft.cs": "c2647fa90441784e2688e56baa21f4653d03aacdf6caee30ecaf8d0b624f8b2a",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1f6e264467941cda8da68dbc2b286464e51d0248cf68c38c2944020e32cf084d",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "318022d4bcf69313ac16442ceaaf5a9280b5a7d10947d75c9778f16b6bd80821",
+          "tests/browser-qualification/ux-ui-daily-order-journey.mjs": "94d046f11a042b051c6fd023f59914ee07f04faf3ba1d7b920a0dcc0dbeb80e9",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d"
+        },
+        "timing": {
+          "tool_wall_seconds": 238.3244094159454
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Keep independent native ink retention and clipped-negative, disabled contrast, exact matrix, observed appearance, fixture ownership and cleanup controls passing. The97-percent retained-ink floor remains unchanged; native browser canaries also verify inherited disabled-state parity.",
+        "criteria": [
+          "Tab order, errors, native fields and primary actions pass across the required rendered matrix."
+        ],
+        "id": "daily-form-order-native-oracles",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 29,
+          "expected": 29,
+          "failed": 0,
+          "passed": 29,
+          "skipped": 0
+        },
+        "definition": "fd64ebdc4780f324216e4d12ff826fc38b94e2307aed0744282cc1aa2207e4d4",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/daily-form-order/C-e204e5a6-fe06-4c19-8f3e-82d8d1c012f6.tap",
+            "sha256": "f99bfacd5693297c534f2ec0aa0fe5b5b03be7427c2d83e4566c6d9a403ee984"
+          }
+        ],
+        "execution_sessions": {
+          "15ea887dff7f464811e970a5215e52c84d73a884d44fa78bfdf841376307d02c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:15:10.648797+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793717950648989000.json"
+            ],
+            "profile_id": "0d77e8bb7cd04a9442abea8ffdf0fafa16527687dcf583ebe48aa19f1a2d81c2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "9cbf93939d13eeb2d5b315bcdb55f0f9012220bd292ac2e744f0761156e53745": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:29:45.353610+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718825353880000.json"
+            ],
+            "profile_id": "09dac75e3aaf408208d039f9c32b71b57c2bb9ea26b807e8c562dfbaafb51f2c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "dd1d1433ffa570425af8073ff3e6efe63bbd728b2cfcff02a180e0311a4eef0e": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:20:04.338015+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/daily-form-order/launch-1793718244338242000.json"
+            ],
+            "profile_id": "5147eb5619d0805da6dce25f78e2f462dd17661589aa28ad30977905db43ebfb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/daily-form-order",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "89b5639c5007675d48cbc9f2db193c8c7668cb5da97a96ff5c786e59256c59a9",
+        "payload_hash": "3cf8bfd565506a17f006e3ae41d4c4ba5739c23db3fb55bac4de12ac0480a68a",
+        "recorded_at": "2026-11-03T15:15:59.003517+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "82e1e2cdd1656c4fe285a2256273e40cdb4687beb594430dc16721a4569d6def",
+          "tests/browser-qualification/ux-ui-contract.mjs": "8affcb8e902336e5c84061f2aff829fce27f356c6500640c90ab17691bfbee4c",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui.mjs": "f3633643cee075bb283b4d8c56961857f2988f7f3333af6942ce4b7993471166"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.14005487505346537
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-form-order/acceptance.json",
+      "sha256": "dd43c92e13b0f7113f61dc6a3c3789e55664656c4835ad1956dc79420cbeab5c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/daily-form-order/operation-history.json",
+      "sha256": "2e5e4cb44ba8eea480186e82e75e58524829c8f68871bb280c1840097416392b"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-60230074-8c9d-4a63-8240-bc26b81b6d63",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Place required Daily schedule fields before the add action. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-d3155b74-ab23-4ed6-8073-e794af664988"
+  ],
+  "recorded_at": "2026-11-03T15:21:56.351556+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "c2f9427dd84102597d19d22afb6f3f2d7690f827c9ad4a65112ba69491cfc104",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "fce7844ad567f4141d9584c3e9652ab22c569c7702385fce2c036bdce147cdf7",
+    "src/Habitica.WebApp/State/DailyCreationDraft.cs": "c2647fa90441784e2688e56baa21f4653d03aacdf6caee30ecaf8d0b624f8b2a",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "29590c93b0dbfb5116f1f8355dafba29455bb373cca3425ce1ac75f72574b49c",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1f6e264467941cda8da68dbc2b286464e51d0248cf68c38c2944020e32cf084d",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "318022d4bcf69313ac16442ceaaf5a9280b5a7d10947d75c9778f16b6bd80821",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "82e1e2cdd1656c4fe285a2256273e40cdb4687beb594430dc16721a4569d6def",
+    "tests/browser-qualification/ux-ui-contract.mjs": "8affcb8e902336e5c84061f2aff829fce27f356c6500640c90ab17691bfbee4c",
+    "tests/browser-qualification/ux-ui-daily-order-journey.mjs": "94d046f11a042b051c6fd023f59914ee07f04faf3ba1d7b920a0dcc0dbeb80e9",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui.mjs": "f3633643cee075bb283b4d8c56961857f2988f7f3333af6942ce4b7993471166"
+  },
+  "task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+  "title": "Place required Daily schedule fields before the add action",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Daily capture follows title, required schedule fields and primary action in DOM and visual order.",
+        "Incomplete Daily capture remains rejected while valid Daily and title-first Todo/Habit behavior retain existing contracts."
+      ],
+      "id": "daily-form-order-behavior",
+      "parameters": {
+        "report_name": "daily-form-order.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/daily-form-order/unit",
+        "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoRecurringEditorTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor",
+        "src/Habitica.WebApp/State/DailyCreationDraft.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Tab order, errors, native fields and primary actions pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Tab order, errors, native fields and primary actions pass across the required rendered matrix."
+      ],
+      "id": "daily-form-order-rendered",
+      "parameters": {
+        "cases": "Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/daily-form-order/browser",
+        "routes": [
+          "/todo/dailies",
+          "/todo/tasks",
+          "/todo/habits"
+        ],
+        "task_key": "daily-form-order"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor",
+        "src/Habitica.WebApp/State/DailyCreationDraft.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-daily-order-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Keep independent native ink retention and clipped-negative, disabled contrast, exact matrix, observed appearance, fixture ownership and cleanup controls passing. The97-percent retained-ink floor remains unchanged; native browser canaries also verify inherited disabled-state parity.",
+      "criteria": [
+        "Tab order, errors, native fields and primary actions pass across the required rendered matrix."
+      ],
+      "id": "daily-form-order-native-oracles",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "fd64ebdc4780f324216e4d12ff826fc38b94e2307aed0744282cc1aa2207e4d4"
+}

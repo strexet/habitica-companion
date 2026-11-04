@@ -1,0 +1,9 @@
+{
+  "task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+  "check_id": "dashboard-appearance-reflow-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T14:50:26.449683+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007"
+}

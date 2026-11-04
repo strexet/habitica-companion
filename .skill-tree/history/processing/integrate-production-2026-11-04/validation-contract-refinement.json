@@ -1,0 +1,5 @@
+{
+  "reason": "Unit controls execute immediately; all stable production and test inputs qualify current source instead of sparse wrapper fingerprints. IDs, acceptance and admitted scope are unchanged.",
+  "source_count": 1163,
+  "task_id": "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+}

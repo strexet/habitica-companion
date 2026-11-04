@@ -1,0 +1,50 @@
+{
+  "task_id": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+  "title": "Open Projects on existing work and reveal management on demand",
+  "operation_history": ".skill-tree/history/validation/ux-ui/projects-browse-first/operation-history.json",
+  "checks": [
+    {
+      "id": "projects-browse-first-behavior",
+      "counts": {
+        "discovered": 31,
+        "expected": 31,
+        "failed": 0,
+        "passed": 31,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/projects-browse-first/C-0292b331-83f2-445c-a00a-55e615af5bad.log",
+          "sha256": "08f7707364a0b71ed98b6c48c09a907bf22b778112627110ef5791a9c28c45f9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/projects-browse-first/C-0292b331-83f2-445c-a00a-55e615af5bad.trx",
+          "sha256": "5074beeb23ea5b85a8890dcc332a0474de37a7b0c38d79fd241861f245cce8fd"
+        }
+      ]
+    },
+    {
+      "id": "projects-browse-first-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/projects-browse-first/browser/cf964016-c9a0-40be-a751-18ec26d83ff5.json",
+          "sha256": "78b631fd1cefff528625f900366c07f2c98043653ef18443bcc72a386b03d3b2"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

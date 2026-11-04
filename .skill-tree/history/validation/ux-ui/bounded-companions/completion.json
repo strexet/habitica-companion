@@ -1,0 +1,596 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Expanded collection rendering is bounded to twenty cards per collection page with accurate range and aggregate search feedback.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.log",
+          "sha256": "e3f4a78cc6524e4aa44942f1be5fad1f82b07f59455a010ea20782e9afdb53fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.trx",
+          "sha256": "9b9a0a4a61cc27ec70108542f26f77ac9b2505c83d0e4eb8e3e6216dec046339"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-d69320fc-7f1c-448f-954e-2e68fdc934c4.tap",
+          "sha256": "8dc870da9646fcaa94c2d0aca4946e1f7040f89260410c28608e16140602c900"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/acceptance.json",
+          "sha256": "952edef6c2eff48bdb6a0b1c226138218b83bdd46e69f01f8341c0c7ca44abae"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+          "sha256": "9d26ea64c02e413e98e87c7a7b1d9d88a8ae00402e87879a0be5daa36ebcd693"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Selections and full matching group candidate counts remain exact across paging and filtering without provider writes.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.log",
+          "sha256": "e3f4a78cc6524e4aa44942f1be5fad1f82b07f59455a010ea20782e9afdb53fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.trx",
+          "sha256": "9b9a0a4a61cc27ec70108542f26f77ac9b2505c83d0e4eb8e3e6216dec046339"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-d69320fc-7f1c-448f-954e-2e68fdc934c4.tap",
+          "sha256": "8dc870da9646fcaa94c2d0aca4946e1f7040f89260410c28608e16140602c900"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/acceptance.json",
+          "sha256": "952edef6c2eff48bdb6a0b1c226138218b83bdd46e69f01f8341c0c7ca44abae"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+          "sha256": "9d26ea64c02e413e98e87c7a7b1d9d88a8ae00402e87879a0be5daa36ebcd693"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Search, reset, pagination and explicit preview access pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.log",
+          "sha256": "e3f4a78cc6524e4aa44942f1be5fad1f82b07f59455a010ea20782e9afdb53fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.trx",
+          "sha256": "9b9a0a4a61cc27ec70108542f26f77ac9b2505c83d0e4eb8e3e6216dec046339"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-d69320fc-7f1c-448f-954e-2e68fdc934c4.tap",
+          "sha256": "8dc870da9646fcaa94c2d0aca4946e1f7040f89260410c28608e16140602c900"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/acceptance.json",
+          "sha256": "952edef6c2eff48bdb6a0b1c226138218b83bdd46e69f01f8341c0c7ca44abae"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+          "sha256": "9d26ea64c02e413e98e87c7a7b1d9d88a8ae00402e87879a0be5daa36ebcd693"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Expanded collection rendering is bounded to twenty cards per collection page with accurate range and aggregate search feedback.",
+          "Selections and full matching group candidate counts remain exact across paging and filtering without provider writes."
+        ],
+        "id": "bounded-companions-behavior",
+        "parameters": {
+          "report_name": "bounded-companions.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/bounded-companions/unit",
+          "test_filter": "FullyQualifiedName~PetsMountsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PetsMountsPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-964a2af1-530a-4959-ac5a-d7120cfb6cd1",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 46,
+          "expected": 46,
+          "failed": 3,
+          "passed": 43,
+          "skipped": 0
+        },
+        "definition": "a2915f26bfde63d01f00dcd8ef27868f7b881a4044d289ed57c00a54f6e45097",
+        "environment_identity": "daedcafac478ef4d5909719bc4da9e6a4adc91347f1f6745f3617beea12508be",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-964a2af1-530a-4959-ac5a-d7120cfb6cd1.log",
+            "sha256": "bcded28b481833ade01cd93dfcd376862aea39fc09768adc1b307aa7304fefef"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-964a2af1-530a-4959-ac5a-d7120cfb6cd1.trx",
+            "sha256": "327e7bb4717ccf2fc9b46dc2c6c2cc903922bd29195b199e9854be220c941206"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "21d4810dbb0b870efdb4d71bc56c33587e9cb7228876b2c3faa3c914d60bdf97",
+        "payload_hash": "4f654485000b7d6282af2b3bb81fce18570b031253ef414f8eedb995baa48ef3",
+        "recorded_at": "2026-11-03T13:25:54.777898+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "439450feeb96865199f1408546d47fd1ea76d24bba3a3a551cfebf83a70ccf19",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "bf429e0e14e7e8e595ff71af3d2a8b5308fe012a85d96769934cde728a53f881",
+          "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "6bb87d06a7b8d1e2c07e88b498b4785d8fc327d834f9c0bee74dc21846a98c0a"
+        },
+        "timing": {
+          "tool_wall_seconds": 12.65035566710867
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 47,
+          "expected": 47,
+          "failed": 0,
+          "passed": 47,
+          "skipped": 0
+        },
+        "definition": "a5bf38c196d071c7b73bd0fdb759c5c3b87ea2a4a22b58ea8fa4c8443a113d5f",
+        "environment_identity": "daedcafac478ef4d5909719bc4da9e6a4adc91347f1f6745f3617beea12508be",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.log",
+            "sha256": "e3f4a78cc6524e4aa44942f1be5fad1f82b07f59455a010ea20782e9afdb53fa"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.trx",
+            "sha256": "9b9a0a4a61cc27ec70108542f26f77ac9b2505c83d0e4eb8e3e6216dec046339"
+          }
+        ],
+        "execution_sessions": {
+          "7c940cf8e3fe5866ba14355a0ec5d07f2c92de9ded7a9d83c23e4159e09c3cf5": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "89f0edf389932fea3b30e01ba586b5eff0be845a94db2ef5a3b7ac584a8f8335",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:10:58.923209+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/bounded-companions/launch-1793714098923476000.json"
+            ],
+            "profile_id": "4b7d67361714f02ba83af222dba662a338b41c85fc12ec289104c69a0a1ab39e",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/bounded-companions",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "6d54db6f5a3ca801ea21111304418bfbc89e16287fa5b7c469f244f93c48aa1d",
+        "payload_hash": "8db602f738f14818fdd8e93938b5578bba13973ffd2c48668a3004be1c126a99",
+        "recorded_at": "2026-11-03T13:57:15.332155+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "84a115d24761e474da804bff435f5eb10ac5f65282e0bad96cc08c997d9d6de5",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "38a700268eb54f065da923eb34afe647d99f1e117a5f8d71da5b764ab02c1f31",
+          "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "c656a73f7e72c02d29b38ef70eea6ccd8794c36791b740357998e15bbed86e2a"
+        },
+        "timing": {
+          "tool_wall_seconds": 8.651505625108257
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Search, reset, pagination and explicit preview access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Search, reset, pagination and explicit preview access pass across the required rendered matrix."
+        ],
+        "id": "bounded-companions-rendered",
+        "parameters": {
+          "cases": "Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/bounded-companions/browser",
+          "routes": [
+            "/pets-mounts"
+          ],
+          "task_key": "bounded-companions"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/PetsMountsPage.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/browser-qualification/ux-ui-companions-journey.mjs",
+          "tests/browser-qualification/ux-ui-companions-user.json",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "src/Habitica.WebApp/wwwroot/js/petsMountsPage.js",
+          "src/Habitica.Domain/User/PetsMountsCatalog.cs",
+          "src/Habitica.Api/HabiticaApiClient.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-6e47522e-41cc-4356-b930-767070c376d9",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 505,
+          "expected": 505,
+          "failed": 0,
+          "passed": 505,
+          "skipped": 0
+        },
+        "definition": "a5bf38c196d071c7b73bd0fdb759c5c3b87ea2a4a22b58ea8fa4c8443a113d5f",
+        "environment_identity": "86b78d265e163ab6f1b32b5403e7c707eacd2a3ffe237839477efbb02d6fc828",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+            "sha256": "9d26ea64c02e413e98e87c7a7b1d9d88a8ae00402e87879a0be5daa36ebcd693"
+          }
+        ],
+        "execution_sessions": {
+          "7c940cf8e3fe5866ba14355a0ec5d07f2c92de9ded7a9d83c23e4159e09c3cf5": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "38a700268eb54f065da923eb34afe647d99f1e117a5f8d71da5b764ab02c1f31",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:14:13.635673+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/bounded-companions/launch-1793714293635936000.json"
+            ],
+            "profile_id": "4b7d67361714f02ba83af222dba662a338b41c85fc12ec289104c69a0a1ab39e",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/bounded-companions",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "bff856c5ec92c1e4b24ee791bfe4cfbd81ff5be71436a85d18891901294f634c",
+        "payload_hash": "394c7cf14fe88a6cffbd1c321dc4503c02c3e6edc594fd4548d7f68ebbce4448",
+        "recorded_at": "2026-11-03T14:05:59.573718+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Api/HabiticaApiClient.cs": "b24ce5572ce4522befbbf7b89db026f039dca44c10b07a0e6399b9e6116afc6f",
+          "src/Habitica.Domain/User/PetsMountsCatalog.cs": "be5838d20d5dcbcb59eaf5912a5d26ba9eacffb8dc216461faa89576662827f3",
+          "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "84a115d24761e474da804bff435f5eb10ac5f65282e0bad96cc08c997d9d6de5",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "38a700268eb54f065da923eb34afe647d99f1e117a5f8d71da5b764ab02c1f31",
+          "src/Habitica.WebApp/wwwroot/js/petsMountsPage.js": "be6a4f0e163e36113851835c9d4391d01baea8dbff358e7f840bb12abd4a7ba5",
+          "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "c656a73f7e72c02d29b38ef70eea6ccd8794c36791b740357998e15bbed86e2a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "592f58c798230b18ff6327f0eb3cbdfc30503303a9a32307c22880991139b5f1",
+          "tests/browser-qualification/ux-ui-companions-journey.mjs": "837da40187f98b5dfc3d7beb6e8290bde944a21a9c114f17eec77586bd0cabf7",
+          "tests/browser-qualification/ux-ui-companions-user.json": "54b817f66226c101db312c0b22e886054b9d474b91fb331a1e55269c4ba16f54"
+        },
+        "timing": {
+          "tool_wall_seconds": 464.8702059579082
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Rich synthetic provider data requires one reviewed owned local fixture filename. Reject external, absolute, nested and traversal paths before launch, while preserving other matrix, appearance and cleanup controls.",
+        "criteria": [
+          "Search, reset, pagination and explicit preview access pass across the required rendered matrix."
+        ],
+        "id": "bounded-companions-fixture-boundary",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/ux-ui.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-cd191bdc-4d19-4173-870a-3de9520378a5",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 29,
+          "expected": 29,
+          "failed": 1,
+          "passed": 28,
+          "skipped": 0
+        },
+        "definition": "fcea6d9159b9ffd53694e26e24efb2d5bf12952a9445e6dae2e6505e5e7e0380",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-cd191bdc-4d19-4173-870a-3de9520378a5.tap",
+            "sha256": "ace443d9b950fdc07704ae2ae6a1d8af7017e3ed4b58dcec4fffc9013c01988c"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "28c89fd35cc1fa3e7898a58ca0206f32827d61671ff837a943de87b2ca34bf12",
+        "payload_hash": "d856f1118418f7aedb2bcd1ffbacc0185997c6d1a1f47c843978756a4e6f4ceb",
+        "recorded_at": "2026-11-03T13:38:48.742980+00:00",
+        "result": "red",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "82e1e2cdd1656c4fe285a2256273e40cdb4687beb594430dc16721a4569d6def",
+          "tests/browser-qualification/ux-ui-contract.mjs": "89f2a5ffbe2bd0b2a7b127e801cd8c1a5168b50e3129fd311bc57c306cc7f4e4",
+          "tests/browser-qualification/ux-ui.mjs": "4dc5ee577afc640360bf704cafb38f205656fc29058c9a4e35b14cc55bd6d494"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.14891254110261798
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-d69320fc-7f1c-448f-954e-2e68fdc934c4",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 29,
+          "expected": 29,
+          "failed": 0,
+          "passed": 29,
+          "skipped": 0
+        },
+        "definition": "a5bf38c196d071c7b73bd0fdb759c5c3b87ea2a4a22b58ea8fa4c8443a113d5f",
+        "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-d69320fc-7f1c-448f-954e-2e68fdc934c4.tap",
+            "sha256": "8dc870da9646fcaa94c2d0aca4946e1f7040f89260410c28608e16140602c900"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "3870bd5491179fadaa59025838b837cbcc98386ecd108dbd58944fff8d9df3a0",
+        "payload_hash": "a8e00aeb40fe8403f154ba2db2552b41a59366023f7c175fb16eb4957b9b71fb",
+        "recorded_at": "2026-11-03T13:41:42.085572+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "82e1e2cdd1656c4fe285a2256273e40cdb4687beb594430dc16721a4569d6def",
+          "tests/browser-qualification/ux-ui-contract.mjs": "8affcb8e902336e5c84061f2aff829fce27f356c6500640c90ab17691bfbee4c",
+          "tests/browser-qualification/ux-ui.mjs": "fd3c5d383021b0b96faa4166c6152cba375052c7c5a574d715cc285e35142c22"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.14853545790538192
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/bounded-companions/acceptance.json",
+      "sha256": "952edef6c2eff48bdb6a0b1c226138218b83bdd46e69f01f8341c0c7ca44abae"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/bounded-companions/operation-history.json",
+      "sha256": "18fba1d99a607b87c8454415bd9f6c520a6ede1fd7b3210d1beac2f29fbb6432"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-2a2686af-0790-45e8-b62d-0f96ab42211d",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Bound companion collection rendering and clarify search results. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-2897d6c0-a804-41fe-9d92-091049683fa3"
+  ],
+  "recorded_at": "2026-11-03T14:06:51.181872+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+  "source_fingerprints": {
+    "src/Habitica.Api/HabiticaApiClient.cs": "b24ce5572ce4522befbbf7b89db026f039dca44c10b07a0e6399b9e6116afc6f",
+    "src/Habitica.Domain/User/PetsMountsCatalog.cs": "be5838d20d5dcbcb59eaf5912a5d26ba9eacffb8dc216461faa89576662827f3",
+    "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "84a115d24761e474da804bff435f5eb10ac5f65282e0bad96cc08c997d9d6de5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "38a700268eb54f065da923eb34afe647d99f1e117a5f8d71da5b764ab02c1f31",
+    "src/Habitica.WebApp/wwwroot/js/petsMountsPage.js": "be6a4f0e163e36113851835c9d4391d01baea8dbff358e7f840bb12abd4a7ba5",
+    "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "c656a73f7e72c02d29b38ef70eea6ccd8794c36791b740357998e15bbed86e2a",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "592f58c798230b18ff6327f0eb3cbdfc30503303a9a32307c22880991139b5f1",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "82e1e2cdd1656c4fe285a2256273e40cdb4687beb594430dc16721a4569d6def",
+    "tests/browser-qualification/ux-ui-companions-journey.mjs": "837da40187f98b5dfc3d7beb6e8290bde944a21a9c114f17eec77586bd0cabf7",
+    "tests/browser-qualification/ux-ui-companions-user.json": "54b817f66226c101db312c0b22e886054b9d474b91fb331a1e55269c4ba16f54",
+    "tests/browser-qualification/ux-ui-contract.mjs": "8affcb8e902336e5c84061f2aff829fce27f356c6500640c90ab17691bfbee4c",
+    "tests/browser-qualification/ux-ui.mjs": "fd3c5d383021b0b96faa4166c6152cba375052c7c5a574d715cc285e35142c22"
+  },
+  "task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+  "title": "Bound companion collection rendering and clarify search results",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Expanded collection rendering is bounded to twenty cards per collection page with accurate range and aggregate search feedback.",
+        "Selections and full matching group candidate counts remain exact across paging and filtering without provider writes."
+      ],
+      "id": "bounded-companions-behavior",
+      "parameters": {
+        "report_name": "bounded-companions.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/bounded-companions/unit",
+        "test_filter": "FullyQualifiedName~PetsMountsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PetsMountsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Search, reset, pagination and explicit preview access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Search, reset, pagination and explicit preview access pass across the required rendered matrix."
+      ],
+      "id": "bounded-companions-rendered",
+      "parameters": {
+        "cases": "Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/bounded-companions/browser",
+        "routes": [
+          "/pets-mounts"
+        ],
+        "task_key": "bounded-companions"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PetsMountsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/browser-qualification/ux-ui-companions-journey.mjs",
+        "tests/browser-qualification/ux-ui-companions-user.json",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "src/Habitica.WebApp/wwwroot/js/petsMountsPage.js",
+        "src/Habitica.Domain/User/PetsMountsCatalog.cs",
+        "src/Habitica.Api/HabiticaApiClient.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Rich synthetic provider data requires one reviewed owned local fixture filename. Reject external, absolute, nested and traversal paths before launch, while preserving other matrix, appearance and cleanup controls.",
+      "criteria": [
+        "Search, reset, pagination and explicit preview access pass across the required rendered matrix."
+      ],
+      "id": "bounded-companions-fixture-boundary",
+      "parameters": {
+        "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+      },
+      "recipe_id": "node-focused-tests",
+      "sources": [
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/ux-ui.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a5bf38c196d071c7b73bd0fdb759c5c3b87ea2a4a22b58ea8fa4c8443a113d5f"
+}

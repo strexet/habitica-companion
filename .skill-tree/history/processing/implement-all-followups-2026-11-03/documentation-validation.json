@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "errors": [
+    "Stale manifest source digest: .skill-tree/documents/future.md",
+    "Queue index source hash is stale"
+  ],
+  "warnings": [
+    "Latest recorded audit is stale; historical verdicts remain unchanged"
+  ]
+}

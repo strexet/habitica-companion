@@ -1,0 +1,909 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Pets and mounts
+- heading "Companion collection" [level=1]
+- paragraph: Review owned and missing companions, hatch ready pets, feed with highest-value food first, equip quickly, and plan safe surplus sales.
+- generic: Account data is up to date
+- article:
+  - generic: Current pet
+  - generic "Fox Sunshine":
+    - img "Fox Sunshine"
+  - strong: Fox Sunshine
+- article:
+  - generic: Current mount
+  - generic "Aether Invisible":
+    - img "Aether Invisible"
+  - strong: Aether Invisible
+- article:
+  - generic: Collection
+  - strong: 90 pet(s)
+  - generic: 57 mount(s) owned
+- paragraph: Collection search
+- heading "Find companions and potions" [level=2]
+- textbox "Search by name or key": ux-review-no-match-20261103
+- generic: Pet type
+- combobox "Pet type" [active]:
+  - option "All types" [selected]
+  - option "Aether"
+  - option "Alligator"
+  - option "Alpaca"
+  - option "Armadillo"
+  - option "Axolotl"
+  - option "Badger"
+  - option "Bear Cub"
+  - option "Beetle"
+  - option "Bunny"
+  - option "Butterfly"
+  - option "Cactus"
+  - option "Cat"
+  - option "Chameleon"
+  - option "Cheetah"
+  - option "Cow"
+  - option "Crab"
+  - option "Cuttlefish"
+  - option "Deer"
+  - option "Dog"
+  - option "Dolphin"
+  - option "Dragon"
+  - option "Egg"
+  - option "Falcon"
+  - option "Ferret"
+  - option "Flying Pig"
+  - option "Fox"
+  - option "Frog"
+  - option "Giraffe"
+  - option "Gryphon"
+  - option "Guinea Pig"
+  - option "Hedgehog"
+  - option "Hippo"
+  - option "Horse"
+  - option "Jack OLantern"
+  - option "Jackalope"
+  - option "Kangaroo"
+  - option "Lion Cub"
+  - option "Monkey"
+  - option "Nudibranch"
+  - option "Octopus"
+  - option "Orca"
+  - option "Otter"
+  - option "Owl"
+  - option "Panda Cub"
+  - option "Parrot"
+  - option "Peacock"
+  - option "Penguin"
+  - option "Platypus"
+  - option "Pterodactyl"
+  - option "Raccoon"
+  - option "Rat"
+  - option "Robot"
+  - option "Rock"
+  - option "Rooster"
+  - option "Sabretooth"
+  - option "Sea Serpent"
+  - option "Seahorse"
+  - option "Sheep"
+  - option "Slime"
+  - option "Sloth"
+  - option "Snail"
+  - option "Snake"
+  - option "Spider"
+  - option "Squirrel"
+  - option "Tiger Cub"
+  - option "Treeling"
+  - option "TRex"
+  - option "Triceratops"
+  - option "Turkey"
+  - option "Turtle"
+  - option "Unicorn"
+  - option "Velociraptor"
+  - option "Whale"
+  - option "Wolf"
+  - option "Yarn"
+- generic: Mount type
+- combobox "Mount type":
+  - option "All types" [selected]
+  - option "Aether"
+  - option "Alligator"
+  - option "Alpaca"
+  - option "Armadillo"
+  - option "Axolotl"
+  - option "Badger"
+  - option "Bear Cub"
+  - option "Beetle"
+  - option "Bunny"
+  - option "Butterfly"
+  - option "Cactus"
+  - option "Cat"
+  - option "Chameleon"
+  - option "Cheetah"
+  - option "Cow"
+  - option "Crab"
+  - option "Cuttlefish"
+  - option "Deer"
+  - option "Dog"
+  - option "Dolphin"
+  - option "Dragon"
+  - option "Egg"
+  - option "Falcon"
+  - option "Ferret"
+  - option "Flying Pig"
+  - option "Fox"
+  - option "Frog"
+  - option "Giraffe"
+  - option "Gryphon"
+  - option "Guinea Pig"
+  - option "Hedgehog"
+  - option "Hippo"
+  - option "Horse"
+  - option "Jack OLantern"
+  - option "Jackalope"
+  - option "Kangaroo"
+  - option "Lion Cub"
+  - option "Monkey"
+  - option "Nudibranch"
+  - option "Octopus"
+  - option "Orca"
+  - option "Otter"
+  - option "Owl"
+  - option "Panda Cub"
+  - option "Parrot"
+  - option "Peacock"
+  - option "Penguin"
+  - option "Platypus"
+  - option "Pterodactyl"
+  - option "Raccoon"
+  - option "Rat"
+  - option "Robot"
+  - option "Rock"
+  - option "Rooster"
+  - option "Sabretooth"
+  - option "Sea Serpent"
+  - option "Seahorse"
+  - option "Sheep"
+  - option "Slime"
+  - option "Sloth"
+  - option "Snail"
+  - option "Snake"
+  - option "Spider"
+  - option "Squirrel"
+  - option "Tiger Cub"
+  - option "Treeling"
+  - option "TRex"
+  - option "Triceratops"
+  - option "Turkey"
+  - option "Turtle"
+  - option "Unicorn"
+  - option "Velociraptor"
+  - option "Whale"
+  - option "Wolf"
+  - option "Yarn"
+- paragraph: Hatch planner
+- heading "Hatch queue" [level=2]
+- generic: 0 queued
+- paragraph: Choose Add to Hatch Queue on a missing pet to review eggs and hatching potions before hatching.
+- paragraph: Feed planner
+- heading "Feed queue" [level=2]
+- generic: 0 queued
+- paragraph: Choose Plan feed on an owned pet or Plan to grow on a missing mount.
+- paragraph: Companion group
+- heading "Base collection" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: Can hatch 5 pet(s) with current inventory.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Companion group
+- heading "Magic potion collection" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: Can hatch 44 pet(s) with current inventory.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Companion group
+- heading "Quest collection" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: Can hatch 383 pet(s) with current inventory.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Companion group
+- heading "Premium collection" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: Can hatch 295 pet(s) with current inventory.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Companion group
+- heading "Wacky collection" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: Can hatch 62 pet(s) with current inventory.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Companion group
+- heading "Special and other" [level=2]
+- button "Add All to Hatching Queue" [disabled]:
+  - generic: Add All to Hatching Queue
+- button "Add All to Feeding Queue" [disabled]:
+  - generic: Add All to Feeding Queue
+- button "Hide group":
+  - generic: Hide group
+- generic: No hatchable pets / No growable mounts
+- paragraph: No missing hatchable pets in this group.
+- paragraph: No matching catalog entries are available in this group.
+- paragraph: Hatching potions
+- heading "Potion inventory" [level=2]
+- button "Hide group":
+  - generic: Hide group
+- paragraph: Saddles
+- heading "Instant mount option" [level=2]
+- generic: 5 saddle(s)
+- paragraph: Saddles instantly turn one eligible owned pet into its matching mount. Use Saddle stays separate from normal food because fed progress is not refunded.
+- paragraph: Saddle purchase is not available in this app until Habitica shop behavior is verified for this flow.
+- paragraph: Bulk sell planner
+- heading "Safe item sell preview" [level=2]
+- generic: Keep count
+- spinbutton "Keep count": "1"
+- article:
+  - strong: Alligator
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Alpaca
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Armadillo
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Axolotl
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Bear Cub
+  - generic: Egg • owned 35 • sell 34
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Beetle
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Bunny
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Butterfly
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cactus
+  - generic: Egg • owned 37 • sell 36
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Chameleon
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cheetah
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cow
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Crab
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Dragon
+  - generic: Egg • owned 43 • sell 42
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Falcon
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Ferret
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Flying Pig
+  - generic: Egg • owned 40 • sell 39
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Fox
+  - generic: Egg • owned 25 • sell 24
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Frog
+  - generic: Egg • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Giraffe
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Gryphon
+  - generic: Egg • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Guinea Pig
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Hippo
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Lion Cub
+  - generic: Egg • owned 41 • sell 40
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Monkey
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Otter
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Owl
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Panda Cub
+  - generic: Egg • owned 38 • sell 37
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Parrot
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Peacock
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Penguin
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Platypus
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pterodactyl
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Robot
+  - generic: Egg • owned 8 • sell 7
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Rock
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Sabretooth
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Sea Serpent
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Sheep
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Sloth
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Spider
+  - generic: Egg • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Tiger Cub
+  - generic: Egg • owned 37 • sell 36
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Treeling
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: TRex
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Triceratops
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Turtle
+  - generic: Egg • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Velociraptor
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Whale
+  - generic: Egg • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Wolf
+  - generic: Egg • owned 40 • sell 39
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Base
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Cotton Candy Blue
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Cotton Candy Pink
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Desert
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Golden
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Red
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Shade
+  - generic: Food • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Skeleton
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake White
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cake Zombie
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Base
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Cotton Candy Blue
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Cotton Candy Pink
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Desert
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Golden
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Red
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Shade
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Skeleton
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy White
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Candy Zombie
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Chocolate
+  - generic: Food • owned 19 • sell 18
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cotton Candy Blue
+  - generic: Food • owned 24 • sell 23
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cotton Candy Pink
+  - generic: Food • owned 23 • sell 22
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Fish
+  - generic: Food • owned 23 • sell 22
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Honey
+  - generic: Food • owned 25 • sell 24
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Meat
+  - generic: Food • owned 11 • sell 10
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Milk
+  - generic: Food • owned 24 • sell 23
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Base
+  - generic: Food • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Cotton Candy Blue
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Cotton Candy Pink
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Desert
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Golden
+  - generic: Food • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Red
+  - generic: Food • owned 4 • sell 3
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Shade
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Skeleton
+  - generic: Food • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie White
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Pie Zombie
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Potatoe
+  - generic: Food • owned 27 • sell 26
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Rotten Meat
+  - generic: Food • owned 29 • sell 28
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Saddle
+  - generic: Food • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Strawberry
+  - generic: Food • owned 20 • sell 19
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Alien
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Aurora
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Balloon
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Base
+  - generic: Hatching potion • owned 48 • sell 47
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Birch Bark
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Black Pearl
+  - generic: Hatching potion • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Bronze
+  - generic: Hatching potion • owned 6 • sell 5
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Celestial
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cotton Candy Blue
+  - generic: Hatching potion • owned 28 • sell 27
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cotton Candy Pink
+  - generic: Hatching potion • owned 28 • sell 27
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Cryptid
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Cupid
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Desert
+  - generic: Hatching potion • owned 68 • sell 67
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Dessert
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Fairy
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Floral
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Fluorite
+  - generic: Hatching potion • owned 9 • sell 8
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Fungi
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Ghost
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Gingerbread
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Glass
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Golden
+  - generic: Hatching potion • owned 25 • sell 24
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Holly
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Icy Snow
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Jade
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Koi
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Mossy Stone
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Opal
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Peppermint
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Polka Dot
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Porcelain
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Rainbow
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Red
+  - generic: Hatching potion • owned 29 • sell 28
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Rose Gold
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Rose Quartz
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Royal Purple
+  - generic: Hatching potion • owned 16 • sell 15
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Shade
+  - generic: Hatching potion • owned 42 • sell 41
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Shimmer
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Silver
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Skeleton
+  - generic: Hatching potion • owned 41 • sell 40
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Solar System
+  - generic: Hatching potion • owned 5 • sell 4
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Spooky
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Stained Glass
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Sunshine
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Tea Shop
+  - generic: Hatching potion • owned 1 • sell 0
+  - generic: "Unsafe by local rule: cached count is at or below the keep threshold."
+- article:
+  - strong: Turquoise
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Vampire
+  - generic: Hatching potion • owned 9 • sell 8
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Veggie
+  - generic: Hatching potion • owned 2 • sell 1
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Virtual Pet
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: White
+  - generic: Hatching potion • owned 53 • sell 52
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Windup
+  - generic: Hatching potion • owned 3 • sell 2
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- article:
+  - strong: Zombie
+  - generic: Hatching potion • owned 21 • sell 20
+  - generic: "Safe by local rule: keep 1 cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+- button "Confirm bulk sell plan":
+  - generic: Confirm bulk sell plan

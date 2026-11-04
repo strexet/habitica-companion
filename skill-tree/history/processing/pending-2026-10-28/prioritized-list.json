@@ -1,0 +1,174 @@
+[
+  {
+    "id": "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+    "title": "Expose exact task adoption through shared reviewed MCP commands",
+    "priority": 105,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "title": "Recover terminal non-acceptance of stale tag reviews safely",
+    "priority": 104,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "title": "Validate stored tag coverage against scoped desired membership",
+    "priority": 104,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+    "title": "Preserve group tag names through diagnostic sanitization",
+    "priority": 102,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "title": "Preview and manage diagnostic sharing for agent access",
+    "priority": 100,
+    "status": "Ready",
+    "unmetDependencies": [
+      "T-788ca84e-e257-47ac-8474-d2e6ea79086d"
+    ],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "title": "Store consented sanitized diagnostic bundles and expose own MCP reads",
+    "priority": 100,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "title": "Expose project-linked Notes in Notes and project views",
+    "priority": 100,
+    "status": "Ready",
+    "unmetDependencies": [
+      "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373"
+    ],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "title": "Persist versioned project links in existing Notes and MCP contracts",
+    "priority": 100,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "title": "Deliver due task reminder events with durable original receipts",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [
+      "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
+    ],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "title": "Implement Auth-owned callback secrets and reviewed event subscriptions",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [
+      "T-273899d8-6f17-43ee-b82f-41013e1021b9"
+    ],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "title": "Qualify an explicit MCP2 migration while retaining legacy clients",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": false,
+    "createdByCurrentProcessing": true
+  },
+  {
+    "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "title": "Show coverage-aware Daily and Habit activity streaks",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "title": "Edit supported linked Daily schedules with explicit reconciliation",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "title": "Convert task types through reviewed linked copies",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "title": "Evaluate saved lists with explicit relative-date predicates",
+    "priority": 99,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+    "title": "Add project-filtered retained task history navigation",
+    "priority": 25,
+    "status": "Ready",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates",
+    "priority": 24,
+    "status": "Blocked pending answers",
+    "unmetDependencies": [],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  },
+  {
+    "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout",
+    "priority": 24,
+    "status": "Ready",
+    "unmetDependencies": [
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
+    ],
+    "initialSnapshot": true,
+    "createdByCurrentProcessing": false
+  }
+]

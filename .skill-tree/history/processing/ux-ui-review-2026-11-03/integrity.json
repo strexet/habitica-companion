@@ -1,0 +1,19 @@
+{
+  "selected_pending": 24,
+  "created_ready": 26,
+  "reused_ids": [],
+  "retained_selected_ids": [],
+  "resolved_without_promotion_ids": [],
+  "untouched_task_bodies": 15,
+  "untouched_bodies_identical": true,
+  "source_hash_matches": true,
+  "provenance_complete": true,
+  "active_run_changes": [
+    "deferred_ids",
+    "next_action",
+    "phase",
+    "processing_results"
+  ],
+  "original_root_snapshot_stop_and_admission_preserved": true,
+  "all_new_roots_deferred_from_original_snapshot": true
+}

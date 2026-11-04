@@ -1,0 +1,4 @@
+{
+  "original_attempt": "C-10ae1381-4981-444f-9a45-a7d8590e8cfb",
+  "findings": "Two public UI failures reproduce missing readable selector and native-only help. A third assertion used an incorrect expected failure for Etc/GMT+13: the existing recurrence calendar rejects that identifier before account normalization. Expected invalid_recurrence now preserves the existing policy order; no domain refusal semantics changed."
+}

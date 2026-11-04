@@ -1,0 +1,9 @@
+{
+  "versionId": "736020af-860e-40f3-9679-1715bd25da5e",
+  "callbackEgressEnabled": false,
+  "sourceHashes": {
+    "index.js": "ced93186be22230f0b4875b3296e9dcc7d0142a6cb098dd678189400deb4abd5",
+    "index.js.map": "a310f686b6b2e1471f253840081b000b1d5cf4a25b1a70d231f1c4116f2d7f31"
+  },
+  "unrelatedSettingsUnchanged": true
+}

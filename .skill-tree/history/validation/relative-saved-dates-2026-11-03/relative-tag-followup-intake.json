@@ -1,0 +1,12 @@
+{
+  "title": "Review day-bound Habitica tag membership for relative saved lists",
+  "priority": 98,
+  "root_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "related_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "relation": "followup",
+  "description": "Relative saved-list membership changes with an explicit local evaluation day, while existing native tag previews and queued work bind only document revision and exact member IDs. Unreviewed day changes must never broaden, clear or refresh upstream tag membership.",
+  "expected_behavior": "Provide a separately reviewed day-bound tag projection contract with exact evaluation day/timezone, full member additions/removals, stale-day refusal, original receipt recovery and MCP parity. Preserve existing tag identities, pending/unknown receipts and every upstream membership until explicit applicable review.",
+  "context": "The relative-date root adds native definition/read behavior and a fail-closed compatibility fence. Relative group tag membership remains visibly unavailable; other group kinds and absolute saved lists retain existing behavior. Full dynamic tag projection is independent nonblocking follow-up outside the frozen initial snapshot.",
+  "source": "Actual SDK relative authoring fails unknown_field because workers/shared/tag-membership.ts passes new relative selectors to the legacy fixed task filter. Native WorkspaceTagCorrespondence currently ignores new selectors, which would falsely broaden membership.",
+  "priority_reason": "Capture the durable missing reviewed projection capability while preserving native read development and the existing no-implicit-effects boundary."
+}

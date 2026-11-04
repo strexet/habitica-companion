@@ -1,0 +1,6 @@
+{
+  "source": "https://developers.cloudflare.com/d1/worker-api/d1-database/#batch",
+  "reviewed_on": "2026-11-02",
+  "assertion": "The documented D1 batch contract executes a sequence transactionally and rolls back the sequence when a statement fails. Existing prepared statement bindings and guarded batch patterns are retained.",
+  "evidence": "Local folder receipt-trigger failures and SQL-identified write-gate races qualify rollback and stale-authority refusal in actual Miniflare/D1 fixtures. No remote D1 migration or service call is executed."
+}

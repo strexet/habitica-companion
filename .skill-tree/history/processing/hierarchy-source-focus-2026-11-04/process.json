@@ -1,0 +1,17 @@
+{
+  "created_ids": [
+    "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784"
+  ],
+  "dispositions": {
+    "P-d0525af9-8f22-4e09-8255-77161f3742bd": {
+      "reason": "New native267be9f5focus trace resolves the previously retained uncertainty: the Tasks heading takes focus after the skip link. Source inspection identifies ClearDraft heading focus during a source-state transition. A deterministic actual-presentation source-change test can establish Red, with existing native shell/hierarchy contracts supplying rendered qualification. Reclassify as a required blocker under the same preserved parent; no new root or duplicate finding.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-e6c72895-1d3f-4884-813a-129c76056b8b",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-d0525af9-8f22-4e09-8255-77161f3742bd"
+  ],
+  "task_keys": {}
+}

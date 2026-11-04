@@ -1,0 +1,70 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-b97b698c-533c-4131-9fed-4cafa1a1c66b",
+  "check_id": "daily-form-order-behavior",
+  "definition": "09343ae8676a1ffc8e49e9284d1bb7acc9f5af691d4e634fadee3837d1675abb",
+  "environment_identity": "1cc2f67bbbc4cc1d06a1472f8d24f3ea9629106066541367544d68a56c085f5d",
+  "key": "7883aaa52f11dcbf0bbdef93026a398169b8a61f06192a84c9c82e24413a1d8f",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T14:58:48.712519+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T14:53:49.347430+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoRecurringEditorTests",
+      "--logger",
+      "trx;LogFileName=daily-form-order.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/daily-form-order/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoDailyCreationFields.razor": "c2f9427dd84102597d19d22afb6f3f2d7690f827c9ad4a65112ba69491cfc104",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "302d957b7ec325c3c967521b16264d429134253a35700f9af0365b83cdd2c0b3",
+    "src/Habitica.WebApp/State/DailyCreationDraft.cs": "c2647fa90441784e2688e56baa21f4653d03aacdf6caee30ecaf8d0b624f8b2a",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1f6e264467941cda8da68dbc2b286464e51d0248cf68c38c2944020e32cf084d"
+  },
+  "task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8"
+}

@@ -1,0 +1,22 @@
+{
+  "action": "repair-auth",
+  "worker": "habitica-companion-auth",
+  "previous_version": "2f4ab53a-85ce-4936-9adf-bc2df94b256d",
+  "version": "198997c7-8b2e-4146-9711-015eccd81d1b",
+  "state": "active",
+  "events_enabled": true,
+  "source_hashes": {
+    "index.js": "6496bf800831c0a4035dee0ede28dba11ad49dc910feca24da7d6c4cebf26fc4",
+    "index.js.map": "496d94476082c30060c4fde89f4df8084432a5813914963279fe0ed82c6381ac"
+  },
+  "provider_source_hashes": {
+    "index.js": "6496bf800831c0a4035dee0ede28dba11ad49dc910feca24da7d6c4cebf26fc4",
+    "index.js.map": "fc59519e1d2d568c0705ad0f61760338975a9568a4f907916ef0636677b9c83d"
+  },
+  "source_map_core_payload_equal": true,
+  "backend_release": "0.3.1",
+  "tool_schema": "1.3.0",
+  "build_hash": "19860e05a1a1b7a55c64857ec264bfa2f800c8ad8b911f0528bc7e8a9d6afd39",
+  "unrelated_bindings_preserved": true,
+  "new_secret_material_logged": false
+}

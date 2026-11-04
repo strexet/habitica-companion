@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: opaque disabled text uses the product floor without skipping the control
+ok 1 - opaque disabled text uses the product floor without skipping the control
+  ---
+  duration_ms: 1.391667
+  ...
+# Subtest: unreadable disabled text fails independently of enabled-text exemptions
+ok 2 - unreadable disabled text fails independently of enabled-text exemptions
+  ---
+  duration_ms: 0.138875
+  ...
+# Subtest: group opacity composites foreground and background together over the parent
+ok 3 - group opacity composites foreground and background together over the parent
+  ---
+  duration_ms: 0.101083
+  ...
+# Subtest: nested disabled opacity cannot pass by measuring the unpainted foreground
+ok 4 - nested disabled opacity cannot pass by measuring the unpainted foreground
+  ---
+  duration_ms: 0.076917
+  ...
+# Subtest: matching actual native-date ink and full-date reference qualifies visible content
+ok 5 - matching actual native-date ink and full-date reference qualifies visible content
+  ---
+  duration_ms: 0.13425
+  ...
+# Subtest: a valid date value and valid outer geometry cannot excuse missing rendered date text
+ok 6 - a valid date value and valid outer geometry cannot excuse missing rendered date text
+  ---
+  duration_ms: 0.058208
+  ...
+# Subtest: missing or empty native reference evidence remains unavailable rather than passing
+ok 7 - missing or empty native reference evidence remains unavailable rather than passing
+  ---
+  duration_ms: 0.09925
+  ...
+# Subtest: existing enabled contrast and geometry contracts remain available
+ok 8 - existing enabled contrast and geometry contracts remain available
+  ---
+  duration_ms: 0.359625
+  ...
+# Subtest: route and state selection resolves only reviewed exact fixtures
+ok 9 - route and state selection resolves only reviewed exact fixtures
+  ---
+  duration_ms: 1.455666
+  ...
+# Subtest: unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+ok 10 - unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+  ---
+  duration_ms: 0.720291
+  ...
+# Subtest: a responding server cannot substitute for exact owner, checkout and build identity
+ok 11 - a responding server cannot substitute for exact owner, checkout and build identity
+  ---
+  duration_ms: 0.339209
+  ...
+# Subtest: failed qualification still awaits owned resource cleanup and retains the original failure
+ok 12 - failed qualification still awaits owned resource cleanup and retains the original failure
+  ---
+  duration_ms: 0.224334
+  ...
+# Subtest: a successful session also closes resources before returning
+ok 13 - a successful session also closes resources before returning
+  ---
+  duration_ms: 0.0555
+  ...
+# Subtest: native ink probes use actual channel differences and reject changed screenshot geometry
+ok 14 - native ink probes use actual channel differences and reject changed screenshot geometry
+  ---
+  duration_ms: 0.130042
+  ...
+# Subtest: declared native fixtures cannot pass with zero measured date inputs
+not ok 15 - declared native fixtures cannot pass with zero measured date inputs
+  ---
+  duration_ms: 0.11475
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:103:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:104:10)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:934:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:633:18)
+    Test.postRun (node:internal/test_runner/test:1045:19)
+    Test.run (node:internal/test_runner/test:973:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:633:7)
+  ...
+# Subtest: strict non-date adapters can qualify without inventing a native-date journey
+not ok 16 - strict non-date adapters can qualify without inventing a native-date journey
+  ---
+  duration_ms: 0.827166
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:108:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:110:10)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:934:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:633:18)
+    Test.postRun (node:internal/test_runner/test:1045:19)
+    Test.run (node:internal/test_runner/test:973:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:633:7)
+  ...
+# Subtest: cleanup attempts every browser and the server after a browser close failure
+not ok 17 - cleanup attempts every browser and the server after a browser close failure
+  ---
+  duration_ms: 0.132958
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:115:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/ux-ui-checks.test.mjs:118:3)
+    async Test.run (node:internal/test_runner/test:935:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:633:7)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 14
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 91.937708

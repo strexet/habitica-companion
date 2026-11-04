@@ -34,9 +34,41 @@ public sealed class NotesProjectPanelTests:BunitContext
     private static async Task Save(NotesController c,string title="Private note",string markdown="# Exact\r\n```\r\ncontent 🧥\r\n```\r\n")
     {c.Draft.Title=title;c.Draft.Markdown=markdown;await c.SaveAsync();if(c.ProjectReview is not null)await c.AcceptProjectAsync();}
 
+    [Fact] public async Task Project_browse_sources_pair_exact_aliases_assigned_work_folder_and_note_history()
+    {
+        var(f,work,todo)=await Setup();var original=work.Controller.Snapshot!;
+        var alpha=original.Document.Projects[0] with{Name="Alpha project",Alias="alpha"};var beta=original.Document.Projects[1] with{Name="Beta project",Alias="beta"};
+        var archived=new WorkspaceProject(Guid.NewGuid(),1,"Archived reference",IsArchived:true,Alias:"archived-reference");
+        var projects=new[]{alpha,beta}.Concat(Enumerable.Range(0,24).Select(i=>new WorkspaceProject(Guid.NewGuid(),1,"Existing project "+i,Alias:"project-"+i))).Append(archived).ToArray();
+        var now=DateTimeOffset.UtcNow;CompanionTask Work(string title,Guid? project)=>new(Guid.NewGuid(),1,title,CompanionTaskKind.Todo,CompanionTaskState.Active,CompanionPriority.Normal,now,now,ProjectId:project);
+        var tasks=new[]{Work("Alpha assigned task",A),Work("Beta assigned task",B),Work("Unassigned task",null),Work("Retained archived task",archived.Id)};
+        var state=original with{StoreVersion=original.StoreVersion+1,Document=original.Document with{Revision=original.Document.Revision+1,Projects=projects,Tasks=tasks}};
+        work.Js.Rows[(WorkspaceTaskFixture.User,state.Document.Id.ToString("D"))]=WorkspaceJournalJson.Serialize(state);await todo.LoadSelectedAsync();Assert.Empty(WorkspaceRules.Validate(todo.Snapshot!.Document));
+        var c=f.Controller;Assert.True(c.PrepareFolder(NoteFolderOperation.Create,null,"Alpha source folder",A));await c.AcceptFolderAsync();var folder=c.LastFolderReceipt!.FolderId;c.NewNote(true);Assert.True(c.ChooseFolder(folder));await Save(c,"Existing project note","First exact project source\n");await Save(c,"Existing project note","Second exact project source\n");c.NewNote(true);
+        Assert.Single(c.Book!.Notes);Assert.Single(c.Book.Notes[0].History);Assert.Equal(A,c.Book.Notes[0].Current.Project!.ProjectId);Assert.Equal(folder,c.Book.Notes[0].Current.Folder!.FolderId);Assert.Equal(26,todo.Snapshot.Document.Projects.Count(project=>!project.IsArchived));Assert.Empty(todo.Snapshot.Commands);
+        var evidence=Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");if(!string.IsNullOrEmpty(evidence)){File.WriteAllText(Path.Combine(evidence,"projects-browse-book.json"),NotesJson.Serialize(c.Book));File.WriteAllText(Path.Combine(evidence,"projects-browse-journal.json"),WorkspaceJournalJson.Serialize(todo.Snapshot));}
+        var cut=Render<NotesPanel>(p=>p.Add(x=>x.ProjectId,A).Add(x=>x.ProjectWorkspaceId,state.Document.Id).Add(x=>x.ProjectSource,NotesSource.Browser));cut.Find("[data-testid=note-new]").Click();Assert.Equal(A,c.Draft.Project!.ProjectId);
+        Evidence("projects-browse-notes",cut.Markup,"/todo/projects","associated-Notes-context-remains-independent",nameof(Project_browse_sources_pair_exact_aliases_assigned_work_folder_and_note_history));Assert.Equal(0,f.Client.Submits);
+    }
+    [Fact] public async Task Responsive_project_note_entry_keeps_exact_folder_project_and_versions_without_implicit_reassociation()
+    {
+        var(f,work,todo)=await Setup();var c=f.Controller;
+        for(var i=0;i<25;i++){c.NewNote(true);await Save(c,"Library note "+i,"Exact standalone source "+i+"\r\n<literal> 🧥");}
+        Assert.True(c.PrepareFolder(NoteFolderOperation.Create,null,"Native project folder",A));await c.AcceptFolderAsync();var folder=c.LastFolderReceipt!.FolderId;
+        c.NewNote(true);Assert.True(c.ChooseFolder(folder));await Save(c,"Project saved note","First project revision\r\n");await Save(c,"Project saved note","Second project revision\r\n");c.NewNote(true);
+        var original=NotesJson.Serialize(c.Book!);var cut=Render<TodoProjectNotesPanel>(p=>p.Add(x=>x.ProjectId,A));cut.Find("[data-testid=project-notes-toggle]").Click();
+        Evidence("phone-notes-project-library",cut.Markup,"/todo/projects","exact-project-library-with-responsive-entry",nameof(Responsive_project_note_entry_keeps_exact_folder_project_and_versions_without_implicit_reassociation));
+        var evidence=Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");if(!string.IsNullOrEmpty(evidence)){File.WriteAllText(Path.Combine(evidence,"phone-notes-project-book.json"),original);File.WriteAllText(Path.Combine(evidence,"phone-notes-project-journal.json"),WorkspaceJournalJson.Serialize(work.Controller.Snapshot!));}
+        cut.Find("[data-testid=notes-folder-filter]").Change(folder.ToString());cut.Find("[data-testid=note-new]").Click();
+        Assert.Equal("editor",cut.Find("[data-testid=notes-workbench]").GetAttribute("data-notes-mode"));Assert.Equal(A,c.Draft.Project!.ProjectId);Assert.Equal(todo.Selection!.WorkspaceId,c.Draft.Project.WorkspaceId);Assert.Equal(folder,c.DraftFolder!.FolderId);
+        cut.Find("[data-testid=note-title]").Input("Unsaved project capture");cut.Find("[data-testid=note-body]").Input("Retained exact project draft");
+        Evidence("phone-notes-project-editor",cut.Markup,"/todo/projects","title-writing-first-with-retained-project-and-folder",nameof(Responsive_project_note_entry_keeps_exact_folder_project_and_versions_without_implicit_reassociation));
+        cut.Find("[data-testid=notes-back]").Click();cut.Find("[data-testid=note-resume]").Click();Assert.Equal(folder,c.DraftFolder!.FolderId);Assert.Equal(A,c.Draft.Project!.ProjectId);Assert.Equal("Retained exact project draft",c.Draft.Markdown);
+        cut.Render(p=>p.Add(x=>x.ProjectId,B));Assert.Single(cut.FindAll("[data-testid=note-context-warning]"));Assert.Equal(A,c.Draft.Project!.ProjectId);Assert.Equal(folder,c.DraftFolder!.FolderId);Assert.Equal("Retained exact project draft",c.Draft.Markdown);Assert.Equal(original,NotesJson.Serialize(c.Book!));Assert.Equal(0,f.Client.Submits);
+    }
     [Fact] public async Task Create_attach_move_and_detach_review_exact_ids_and_keep_text_history()
     {
-        var (f,work,todo)=await Setup();var c=f.Controller;var cut=Render<NotesPanel>();
+        var (f,work,todo)=await Setup();var c=f.Controller;var cut=Render<NotesPanel>();cut.Find("[data-testid=note-new]").Click();
         cut.Find("[data-testid=note-title]").Input("Project note");cut.Find("[data-testid=note-body]").Input("Exact\r\nMarkdown 🧥\r\n");cut.Find("[data-testid=note-project-picker]").Change(A.ToString());cut.Find("form").Submit();
         Assert.Null(f.Database.Current.Book);Assert.Contains(A.ToString(),cut.Find("[data-testid=note-project-review]").TextContent);
         Evidence("notes-project-create-review",cut.Markup,"/notes","new-exact-project-review",nameof(Create_attach_move_and_detach_review_exact_ids_and_keep_text_history));
@@ -91,6 +123,19 @@ public sealed class NotesProjectPanelTests:BunitContext
         var (f,_,_)=await Setup(cloud:true);var c=f.Controller;await c.SwitchAsync(NotesSource.Browser,true);await Save(c,"Private browser title","Private browser snippet");var cut=Render<TodoProjectNotesPanel>(p=>p.Add(x=>x.ProjectId,A));cut.Find("[data-testid=project-notes-toggle]").Click();Assert.DoesNotContain("Private browser title",cut.Markup);Assert.DoesNotContain("Private browser snippet",cut.Markup);Assert.Contains("Restore the shared active source",cut.Markup);
         f.Client.Connected=false;await cut.InvokeAsync(()=>c.SwitchAsync(NotesSource.Cloud,true));Assert.Empty(cut.FindAll("[data-testid=note-source]"));Assert.Empty(cut.FindAll("[data-testid=note-body]"));Assert.Single(cut.FindAll("[data-testid=notes-consent]"));Assert.Equal(0,f.Client.Submits);
         Evidence("project-notes-no-consent",cut.Markup,"/todo/projects","separate-cloud-consent-no-content",nameof(Project_only_cloud_access_never_renders_private_browser_notes_or_connects_notes));
+    }
+
+    [Fact] public async Task Exact_project_folder_creation_rename_and_empty_removal_preserve_notes_and_navigation()
+    {
+        var (f,work,_)=await Setup();var c=f.Controller;var cut=Render<TodoProjectNotesPanel>(p=>p.Add(x=>x.ProjectId,A));cut.Find("[data-testid=project-notes-toggle]").Click();
+        var name="Hotels and places 🧥 "+new string('W',180);cut.Find("[data-testid=folder-name]").Input(name);cut.Find("[data-testid=folder-create]").Click();Assert.Equal(A,c.FolderReview!.After.Project!.ProjectId);
+        Evidence("project-folders-review",cut.Markup,"/todo/projects","exact-project-folder-long-name-review",nameof(Exact_project_folder_creation_rename_and_empty_removal_preserve_notes_and_navigation));cut.Find("[data-testid=folder-confirm]").Click();var folder=c.LastFolderReceipt!.FolderId;
+        cut.Find("[data-testid=note-new]").Click();Assert.Equal(folder,c.DraftFolder!.FolderId);Assert.Equal(A,c.Draft.Project!.ProjectId);cut.Find("[data-testid=note-title]").Input("One separate hotel document");cut.Find("[data-testid=note-body]").Input("# Hotel\r\nExact details\n");cut.Find("form").Submit();cut.Find("[data-testid=note-project-confirm]").Click();var note=c.Selected!;var history=note.History.Count;
+        cut.Find("[data-testid=folder-name]").Input("Renamed "+name);cut.Find("[data-testid=folder-rename]").Click();cut.Find("[data-testid=folder-confirm]").Click();Assert.Equal(note.Current,c.Selected!.Current);Assert.Equal(history,c.Selected.History.Count);Assert.True(cut.Find("[data-testid=folder-remove]").HasAttribute("disabled"));
+        Evidence("project-folders-document",cut.Markup,"/todo/projects","long-folder-note-and-disabled-nonempty-removal",nameof(Exact_project_folder_creation_rename_and_empty_removal_preserve_notes_and_navigation));
+        cut.Find("[data-testid=note-clear-folder]").Click();cut.Find("form").Submit();cut.Find("[data-testid=note-project-confirm]").Click();Assert.Equal(A,c.Selected!.Current.Project!.ProjectId);Assert.Equal(note.Current.Markdown,c.Selected.Current.Markdown);
+        cut.Find("[data-testid=folder-remove]").Click();cut.Find("[data-testid=folder-confirm]").Click();Assert.Empty(c.Folders);Assert.Single(c.Book!.Notes);Assert.Equal(folder,c.Selected.History.Last().Folder!.FolderId);Assert.Empty(work.Controller.Snapshot!.Commands);
+        Evidence("project-folders-empty",cut.Markup,"/todo/projects","empty-folder-removed-note-history-retained",nameof(Exact_project_folder_creation_rename_and_empty_removal_preserve_notes_and_navigation));
     }
 
     [Fact] public async Task Review_refuses_changed_project_or_content_and_account_change_clears_private_link_draft()

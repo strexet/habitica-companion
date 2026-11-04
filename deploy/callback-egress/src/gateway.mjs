@@ -23,12 +23,15 @@ export function dispatchPayload(value) {
   if (typeof v.body !== 'string' || v.body.length>87384 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(v.body)) throw Error('invalid_payload');
   const bytes=Buffer.from(v.body,'base64');
   if (bytes.length<1 || bytes.length>65536 || bytes.toString('base64')!==v.body) throw Error('invalid_payload');
-  const h=exactObject(v.headers,['content-type','webhook-id','webhook-timestamp','webhook-signature']);
+  const subscriptionFields=v.headers&&typeof v.headers==='object'&&Object.hasOwn(v.headers,'x-mcp-subscription-id')?['x-mcp-subscription-id']:[];
+  const h=exactObject(v.headers,['content-type','webhook-id','webhook-timestamp','webhook-signature',...subscriptionFields]);
   if (h['content-type'] !== 'application/json' || typeof h['webhook-id']!=='string' || !/^[A-Za-z0-9_-]{1,100}$/.test(h['webhook-id']) ||
       typeof h['webhook-timestamp']!=='string' || !/^\d{10}$/.test(h['webhook-timestamp']) ||
-      typeof h['webhook-signature']!=='string' || !/^v1,[A-Za-z0-9+/]{43}=$/.test(h['webhook-signature'])) throw Error('invalid_payload');
+      typeof h['webhook-signature']!=='string' || !/^v1,[A-Za-z0-9+/]{43}=(?: v1,[A-Za-z0-9+/]{43}=)?$/.test(h['webhook-signature']) ||
+      subscriptionFields.length&&(typeof h['x-mcp-subscription-id']!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(h['x-mcp-subscription-id']))) throw Error('invalid_payload');
   return {url,body:v.body,headers:{'content-type':h['content-type'],'webhook-id':h['webhook-id'],
-    'webhook-timestamp':h['webhook-timestamp'],'webhook-signature':h['webhook-signature']}};
+    'webhook-timestamp':h['webhook-timestamp'],'webhook-signature':h['webhook-signature'],
+    ...(subscriptionFields.length?{'x-mcp-subscription-id':h['x-mcp-subscription-id']}:{})}};
 }
 function configuration(env) {
   if (env.CALLBACK_EGRESS_ENABLED !== 'true' || process.versions.node.split('.')[0] !== '22' ||
@@ -39,7 +42,7 @@ function configuration(env) {
 }
 // Dependency injection is confined to tests. Netlify entry invokes defaults only.
 export async function handleGateway(request,env,{post=postPublic,now=Date.now,deadlineMs=10000}={}) {
-  if (request.method==='GET' && new URL(request.url).pathname.endsWith('/health')) return reply({service:'callback-egress',version:egressVersion,activation:'unqualified'});
+  if (request.method==='GET' && new URL(request.url).pathname.endsWith('/health')) return reply({service:'callback-egress',version:egressVersion,runtimeNodeMajor:Number(process.versions.node.split('.')[0]),activation:'unqualified'});
   let claimed=false,requestId;
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),deadlineMs),signal=controller.signal;
   const cancel=()=>controller.abort(); request.signal.addEventListener('abort',cancel,{once:true});

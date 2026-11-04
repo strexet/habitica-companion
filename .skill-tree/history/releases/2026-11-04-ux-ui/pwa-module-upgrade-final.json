@@ -1,0 +1,11 @@
+{
+  "name": "pwa-module-upgrade-final",
+  "argv": [
+    "node",
+    "/tmp/habitica-pwa-upgrade-final-20261104.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 9.038,
+  "deadline_seconds": 240,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/pwa-module-upgrade-final.log"
+}

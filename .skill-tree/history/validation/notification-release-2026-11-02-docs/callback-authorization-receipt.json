@@ -1,0 +1,39 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-270eb57f-691b-4980-88a8-4818f9a68618",
+  "classification": "executed-control",
+  "cleanup": "Synthetic Worker/D1 fixtures disposed and local native TLS/receiver servers closed. No runtime source, production state, real subscription, chat or game effect changed by documentation qualification.",
+  "counts": {
+    "discovered": 10,
+    "expected": 10,
+    "failed": 0,
+    "passed": 10,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/callback-authorization-execution.log",
+      "sha256": "a2c9f24e38e54b441b8768d2b221569663365c6d099e96d41045a2f7498f7a05"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/releases/2026-11-02-notifications/prose-validation-final.log",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "06217c018c7d6f0afb38e922a1640810ec526909e5d59a43e5fa87b13d840537",
+  "payload_hash": "db06da540700964653db1c43d835eb7690950fdf51751d3416e6f60718ffbf1e",
+  "recorded_at": "2026-11-02T15:05:06.438025+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "4dfa4873e9dbc523145b10990b914b8ecd2e5ef7aa0a57817c29e8daed1b7461"
+  },
+  "timing": {
+    "tool_wall_seconds": 11.952193291159347
+  }
+}

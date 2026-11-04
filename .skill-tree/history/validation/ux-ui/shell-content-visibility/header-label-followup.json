@@ -1,0 +1,10 @@
+{
+  "title": "Keep header sync labels readable at enlarged phone text",
+  "description": "At 360 pixels and 200-percent text, full-shell light/dark snapshots reduce the header sync label to Sy while the Refresh button remains large. The status word cannot be read from the visible chip.",
+  "expected_behavior": "Expose an understandable complete sync-state label or concise summary at enlarged phone text, retain full time/detail on demand, and preserve menu and Refresh access.",
+  "context": "Separate from the required header/main clearance correction. Current screenshots observe truncation of the synced label; failure/stale/loading variants need researched coverage. Existing navigation compaction and dashboard freshness tasks do not directly specify header-label legibility.",
+  "source": ".skill-tree/artifacts/ux-ui/shell-content-visibility/1793697139434733000/chromium-gryphy-light-shell-today.png; .skill-tree/artifacts/ux-ui/shell-content-visibility/1793697139434733000/chromium-obsidian-glow-shell-today.png; MainLayout GetHeaderSyncStatus and topbar-sync-slot CSS.",
+  "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "related_task_id": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+  "relation": "followup"
+}

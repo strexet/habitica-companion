@@ -1,0 +1,40 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-87919909-bb2c-4874-b1e0-be6b15d1870f",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 1,
+    "expected": 1,
+    "failed": 1,
+    "passed": 0,
+    "skipped": 0
+  },
+  "definition": "dd0e1b65d4a13e08969e95b6bf2d6c9e5247c12007023f2eff6eb6ee57d9050a",
+  "diagnostic_key": "d5c87debc97d7ff1ad77a9333f4529b2f56917c7b728e8ef2d2156b77181bcff",
+  "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/discovery-green-execution.log",
+      "sha256": "0bfd6aec5f062957a1d22c1e4647484a1a94ab8bf1c0d83a23a73d5587e29f93"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "notes_owner_api_failureType: 'testCodeFailure'",
+  "key": "c56aac90d752f776fdd072c0b1f567400672e7b9febf18147329a2907d288f22",
+  "payload_hash": "b938702e9b103093099c20c3bf5fd26ecd94661bf6a156f8e2a58503fd40ca7d",
+  "recorded_at": "2026-11-02T17:04:31.163635+00:00",
+  "result": "fail",
+  "sources": {
+    "plugin/skills/habitica-notes/SKILL.md": "08d5458c56cdc49b185bff82483fd6afd5cef6bf3c58ed31cce5a8bac3fa4eef",
+    "workers/chatgpt-mcp/src/note-tools.ts": "aae1c4782df0a0e8bc67665a94f3f4552c6d8f5762b7d43ef69ab88d65814d1c",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-tools-api.ts": "c10662e5ad8aa8c9ba594a3002bdd1f3c464464e74b09910de12f5601fef3968",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "bd8b80150dc29401f32abc31d78ed08ed7e6d06fdb87fe50acbe716ca5909c1c",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3"
+  },
+  "timing": {
+    "tool_wall_seconds": 1.4394131251610816
+  }
+}

@@ -22,3 +22,10 @@ node ../../deploy/frontend-settings.mjs "$FRONTEND_SETTINGS_PATH"
 
 cd ../..
 "$DOTNET_INSTALL_DIR/dotnet" publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release -o output
+
+# Every production Git build publishes a verified package from the same source revision.
+HABITICA_RELEASE_REVISION="${CF_PAGES_COMMIT_SHA:-}"
+if [ -z "$HABITICA_RELEASE_REVISION" ]; then
+    HABITICA_RELEASE_REVISION="$(git rev-parse HEAD)"
+fi
+python3 deploy/build-plugin-download.py --published output/wwwroot --source-revision "$HABITICA_RELEASE_REVISION"

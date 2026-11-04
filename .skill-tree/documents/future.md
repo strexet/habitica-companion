@@ -110,352 +110,669 @@ Processing blocker:
 Processing blocker:
 - Fresh static inspection confirms serialized adaptive pacing, acknowledged17of40/429 controls and account-bound explicit gear recovery. The release report excludes live spell reproduction; affected-client build/controller identity and sanitized post-update iPhone evidence remain unavailable. No residual source defect or duplicate implementation is established. Obtain affected-client observations before a separately scoped live reproduction; research: .skill-tree/history/processing/session-workspace-2026-10-30/research.md.
 
+### Qualify hosted callback DNS and TLS failure injection
+
+```yaml
+id: P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Exercise owner-controlled DNS answer changes, private and mixed address rejection, invalid TLS certificates and stalled TLS handshakes against the deployed callback gateway. Independent authoritative DNS and a raw public TLS fixture are unavailable on the current provider-managed project hostnames.
+
+Expected behavior:
+- Retain source-bound hosted refusal and receiver counters for every DNS/TLS scenario when an owned fixture becomes available. Keep the production destination and certificate guards enforced; report unavailable hosted coverage explicitly. Dedicated DNS/TLS infrastructure is not a prerequisite for the owner-selected normal-delivery smoke task.
+
+Current context:
+- Independent fixture qualification deferred from selected task T-ec421773-5864-4bc5-b17f-ce04e0d818c2, with inherited completed root T-6a8db6be-b721-4b88-b62b-c6566d759080. The installed intake helper requires an open prioritized root for a structural followup; no inherited identity is rewritten. The normal-delivery revision preserves local DNS/TLS tests and production guards. No passing hosted evidence is implied.
+
+Source:
+- Direct repository-owner request in the current chat to defer unavailable hosted failure tests and check normal operation first.
+
+Priority rationale:
+- Nonblocking work deferred from the selected priority101 hosted task; the repository owner selects normal HTTPS delivery before dedicated DNS/TLS failure infrastructure.
+
+Processing blocker:
+- Owned authoritative DNS and raw public TLS fixture identities, allocation and cleanup scope remain unavailable. Existing normal HTTPS evidence cannot establish the deferred failure controls. Keep the owner-deferred hosted test Pending; no resource purchase or live scope is inferred. Research: .skill-tree/history/processing/implement-all-followups-2026-11-03/research.json.
+
+### Preserve optional validation metadata during installed workflow task rewrites
+
+```yaml
+id: P-f6d09ee5-4b46-4dd6-9843-bdd82419df43
+priority: 23
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
+relation: followup
+depends_on: []
+```
+
+Description:
+- The installed rewrite_meta helper rebuilds headers from FIELDS and drops OPTIONAL_FIELDS. Adding a required dependency to a before-dependent-work parent then fails atomic validation before writing. The current controller uses a documented canonical-transaction wrapper to preserve existing optional fields without modifying installed packages.
+
+Expected behavior:
+- A separately maintained Skill Tree package preserves validation_group_id and boundary_validation across dependency and provenance rewrites, with regression coverage and an explicitly reviewed installation update.
+
+Source:
+- .skill-tree/history/processing/ux-ui-adapter-inputs-2026-11-04/metadata-preservation.json
+
+Processing blocker:
+- The installed package drops optional metadata during canonical dependency/provenance rewrites. The current operation preserves existing flags through a documented canonical-transaction wrapper. A permanent upstream Skill Tree package fix and reviewed installation update require a separate maintenance scope; no source-repository edit or implicit reinstall is authorized by the app UI run. Evidence: .skill-tree/history/processing/ux-ui-adapter-inputs-2026-11-04/metadata-preservation.json.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Qualify the selected Netlify callback gateway deployment
+### Review and merge the validated integration through develop into main
 
 ```yaml
-id: T-ec421773-5864-4bc5-b17f-ce04e0d818c2
+id: T-6baa09b4-23c5-4f7a-990c-31183c92ae5e
+priority: 112
+status: Ready
+parent_pending_ids: ["P-9579af1d-3709-4bca-961a-6947585c7747"]
+processing_run_id: PR-29d81efe-837a-4d24-8135-018611823297
+root_task_id: T-6baa09b4-23c5-4f7a-990c-31183c92ae5e
+related_task_id: null
+relation: main
+depends_on: ["T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"]
+boundary_validation: before-dependent-work
+```
+
+Goal:
+- Create or reconcile the integration PR, review the complete diff, resolve actionable findings and merge the checked develop result into main.
+
+Touch:
+- GitHub repository strexet/habitica-companion, develop/main PRs, scoped commits, branch refs and publication evidence.
+
+Implementation constraints:
+- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.
+- Use the existing provider and owner authorization for PRs, commits, pushes and merges. Recheck required policy, approvals and CI at the actual head. Report absent CI honestly. Preserve both branch histories and compare production source hashes. Main publication can trigger a Pages build; coordinate matching backend availability and public frontend settings.
+
+Validation:
+```json
+{
+  "checks": [
+    {
+      "id": "merged-targets",
+      "recipe_id": "static-inspection",
+      "criteria": [
+        "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes."
+      ],
+      "sources": [
+        ".skill-tree/documents/build-and-release.md",
+        "tests/release/qualification.py"
+      ],
+      "parameters": {},
+      "assertion": "Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.",
+      "timing": "before-dependent-work"
+    }
+  ]
+}
+```
+
+Acceptance:
+- Provider-confirmed reviewed merges put the validated integration into develop and then main, with exact head/base guards and no omitted completed source changes.
+
+### Deploy and verify the complete merged main production state
+
+```yaml
+id: T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac
+priority: 111
+status: Ready
+parent_pending_ids: ["P-9579af1d-3709-4bca-961a-6947585c7747"]
+processing_run_id: PR-29d81efe-837a-4d24-8135-018611823297
+root_task_id: T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac
+related_task_id: null
+relation: main
+depends_on: ["T-6baa09b4-23c5-4f7a-990c-31183c92ae5e"]
+boundary_validation: before-dependent-work
+```
+
+Goal:
+- Publish the complete main release to the existing production site and matching services, then verify source identity and operational readiness.
+
+Touch:
+- Cloudflare Pages habitica-companion, existing Auth/MCP/Workspace Workers, migration preflight, public plugin artifacts and release records.
+
+Implementation constraints:
+- Preserve canonical task identities, stopped checkpoints, original receipts, secrets and per-account consent. No force push, destructive reset, automatic history rewrite, live gameplay test, independent-user acceptance or backlog implementation.
+- The owner explicitly authorizes production publication and necessary additive migrations. Inspect actual deployed resources, preserve consent and runtime capabilities, retain recovery bookmarks and exact predecessor versions, and avoid irreversible account/key operations. Validate the stable origin after any Git-connected build and keep a concrete release/rollback handoff.
+
+Validation:
+```json
+{
+  "checks": [
+    {
+      "id": "production-identity",
+      "recipe_id": "release-hosted",
+      "criteria": [
+        "Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities."
+      ],
+      "sources": [
+        "deploy/coordinated-release.py",
+        "tests/release/qualification.py"
+      ],
+      "parameters": {
+        "report_directory": ".skill-tree/history/validation/integrate-production/hosted"
+      },
+      "assertion": "Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities.",
+      "timing": "before-dependent-work"
+    },
+    {
+      "id": "production-browser",
+      "recipe_id": "release-hosted-browser",
+      "criteria": [
+        "Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits."
+      ],
+      "sources": [
+        "tests/release/hosted-smoke.mjs",
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js"
+      ],
+      "parameters": {
+        "report_directory": ".skill-tree/history/validation/integrate-production/hosted-browser"
+      },
+      "assertion": "Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits.",
+      "timing": "before-dependent-work"
+    }
+  ]
+}
+```
+
+Acceptance:
+- Production serves the exact complete main application and coherent matching Workers with required migrations, existing runtime settings and recoverable predecessor identities.
+- Hosted routed cold startup and PWA/storage smoke checks pass on the deployed artifact, with device/account paths truthfully reported as separate review limits.
+
+### Keep header sync states readable with enlarged phone text
+
+```yaml
+id: T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e
+priority: 104
+status: Ready
+parent_pending_ids: ["P-375aba91-d916-46f4-8310-aa7b51810a45"]
+processing_run_id: PR-edb0232f-548c-4ab6-b918-e9993e00497e
+root_task_id: T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12
+related_task_id: T-1fa4460c-6493-446e-9bc3-bd33d976404f
+relation: followup
+depends_on: ["T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"]
+```
+
+Goal:
+Expose a complete understandable sync-state label or concise summary with full detail available through an accessible explicit path, while retaining menu and Refresh access.
+
+Current behavior:
+MainLayout emits failed, stale, cloud-syncing and timestamp labels. The phone slot is bounded by25vw and sync-chip applies nowrap/hidden ellipsis. Current360/200 native screenshots still expose only a prefix. Shared header/main clearance and compact navigation outcomes preserve access but do not establish complete status wording.
+
+Touch:
+- `src/Habitica.WebApp/Layout/MainLayout.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs`
+- `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs`
+
+Implementation constraints:
+Presentation only. Preserve status precedence, refresh ownership, busy guards and cache decisions. Do not weaken fonts, contrast, controls or qualification to hide clipping. Local synthetic tests/builds require the applicable standing owner scope. No live provider, deployment, enrollment, real permission or publication is implied.
+
+Validation:
+Use focused runnable behavior or rendered Red before the scoped fix. Preserve original failed controls and source/test/environment evidence. Missing required evidence blocks completion.
+```json
+{
+  "checks": [
+    {
+      "id": "header-sync-labels-behavior",
+      "recipe_id": "dotnet-focused-tests",
+      "criteria": [
+        "Complete sync-state wording remains understandable for fresh, failed, stale and busy states with long times and enlarged phone text.",
+        "Menu and Refresh retain44-pixel targets, visible focus and access; full status/time detail is available without relying only on hover."
+      ],
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs"
+      ],
+      "parameters": {
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "test_filter": "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~AppNavMenuTests",
+        "report_name": "header-sync-labels.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/header-sync-labels/unit"
+      },
+      "assertion": "Exercise the stated independent outcomes with controlled synthetic collaborators, nonzero discovery, original failure evidence and no required skips. Presentation only. Preserve status precedence, refresh ownership, busy guards and cache decisions. Do not weaken fonts, contrast, controls or qualification to hide clipping.",
+      "timing": "immediate"
+    },
+    {
+      "id": "header-sync-labels-rendered",
+      "recipe_id": "ux-ui-rendered-browser",
+      "criteria": [
+        "Current light/dark phone/desktop rendered geometry and native disclosure behavior qualify without changing sync decisions."
+      ],
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "parameters": {
+        "task_key": "header-sync-labels",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings"
+        ],
+        "cases": "MainLayout emits failed, stale, cloud-syncing and timestamp labels. The phone slot is bounded by25vw and sync-chip applies nowrap/hidden ellipsis. Current360/200 native screenshots still expose only a prefix. Shared header/main clearance and compact navigation outcomes preserve access but do not establish complete status wording.",
+        "matrix": {
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "require": [
+            "44-pixel primary targets",
+            "visible focus and actions",
+            "disabled-state refusal",
+            "complete ordinary words",
+            "long-content geometry",
+            "enabled and disabled contrast"
+          ],
+          "disabled_text_product_minimum": 3,
+          "evidence": "Current Release identity, actual Razor states, hydrated task-specific journey, screenshots, limitations and owned cleanup."
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/header-sync-labels/browser"
+      },
+      "assertion": "Current light/dark phone/desktop rendered geometry and native disclosure behavior qualify without changing sync decisions. Implement a reviewed task-specific adapter with owned synthetic state and current routing; static captures alone cannot qualify interactive assertions.",
+      "timing": "immediate"
+    }
+  ]
+}
+```
+
+Acceptance:
+- Complete sync-state wording remains understandable for fresh, failed, stale and busy states with long times and enlarged phone text.
+- Menu and Refresh retain44-pixel targets, visible focus and access; full status/time detail is available without relying only on hover.
+- Current light/dark phone/desktop rendered geometry and native disclosure behavior qualify without changing sync decisions.
+
+Documentation updates:
+Update current behavior and qualification limits in testing.md and ux-ui-manifest.md when relevant. Keep investigation findings and original failure evidence in structured history.
+
+Research provenance:
+- `.skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json`
+- Original Pending source/context and artifact references remain in the processing selection receipt.
+
+### Clear stale review guidance after known unaccepted task cancellation
+
+```yaml
+id: T-f21b11ff-1224-486a-b729-e2f440f4920b
+priority: 102
+status: Ready
+parent_pending_ids: ["P-d70cd514-c714-48e7-8e9d-f2c10e3399d4"]
+processing_run_id: PR-edb0232f-548c-4ab6-b918-e9993e00497e
+root_task_id: T-e23a628d-1649-4e5e-bb14-17d2194dc4fa
+related_task_id: T-e23a628d-1649-4e5e-bb14-17d2194dc4fa
+relation: followup
+depends_on: ["T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"]
+```
+
+Goal:
+After a known unaccepted task preview is cancelled, present guidance consistent with current readiness while retaining original unknown-command fences and unrelated errors.
+
+Current behavior:
+WorkspaceTaskController.CancelPreview clears Message and refuses unknown preparation/acceptance. TodoWorkspacePresentation.CancelPreview forwards cancellation without updating the copied Message; RunAsync also retains Message when the controller message becomes null. Current cancelled native previews preserve journals but leave earlier review guidance.
+
+Touch:
+- `src/Habitica.WebApp/State/TodoWorkspacePresentation.cs`
+- `src/Habitica.WebApp/State/WorkspaceTaskController.cs`
+- `tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs`
+- `tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs`
+- `tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs`
+
+Implementation constraints:
+Update message ownership at the actual known-cancellation boundary. Preserve current controller refusal order, source authority, accepted receipts and draft isolation. No acceptance, replay or source switch is implied. Local synthetic tests/builds require the applicable standing owner scope. No live provider, deployment, enrollment, real permission or publication is implied.
+
+Validation:
+Use focused runnable behavior or rendered Red before the scoped fix. Preserve original failed controls and source/test/environment evidence. Missing required evidence blocks completion.
+```json
+{
+  "checks": [
+    {
+      "id": "cancelled-review-guidance-behavior",
+      "recipe_id": "dotnet-focused-tests",
+      "criteria": [
+        "Known unaccepted cancellation removes obsolete review-before-saving guidance and leaves the exact journal and draft unchanged.",
+        "Unknown preparation/acceptance still refuses cancellation and retains original request, receipt and refusal guidance; completed receipts and unrelated errors are not silently erased."
+      ],
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs"
+      ],
+      "parameters": {
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "test_filter": "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TaskTypeConversionPanelTests",
+        "report_name": "cancelled-review-guidance.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/cancelled-review-guidance/unit"
+      },
+      "assertion": "Exercise the stated independent outcomes with controlled synthetic collaborators, nonzero discovery, original failure evidence and no required skips. Update message ownership at the actual known-cancellation boundary. Preserve current controller refusal order, source authority, accepted receipts and draft isolation. No acceptance, replay or source switch is implied.",
+      "timing": "immediate"
+    },
+    {
+      "id": "cancelled-review-guidance-rendered",
+      "recipe_id": "ux-ui-rendered-browser",
+      "criteria": [
+        "Task, Today and type-copy cancellation render correct readiness and keyboard continuation across the required matrix."
+      ],
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "parameters": {
+        "task_key": "cancelled-review-guidance",
+        "routes": [
+          "/todo/today",
+          "/todo/tasks",
+          "/todo/convert"
+        ],
+        "cases": "WorkspaceTaskController.CancelPreview clears Message and refuses unknown preparation/acceptance. TodoWorkspacePresentation.CancelPreview forwards cancellation without updating the copied Message; RunAsync also retains Message when the controller message becomes null. Current cancelled native previews preserve journals but leave earlier review guidance.",
+        "matrix": {
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "require": [
+            "44-pixel primary targets",
+            "visible focus and actions",
+            "disabled-state refusal",
+            "complete ordinary words",
+            "long-content geometry",
+            "enabled and disabled contrast"
+          ],
+          "disabled_text_product_minimum": 3,
+          "evidence": "Current Release identity, actual Razor states, hydrated task-specific journey, screenshots, limitations and owned cleanup."
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/cancelled-review-guidance/browser"
+      },
+      "assertion": "Task, Today and type-copy cancellation render correct readiness and keyboard continuation across the required matrix. Implement a reviewed task-specific adapter with owned synthetic state and current routing; static captures alone cannot qualify interactive assertions.",
+      "timing": "immediate"
+    }
+  ]
+}
+```
+
+Acceptance:
+- Known unaccepted cancellation removes obsolete review-before-saving guidance and leaves the exact journal and draft unchanged.
+- Unknown preparation/acceptance still refuses cancellation and retains original request, receipt and refusal guidance; completed receipts and unrelated errors are not silently erased.
+- Task, Today and type-copy cancellation render correct readiness and keyboard continuation across the required matrix.
+
+Documentation updates:
+Update current behavior and qualification limits in testing.md and ux-ui-manifest.md when relevant. Keep investigation findings and original failure evidence in structured history.
+
+Research provenance:
+- `.skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json`
+- Original Pending source/context and artifact references remain in the processing selection receipt.
+
+### Diagnose and stabilize sign-in overlap in gear-recovery cancellation checks
+
+```yaml
+id: T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a
+priority: 102
+status: Ready
+parent_pending_ids: ["P-612f62db-56ca-44cd-8f23-95609d268da9"]
+processing_run_id: PR-edb0232f-548c-4ab6-b918-e9993e00497e
+root_task_id: T-21881802-f186-479d-9111-295192ce2de8
+related_task_id: T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69
+relation: followup
+depends_on: []
+```
+
+Goal:
+Establish deterministic synthetic readiness and controlled interleavings around cancellation; identify a fixture race or evidence-backed application defect without weakening recovery assertions.
+
+Current behavior:
+RecoverySetup awaits SignInAsync, while CompleteSignInRefreshAsync continues through an unawaited background path. Recovery refuses State.IsBusy before acquiring the recovery lease. The original119-test prerequisite failed once before browser launch; the observed guard result does not establish a production cause.
+
+Touch:
+- `src/Habitica.WebApp/State/AppSessionController.cs`
+- `src/Habitica.WebApp/State/AppSessionController.GearRecovery.cs`
+- `tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs`
+- `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
+
+Implementation constraints:
+Investigation precedes any production fix. Use bounded synthetic collaborators and explicit readiness signals. No live equipment, spell, credential or provider operation. An unexplained failure remains open rather than becoming a claimed production diagnosis. Local synthetic tests/builds require the applicable standing owner scope. No live provider, deployment, enrollment, real permission or publication is implied.
+
+Validation:
+Use focused runnable behavior or rendered Red before the scoped fix. Preserve original failed controls and source/test/environment evidence. Missing required evidence blocks completion.
+```json
+{
+  "checks": [
+    {
+      "id": "gear-recovery-readiness-behavior",
+      "recipe_id": "dotnet-focused-tests",
+      "criteria": [
+        "Controlled deferred collaborators establish the exact sign-in/background/recovery ordering and explain the observed guard failure or retain an explicit evidence-backed blocker.",
+        "Cancellation retains the original journal, releases busy/lease state, permits no duplicate equip or cast, and preserves account-change guards under deterministic interleavings.",
+        "Focused repeated controls use explicit completion barriers and preserve every original failure; no arbitrary sleep, retry-until-pass or assertion weakening establishes acceptance."
+      ],
+      "sources": [
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/AppSessionController.GearRecovery.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs"
+      ],
+      "parameters": {
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "test_filter": "FullyQualifiedName~AppSessionControllerTests",
+        "report_name": "gear-recovery-readiness.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/gear-recovery-readiness/unit"
+      },
+      "assertion": "Exercise the stated independent outcomes with controlled synthetic collaborators, nonzero discovery, original failure evidence and no required skips. Investigation precedes any production fix. Use bounded synthetic collaborators and explicit readiness signals. No live equipment, spell, credential or provider operation. An unexplained failure remains open rather than becoming a claimed production diagnosis.",
+      "timing": "immediate"
+    }
+  ]
+}
+```
+
+Acceptance:
+- Controlled deferred collaborators establish the exact sign-in/background/recovery ordering and explain the observed guard failure or retain an explicit evidence-backed blocker.
+- Cancellation retains the original journal, releases busy/lease state, permits no duplicate equip or cast, and preserves account-change guards under deterministic interleavings.
+- Focused repeated controls use explicit completion barriers and preserve every original failure; no arbitrary sleep, retry-until-pass or assertion weakening establishes acceptance.
+
+Documentation updates:
+Update current behavior and qualification limits in testing.md and ux-ui-manifest.md when relevant. Keep investigation findings and original failure evidence in structured history.
+
+Research provenance:
+- `.skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json`
+- Original Pending source/context and artifact references remain in the processing selection receipt.
+
+### Present concise Party sync failures with separate sanitized diagnostics
+
+```yaml
+id: T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa
 priority: 101
 status: Ready
-parent_pending_ids: ["P-2d43941f-f8b5-489c-9467-dd2dcc7383a4"]
-processing_run_id: PR-0397ff3e-5942-44c8-8fbf-32966ad290af
-root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
-related_task_id: T-280cb859-c0f7-46e5-97db-bbd41dc6a99a
-relation: blocker
-depends_on: ["T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9"]
-boundary_validation: before-dependent-work
+parent_pending_ids: ["P-5a241695-798e-48df-8a0f-989ba8ceaee8"]
+processing_run_id: PR-edb0232f-548c-4ab6-b918-e9993e00497e
+root_task_id: T-84818186-be62-46d9-be33-c237da0054f2
+related_task_id: T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb
+relation: followup
+depends_on: ["T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"]
 ```
 
 Goal:
-- Provide the owner-selected Netlify Functions Free callback egress boundary without changing callback-secret custody or activating subscriptions.
+Show concise actionable Party-sync guidance while retaining sanitized technical diagnostics separately and preserving cached Party reads and execution fences.
 
 Current behavior:
-- Auth has no callback egress grant fence. The retained protocol prototype uses fake network adapters. The owner selected Netlify Functions Free; deployment and real callback execution require a concrete account and explicit scope.
-
-Desired behavior:
-- Qualify the exact candidate on a selected owner Netlify Free account/site and matching Auth deployment using a bounded operator-approved profile. Record runtime, deployment/rollback identity, Free-plan hard limit, environment secret names, redacted provider logging configuration and permitted test destinations.
-- Verify actual signed challenge bytes, public IPv4/IPv6 connection policy, controlled DNS changes, original-host TLS, redirect/private/mixed-address rejection, concurrency/replay, cold-start deadline and unavailable/quota behavior. Keep subscription activation unavailable until evidence passes.
+The Party bridge throws descriptive local-host/HTML response errors. The background sign-in error path forwards exception.Message to shared ErrorMessage and sanitized diagnostics, so JSInterop message/stack content appears in the user banner. The prior reflow repair bounds the banner but does not shorten failure copy.
 
 Touch:
-- Operator setup, selected Netlify/Auth deployment configuration and hosted evidence only; scoped repairs return to the existing implementation checkpoint.
-
-Discovery allowance:
-- Inspect connected provider access without exposing credentials. Obtain missing exact account/site, controlled fixture destinations and publication scope from the owner after the local candidate is reviewable.
-
-Out of scope:
-- Paid resources, automatic upgrades, provider fallback, real user callback enrollment, ChatGPT messages, subscriptions and gameplay.
+- `src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js`
+- `src/Habitica.WebApp/State/AppSessionController.cs`
+- `src/Habitica.WebApp/Layout/MainLayout.razor`
+- `src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs`
+- `tests/Functions/cloudflare-party-sync-bridge.test.mjs`
+- `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
+- `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
 
 Implementation constraints:
-- Account creation, secret entry, remote migration and publication require explicit operator scope. No provider documentation or local TLS fixture substitutes for hosted acceptance. Do not probe unowned private services.
-
-Questions and required clarifications:
-- [Resolved - execution prerequisite] Netlify Functions Free is selected. The owner supplies the concrete account/site and hosted execution scope when the local implementation and profile are ready. No live access is inferred from the planning decision.
+Scope normalization to the Party-sync failure path. Preserve existing rate-limit, consent, account and mutation boundaries. Do not hide unrelated errors, expose response bodies or imply automatic retry or configuration changes. Local synthetic tests/builds require the applicable standing owner scope. No live provider, deployment, enrollment, real permission or publication is implied.
 
 Validation:
-- Execute the bounded hosted profile against owned fixtures after explicit scope; retain sanitized original receipts, negative controls, runtime/configuration and rollback evidence. Failed or unavailable controls leave the dependency incomplete.
+Use focused runnable behavior or rendered Red before the scoped fix. Preserve original failed controls and source/test/environment evidence. Missing required evidence blocks completion.
 ```json
 {
   "checks": [
     {
-      "id": "hosted-gateway",
-      "recipe_id": "netlify-hosted-controls",
-      "criteria": [
-        "The exact deployed gateway and Auth claim endpoint pass the approved hosted DNS/TLS, signed-byte, replay, deadline and unavailable/quota controls with sanitized evidence and a verified rollback path."
-      ],
-      "sources": [
-        ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
-      ],
-      "parameters": {},
-      "assertion": "- Execute the bounded hosted profile against owned fixtures after explicit scope; retain sanitized original receipts, negative controls, runtime/configuration and rollback evidence. Failed or unavailable controls leave the dependency incomplete.",
-      "timing": "before-dependent-work"
-    }
-  ]
-}
-```
-
-Acceptance:
-- The exact deployed gateway and Auth claim endpoint pass the approved hosted DNS/TLS, signed-byte, replay, deadline and unavailable/quota controls with sanitized evidence and a verified rollback path.
-
-Documentation updates:
-- Record actual hosted coverage and remaining host/device limitations; retain no real callback URL, signing material or account credentials.
-
-Risks:
-- Missing owner account, publication authority or controlled fixtures blocks execution. Free quota exhaustion must preserve undelivered state without paid fallback.
-
-### Browse and manage standalone and project Notes folders
-
-```yaml
-id: T-23342106-269e-4cd6-992e-4ff95be3e62d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
-processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
-root_task_id: T-23342106-269e-4cd6-992e-4ff95be3e62d
-related_task_id: null
-relation: main
-depends_on: ["T-94b18897-2c2f-44ab-b89b-34e58b3903c5", "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599"]
-boundary_validation: before-dependent-work
-```
-
-Goal:
-- Make thematic folders usable in general Notes and the exact Companion project view.
-
-Current behavior:
-- NotesPanel exposes a flat title/Markdown library. The existing task T-a48aa46e-fd3c-43ff-b9b3-3becddb47599 owns the project picker and project Notes composition; folder UI extends the accepted project composition instead of duplicating the predecessor.
-
-Desired behavior:
-- Expose All notes, notes without a folder, standalone folders and project-scoped folders with clear current context. Allow folder create/rename/remove-empty, folder browsing, new-note-in-folder and moving existing notes into or out of a folder.
-- Support the owner Altai project with Hotels and Interesting places folders, separate hotel/place notes and exact descriptive content. Keep project notes outside folders visible. Combine folder selection with text/trash/project filters and paging.
-
-Touch:
-- NotesController and volatile drafts, NotesPanel.razor, TodoProjectsPage.razor and accepted project Notes components, scoped styles, diagnostics operation names and focused component/browser fixtures.
-
-Discovery allowance:
-- Inspect the completed project UI and folder API/MCP contracts before editing. Inventory routes sharing changed Notes controls and preserve canonical selection, source and notebook identity.
-
-Out of scope:
-- New backend semantics, nested folders, multi-folder membership, drag-and-drop as the only control, bulk note deletion, project deletion cascades, remote deployment and real device/account qualification.
-
-Implementation constraints:
-- Preserve the existing primary Notes editor, exact Markdown, retained versions, drafts, consent/source isolation, conflict handling, export/import and original uncertain-command recovery. Importing a Markdown file remains an unsaved draft rather than a silent folder assignment.
-- Review exact before/after folder/project scope for note moves. Clearing a folder preserves the project. A move into a standalone/project folder that changes project scope requires an explicit reviewed project change; stale or unavailable references remain visible and detachable.
-- Explain nonempty-folder removal refusal, including trashed current members; provide normal navigation/move controls without implicit deletion. Folder labels never select identities. Account/source/project changes clear obsolete selection and cannot apply late responses to another notebook.
-- Use existing light/dark semantic surfaces, visible keyboard focus, readable wrapping and primary actions at phone/desktop widths. Source navigation never uploads Notes or broadens permissions.
-
-Questions and required clarifications:
-- [Resolved - direct owner replies] Single-level folders and zero-or-one membership are recorded in owner-decisions.json. Folder project scope is fixed; notes without folders remain supported.
-
-Validation:
-- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.
-- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.
-```json
-{
-  "checks": [
-    {
-      "id": "notes-components",
+      "id": "party-sync-failure-copy-behavior",
       "recipe_id": "dotnet-focused-tests",
       "criteria": [
-        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
-        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+        "Local-host unavailable, HTML response, malformed JSON and transport failures produce concise classified user guidance without a raw stack or duplicated implementation details.",
+        "Sanitized diagnostics retain useful failure context without credentials, private headers or unbounded response bodies; cached Party access and sync/mutation guards remain unchanged."
       ],
       "sources": [
-        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
-        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
-        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
-        "src/Habitica.Domain/Notes/NotesModel.cs"
+        "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs"
       ],
       "parameters": {
         "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Notes",
-        "report_name": "notes-components.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components"
+        "test_filter": "FullyQualifiedName~AppSessionControllerTests|FullyQualifiedName~PartyPageTests",
+        "report_name": "party-sync-failure-copy.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/party-sync-failure-copy/unit"
       },
-      "assertion": "- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.\n- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.",
+      "assertion": "Exercise the stated independent outcomes with controlled synthetic collaborators, nonzero discovery, original failure evidence and no required skips. Scope normalization to the Party-sync failure path. Preserve existing rate-limit, consent, account and mutation boundaries. Do not hide unrelated errors, expose response bodies or imply automatic retry or configuration changes.",
       "timing": "immediate"
     },
     {
-      "id": "notes-rendered-interactions",
-      "recipe_id": "notes-rendered-browser",
+      "id": "party-sync-failure-copy-bridge",
+      "recipe_id": "node-focused-tests",
       "criteria": [
-        "Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.",
-        "All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass."
+        "Local-host unavailable, HTML response, malformed JSON and transport failures produce concise classified user guidance without a raw stack or duplicated implementation details.",
+        "Sanitized diagnostics retain useful failure context without credentials, private headers or unbounded response bodies; cached Party access and sync/mutation guards remain unchanged."
       ],
       "sources": [
-        ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
-      ],
-      "parameters": {},
-      "assertion": "- Component journeys cover standalone and project folders, create/rename, note capture/move/detach, dirty drafts, exact accepted-version verification, nonempty removal including trash, stale projects, duplicate names, source/account races and original receipt recovery.\n- Render every changed/shared route in built-in light and dark schemes including obsidian-glow at phone and desktop widths, normal/200-percent text, long folder/project/note names, empty/disabled/error states, visible primary actions, keyboard focus, geometry and contrast. Record physical-device, assistive-technology and hosted-path gaps separately.",
-      "timing": "before-dependent-work"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Users can organize and find separate thematic notes outside projects and inside exact project folders, with no content/history loss or hidden reassociation.
-- All scoped UI actions have reviewed MCP counterparts; unknown acceptance, private access, stale context and unsupported removal remain explicit, and required interaction/rendered checks pass.
-
-Documentation updates:
-- Update features.md, ux-ui-manifest.md, testing.md and the canonical folder contract for actual Notes/project routes and verified interaction boundaries.
-
-Risks:
-- Shared selection/draft ownership or crowded project controls can discard content or hide primary actions. Validate every affected route and retain no-folder/project context explicitly.
-
-### Expose reviewed Notes folder workflows through MCP
-
-```yaml
-id: T-94b18897-2c2f-44ab-b89b-34e58b3903c5
-priority: 100
-status: Ready
-parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
-processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
-root_task_id: T-94b18897-2c2f-44ab-b89b-34e58b3903c5
-related_task_id: null
-relation: main
-depends_on: ["T-7aa20175-78af-40c9-86a3-e1ea37109c34"]
-```
-
-Goal:
-- Provide complete reviewed agent parity for discovering folders, managing folder metadata and placing Notes.
-
-Current behavior:
-- search_notes/get_note/prepare_note_command/accept_note_command/get_note_command support Notes and project links, but folder schemas and folder command receipts are absent.
-
-Desired behavior:
-- Expose bounded folder list/search, exact folder reads and create/rename/remove-empty preview/accept/original-receipt tools through the existing Auth/MCP/Workspace boundary. Extend note preview/read/search with exact folder membership, no-folder filters and accepted-version verification.
-- Audit the full folder workflow, including creating a note directly in a folder, moving an existing note, detaching, duplicate labels, empty-folder removal and recovery after uncertain preparation/acceptance. Update packaged habitica-notes guidance for English and Russian folder intent.
-
-Touch:
-- workers/shared/note-tools.ts, workers/chatgpt-mcp/src/note-tools.ts, note-tools-api.ts, scoped tool registration, plugin/skills/habitica-notes/SKILL.md and actual-SDK tests.
-
-Discovery allowance:
-- Inspect current tool discovery/scopes and the accepted folder-cloud contract. Reuse existing reviewed preparation and epoch guards or add a separately typed folder preparation lane without weakening exact identity/hash checks.
-
-Out of scope:
-- Browser UI automation as a permanent workflow, folder recursion/sharing, arbitrary API passthrough, task writes, hosted account/device tests and package publication.
-
-Implementation constraints:
-- Require separate Notes consent/read/write as appropriate; active canonical tasks:read is additionally required when creating a project folder or explicitly changing project placement. Folder names and note bodies remain untrusted data.
-- Previews bind exact notebook/folder/note identities and revisions, before/after folder and project membership, unchanged content hashes, lifecycle consequences, grant/access epochs and expiry. Clarify ambiguous names rather than inferring a target.
-- After uncertainty reuse the original request and arguments or recover the original command receipt. Verify accepted metadata/version before reporting the result; missing receipts never authorize replacement writes. Empty-folder removal never purges member notes or retained content.
-
-Questions and required clarifications:
-- [Resolved - repository rule] Agent-required browser actions require reviewed MCP parity with matching ownership, consent and receipt recovery. Explicit unambiguous folder intent permits matching acceptance under the existing Notes policy.
-
-Validation:
-- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.
-- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.
-```json
-{
-  "checks": [
-    {
-      "id": "notes-mcp-contracts",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
-        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/notes.test.mjs",
-        "workers/companion-workspace/package.json"
+        "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js",
+        "tests/Functions/cloudflare-party-sync-bridge.test.mjs"
       ],
       "parameters": {
-        "test_file": "workers/companion-workspace/test/notes.test.mjs"
+        "test_file": "tests/Functions/cloudflare-party-sync-bridge.test.mjs"
       },
-      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.
-- Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects.
-
-Documentation updates:
-- Update the folder contract, plugin guidance, features.md and testing.md with actual tool identities, permission requirements and unqualified host boundaries.
-
-Risks:
-- A partial tool inventory can leave management/recovery browser-only; renamed labels and stale notebook identities must never redirect a command.
-
-### Persist Notes folders through the cloud owner API
-
-```yaml
-id: T-7aa20175-78af-40c9-86a3-e1ea37109c34
-priority: 100
-status: Ready
-parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
-processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
-root_task_id: T-7aa20175-78af-40c9-86a3-e1ea37109c34
-related_task_id: null
-relation: main
-depends_on: ["T-5111060c-76ae-4a0e-a48b-260ecbb8885f"]
-```
-
-Goal:
-- Provide cloud persistence and browser-client transport for the shared Notes folder contract.
-
-Current behavior:
-- Workspace D1 stores current note rows, retained version JSON, immutable note receipts and separate Notes preparations. Migration0017 adds project_json; no folder storage or folder API exists.
-
-Desired behavior:
-- Add an additive Workspace migration and bounded owner routes for folder discovery/exact reads, explicit folder commands and original receipts. Extend note create/update and search with the shared membership/filter contract.
-- Update NotesCloudClient and application interfaces to validate extended folder backups, identities, current/retained metadata and exact original receipts. Browser and cloud sources retain independent namespaces.
-
-Touch:
-- workers/shared/notes.ts, notes-api.ts, Workspace migrations, Notes lifecycle cleanup, INotesCloudClient.cs, NotesCloudClient.cs and Worker/client fixtures.
-
-Discovery allowance:
-- Use the folder-model wire fixtures and current Notes/project transaction guards. Inspect private Auth Notes identity, current D1 batch conventions and revocation/delete cleanup before extending routes. Consult official platform documentation only for new platform behavior.
-
-Out of scope:
-- MCP tool exposure, folder UI, remote migration/publication, real private content, new consent grants and Habitica API calls.
-
-Implementation constraints:
-- Commit folder/note membership, notebook revision, retained history and original receipts atomically. Recheck current Notes connection/access epoch and exact project authority at acceptance; a failed guard or receipt insert rolls back every write.
-- Preserve existing Notes consent, owner/profile isolation, quotas, content-free diagnostics and original request identity. Separate Notes permissions from project access; project-only readers cannot see private folder names, note titles or snippets.
-- Remove folder names/current metadata and retained content copies during explicit notebook/profile deletion. Disconnect revokes access without deleting stored content. Never automatically copy browser folders or rebind imported project references.
-- Support complete-set text/trash/project/folder/no-folder filtering before twenty-row paging with unchanged notebook revision. Retain stale references visibly and recover original receipts before prospective folder/project validation.
-
-Questions and required clarifications:
-- [Resolved - repository contract] The private Notes namespace owns folders. Folder commands do not use Workspace organization/task commands or native tag consent.
-
-Validation:
-- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.
-- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.
-```json
-{
-  "checks": [
-    {
-      "id": "notes-owner-api",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
-        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/notes.test.mjs",
-        "workers/companion-workspace/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/companion-workspace/test/notes.test.mjs"
-      },
-      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "assertion": "Exercise actual bridge classification and response/refusal boundaries with synthetic responses and no real provider traffic.",
       "timing": "immediate"
     },
     {
-      "id": "notes-client-contracts",
-      "recipe_id": "dotnet-focused-tests",
+      "id": "party-sync-failure-copy-rendered",
+      "recipe_id": "ux-ui-rendered-browser",
       "criteria": [
-        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
-        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+        "Party and shared-warning surfaces remain readable with keyboard-reachable relevant actions in the required rendered matrix."
       ],
       "sources": [
-        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
-        "src/Habitica.Domain/Notes/NotesModel.cs"
+        "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs",
+        "tests/Functions/cloudflare-party-sync-bridge.test.mjs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
       ],
       "parameters": {
-        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "test_filter": "FullyQualifiedName~NotesCloud",
-        "report_name": "notes-client-contracts.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts"
+        "task_key": "party-sync-failure-copy",
+        "routes": [
+          "/party",
+          "/dashboard"
+        ],
+        "cases": "The Party bridge throws descriptive local-host/HTML response errors. The background sign-in error path forwards exception.Message to shared ErrorMessage and sanitized diagnostics, so JSInterop message/stack content appears in the user banner. The prior reflow repair bounds the banner but does not shorten failure copy.",
+        "matrix": {
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "require": [
+            "44-pixel primary targets",
+            "visible focus and actions",
+            "disabled-state refusal",
+            "complete ordinary words",
+            "long-content geometry",
+            "enabled and disabled contrast"
+          ],
+          "disabled_text_product_minimum": 3,
+          "evidence": "Current Release identity, actual Razor states, hydrated task-specific journey, screenshots, limitations and owned cleanup."
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/party-sync-failure-copy/browser"
       },
-      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "assertion": "Party and shared-warning surfaces remain readable with keyboard-reachable relevant actions in the required rendered matrix. Implement a reviewed task-specific adapter with owned synthetic state and current routing; static captures alone cannot qualify interactive assertions.",
       "timing": "immediate"
     }
   ]
@@ -463,315 +780,256 @@ Validation:
 ```
 
 Acceptance:
-- The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.
-- Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work.
+- Local-host unavailable, HTML response, malformed JSON and transport failures produce concise classified user guidance without a raw stack or duplicated implementation details.
+- Sanitized diagnostics retain useful failure context without credentials, private headers or unbounded response bodies; cached Party access and sync/mutation guards remain unchanged.
+- Party and shared-warning surfaces remain readable with keyboard-reachable relevant actions in the required rendered matrix.
 
 Documentation updates:
-- Extend the canonical folder contract, technical.md, features.md, testing.md and migration guidance with verified local boundaries.
+Update current behavior and qualification limits in testing.md and ux-ui-manifest.md when relevant. Keep investigation findings and original failure evidence in structured history.
 
-Risks:
-- D1 rollback, notebook deletion and preparation cleanup must include folder metadata without changing accepted legacy receipts or leaving private name copies.
+Research provenance:
+- `.skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json`
+- Original Pending source/context and artifact references remain in the processing selection receipt.
 
-### Add versioned Notes folders and local persistence
+### Keep Projects management labels readable at enlarged phone widths
 
 ```yaml
-id: T-5111060c-76ae-4a0e-a48b-260ecbb8885f
+id: T-6ec3d90c-0cb8-4968-b794-d68f9cde898c
 priority: 100
 status: Ready
-parent_pending_ids: ["P-51d5734b-82dc-4f91-82c6-d4eca50a3114"]
-processing_run_id: PR-510172b6-67f0-4cdd-8340-aaa0ec3e9d20
-root_task_id: T-5111060c-76ae-4a0e-a48b-260ecbb8885f
-related_task_id: null
-relation: main
+parent_pending_ids: ["P-3663dfd8-1ecc-4dc3-9577-fc0fd9afb49f"]
+processing_run_id: PR-9724479e-a259-40ca-9850-0e5e70e1a4b3
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784
+relation: followup
 depends_on: []
-boundary_validation: before-dependent-work
 ```
 
 Goal:
-- Support single-level thematic folders in the existing private Notes notebook, with zero or one folder per note.
+Keep optional Projects management copy readable with enlarged phone text.
 
 Current behavior:
-- NotesModel retains note content, receipts and one optional versioned project association. NotesEngine has no folder entity or folder commands. IndexedDB commits assume the current note-only revision/receipt sequence. See source-fingerprints.json and research.md in .skill-tree/history/processing/note-folders-2026-10-29.
-
-Desired behavior:
-- Add stable folder identities, revisions, names, optional exact project scope, retained removal identity and explicit create/rename/remove-empty commands. Folder project scope remains immutable; nested folders and multiple-folder membership are excluded.
-- Allow a note create/update to select or clear one folder. Omitted membership preserves the existing folder. Scope-consistent placement preserves exact Markdown, note identity and prior versions. Detaching from a folder preserves the project association; moving to a differently scoped folder must explicitly review and atomically apply the matching project change.
-- Support folder discovery and combined text/trash/project/folder/no-folder filtering before revision-bound paging. Distinguish notes without a folder from notes without a project. Keep folder metadata in account-bound Notes exports/imports.
+The current post-focus-repair native screenshots show mid-word breaks in Organization management and Open management at360px200percent text. The on-demand management surface remains at the end of Projects. Outer document geometry alone does not detect the word break.
 
 Touch:
-- NotesModel.cs, NotesEngine.cs, NotesService.cs, NotesProjects.cs, NotesQueries.cs, IndexedDbNotesDatabase.cs, indexedDbStorage.js and focused model/service/storage fixtures.
-
-Discovery allowance:
-- Define a portable folder command/receipt encoding alongside the existing note contract. Inspect global notebook revision and receipt invariants before extending storage. Explicitly version the extended backup shape and refuse unsupported readers without losing metadata.
-
-Out of scope:
-- Cloud HTTP/MCP transports, browser folder UI, recursive folders, shared folders, folder scope moves, multi-folder membership, bulk deletion, task entities and Habitica tag projection.
+- `src/Habitica.WebApp/Pages/TodoProjectsPage.razor`
+- `src/Habitica.WebApp/Components/TodoOrganizationPanel.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `tests/browser-qualification/ux-ui-projects-browse-journey.mjs`
+- `tests/browser-qualification/ux-ui-adapters.json`
+- `tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs`
 
 Implementation constraints:
-- Keep existing accepted command bytes/hashes and legacy backups readable; absent folder metadata means no folder. Use neutral C#/TypeScript wire fixtures for new commands without rewriting existing fixtures.
-- Use exact owner/source/notebook/folder/project identities. New project folders and assignments require active canonical own-project authority checked atomically with the Notes commit. Retained stale project/folder references remain readable, content-editable and explicitly detachable. A project deletion never deletes Notes.
-- Reject folder removal while any current note, including trash, references the folder. Retain an identity tombstone for historical memberships; never silently delete or detach notes. Preserve original receipts after rename/removal and uncertain acknowledgements.
-- Keep revision/CAS and immutable-receipt invariants valid across note and folder commands. Bound folder metadata/capacity and preserve Notes lifecycle reserve, explicit quota failures, account separation and source isolation. Names never establish ownership or enter diagnostics.
-
-Questions and required clarifications:
-- [Resolved - direct owner replies] owner-decisions.json records single-level folders and zero-or-one folder membership with exact content/history preservation.
-- [Resolved - bounded implementation scope] Folder scope is immutable. Empty-only removal, explicit project-change review and no-folder/project distinction avoid implicit cascades or hidden reassociation. Expanded folder lifecycle is outside the selected contract.
+Scope spacing/reflow to Projects management. Do not shrink normal/enlarged typography, hide labels, weaken contrast, replace native controls or change original management/draft/receipt behavior. Register reviewed new adapter inputs before execution. Preserve source/consent/unknown-outcome fences; no provider or command acceptance.
 
 Validation:
-- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.
-- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.
+Use exploratory rendered Red before scoped layout changes. Existing organization component behavior contracts remain required regression coverage; no new pure markup test is required for a CSS-only repair. Add native word-line geometry and an independent narrow negative to a reviewed Projects adapter, retaining every declared route/palette/width/text case.
 ```json
 {
   "checks": [
     {
-      "id": "notes-local-model",
-      "recipe_id": "dotnet-focused-tests",
+      "assertion": "Use actual current Release Projects with paired typed Browser fixtures. Establish rendered Red for split management heading/action words, then require complete word-line geometry at unchanged normal font sizes, native keyboard focus,44-pixel actions, original locked reviews and unchanged storage. Include an independent narrower-than-word negative control; no static markup or outer viewport width substitutes for readability.",
       "criteria": [
-        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
-        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+        "Projects management headings and primary Open/Close management labels retain complete ordinary words in the documented normal/enlarged phone/desktop light and dark matrix.",
+        "Management remains on demand; opening, closing and original-review locks preserve exact project and Notes drafts, selected source and keyboard focus without accepting commands.",
+        "A native rendered word-line control rejects the original narrow layout and an independent narrow negative, while current scoped product states pass with full geometry, disabled, focus, contrast and cleanup evidence."
       ],
-      "sources": [
-        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
-        "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
-        "src/Habitica.Domain/Notes/NotesModel.cs"
-      ],
+      "id": "projects-management-word-reflow",
       "parameters": {
-        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Notes",
-        "report_name": "notes-local-model.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model"
+        "cases": "Closed/on-demand management, open management, frozen original review, long heading/action labels, source and draft preservation, ordinary-word negative control.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/projects-management-reflow/browser",
+        "routes": [
+          "/todo/projects"
+        ],
+        "task_key": "projects-management-reflow"
       },
-      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
-      "timing": "immediate"
-    },
-    {
-      "id": "notes-storage-contracts",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
-        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
-      ],
+      "recipe_id": "ux-ui-rendered-browser",
       "sources": [
-        "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
-        "src/Habitica.Domain/Notes/NotesModel.cs"
+        "src/Habitica.WebApp/Pages/TodoProjectsPage.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-projects-browse-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs"
       ],
-      "parameters": {
-        "test_project": "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Notes",
-        "report_name": "notes-storage-contracts.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts"
-      },
-      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
       "timing": "immediate"
-    },
-    {
-      "id": "notes-indexeddb",
-      "recipe_id": "notes-indexeddb-browser",
-      "criteria": [
-        "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
-        "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
-      ],
-      "sources": [
-        ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
-      ],
-      "parameters": {},
-      "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
-      "timing": "before-dependent-work"
     }
   ]
 }
 ```
 
 Acceptance:
-- Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.
-- Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects.
+- Projects management headings and primary Open/Close management labels retain complete ordinary words in the documented normal/enlarged phone/desktop light and dark matrix.
+- Management remains on demand; opening, closing and original-review locks preserve exact project and Notes drafts, selected source and keyboard focus without accepting commands.
+- A native rendered word-line control rejects the original narrow layout and an independent narrow negative, while current scoped product states pass with full geometry, disabled, focus, contrast and cleanup evidence.
 
-Documentation updates:
-- Document the folder wire/storage and lifecycle contract in one canonical lowercase kebab-case document; update technical.md, features.md and testing.md only for implemented behavior.
-
-Risks:
-- Adding a second command kind can invalidate the current receipt-count/revision invariant or legacy JSON readers. Backups and historical membership require explicit compatibility controls.
-
-### Deliver due task reminder events with durable original receipts
+### Expose complete retained title and Notes during frozen task reviews
 
 ```yaml
-id: T-569ff3a0-8765-49b6-9b37-a62e091617ae
-priority: 99
+id: T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44
+priority: 100
 status: Ready
-parent_pending_ids: ["P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"]
-processing_run_id: PR-9722057b-0549-4478-8c12-6ee286276060
-root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
-related_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+parent_pending_ids: ["P-972b21ed-ac92-48d4-ba32-ca8ef24be8a7"]
+processing_run_id: PR-edb0232f-548c-4ab6-b918-e9993e00497e
+root_task_id: T-4afee12c-2759-40f6-adb4-39b5029a3928
+related_task_id: T-4afee12c-2759-40f6-adb4-39b5029a3928
 relation: followup
-depends_on: ["T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"]
+depends_on: ["T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"]
 ```
 
 Goal:
-- Add the default-off exact-task reminder Events channel on the qualified protocol and subscription foundation.
+Offer complete exact retained title and Notes through a keyboard-accessible read-only presentation while editing remains fenced.
 
 Current behavior:
-- Durable reminder state and Web Push have separate schedule/receipt contracts. The Events prototype can model signed delivery but is not a production sender and has no actual host reply evidence.
-
-Desired behavior:
-- Match due exact-task reminder state to independently authorized live subscriptions and send generic schema-valid signed events through the Auth-owned protected callback gateway. Persist stable event IDs, original attempt receipts, expiry and connection/resource fences.
-- Report scheduled, accepted-by-host, refused, retryable and unknown delivery separately from an actual subscribed-chat response; unsubscribed, revoked and expired resources stop delivery.
+TodoTaskPanel retains the exact draft title and Notes inside a disabled fieldset. A native disabled single-line title cannot offer ordinary keyboard scrolling/selection, and current360/200 captures show only a prefix. The3:1 disabled-text outcome qualifies contrast, not complete retained-value inspectability.
 
 Touch:
-- Workspace reminder/event outbox and scheduler, shared event payload/status contracts, Auth private signing/dispatch gateway, Events subscription lifecycle, MCP read-only original event status and synthetic composition fixtures.
-
-Discovery allowance:
-- Reuse existing reminder civil-time/DST and original delivery identity rules without coupling Events permission to push/foreground consent. Validate the final protocol/event schema against the official profile and the completed predecessor contracts.
-
-Out of scope:
-- Raw conversation IDs, local Codex control sockets, task completion/scoring, implicit subscription or notification consent, actual chat messages, enabling rollout gates, key provisioning and hosted/device publication.
+- `src/Habitica.WebApp/Components/TodoTaskPanel.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs`
+- `tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs`
 
 Implementation constraints:
-- Use generic minimum payloads with exact task/event identity and no private Notes, task text, callback URL or signing secret. Enforce current account/connection/grant/resource authorization again before dispatch.
-- Persist dispatch intent before the send; preserve event ID across only contract-permitted bounded transient retries, with fresh signing timestamp/signature and exact body bytes. Stop on410/413, expired subscriptions, revoke and exhausted attempts. Original uncertainty never authorizes a new event identity or a duplicated game action.
-- Use the predecessor protected HTTPS adapter and Auth vault. Keep server schedule state, transport receipt and actual host rendering distinct; a2xx callback alone cannot confirm a subscribed-chat response or Codex support.
-- Retain default-off configuration and bounded quotas/cleanup. Any actual host rescan/subscription/callback operation requires a separately selected qualification profile; local acceptance supplies no real-chat delivery claim.
-
-Questions and required clarifications:
-- [Resolved - owner/repository scope] Auth-vault ownership and separate consent are selected. Protocol migration and verified subscription transport/lifecycle are explicit required dependencies; live host/device operations remain outside local implementation scope.
+Read-only presentation only. Use the current draft and active ownership context, render untrusted text safely and avoid new persistence, clipboard side effects, enabled editing or command dispatch. Local synthetic tests/builds require the applicable standing owner scope. No live provider, deployment, enrollment, real permission or publication is implied.
 
 Validation:
-- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.
-- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.
+Use focused runnable behavior or rendered Red before the scoped fix. Preserve original failed controls and source/test/environment evidence. Missing required evidence blocks completion.
 ```json
 {
   "checks": [
     {
-      "id": "reminder-events",
-      "recipe_id": "worker-focused-tests",
+      "id": "frozen-value-inspection-behavior",
+      "recipe_id": "dotnet-focused-tests",
       "criteria": [
-        "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
-        "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification."
+        "Long retained title and Notes are fully inspectable through wrapped read-only text or an equivalent keyboard-accessible disclosure while native editing remains unavailable.",
+        "Inspection preserves exact private draft values, original pending command ownership and unknown-outcome fences; account/source changes remove prior private content."
       ],
       "sources": [
-        "workers/companion-workspace/test/reminder-api.test.mjs",
-        "workers/companion-workspace/package.json"
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs"
       ],
       "parameters": {
-        "test_file": "workers/companion-workspace/test/reminder-api.test.mjs"
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoWorkspacePresentationTests",
+        "report_name": "frozen-value-inspection.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/frozen-value-inspection/unit"
       },
-      "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.
-- Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification.
-
-Documentation updates:
-- Update features.md, originating-chat-reminders.md, protocol/scope/retention contracts, testing.md and packaged reminder guidance with the implemented channel and explicit host/device limits.
-
-Risks:
-- A retry or stale subscription can duplicate notifications or leak task context. Preserve exact event identity, minimal payloads and current resource/connection checks at every dispatch.
-
-### Implement Auth-owned callback secrets and reviewed event subscriptions
-
-```yaml
-id: T-280cb859-c0f7-46e5-97db-bbd41dc6a99a
-priority: 99
-status: Ready
-parent_pending_ids: ["P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"]
-processing_run_id: PR-9722057b-0549-4478-8c12-6ee286276060
-root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
-related_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
-relation: followup
-depends_on: ["T-273899d8-6f17-43ee-b82f-41013e1021b9", "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9", "T-ec421773-5864-4bc5-b17f-ce04e0d818c2"]
-boundary_validation: before-dependent-work
-```
-
-Goal:
-- Implement the separately consented subscription foundation using the owner-selected Auth-vault callback boundary and exact resource ownership.
-
-Current behavior:
-- The current MCP exposes tools only; no production Events subscription store, callback vault or protected callback transport exists. The offline prototype uses fake authorization/network adapters and does not establish production persistence, encryption or egress safety.
-
-Desired behavior:
-- Add authenticated Events discovery/list/subscribe/unsubscribe with deterministic subscription identity, finite expiry/refresh and original lifecycle receipts. Auth encrypts callback URL and signing secrets under separate versioned keys; Workspace stores opaque callback IDs, owner/resource-bound subscriptions and receipts.
-- Activate a subscription only after signed challenge verification through a qualified connection-safe HTTPS adapter. Raw callback URL/secrets never enter Workspace records, MCP results, exported workspaces or diagnostic logs.
-
-Touch:
-- Auth private callback-vault lifecycle and narrow service binding, Workspace subscription/migration/consent records, MCP2 method handlers and scope catalogue, profile/grant cleanup and offline/local Worker security fixtures.
-
-Discovery allowance:
-- Reuse existing credential/push vault encryption and cleanup patterns with separate keys and consent. Verify an actual supported callback transport before activation; official TCP socket or fetch documentation alone does not prove validated-address/TLS-host binding. Capture a required transport blocker if the deployment adapter cannot meet the contract.
-
-Out of scope:
-- Sending application reminder events, reusing Web Push consent/keys, accepting arbitrary account/desktop-thread selectors, exposing a local app-server, actual key/callback provisioning, real subscriptions and publication.
-
-Implementation constraints:
-- [Owner decision2026-10-28] Auth owns encrypted callback URL/signing secrets; Workspace owns opaque IDs, subscriptions and receipts. Require independent subscription consent, current resource access, short-lived verification challenges, expiry/refresh, replacement-secret rotation and cleanup on revoke/disconnect/delete.
-- [Owner decision2026-10-29] The protected HTTPS egress gateway targets Netlify Functions Free. Preserve Auth/Workspace ownership and the existing connection-safety contract. Required Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 includes deployable configuration and owner setup assistance; free-quota exhaustion must not trigger a paid upgrade or an unapproved hosting fallback.
-- Validate exact event/filter schemas and current principal ownership. Canonicalize subscription arguments and deduplicate same owner/callback/event identity without extending an expired or revoked authority context.
-- Require HTTPS, connection-time public-destination enforcement, original-host TLS verification, bounded time/bytes, no redirects and no private/local address access for challenge and later delivery. DNS preflight followed by unconstrained fetch is insufficient; fail closed when secure connection binding is unavailable.
-- Persist lifecycle changes and original IDs atomically across concurrent subscribe/refresh/unsubscribe. A challenge acknowledgment or stored callback is not proof of a rendered chat response. Preserve legacy tools, existing grants and all default-off rollout gates.
-
-Questions and required clarifications:
-- [Resolved - explicit owner answer2026-10-29] Use Netlify Functions Free for the protected Node.js HTTPS egress gateway and assist with setup during implementation. The owner requested a planning update in the current turn. Required Pending P-2d43941f-f8b5-489c-9467-dd2dcc7383a4 produces local gateway T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9 and hosted qualification T-ec421773-5864-4bc5-b17f-ce04e0d818c2. Complete both recorded dependencies before implementing the parent. See .skill-tree/history/validation/callback-egress/owner-decision.md.
-- [Resolved - explicit owner answer] Callback URL/signing-secret ownership is Auth vault with separate consent and revocation cleanup; the prior Web Push decision is no longer used as a substitute. Protocol compatibility is a required predecessor.
-
-Validation:
-- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.
-- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.
-```json
-{
-  "checks": [
-    {
-      "id": "callback-authorization",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
-        "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
-      ],
-      "sources": [
-        "workers/chatgpt-auth/test/callback-egress.test.mjs",
-        "workers/chatgpt-auth/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/chatgpt-auth/test/callback-egress.test.mjs"
-      },
-      "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+      "assertion": "Exercise the stated independent outcomes with controlled synthetic collaborators, nonzero discovery, original failure evidence and no required skips. Read-only presentation only. Use the current draft and active ownership context, render untrusted text safely and avoid new persistence, clipboard side effects, enabled editing or command dispatch.",
       "timing": "immediate"
     },
     {
-      "id": "subscription-contracts",
-      "recipe_id": "subscription-contracts-execution-profile",
+      "id": "frozen-value-inspection-rendered",
+      "recipe_id": "ux-ui-rendered-browser",
       "criteria": [
-        "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
-        "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+        "Normal/enlarged light/dark phone/desktop states qualify complete value access, visible focus, disabled refusal and safe text encoding; physical assistive-technology gaps remain explicit."
       ],
       "sources": [
-        ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
       ],
-      "parameters": {},
-      "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
-      "timing": "before-dependent-work"
+      "parameters": {
+        "task_key": "frozen-value-inspection",
+        "routes": [
+          "/todo/tasks",
+          "/todo/dailies",
+          "/todo/habits"
+        ],
+        "cases": "TodoTaskPanel retains the exact draft title and Notes inside a disabled fieldset. A native disabled single-line title cannot offer ordinary keyboard scrolling/selection, and current360/200 captures show only a prefix. The3:1 disabled-text outcome qualifies contrast, not complete retained-value inspectability.",
+        "matrix": {
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "require": [
+            "44-pixel primary targets",
+            "visible focus and actions",
+            "disabled-state refusal",
+            "complete ordinary words",
+            "long-content geometry",
+            "enabled and disabled contrast"
+          ],
+          "disabled_text_product_minimum": 3,
+          "evidence": "Current Release identity, actual Razor states, hydrated task-specific journey, screenshots, limitations and owned cleanup."
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/frozen-value-inspection/browser"
+      },
+      "assertion": "Normal/enlarged light/dark phone/desktop states qualify complete value access, visible focus, disabled refusal and safe text encoding; physical assistive-technology gaps remain explicit. Implement a reviewed task-specific adapter with owned synthetic state and current routing; static captures alone cannot qualify interactive assertions.",
+      "timing": "immediate"
     }
   ]
 }
 ```
 
 Acceptance:
-- Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.
-- No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim.
+- Long retained title and Notes are fully inspectable through wrapped read-only text or an equivalent keyboard-accessible disclosure while native editing remains unavailable.
+- Inspection preserves exact private draft values, original pending command ownership and unknown-outcome fences; account/source changes remove prior private content.
+- Normal/enlarged light/dark phone/desktop states qualify complete value access, visible focus, disabled refusal and safe text encoding; physical assistive-technology gaps remain explicit.
 
 Documentation updates:
-- Update technical/privacy/retention and originating-chat-reminders contracts, scope/consent guidance and testing.md; distinguish local security qualification from actual host callbacks.
+Update current behavior and qualification limits in testing.md and ux-ui-manifest.md when relevant. Keep investigation findings and original failure evidence in structured history.
 
-Risks:
-- A callback is both a secret-bearing delivery channel and an outbound network target. Enforce vault isolation, resource authorization and protected egress before any data transfer.
+Research provenance:
+- `.skill-tree/history/processing/ux-ui-all-followups-2026-11-04/research.json`
+- Original Pending source/context and artifact references remain in the processing selection receipt.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
@@ -784,7 +1042,7 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108", "T-b38dad4c-c3fa-431a-a429-50d6fed97650", "T-70901e97-738c-42c2-ae50-68dd71417a32", "T-65810da7-9524-45ce-b280-668d04c86441"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108", "T-b38dad4c-c3fa-431a-a429-50d6fed97650", "T-70901e97-738c-42c2-ae50-68dd71417a32", "T-65810da7-9524-45ce-b280-668d04c86441", "T-13e3754f-774b-443f-8997-e1d677f3c079"]
 boundary_validation: before-dependent-work
 ```
 
@@ -871,401 +1129,6 @@ Documentation updates:
 - Deployment and release qualification matrix; preserve unrun gates in future.md.
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
-
-### Show coverage-aware Daily and Habit activity streaks
-
-```yaml
-id: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f
-priority: 99
-status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f
-related_task_id: null
-relation: main
-depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"]
-boundary_validation: before-dependent-work
-```
-
-Goal:
-- Present useful streak statistics with explicit limits and no invented lifetime records.
-Current behavior:
-- Retained completion/Habit event reads exist; statistics and history UI are planned, but current history cannot establish contiguous completeness.
-Desired behavior:
-- Bounded streak reads and statistics distinguish verified scheduled-day Daily runs, positive-Habit calendar-day runs and unknown/lower-bound history.
-Touch:
-- Workspace activity queries, shared recurrence/calendar helpers, MCP read definitions, statistics/history view models and browser components.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Use explicit UTC as-of plus the displayed IANA timezone. Habit days with at least one positive event count once; negative events remain separate and do not erase a positive day. Negative-only habits display activity frequency rather than a positive streak. Daily streaks count scheduled dates; skipped/paused intervals are neutral and missing eligible dates break a run only inside proven coverage. Current unfinished days retain the previous run until the local day closes. Historical schedules/corrections determine prior dates. Label lower bounds and refuse lifetime-best claims without complete coverage; no game effects or synthetic backfill.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.
-```json
-{
-  "checks": [
-    {
-      "id": "activity-rules",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
-        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
-      ],
-      "sources": [
-        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Activity|FullyQualifiedName~Streak",
-        "report_name": "activity-rules.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules"
-      },
-      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
-      "timing": "immediate"
-    },
-    {
-      "id": "activity-components",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
-        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
-      ],
-      "sources": [
-        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Statistics",
-        "report_name": "activity-components.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components"
-      },
-      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
-      "timing": "immediate"
-    },
-    {
-      "id": "activity-rendering",
-      "recipe_id": "activity-rendered-browser",
-      "criteria": [
-        "Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.",
-        "Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims."
-      ],
-      "sources": [
-        ".skill-tree/documents/testing.md",
-        ".skill-tree/documents/technical.md"
-      ],
-      "parameters": {},
-      "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
-      "timing": "before-dependent-work"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.
-- Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Edit supported linked Daily schedules with explicit reconciliation
-
-```yaml
-id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
-priority: 99
-status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31", "P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
-related_task_id: null
-relation: main
-depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30", "T-07d27408-3019-423f-a5de-4cda1f9e2818"]
-```
-
-Goal:
-- Make linked recurrence authoring available where the current Habitica schedule has a lossless supported mapping.
-Current behavior:
-- Canonical Daily recurrence and native authoring exist; HabiticaTaskDetails contains difficulty/attribute/checklist only, and lifecycle edits reject linked work.
-Desired behavior:
-- A reviewed linked Daily schedule edit displays separate Companion and Habitica semantics and records fresh verified schedule normalization.
-Touch:
-- Habitica task schedule parsing, Auth update allowlist/preconditions, Workspace projection engine, schedule history, recurrence editor, MCP contracts and shared fixtures.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Support only losslessly represented daily/weekly/monthly day-of-month rules. Bind fresh account timezone/dayStart and upstream frequency/everyX/repeat/startDate/daysOfMonth facts; unsupported yearly, weeks-of-month and mixed rules remain explicitly read-only rather than discarded. Preserve actual Habitica normalized fields and record schedule epochs. Preview current/next dates and warn that native pause/skip does not pause Habitica penalties. Do not change native-only pause into an upstream resting setting, auto-score past dates, run Cron or dispatch while outcome is unknown. Revalidate official controller/update semantics before editing the allowlist.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.
-```json
-{
-  "checks": [
-    {
-      "id": "daily-schedule-rules",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
-        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
-      ],
-      "sources": [
-        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "Directory.Packages.props",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Schedule",
-        "report_name": "daily-schedule-rules.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules"
-      },
-      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
-      "timing": "immediate"
-    },
-    {
-      "id": "daily-schedule-wire",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
-        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/recurrence-commands.test.mjs",
-        "workers/companion-workspace/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
-      },
-      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.
-- Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Convert task types through reviewed linked copies
-
-```yaml
-id: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528
-priority: 99
-status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528
-related_task_id: null
-relation: main
-depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0", "T-ea3c2df0-7c13-4a77-a920-1451801b9946"]
-```
-
-Goal:
-- Offer task-type changes without corrupting retained event semantics or Habitica mappings.
-Current behavior:
-- Current commands create explicit kinds and history validation compares accepted snapshot kind with current task kind; in-place conversion would invalidate prior activity.
-Desired behavior:
-- Conversion creates a new native target-kind task with explicit lineage and a preview of copied/reset fields. The original remains intact unless a separate supported native archive is selected.
-Touch:
-- Workspace typed commands/identity, portable lineage validation, command engine and Worker parity, browser capture/editor and MCP descriptions.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Default to a new unlinked copy; never rewrite historical task kind, transfer mappings/history, create a Habitica task automatically or silently archive linked work. Copy name/notes/priority and valid chosen organization; require explicit target Daily recurrence, reset kind-specific state/stage/occurrence fields, and show all losses. The optional native archive is allowed only with available references and no unresolved effects. One reviewed atomic command binds source revision, target identity and field choices; repeated acceptance retains the same target. Original Habitica records remain unchanged and separate explicit linking remains available.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.
-```json
-{
-  "checks": [
-    {
-      "id": "conversion-rules",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
-        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
-      ],
-      "sources": [
-        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
-        "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Conversion",
-        "report_name": "conversion-rules.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules"
-      },
-      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
-      "timing": "immediate"
-    },
-    {
-      "id": "conversion-components",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
-        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
-      ],
-      "sources": [
-        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
-        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
-        "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
-        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Conversion",
-        "report_name": "conversion-components.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components"
-      },
-      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
-      "timing": "immediate"
-    },
-    {
-      "id": "conversion-wire",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
-        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/conversion-api.test.mjs",
-        "workers/companion-workspace/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/companion-workspace/test/conversion-api.test.mjs"
-      },
-      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.
-- Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
-
-### Evaluate saved lists with explicit relative-date predicates
-
-```yaml
-id: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d
-priority: 99
-status: Ready
-parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
-root_task_id: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d
-related_task_id: null
-relation: main
-depends_on: ["T-66aec83d-1d40-4c42-87ec-6566e1ac3769"]
-```
-
-Goal:
-- Keep Today/overdue/upcoming saved lists useful after dates advance.
-Current behavior:
-- SavedTaskPredicates stores fixed DateOnly ranges; saved-view evaluation delegates the fixed query to canonical filters.
-Desired behavior:
-- Optional typed relative predicates evaluate from one explicit clock/timezone context per query and return the evaluated bounds.
-Touch:
-- WorkspaceSavedTaskView models/validators, query identity, organization save/history, C#/Worker read evaluators, saved-list editor and MCP read results.
-Discovery allowance:
-- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
-Out of scope:
-- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
-Implementation constraints:
-- Adopt presets Today, BeforeToday, NextSevenDays inclusive of today, ThisWeek Monday through Sunday and NoDate. Planned and deadline predicates remain separate and cannot silently override an absolute range on the same field. Store relative intent, not a frozen date. Capture one UTC as-of and explicit IANA timezone; bind pagination to the document revision and evaluation-day context. Clock/day changes invalidate old cursors. Reads remain side-effect free and unavailable timezones fail explicitly. Existing absolute saved lists remain unchanged.
-- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
-Validation:
-- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.
-```json
-{
-  "checks": [
-    {
-      "id": "relative-date-rules",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
-        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
-      ],
-      "sources": [
-        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs",
-        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
-        "test_filter": "FullyQualifiedName~Saved|FullyQualifiedName~Relative",
-        "report_name": "relative-date-rules.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules"
-      },
-      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
-      "timing": "immediate"
-    },
-    {
-      "id": "relative-date-wire",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
-        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/saved-view-api.test.mjs",
-        "workers/companion-workspace/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/companion-workspace/test/saved-view-api.test.mjs"
-      },
-      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.
-- Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks.
-Documentation updates:
-- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
-Risks:
-- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
 
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 
@@ -1480,89 +1343,6 @@ Risks:
 - losing a key before migration.
 - OAuth grants surviving credential deletion.
 - upstream IP-level rate limiting after centralizing requests.
-
-### Add project-filtered retained task history navigation
-
-```yaml
-id: T-16e1b491-18c3-498e-82da-81a97ff1294a
-priority: 25
-status: Ready
-parent_pending_ids: ["P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-16e1b491-18c3-498e-82da-81a97ff1294a
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Add exact project filtering and direct project-to-history navigation while reusing completed history and recovery.
-Current behavior:
-- Completion and Habit history already support exact task, text and UTC dates with safe restoration. Queries and TodoHistoryPanel lack a project filter; statistics and extended recovery have separate existing Ready tasks.
-Desired behavior:
-- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
-Touch:
-- WorkspaceCompletionHistory/WorkspaceHabitHistory filters and parity models, Worker history reads/MCP schemas, TodoHistoryPanel, Projects entrypoints and retained-history skill.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Define project filtering as current retained canonical task assignment, labelled clearly rather than claiming event-time membership when snapshots lack placement. Include archived/removed project identities and completed archived tasks; preserve accepted event text/time provenance. Distinguish current Unassigned from a removed historical project selector. Combine text/project/UTC filters with AND, stable revision-bound paging and full counts. Existing exact-event restoration and linked/uncertain refusal remain unchanged. Reuse the planned statistics and extended-recovery tasks instead of implementing duplicate pages or unsafe undo.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in .skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.
-```json
-{
-  "checks": [
-    {
-      "id": "history-components",
-      "recipe_id": "dotnet-focused-tests",
-      "criteria": [
-        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
-      ],
-      "sources": [
-        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "Directory.Packages.props",
-        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
-        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
-      ],
-      "parameters": {
-        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
-        "test_filter": "FullyQualifiedName~TodoHistory|FullyQualifiedName~History",
-        "report_name": "history-components.trx",
-        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components"
-      },
-      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
-      "timing": "immediate"
-    },
-    {
-      "id": "history-wire",
-      "recipe_id": "worker-focused-tests",
-      "criteria": [
-        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
-      ],
-      "sources": [
-        "workers/companion-workspace/test/completion-history.test.mjs",
-        "workers/companion-workspace/package.json"
-      ],
-      "parameters": {
-        "test_file": "workers/companion-workspace/test/completion-history.test.mjs"
-      },
-      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
-      "timing": "immediate"
-    }
-  ]
-}
-```
-
-Acceptance:
-- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
 
 ## Backlog
 

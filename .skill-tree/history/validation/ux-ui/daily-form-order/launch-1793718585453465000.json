@@ -1,0 +1,9 @@
+{
+  "task_id": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+  "check_id": "daily-form-order-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T15:25:45.453229+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "0f067ea4a58b6d22ee7cf80b41c2b992cb1f420c54b3577096fc6000eeccaa83"
+}

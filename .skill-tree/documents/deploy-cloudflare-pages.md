@@ -12,8 +12,8 @@ Current source prerequisites include every numbered migration in the selected st
 
 | Store | Migration source | Required source sequence |
 | --- | --- | --- |
-| Auth integration D1 | `workers/chatgpt-auth/migrations/` | `0001` through `0013-recovery-sessions.sql` |
-| Workspace D1 | `workers/companion-workspace/migrations/` | `0001` through `0018-workspace-transfers.sql` |
+| Auth integration D1 | `workers/chatgpt-auth/migrations/` | `0001` through `0015-event-dispatches.sql` |
+| Workspace D1 | `workers/companion-workspace/migrations/` | `0001` through `0023-task-type-copy-previews.sql` |
 | Pages party D1 | `migrations/` | Numbered party migrations through `0008_party_sync_invite_proofs.sql` |
 
 Inspect exact migration filenames and remote applied state before an authorized publication; a historical applied range never proves current schema readiness. Preserve profile identity/encryption keys, original command receipts, uncertainty fences and unrelated browser KV/party bindings. Provision only secret names required by selected capabilities. Keep credential write-version selection and retained decryption keys explicit; credential rotation requires the separate key-operation contract.
@@ -145,7 +145,7 @@ Create local KV/D1 resources or override the placeholder IDs in `wrangler.toml` 
 
 ## Existing browser migration
 
-Pages uses native SPA routing. The PWA registers service-worker.js on secure page load; Release publication supplies the public offline cache worker. Pages HTML canonicalization can give the cached index response redirect history. The worker validates and reconstructs only the public shell before serving navigation, retaining same-origin integrity and private-route exclusions. The shell-v2 cache namespace permits a worker-only update without reusing the redirected shell cache. See [PWA installation and relaunch](pwa-installation.md#redirect-safe-shell-and-updates).
+Pages uses native SPA routing. The PWA registers service-worker.js on secure page load; Release publication supplies the public offline cache worker. Pages HTML canonicalization can give the cached index response redirect history. The worker validates and reconstructs only the public shell before serving navigation, retaining same-origin integrity and private-route exclusions. The shell-v3 cache namespace permits a worker-only update without reusing the redirected shell cache. See [PWA installation and relaunch](pwa-installation.md#redirect-safe-shell-and-updates).
 
 Verify the published worker/asset identities and successful installation, close all controlled app tabs/windows, then reopen to permit ordinary activation. Activation removes obsolete public build caches only. A failed install preserves the active build. Do not require site-data clearing or unregister the worker as the normal migration: local records and push subscriptions must survive. Deployment success alone does not establish activation on an affected iPhone.
 

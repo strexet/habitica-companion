@@ -1,0 +1,444 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Workspace source restoration clears hierarchy-local drafts and selection without requesting heading focus after the user has moved to another control.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+          "sha256": "1585104e7b997780e88332a17e7935d2258059a8186c89989484443ef232ce94"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+          "sha256": "22443a613f8d1f068804fbaf159749a92b026c3246d7c0ee2564bac81db18d26"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.log",
+          "sha256": "6f8b1f671fa04c8fb866ed5fd5bf6352def7bdad795dcb9dd743fab28e223c9b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.trx",
+          "sha256": "1ab7aeb49bc810acc07473fe63ca9d455593dbcd0fb8629486a1c4a60b476741"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-6afd4e06-5c8b-48e4-b385-2c8332216f95-rendered-receipts.json",
+          "sha256": "0d4b733439ad4634adb910042b1605da893ecc3f70c8c9b156a97b23e0281969"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+          "sha256": "57fe0cf15cefeea0083bcbc7509346361ad3d5c086739640c9f947320ffeef67"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+          "sha256": "502b118d89aca468102c2ca8af8407799bf68298c3e50bdb3ea74ae7bd696099"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Explicit branch navigation, draft closure and original-review restoration retain intended focus and unchanged command/source guards.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+          "sha256": "1585104e7b997780e88332a17e7935d2258059a8186c89989484443ef232ce94"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+          "sha256": "22443a613f8d1f068804fbaf159749a92b026c3246d7c0ee2564bac81db18d26"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.log",
+          "sha256": "6f8b1f671fa04c8fb866ed5fd5bf6352def7bdad795dcb9dd743fab28e223c9b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.trx",
+          "sha256": "1ab7aeb49bc810acc07473fe63ca9d455593dbcd0fb8629486a1c4a60b476741"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-6afd4e06-5c8b-48e4-b385-2c8332216f95-rendered-receipts.json",
+          "sha256": "0d4b733439ad4634adb910042b1605da893ecc3f70c8c9b156a97b23e0281969"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+          "sha256": "57fe0cf15cefeea0083bcbc7509346361ad3d5c086739640c9f947320ffeef67"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+          "sha256": "502b118d89aca468102c2ca8af8407799bf68298c3e50bdb3ea74ae7bd696099"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Current native shell and Tasks/Projects hierarchy reports qualify light/dark phone/desktop normal/enlarged focus behavior, including the previously failing skip-link sequence, with actual browser evidence and verified cleanup.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+          "sha256": "1585104e7b997780e88332a17e7935d2258059a8186c89989484443ef232ce94"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+          "sha256": "22443a613f8d1f068804fbaf159749a92b026c3246d7c0ee2564bac81db18d26"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.log",
+          "sha256": "6f8b1f671fa04c8fb866ed5fd5bf6352def7bdad795dcb9dd743fab28e223c9b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.trx",
+          "sha256": "1ab7aeb49bc810acc07473fe63ca9d455593dbcd0fb8629486a1c4a60b476741"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-6afd4e06-5c8b-48e4-b385-2c8332216f95-rendered-receipts.json",
+          "sha256": "0d4b733439ad4634adb910042b1605da893ecc3f70c8c9b156a97b23e0281969"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+          "sha256": "57fe0cf15cefeea0083bcbc7509346361ad3d5c086739640c9f947320ffeef67"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+          "sha256": "502b118d89aca468102c2ca8af8407799bf68298c3e50bdb3ea74ae7bd696099"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Restore a different actual local workspace through TodoWorkspacePresentation. Require no new heading-focus interop from passive source-state reset, unchanged seeded journals and no accepted commands; then require explicit branch navigation to request focus. Preserve existing hierarchy, edit, review and shell tests with nonzero discovery and no required skips.",
+        "criteria": [
+          "Workspace source restoration clears hierarchy-local drafts and selection without requesting heading focus after the user has moved to another control.",
+          "Explicit branch navigation, draft closure and original-review restoration retain intended focus and unchanged command/source guards."
+        ],
+        "id": "hierarchy-passive-focus-behavior",
+        "parameters": {
+          "report_name": "hierarchy-source-focus.trx",
+          "result_directory": ".skill-tree/artifacts/hierarchy-source-focus-unit",
+          "test_filter": "FullyQualifiedName~TodoHierarchyPanelTests|FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-21f6e180-3eb4-4631-995c-3ba6be9ae95d",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 54,
+          "expected": 54,
+          "failed": 1,
+          "passed": 53,
+          "skipped": 0
+        },
+        "definition": "04dd2ae527fe7575470ad91b3e5954f82ba3857cd4744d12bd0465d6bb92b8cf",
+        "environment_identity": "2a1b8c1993c5b3e1bc824220c11441afe2fbc4653159921cd402dfddadab3a40",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-21f6e180-3eb4-4631-995c-3ba6be9ae95d.log",
+            "sha256": "6f7c987eca377281e0bc8fbb35663e29dafb56ac4f50b6baa63e89a7cdf8173b"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-21f6e180-3eb4-4631-995c-3ba6be9ae95d.trx",
+            "sha256": "a72fda38735aef015e9cc48683df97d6255c785db11a16fe8bc0e2f499234c4d"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "ac6135f948c0d97f159d79817f0135df2f5fe11fe478e674409713407f49ce84",
+        "payload_hash": "a7db9a98bc9f919642974704844ce334427b579ae93345a0e206a2dcfdd440b2",
+        "recorded_at": "2026-11-04T02:59:35.723019+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "d52b878587baf68c22d29b879728db264df49ffc3b884652fe7c2a9b5a13e5f6",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "b1e009edaff8d6a9c3fafcc7100566e0fe6d47ad3921af19220975a9589b425a"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.936103791929781
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 54,
+          "expected": 54,
+          "failed": 0,
+          "passed": 54,
+          "skipped": 0
+        },
+        "definition": "04dd2ae527fe7575470ad91b3e5954f82ba3857cd4744d12bd0465d6bb92b8cf",
+        "environment_identity": "2a1b8c1993c5b3e1bc824220c11441afe2fbc4653159921cd402dfddadab3a40",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.log",
+            "sha256": "6f8b1f671fa04c8fb866ed5fd5bf6352def7bdad795dcb9dd743fab28e223c9b"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.trx",
+            "sha256": "1ab7aeb49bc810acc07473fe63ca9d455593dbcd0fb8629486a1c4a60b476741"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "98c2550359c10b7d54ebc4de6d7fc57d3b45f170df7e7559dcddc83b5783d35e",
+        "payload_hash": "1e6f333fd36c5866bd5ae3b8293ed86120c60378c2ac5921ba9f3eee53315b89",
+        "recorded_at": "2026-11-04T03:00:25.283181+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "0c805d7e7cacd893245a9024fe7a51f01ba23ee54f115def4c4cd5fcab8832bf",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "b1e009edaff8d6a9c3fafcc7100566e0fe6d47ad3921af19220975a9589b425a"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.672068292275071
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Verify actual current-source passing browser receipts from the existing immutable accessible-shell, full-shell and Tasks/Projects hierarchy contracts, with complete declared six-width100/200percent light/gryphy-dark/obsidian matrices and owned cleanup. Re-execute both shell contracts after this repair even when older fingerprints omit the hierarchy component. No static or component result substitutes for the required native browser evidence.",
+        "criteria": [
+          "Current native shell and Tasks/Projects hierarchy reports qualify light/dark phone/desktop normal/enlarged focus behavior, including the previously failing skip-link sequence, with actual browser evidence and verified cleanup."
+        ],
+        "id": "hierarchy-current-rendered-receipts",
+        "parameters": {
+          "required_current_browser_contracts": [
+            "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+            "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+            "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+          ]
+        },
+        "recipe_id": "static-inspection",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+          "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "Verify actual current-source passing browser receipts from the existing immutable accessible-shell, full-shell and Tasks/Projects hierarchy contracts, with complete declared six-width100/200percent light/gryphy-dark/obsidian matrices and owned cleanup. Re-execute both shell contracts after this repair even when older fingerprints omit the hierarchy component. No static or component result substitutes for the required native browser evidence.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-6afd4e06-5c8b-48e4-b385-2c8332216f95",
+        "classification": "executed-control",
+        "cleanup": "Read-only current-source/native-receipt inspection completed. Referenced browser reports verify owned contexts/server/profiles closed and removed. No live provider or owner qualification.",
+        "definition": "04dd2ae527fe7575470ad91b3e5954f82ba3857cd4744d12bd0465d6bb92b8cf",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-6afd4e06-5c8b-48e4-b385-2c8332216f95-rendered-receipts.json",
+            "sha256": "0d4b733439ad4634adb910042b1605da893ecc3f70c8c9b156a97b23e0281969"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+            "sha256": "1585104e7b997780e88332a17e7935d2258059a8186c89989484443ef232ce94"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+            "sha256": "502b118d89aca468102c2ca8af8407799bf68298c3e50bdb3ea74ae7bd696099"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+            "sha256": "22443a613f8d1f068804fbaf159749a92b026c3246d7c0ee2564bac81db18d26"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+            "sha256": "57fe0cf15cefeea0083bcbc7509346361ad3d5c086739640c9f947320ffeef67"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "c3a1491101d288261a7775aaaeea2d33c6e9a9b18f970064f2ac0f972d64ffbb",
+        "payload_hash": "b122874ab05745b33aa319b6b5c957fa5bb46f3015217e2f28bfb50140d7f29d",
+        "recorded_at": "2026-11-04T05:22:08.686277+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "0c805d7e7cacd893245a9024fe7a51f01ba23ee54f115def4c4cd5fcab8832bf",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "b1e009edaff8d6a9c3fafcc7100566e0fe6d47ad3921af19220975a9589b425a",
+          "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs": "5ea41830e5c9c1226614648c6df4034d5571c52350ee19ff509122f8bad00190",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs": "9d0e3d8e383f9fc75be85f5aaee542a48b8556beb4323d91733884a3a1075d14"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.37544120801612735
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+    "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+    "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+      "sha256": "1585104e7b997780e88332a17e7935d2258059a8186c89989484443ef232ce94"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+      "sha256": "22443a613f8d1f068804fbaf159749a92b026c3246d7c0ee2564bac81db18d26"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.log",
+      "sha256": "6f8b1f671fa04c8fb866ed5fd5bf6352def7bdad795dcb9dd743fab28e223c9b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e.trx",
+      "sha256": "1ab7aeb49bc810acc07473fe63ca9d455593dbcd0fb8629486a1c4a60b476741"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/C-6afd4e06-5c8b-48e4-b385-2c8332216f95-rendered-receipts.json",
+      "sha256": "0d4b733439ad4634adb910042b1605da893ecc3f70c8c9b156a97b23e0281969"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+      "sha256": "57fe0cf15cefeea0083bcbc7509346361ad3d5c086739640c9f947320ffeef67"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+      "sha256": "502b118d89aca468102c2ca8af8407799bf68298c3e50bdb3ea74ae7bd696099"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/repair.json",
+      "sha256": "eb0f8c4b91f6adc01770e96ede81e0a3e7109d4e86dd92a9a764b3bbda8a3f5a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/operation-history.json",
+      "sha256": "44ca9e8b220e5dd333b9d0c5d2a4420ef82c411e007afad1d2b5623df2d70a0e"
+    }
+  ],
+  "followup_ids": [
+    "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c"
+  ],
+  "id": "O-1268c80a-2199-4509-9f91-ef80e48db507",
+  "limitations": [
+    "Physical devices, assistive technology and independent real-account release gates remain unqualified.",
+    "No provider writes, command acceptance, consent or publication."
+  ],
+  "outcome": "Passive hierarchy source restoration clears private branch drafts without requesting heading focus. Explicit branch/edit/review actions retain intended focus. Focused54control Green and current native shell/Tasks/Projects reports pass after the repair; original failures and focus traces remain preserved.",
+  "parent_pending_ids": [
+    "P-d0525af9-8f22-4e09-8255-77161f3742bd"
+  ],
+  "recorded_at": "2026-11-04T05:22:09.248850+00:00",
+  "related_task_id": "T-13e3754f-774b-443f-8997-e1d677f3c079",
+  "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "0c805d7e7cacd893245a9024fe7a51f01ba23ee54f115def4c4cd5fcab8832bf",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "b1e009edaff8d6a9c3fafcc7100566e0fe6d47ad3921af19220975a9589b425a",
+    "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs": "5ea41830e5c9c1226614648c6df4034d5571c52350ee19ff509122f8bad00190",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "9d0e3d8e383f9fc75be85f5aaee542a48b8556beb4323d91733884a3a1075d14"
+  },
+  "task_id": "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784",
+  "title": "Preserve user focus during passive hierarchy source restoration",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Restore a different actual local workspace through TodoWorkspacePresentation. Require no new heading-focus interop from passive source-state reset, unchanged seeded journals and no accepted commands; then require explicit branch navigation to request focus. Preserve existing hierarchy, edit, review and shell tests with nonzero discovery and no required skips.",
+      "criteria": [
+        "Workspace source restoration clears hierarchy-local drafts and selection without requesting heading focus after the user has moved to another control.",
+        "Explicit branch navigation, draft closure and original-review restoration retain intended focus and unchanged command/source guards."
+      ],
+      "id": "hierarchy-passive-focus-behavior",
+      "parameters": {
+        "report_name": "hierarchy-source-focus.trx",
+        "result_directory": ".skill-tree/artifacts/hierarchy-source-focus-unit",
+        "test_filter": "FullyQualifiedName~TodoHierarchyPanelTests|FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs",
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Verify actual current-source passing browser receipts from the existing immutable accessible-shell, full-shell and Tasks/Projects hierarchy contracts, with complete declared six-width100/200percent light/gryphy-dark/obsidian matrices and owned cleanup. Re-execute both shell contracts after this repair even when older fingerprints omit the hierarchy component. No static or component result substitutes for the required native browser evidence.",
+      "criteria": [
+        "Current native shell and Tasks/Projects hierarchy reports qualify light/dark phone/desktop normal/enlarged focus behavior, including the previously failing skip-link sequence, with actual browser evidence and verified cleanup."
+      ],
+      "id": "hierarchy-current-rendered-receipts",
+      "parameters": {
+        "required_current_browser_contracts": [
+          "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+          "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+          "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0"
+        ]
+      },
+      "recipe_id": "static-inspection",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs",
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "04dd2ae527fe7575470ad91b3e5954f82ba3857cd4744d12bd0465d6bb92b8cf"
+}

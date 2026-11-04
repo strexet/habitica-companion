@@ -1,0 +1,555 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Fresh sign-in data and absent later refresh history produce coherent account status with actual timestamp provenance.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.log",
+          "sha256": "d436a9dd5c5ff066964b485b0fac6557346511eca69f819555d2c5bb477ad8eb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.trx",
+          "sha256": "9bb3397a18a2756ea0158f96c1df582c67b09e4ff748511e9fedfec5caa2e4a9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/acceptance.json",
+          "sha256": "b68f9ae40c0e72b8cec104318029716dedb2aa864b454b363354352eb45ae7bb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json",
+          "sha256": "8e28f2137a0342902573d061c854cee2ff28d85cce92b4d7fb6920a5c4746ba5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Refreshing, failed, stale and missing states remain distinct without invented timestamps, extra requests or weakened action gates.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.log",
+          "sha256": "d436a9dd5c5ff066964b485b0fac6557346511eca69f819555d2c5bb477ad8eb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.trx",
+          "sha256": "9bb3397a18a2756ea0158f96c1df582c67b09e4ff748511e9fedfec5caa2e4a9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/acceptance.json",
+          "sha256": "b68f9ae40c0e72b8cec104318029716dedb2aa864b454b363354352eb45ae7bb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json",
+          "sha256": "8e28f2137a0342902573d061c854cee2ff28d85cce92b4d7fb6920a5c4746ba5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Account readiness and refresh feedback remain readable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.log",
+          "sha256": "d436a9dd5c5ff066964b485b0fac6557346511eca69f819555d2c5bb477ad8eb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.trx",
+          "sha256": "9bb3397a18a2756ea0158f96c1df582c67b09e4ff748511e9fedfec5caa2e4a9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/acceptance.json",
+          "sha256": "b68f9ae40c0e72b8cec104318029716dedb2aa864b454b363354352eb45ae7bb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json",
+          "sha256": "8e28f2137a0342902573d061c854cee2ff28d85cce92b4d7fb6920a5c4746ba5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Fresh sign-in data and absent later refresh history produce coherent account status with actual timestamp provenance.",
+          "Refreshing, failed, stale and missing states remain distinct without invented timestamps, extra requests or weakened action gates."
+        ],
+        "id": "dashboard-freshness-behavior",
+        "parameters": {
+          "report_name": "dashboard-freshness.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/dashboard-freshness/unit",
+          "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Pages/DashboardPage.razor",
+          "src/Habitica.WebApp/State/AppSessionController.cs",
+          "src/Habitica.WebApp/State/IAppSessionController.cs",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-4ea0e21e-28b2-4980-b7fa-92799d644e6d",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 120,
+          "expected": 120,
+          "failed": 1,
+          "passed": 119,
+          "skipped": 0
+        },
+        "definition": "619c6d8095cfefaa3939db4ea81777cea3b49b4382bb6f90147c5bb9b59641ab",
+        "environment_identity": "7fd2010b7c921f183608adeb712f7dfbc6ea1fc6e4100c175850b84160ce4361",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-4ea0e21e-28b2-4980-b7fa-92799d644e6d.log",
+            "sha256": "e3ba476224537560466bfbbf8e352a1af2f2dd909d87400c44ee0cb674cccfb4"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-4ea0e21e-28b2-4980-b7fa-92799d644e6d.trx",
+            "sha256": "2471c077800395f06f2bdaf16188827edac56df5d2dd5d312d4feb8ae5c073d0"
+          }
+        ],
+        "execution_sessions": {
+          "45ef03765cd7474000b746e0cf32347e7a776604055f2b6c6dd8aecddc0c49c4": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "ec47f46ab6595d10a8d52c8b8bfa2de6c7189019c3fd64d99d0e8256e5e4254f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:33:16.805031+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793715436805312000.json"
+            ],
+            "profile_id": "91ea05bb7120f715fd05ba7628c529e11f1a6e0f14a3e6e1cb6df8ef2645ba0c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "57389fca28ee7111056494c7eeed780ba3009b80cef1f1b723ae07270f996d22": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:53:27.369421+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793716647369620000.json"
+            ],
+            "profile_id": "3203970eb2547e844008a9ac0a1074fdfedc8f6af53d825558b3dbd0fbf2615b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "f79e68dd7addd19eeee5ed6dd052d7b92684925a465ea11be4d05b0baf6fe8bd",
+        "payload_hash": "99a6accf0765271bea9615bc158729775fa92f0b29730d6015c6e98d96797f3e",
+        "recorded_at": "2026-11-03T14:41:42.917036+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/DashboardPage.razor": "de03ce475be6b70bc554717c07f8c1bdc16994a1d549743beab4cfaf93e8c5d0",
+          "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+          "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e8a58930ea9a5632609a2090e17a5e74be634d17c48a653e85414711741e81a5",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "0a72b4e30c0cc229429f23fd9ce09c9ac5e9587eeb501df41eda25cbdc3ad90b"
+        },
+        "timing": {
+          "tool_wall_seconds": 45.3890527500771
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 121,
+          "expected": 121,
+          "failed": 0,
+          "passed": 121,
+          "skipped": 0
+        },
+        "definition": "619c6d8095cfefaa3939db4ea81777cea3b49b4382bb6f90147c5bb9b59641ab",
+        "environment_identity": "7fd2010b7c921f183608adeb712f7dfbc6ea1fc6e4100c175850b84160ce4361",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.log",
+            "sha256": "d436a9dd5c5ff066964b485b0fac6557346511eca69f819555d2c5bb477ad8eb"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.trx",
+            "sha256": "9bb3397a18a2756ea0158f96c1df582c67b09e4ff748511e9fedfec5caa2e4a9"
+          }
+        ],
+        "execution_sessions": {
+          "45ef03765cd7474000b746e0cf32347e7a776604055f2b6c6dd8aecddc0c49c4": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "ec47f46ab6595d10a8d52c8b8bfa2de6c7189019c3fd64d99d0e8256e5e4254f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:33:16.805031+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793715436805312000.json"
+            ],
+            "profile_id": "91ea05bb7120f715fd05ba7628c529e11f1a6e0f14a3e6e1cb6df8ef2645ba0c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "57389fca28ee7111056494c7eeed780ba3009b80cef1f1b723ae07270f996d22": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:53:27.369421+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793716647369620000.json"
+            ],
+            "profile_id": "3203970eb2547e844008a9ac0a1074fdfedc8f6af53d825558b3dbd0fbf2615b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "c2ccc99fc11a3da6a306a26289f9b189de56d267f53bc1ccc5bc323506dd6006",
+        "payload_hash": "4b52703095d85916fba55715f167a77448ae3183fbc9dcdeb5e829228cd19362",
+        "recorded_at": "2026-11-03T14:46:17.881388+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/DashboardPage.razor": "0c11cb5646d2490c8bbbbdb1995407e9428919e910ccf528af3c13e762ebd1f5",
+          "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+          "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e0cb1e53f95dadb05af64d94026f4dc7c09bdd7e2ac77b6ddfd138e7b96864a5",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2"
+        },
+        "timing": {
+          "tool_wall_seconds": 44.726310750003904
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Account readiness and refresh feedback remain readable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Account readiness and refresh feedback remain readable across the required rendered matrix."
+        ],
+        "id": "dashboard-freshness-rendered",
+        "parameters": {
+          "cases": "Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser",
+          "routes": [
+            "/dashboard"
+          ],
+          "task_key": "dashboard-freshness"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Pages/DashboardPage.razor",
+          "src/Habitica.WebApp/State/AppSessionController.cs",
+          "src/Habitica.WebApp/State/IAppSessionController.cs",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-11fa6661-21ce-4853-8932-7b5d84532e40",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 721,
+          "expected": 721,
+          "failed": 0,
+          "passed": 721,
+          "skipped": 0
+        },
+        "definition": "619c6d8095cfefaa3939db4ea81777cea3b49b4382bb6f90147c5bb9b59641ab",
+        "environment_identity": "add38398ce7d51bcb39b752d3e637d88093eb3927cb5a4c0a73e8af508c32ced",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json",
+            "sha256": "8e28f2137a0342902573d061c854cee2ff28d85cce92b4d7fb6920a5c4746ba5"
+          }
+        ],
+        "execution_sessions": {
+          "09689837648056e90b29ffa3797f82b44d32625659e214bc3e715effce91e57a": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T15:02:22.724430+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793717182724644000.json"
+            ],
+            "profile_id": "470402036efb3c51605791a2ae825be67caffda9dd55b8d9418110bc6bc2da25",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "45ef03765cd7474000b746e0cf32347e7a776604055f2b6c6dd8aecddc0c49c4": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "ec47f46ab6595d10a8d52c8b8bfa2de6c7189019c3fd64d99d0e8256e5e4254f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:33:16.805031+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793715436805312000.json"
+            ],
+            "profile_id": "91ea05bb7120f715fd05ba7628c529e11f1a6e0f14a3e6e1cb6df8ef2645ba0c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "57389fca28ee7111056494c7eeed780ba3009b80cef1f1b723ae07270f996d22": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T14:53:27.369421+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/dashboard-freshness/launch-1793716647369620000.json"
+            ],
+            "profile_id": "3203970eb2547e844008a9ac0a1074fdfedc8f6af53d825558b3dbd0fbf2615b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/dashboard-freshness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "dc9695d210d9635a61915f1097975dfeaf87f5cfcf3021256c1b773a494bc7d6",
+        "payload_hash": "252f21e5921f85740b83b2f9f37b106d9c63c2406d2af7c67edd5c42676dc444",
+        "recorded_at": "2026-11-03T14:50:06.973388+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/DashboardPage.razor": "0c11cb5646d2490c8bbbbdb1995407e9428919e910ccf528af3c13e762ebd1f5",
+          "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+          "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+          "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e0cb1e53f95dadb05af64d94026f4dc7c09bdd7e2ac77b6ddfd138e7b96864a5",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "d6cc804cdbf21f9e039898215e79d831777907ceaa3fde3b2363e5a6603e0248",
+          "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs": "37963208f41c07b4c7bf1c4942ca37d2ce2452e34a9b07b83527c315383c458e",
+          "tests/browser-qualification/ux-ui-dashboard-journey.mjs": "82462474421e89fd738239f9541487db4a3bf8aec32535b92aa8dcd2e50db910"
+        },
+        "timing": {
+          "tool_wall_seconds": 223.15768508426845
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/acceptance.json",
+      "sha256": "b68f9ae40c0e72b8cec104318029716dedb2aa864b454b363354352eb45ae7bb"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/operation-history.json",
+      "sha256": "568d9a9719bf8a61a3ad082b4bbf2cc03b9eb78e59f23a2dab2d14ec679d93ba"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-2aec50dc-d685-4107-aa4e-9def59d6ab1a",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Reconcile dashboard account freshness and refresh-history labels. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-d3dd549c-426f-4e67-9061-df88247cba31"
+  ],
+  "recorded_at": "2026-11-03T14:50:16.253895+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "0c11cb5646d2490c8bbbbdb1995407e9428919e910ccf528af3c13e762ebd1f5",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e0cb1e53f95dadb05af64d94026f4dc7c09bdd7e2ac77b6ddfd138e7b96864a5",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "d6cc804cdbf21f9e039898215e79d831777907ceaa3fde3b2363e5a6603e0248",
+    "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs": "37963208f41c07b4c7bf1c4942ca37d2ce2452e34a9b07b83527c315383c458e",
+    "tests/browser-qualification/ux-ui-dashboard-journey.mjs": "82462474421e89fd738239f9541487db4a3bf8aec32535b92aa8dcd2e50db910"
+  },
+  "task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+  "title": "Reconcile dashboard account freshness and refresh-history labels",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Fresh sign-in data and absent later refresh history produce coherent account status with actual timestamp provenance.",
+        "Refreshing, failed, stale and missing states remain distinct without invented timestamps, extra requests or weakened action gates."
+      ],
+      "id": "dashboard-freshness-behavior",
+      "parameters": {
+        "report_name": "dashboard-freshness.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/dashboard-freshness/unit",
+        "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/IAppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Account readiness and refresh feedback remain readable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Account readiness and refresh feedback remain readable across the required rendered matrix."
+      ],
+      "id": "dashboard-freshness-rendered",
+      "parameters": {
+        "cases": "Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser",
+        "routes": [
+          "/dashboard"
+        ],
+        "task_key": "dashboard-freshness"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/IAppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "619c6d8095cfefaa3939db4ea81777cea3b49b4382bb6f90147c5bb9b59641ab"
+}

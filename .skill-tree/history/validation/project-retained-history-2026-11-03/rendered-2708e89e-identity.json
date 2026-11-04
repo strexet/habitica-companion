@@ -1,0 +1,10 @@
+{
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "fixture": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+  "source_hashes": {
+    "tests/browser/project-history-ui.mjs": "67829a381d4b283ec952a364b650bf2aac7492879e50503d7fc1e6e69f0e82e7",
+    "tests/browser/project-history-ui.py": "1519d9ad8a5ce78356fdcda941434904d1a2300ab89acc91a618ae15bbccbcfc",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f"
+  }
+}

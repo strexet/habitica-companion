@@ -1,0 +1,14 @@
+{
+  "original_report": "browser/5c5daa3d-1bb8-439b-8cdc-2d9efb3c48fb-failure.json",
+  "observation": "The setup startsWith check used untrimmed rendered button text, so the original accessory group stayed collapsed. Search reset correctly restored that collapsed state, conflicting with the intended open-state test setup.",
+  "repair": "Trim the public label before choosing the native toggle action and assert the original accessory is visible before search. Preserve the same open-fold reset expectation.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "original_receipt": "Retained unchanged; no task acceptance.",
+  "second_report": "browser/dd4e4f17-94d6-4311-8b02-802ed40a38d8-failure.json",
+  "new_evidence": "The native setup now stops at the new starting-state assertion. Raw button text is Show other equipment (1), but MudButton CSS applies text-transform:uppercase, so innerText starts with SHOW. Trim alone did not establish the intended state.",
+  "current_repair": "Use the actual accessory record visibility to choose the public toggle action, then require the record to be visible before search. The original open-fold reset expectation remains unchanged."
+}

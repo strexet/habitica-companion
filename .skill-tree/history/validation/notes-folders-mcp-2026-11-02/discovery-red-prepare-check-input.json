@@ -1,0 +1,13 @@
+{
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+  "check_id": "notes-mcp-contracts",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "deadline_utc": "2026-11-02T17:03:23.927501+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "notes-folders-cloud-local-v1"
+  }
+}

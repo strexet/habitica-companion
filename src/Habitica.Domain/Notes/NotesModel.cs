@@ -7,29 +7,44 @@ namespace Habitica.Domain.Notes;
 
 public enum NoteOperation { Create, Update, Append, Trash, Restore, Purge }
 public sealed record NoteProjectLink(Guid ProjectId,Guid WorkspaceId,string Source,string OwnerScope);
-public sealed record NoteVersion(long Revision, string Title, string Markdown, bool IsTrashed, DateTimeOffset AtUtc,
+public enum NoteFolderOperation { Create, Rename, Remove }
+public sealed record NoteFolderLink(Guid FolderId,string OwnerScope,string Source);
+public sealed record NoteFolder(Guid Id,long Revision,string Name,string Source,DateTimeOffset CreatedAtUtc,DateTimeOffset UpdatedAtUtc,bool IsRemoved=false,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null);
+public sealed record NoteFolderCommand(Guid Id,Guid FolderId,long ExpectedNotebookRevision,long ExpectedFolderRevision,NoteFolderOperation Operation,string OwnerScope,string Source,string? Name=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null);
+public sealed record NoteFolderReceipt(Guid CommandId,string PayloadHash,Guid FolderId,long FolderRevision,long NotebookRevision);
+public sealed record NoteVersion(long Revision, string Title, string Markdown, bool IsTrashed, DateTimeOffset AtUtc,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteFolderLink? Folder=null);
 public sealed record PersonalNote(Guid Id, NoteVersion Current, DateTimeOffset CreatedAtUtc, IReadOnlyList<NoteVersion> History);
 public sealed record NoteReceipt(Guid CommandId, string PayloadHash, Guid NoteId, long NoteRevision, long NotebookRevision);
 public sealed record PurgedNote(Guid Id, long Revision);
 public sealed record ImportedNoteRevision(Guid Id, long Revision);
-public sealed record NotesTransferMarker(Guid TransferId, long NotebookRevision, IReadOnlyList<ImportedNoteRevision> Notes);
+public sealed record NotesTransferMarker(Guid TransferId, long NotebookRevision, IReadOnlyList<ImportedNoteRevision> Notes,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<ImportedNoteRevision>? Folders=null);
 public sealed record NotesNotebook(int SchemaVersion, string OwnerScope, long Revision, IReadOnlyList<PersonalNote> Notes,
     IReadOnlyList<NoteReceipt> Receipts, IReadOnlyList<PurgedNote> Purged,
-    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<NotesTransferMarker>? Transfers=null);
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<NotesTransferMarker>? Transfers=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<NoteFolder>? Folders=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<NoteFolderReceipt>? FolderReceipts=null);
 public sealed record NoteCommand(Guid Id, Guid NoteId, long ExpectedNotebookRevision, long ExpectedNoteRevision,
     NoteOperation Operation, string? Title = null, string? Markdown = null,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteProjectLink? Project=null,
-    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] bool? ClearProject=null);
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] bool? ClearProject=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] NoteFolderLink? Folder=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] bool? ClearFolder=null);
 
 public static class NotesModel
 {
     public const int BodyBytes = 128 * 1024, HistoryLimit = 16, NotebookBytes = 16 * 1024 * 1024, MaxNotes = 200, MaxReceipts = 2048;
     public const long MaxRevision = 9007199254740991;
+    public const int MaxFolders=200;
     public static string Scope(string userId) => string.IsNullOrWhiteSpace(userId) ? throw new ArgumentException("Account identity required.")
         : Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(userId))).ToLowerInvariant();
     public static bool ValidScope(string? scope) => scope is {Length:64} && scope.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');
     public static bool ValidProject(NoteProjectLink? link,string scope)=>link is null||link.ProjectId!=Guid.Empty&&link.WorkspaceId!=Guid.Empty&&link.Source is "browser" or "cloud"&&link.OwnerScope==scope&&ValidScope(link.OwnerScope);
+    public static bool ValidFolder(NoteFolderLink? link,string scope)=>link is null||link.FolderId!=Guid.Empty&&link.OwnerScope==scope&&link.Source is "browser" or "cloud";
     public static NotesNotebook Empty(string scope) { if(!ValidScope(scope))throw new ArgumentException("Invalid notes scope.");return new(1,scope,0,[],[],[]); }
     public static bool TextValid(string? title,string? body)
     {
@@ -39,14 +54,20 @@ public static class NotesModel
     public static void Validate(NotesNotebook book)
     {
         bool At(DateTimeOffset at) => at!=default && at.Offset==TimeSpan.Zero;
-        bool Version(NoteVersion? v) => v is not null && v.Revision is >0 and <=MaxRevision && TextValid(v.Title,v.Markdown) && At(v.AtUtc) && ValidProject(v.Project,book.OwnerScope);
-        if(book.SchemaVersion!=1||!ValidScope(book.OwnerScope)||book.Revision is <0 or >MaxRevision||book.Notes is null||book.Receipts is null||book.Purged is null
-            ||book.Notes.Count>MaxNotes||book.Receipts.Count>MaxReceipts+2*MaxNotes||book.Purged.Count>MaxReceipts)throw new JsonException("Invalid notes notebook.");
+        var folders=book.Folders??[];var folderReceipts=book.FolderReceipts??[];
+        bool Version(NoteVersion? v) => v is not null && v.Revision is >0 and <=MaxRevision && TextValid(v.Title,v.Markdown) && At(v.AtUtc) && ValidProject(v.Project,book.OwnerScope)
+            &&ValidFolder(v.Folder,book.OwnerScope)&&(v.Folder is null||folders.Any(f=>f.Id==v.Folder.FolderId&&f.Source==v.Folder.Source&&f.Project==v.Project));
+        if(book.SchemaVersion is not (1 or 2)||book.SchemaVersion==1&&(book.Folders is not null||book.FolderReceipts is not null||book.Notes?.Any(n=>n?.Current?.Folder is not null||n?.History?.Any(v=>v.Folder is not null)==true)==true)
+            ||book.SchemaVersion==2&&(book.Folders is null||book.FolderReceipts is null)||!ValidScope(book.OwnerScope)||book.Revision is <0 or >MaxRevision||book.Notes is null||book.Receipts is null||book.Purged is null
+            ||book.Notes.Count>MaxNotes||book.Receipts.Count+folderReceipts.Count>MaxReceipts+2*MaxNotes+(book.SchemaVersion==2?MaxFolders:0)||book.Purged.Count>MaxReceipts||folders.Count>MaxFolders)throw new JsonException("Invalid notes notebook.");
+        if(folders.Any(f=>f is null||f.Id==Guid.Empty||f.Revision is <1 or >MaxRevision||!TextValid(f.Name,"")||f.Source is not ("browser" or "cloud")||!ValidProject(f.Project,book.OwnerScope)||f.Project is not null&&f.Project.Source!=f.Source
+            ||!At(f.CreatedAtUtc)||!At(f.UpdatedAtUtc)||f.UpdatedAtUtc<f.CreatedAtUtc||f.IsRemoved&&f.Revision<2)||folders.Select(f=>f.Id).Distinct().Count()!=folders.Count||folders.Select(f=>f.Source).Distinct().Count()>1)throw new JsonException("Invalid Notes folder.");
         var ids=new HashSet<Guid>();
         foreach(var note in book.Notes)
         {
             if(note is null||note.Id==Guid.Empty||!ids.Add(note.Id)||!Version(note.Current)||!At(note.CreatedAtUtc)||note.CreatedAtUtc>note.Current.AtUtc
                 ||note.History is null||note.History.Count!=Math.Min(note.Current.Revision-1,HistoryLimit))throw new JsonException("Invalid note history.");
+            if(note.Current.Folder is {} membership&&folders.Single(f=>f.Id==membership.FolderId).IsRemoved)throw new JsonException("Removed folder has current members.");
             var revision=note.Current.Revision-note.History.Count;var previous=note.CreatedAtUtc;
             foreach(var item in note.History)
             {
@@ -57,19 +78,31 @@ public static class NotesModel
         foreach(var item in book.Purged)
             if(item is null||item.Id==Guid.Empty||!ids.Add(item.Id)||item.Revision<2||item.Revision>MaxRevision)throw new JsonException("Invalid purged identity.");
         var commands=new HashSet<Guid>();var revisions=new Dictionary<Guid,long>();long notebookRevision=0;
+        var folderRevisions=new Dictionary<Guid,long>();
         var transfers=book.Transfers??[];
-        if(transfers.Count>32||transfers.Any(marker=>marker is null||marker.TransferId==Guid.Empty||marker.Notes is null)
+        if(transfers.Count>32||transfers.Any(marker=>marker is null||marker.TransferId==Guid.Empty||marker.Notes is null||book.SchemaVersion==1&&marker.Folders is not null)
             ||transfers.Select(marker=>marker.TransferId).Distinct().Count()!=transfers.Count)throw new JsonException("Invalid transfer markers.");
-        var changes=book.Receipts.Select(receipt=>(Revision:receipt.NotebookRevision,Receipt:(NoteReceipt?)receipt,Marker:(NotesTransferMarker?)null))
-            .Concat(transfers.Select(marker=>(Revision:marker.NotebookRevision,Receipt:(NoteReceipt?)null,Marker:(NotesTransferMarker?)marker))).OrderBy(change=>change.Revision);
+        var changes=book.Receipts.Select(receipt=>(Revision:receipt.NotebookRevision,Receipt:(NoteReceipt?)receipt,Marker:(NotesTransferMarker?)null,Folder:(NoteFolderReceipt?)null))
+            .Concat(transfers.Select(marker=>(Revision:marker.NotebookRevision,Receipt:(NoteReceipt?)null,Marker:(NotesTransferMarker?)marker,Folder:(NoteFolderReceipt?)null)))
+            .Concat(folderReceipts.Select(receipt=>(Revision:receipt.NotebookRevision,Receipt:(NoteReceipt?)null,Marker:(NotesTransferMarker?)null,Folder:(NoteFolderReceipt?)receipt))).OrderBy(change=>change.Revision);
         foreach(var change in changes)
         {
             if(change.Revision!=++notebookRevision)throw new JsonException("Missing notebook change.");
+            if(change.Folder is {} folderReceipt)
+            {
+                if(folderReceipt.CommandId==Guid.Empty||!commands.Add(folderReceipt.CommandId)||!ValidScope(folderReceipt.PayloadHash)||!folders.Any(f=>f.Id==folderReceipt.FolderId)
+                    ||folderReceipt.FolderRevision!=folderRevisions.GetValueOrDefault(folderReceipt.FolderId)+1)throw new JsonException("Invalid folder receipt.");
+                folderRevisions[folderReceipt.FolderId]=folderReceipt.FolderRevision;continue;
+            }
             if(change.Marker is {} marker)
             {
                 foreach(var imported in marker.Notes)
                 {
                     if(imported is null||imported.Id==Guid.Empty||!ids.Contains(imported.Id)||imported.Revision is <1 or >MaxRevision||!revisions.TryAdd(imported.Id,imported.Revision))throw new JsonException("Invalid imported note baseline.");
+                }
+                foreach(var imported in marker.Folders??[])
+                {
+                    if(book.SchemaVersion!=2||imported is null||imported.Id==Guid.Empty||!folders.Any(f=>f.Id==imported.Id)||imported.Revision is <1 or >MaxRevision||!folderRevisions.TryAdd(imported.Id,imported.Revision))throw new JsonException("Invalid imported folder baseline.");
                 }
                 continue;
             }
@@ -80,6 +113,7 @@ public static class NotesModel
         }
         if(book.Notes.Any(note=>note.Current.Revision!=revisions.GetValueOrDefault(note.Id))||book.Purged.Any(note=>note.Revision!=revisions.GetValueOrDefault(note.Id)))throw new JsonException("Note receipt revision mismatch.");
         if(book.Revision!=notebookRevision)throw new JsonException("Missing notebook receipts.");
+        if(folders.Any(f=>f.Revision!=folderRevisions.GetValueOrDefault(f.Id)))throw new JsonException("Folder receipt revision mismatch.");
     }
 }
 public static class NotesJson
@@ -103,4 +137,5 @@ public static class NotesJson
         else if(value.ValueKind==JsonValueKind.Array)foreach(var item in value.EnumerateArray())Check(item);
     }
     public static string Hash(NoteCommand command) => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(command,Options))).ToLowerInvariant();
+    public static string Hash(NoteFolderCommand command)=>Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(command,Options))).ToLowerInvariant();
 }

@@ -1,0 +1,15 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/6c8c6a25-1ecf-4f7c-8e54-69a79297b7ee.json",
+  "result": "Scoped Party reflow and resource contrast reviewed; current document bounds match every selected width.",
+  "reviewed_screenshots": [
+    ".skill-tree/artifacts/ux-ui/party-context-reflow/1793726158678393000/chromium-gryphy-light-360-200-party-reflow.png",
+    ".skill-tree/artifacts/ux-ui/party-context-reflow/1793726158678393000/chromium-obsidian-glow-360-200-party-reflow.png",
+    ".skill-tree/artifacts/ux-ui/party-context-reflow/1793726158678393000/chromium-gryphy-light-1280-100-party-reflow.png",
+    ".skill-tree/artifacts/ux-ui/party-context-reflow/1793726158678393000/webkit-obsidian-glow-1280-200-party-reflow.png"
+  ],
+  "remaining": [
+    "Raw exception copy remains deferred as P-5a241695-798e-48df-8a0f-989ba8ceaee8.",
+    "Existing enlarged header Sync clipping and navigation density remain with P-375aba91-d916-46f4-8310-aa7b51810a45 and snapshot compact-navigation task.",
+    "Physical devices, assistive technology and actual shared server/provider execution remain unqualified."
+  ]
+}

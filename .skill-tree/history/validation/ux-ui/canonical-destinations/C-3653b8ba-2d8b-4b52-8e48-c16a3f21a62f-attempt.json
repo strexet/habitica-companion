@@ -1,0 +1,71 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-3653b8ba-2d8b-4b52-8e48-c16a3f21a62f",
+  "check_id": "canonical-destinations-behavior",
+  "definition": "13605c9b27a041ea141c2afa8af6bb37cdfd0422991d08d6d8eb2f3f081036a3",
+  "environment_identity": "8002fc637fa6a28b44d00b1d9db4c53388ff73d2e61b34a077dadf57daa65da6",
+  "key": "33912aacfcf20d85bfcc2d6c174f13b05fe8610a57c5348ef5e82bdfff14893a",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T12:37:45.154380+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T12:32:45.421322+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoHistoryPanelTests|FullyQualifiedName~TodoStatisticsPanelTests|FullyQualifiedName~TodoTaskLinkTests",
+      "--logger",
+      "trx;LogFileName=canonical-destinations.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/canonical-destinations/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "9fb1c48c54053cd6475a4036edea2806fec820fb14e6a99146521de3dcea1102",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "e19f4c6549f96bc03b790bac578f5c906c1d48f811e282ad7b2ef2a409e918e0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "f1a65809cc2544ee61c696ef90b5973d1d41f149c16793a1b52e4e8b4e50a5b2",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "853fb3ec5bfdd0a98b96a0bd4391b1f7fc3571f2f3f5fde25b1b96989f10b6c0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338"
+  },
+  "task_id": "T-39daa4c0-239d-445b-b812-62007877b49e"
+}

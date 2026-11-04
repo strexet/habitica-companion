@@ -1,0 +1,48 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-1245edc5-505e-44be-a34f-d92db3b3f76b",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 34,
+    "expected": 34,
+    "failed": 0,
+    "passed": 33,
+    "skipped": 0
+  },
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "diagnostic_key": "3bcbb8dc65129a5e338f10cdc1ff5f4f69c16a13a8816dfdbabc4b35a3f43f87",
+  "environment_identity": "e4db5272e61c678dfac0c41ab99ef6e60b9a51ed270d3e93f6d92ae81f4b415f",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-execution-final-execution.log",
+      "sha256": "84318e21e6f24fc50682856a9a5c65e75fcf1921558fa0214109d1e6481f252a"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "error: 'test timed out after 30000ms'",
+  "key": "8ff766b169681d1e776f2d86b6d25f139f20f6ac954f5a06ea272157aa69791b",
+  "payload_hash": "354f0e879c9f5d2288ad68ef919efa778849e3c0bea23cb816a3c575aa554764",
+  "recorded_at": "2026-11-03T01:56:10.717455+00:00",
+  "result": "fail",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "069feb3017beb6c7c7df02e21bef0c39297d2d00d63732bf735a252cbd1c5066",
+    "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+    "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-execution.test.mjs": "e34906ce5330029ccc6ff6a14147c54c46f6fbf7fd62467232ec4b87fcac4258",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "f41865e97df2321ecdd70a7f0455ddd5310d974d46dd231315dcb8b2d8c928b6",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+    "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+  },
+  "timing": {
+    "tool_wall_seconds": 30.077241958118975
+  }
+}

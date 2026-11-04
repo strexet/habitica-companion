@@ -1,0 +1,18 @@
+{
+  "automated_pass": "74a8ec37-b721-44ea-a58a-8926baf349e2",
+  "artifact": "1793747617584915000",
+  "manual_observations": [
+    "WebKit light360/200 preview screenshot starts in middle of original long review due center focus on entire container.",
+    "Monthly preview prints empty weekdays separator and ambiguous culture-formatted civil dates."
+  ],
+  "repair": [
+    "Focus/reveal exact review heading.",
+    "Show only relevant weekly/monthly recurrence details and explicit ISO civil dates."
+  ],
+  "acceptance": "Prior automated pass remains evidence only; final current-source matrix required.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

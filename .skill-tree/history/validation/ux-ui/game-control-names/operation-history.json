@@ -1,0 +1,1946 @@
+{
+  "admission": {
+    "environment_id": "008e527e5056c817f574b623c13b62db50f51100a8a19f9cb3446c7782de8ea5",
+    "flavor": "web",
+    "identity": "74757db51dcf7d8d57e0b6443d7979906b383f6ee8ad516d1ae0469e31257e0d",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "checks": {
+    "game-control-names-behavior": {
+      "attempt": {
+        "attempt_id": "C-b737989d-8308-4d7c-8079-9dd17c93ab4f",
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+        "key": "1d6463b26e7d4da995dd33a704a2e3d3e26d499c31ac0ede8e1ee7db03f6f226",
+        "launch": {
+          "assertion": "Exercise public component/controller behavior with independent expected outcomes: Multiple same-named members/items with distinguishing context, long labels, details closed/open, existing battle action and preset-name inputs. Require nonzero discovery and no required skips.",
+          "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+          "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+          "cleanup_seconds": 15,
+          "deadline_utc": "2026-11-03T18:24:22.675636+00:00",
+          "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T18:19:22.967867+00:00",
+        "recipe": {
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "-m:1",
+            "-nodeReuse:false",
+            "--filter",
+            "FullyQualifiedName~PartyPageTests|FullyQualifiedName~InventoryPageTests",
+            "--logger",
+            "trx;LogFileName=game-control-names.trx",
+            "--results-directory",
+            ".skill-tree/history/validation/ux-ui/game-control-names/unit"
+          ],
+          "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "global.json",
+            "Directory.Build.props",
+            "Directory.Packages.props",
+            "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+            "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+            "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "csharp": "12.0",
+            "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+            "framework": "Blazor WebAssembly net8.0",
+            "sdk_declaration": "8.0.125",
+            "test_frameworks": {
+              "Microsoft.NET.Test.Sdk": "18.4.0",
+              "bunit": "2.7.2",
+              "xunit": "2.9.3"
+            }
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+        }
+      },
+      "receipts": {
+        "C-28c9a40f-5e94-4e7b-9de4-d3c0758b175a": {
+          "actual_lane": "unit",
+          "attempt_id": "C-28c9a40f-5e94-4e7b-9de4-d3c0758b175a",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 63,
+            "expected": 63,
+            "failed": 0,
+            "passed": 63,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "a51e58e219fd1e4c463348b79e50375a73b7ad559c99f1bec02e7921c3df3cb4",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-28c9a40f-5e94-4e7b-9de4-d3c0758b175a.log",
+              "sha256": "eda8eb272d2d070e92ea4b63e489b9e4adbcdcb447ad1da68239e311b6e985cd"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-28c9a40f-5e94-4e7b-9de4-d3c0758b175a.trx",
+              "sha256": "cbe5bc53da673e6e21af375233b0a5609100e274350e6a0357f0ce7943736ca7"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "22dac476bc9ea9483543b90a963f59d8e2161dcae2efc1ab6ead8497bd970286",
+          "payload_hash": "35f9c10311762e5ae6e48ae51a1ee9391a00bbadaaf63e28342f2578e999ca26",
+          "recorded_at": "2026-11-03T17:00:50.644274+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+          },
+          "timing": {
+            "tool_wall_seconds": 4.039311292115599
+          }
+        },
+        "C-311d8c9e-bfef-4165-968d-0acae86917df": {
+          "actual_lane": "unit",
+          "attempt_id": "C-311d8c9e-bfef-4165-968d-0acae86917df",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 63,
+            "expected": 63,
+            "failed": 2,
+            "passed": 61,
+            "skipped": 0
+          },
+          "definition": "2f0fce7e87c7c106139093543d3e9fd4edcb4653757e6256925a87a85b08c950",
+          "environment_identity": "a51e58e219fd1e4c463348b79e50375a73b7ad559c99f1bec02e7921c3df3cb4",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-311d8c9e-bfef-4165-968d-0acae86917df.log",
+              "sha256": "8a91a336bd2ed4bf394a981e85f08a3c240e9cfe4a9cff7d8ebb38441414c0e4"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-311d8c9e-bfef-4165-968d-0acae86917df.trx",
+              "sha256": "5b677b03e3a8aaa37eec6f17a25d5de36e91a4e10208df6c8b21d3db7c201531"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_category": "expected-behavior",
+          "key": "846a2e435f141065f39a0eec1e4eb7e9bdd46a5da57aaeb20ca6805969b63731",
+          "payload_hash": "80112ca3adb7053dc52f8b8d7bdc9451562ce2832a6a3c267c70e017cbfdc616",
+          "recorded_at": "2026-11-03T16:49:04.848793+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "d68393c8ef9892deecbf0a78dc8b9c5418b881cda2aeba2235f08cc773ff4c64",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "e2df3bcb2732e27a8b827cd41c69d0ffe21b003056ce0a2d0f8064145471aef0",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+          },
+          "timing": {
+            "tool_wall_seconds": 7.466416040901095
+          }
+        },
+        "C-3ff3b496-b170-41aa-9993-52e594ddc2af": {
+          "actual_lane": "unit",
+          "attempt_id": "C-3ff3b496-b170-41aa-9993-52e594ddc2af",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 65,
+            "expected": 65,
+            "failed": 2,
+            "passed": 63,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-3ff3b496-b170-41aa-9993-52e594ddc2af.log",
+              "sha256": "c5ab9928d7aeb9f3a0fa9c3020c0341c38fcd65e522531bf824afd7f7a93c678"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-3ff3b496-b170-41aa-9993-52e594ddc2af.trx",
+              "sha256": "c986e56ef128e4a14037bbf7aedad6c589cd833ad0e90b1feb369141a5557060"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_category": "expected-behavior",
+          "key": "9f1d4b8003d32d05bdd1d920e598d3d0669a3d9f595b4ad8e9dbf201180c936d",
+          "payload_hash": "6e6f4d21c4c38dccf62e7d41d25334b959765ad9ebb2c92f1e19980fb25f1778",
+          "recorded_at": "2026-11-03T18:13:57.118819+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.643124249763787
+          }
+        },
+        "C-450d324a-8e4c-4788-8feb-58e3bc37c19d": {
+          "actual_lane": "unit",
+          "attempt_id": "C-450d324a-8e4c-4788-8feb-58e3bc37c19d",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 63,
+            "expected": 63,
+            "failed": 0,
+            "passed": 63,
+            "skipped": 0
+          },
+          "definition": "2f0fce7e87c7c106139093543d3e9fd4edcb4653757e6256925a87a85b08c950",
+          "environment_identity": "a51e58e219fd1e4c463348b79e50375a73b7ad559c99f1bec02e7921c3df3cb4",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-450d324a-8e4c-4788-8feb-58e3bc37c19d.log",
+              "sha256": "1eb195002d124c4df871edfc9a08ea63fb2458d00f19bfd6645ea018031edd9f"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-450d324a-8e4c-4788-8feb-58e3bc37c19d.trx",
+              "sha256": "edff91be995c9ddb2986ec8e702e30aaa34ecc2ab97d275b19236cbf49f70e45"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "36808b3ba5292aa42b34390757b6dc6115b7c1cade4efdcf7c8879cec36744d7",
+          "payload_hash": "af1de653bfeea7ec03cc8bd01b44ce2764b3754e3dba1e290b7218ab7bb07a01",
+          "recorded_at": "2026-11-03T16:52:52.824304+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+          },
+          "timing": {
+            "tool_wall_seconds": 14.108551042154431
+          }
+        },
+        "C-637dd236-06b9-491b-b2ad-8daebeb7f690": {
+          "actual_lane": "unit",
+          "attempt_id": "C-637dd236-06b9-491b-b2ad-8daebeb7f690",
+          "classification": "executed-control",
+          "cleanup": "The original focused dotnet process exited successfully; the Node wrapper stopped during output parsing. No browser or provider process was launched.",
+          "counts": {
+            "discovered": 63,
+            "expected": 63,
+            "failed": 0,
+            "passed": 63,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "a51e58e219fd1e4c463348b79e50375a73b7ad559c99f1bec02e7921c3df3cb4",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-637dd236-06b9-491b-b2ad-8daebeb7f690.log",
+              "sha256": "c1bd09900f08367b85ffcebd4db245587f330363fd5f1a230fd4679ca6c95fbd"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-637dd236-06b9-491b-b2ad-8daebeb7f690.trx",
+              "sha256": "4efe49a579261f8efe66433319ee9a40e3695117c2cd7e9c74e3bcbba14f6cc6"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/metadata-collision-recovery.json",
+              "sha256": "7c233447b3b6268d7036d8387ec683a5e8481b09cd5def0c03ee546afa31d87b"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "d93b93850f4e2e66c648ebd08219bbc02c37fbe3dd787ea3f40df15352d9f80a",
+          "payload_hash": "09e34b52b121fced1d5ffd0364e9667bff1853d5f3a1bad490ae54638649060d",
+          "recorded_at": "2026-11-03T17:20:12.654196+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+          }
+        },
+        "C-b737989d-8308-4d7c-8079-9dd17c93ab4f": {
+          "actual_lane": "unit",
+          "attempt_id": "C-b737989d-8308-4d7c-8079-9dd17c93ab4f",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 65,
+            "expected": 65,
+            "failed": 0,
+            "passed": 65,
+            "skipped": 0
+          },
+          "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+          "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.log",
+              "sha256": "4b0523fa68be0d5e3adaf7afb47892176ae59fd368dee7986b340dce8bafa2bf"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.trx",
+              "sha256": "ace98d201ce8fd5b128326d8b56e16c372c79db7e4af1f7dfea23bb81459369a"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "1d6463b26e7d4da995dd33a704a2e3d3e26d499c31ac0ede8e1ee7db03f6f226",
+          "payload_hash": "5617871c92219f3b7543188c710c42ea243dec5cad35a5c55bb3692f15edc40f",
+          "recorded_at": "2026-11-03T18:19:37.112419+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.483858791645616
+          }
+        },
+        "C-e7867b1e-95d7-495a-af01-aa311f4d9430": {
+          "actual_lane": "unit",
+          "attempt_id": "C-e7867b1e-95d7-495a-af01-aa311f4d9430",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 63,
+            "expected": 63,
+            "failed": 0,
+            "passed": 63,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-e7867b1e-95d7-495a-af01-aa311f4d9430.log",
+              "sha256": "de0a7b8eddbf46e77850aecd4ee1aabf4ded582438fe49edd8997600dfa0a88f"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-e7867b1e-95d7-495a-af01-aa311f4d9430.trx",
+              "sha256": "27b7816cdaa8bc83ae85b30a54249d2cc9821d00ba31d7f1480e63368698caa4"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "cd7984156ced4f85570584ad1ad04680ecbff9f089b4ad5391cc90663bde1db7",
+          "payload_hash": "2fd78524b9e7ebd883018664f1c1ac639f63291176644eda1b2038fc8bf8368d",
+          "recorded_at": "2026-11-03T18:01:40.440727+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a"
+          },
+          "timing": {
+            "tool_wall_seconds": 3.5338314999826252
+          }
+        }
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3ff3b496-b170-41aa-9993-52e594ddc2af",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 65,
+          "expected": 65,
+          "failed": 2,
+          "passed": 63,
+          "skipped": 0
+        },
+        "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+        "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-3ff3b496-b170-41aa-9993-52e594ddc2af.log",
+            "sha256": "c5ab9928d7aeb9f3a0fa9c3020c0341c38fcd65e522531bf824afd7f7a93c678"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-3ff3b496-b170-41aa-9993-52e594ddc2af.trx",
+            "sha256": "c986e56ef128e4a14037bbf7aedad6c589cd833ad0e90b1feb369141a5557060"
+          }
+        ],
+        "execution_sessions": {
+          "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+            ],
+            "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+            ],
+            "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "9f1d4b8003d32d05bdd1d920e598d3d0669a3d9f595b4ad8e9dbf201180c936d",
+        "payload_hash": "6e6f4d21c4c38dccf62e7d41d25334b959765ad9ebb2c92f1e19980fb25f1778",
+        "recorded_at": "2026-11-03T18:13:57.118819+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.643124249763787
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-b737989d-8308-4d7c-8079-9dd17c93ab4f",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 65,
+          "expected": 65,
+          "failed": 0,
+          "passed": 65,
+          "skipped": 0
+        },
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "b783ff2b22ee25f39f6623ad963669908590059e3c6691565c606ee6a14a2329",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.log",
+            "sha256": "4b0523fa68be0d5e3adaf7afb47892176ae59fd368dee7986b340dce8bafa2bf"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b737989d-8308-4d7c-8079-9dd17c93ab4f.trx",
+            "sha256": "ace98d201ce8fd5b128326d8b56e16c372c79db7e4af1f7dfea23bb81459369a"
+          }
+        ],
+        "execution_sessions": {
+          "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+            ],
+            "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+            ],
+            "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "1d6463b26e7d4da995dd33a704a2e3d3e26d499c31ac0ede8e1ee7db03f6f226",
+        "payload_hash": "5617871c92219f3b7543188c710c42ea243dec5cad35a5c55bb3692f15edc40f",
+        "recorded_at": "2026-11-03T18:19:37.112419+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.483858791645616
+        }
+      }
+    },
+    "game-control-names-fixture-boundary": {
+      "attempt": {
+        "attempt_id": "C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41",
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+        "key": "5a318d34e248fdc6431b82693b3e7d0142754326d891e0a69fd20aeb5f15029a",
+        "launch": {
+          "assertion": "Owned synthetic provider fixtures reject external, absolute, nested and traversal paths before launch. Independent matrix, paint, identity and cleanup controls remain enforced.",
+          "authorization": "Owner-invoked Implement All; local synthetic checks.",
+          "cheaper_evidence_insufficient": "Rendered qualification needs independent controls for missing coverage and mismatched observed appearance.",
+          "cleanup_seconds": 5,
+          "deadline_utc": "2026-11-03T18:34:27.833401+00:00",
+          "execution_profile": "Pinned Node test runner; pure controls.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T18:33:28.127299+00:00",
+        "recipe": {
+          "argv": [
+            "node",
+            "--experimental-strip-types",
+            "--test",
+            "--test-concurrency=1",
+            "--test-timeout=15000",
+            "tests/browser-qualification/ux-ui-checks.test.mjs"
+          ],
+          "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "deploy/callback-egress/package.json"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "node_declaration": "22.x"
+          }
+        },
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+        }
+      },
+      "receipts": {
+        "C-32392451-d2f7-4ee3-bb54-e9195bc6d772": {
+          "actual_lane": "unit",
+          "attempt_id": "C-32392451-d2f7-4ee3-bb54-e9195bc6d772",
+          "classification": "executed-control",
+          "cleanup": "Pure Node test process exited; no product/session state.",
+          "counts": {
+            "discovered": 33,
+            "expected": 33,
+            "failed": 0,
+            "passed": 33,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-32392451-d2f7-4ee3-bb54-e9195bc6d772.tap",
+              "sha256": "ebf90341d52353f4aba6069b48096b31006982e9f501c93285b4d791cf796da0"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "99ff2924e121c69aec5962ef8a91841cb9afb2aed11bd4494179f7dd768a8bf6",
+          "payload_hash": "7241a792f645536e2d1e3d0b581d8f4dd5a49c443d87ab340f519e287db569fd",
+          "recorded_at": "2026-11-03T17:00:36.287710+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/browser-qualification/ux-ui-checks.test.mjs": "f855718b3d389156395117d04c68df46a4477f726a44e2622c2fcd865f6c160d",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+          },
+          "timing": {
+            "tool_wall_seconds": 0.14952462539076805
+          }
+        },
+        "C-8ff41e79-7a1d-49f7-acfb-21a9af7fb2ab": {
+          "actual_lane": "unit",
+          "attempt_id": "C-8ff41e79-7a1d-49f7-acfb-21a9af7fb2ab",
+          "classification": "executed-control",
+          "cleanup": "Pure Node test process exited; no product/session state.",
+          "counts": {
+            "discovered": 38,
+            "expected": 38,
+            "failed": 0,
+            "passed": 38,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-8ff41e79-7a1d-49f7-acfb-21a9af7fb2ab.tap",
+              "sha256": "504a098a9316e1a1f90bfd94c93d25896b86a8fd6603aa9bd996dabda628ce63"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "5a318d34e248fdc6431b82693b3e7d0142754326d891e0a69fd20aeb5f15029a",
+          "payload_hash": "9d84cce6630d797c9befc0cd2be1a2909377917b3fe6eb0d7a6ff066135ce4a9",
+          "recorded_at": "2026-11-03T18:01:30.839549+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+          },
+          "timing": {
+            "tool_wall_seconds": 0.1403155829757452
+          }
+        },
+        "C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41": {
+          "actual_lane": "unit",
+          "attempt_id": "C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41",
+          "classification": "executed-control",
+          "cleanup": "Pure Node test process exited; no product/session state.",
+          "counts": {
+            "discovered": 38,
+            "expected": 38,
+            "failed": 0,
+            "passed": 38,
+            "skipped": 0
+          },
+          "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+          "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41.tap",
+              "sha256": "d0f212c245ce00c9b7cd21565b23ae07cddb2b3c6fd113973ce298cca5176f0a"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730494137238000.json"
+              ],
+              "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "5a318d34e248fdc6431b82693b3e7d0142754326d891e0a69fd20aeb5f15029a",
+          "payload_hash": "a9539e4016ed3d50b987e4059e4540bca1b3f0b0a87f4fb6e3b72a2e08d92128",
+          "recorded_at": "2026-11-03T18:33:28.595968+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+          },
+          "timing": {
+            "tool_wall_seconds": 0.1416092081926763
+          }
+        },
+        "C-bd45a175-ae14-4648-9c46-05d02b18f440": {
+          "actual_lane": "unit",
+          "attempt_id": "C-bd45a175-ae14-4648-9c46-05d02b18f440",
+          "classification": "executed-control",
+          "cleanup": "Pure Node test process exited; no product/session state.",
+          "counts": {
+            "discovered": 33,
+            "expected": 33,
+            "failed": 0,
+            "passed": 33,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "396f445b311d0e293b98d488764d86ff71fbfcb684c1e35c0c10747c940ef351",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-bd45a175-ae14-4648-9c46-05d02b18f440.tap",
+              "sha256": "d5dca9c9157a89e36026ff6e0ab7fea88eba90a7017c8bac68bb7ff5756e9b09"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "99ff2924e121c69aec5962ef8a91841cb9afb2aed11bd4494179f7dd768a8bf6",
+          "payload_hash": "523dc87d8484144e0b2fd8964b7abc4948d605417567c0bf59e35cfcc1aebe48",
+          "recorded_at": "2026-11-03T17:20:13.614795+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/browser-qualification/ux-ui-checks.test.mjs": "f855718b3d389156395117d04c68df46a4477f726a44e2622c2fcd865f6c160d",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+          },
+          "timing": {
+            "tool_wall_seconds": 0.15199958300217986
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 38,
+          "expected": 38,
+          "failed": 0,
+          "passed": 38,
+          "skipped": 0
+        },
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "03894e68a39af67c7a6f34ca710707f7c1afad3286f16af42f482ae536ff8d93",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-9aeaf66a-2414-4642-b886-0e1ef1a4fe41.tap",
+            "sha256": "d0f212c245ce00c9b7cd21565b23ae07cddb2b3c6fd113973ce298cca5176f0a"
+          }
+        ],
+        "execution_sessions": {
+          "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+            ],
+            "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+            ],
+            "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730494137238000.json"
+            ],
+            "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "5a318d34e248fdc6431b82693b3e7d0142754326d891e0a69fd20aeb5f15029a",
+        "payload_hash": "a9539e4016ed3d50b987e4059e4540bca1b3f0b0a87f4fb6e3b72a2e08d92128",
+        "recorded_at": "2026-11-03T18:33:28.595968+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "aa21b64065d0b6c294a3da1a6192636f7cd01a1bba8cb39dadc1684a740fb4f1",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.1416092081926763
+        }
+      }
+    },
+    "game-control-names-rendered": {
+      "attempt": {
+        "attempt_id": "C-789c9d96-09a8-427f-a134-d3ed03985963",
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "7d732cf0f40f5083694067e79cff4201f1a087a6c8ab38acbb23a7bcd7dba473",
+        "key": "8faef697df7577d533fb32c16fd44e9b0a65dbd80d0a212001207086f3067ca7",
+        "launch": {
+          "assertion": "Accessible-name navigation, disclosure keyboard behavior and long names pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+          "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+          "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+          "cleanup_seconds": 30,
+          "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+          "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T18:28:14.738454+00:00",
+        "recipe": {
+          "argv": [
+            "python3",
+            "tests/browser-qualification/ux-ui.py",
+            "game-control-names",
+            ".skill-tree/history/validation/ux-ui/game-control-names/browser"
+          ],
+          "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "tests/browser-qualification/ux-ui.py",
+            "tests/browser-qualification/ux-ui.mjs",
+            "tests/browser-qualification/ux-ui-contract.mjs",
+            "tests/browser-qualification/ux-ui-native-date.mjs",
+            "tests/browser-qualification/ux-ui-shared-journey.mjs",
+            "tests/browser-qualification/ux-ui-adapters.json",
+            "tests/browser-qualification/ux-ui-checks.test.mjs",
+            "tests/browser-qualification/prepare.py",
+            "tests/browser-qualification/qualification-core.mjs",
+            "tests/browser-qualification/qualification-frame.mjs",
+            "tests/browser-qualification/qualification-session.mjs",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+            "src/Habitica.WebApp/Habitica.WebApp.csproj",
+            "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+          ],
+          "lane": "browser",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+            "framework": "Blazor WebAssembly8 Release",
+            "node": "22.x"
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "d234f91df787dd8e3f68ddd86bc781f517efa2556c60c05052af7acf617d2880",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+          "tests/browser-qualification/ux-ui-game-content.json": "60a0a9b052a704a33ca2189cc40737762dcf190ea006c7b95d6a2c10d7c2d1b8",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs": "9834cf8b0cca1b923f2de6022e58ea20f889b4b948e639affcbcb1b974393196",
+          "tests/browser-qualification/ux-ui-game-party.json": "56f465ccce4ace6d6912efb3c28548f52b41752aa5fa0e6a94a5ed1179a64f0e",
+          "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+          "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+        }
+      },
+      "receipts": {
+        "C-0d72558e-a2ef-4102-b112-ff2aa21ebc2e": {
+          "actual_lane": "browser",
+          "attempt_id": "C-0d72558e-a2ef-4102-b112-ff2aa21ebc2e",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 433,
+            "expected": 433,
+            "failed": 0,
+            "passed": 433,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "d58bc2f02cdd1bb997bc94fe77d6605f06ca8d8d1cf769c7b3ca35c41ba6a6ec",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/716c7f3d-8816-43d2-ba5b-559d774ea7cb.json",
+              "sha256": "3dbbd720555f787af170965c039d10f521abd7fb4e9a48a10bfa8bd171e23e9e"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "e988a965bd0d194ebd6ca8a25c694011e9f08dff8e8369dec9b8c54cfbc65fe7",
+          "payload_hash": "0e23e42ec4a86b1343a76bf3db55a69d56c7950ebf85579e2bdd87e2a1e0da2b",
+          "recorded_at": "2026-11-03T17:23:08.717444+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+            "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+            "tests/browser-qualification/ux-ui-adapters.json": "7f91081bedaecbd115bce129b7a343e2c2c1e5bf4dda656833cc11273d4612bb",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "df6f358fdb0e458fe3999ff98fbc355aa6a95e7d5101372808b1f1037a0b93ad",
+            "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+          },
+          "timing": {
+            "tool_wall_seconds": 158.23874112498015
+          }
+        },
+        "C-141406a6-a377-4521-906c-ba7cc485491b": {
+          "actual_lane": "browser",
+          "attempt_id": "C-141406a6-a377-4521-906c-ba7cc485491b",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "diagnostic_key": "eb744ae4bea98fc51ecde613af6db3bbe672c2e7955bba7174c5251a654ea5e6",
+          "environment_identity": "511656746827d1529a00a1040c9281077ada361eded396822bcc4ba6a15d2922",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-141406a6-a377-4521-906c-ba7cc485491b-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/c838ad87-a36b-4d4b-a863-a52ef6e9c6d6-failure.json",
+              "sha256": "12cb3809452bea8a8b81f7dffb3400518bb6212fea02547fd7ba7668b441e933"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "285ac0befb2e60a01aa655ba1ac24502d39a2852f2aadabdcbfe5a11b82ba6b8",
+          "payload_hash": "1ce6780aab8c2dc5d0ad2b28c3373e7d46252c19b25e2cbccf1328de6a9bba5e",
+          "recorded_at": "2026-11-03T17:03:43.848804+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+            "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+            "tests/browser-qualification/ux-ui-adapters.json": "c36824534d60f16ef1aa7fdd1870f73bdee29c2a78439a7796684f5dfb7c7d67",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "fb1f892c3ee69311c677cbed38a727d1e871ab6d02d4900e319750e61bd67a33",
+            "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+          },
+          "timing": {
+            "tool_wall_seconds": 18.15554591594264
+          }
+        },
+        "C-589ecfc7-af1c-49b9-a1ac-79fcc3545d7d": {
+          "actual_lane": "browser",
+          "attempt_id": "C-589ecfc7-af1c-49b9-a1ac-79fcc3545d7d",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 433,
+            "expected": 433,
+            "failed": 0,
+            "passed": 433,
+            "skipped": 0
+          },
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "environment_identity": "23c7b051cc6ef20dbd0d5f302d87d00aecbad537e1d2ba53612a5a33d13f64dc",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/5c5b3a44-1cf2-48b0-875c-f152cb72a3d6.json",
+              "sha256": "8e8f2eceed89a30ceee6d00b79e51ace928d49e6d0b9b549bb81d87d34b6b99e"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "382a843c5193e0485febce0568ea973fa7d22782b202fd3c832e8b16c913c1d2",
+          "payload_hash": "9376db0227a73405cba6251db1ac14179c7fb5a3d29133c3365d4503c18e78f9",
+          "recorded_at": "2026-11-03T18:05:30.603011+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "e233cefd94fe8af9d91a540c27bc02a2df441e68935d5363f32d43b5de6e153a",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+            "tests/browser-qualification/ux-ui-adapters.json": "9af215c78bf46d14b770d28b43d57ebb2d543a1056986216b757bf0f078d4420",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "c145a23e2aa9a7b9ddd3bdfdc8b22d3bffe490998f8c956dee5a5b77482ec5fa",
+            "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+          },
+          "timing": {
+            "tool_wall_seconds": 156.36265083309263
+          }
+        },
+        "C-6d529783-9676-4015-9d31-a28528c8ef44": {
+          "actual_lane": "browser",
+          "attempt_id": "C-6d529783-9676-4015-9d31-a28528c8ef44",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+          "diagnostic_key": "a2e0122659f09baf0d1f196773a2d14084729b55232c8bec7c24550f54c91146",
+          "environment_identity": "8affc9230e8b3b1d849a5fbf8bc21825aa43ce62c34859f351de5bf78e60a735",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-6d529783-9676-4015-9d31-a28528c8ef44-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/a571a908-24ac-4fd4-aa93-bcc881fba44b-failure.json",
+              "sha256": "9022714894181f3f70c42f22b2136dbdc02e13afd8499fcf886eb0acf6d84b50"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:41:14.874283+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730314874472000.json"
+              ],
+              "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "e80308229f7dd5841fe28d1b22ca9187b344ebca166085d5183d9ad6c50627d6",
+          "payload_hash": "742435b3714d907d520d281db7c94f2b5666fd864682f2d52a5984e5e409c620",
+          "recorded_at": "2026-11-03T18:25:22.311241+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+            "tests/browser-qualification/ux-ui-adapters.json": "d234f91df787dd8e3f68ddd86bc781f517efa2556c60c05052af7acf617d2880",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "60a0a9b052a704a33ca2189cc40737762dcf190ea006c7b95d6a2c10d7c2d1b8",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "1cbdcfd5970fa4146a507f59fda1f5d6da4f5ce263cbab20a624aee3f6554db8",
+            "tests/browser-qualification/ux-ui-game-party.json": "56f465ccce4ace6d6912efb3c28548f52b41752aa5fa0e6a94a5ed1179a64f0e",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.431176166981459
+          }
+        },
+        "C-7022a46c-27eb-4054-9134-da8f11affad9": {
+          "actual_lane": "browser",
+          "attempt_id": "C-7022a46c-27eb-4054-9134-da8f11affad9",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+          "diagnostic_key": "810255321351794cb85d56ca9133393e00473981d86e7785b138d53f1aac5895",
+          "environment_identity": "544cd383a9cfc092426d893cf2216ca39f23b338ec65efbeb5d7c3b0ad7425ad",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-7022a46c-27eb-4054-9134-da8f11affad9-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/74b336b8-68fa-470b-9643-858654a32b5a-failure.json",
+              "sha256": "09fcd03f259310d2aa2418747e969f4f98d43edec8686c09bcd7116684d3e26e"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:36:38.491114+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730038491303000.json"
+              ],
+              "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "f8449f45d2e5cdbc11f5d6f2b7f0d7dce5751ee3d65269ed01b38d7d8204a242",
+          "payload_hash": "4515945c239cfbbeb488a3c84102d12e3473c1f0fb92564f14a5fe6d9b802020",
+          "recorded_at": "2026-11-03T18:21:11.572071+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+            "tests/browser-qualification/ux-ui-adapters.json": "d234f91df787dd8e3f68ddd86bc781f517efa2556c60c05052af7acf617d2880",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "60a0a9b052a704a33ca2189cc40737762dcf190ea006c7b95d6a2c10d7c2d1b8",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "a588237394c04d44f597e7a15b7705477f15d31b5083109e5f4381721fcd7489",
+            "tests/browser-qualification/ux-ui-game-party.json": "56f465ccce4ace6d6912efb3c28548f52b41752aa5fa0e6a94a5ed1179a64f0e",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+          },
+          "timing": {
+            "tool_wall_seconds": 31.806124708615243
+          }
+        },
+        "C-789c9d96-09a8-427f-a134-d3ed03985963": {
+          "actual_lane": "browser",
+          "attempt_id": "C-789c9d96-09a8-427f-a134-d3ed03985963",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 577,
+            "expected": 577,
+            "failed": 0,
+            "passed": 577,
+            "skipped": 0
+          },
+          "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+          "environment_identity": "7d732cf0f40f5083694067e79cff4201f1a087a6c8ab38acbb23a7bcd7dba473",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/d7c9c016-5625-47b4-b82f-9d8e951471dc.json",
+              "sha256": "95785830deff5f02fed3fae28d357810e49def36c00de15904e57a538b98ac13"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+              ],
+              "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+              ],
+              "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730494137238000.json"
+              ],
+              "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "8faef697df7577d533fb32c16fd44e9b0a65dbd80d0a212001207086f3067ca7",
+          "payload_hash": "c17abd1d20c004595f706e275c22f1ea2e0b2cdc779da493fdfb70296b4cbe64",
+          "recorded_at": "2026-11-03T18:30:59.921955+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+            "tests/browser-qualification/ux-ui-adapters.json": "d234f91df787dd8e3f68ddd86bc781f517efa2556c60c05052af7acf617d2880",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "60a0a9b052a704a33ca2189cc40737762dcf190ea006c7b95d6a2c10d7c2d1b8",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "9834cf8b0cca1b923f2de6022e58ea20f889b4b948e639affcbcb1b974393196",
+            "tests/browser-qualification/ux-ui-game-party.json": "56f465ccce4ace6d6912efb3c28548f52b41752aa5fa0e6a94a5ed1179a64f0e",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+          },
+          "timing": {
+            "tool_wall_seconds": 164.33730645803735
+          }
+        },
+        "C-a531cd53-a411-4d27-ba8d-c1f1b93f4849": {
+          "actual_lane": "browser",
+          "attempt_id": "C-a531cd53-a411-4d27-ba8d-c1f1b93f4849",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "diagnostic_key": "86cbbb3b78457062cc975fb6453be3825064ab6bccd1bda00ff0007d71397bcc",
+          "environment_identity": "1f55e9486aeb9d40d84b8be7a6f6d9260f0ea539c4bff82086d06f948310aed3",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-a531cd53-a411-4d27-ba8d-c1f1b93f4849-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/75026cb5-240a-4140-a910-611ea52d1ab6-failure.json",
+              "sha256": "c3ce59600e136918dfffbfeaab1bbc20406b8a6b9d7e15f9e67cd3c3e3bf7140"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:18:03.190176+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725323190396000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "82f5d4b0fe6525eeb5c63c1f294a5ad50e1deb8c4294bbd4a482cabf149c4462",
+          "payload_hash": "74900f6fc683a8365af30e0cc18acdf9d647fbea7e049f4b7bb664854189710b",
+          "recorded_at": "2026-11-03T17:02:17.541105+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+            "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+            "tests/browser-qualification/ux-ui-adapters.json": "c36824534d60f16ef1aa7fdd1870f73bdee29c2a78439a7796684f5dfb7c7d67",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "e4b6568d60d34ea404c87471469ce02203ba713b5312a3b3906bd0a93cb98332",
+            "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.679821874946356
+          }
+        },
+        "C-b729f2d3-e194-4619-a031-9d456690cb3f": {
+          "actual_lane": "browser",
+          "attempt_id": "C-b729f2d3-e194-4619-a031-9d456690cb3f",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "6a79a4f718e850afa47be9f3cd3125d4bdf6e9e5707a4364321deabf144df827",
+          "diagnostic_key": "b6c4ffe5905080e2a90bc303032dbeda35d508409925649ebfd7b450e82b3ff9",
+          "environment_identity": "fbcdd7c7dbdcd1a580589debc1593cf08beae83598efa76f0afb1be768054208",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/C-b729f2d3-e194-4619-a031-9d456690cb3f-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/dcabff0c-fa43-4e3f-b60e-a8b28c79bbaf-failure.json",
+              "sha256": "71846ff83210cc9fcaf87338adbe32c83c57ee56e987abb40833598a0ea37c77"
+            }
+          ],
+          "execution_sessions": {
+            "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T17:16:55.013500+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725255013736000.json"
+              ],
+              "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "330a2298812cf9d607d8772e137e7ed4520d3d51bf156f07fca0c2547a7670e3",
+          "payload_hash": "2e5116d18359e69e27d12e446c13526170f6402b696f99fe972722ca83a63963",
+          "recorded_at": "2026-11-03T17:01:43.901203+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Pages/InventoryPage.razor": "74956876684737cca0f483be7a32ebad4109d8d6642593b3a8b1304b8575b57b",
+            "src/Habitica.WebApp/Pages/PartyPage.razor": "17fc2aba322d3e3f6fbcc9f3e36e4796763cf7789737c40ba8eacb32898cdfc2",
+            "src/Habitica.WebApp/wwwroot/css/app.css": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "470f21241d2a5db4b8e92aa111871617a18767d1cd6a9891e856a1bc6ef1b6e4",
+            "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "5aced9d099b257e3fbadf49bbdbaac7bc41ee4035325b9f2fc375d2e889e084a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+            "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+            "tests/browser-qualification/ux-ui-adapters.json": "c36824534d60f16ef1aa7fdd1870f73bdee29c2a78439a7796684f5dfb7c7d67",
+            "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+            "tests/browser-qualification/ux-ui-game-content.json": "f059e2e64f65f9fc813d62dee841b609a4426f3ad5fadcbbd318346e4f52497e",
+            "tests/browser-qualification/ux-ui-game-names-journey.mjs": "fc59cf92595ea5a6eaacc8a183e7cab2446f1d7349add3b098cab49cb72e0999",
+            "tests/browser-qualification/ux-ui-game-party.json": "bd6bf53a31d1ebeacbade0a2f73400c9227ce7061635f5edb0bf29b6f7605143",
+            "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+            "tests/browser-qualification/ux-ui.mjs": "038b35fd03f4be6fc524e55aa0cda14573cc1d98ef1b3b59b0cb33176f70413b"
+          },
+          "timing": {
+            "tool_wall_seconds": 47.60188045911491
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-789c9d96-09a8-427f-a134-d3ed03985963",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "66f2f94f6525d45bcf2a2b1ef74f11e3de65a3b2947127d0512201122c4d376a",
+        "environment_identity": "7d732cf0f40f5083694067e79cff4201f1a087a6c8ab38acbb23a7bcd7dba473",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/game-control-names/browser/d7c9c016-5625-47b4-b82f-9d8e951471dc.json",
+            "sha256": "95785830deff5f02fed3fae28d357810e49def36c00de15904e57a538b98ac13"
+          }
+        ],
+        "execution_sessions": {
+          "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+            ],
+            "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+            ],
+            "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+            ],
+            "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730494137238000.json"
+            ],
+            "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "8faef697df7577d533fb32c16fd44e9b0a65dbd80d0a212001207086f3067ca7",
+        "payload_hash": "c17abd1d20c004595f706e275c22f1ea2e0b2cdc779da493fdfb70296b4cbe64",
+        "recorded_at": "2026-11-03T18:30:59.921955+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Pages/InventoryPage.razor": "5c5fa45c3b79519ec44ecff3f9b03b82fc8dd1260b08eeddb7e89434981a8c0e",
+          "src/Habitica.WebApp/Pages/PartyPage.razor": "9c06d5ac5de530bf8827aa311c1f0f348deb9281f0a6ded50fbad31be7886c18",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+          "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "c3115c3b33a81b75ff91ea971baaab6a5cfd2da0af39a96a75aab59b7cd4b687",
+          "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "210a5b94b52807b7cca874b0ae7fde5bd67acae8704c0cebf531d5b1c0f461e9",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "d234f91df787dd8e3f68ddd86bc781f517efa2556c60c05052af7acf617d2880",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+          "tests/browser-qualification/ux-ui-game-content.json": "60a0a9b052a704a33ca2189cc40737762dcf190ea006c7b95d6a2c10d7c2d1b8",
+          "tests/browser-qualification/ux-ui-game-names-journey.mjs": "9834cf8b0cca1b923f2de6022e58ea20f889b4b948e639affcbcb1b974393196",
+          "tests/browser-qualification/ux-ui-game-party.json": "56f465ccce4ace6d6912efb3c28548f52b41752aa5fa0e6a94a5ed1179a64f0e",
+          "tests/browser-qualification/ux-ui-game-user.json": "663f0f41b7b82eff583079a45d5beee73f867e6d84f8c117d05adaa0553a87ed",
+          "tests/browser-qualification/ux-ui.mjs": "b4e91906eb0fa0f88c15da9c5a793d54c98506369c899f9257d278e88bc2236c"
+        },
+        "timing": {
+          "tool_wall_seconds": 164.33730645803735
+        }
+      }
+    }
+  },
+  "execution_sessions": {
+    "71f799988babee85f188beb0b65765e4def6bb98809f3784b8f5d3600a10c1b1": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "cc6c7de5b269a957947d37b4375525de9765209208aa327f3c3d7e4dfad47657",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T17:19:24.736100+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793725404736285000.json"
+      ],
+      "profile_id": "7bf6a3750a6e198ebe38751436b5054483b929ba9c81503c10347cd88e2d92bb",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    },
+    "bfb7867b83f9e33755f16c9de1105466f7a9cc78aaa635cbdf5c06ab11d5c0ee": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "9dc781d26ac553f604df37fb79f3d4cd3a4215a2081b23ebc95b1e4aa99798a6",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T17:36:29.158734+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793726429158993000.json"
+      ],
+      "profile_id": "6239eada11b7ae33f0accbbe8192bc3d63a81df241caa62b6e897924601fe046",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    },
+    "f0bc7ebd1bade4c992dc00929800c50d05715b10626b087ffa8c9c927bef8e9b": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793728972718726000.json"
+      ],
+      "profile_id": "4915afaefe279e3914915009d554f9e70d7a93dc333e37cb7acd57f63ba5227b",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    },
+    "f65c5db73b7236cf2d43795c91ae305eeeaba7295aefb6be8cc8abf31a4ca237": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T18:44:14.137036+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/game-control-names/launch-1793730494137238000.json"
+      ],
+      "profile_id": "1b3012af7d59478b1506e9ecc96cf612755730c82e225b037cc6fd7ee49642c2",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/game-control-names",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    }
+  },
+  "partial_work": [],
+  "stage": "implementing"
+}

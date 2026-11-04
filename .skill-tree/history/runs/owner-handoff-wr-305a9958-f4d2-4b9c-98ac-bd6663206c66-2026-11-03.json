@@ -1,0 +1,26 @@
+{
+  "archive_sha256": "2cb877ab833487960ec8e7cffd94aa5605078a46a2e70199a4b93cb151adef5a",
+  "authorization": {
+    "owner_instruction": "yes, resolve how to preserve or close that stopped checkpoint,",
+    "scope": "Archive and detach the stopped checkpoint only. No task completion, implementation, release acceptance or live execution."
+  },
+  "checkpoint_archive": ".skill-tree/history/runs/suspended-wr-305a9958-f4d2-4b9c-98ac-bd6663206c66-2026-11-03.json",
+  "completed_task_outcomes_added": false,
+  "disposition": "suspended-incomplete",
+  "format": "skill-tree-owner-handoff-v1",
+  "new_controller_started": false,
+  "original_future_sha256": "15dcfdc3f65cf05f004d69ca72436a2feef3d9404103483830951765cca1aedb",
+  "original_outcomes_sha256": "bac94222411d39577889b330ae9f204d2d35421aa0d42343aae506600b52129f",
+  "original_state_sha256": "1ca7c3b9e9d1a0ed83c775d064dcd6459aa3e6544cd320bada1e06f26c0d90fb",
+  "original_stop_reason": "The owner explicitly deferred actual subscribed-chat/device qualification T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The remaining security root requires the unresolved gate. All other initial snapshot development roots are recorded complete; no new nonblocking task is admitted for implementation.",
+  "reason": "Owner requested resolution of the stopped checkpoint after standalone UX/UI processing. Preserve the incomplete run and unresolved release gate while freeing the active controller slot. No UI implementation or new controller was selected.",
+  "recorded_at": "2026-11-03T06:51:40.847262+00:00",
+  "report": ".skill-tree/history/checkpoint-handoffs/2026-11-03/parked-controller.md",
+  "resume_policy": "Explicit owner selection and current source/profile/evidence verification are required. Original release blockers remain binding. Do not overwrite another active run.",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "selected_task_id": null,
+  "unfinished_required_ids": [
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+  ]
+}

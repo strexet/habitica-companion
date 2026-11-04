@@ -202,6 +202,7 @@ Files: `src/Habitica.WebApp/Pages/DashboardPage.razor`
 Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
+- Account readiness uses snapshot freshness and the actual retrieval timestamp. Separate refresh-history labels report fetching, failure or completed refresh time; absent history reads “no later refresh recorded” with neutral styling. Authenticated missing-data states retain refresh feedback. Signed-out cached snapshots retain factual retrieval/history feedback and explicitly identify the saved-only state; an empty cleared session has no snapshot feedback. Direct account replacement resets the prior account refresh history; same-account refresh history remains independent of the newly loaded snapshot.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
 - Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, compact CRON damage summary, contextual Health Potion recovery, confirmed due unfinished-Dailies list, collapsed estimate details, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
@@ -279,6 +280,7 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 
 Current pattern:
 
+- Owned-equipment search precedes summary/management surfaces. Case-insensitive displayed-name/key search and slot filters reveal matching categories; explicit View results or Enter moves focus, preserving focus while typing or choosing a slot. Filtered results page at20 items with full counts and a local empty/reset action. Clearing restores previous category folds and preserves loadout, optimizer goal and preset drafts.
 - Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
 - Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions. Intelligence is the initial goal across classes and the invalid-input fallback. Explicit alternate goals survive page refresh notifications while mounted; equipment changes require the separate equip action.
 - Responsive `auto-fit` grids bound minimum tracks by the available width. Inventory headers wrap, gear identity text uses shrinkable tracks and stat pills remain within the identity column. Mobile preset inputs use an automatic flex basis to preserve input height in stacked rows. Long gear names wrap within recommendation cards.
@@ -868,7 +870,7 @@ Explicit unambiguous Notes capture/update intent permits acceptance of a matchin
 
 ### Notes page interaction
 
-Notes remains a top-level destination, separate from Todo descriptions. Source, New note, search and the title/Markdown editor are direct controls. On phones the library and editor stack; New note and selection focus the editor. Browser-only and cloud/agent-readable content are labelled explicitly. Cloud consent names server readability, encrypted credential storage, retained versions and separate deletion. No source switch uploads local data.
+Notes remains a top-level destination, separate from Todo descriptions. Source, New note, search and the title/Markdown editor are direct controls. Notes use a single library/editor mode when the available panel width is below40rem; a readable split view returns when space permits. New note and Open note focus the editor heading, with title and Markdown before the optional Project and folder disclosure. Back to library preserves the draft and returns to the selected row, New note or search fallback. Reopening the selected note resumes the draft without replacing an unsaved version. Continue draft/current note restores the existing editor. Browser-only and cloud/agent-readable content are labelled explicitly. Cloud consent names server readability, encrypted credential storage, retained versions and separate deletion. No source switch uploads local data.
 
 Unsaved changes use an inline keep/export/discard choice. A conflicting stored revision keeps the private draft and pauses replacement until explicit reload. Safe preview uses shared surfaces and readable ink; tables and fenced code can scroll locally. Raw HTML stays text and remote images never load. Trash/restore reviews name the exact record; purge additionally acknowledges irreversible deletion of all retained versions. Original command uncertainty pauses fresh writes and exposes receipt lookup. Navigation away retains the scoped draft; account/session clearing removes the draft. Source and cleanup controls preserve account/notebook ownership. Synthetic rendered coverage and physical-device limits are recorded in testing.md.
 
@@ -935,3 +937,153 @@ Settings displays observed integration permissions separately from new consent. 
 Legacy frozen transfers retain original identities and an explicit original-receipt/retry path. Existing cloud-owned local task copies remain recovery evidence while remaining browser Notes move through reviewed adoption. Export, pause and disconnect remain available; reverse ownership transfer remains deferred.
 
 Rendered qualification uses actual synthetic Razor markup and published assets in Gryphy Light and Obsidian Glow at 360/1280 pixels and 100/200-percent text. OAuth consent uses corresponding built-in light/dark palettes through system preference. Component interactions, rendered geometry/contrast, focus samples and physical-device gaps have separate evidence under `.skill-tree/history/validation/unified-workspace/`.
+
+### Single-level Notes folders
+
+Both /notes and the /todo/projects Notes section provide All notes, Without a folder, standalone/project folder navigation and shared metadata controls. Native selects and readable references distinguish duplicate labels by exact identity. Manage folders reveals a private name, explicit immutable new-folder scope and create/rename/remove-empty actions. A folder review shows exact identity, revision, before/after name and project context before confirmation. Dirty note drafts disable metadata operations; nonempty removal explains retained members including trash.
+
+The editor shows current folder/project context separately. Choosing a destination folder stages the matching project; Save reviews the combined association and content. Clear folder preserves the project. Retained unavailable folders remain readable and detachable but unavailable for new placement. Scope selectors retain unavailable project context visibly rather than presenting a different default. Historical drafts restore version-specific links. Markdown import remains unfiled and unsaved. Unknown outcomes expose the original receipt recovery path; account/source changes remove obsolete private controls and late responses.
+
+The local folder matrix covers gryphy-light and obsidian-glow, phone/desktop widths and normal/enlarged text on both routes. Semantic action/field tokens, wrapping, native keyboard controls, visible focus and explicit disabled states remain shared. Local synthetic and hydrated Release checks do not qualify physical devices, assistive technologies or hosted login.
+
+### Daily and Habit calendar series
+
+The /todo/statistics section offers an exact Daily/Habit selector, explicit IANA timezone, local start day and historical UTC as-of. Current type/search/project filters restrict task candidates; native task choices and chronological day rows page twenty records at a time. Refresh captures a new as-of and reads the active workspace without granting access or mutating tasks. Metrics label verified, lower-bound and unavailable values. Negative-only Habits show activity frequency. Unknown history never becomes zero or a lifetime-best claim. Day rows explain positive activity, known eligible misses, neutral intervals, current-day grace, historical timezone mismatch and missing causal proof. Account/source changes remove private selection and stale cursors. Native controls, focus outlines, wrapping references and solid semantic surfaces remain readable in light/obsidian phone/desktop enlarged-text checks.
+
+### Exact linked Daily schedule review
+
+The `/todo/dailies` recurring editor enables schedule replacement for eligible active cloud-linked Dailies. Browser, pending, conflicting and unknown mappings remain read-only. Linked clearing, native occurrence and lifecycle controls stay disabled. The separate review names the exact Daily, complete original/expected provider fields, account offset/dayStart, saved native rule, current account day and bounded next dates. The review distinguishes native acceptance from a provider metadata update, retained history from backfill, and Companion pause/skip from Habitica penalties. Todo Sync exposes pending/original schedule epoch semantics. Unknown outcomes require the original command receipt; account changes hide private review/receipt data immediately. The light/dark responsive qualification recipe covers the editor, review, pending/unknown outcomes, long identities, disabled source states and Sync receipt surfaces; real devices and installed-PWA paths remain separately unqualified. [linked-daily-schedules.md](linked-daily-schedules.md) owns the full contract.
+
+### Native type-copy review
+
+`/todo/convert` and the exact-source route provide a new type-copy panel alongside retained checklist conversion. Source search pages twenty active/historical/archived exact identities. Different kind, optional valid organization and complete explicit Daily fields precede full original/target/copied/reset disclosure. Review receives keyboard focus; explicit acknowledgement enables the primary confirmation. Unknown requests keep original recovery controls and disable replacement actions. Account changes clear private source/review data. Todo Sync retains the same full copy review during navigation. Light/obsidian, phone/desktop, normal/enlarged-text and keyboard/disabled-state evidence belongs to `task-type-copy-rendered-browser`; real device, assistive-technology and installed-PWA paths remain separate. See [task type copies](task-type-copies.md).
+
+### Relative saved-list date controls
+
+`/todo/lists` offers separate planned/deadline presets and explicit UTC/IANA timezone. Fixed fields conflict only with a relative selector on the same date field; conflicting values remain visible until an explicit clear action. Review and result sections display interpreted inclusive bounds, clock and local day. A day-changed continuation renders unavailable and requires explicit restart, never an all-task substitute. Account/source changes clear private selected context. `/todo/sync` identifies relative tag membership as unavailable, disables new sync/adoption and retains original receipt recovery. Light/obsidian phone/desktop normal/enlarged-text and keyboard evidence belongs to `relative-saved-rendered-browser`; routed production/device claims remain separate. See [relative date behavior](relative-saved-dates.md).
+
+## Project-filtered retained history
+
+History adds exact current-project/Unassigned selection with UUID-disambiguated retained archived/removed identities. Labels distinguish current placement from event-time membership. Projects links bind project/Workspace/source; invalid scope refuses fallback. The independent archived/occurrence recovery browser retains separate filters. See [project history](project-retained-history.md) for changed routes, light/obsidian responsive qualification and device limits.
+
+## Folder-aware Workspace adoption
+
+Sync transfer review includes exact folder identities, source/target counts, original receipt counts and current/historical memberships. Separate task/Notes consent, explicit conflict archival and original uncertain-transfer recovery remain mandatory. Unsupported source formats and changed Notes inventory refuse before durable authority freeze. See [folder adoption](notes-folder-adoption.md).
+
+## Reviewed relative-date tag membership
+
+Sync adds a one-local-day relative tag review with UTC as-of, timezone, local day, interpreted bounds and complete membership pages. Empty reconcile selection requires a separate acknowledgement. Stale days disable new confirmation while preserving original receipt recovery. Recorded current context appears in scoped coverage; no automatic daily refresh follows. See [relative tag reviews](relative-tag-reviews.md).
+
+## UX and UI review evidence
+
+The [comprehensive review report](../history/reviews/ux-ui-2026-11-03/report.md) records current-run deployed screenshots, current-source synthetic states, route coverage, keyboard samples and separate UX, UI and accessibility findings. The report links 24 Pending identities in future.md and identifies overlapping backlog work. The local five-theme matrix covers phone and desktop geometry and enabled-text contrast at normal and enlarged text; disabled readability, native date content and actual device or provider behavior retain separate evidence limits. Pending intake supplies no implementation or release acceptance.
+
+## Disabled and native-date qualification
+
+The shared UI recipe in [testing.md](testing.md#shared-ux-and-ui-qualification) inspects rendered disabled text and native selected dates explicitly. Disabled text uses a product 3:1 readability floor with compound foreground/surface opacity. Native date values and outer bounds never substitute for visible selected-date paint; same-engine full-width reference images supply the required comparison. Unsupported or missing paint evidence remains unqualified.
+
+The shared qualification task changes testing infrastructure. Existing disabled-theme readability and Today date-reflow defects remain separate planned product fixes. Harness baseline observations never establish acceptance of the disabled-theme and date-reflow fixes. Changed product routes retain the required light/dark, phone/desktop, enlarged-text, action, disabled-state, focus, geometry and contrast checks.
+
+## Accessible application shell
+
+The shell exposes a named Main navigation toggle with an exact controlled-region identity and current expansion state. Closed navigation is inert and hidden from the accessibility tree. Escape closes open navigation and restores the toggle; explicit phone backdrop dismissal returns focus without overriding route-heading focus. A visible-on-focus Skip to main content link targets the focusable main landmark. Menu and header actions retain at least 44-pixel targets.
+
+## Header and main clearance
+
+The dense application header, clipped drawer and main-content offset share the rem-scaled toolbar height through the framework geometry variable. The main landmark clears the fixed header with normal and enlarged text. Full-shell qualification uses the actual App theme stylesheet and explicit body-content/occlusion assertions; a shell without visible body evidence remains unqualified.
+
+## Workspace readiness guidance
+
+`TodoTaskPanel` shows the selected source, load state and highest observed editing fence before source details. Original unknown commands and reviews retain priority over source recovery; storage, settings conflicts, consolidation, transferred browser authority and unavailable snapshots remain distinct. The status offers the relevant existing reload, refresh, review or destination action. Todo Sync gives in-page guidance instead of a self-link. A displayed revision never grants writable authority.
+
+A late coordinator transition to an available selected source initiates its snapshot read once. Original reviews and recovery fences retain ownership; unchanged failed reads require explicit reload. No source fallback or connection recovery occurs.
+
+## Disabled control readability
+
+Built-in palettes use opaque muted disabled text. Native inputs, selects and textareas, including descendants of disabled fieldsets, use the semantic disabled surface, border and text tokens with opaque WebKit text fill. Notes buttons retain native disabled behavior without a second opacity reduction. The product text target is 3:1; inactive appearance also uses surface/border styling and disabled cursor/interaction. Existing custom palette values remain unchanged and require separate visual qualification.
+
+## Today native day selector
+
+The day selector and Today action wrap according to the available space and root text size. The date field takes a readable row before the action when both cannot fit. Scoped horizontal input padding preserves room for native date segments and the calendar affordance. DateOnly selection, native date input type, labels and Today reset remain unchanged; no generic input width is imposed.
+
+Workspace readiness uses the retained source during original reviews. A cancelled link-review load offers reload before review; the original request action focuses a native heading without accepting a command. Status copy shows one concise cause and recovery action.
+
+Habits and Dailies render the shared category title as their single page-level heading. Embedded task panels retain section headings by default. Category navigation and browser history use the existing `FocusOnNavigate` target; capture and task-kind semantics remain unchanged.
+
+Planning (including Inbox), History and Statistics send ordinary Add task/Open tasks actions to `/todo/tasks`. Return links use standard primary target sizing. The explicitly named Habitica tasks navigation entry and Today cache reference retain `/tasks`; provider records remain separate.
+
+Planning/Inbox and Statistics native date fields use scoped half-rem horizontal padding. The Statistics header uses one-rem inline padding on phone widths to retain room for native date segments and picker affordances at enlarged text. Native input type, filters and date bounds remain unchanged.
+
+Today places the selected-day work groups before optional reminder setup. Reminder status remains visible in a concise summary; a native disclosure contains setup controls and cue details without unmounting them. Uncertain delivery, clock changes and reminder errors remain outside the disclosure. Workspace readiness and original task reviews still precede work actions.
+
+Expanded companion groups page pets and mounts independently at twenty cards; potion inventory uses the same bound. Each page shows total/range and named previous/next controls. Search/type changes reset pages, aggregate counts identify filtered scope, and one no-results/reset state replaces repeated empty groups. Filtered group folding is temporary to the current query; clearing filters restores saved fold preferences. Add all labels count the full matching queue candidates, independently of visible cards and existing queued keys. The sale preview remains separately labelled and unfiltered.
+
+Companion-card identity rows wrap the name area below the thumbnail when the available width cannot hold both. This scope is limited to the collection page; ordinary names retain usable word width at enlarged phone text.
+
+The dashboard Appearance heading/action row wraps at constrained widths. Phone full-width children stack without compressing the theme action into a narrow label column; normal and enlarged text preserve the existing preference and disclosure behavior.
+
+New Daily capture follows title, complete required schedule and Add Daily in document and visual order. The primary capture grid stacks these sections; existing Todo/Habit title-first compact capture and Daily edit behavior remain unchanged. Form submission still uses the same validation and explicit preview boundary.
+
+New Daily capture uses half-rem native-date inline padding and one-rem phone card padding to retain complete selected-date segments at enlarged text. Scope is limited to new Daily capture; native date values, schedule defaults, validation and other capture kinds remain unchanged.
+
+Saved-list Review reports typed field/constraint errors through associated inline text, invalid-state attributes and a concise announced summary. Focus moves to the first affected field in form order after failed review; typing does not move focus. Source changes retain conflicting type/state values until explicit correction. Query validation retains exact drafts and domain validation; invalid review prepares no command. Placement filters expose scoped IDs/error associations and focus without changing picker selection behavior.
+
+Saved-list fields reserve eight rem of scroll margin when focused, keeping invalid controls and nearby error text clear of the fixed app bar at normal and enlarged text. The spacing affects focus scrolling within Saved lists and does not alter form geometry or other routes.
+
+After failed saved-list review, the focused field is revealed after validation layout settles. The small owned module scrolls only a still-connected, enabled control that retains focus; navigation or another user focus choice prevents a late viewport jump. No additional command or permission is introduced.
+
+Saved-list fixed date filters use half-rem inline input padding and one-rem phone card padding so complete selected dates fit at enlarged text. Date bounds, relative interpretation, filtering and preview semantics are unchanged.
+
+Each failed saved-list review inserts a fresh alert summary, including the first affected field’s corrective message. Repeating a one-field failure therefore exposes a new alert event even when the field count stays unchanged. This structure supports announcement; physical assistive-technology behavior remains unqualified.
+
+Party member Details controls expose contextual names, accurate expansion and stable hidden region identities. Equipment actions include displayed gear/slot or preset/goal context; colliding public names show safe item/member/preset references. Preset creation and rename fields retain visible programmatic labels. Existing battle-only actions, previews and freshness gates remain unchanged.
+
+Party detail/member grids bound their minimum column width to the available container width. Member disclosure actions retain a bounded minimum and public references wrap within the identity area. Enlarged text can stack member columns without clipping or reducing type size.
+
+Party HP/MP resource chips use semantic surface and text tokens so compact status remains readable in built-in dark and light schemes.
+
+Runtime warning text wraps within the shared content column, including long error references; full message content is retained.
+
+Equipment identity rows wrap artwork and text onto separate rows when both cannot fit. Stat groups wrap between complete stat-label/value tokens; compact group padding reserves readable token width in nested cards. Existing long-ID wrapping, numeric values and equipment actions remain unchanged.
+
+Phone Equipment group/item/preset padding reserves more inline space for names and action labels at enlarged text. Wrapped stat groups use a small rounded rectangle so multiple token rows retain a clear containing surface.
+
+At phone widths the Equipment recommendation action row extends into the card body gutters while staying within the card border. Complete action words retain normal type size and explicit button targets.
+
+Game record-name collisions use whitespace normalization before case-insensitive comparison, matching names that look identical after browser whitespace collapse. Displayed names and stored records remain unchanged; safe visible references distinguish colliding members, gear and presets. Party collision names are computed once per render.
+
+Canonical task rows name completion, Habit scoring, linking, editing and recurring controls with displayed task context. Names that collide after browser whitespace normalization show a visible task reference. Notes summaries and occurrence-date fields retain task context and stable content identities; native Notes disclosure owns expansion semantics. Settings private-sync checkboxes have stable section IDs and names beginning with the visible Exclude label. Original commands, selection and exclusion guards remain unchanged.
+
+Canonical Tasks and Project hierarchy actions include displayed task/state context. Browser-whitespace-equivalent names expose visible public task references and exact-record accessible names. Notes and References retain native details behavior with stable controlled content IDs. Focused-context actions and parent navigation identify exact records. Original command fences and branch semantics remain unchanged.
+
+Repeated Daily occurrence date inputs use scoped half-rem inline padding, matching the bounded creation date fields. Qualification compares selected native date paint in both ready and original-review-disabled states; exact per-task date drafts and command fences remain unchanged. Native popovers, physical devices, other locales and assistive technology remain unqualified.
+
+Shared raw task-list rows allocate identity and action columns with available-width18rem minima, stacking when both columns cannot fit. The rule avoids auto-width actions collapsing task names and Notes into glyph-wide columns. Native recurring-row qualification checks available ordinary-word width, visible Notes disclosure, exact action previews and selected Daily occurrence ink. Hierarchy and organization rows retain separate layout ownership.
+
+Settings phone sizing bounds cumulative nested padding: root cards use three-quarter-rem padding, nested action/status cards use half-rem, and private-sync rows use three-eighth-rem. Scoped action padding retains44-pixel minima. The private-section fixture captures owning Settings markup; native checks retain intact action words, available ordinary-word width for section names, exact labels and independent exclusion toggles. Section order and data/consent actions remain unchanged; physical devices, native file dialogs and assistive technology remain unqualified.
+
+Push device presentation distinguishes not checked, checking, observed capability and failed browser checks without changing the BrowserPushCapability wire record. Permission default displays as not requested; denied, granted, installation-required, insecure and unsupported observations remain distinct. Account/source changes reset observations and late/disposed probes are discarded. Browser module read failure retains the existing unprepared wire state. Setup checks request no permission; enrollment retains explicit acknowledgement and direct device gesture, original consent and pending-request recovery. Controller/component qualification includes late probes and actual PwaPushBrowser module failure. Physical devices, service-worker enrollment and notification permission prompts remain unqualified by synthetic review.
+
+The nested Settings padding repair is scoped to `settings-account-shell` on `/settings`. Shared settings-shell routes (Todo Sync, reminders, notification opening and privacy) keep independent geometry; no account-page padding inference qualifies those routes.
+
+The authenticated compact drawer puts canonical Add task and Today/Inbox/Plan/Projects before direct Habits/Dailies/Tasks and secondary tools. More planning and Game tools use native disclosures with the active route group open on entry/navigation. Notes, Settings and Diagnostics remain direct; all prior route URLs and permissions remain. A compact brand/account summary replaces the drawer hero. Qualification covers exact active links including nested Tasks, native summary keyboard operation, drawer Escape/focus, route/capture reachability and original synthetic journal preservation. Physical devices and assistive technology remain unqualified.
+
+Collapsing an active secondary navigation group retains one current-section marker on the summary. Expanding the group leaves the exact selected link as the only visible current cue. Native qualification asserts a single visible cue after keyboard disclosure collapse; ordinary focus styling remains independent.
+
+Linked Daily timezone inputs show readable UTC offsets and disclose the exact stored identifier below the selector. Fresh account observations constrain choices without selecting a replacement automatically; unsupported account days and fractional offsets remain explicit. Native recurrence uses separate IANA/DST help. This presentation retains existing schedule, review and executor boundaries.
+
+Saved-list browsing precedes authoring. New list exposes three basic labeled fields, while a controlled Additional filters disclosure reports retained values. Complete-definition review includes collapsed predicates. Editing reveals nondefault options; Close authoring keeps the draft and Continue draft restores the exact editing context. Validation opens hidden invalid fields before focusing. Browse and review headings and editor/toolbar controls use the existing post-layout focus reveal. Selected-list recovery actions share the standard44-pixel action row.
+
+Projects leads with the page heading, explicit project choice and associated work. Manage organization reveals the existing creation, alias and organization controls after the work area. Closing management returns keyboard focus to the toolbar and preserves current editing values; reopening resumes the same draft. Pending reviews remain visible outside the optional body and prevent closure. Empty project choice still shows no project tasks rather than selecting an arbitrary project. All tasks provides a separate unscoped destination.
+
+Settings section links target focusable headings with fixed-header scroll clearance and44-pixel minimum heights. Heading/account summary precede installation advice. Appearance and installation remain explicit disclosures. Backup and private-sync scopes are stated beside actions; source selection and consent retain original owners. Section navigation changes no data or review state.
+
+Push reminder weekly/monthly selections use named native checkbox groups with keyboard focus and44-pixel label targets. Specific empty-group messages associate with each checkbox and focus the group legend. Preview and return focus use the existing reveal helper. Selected civil dates retain native paint qualification; pending original previews disable editing. No automatic scheduling or permission request accompanies selection.
+
+Equipment count chips reserve artwork dimensions, allow large counts below artwork, and place labels on a complete row. Scoped count typography retains the intended1rem size instead of inheriting larger dashboard-stat numerals. Natural word wrapping remains scoped to summary labels; long identifiers elsewhere keep independent wrapping.
+
+Private-sync payload metadata uses an explicit localized general date/time string with local-time context and a semantic time element carrying the unchanged UTC timestamp. Missing payload metadata preserves the prior hidden-metadata behavior. Synchronization state and decisions remain unchanged.
+
+Task-type copy reviews use labeled source/target field groups. Absent scalar metadata displays Not set; empty dependency/label and unused recurrence lists display None. Nullable stage presence preserves Inbox and other zero enum values. Civil dates use explicit ISO form; UTC instants and exact IDs remain visible. Copied/reset disclosures, source preservation and original acknowledgement/command boundaries remain unchanged.
+
+Notes initial entry: expose aria-busy and a readable loading status while the first scoped load is unfinished. New note remains natively disabled during that interval and opens the editor only after initialization. Qualify retained notebooks and first entry across phone/desktop, normal/enlarged light/dark states; physical devices and assistive technology remain separate.

@@ -1,0 +1,14 @@
+@using Habitica.Domain.Workspace
+@if(Evaluation is {} value)
+{
+    <section class="relative-date-summary" data-testid="saved-relative-evaluation" aria-label="Interpreted relative dates">
+        <p>Evaluated @value.AsOfUtc.ToString("u") · @value.TimeZoneId · local day @value.LocalDate.ToString("yyyy-MM-dd"). Relative intent remains saved; interpreted dates advance with the local day.</p>
+        @if(value.Planned is {} planned){<p>Planned: @Text(planned)</p>}
+        @if(value.Deadline is {} deadline){<p>Deadline: @Text(deadline)</p>}
+        <p>Relative-list Habitica tag membership requires a separate review bound to the evaluation day. Existing upstream tags and membership remain unchanged; tag correspondence is currently unavailable for this relative list.</p>
+    </section>
+}
+@code{
+    [Parameter]public WorkspaceRelativeDateEvaluation? Evaluation{get;set;}
+    private static string Text(WorkspaceRelativeDateBounds value)=>value.Preset==WorkspaceRelativeDatePreset.NoDate?"No date assigned":$"{value.Preset} · {value.From?.ToString("yyyy-MM-dd")??"Unbounded"} through {value.Through?.ToString("yyyy-MM-dd")??"Unbounded"} (inclusive)";
+}

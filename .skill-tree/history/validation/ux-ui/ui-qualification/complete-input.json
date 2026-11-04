@@ -1,0 +1,63 @@
+{
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "expected_source_hash": "4c09600c3680f09c4ea8559bf586126dd2096925df7ebf42da23b3c1e43b739d",
+  "outcome": "Registered the parameterized shared UI qualification runner with disabled text/value opacity checks, native-date screenshot evidence, exact adapter/route/state selection and verified owned-session cleanup. Final current Release qualification passes 721 harness assertions, 61 component captures and 17 focused unit checks. Existing product defects remain separate planned fixes.",
+  "acceptance": [
+    {
+      "criterion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+        ".skill-tree/history/validation/ux-ui/ui-qualification/final-contract.json"
+      ]
+    },
+    {
+      "criterion": "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+        ".skill-tree/history/validation/ux-ui/ui-qualification/final-unit.tap"
+      ]
+    },
+    {
+      "criterion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+        ".skill-tree/history/validation/ux-ui/ui-qualification/browser/256fca65-9fe5-425d-8cae-5c60aeedbeda.json"
+      ]
+    }
+  ],
+  "source_fingerprints": {
+    ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e",
+    ".skill-tree/documents/ux-ui-manifest.md": "d155a06028404277ec3c8247cd784969e3f2469f7b959018c6fec934211043ad",
+    ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+    ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "aeef67f524185d984747166462a2ee3c5c20e3ead00f910111124e232f83d39b",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+    "tests/browser-qualification/qualification-frame.mjs": "1fc35dfbec50101b5970526690a2343c12888cf26ec2c56561c22fccc869af71",
+    "tests/browser-qualification/ux-ui-adapters.json": "04ba39ed2e8988314cad6bb7eb8311efd2e2601aeadecda31913753b5ab63b1d",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "f2bf8706c01c570f1e92385bc690d1bf4bbfcc650cbe914ed6129446932ab600",
+    "tests/browser-qualification/ux-ui-contract.mjs": "bf0fc516fb199720d6bfacbb1f7fb8acd5ea8b892735ff0a4df1ef7206e78a76",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs": "19e7a3c0fa6b957a2167af750035a1d3eb8142fa89cac1f2f217be15eb133b7b",
+    "tests/browser-qualification/ux-ui.mjs": "f9fb4d25e7d296c9a36e17d4615d9cf085e3e7cb1fd7811f3e0800ed4ba400d6",
+    "tests/browser-qualification/ux-ui.py": "638c40ab1c684e1b353b119f7835cfd62720e6e045508e905e3d1240c853a160"
+  },
+  "limitations": [
+    "Physical devices, assistive technology, mobile keyboards, hosted/service-worker behavior and real provider effects remain unqualified.",
+    "Product baseline observations do not establish acceptance of the remaining UI fixes.",
+    "Native paint uses same-engine screenshot references and a 97-percent retention tolerance; unsupported evidence remains unavailable."
+  ],
+  "followup_ids": [],
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance.md",
+    ".skill-tree/history/validation/ux-ui/ui-qualification/acceptance-summary.json",
+    ".skill-tree/history/validation/ux-ui/ui-qualification/scoped-changes.json"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-rules",
+  "attempt_id": "C-1c95cd49-7ecf-4ffe-bddc-0aa6bcb7da1f",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "actual_lane": "unit",
+  "classification": "prerequisite-wait",
+  "result": "fail",
+  "failure_signature": "type_copy_compile_prerequisite",
+  "cleanup": "The dotnet build exited before test discovery; no product fixture or service remained running.",
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/atomic-copy-green-execution.log"
+  ]
+}

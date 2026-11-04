@@ -1,0 +1,66 @@
+{
+  "recorded_at_utc": "2026-11-02T11:30:47.220188+00:00",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "authorization": {
+    "source": "Direct owner reply to the exact hosted-scope question in the current chat.",
+    "owner_reply": "разрешаю. если что-то еще нужно настроить мне руками, пришли подробную инструкцию как это сделать.",
+    "gateway": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+    "auth_worker": "habitica-companion-auth",
+    "profile_path": ".skill-tree/history/validation/callback-egress-netlify/hosted-profile.json",
+    "profile_sha256": "45bd657dab5afe828c621beea7b972adf3b95ca568352f4941658a2b8ec9c7e8",
+    "allowed": [
+      "Temporary activation of the selected gateway and Auth claim lane.",
+      "Synthetic hosted controls against owner-controlled fixtures under the retained profile.",
+      "Subsequent disable and scoped rollback."
+    ],
+    "retained_exclusions": [
+      "Real user subscriptions, callbacks and chat messages.",
+      "Habitica/game/account effects.",
+      "Paid resources, automatic upgrades and provider fallback."
+    ],
+    "reconfirmation_required_for_accepted_scope": false
+  },
+  "status": "awaiting-netlify-session-and-owned-fixtures",
+  "observations": {
+    "netlify_connector_available": false,
+    "netlify_cli_available": false,
+    "netlify_cli_auth_files_at_conventional_paths": false,
+    "provider_environment_credentials_present": false,
+    "browser_url": "https://app.netlify.com/",
+    "browser_observed_state": "Log in; existing project/team not visible before sign-in.",
+    "browser_tab_retained_for_owner": true,
+    "owned_dns_zone_and_receiver_supplied": false,
+    "hosted_recipe_available": false,
+    "installation_readmission": "pass"
+  },
+  "operations": [
+    {
+      "operation": "Netlify browser navigation",
+      "classification": "transport-uncertainty",
+      "result": "Initial navigation timeout; the existing tab subsequently rendered the Netlify Log in page.",
+      "executed_hosted_controls": 0
+    },
+    {
+      "operation": "Provider access and fixture inventory preflight",
+      "classification": "prerequisite-wait",
+      "result": "Owner sign-in and owned fixture identities remain required. Authorization is resolved.",
+      "executed_hosted_controls": 0
+    }
+  ],
+  "performed": {
+    "provider_configuration_changes": false,
+    "hosted_controls": 0,
+    "publication": false,
+    "callbacks": false,
+    "product_source_changes": false,
+    "commits": false
+  },
+  "timing": {
+    "active_controller_seconds": null,
+    "tool_wall_seconds": null,
+    "prerequisite_wait_seconds": null,
+    "note": "Separate timings are uninstrumented; navigation tool wall was 12.0869 seconds. No cumulative task budget is imposed."
+  },
+  "next_action": "Owner signs in to the existing Netlify project and identifies available owned DNS/server infrastructure. The agent binds fixtures and prepares the hosted recipe before activation."
+}

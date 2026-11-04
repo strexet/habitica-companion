@@ -1,0 +1,12 @@
+{
+  "name": "functions-full",
+  "argv": [
+    "bash",
+    "-c",
+    "node --test tests/Functions/*.test.mjs"
+  ],
+  "exit_code": 1,
+  "seconds": 3.116,
+  "deadline_seconds": 300,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/functions-full.log"
+}

@@ -1,0 +1,25 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "check_id": "history-components",
+  "attempt_id": "C-9e15dbfb-52e2-405b-8ff7-e7b70ce71387",
+  "environment_identity": "3faab00121393ef8ece332c5c40f04f6f91db81ecc4880b433dbb79f7f591a9c",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "fail",
+  "counts": {
+    "expected": 37,
+    "discovered": 37,
+    "passed": 33,
+    "failed": 4,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 14.055189291015267
+  },
+  "evidence": [
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-ui-first-execution.log",
+    ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-ui-first.trx"
+  ],
+  "failure_signature": "activity_suite_failure_history-components"
+}

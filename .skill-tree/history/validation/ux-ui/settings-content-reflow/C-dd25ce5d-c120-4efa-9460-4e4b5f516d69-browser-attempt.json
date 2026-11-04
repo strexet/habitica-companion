@@ -1,0 +1,66 @@
+{
+  "assertion": "Use full current Settings fixtures and the hydrated route to require ordinary-word width for section context and native Range whole-word action labels. Preserve exact checkbox targeting and restore selections, unchanged task journal, visible keyboard focus and full declared matrix. Do not activate destructive, restore, upload, consent or provider actions.",
+  "attempt_id": "C-dd25ce5d-c120-4efa-9460-4e4b5f516d69",
+  "check_id": "settings-content-reflow-rendered",
+  "definition": "9414b9cc9c0c68c6b392b789c9fa2c5f70d39fc205cdfa7db9a593a7d5b56143",
+  "environment_identity": "5cc90d1fbabb074b0df3b98708c0bbee66bc9f186cd9a140f1bbc06556d5c924",
+  "key": "24192e3519ff12d917010501e3b91f9c7d8ef48f63b790cc540c57dcf2ec8973",
+  "launch": {
+    "assertion": "Use full current Settings fixtures and the hydrated route to require ordinary-word width for section context and native Range whole-word action labels. Preserve exact checkbox targeting and restore selections, unchanged task journal, visible keyboard focus and full declared matrix. Do not activate destructive, restore, upload, consent or provider actions.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T19:58:01.626555+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:42:01.929587+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "settings-content-reflow",
+      ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "26bb317936c4e650c2e875b01b7cfbcbbc654327a1b573e7b817b3853337f6bc",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "fc8bf01ba9ddb043e4e49b624e67bb5feba9b8c48ebbab1f514cdba5442dd74a",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs": "c2393d756470874f245cadab62412dbee78bdc6ef2d6d988e4b4d5e687e18e28",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+  },
+  "task_id": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+}

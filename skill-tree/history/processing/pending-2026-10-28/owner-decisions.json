@@ -1,0 +1,18 @@
+{
+  "recordedAtUtc": "2026-10-28T10:41:29.451522+00:00",
+  "source": "Direct owner replies to request_user_input_async call_e3e9468c1fa1463fb15f5797b2eb9663",
+  "diagnostics": {
+    "pendingId": "P-2e9d3baa-4e4b-4569-80d2-81fceebb1cec",
+    "selected": "Workspace D1; independent consent; upload only after preview; deletion after seven days; strict quotas.",
+    "numericQuotaPolicy": "One MiB and2000 rows are conservative proposed implementation ceilings, not a separately asserted owner-selected number."
+  },
+  "events": {
+    "pendingId": "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192",
+    "selected": "Auth vault stores callback URL and signing secrets; Workspace stores opaque IDs, subscriptions and receipts; separate consent and revoke cleanup.",
+    "protocolQualification": "MCP2 compatibility remains a required predecessor; installed SDK1.32.1 is unchanged."
+  },
+  "limits": [
+    "No actual browser logs uploaded or remote diagnostic consent enabled.",
+    "No callbacks, signing keys, real subscriptions, messages, package upgrades or deployment performed."
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "scope": "Source implementation and isolated synthetic qualification; no live provider mutation, publication, commit, device permission or actual notification delivery.",
+  "results": [
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rules-final-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 15,
+        "expected": 15,
+        "failed": 0,
+        "passed": 15,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/components-final-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 24,
+        "expected": 24,
+        "failed": 0,
+        "passed": 24,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/wire-final-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 8,
+        "expected": 3,
+        "failed": 0,
+        "passed": 8,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/gateway-final-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 5,
+        "expected": 5,
+        "failed": 0,
+        "passed": 5,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-final-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 7,
+        "expected": 7,
+        "failed": 0,
+        "passed": 7,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-98e22785-receipt.json",
+      "result": "pass",
+      "counts": {
+        "discovered": 146,
+        "expected": 146,
+        "failed": 0,
+        "passed": 146,
+        "skipped": 0
+      }
+    }
+  ],
+  "independentExamples": 20,
+  "fixes": [
+    "The separate reviewed linked command binds complete provider fields and account facts; direct unprepared command submission refuses before native acceptance.",
+    "The gateway re-observes exact task/account facts before one metadata PUT; unsafe retained monthly schedules also block ordinary title-only PUTs.",
+    "Native acceptance epochs remain separate from original provider normalization; unexpected normalization is retained and explicitly conflicting.",
+    "Original Auth receipts recover lost Workspace acknowledgements; original unknown Auth attempts never gain proof from current equality.",
+    "Account changes gate private command/link previews, original receipts and cached recurring-editor identity before replacement state loads."
+  ],
+  "preservedFailures": [
+    {
+      "label": "supported-linked-edit-red",
+      "cause": "The initial model refused a supported explicit linked edit; the runnable behavioral Red preceded the policy implementation."
+    },
+    {
+      "label": "gateway-first",
+      "cause": "The fixture executed the previous dist bundle. The current dry-build prerequisite and source build identity were restored before the passing control."
+    },
+    {
+      "label": "components-first",
+      "cause": "Account transition exposed an unguarded private preview while the Workspace snapshot was already unavailable. Scoped getters and cached-editor identity fencing fixed the observed exception and disclosure."
+    },
+    {
+      "label": "sdk-first",
+      "cause": "Synthetic profile text did not meet the existing OAuth fixture consent oracle; the fixture label was corrected."
+    },
+    {
+      "label": "sdk-profile-fixture-green",
+      "cause": "Discovery advertises capability metadata independently of granted write scopes. The refusal oracle now verifies actual unauthorized invocation, without treating discovery as authorization."
+    },
+    {
+      "label": "rendered-50291c1f",
+      "cause": "The actual Workspace recovery response is201; the browser fixture incorrectly expected200."
+    },
+    {
+      "label": "rendered-9ce9568b and rendered-d9fcee07",
+      "cause": "WebKit Sync native Tab can leave the document at the browser navigation boundary. The always-a-second-document-element assumption was replaced by required initial outline and explicit return-focus outline checks. BODY diagnostics and fixture controls supplied new evidence. The ineffective production anchor-selector probe was reverted."
+    }
+  ],
+  "ui": {
+    "report": ".skill-tree/artifacts/linked-daily-ui/1793649350112595000/report.json",
+    "routes": [
+      "/todo/dailies",
+      "/todo/sync"
+    ],
+    "matrixStates": 9,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "schemes": [
+      "gryphy-light",
+      "obsidian-glow"
+    ],
+    "widths": [
+      360,
+      1280
+    ],
+    "textPercent": [
+      100,
+      200
+    ],
+    "actualHydratedJourneys": 2,
+    "inspectedScreenshots": [
+      "chromium-gryphy-light-viewport.png",
+      "webkit-obsidian-glow-viewport.png"
+    ],
+    "providerWrites": 0,
+    "executorEnabled": false,
+    "limits": [
+      "Service workers blocked",
+      "Real hosted OAuth/CORS/deployment and installed-PWA activation unqualified",
+      "Physical devices and assistive technologies unqualified"
+    ]
+  }
+}

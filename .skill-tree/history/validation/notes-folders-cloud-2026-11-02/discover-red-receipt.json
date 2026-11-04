@@ -1,0 +1,35 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-8bb10d01-824e-466d-b389-2272fa732cb4",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 13,
+    "expected": 13,
+    "failed": 1,
+    "passed": 12,
+    "skipped": 0
+  },
+  "definition": "5357e3f9f3464d53d584dd28ddd8b7ae3a927824462479d29c1a359d45a372db",
+  "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/discover-red-execution.log",
+      "sha256": "9486ef6b52a9fe45c7d48adcfdb32af55229e917492b43e8530f8dbe1b29e8cb"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_category": "expected-behavior",
+  "key": "e9f12c34cf20697bad1bd07783f6d3be18fdeb7bd1d66c171dff0b7d5524f4e2",
+  "payload_hash": "faf628f167e52a2115b7f801ab410bab2846b86f7c9a0dd5137314269a397483",
+  "recorded_at": "2026-11-02T16:39:07.261665+00:00",
+  "result": "red",
+  "sources": {
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/test/notes.test.mjs": "d4f9050e83b9ca86d2161de43803846b9b72a111d1799289e6a52cb193613a9c"
+  },
+  "timing": {
+    "tool_wall_seconds": 9.883797958027571
+  }
+}

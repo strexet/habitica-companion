@@ -1,0 +1,69 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-4be6e878-3ac5-4335-8443-bea96fa6af3b",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 18,
+    "expected": 18,
+    "failed": 1,
+    "passed": 17,
+    "skipped": 0
+  },
+  "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+  "diagnostic_key": "ce2c6ee0f522080d0e8829055be51597d64fd2cde24d996fa2daaa27025784d5",
+  "environment_identity": "141262cf081734c6b7a529f88f0b2e7b77d131af25973ebd14917235f3271343",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-green-execution.log",
+      "sha256": "887eea6af19f1a93c6cc58ddafe99e056c0b2a67ab947f392065f5365ce088ec"
+    }
+  ],
+  "execution_sessions": {
+    "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+      "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+      ],
+      "profile_id": "task-type-copy-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-cc1d0534",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "failure_signature": "activity_conversion-wire_failureType: 'testCodeFailure'",
+  "key": "484abb1b50b5c4a45a8e9ba07a2eea3a5dbdf314707f9a4e30ec1bb7c7d8e99b",
+  "payload_hash": "0031838ef5d93054b8c54df3611fccfbc228aecd092fffe7158b99982d041f94",
+  "recorded_at": "2026-11-02T21:21:04.459907+00:00",
+  "result": "fail",
+  "sources": {
+    "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+    "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+    "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/src/mcp-epoch.ts": "1c1a31fdea6ccf0180aa2ccee1a0a19dee9a2c674f429a50a30b9066c90865a8",
+    "workers/companion-workspace/src/preparation-retention.ts": "0f2ae508588630fc569523a9d618f3f0f631fcad3eb0440a311470352fd5e07f",
+    "workers/companion-workspace/src/task-api.ts": "80c67286035e5633a344d0dca8e91275f9a4caec889ade7724d28bb0a1ced19e",
+    "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+    "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+    "workers/companion-workspace/test/task-type-copy.test.mjs": "9a4de2964653c4e78ec062bdc1babcb7fee20f6d6813267e62b11dda318f67f3",
+    "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+    "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+    "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+    "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+    "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+  },
+  "timing": {
+    "tool_wall_seconds": 11.97769554099068
+  }
+}

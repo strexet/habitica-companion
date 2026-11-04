@@ -1,0 +1,17 @@
+{
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "check_id": "hosted-gateway:receiver-setup",
+  "classification": "executed-control",
+  "assertion": "Deploy only the exact reviewed synthetic receiver with short-lived keys, strict signed-byte acceptance and isolated observation rows; preserve the existing disabled Auth runtime.",
+  "cheaper_evidence_insufficient": "Local Miniflare/D1 cannot establish a public owned HTTPS receiver reached by the real Netlify function.",
+  "authorization": "Existing gateway/claim fixture scope and direct notification/publication request in owner-publication-scope.json.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "profile_id": "normal-delivery-profile",
+  "deadline_utc": "2026-11-02T12:11:18.138308+00:00",
+  "cleanup_seconds": 30,
+  "fixture_worker": "habitica-companion-callback-qualification",
+  "account_id": "8c962c94f28f5bdd298024365e0dea40",
+  "source_sha256": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+  "test_evidence": "receiver-green.log",
+  "per_network_deadline_seconds": 15
+}

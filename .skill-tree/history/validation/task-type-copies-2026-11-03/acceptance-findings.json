@@ -1,0 +1,51 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "decision": "Local native type-copy acceptance qualified; no publication, live account, provider write or physical-device qualification.",
+  "checks": {
+    "conversion-rules": 29,
+    "conversion-components": 27,
+    "conversion-wire": 18,
+    "conversion-rendering": 242
+  },
+  "totalPassed": 316,
+  "implemented": [
+    "All six directed Todo/Daily/Habit pairs create exactly one active unlinked native target.",
+    "Source kind/state/history/mappings remain unchanged; copied/reset fields and explicit Daily rules are reviewed.",
+    "V13 hash, exact source/root/target/choice guards, original prepared metadata and receipt recovery preserve identities after uncertainty.",
+    "Shallow immutable per-task lineage survives actual portable revision-offset transfer and copy-of-copy without recursive growth.",
+    "Conditional read/write scopes and profile/account fences protect complete private before fields.",
+    "Unaccepted expiry and grant revocation release full metadata bytes; accepted original reviews remain retained.",
+    "Current Release conversion/Sync routes hydrate through actual isolated Auth/Workspace Workers/D1 and native IndexedDB; existing checklist protocol remains intact."
+  ],
+  "originalFailures": [
+    "Initial Razor attribute compilation failed before discovery; the attempt was recorded as a prerequisite failure before repair.",
+    "Existing page tests selected the first fieldset after the new panel was inserted; exact checklist fieldset selectors now preserve the original regression oracle.",
+    "A synthetic cross-profile missing-receipt assertion expected a failure HTTP status; the actual opaque unknown envelope discloses no original target/source and is now asserted.",
+    "Meaningful quota Red detected2120 retained metadata bytes after expired unaccepted preparation removal; full BLOB byte cleanup is repaired and expiry/revocation Green passes.",
+    "Initial grant invalidation fixture attempted to increment the literal legacy epoch; the fixture now advances legacy to1 and numeric epochs monotonically.",
+    "Rendered controls found missing new/Sync anchor focus, long title overflow and native WebKit select paint overflow. Scoped wrapping, visible focus and existing native-select overflow primitives repair the observed cases."
+  ],
+  "limits": [
+    "No new commit, push, migration application or publication occurred.",
+    "Synthetic local credentials and provider fixtures only; provider mutations prohibited and executor disabled.",
+    "Physical devices, assistive technologies, real hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified."
+  ],
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-execution.log",
+    ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/rules-qualified.trx",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-receipt.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-execution.log",
+    ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/components-qualified.trx",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-receipt.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-execution.log",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-receipt.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+    ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-receipt.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/quota-worker-dry-builds.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/future-validation.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/documentation-validation.json",
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/changed-prose-validation.json"
+  ]
+}

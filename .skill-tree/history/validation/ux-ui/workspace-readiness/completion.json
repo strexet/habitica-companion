@@ -1,0 +1,579 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Every observed readiness or read-only cause has an accurate source-aware message and a relevant existing recovery or wait action.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+          "sha256": "58b6e4f86b586b7e58f3fd11dfb8993dbd912a8a29aeae7887dbdd68f1e6131a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.trx",
+          "sha256": "782f9e0310b3902939758b0c61c400925947f7206034fb0bde7f798bb1ab12fc"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/acceptance.json",
+          "sha256": "aa1934b314242a49195d0e415cd0c8e5b5aa24b22ed47cea22aa6312aed1b2e2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+          "sha256": "232988bf94656f4dd56d628f923ff09b046a0ea8295c1d95c5c7e6eea541c5fa"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Readiness transitions never enable edits across source/account changes, frozen authority or unresolved original-command fences.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+          "sha256": "58b6e4f86b586b7e58f3fd11dfb8993dbd912a8a29aeae7887dbdd68f1e6131a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.trx",
+          "sha256": "782f9e0310b3902939758b0c61c400925947f7206034fb0bde7f798bb1ab12fc"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/acceptance.json",
+          "sha256": "aa1934b314242a49195d0e415cd0c8e5b5aa24b22ed47cea22aa6312aed1b2e2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+          "sha256": "232988bf94656f4dd56d628f923ff09b046a0ea8295c1d95c5c7e6eea541c5fa"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+          "sha256": "58b6e4f86b586b7e58f3fd11dfb8993dbd912a8a29aeae7887dbdd68f1e6131a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.trx",
+          "sha256": "782f9e0310b3902939758b0c61c400925947f7206034fb0bde7f798bb1ab12fc"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/acceptance.json",
+          "sha256": "aa1934b314242a49195d0e415cd0c8e5b5aa24b22ed47cea22aa6312aed1b2e2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+          "sha256": "232988bf94656f4dd56d628f923ff09b046a0ea8295c1d95c5c7e6eea541c5fa"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Every observed readiness or read-only cause has an accurate source-aware message and a relevant existing recovery or wait action.",
+          "Readiness transitions never enable edits across source/account changes, frozen authority or unresolved original-command fences."
+        ],
+        "id": "workspace-readiness-behavior",
+        "parameters": {
+          "report_name": "workspace-readiness.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/workspace-readiness/unit",
+          "test_filter": "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~WorkspaceTaskControllerTests|FullyQualifiedName~TodoSyncPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+          "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/TodoSyncPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3a65fdc0-856e-432b-9a6d-3928c96b54c2",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 50,
+          "expected": 50,
+          "failed": 1,
+          "passed": 49,
+          "skipped": 0
+        },
+        "definition": "71affb0dce2af30811bb28c26ba7c186bfc2e8e3a056cb34ec430e2cb2d49951",
+        "environment_identity": "332812a0f10e65be465fe8ac465ca309535e6f971fa6399027f7513abb60e3ca",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-3a65fdc0-856e-432b-9a6d-3928c96b54c2.log",
+            "sha256": "61d5e96fa456451c4f4374310a17000a2af8325c432684a7c8176b8d0d8d34a6"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-3a65fdc0-856e-432b-9a6d-3928c96b54c2.trx",
+            "sha256": "b88ef6b3e5bea37ecf8173fac5f576819dd1e4f6e6e90fde1b0281096c0d0f5a"
+          }
+        ],
+        "execution_sessions": {
+          "8b560e6e8d7d653c6adfea57352bb534c88c6b008ea4adea6897227ea9a22222": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:58:01.502970+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793698921503201000.json"
+            ],
+            "profile_id": "62720406a96ac80ae365f2841f460cec63a0f1cfb906ba7e58366256ecd65973",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d03b860a8b5de9056410c454494c425c91fe7b82b0de6642ee811a62e00b2ed9": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:18:29.071281+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793707349071501000.json"
+            ],
+            "profile_id": "82a692bfe1cfb22f13ee2289ddebffcfc8743275e4dce025ec5b4a4c1d3c2b20",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "499eef695c365d689e8096abe2492328085ae7ac49a3a09fb8f152a6324800fb",
+        "payload_hash": "1aa8c6fc62eba494f898b123fe3bc9799f19db736034e7b7f68527ca34ef5fb5",
+        "recorded_at": "2026-11-03T12:05:14.977440+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "88e104084f45316e2c713e3afd2503d68fff01c2f726e37ca213507b613f2143",
+          "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+          "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "aff373a5b1e030beb8c859ba2c748ae00ad8781db76cfff3cf004b23ef0ca8e3",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "29e4f33f798fe137f7ad006a058ad01691d9ac0d80980c9931d4b3aaffb4d6d7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.741847000084817
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-8503eb9f-cbb4-49bf-b367-96ded3ae612c",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 50,
+          "expected": 50,
+          "failed": 0,
+          "passed": 50,
+          "skipped": 0
+        },
+        "definition": "71affb0dce2af30811bb28c26ba7c186bfc2e8e3a056cb34ec430e2cb2d49951",
+        "environment_identity": "332812a0f10e65be465fe8ac465ca309535e6f971fa6399027f7513abb60e3ca",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+            "sha256": "58b6e4f86b586b7e58f3fd11dfb8993dbd912a8a29aeae7887dbdd68f1e6131a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.trx",
+            "sha256": "782f9e0310b3902939758b0c61c400925947f7206034fb0bde7f798bb1ab12fc"
+          }
+        ],
+        "execution_sessions": {
+          "8b560e6e8d7d653c6adfea57352bb534c88c6b008ea4adea6897227ea9a22222": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:58:01.502970+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793698921503201000.json"
+            ],
+            "profile_id": "62720406a96ac80ae365f2841f460cec63a0f1cfb906ba7e58366256ecd65973",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d03b860a8b5de9056410c454494c425c91fe7b82b0de6642ee811a62e00b2ed9": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:21:38.410958+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793707538411267000.json"
+            ],
+            "profile_id": "82a692bfe1cfb22f13ee2289ddebffcfc8743275e4dce025ec5b4a4c1d3c2b20",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "4a184ace3e8e9ffda9c75b245181cb05bf8d16e7c194dcf930f69d4a876598aa",
+        "payload_hash": "9e08f78fe559f40855629bc142e091cc4e7ce001975d8783c4147baee9c4bef1",
+        "recorded_at": "2026-11-03T12:05:46.652285+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "030e76246f9ea5a2b34f40bb5f67851c393b4ace246efb183a37239aac9fb9e8",
+          "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+          "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "aff373a5b1e030beb8c859ba2c748ae00ad8781db76cfff3cf004b23ef0ca8e3",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "29e4f33f798fe137f7ad006a058ad01691d9ac0d80980c9931d4b3aaffb4d6d7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7"
+        },
+        "timing": {
+          "tool_wall_seconds": 16.202585791936144
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix."
+        ],
+        "id": "workspace-readiness-rendered",
+        "parameters": {
+          "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser",
+          "routes": [
+            "/todo/today",
+            "/todo/tasks",
+            "/todo/habits",
+            "/todo/dailies",
+            "/todo/sync"
+          ],
+          "task_key": "workspace-readiness"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+          "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/TodoSyncPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/browser-qualification/ux-ui-readiness-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+          "tests/browser-qualification/ux-ui-native-date.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-3da7c511-d817-421a-9ec1-bc419ce229e8",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 505,
+          "expected": 505,
+          "failed": 0,
+          "passed": 505,
+          "skipped": 0
+        },
+        "definition": "71affb0dce2af30811bb28c26ba7c186bfc2e8e3a056cb34ec430e2cb2d49951",
+        "environment_identity": "a0229a0ca4453ee89c34cb42d6d2aee4b12043ec7e4a498a3d48aba70790a8fb",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+            "sha256": "232988bf94656f4dd56d628f923ff09b046a0ea8295c1d95c5c7e6eea541c5fa"
+          }
+        ],
+        "execution_sessions": {
+          "8b560e6e8d7d653c6adfea57352bb534c88c6b008ea4adea6897227ea9a22222": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d610887a83d573cbd276af7f24f2c030c2b26c622ed8c4e9721153a0427c0b56",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T09:58:01.502970+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793698921503201000.json"
+            ],
+            "profile_id": "62720406a96ac80ae365f2841f460cec63a0f1cfb906ba7e58366256ecd65973",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "d03b860a8b5de9056410c454494c425c91fe7b82b0de6642ee811a62e00b2ed9": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:21:38.410958+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-readiness/launch-1793707538411267000.json"
+            ],
+            "profile_id": "82a692bfe1cfb22f13ee2289ddebffcfc8743275e4dce025ec5b4a4c1d3c2b20",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "bb728ee6a1570753df860a0cae605d5a4474dead81133f52800c22cf4edc829c",
+        "payload_hash": "03c53c5da0fe6ce689cd38640d3cbcb5b17b0bf0fdd0517c2f8c45db76217461",
+        "recorded_at": "2026-11-03T12:10:28.798597+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "030e76246f9ea5a2b34f40bb5f67851c393b4ace246efb183a37239aac9fb9e8",
+          "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+          "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+          "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+          "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "aff373a5b1e030beb8c859ba2c748ae00ad8781db76cfff3cf004b23ef0ca8e3",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+          "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "29e4f33f798fe137f7ad006a058ad01691d9ac0d80980c9931d4b3aaffb4d6d7",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "944e89293a160ea127b463e43b1f17cf590cdd79b8a2dd3589186dfebbdafa18",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+          "tests/browser-qualification/ux-ui-readiness-journey.mjs": "9f950fee32f9fbe61d5d2ad9f2ed7df3118261e8158aa44dfb20ab1d24da6dc9"
+        },
+        "timing": {
+          "tool_wall_seconds": 289.34901287499815
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+    "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/acceptance.json",
+      "sha256": "aa1934b314242a49195d0e415cd0c8e5b5aa24b22ed47cea22aa6312aed1b2e2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/workspace-readiness/operation-history.json",
+      "sha256": "1e9784775ed952383c6d194e4a274c279f0acbe7f0dd9948f0ec2b8391ab40de"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-1f14d2e9-54ab-4d17-9950-de983ac32ead",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Explain workspace readiness and disabled editor recovery. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-10dedd84-9a90-447e-bf89-c3dcb81affc7"
+  ],
+  "recorded_at": "2026-11-03T12:10:59.835177+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "030e76246f9ea5a2b34f40bb5f67851c393b4ace246efb183a37239aac9fb9e8",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+    "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+    "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "aff373a5b1e030beb8c859ba2c748ae00ad8781db76cfff3cf004b23ef0ca8e3",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "310ed01db2e1fe3e40fe6d17f3e8321c0084c426a646ed828d70ec68f5c35672",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "29e4f33f798fe137f7ad006a058ad01691d9ac0d80980c9931d4b3aaffb4d6d7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "944e89293a160ea127b463e43b1f17cf590cdd79b8a2dd3589186dfebbdafa18",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+    "tests/browser-qualification/ux-ui-readiness-journey.mjs": "9f950fee32f9fbe61d5d2ad9f2ed7df3118261e8158aa44dfb20ab1d24da6dc9"
+  },
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "title": "Explain workspace readiness and disabled editor recovery",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Every observed readiness or read-only cause has an accurate source-aware message and a relevant existing recovery or wait action.",
+        "Readiness transitions never enable edits across source/account changes, frozen authority or unresolved original-command fences."
+      ],
+      "id": "workspace-readiness-behavior",
+      "parameters": {
+        "report_name": "workspace-readiness.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/workspace-readiness/unit",
+        "test_filter": "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~WorkspaceTaskControllerTests|FullyQualifiedName~TodoSyncPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoSyncPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix."
+      ],
+      "id": "workspace-readiness-rendered",
+      "parameters": {
+        "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser",
+        "routes": [
+          "/todo/today",
+          "/todo/tasks",
+          "/todo/habits",
+          "/todo/dailies",
+          "/todo/sync"
+        ],
+        "task_key": "workspace-readiness"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoSyncPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/browser-qualification/ux-ui-readiness-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "tests/browser-qualification/ux-ui-native-date.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "71affb0dce2af30811bb28c26ba7c186bfc2e8e3a056cb34ec430e2cb2d49951"
+}

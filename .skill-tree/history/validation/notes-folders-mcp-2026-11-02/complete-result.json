@@ -1,0 +1,475 @@
+{
+  "acceptance": [
+    {
+      "criterion": "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+          "sha256": "59f77a204f58f56325add7b3f5802b134ed51b750123437649a0a1bf01e0bf84"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+          "sha256": "ed94ec9b4538dc1110de8215de72350ad7db4ffa671f388a2b9ee1bf3e39986d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log",
+          "sha256": "6355554b9c317681967abc8273fc15866c81443fcc5750f5de4a21977892f17d"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+          "sha256": "59f77a204f58f56325add7b3f5802b134ed51b750123437649a0a1bf01e0bf84"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+          "sha256": "ed94ec9b4538dc1110de8215de72350ad7db4ffa671f388a2b9ee1bf3e39986d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log",
+          "sha256": "6355554b9c317681967abc8273fc15866c81443fcc5750f5de4a21977892f17d"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+        "criteria": [
+          "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+          "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+        ],
+        "id": "notes-mcp-contracts",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/note-folder-tools.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/note-folder-tools.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/note-tools.ts",
+          "workers/chatgpt-mcp/src/note-tools.ts",
+          "workers/companion-workspace/src/note-tools-api.ts",
+          "plugin/skills/habitica-notes/SKILL.md",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/src/note-folder-tools-api.ts",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "plugin/skills/habitica-notes/references/folders.md"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "integration",
+        "attempt_id": "C-5bb1e921-5b3b-47ed-8e6f-dab3eecf706d",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 1,
+          "expected": 1,
+          "failed": 1,
+          "passed": 0,
+          "skipped": 0
+        },
+        "definition": "dd0e1b65d4a13e08969e95b6bf2d6c9e5247c12007023f2eff6eb6ee57d9050a",
+        "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/discovery-red-execution.log",
+            "sha256": "b42ddb5040d41a68e65f0f1fe4d9701597660ecc8f4816c0c153abdc9cf063b6"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "6604f7009a3b5d6d6028cd17215a65227dbad5c2fcc52413052f10ff06a843db",
+        "payload_hash": "47f64e61c121d084beb55bbc318250a72cd2420d3d132dc3c703544924ec19e3",
+        "recorded_at": "2026-11-02T16:59:25.930690+00:00",
+        "result": "red",
+        "sources": {
+          "plugin/skills/habitica-notes/SKILL.md": "890ba94faefcffdf5f1fa3e427bd1c14c2013a84f7fca834a4b5f63e3efbef1e",
+          "workers/chatgpt-mcp/src/note-tools.ts": "2e73820fc982f0f63c48f17c80be4ad33c5f38b981c13cd6a7481a5a0f455616",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/note-tools-api.ts": "1da58249244ab0fa3873c3cf6e4902aba0bbc67fea80456a7689cd641fe92eaa",
+          "workers/companion-workspace/test/note-folder-tools.test.mjs": "bd8b80150dc29401f32abc31d78ed08ed7e6d06fdb87fe50acbe716ca5909c1c",
+          "workers/shared/note-tools.ts": "4aff1206f98d75d083f3372bef4e09cb8fbed6ebda6eab72234e50ff499dc009"
+        },
+        "timing": {
+          "tool_wall_seconds": 1.6223450838588178
+        }
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-a465a440-5f5c-41ac-98c6-18fd0f85dce6",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 9,
+          "expected": 9,
+          "failed": 0,
+          "passed": 9,
+          "skipped": 0
+        },
+        "definition": "38d7f07809cead441950927358fbb253c3e1e6c30ba4f77d44b20a8cb7e51596",
+        "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log",
+            "sha256": "6355554b9c317681967abc8273fc15866c81443fcc5750f5de4a21977892f17d"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "6fcc1410915d195699f5164516a2de374ab362df862500333df80e7493730e09",
+        "payload_hash": "33a3c53bc3157a2715783e371603adf64bed23b2092f67d743165e93bc1963b3",
+        "recorded_at": "2026-11-02T17:14:30.781094+00:00",
+        "result": "pass",
+        "sources": {
+          "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+          "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+          "workers/chatgpt-mcp/src/note-tools.ts": "701d6c26d3accbe6f23896ef5bda9d7dec6d04797ad2e5ae2e9d33a4f8e5198c",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+          "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+          "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+          "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+          "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+          "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.959927916992456
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+        "criteria": [
+          "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+          "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+        ],
+        "id": "notes-existing-tools-regressions",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/note-folder-tools.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/note-tools.ts",
+          "workers/chatgpt-mcp/src/note-tools.ts",
+          "workers/companion-workspace/src/note-tools-api.ts",
+          "plugin/skills/habitica-notes/SKILL.md",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/src/note-folder-tools-api.ts",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "plugin/skills/habitica-notes/references/folders.md",
+          "workers/companion-workspace/test/note-tools.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-b7e80434-78d1-4e8f-bb0f-5893c501819c",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 8,
+          "expected": 8,
+          "failed": 0,
+          "passed": 8,
+          "skipped": 0
+        },
+        "definition": "38d7f07809cead441950927358fbb253c3e1e6c30ba4f77d44b20a8cb7e51596",
+        "environment_identity": "10cdb3fc149208e0e6c81e06c12a984c724ea93389bcde68f619e7d9b42ad48a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+            "sha256": "ed94ec9b4538dc1110de8215de72350ad7db4ffa671f388a2b9ee1bf3e39986d"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "3d285f9e62fad4881b79dcd240bff88ccf798951f4c3cf212d57994ee822e574",
+        "payload_hash": "e61a5a26ec402003bd88b78be2645a7c7ab1c77e4d3e043df61df1b235f2bf2c",
+        "recorded_at": "2026-11-02T17:15:32.949440+00:00",
+        "result": "pass",
+        "sources": {
+          "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+          "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+          "workers/chatgpt-mcp/src/note-tools.ts": "701d6c26d3accbe6f23896ef5bda9d7dec6d04797ad2e5ae2e9d33a4f8e5198c",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+          "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+          "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+          "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+          "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+          "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+          "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.795600458048284
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+        "criteria": [
+          "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+          "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+        ],
+        "id": "notes-existing-project-tools",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/note-folder-tools.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/note-tools.ts",
+          "workers/chatgpt-mcp/src/note-tools.ts",
+          "workers/companion-workspace/src/note-tools-api.ts",
+          "plugin/skills/habitica-notes/SKILL.md",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/src/note-folder-tools-api.ts",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "plugin/skills/habitica-notes/references/folders.md",
+          "workers/companion-workspace/test/note-projects.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-9fe5113c-911e-4ed2-9469-ee9423f57806",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 7,
+          "expected": 7,
+          "failed": 0,
+          "passed": 7,
+          "skipped": 0
+        },
+        "definition": "38d7f07809cead441950927358fbb253c3e1e6c30ba4f77d44b20a8cb7e51596",
+        "environment_identity": "03f1c8188a2fc14c2b4181fab9770b74a8860b27c8bab6bb320fbe4e9aad1dcb",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+            "sha256": "59f77a204f58f56325add7b3f5802b134ed51b750123437649a0a1bf01e0bf84"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "655ce422645594f65f39d1e80607e6b1b0d35ae51196634552d52ef0a8c93581",
+        "payload_hash": "f3d1f428b601b05071ea333e736122901261454361c329ddd3b04394c799ce03",
+        "recorded_at": "2026-11-02T17:15:39.325867+00:00",
+        "result": "pass",
+        "sources": {
+          "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+          "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+          "workers/chatgpt-mcp/src/note-tools.ts": "701d6c26d3accbe6f23896ef5bda9d7dec6d04797ad2e5ae2e9d33a4f8e5198c",
+          "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+          "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+          "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+          "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+          "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+          "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+          "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 5.883016166975722
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+      "sha256": "59f77a204f58f56325add7b3f5802b134ed51b750123437649a0a1bf01e0bf84"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+      "sha256": "ed94ec9b4538dc1110de8215de72350ad7db4ffa671f388a2b9ee1bf3e39986d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log",
+      "sha256": "6355554b9c317681967abc8273fc15866c81443fcc5750f5de4a21977892f17d"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-cc257fcc-fb2d-411b-b719-6cb2fb427a63",
+  "limitations": [
+    "Browser folder presentation remains the selected parent task. Migration0022 and the changed plugin package remain unpublished.",
+    "Actual host installation, model decisions, real accounts and device behavior are unqualified. Reviewed browser-folder adoption remains the separate captured followup."
+  ],
+  "outcome": "Reviewed private Notes folder discovery, exact reads, metadata lifecycle and project-consistent note placement are exposed through MCP with original request/receipt recovery and shared preview quotas. Actual SDK contracts and unchanged Notes/project regressions pass24 controls.",
+  "parent_pending_ids": [
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+  ],
+  "recorded_at": "2026-11-02T17:16:54.706200+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+  "source_fingerprints": {
+    ".skill-tree/documents/notes-folders.md": "a8746760bc16fd3ee3dc3c4daf110fd9a2e7d4e8bc312eca4cd3256098bd84e0",
+    "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+    "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-mcp/src/note-tools.ts": "701d6c26d3accbe6f23896ef5bda9d7dec6d04797ad2e5ae2e9d33a4f8e5198c",
+    "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+    "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+    "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+    "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+    "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/shared/build-identity.generated.ts": "cc6aa3a3cbca86b8ded99344941a22c777e635333eeb517c06830cedaea0f70d",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+  "title": "Expose reviewed Notes folder workflows through MCP",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-mcp-contracts",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-folder-tools.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-existing-tools-regressions",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md",
+        "workers/companion-workspace/test/note-tools.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-existing-project-tools",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md",
+        "workers/companion-workspace/test/note-projects.test.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "38d7f07809cead441950927358fbb253c3e1e6c30ba4f77d44b20a8cb7e51596"
+}

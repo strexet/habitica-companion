@@ -36,6 +36,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
                 ||page.Groups.Select(row=>row.EntityId).Distinct().Count()!=page.Groups.Count
                 ||page.Groups.Any(row=>row.EntityId==Guid.Empty||!Enum.IsDefined(row.Kind)||!Name(row.Name)||!CoverageStates.Contains(row.IdentityState)||!MembershipStates.Contains(row.MembershipState)
                     ||(row.UnknownWorkIds is {} ids && (ids.Count>100000||ids.Any(id=>id==Guid.Empty)||ids.Distinct().Count()!=ids.Count))
+                    ||row.Evaluation is not null&&(row.Kind!=WorkspaceOrganizationKind.SavedTaskView||!ValidTagEvaluation(row.Evaluation))
                     ||!Remote(row.HabiticaTagId)||!page.AccountVerified&&row.HabiticaTagId is not null||!Counts(row.DesiredTaskCount,row.ConfirmedMemberCount))
                 ||page.IntegrationComplete&&(!page.AccountVerified||!page.TagConsentEnabled||!page.TagScopeAllowed||t.Linked!=t.Total||g.Confirmed!=g.Total))return new(false,null,"Tag coverage could not be validated.");
             return result;
@@ -60,6 +61,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
     public Task<WorkspaceTaskResponse<WorkspaceTagReview>> PrepareTagReviewAsync(WorkspaceTagRequest intent,CancellationToken cancellationToken)
     {
         var args=new Dictionary<string,object?> { ["requestId"]=intent.RequestId,["operation"]=intent.Operation };
+        if(intent.RelativeDayReview)args["relativeDayReview"]=true;
         if(intent.Kind is not null)args["kind"]=intent.Kind;if(intent.EntityId is not null)args["entityId"]=intent.EntityId;
         if(intent.HabiticaTagId is not null)args["habiticaTagId"]=intent.HabiticaTagId;if(intent.WorkId is not null)args["workId"]=intent.WorkId;
         return ObserveResponseAsync("workspace-tag-prepare",async()=>
@@ -69,7 +71,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
             if(result.Value is not {} review)return result;
             if(review.Receipt is { SavedInCompanion:false } terminal&&ValidTagReceipt(terminal,review.CommandId??Guid.Empty)
                 &&terminal.RequestId==intent.RequestId&&terminal.Operation==intent.Operation&&review.RequestId==intent.RequestId&&review.WorkspaceId==WorkspaceId&&!review.CanAccept)return result;
-            if(!ValidTagReview(review)||review.RequestId!=intent.RequestId||review.Operation!=intent.Operation
+            if(!ValidTagReview(review)||intent.RelativeDayReview!=(review.Details?.Evaluation is not null)||review.RequestId!=intent.RequestId||review.Operation!=intent.Operation
                 ||(intent.Operation=="recover"?review.Details?.OriginalWorkId!=intent.WorkId:review.Details?.EntityId!=intent.EntityId||review.Details?.Kind!=intent.Kind)
                 ||intent.HabiticaTagId is {} tag&&review.Details?.HabiticaTagId!=tag.ToString("D"))return new(false,null,"The tag preview did not match the original request. Preserve the request ID.",true);
             return result;
@@ -96,10 +98,19 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
         &&review.Operation is "reconcile" or "adopt" or "recover"&&review.Details is {} details&&details.EntityId!=Guid.Empty&&Enum.IsDefined(details.Kind)&&Name(details.Name)
         &&Remote(details.HabiticaTagId)&&details.Disclosure is { Length: >0 and <=4096 }&&details.TaskChanges is not null&&details.TaskChanges.Count<=100000
         &&details.TaskChanges.All(row=>row.TaskId!=Guid.Empty&&Remote(row.HabiticaTaskId)&&row.Text is not null&&row.Text.Length<=2048&&MemberStates.Contains(row.State))
+        &&(details.Evaluation is null||details.Kind==WorkspaceOrganizationKind.SavedTaskView&&ValidTagEvaluation(details.Evaluation))
         &&details.TaskChanges.Select(row=>row.TaskId).Distinct().Count()==details.TaskChanges.Count
         &&(review.Operation!="recover"||details.OriginalWorkId is {} work&&work!=Guid.Empty&&details.OriginalAttemptId is {} attempt&&attempt!=Guid.Empty)
         &&(review.Operation!="adopt"||details.ObservedTag is {} tag&&tag.Id!=Guid.Empty&&tag.Id.ToString("D")==details.HabiticaTagId&&Name(tag.Name));
+    private static bool ValidTagEvaluation(WorkspaceRelativeDateEvaluation value)
+    {
+        try{return value.AsOfUtc!=default&&value.AsOfUtc.Offset==TimeSpan.Zero&&WorkspaceRelativeDates.IsTimeZoneShape(value.TimeZoneId)
+            &&RecurrenceCalendar.LocalDateAt(value.AsOfUtc,value.TimeZoneId).Date==value.LocalDate&&(value.Planned is not null||value.Deadline is not null)
+            &&WorkspaceRelativeDates.Bounds(value.Planned?.Preset,value.LocalDate)==value.Planned&&WorkspaceRelativeDates.Bounds(value.Deadline?.Preset,value.LocalDate)==value.Deadline;}
+        catch(InvalidOperationException){return false;}
+    }
     private bool ValidTagReceipt(WorkspaceTagReceipt receipt,Guid commandId)=>receipt.CommandId==commandId&&commandId!=Guid.Empty
+        &&(receipt.Evaluation is null||ValidTagEvaluation(receipt.Evaluation))
         &&receipt.WorkspaceId==WorkspaceId&&receipt.RequestId is {} request&&request!=Guid.Empty&&receipt.Operation is "reconcile" or "adopt" or "recover"&&receipt.GameEffects==0
         &&receipt.WorkIds is not null&&receipt.WorkIds.All(id=>id!=Guid.Empty)&&receipt.WorkIds.Distinct().Count()==receipt.WorkIds.Count
         &&(receipt.Original is null||ValidOriginal(receipt.Original))
@@ -107,10 +118,10 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
             ?receipt.ReviewOutcome is null||(receipt.ReviewOutcome=="accepted-unknown")==receipt.OutcomeUnknown&&receipt.ReviewOutcome is "accepted" or "accepted-unknown"
             :receipt.SavedInCompanion==false
                 ?receipt.ReviewOutcome=="terminal-unaccepted"&&!receipt.OutcomeUnknown&&receipt.WorkIds.Count==0&&receipt.Original is null
-                    &&receipt.Reason is "tag_preview_expired" or "tag_preview_changed" or "tag_connection_changed" or "tag_authority_changed"
+                    &&(receipt.Reason is "tag_preview_expired" or "tag_preview_changed" or "tag_connection_changed" or "tag_authority_changed"||receipt.Evaluation is not null&&(receipt.Reason is "stale_evaluation_day" or "tag_evaluation_changed"))
                     &&receipt.ClosedAtUtc is {} closed&&closed!=default&&closed.Offset==TimeSpan.Zero
                 :receipt.ReviewOutcome=="prepared"&&receipt.Prepared==true&&receipt.OutcomeUnknown&&receipt.WorkIds.Count==0&&receipt.Original is null);
-    private static bool ValidOriginal(WorkspaceTagOriginal original)=>original.WorkId!=Guid.Empty&&original.CommandId!=Guid.Empty&&original.SourceRevision>=1
+    private static bool ValidOriginal(WorkspaceTagOriginal original)=>original.WorkId!=Guid.Empty&&original.CommandId!=Guid.Empty&&original.SourceRevision>=1&&(original.Evaluation is null||ValidTagEvaluation(original.Evaluation))
         &&original.EntityId!=Guid.Empty&&Enum.IsDefined(original.Kind)&&(MemberStates.Contains(original.State)||original.State=="executing")&&original.Operation is "ensureTag" or "setMembership";
     private static readonly string[] CoverageStates=["missing","pending","linked","retained","needsReview"];
     private static readonly string[] MembershipStates=["missing","pending","confirmed","retained","needsReview"];

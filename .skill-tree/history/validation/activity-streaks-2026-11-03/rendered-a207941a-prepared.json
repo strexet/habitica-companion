@@ -1,0 +1,52 @@
+{
+  "assertion": "- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.",
+  "attempt_id": "C-fab059d7-3a2f-4bbc-beab-14a5a7ea4cfa",
+  "check_id": "activity-rendering",
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "5cc36ba8cd1cf7078897acfce83307daf9b2b7aad6c271809671fea22a48365b",
+  "key": "32bde6d90596fae2f32d74ec55531fdd32d7e873d12f9349023903600ec66c6d",
+  "launch": null,
+  "prepared_at": "2026-11-02T18:40:00.213705+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/activity-ui.py"
+    ],
+    "execution_notes": "Bounded current Release publish, real Razor capture,112 light/obsidian phone/desktop normal/enlarged-text state cases and2 actual hydrated statistics journeys with real isolated IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, hosted qualification, mutation or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/activity-ui.py",
+      "tests/browser/activity-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+    ".skill-tree/documents/testing.md": "e499bf2e0c0ccf9b5301f04490dff232e1f8a3bbdc97b452b5baddba28401716",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "5879b448b049e9b496e676c4533c10e201177173c00f65ff3acb913d94c3cbcd",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "7926146cbdea90816ba1f871df6db27887c8b8bb36f322bdf1b520fb3019c8e8",
+    "src/Habitica.WebApp/Components/TodoStatisticsChart.razor": "eb7e9f71b41122fae41f59011f459c70974e650f873d97f289c755dcba257d7d",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "493c56f9718e0cc32bc240154327f4fe6a9a1e694e8a7b0679a5941cbd492159",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/activity-ui.mjs": "45f444b17ed7762910dc7cd7868c4e2c41258442df1c63b08c9557feadc8ead7",
+    "tests/browser/activity-ui.py": "c7796537d8282ec304b5d031c6c056ee95cb7e61bda597899abf682187d37fc0",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

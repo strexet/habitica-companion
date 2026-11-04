@@ -1,0 +1,25 @@
+{
+  "task_id": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "check_id": "notes-hydrated-journeys",
+  "attempt_id": "C-5bab27a7-1fcf-4f4c-89be-e4a2e31baf69",
+  "environment_identity": "2e7a81100c3eccdcc5ce589d8a7cf8129588fc2a0d8694abe639473077cec7e0",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 18.91467516706325
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-execution.log",
+    ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json",
+    ".skill-tree/artifacts/notes-folders-ui/1793642123135295000/report.json"
+  ],
+  "counts": {
+    "expected": 2,
+    "discovered": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  }
+}

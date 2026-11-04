@@ -1,0 +1,14 @@
+[
+  {
+    "context": "production",
+    "exit_code": 0,
+    "value": "false",
+    "diagnostic": null
+  },
+  {
+    "context": "dev",
+    "exit_code": 0,
+    "value": "false",
+    "diagnostic": null
+  }
+]

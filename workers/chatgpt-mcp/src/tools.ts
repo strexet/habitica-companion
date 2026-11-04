@@ -1,4 +1,5 @@
 import {workspaceTransferTools,handleWorkspaceTransferTool} from './workspace-transfer-tools.ts';
+import {eventTools,eventToolNames} from '../../shared/events';
 import {workspaceTransferScopes,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
 import {diagnosticTools,handleDiagnosticTool} from './diagnostic-tools';
 import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
@@ -27,8 +28,8 @@ import {partyTools} from './party-tools';
 import {partyToolScopes,partyInput} from '../../shared/party-tools';
 import { canonicalTaskTools } from "./task-tools";
 import { taskToolScopes, taskToolInput } from "../../shared/task-tools";
-import { workspaceJson } from "../../shared/workspace-http";
-import { Server, createMcpHandler, isLegacyRequest, WebStandardStreamableHTTPServerTransport, SUPPORTED_PROTOCOL_VERSIONS, type Tool } from "@modelcontextprotocol/server";
+import { workspaceJson, workspaceObject } from "../../shared/workspace-http";
+import { Server, ProtocolError, createMcpHandler, isLegacyRequest, WebStandardStreamableHTTPServerTransport, SUPPORTED_PROTOCOL_VERSIONS, type Tool } from "@modelcontextprotocol/server";
 import { CfWorkerJsonSchemaValidator } from "@modelcontextprotocol/server/validators/cf-worker";
 import { readInput, readScopes, type ReadTool } from "../../shared/read-tools";
 
@@ -60,10 +61,30 @@ function canonicalReadFailure(result?:Record<string,unknown>){
 }
 
 function createServer(request: Request, env: McpEnv): Server {
-  const server = new Server({ name: "habitica-companion-read-bootstrap", version: buildIdentity.backendRelease }, { capabilities: { tools: {} }, jsonSchemaValidator: new CfWorkerJsonSchemaValidator() });
-  server.setRequestHandler("tools/list", async () => ({ tools: toolDefinitions }));
+  const eventsEnabled=Boolean(env.EVENTS_ENABLED);
+  const capabilities={tools:{},...(eventsEnabled?{events:{}}:{})};
+  const server = new Server({ name: "habitica-companion-read-bootstrap", version: buildIdentity.backendRelease }, { capabilities, jsonSchemaValidator: new CfWorkerJsonSchemaValidator() });
+  const forwardEvent=async(method:string,params:unknown)=>{
+    const response=await env.AUTH_SERVER.fetch('https://auth.internal/events',{method:'POST',headers:{authorization:request.headers.get('authorization')??''},body:JSON.stringify({method,params}),signal:AbortSignal.timeout(20000)});
+    const result=await response.json<Record<string,unknown>>();return {response,result};
+  };
+  if(eventsEnabled){
+    // The draft Events extension is outside the pinned SDK's core method catalogue.
+    // Auth applies the exact method schema; this Standard Schema admits JSON object params only.
+    const paramsSchema={'~standard':{version:1 as const,vendor:'companion-events',validate:(input:unknown)=>input&&typeof input==='object'&&!Array.isArray(input)?{value:input as Record<string,unknown>}:{issues:[{message:'Object parameters required'}]}}};
+    for(const method of ['events/list','events/subscribe','events/unsubscribe'])server.setRequestHandler(method,{params:paramsSchema},async params=>{
+      const {_meta,...input}=workspaceObject(params);const {response,result}=await forwardEvent(method,input);
+      if(!response.ok)throw new ProtocolError(result.error==='callback_challenge_failed'?-32015:-32602,result.error==='callback_challenge_failed'?'CallbackEndpointError':'Events request refused',{reason:result.error==='callback_challenge_failed'?'challenge_failed':result.error,...(result.original?{original:result.original}:{})});
+      return result;
+    });
+  }
+  server.setRequestHandler("tools/list", async () => ({ tools: eventsEnabled?[...eventTools as Tool[],...toolDefinitions]:toolDefinitions }));
   server.setRequestHandler("tools/call", async call => {
     const name = call.params.name;
+    if(eventsEnabled&&(eventToolNames as readonly string[]).includes(name)){
+      try{const {response,result}=await forwardEvent(name,call.params.arguments??{});return {isError:!response.ok,content:[{type:'text',text:JSON.stringify(result)}],structuredContent:result};}
+      catch{return {isError:true,content:[{type:'text',text:'Events outcome unknown. Recover the original command or event receipt; do not create a replacement operation.'}]};}
+    }
     if((diagnosticToolNames as readonly string[]).includes(name))return handleDiagnosticTool(request,env,name as DiagnosticTool,call.params.arguments??{});
     if(Object.hasOwn(reminderToolScopes,name))return handleReminderTool(request,env,name as ReminderTool,call.params.arguments??{});
     if(Object.hasOwn(noteToolScopes,name))return handleNoteTool(request,env,name as NoteTool,call.params.arguments??{});
@@ -71,7 +92,7 @@ function createServer(request: Request, env: McpEnv): Server {
       let report;try{report=clientBuildReport(call.params.arguments??{});}catch{return {isError:true,content:[{type:'text',text:'Invalid compatibility report. Use only documented version/hash fields.'}]};}
       const readIdentity=async(binding:Fetcher,url:string)=>{try{const response=await binding.fetch(url,{signal:AbortSignal.timeout(5000)});if(!response.ok)return null;return await response.json();}catch{return null;}};
       const [auth,workspace]=await Promise.all([readIdentity(env.AUTH_SERVER,'https://auth.internal/build-identity'),readIdentity(env.WORKSPACE_SERVER,'https://workspace.internal/build-identity')]);
-      const result={...compatibilityDiscovery(report,auth,workspace),transport:{sdk:{server:"2.4.0",core:"2.4.0"},protocolVersions:["2026-07-28",...SUPPORTED_PROTOCOL_VERSIONS],legacyMode:"stateless",events:false}};
+      const result={...compatibilityDiscovery(report,auth,workspace),transport:{sdk:{server:"2.4.0",core:"2.4.0"},protocolVersions:["2026-07-28",...SUPPORTED_PROTOCOL_VERSIONS],legacyMode:"stateless",events:Boolean(env.EVENTS_ENABLED)}};
       return {content:[{type:'text',text:JSON.stringify(result)}],structuredContent:result};
     }
     if(Object.hasOwn(workspaceTransferScopes,name))return handleWorkspaceTransferTool(request,env,name as WorkspaceTransferTool,call.params.arguments??{});

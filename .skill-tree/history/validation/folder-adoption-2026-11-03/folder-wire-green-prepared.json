@@ -1,0 +1,60 @@
+{
+  "assertion": "Cover legacy and schema2 source/target combinations, folder membership/receipt provenance, collisions, capacity, exact project mappings and atomic original-receipt recovery.",
+  "attempt_id": "C-2c5616d2-e087-4433-bd9a-3fb1e4a32617",
+  "check_id": "folder-transfer-wire",
+  "definition": "55ba866946d86b5e533d599be7ca6649adbeadf2303fffa70cef80ea422b5628",
+  "environment_identity": "bb0b43ca15589c8ea46437f9a326fc201a7eaaa6f3e94ccd4b3b38052aaea15a",
+  "key": "4ce49a23c9cb071af428748dc51ffa5c6b4c21e0aabd35544253f16d768bab1a",
+  "launch": {
+    "assertion": "Exact reviewed folder adoption or evaluation-day tag membership preserves original identities, causal receipts, refusal boundaries and no implicit effects.",
+    "authorization": "Direct owner selection of the two researched tasks; local synthetic fixtures only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove serialization, actual isolated D1 atomic acceptance or original uncertain-receipt recovery.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T01:38:36.877681+00:00",
+    "execution_profile": "selected-followups-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T01:29:37.077885+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/folder-adoption.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTransferService.cs": "1d8a77bdc28065b2e9f372b54b93e37a3f9202f51fba60d11b4f9d04a158b30d",
+    "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs": "cb9e94af114b912c2a960287bbdfbbb15904f82580aa9e246d4625ec49b61ada",
+    "src/Habitica.WebApp/State/WorkspaceTransferController.cs": "28cab844c6c48e4c5fb51ef542654cbae268e60b71006767e1bf4d904e671f9f",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs": "76a7c351a3cc492c05c34f844ddbeb7dbeecc70dcee5df6f5aafa376ab705477",
+    "workers/companion-workspace/src/workspace-transfer-api.ts": "48d0b5de8c95bea67735f8e34696cf8842869c3ae4a7567c0e24f1ab4d0e5fab",
+    "workers/companion-workspace/test/folder-adoption.test.mjs": "91022eacd26507c3e0498d6f6643b0db7a21f0da9db558539910825f73fd3485",
+    "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs": "103e5318bca6c722113dc47c9baa8fc26ef68b53b87f3f39887d99a15ab5f09b",
+    "workers/companion-workspace/test/workspace-transfer.test.mjs": "50550f02290d6e3ca8302ccf7364f32c21040ed65ab0ea9d1b2b8a05f654857b",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "e967818a732c4c000aeb019259a4a08b7b77b9f13e3dc9b1e5e20697a038e199",
+    "workers/shared/workspace-transfer-tools.ts": "43d2ffc4c027b499846e7df925a767f1c2d6a2463e76b5c72c65e549ea59d36a",
+    "workers/shared/workspace-transfer.ts": "8a5bc0fefe8c98489a854e182e18be77042c7cce1b9f5d804b772927f8904e58"
+  },
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455"
+}

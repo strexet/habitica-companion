@@ -1,0 +1,16 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/950e338c-0076-467b-832f-1123c3309a02.json",
+  "reviewed": [
+    "webkit-gryphy-light-360-200-hierarchy-names-projects.png",
+    "webkit-obsidian-glow-360-100-hierarchy-names-tasks.png",
+    "chromium-gryphy-light-1280-200-hierarchy-names-tasks-frozen.png"
+  ],
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793732486186476000",
+  "observations": [
+    "Task references, row actions and review context remain readable with original gates.",
+    "Existing enlarged drawer copy and creation-first Projects layout remain covered by separate frozen snapshot roots."
+  ],
+  "limitations": [
+    "Physical devices and assistive technology remain unqualified."
+  ]
+}

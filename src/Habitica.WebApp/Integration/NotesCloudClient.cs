@@ -58,16 +58,21 @@ public sealed partial class NotesCloudClient(HttpClient http,ChatGptIntegrationC
         return new(true,receipt,value.Disposition??"recovered");
     }
     public Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,CancellationToken token)=>SearchAsync(query,trash,offset,expectedRevision,new NotesProjectFilter(),token);
-    public async Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,NotesProjectFilter filter,CancellationToken token)
+    public Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,NotesProjectFilter filter,CancellationToken token)=>SearchAsync(query,trash,offset,expectedRevision,filter,new NotesFolderFilter(),token);
+    public async Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,NotesProjectFilter filter,NotesFolderFilter folders,CancellationToken token)
     {
         if(!filter.Valid||filter.ProjectId is not null&&filter.Source!="cloud")return new(false,null,"invalid_project_filter");
-        var input=new Dictionary<string,object?>{{"query",query},{"trash",trash},{"offset",offset},{"expectedRevision",expectedRevision}};
+        if(!folders.Valid||folders.FolderId is not null&&folders.Source!="cloud")return new(false,null,"invalid_folder_filter");
+        var input=new Dictionary<string,object?>{{"query",query},{"trash",trash},{"offset",offset}};
+        if(expectedRevision is {} revision)input["expectedRevision"]=revision;
         if(filter.ProjectId is {} id){input["projectId"]=id;input["projectWorkspaceId"]=filter.WorkspaceId;}
         if(filter.Unassigned)input["unassigned"]=true;
+        if(folders.FolderId is {} folderId)input["folderId"]=folderId;
+        if(folders.NoFolder)input["noFolder"]=true;
         var result=await Call(HttpMethod.Post,"notes/search",input,64*1024,text=>JsonSerializer.Deserialize<NotesSearchPage>(text,Json)??throw new JsonException(),token);
         if(result.Succeeded&&result.Value is {} page&&(page.NotebookId!=NotebookId||page.OwnerScope!=OwnerScope||page.Revision<0||page.Revision>NotesModel.MaxRevision||page.FullContentIncluded||page.Results is null||page.Results.Count>20||page.Total<page.Results.Count||page.Total>NotesModel.MaxNotes
             ||page.NextOffset is {} next&&(next!=offset+page.Results.Count||next>=page.Total)||page.Results.Any(item=>item.Id==Guid.Empty||item.IsTrashed!=trash||item.NoteRevision<1||item.NoteRevision>NotesModel.MaxRevision||!NotesModel.TextValid(item.Title,item.Snippet)||!NotesModel.ValidProject(item.Project,page.OwnerScope)||!filter.Matches(item.Project))||page.Results.Select(item=>item.Id).Distinct().Count()!=page.Results.Count
-            ||offset>0&&page.Revision!=expectedRevision))return new(false,null,"invalid_notes_search");
+            ||page.Results.Any(item=>!NotesModel.ValidFolder(item.Folder,page.OwnerScope)||item.Folder is {Source:not "cloud"}||!folders.Matches(item.Folder))||offset>0&&page.Revision!=expectedRevision))return new(false,null,"invalid_notes_search");
         return result;
     }
     public async Task<NotesCloudResult<CloudNote>> ReadAsync(Guid noteId,CancellationToken token)
@@ -84,7 +89,7 @@ public sealed partial class NotesCloudClient(HttpClient http,ChatGptIntegrationC
         var revision=note.Current.Revision-note.History.Count;var previous=note.CreatedAtUtc;
         foreach(var item in note.History.Append(note.Current))
         {
-            if(item is null||item.Revision!=revision++||item.AtUtc==default||item.AtUtc.Offset!=TimeSpan.Zero||item.AtUtc<previous||!NotesModel.TextValid(item.Title,item.Markdown)||!NotesModel.ValidProject(item.Project,ownerScope))return false;
+            if(item is null||item.Revision!=revision++||item.AtUtc==default||item.AtUtc.Offset!=TimeSpan.Zero||item.AtUtc<previous||!NotesModel.TextValid(item.Title,item.Markdown)||!NotesModel.ValidProject(item.Project,ownerScope)||!NotesModel.ValidFolder(item.Folder,ownerScope)||item.Folder is {Source:not "cloud"})return false;
             previous=item.AtUtc;
         }
         return true;
@@ -115,6 +120,7 @@ public sealed partial class NotesCloudClient(HttpClient http,ChatGptIntegrationC
             var value=parse(await Text(response,limit,token));
             if(generation!=_generation||version!=vault.SessionVersion||!IsConnected)return new(false,default,"connection_changed",mutation);
             if(value is NotesNotebook book&&book.OwnerScope!=OwnerScope)return new(false,default,"account_mismatch");
+            if(value is NotesNotebook folderBook&&(folderBook.Folders??[]).Any(f=>f.Source!="cloud"))return new(false,default,"folder_source_mismatch");
             return new(true,value,"ok");
         }
         catch(OperationCanceledException) when(token.IsCancellationRequested){if(mutation)return new(false,default,"acceptance_unknown",true);throw;}

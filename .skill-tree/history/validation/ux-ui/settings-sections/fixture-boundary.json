@@ -1,0 +1,10 @@
+{
+  "original_failure": "a3767ba4-0837-4745-a834-e2efebf90179",
+  "observed": "Signed-in fixture captures explicit checked enrollment acknowledgement plus expanded appearance and clear review. No disabled text action exists; disabled checkbox paint is not text.",
+  "correction": "Remove only incorrect disabled-text declaration for signed-in fixture; fresh-access and signed-out disabled-text checks remain required.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

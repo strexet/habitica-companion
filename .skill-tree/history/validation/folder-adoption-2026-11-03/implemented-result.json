@@ -1,0 +1,100 @@
+{
+  "checks": [
+    {
+      "assertion": "Cover legacy and schema2 source/target combinations, folder membership/receipt provenance, collisions, capacity, exact project mappings and atomic original-receipt recovery.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/folder-adoption.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/workspace-transfer.ts",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/shared/workspace-transfer-tools.ts",
+        "workers/companion-workspace/src/workspace-transfer-api.ts",
+        "workers/companion-workspace/test/workspace-transfer.test.mjs",
+        "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+        "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+        "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+        "workers/companion-workspace/test/folder-adoption.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Reviewed MCP preview/accept/receipt and exact source-record reads preserve original folder receipts and require existing migration permission.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-mcp",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/workspace-transfer-mcp.test.mjs",
+        "workers/shared/workspace-transfer-tools.ts",
+        "workers/chatgpt-mcp/src/workspace-transfer-tools.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Prove unsupported schema2 capture refuses before FreezeAsync; supported capture reviews exact folders and restores original transfer after interruption without a second writable authority.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-browser-capture",
+      "parameters": {
+        "report_name": "folder-transfer.trx",
+        "result_directory": ".skill-tree/artifacts/validation/folder-transfer",
+        "test_filter": "FullyQualifiedName~WorkspaceTransfer|FullyQualifiedName~UnifiedWorkspaceFlow",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceTransferTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTransferService.cs",
+        "src/Habitica.WebApp/State/WorkspaceTransferController.cs",
+        "src/Habitica.Storage/IndexedDbWorkspaceTransfer.cs",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Rendered exact folder review, original receipt recovery and authority freeze qualify across both engines and required layout/text/theme cases.",
+      "criteria": [
+        "Workspace adoption preserves target and imported Notes folder identities, memberships and original receipt provenance, or refuses unsupported folder capture before any browser authority freeze."
+      ],
+      "id": "folder-transfer-rendering",
+      "parameters": {},
+      "recipe_id": "folder-adoption-rendered-browser",
+      "sources": [
+        "tests/browser/folder-adoption-ui.py",
+        "tests/browser/folder-adoption-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/folder-adoption-fixture.mjs",
+        "src/Habitica.WebApp/Components/WorkspaceTransferPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "tests/Habitica.WebApp.Tests/Workspace/UnifiedWorkspaceFlowTests.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-925d1068-d6c5-4334-8438-3996c46b5455"
+}

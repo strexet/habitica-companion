@@ -1722,6 +1722,53 @@ public sealed class PartyPageTests : BunitContext
             new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>()));
     }
 
+    [Fact]
+    public void Same_named_member_disclosures_have_distinct_context_and_stable_controlled_regions()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
+        var name = "Same member with a long displayed name for accessible record navigation";
+        var controller = new FakeAppSessionController(CreatePartySearchState(
+            new PartyMemberSnapshot("member-one",name,null,null,null,PartyCronState.Unknown,"Unknown.",null,null,ClassName:"wizard",Level:15),
+            new PartyMemberSnapshot("member-two",name,null,null,null,PartyCronState.Unknown,"Unknown.",null,null,ClassName:"wizard",Level:15)));
+        Services.AddSingleton<IAppSessionController>(controller);var cut=Render<PartyPage>();
+        var buttons=cut.FindAll("[data-testid='member-details']");
+        Assert.Equal(2,buttons.Select(button=>button.GetAttribute("aria-label")).Distinct().Count());
+        var controls=buttons.Select(button=>button.GetAttribute("aria-controls")).ToArray();
+        Assert.Equal(2,controls.Distinct().Count());
+        foreach(var button in buttons)
+        {
+            Assert.Contains("Details",button.GetAttribute("aria-label"));Assert.Contains(name,button.GetAttribute("aria-label"));
+            Assert.Equal("false",button.GetAttribute("aria-expanded"));var region=cut.Find("#"+button.GetAttribute("aria-controls"));
+            Assert.Equal("region",region.GetAttribute("role"));Assert.True(region.HasAttribute("hidden"));
+        }
+        var calls=controller.RefreshPartyQuestStateCalls;buttons[1].Click();
+        var second=cut.Find("#"+controls[1]);Assert.False(second.HasAttribute("hidden"));Assert.Contains("member-two",second.TextContent);Assert.DoesNotContain("member-one",second.TextContent);
+        Assert.True(cut.Find("#"+controls[0]).HasAttribute("hidden"));
+        Assert.Equal("true",cut.FindAll("[data-testid='member-details']")[1].GetAttribute("aria-expanded"));
+        Assert.StartsWith("Hide details",cut.FindAll("[data-testid='member-details']")[1].GetAttribute("aria-label"));
+        Qualification.PageLayoutEvidence.Save("game-party-open",cut.Markup,"/party","same-named-members-second-detail-open",["disclosure","long-names","accessible-controls"],nameof(Same_named_member_disclosures_have_distinct_context_and_stable_controlled_regions));
+        cut.FindAll("[data-testid='member-details']")[1].Click();Assert.True(cut.Find("#"+controls[1]).HasAttribute("hidden"));
+        Assert.Equal(controls,cut.FindAll("[data-testid='member-details']").Select(button=>button.GetAttribute("aria-controls")).ToArray());
+        Assert.Equal(calls,controller.RefreshPartyQuestStateCalls);
+        Qualification.PageLayoutEvidence.Save("game-party-closed",cut.Markup,"/party","same-named-members-all-details-closed",["disclosure","long-names","accessible-controls"],nameof(Same_named_member_disclosures_have_distinct_context_and_stable_controlled_regions));
+    }
+
+    [Fact]
+    public void Whitespace_equivalent_member_names_retain_distinct_public_record_context()
+    {
+        JSInterop.Mode=JSRuntimeMode.Loose;Services.AddMudServices();
+        const string name="Same member with a long displayed name for accessible record navigation";
+        var controller=new FakeAppSessionController(CreatePartySearchState(
+            new PartyMemberSnapshot("member-one",name,null,null,null,PartyCronState.Unknown,"Unknown.",null,null,ClassName:"wizard",Level:15),
+            new PartyMemberSnapshot("member-two",name.Replace(" ","  "),null,null,null,PartyCronState.Unknown,"Unknown.",null,null,ClassName:"wizard",Level:15)));
+        Services.AddSingleton<IAppSessionController>(controller);var cut=Render<PartyPage>();var buttons=cut.FindAll("[data-testid='member-details']");
+        Assert.All(buttons,button=>Assert.Contains("member reference",button.GetAttribute("aria-label")));
+        foreach(var id in new[]{"member-one","member-two"})
+        {Assert.Single(buttons.Where(button=>button.GetAttribute("aria-label")!.Contains(id)));Assert.Contains("Member reference: "+id,cut.Markup);}
+        Assert.Equal(2,buttons.Select(button=>button.GetAttribute("aria-controls")).Distinct().Count());
+        Qualification.PageLayoutEvidence.Save("game-party-normalized",cut.Markup,"/party","whitespace-equivalent-member-names",["record-actions","long-names"],nameof(Whitespace_equivalent_member_names_retain_distinct_public_record_context));
+    }
+
     private static SessionViewModel CreatePartySearchState(params PartyMemberSnapshot[] members)
     {
         return new SessionViewModel(

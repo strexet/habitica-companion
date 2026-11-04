@@ -1,0 +1,1900 @@
+- banner:
+  - toolbar:
+    - button [active]:
+    - strong: Habitica Tool
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Diagnostics
+- heading "Diagnostics" [level=1]
+- paragraph: Use this page for safe refresh checks, optional gear verification, quick Habitica account reads, and recent app messages.
+- article:
+  - paragraph: Overview
+  - heading "Current saved data" [level=2]
+  - generic: Sign-in Ready
+  - generic: Warnings 36
+  - generic: User Fresh
+  - generic: Tasks Fresh
+  - generic: Party Fresh
+  - generic: Synced 11/3/2026 12:27 PM
+- article:
+  - paragraph: Safe checks
+  - heading "Safe refresh checks" [level=2]
+  - paragraph: Refreshes supported Habitica data one step at a time using a small number of requests.
+  - button "Run safe live tests":
+    - generic: Run safe live tests
+- article:
+  - paragraph: Guarded tests
+  - heading "Optional gear check" [level=2]
+  - paragraph: This reversible check temporarily changes equipped battle gear, verifies the change, and restores the original loadout.
+  - checkbox "I understand this temporarily changes equipped battle gear during the check."
+  - generic: I understand this temporarily changes equipped battle gear during the check.
+  - button "Run reversible gear test" [disabled]:
+    - generic: Run reversible gear test
+- article:
+  - paragraph: Quick account reads
+  - heading "Choose what to inspect" [level=2]
+  - button "Check account":
+    - generic: Check account
+  - button "Check inventory":
+    - generic: Check inventory
+  - button "Check tasks":
+    - generic: Check tasks
+  - button "Check party":
+    - generic: Check party
+- complementary:
+  - paragraph: App messages
+  - heading "Recent app messages" [level=2]
+  - button "Copy all messages":
+    - generic: Copy all messages
+  - button "Download messages":
+    - generic: Download messages
+  - button "Clear messages":
+    - generic: Clear messages
+  - generic: Feature
+  - combobox "Feature":
+    - option "All features" [selected]
+    - option "Inventory"
+    - option "Skills"
+    - option "Sync"
+    - option "Workspace"
+  - generic: Severity
+  - combobox "Severity":
+    - option "All severities" [selected]
+    - option "Success"
+    - option "Warning"
+  - generic: Mode
+  - combobox "Mode":
+    - option "All modes" [selected]
+    - option "LiveMutation"
+    - option "LiveRead"
+    - option "Local"
+  - generic "Share diagnostics with Codex or ChatGPT"
+  - region "Shared diagnostics":
+    - heading "Agent access to shared diagnostics" [level=3]
+    - paragraph: "Source: this exporting browser profile only. No device identifier is collected. Server operators and agents granted diagnostics.read can read an explicitly uploaded sanitized copy after separate consent. Other devices, raw provider logs and unshared history remain unavailable."
+    - paragraph: Up to 100 entries per bundle; 2000 event rows and 1 MiB charged storage per profile. Metadata and indexed copies count toward the quota. Shared records expire within seven days of preparation. Revocation blocks reads immediately; scheduled physical cleanup and provider recovery history are separate.
+    - status: Connect the intended cloud Workspace in Settings to use this channel. Manual copy/download remains available.
+  - paragraph: Click or tap a message to copy it. Open Details to inspect.
+  - generic "Recent app messages":
+    - 'button "11/3/2026 12:28 PM Success notes-load notes load: Success. Workspace · Local"':
+      - time: 11/3/2026 12:28 PM
+      - generic: Success
+      - strong: notes-load
+      - generic: "notes load: Success."
+      - generic: Workspace · Local
+    - generic "Details"
+    - 'button "11/3/2026 12:27 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 11/3/2026 12:27 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "11/3/2026 12:27 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:27 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:27 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:27 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:27 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 11/3/2026 12:27 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:27 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:27 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success cloud-sync-upload cloud sync upload: Success. Sync · Local"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Success."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success appearance-select appearance select: Success. Sync · Local"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: appearance-select
+      - generic: "appearance select: Success."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "11/3/2026 12:26 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 11/3/2026 12:26 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:40 PM Warning workspace-link-adopt workspace link adopt: Observed. Workspace · LiveMutation"':
+      - time: 10/25/2026 1:40 PM
+      - generic: Warning
+      - strong: workspace-link-adopt
+      - generic: "workspace link adopt: Observed."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/25/2026 1:40 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:40 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Success workspace-link-preview workspace link preview: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Success
+      - strong: workspace-link-preview
+      - generic: "workspace link preview: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Warning workspace-link-adopt workspace link adopt: Observed. Workspace · LiveMutation"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Warning
+      - strong: workspace-link-adopt
+      - generic: "workspace link adopt: Observed."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Success workspace-link-preview workspace link preview: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Success
+      - strong: workspace-link-preview
+      - generic: "workspace link preview: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/25/2026 1:39 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:39 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:38 PM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/25/2026 1:38 PM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/25/2026 1:38 PM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 1:38 PM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:37 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/25/2026 1:37 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:37 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/25/2026 1:37 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:37 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/25/2026 1:37 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 1:37 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/25/2026 1:37 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 9:53 AM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/25/2026 9:53 AM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/25/2026 9:53 AM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/25/2026 9:53 AM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 9:51 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/25/2026 9:51 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/25/2026 9:51 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/25/2026 9:51 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 9:51 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/25/2026 9:51 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 9:51 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/25/2026 9:51 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/25/2026 9:51 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/25/2026 9:51 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:26 PM Success app-operation app operation: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:26 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:17 PM Warning app-operation app operation: Unavailable. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:17 PM
+      - generic: Warning
+      - strong: app-operation
+      - generic: "app operation: Unavailable."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:17 PM Warning app-operation app operation: Unavailable. Workspace · LiveRead"':
+      - time: 10/24/2026 6:17 PM
+      - generic: Warning
+      - strong: app-operation
+      - generic: "app operation: Unavailable."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:16 PM Warning app-operation app operation: Unavailable. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:16 PM
+      - generic: Warning
+      - strong: app-operation
+      - generic: "app operation: Unavailable."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:16 PM Success app-operation app operation: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:16 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:16 PM Success app-operation app operation: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:16 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:15 PM Success app-operation app operation: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:15 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:15 PM Success app-operation app operation: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:15 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:14 PM Success app-operation app operation: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:14 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:14 PM Success app-operation app operation: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:14 PM
+      - generic: Success
+      - strong: app-operation
+      - generic: "app operation: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:14 PM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:14 PM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:14 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:14 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:13 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:13 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:13 PM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:13 PM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:13 PM Success workspace-conversion-accept workspace conversion accept: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:13 PM
+      - generic: Success
+      - strong: workspace-conversion-accept
+      - generic: "workspace conversion accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:13 PM Success workspace-conversion-prepare workspace conversion prepare: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:13 PM
+      - generic: Success
+      - strong: workspace-conversion-prepare
+      - generic: "workspace conversion prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 6:11 PM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 6:11 PM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:11 PM Warning workspace-conversion-recover workspace conversion recover: Unknown. Workspace · LiveRead"':
+      - time: 10/24/2026 6:11 PM
+      - generic: Warning
+      - strong: workspace-conversion-recover
+      - generic: "workspace conversion recover: Unknown."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 6:00 PM Success workspace-conversion-prepare workspace conversion prepare: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 6:00 PM
+      - generic: Success
+      - strong: workspace-conversion-prepare
+      - generic: "workspace conversion prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 5:59 PM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 5:59 PM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 5:59 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 5:59 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 5:59 PM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 5:59 PM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 5:58 PM Warning workspace-conversion-prepare workspace conversion prepare: Unavailable. Workspace · LiveMutation"':
+      - time: 10/24/2026 5:58 PM
+      - generic: Warning
+      - strong: workspace-conversion-prepare
+      - generic: "workspace conversion prepare: Unavailable."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 5:58 PM Warning workspace-conversion-prepare workspace conversion prepare: Unavailable. Workspace · LiveMutation"':
+      - time: 10/24/2026 5:58 PM
+      - generic: Warning
+      - strong: workspace-conversion-prepare
+      - generic: "workspace conversion prepare: Unavailable."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 11:48 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:48 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:48 AM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:48 AM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:48 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:48 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:48 AM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:48 AM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:48 AM Success workspace-conversion-accept workspace conversion accept: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 11:48 AM
+      - generic: Success
+      - strong: workspace-conversion-accept
+      - generic: "workspace conversion accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 11:47 AM Success workspace-conversion-prepare workspace conversion prepare: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 11:47 AM
+      - generic: Success
+      - strong: workspace-conversion-prepare
+      - generic: "workspace conversion prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 11:47 AM Success workspace-conversion-read workspace conversion read: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:47 AM
+      - generic: Success
+      - strong: workspace-conversion-read
+      - generic: "workspace conversion read: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:47 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:47 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success appearance-import appearance import: Success. Sync · Local"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: appearance-import
+      - generic: "appearance import: Success."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/24/2026 11:46 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/24/2026 11:46 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/23/2026 8:35 PM Warning notes-load notes load: AccountChanged. Workspace · Local"':
+      - time: 10/23/2026 8:35 PM
+      - generic: Warning
+      - strong: notes-load
+      - generic: "notes load: AccountChanged."
+      - generic: Workspace · Local
+    - generic "Details"
+    - 'button "10/21/2026 11:36 AM Warning workspace-task-prepare workspace task prepare: Unknown. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:36 AM
+      - generic: Warning
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Unknown."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:35 AM Warning workspace-task-prepare workspace task prepare: Unknown. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:35 AM
+      - generic: Warning
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Unknown."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:27 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:27 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:27 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:27 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:27 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:27 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:27 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:27 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:27 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:27 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:26 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:26 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:25 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:25 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:24 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:24 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:23 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:23 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:22 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:22 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:22 AM Warning workspace-task-prepare workspace task prepare: Unknown. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:22 AM
+      - generic: Warning
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Unknown."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:21 AM Success workspace-task-accept workspace task accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:21 AM
+      - generic: Success
+      - strong: workspace-task-accept
+      - generic: "workspace task accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:21 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:21 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:21 AM Success workspace-task-prepare workspace task prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:21 AM
+      - generic: Success
+      - strong: workspace-task-prepare
+      - generic: "workspace task prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:20 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:20 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:20 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:20 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:20 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:20 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:19 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:19 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:19 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:19 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:19 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:19 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:15 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:15 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:15 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:15 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:15 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:15 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:14 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:14 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:13 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:13 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:12 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/21/2026 11:12 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:03 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 11:03 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 11:03 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:03 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 11:03 AM Success workspace-organization-accept workspace organization accept: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 11:03 AM
+      - generic: Success
+      - strong: workspace-organization-accept
+      - generic: "workspace organization accept: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:55 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 10:55 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:55 AM Success workspace-organization-prepare workspace organization prepare: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 10:55 AM
+      - generic: Success
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:54 AM Warning workspace-organization-prepare workspace organization prepare: Unknown. Workspace · LiveMutation"':
+      - time: 10/21/2026 10:54 AM
+      - generic: Warning
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Unknown."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:54 AM Warning workspace-organization-prepare workspace organization prepare: Unknown. Workspace · LiveMutation"':
+      - time: 10/21/2026 10:54 AM
+      - generic: Warning
+      - strong: workspace-organization-prepare
+      - generic: "workspace organization prepare: Unknown."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:54 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 10:54 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 10:53 AM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 10:53 AM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 10:48 AM Success workspace-operations workspace operations: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 10:48 AM
+      - generic: Success
+      - strong: workspace-operations
+      - generic: "workspace operations: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 10:48 AM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 10:48 AM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 10:48 AM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/21/2026 10:48 AM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/21/2026 10:48 AM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/21/2026 10:48 AM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/21/2026 10:46 AM Warning workspace-status workspace status: Unavailable. Workspace · LiveRead"':
+      - time: 10/21/2026 10:46 AM
+      - generic: Warning
+      - strong: workspace-status
+      - generic: "workspace status: Unavailable."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 9:00 PM Success workspace-load workspace load: Success. Workspace · LiveRead"':
+      - time: 10/20/2026 9:00 PM
+      - generic: Success
+      - strong: workspace-load
+      - generic: "workspace load: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 8:59 PM Success workspace-connect workspace connect: Success. Workspace · LiveMutation"':
+      - time: 10/20/2026 8:59 PM
+      - generic: Success
+      - strong: workspace-connect
+      - generic: "workspace connect: Success."
+      - generic: Workspace · LiveMutation
+    - generic "Details"
+    - 'button "10/20/2026 8:59 PM Success workspace-status workspace status: Success. Workspace · LiveRead"':
+      - time: 10/20/2026 8:59 PM
+      - generic: Success
+      - strong: workspace-status
+      - generic: "workspace status: Success."
+      - generic: Workspace · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 8:59 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/20/2026 8:59 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/20/2026 8:58 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/20/2026 8:58 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 8:58 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/20/2026 8:58 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 8:58 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/20/2026 8:58 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/20/2026 8:58 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/20/2026 8:58 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/19/2026 10:33 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/19/2026 10:33 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/19/2026 10:33 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/19/2026 10:33 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/19/2026 10:33 AM Success inventory-equip-item inventory equip item: Success. Inventory · LiveMutation"':
+      - time: 10/19/2026 10:33 AM
+      - generic: Success
+      - strong: inventory-equip-item
+      - generic: "inventory equip item: Success."
+      - generic: Inventory · LiveMutation
+    - generic "Details"
+    - 'button "10/19/2026 10:33 AM Success inventory-equip-item inventory equip item: Success. Inventory · LiveMutation"':
+      - time: 10/19/2026 10:33 AM
+      - generic: Success
+      - strong: inventory-equip-item
+      - generic: "inventory equip item: Success."
+      - generic: Inventory · LiveMutation
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Success spell-cast spell cast: Success. Skills · LiveMutation"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Success
+      - strong: spell-cast
+      - generic: "spell cast: Success."
+      - generic: Skills · LiveMutation
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/19/2026 10:32 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/19/2026 10:32 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:50 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:50 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:50 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:50 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:50 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:50 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:50 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/17/2026 11:50 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:50 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:50 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:43 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:43 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:43 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:43 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:43 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:43 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:43 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/17/2026 11:43 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:43 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:43 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:35 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:35 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:35 AM Success inventory-equip-item inventory equip item: Success. Inventory · LiveMutation"':
+      - time: 10/17/2026 11:35 AM
+      - generic: Success
+      - strong: inventory-equip-item
+      - generic: "inventory equip item: Success."
+      - generic: Inventory · LiveMutation
+    - generic "Details"
+    - 'button "10/17/2026 11:35 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:35 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:35 AM Success inventory-equip-item inventory equip item: Success. Inventory · LiveMutation"':
+      - time: 10/17/2026 11:35 AM
+      - generic: Success
+      - strong: inventory-equip-item
+      - generic: "inventory equip item: Success."
+      - generic: Inventory · LiveMutation
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Success spell-cast spell cast: Success. Skills · LiveMutation"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Success
+      - strong: spell-cast
+      - generic: "spell cast: Success."
+      - generic: Skills · LiveMutation
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "10/17/2026 11:34 AM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 10/17/2026 11:34 AM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:10 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 6/4/2026 5:10 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "6/4/2026 5:10 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:10 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:10 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:10 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:10 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 6/4/2026 5:10 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:10 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:10 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:07 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 6/4/2026 5:07 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "6/4/2026 5:07 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:07 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:07 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:07 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:07 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 6/4/2026 5:07 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:07 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:07 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:02 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 6/4/2026 5:02 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "6/4/2026 5:02 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:02 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:02 PM Success refresh-gearcatalog refresh gearcatalog: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:02 PM
+      - generic: Success
+      - strong: refresh-gearcatalog
+      - generic: "refresh gearcatalog: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:02 PM Success inventory-refresh-catalog inventory refresh catalog: Success. Inventory · LiveRead"':
+      - time: 6/4/2026 5:02 PM
+      - generic: Success
+      - strong: inventory-refresh-catalog
+      - generic: "inventory refresh catalog: Success."
+      - generic: Inventory · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 5:02 PM Success refresh-tasks refresh tasks: Success. Sync · LiveRead"':
+      - time: 6/4/2026 5:02 PM
+      - generic: Success
+      - strong: refresh-tasks
+      - generic: "refresh tasks: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"
+    - 'button "6/4/2026 4:54 PM Warning cloud-sync-upload cloud sync upload: Warning. Sync · Local"':
+      - time: 6/4/2026 4:54 PM
+      - generic: Warning
+      - strong: cloud-sync-upload
+      - generic: "cloud sync upload: Warning."
+      - generic: Sync · Local
+    - generic "Details"
+    - 'button "6/4/2026 4:54 PM Success refresh-party refresh party: Success. Sync · LiveRead"':
+      - time: 6/4/2026 4:54 PM
+      - generic: Success
+      - strong: refresh-party
+      - generic: "refresh party: Success."
+      - generic: Sync · LiveRead
+    - generic "Details"

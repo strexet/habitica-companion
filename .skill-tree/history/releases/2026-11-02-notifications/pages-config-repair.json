@@ -1,0 +1,5 @@
+{
+  "classification": "prerequisite-wait",
+  "reason": "Pages rejects the Worker account_id config property before upload. Account selection moved to the supported CLOUDFLARE_ACCOUNT_ID environment variable; runtime/storage settings retained.",
+  "provider_deployment_created": false
+}

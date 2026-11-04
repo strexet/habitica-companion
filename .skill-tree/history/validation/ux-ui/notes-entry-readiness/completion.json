@@ -1,0 +1,459 @@
+{
+  "acceptance": [
+    {
+      "criterion": "New note remains natively disabled with a readable loading explanation until component initialization completes, including a retained readable notebook while the next load is held.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.log",
+          "sha256": "4a5da868ebd5e32edae4d75e9a4c58d85be98283f6fc95598ea9c66feae6bcfb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.trx",
+          "sha256": "74fbc468a344bd9dc2213d450b5dac89fec79e143b4934e5a8632fd62f673c61"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/acceptance.json",
+          "sha256": "94cabeea039dcd5c74af07d5fb44f90b4ad581c4e0e313f6df3fc6335d6a2570"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser/daca672c-ef38-41bf-a9fe-682e65b71286.json",
+          "sha256": "ec2289c233115c3d28b1228fdaf6cd435dbbb05f4d75eeb3d6e4fe5883a7e7c8"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "After loading completes, New note opens and retains the empty editor and exact unsaved text without a notebook write, source switch or weakened original receipt fence.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.log",
+          "sha256": "4a5da868ebd5e32edae4d75e9a4c58d85be98283f6fc95598ea9c66feae6bcfb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.trx",
+          "sha256": "74fbc468a344bd9dc2213d450b5dac89fec79e143b4934e5a8632fd62f673c61"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/acceptance.json",
+          "sha256": "94cabeea039dcd5c74af07d5fb44f90b4ad581c4e0e313f6df3fc6335d6a2570"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser/daca672c-ef38-41bf-a9fe-682e65b71286.json",
+          "sha256": "ec2289c233115c3d28b1228fdaf6cd435dbbb05f4d75eeb3d6e4fe5883a7e7c8"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Current Notes and Tasks routes qualify normal/enlarged light and dark phone/desktop rendering, native held-read refusal, focus and unchanged original storage; owner-only release gates remain unaccepted.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.log",
+          "sha256": "4a5da868ebd5e32edae4d75e9a4c58d85be98283f6fc95598ea9c66feae6bcfb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.trx",
+          "sha256": "74fbc468a344bd9dc2213d450b5dac89fec79e143b4934e5a8632fd62f673c61"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/acceptance.json",
+          "sha256": "94cabeea039dcd5c74af07d5fb44f90b4ad581c4e0e313f6df3fc6335d6a2570"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser/daca672c-ef38-41bf-a9fe-682e65b71286.json",
+          "sha256": "ec2289c233115c3d28b1228fdaf6cd435dbbb05f4d75eeb3d6e4fe5883a7e7c8"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Hold actual Notes store loading while a retained notebook remains readable. Require disabled New note and loading explanation, release the read, activate New once, and retain exact unsaved input without notebook changes. Preserve existing conflict, pending, source and project workflows; require nonzero focused discovery and no required skips.",
+        "criteria": [
+          "New note remains natively disabled with a readable loading explanation until component initialization completes, including a retained readable notebook while the next load is held.",
+          "After loading completes, New note opens and retains the empty editor and exact unsaved text without a notebook write, source switch or weakened original receipt fence."
+        ],
+        "id": "notes-initial-entry-behavior",
+        "parameters": {
+          "report_name": "notes-entry-readiness.trx",
+          "result_directory": ".skill-tree/artifacts/notes-entry-readiness-unit",
+          "test_filter": "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/NotesPanel.razor",
+          "src/Habitica.WebApp/State/NotesController.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-fd66aebc-26c2-41cc-a9ba-ccdb60d6fdb6",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 26,
+          "expected": 26,
+          "failed": 1,
+          "passed": 25,
+          "skipped": 0
+        },
+        "definition": "7f54db58d3fa9c100ca8878774169d8a4a5df916c260e83641ee937d45722717",
+        "environment_identity": "cfd7a409f79b62e710c6823e3664a5f96ac1bcc9642731d4bb22b259135e1654",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-fd66aebc-26c2-41cc-a9ba-ccdb60d6fdb6.log",
+            "sha256": "47611df1c9b1303a260f6a1b5ad6fdb782e7099baefc712a6349796ed8098bfe"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-fd66aebc-26c2-41cc-a9ba-ccdb60d6fdb6.trx",
+            "sha256": "9c4f346f19b6e20bb8218cd006627d283784343f4fb85a2daf254543cd0c14bc"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "3999668196e8830ba56e0c506a70b6dd28fddf98762bf8334a3bb88126787954",
+        "payload_hash": "d9250021373a22259d5f37100581bb5ffd18d8217d6dd20a64c2f5cea8e4772d",
+        "recorded_at": "2026-11-04T00:37:03.965619+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "a3b2b89473960007d863964265a90708eb51cc95502079ca12d6d894e14d177b",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.335316208191216
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-a46dbbe6-493d-47e9-82f9-20ce459878a2",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 26,
+          "expected": 26,
+          "failed": 0,
+          "passed": 26,
+          "skipped": 0
+        },
+        "definition": "28df3c20ab5fbf65bd94d1156a9d673ac851b322ce68e46d377a14e9bebbc40d",
+        "environment_identity": "767b5d907b59fc4f48c1924afab9844b0fd349452e2e1077285f5de327ebbfc4",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.log",
+            "sha256": "4a5da868ebd5e32edae4d75e9a4c58d85be98283f6fc95598ea9c66feae6bcfb"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/C-a46dbbe6-493d-47e9-82f9-20ce459878a2.trx",
+            "sha256": "74fbc468a344bd9dc2213d450b5dac89fec79e143b4934e5a8632fd62f673c61"
+          }
+        ],
+        "execution_sessions": {
+          "dc11c2b9ccfae17c76957fef165722b8793e30853d7b5a1157589be03ff4b240": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-04T00:54:36.214797+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/notes-entry-readiness/launch-1793752716215074000.json"
+            ],
+            "profile_id": "fe4dc1b8b78c11e85d8513356db336a4a512aa18f3fe508d77918717a696e505",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/notes-entry-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "1f5d54ea2d6e6f46d9f5cd01dab69e08401b92e7e26b22bc0b854d5eb8b1686a",
+        "payload_hash": "d4bb953946c2f267e25ef198bf3699fdce76cb73a360f1c06af767f9d50f0942",
+        "recorded_at": "2026-11-04T00:41:03.458906+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "527c2c1e008f5f044fd30de462059906049d06cf70b2d04c4810523e0a719af0",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.14084216626361
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Current Notes and Tasks routes qualify normal/enlarged light and dark phone/desktop rendering, native held-read refusal, focus and unchanged original storage; owner-only release gates remain unaccepted.",
+        "criteria": [
+          "Current Notes and Tasks routes qualify normal/enlarged light and dark phone/desktop rendering, native held-read refusal, focus and unchanged original storage; owner-only release gates remain unaccepted."
+        ],
+        "id": "notes-initial-entry-rendered",
+        "parameters": {
+          "cases": "Initial held Notes read with retained notebook; disabled New note and readable loading reason; released keyboard entry; exact unsaved text; original dirty-draft review; unchanged notebook and task journal.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser",
+          "routes": [
+            "/notes",
+            "/todo/tasks"
+          ],
+          "task_key": "notes-entry-readiness"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/NotesPanel.razor",
+          "src/Habitica.WebApp/State/NotesController.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-notes-entry-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-b1bd85fd-f716-44b7-8d21-a53320c5601c",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 433,
+          "expected": 433,
+          "failed": 0,
+          "passed": 433,
+          "skipped": 0
+        },
+        "definition": "28df3c20ab5fbf65bd94d1156a9d673ac851b322ce68e46d377a14e9bebbc40d",
+        "environment_identity": "0b374bd5067af17fb75520c1f68702dc9e796f404daf0c4fb38ada4bd79918b0",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser/daca672c-ef38-41bf-a9fe-682e65b71286.json",
+            "sha256": "ec2289c233115c3d28b1228fdaf6cd435dbbb05f4d75eeb3d6e4fe5883a7e7c8"
+          }
+        ],
+        "execution_sessions": {
+          "dc11c2b9ccfae17c76957fef165722b8793e30853d7b5a1157589be03ff4b240": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-04T00:57:03.583263+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/notes-entry-readiness/launch-1793752863583477000.json"
+            ],
+            "profile_id": "fe4dc1b8b78c11e85d8513356db336a4a512aa18f3fe508d77918717a696e505",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/notes-entry-readiness",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "dc145d57f710f0aaf3ef62328270c9f758d0b05803abb4290f15bdc00124138f",
+        "payload_hash": "cf5401996bab7795a2fd339fdc072ef9b7778cab5aa1369ead3a671c4db98592",
+        "recorded_at": "2026-11-04T00:42:07.206496+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/NotesPanel.razor": "527c2c1e008f5f044fd30de462059906049d06cf70b2d04c4810523e0a719af0",
+          "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+          "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+          "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e",
+          "tests/browser-qualification/ux-ui-adapters.json": "8fb3ed6e87a3776213446a61154f5f6836e5c8376a01be8031f57b0fc01f228a",
+          "tests/browser-qualification/ux-ui-notes-entry-journey.mjs": "6d60bbeb3c2fbfd49f2ea0dcb2c2b2dc0910ce54a39559c0dc2d394fcca1bcb3"
+        },
+        "timing": {
+          "tool_wall_seconds": 62.29731737496331
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/acceptance.json",
+      "sha256": "94cabeea039dcd5c74af07d5fb44f90b4ad581c4e0e313f6df3fc6335d6a2570"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/operation-history.json",
+      "sha256": "1893cf490f67398110511da768fef380b1c61905e84936dd7a10d06f7de4c1f6"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-3f1afe1d-9bf6-4426-9ff5-1d08fc1cf1ec",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Fence New note until the Notes component finishes initial loading. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-c23c68b6-4223-465b-bf33-83629fb5b074"
+  ],
+  "recorded_at": "2026-11-04T00:42:49.602396+00:00",
+  "related_task_id": "T-13e3754f-774b-443f-8997-e1d677f3c079",
+  "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+  "source_fingerprints": {
+    ".skill-tree/documents/features.md": "8f1f27e14823db34437bf57bb1c6e045d76272d0109a90cc1cbf90bb8ac0568c",
+    ".skill-tree/documents/testing.md": "7bf414404ec05ef80e5c34e9fbfb4c0abfcde006332d999da67da777f2d35ca0",
+    ".skill-tree/documents/ux-ui-manifest.md": "cc7de86316658ea39040084c3fd4f36dfa4a03b487f49cd234e81e0b1a17343a",
+    ".skill-tree/validation-recipes.json": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "527c2c1e008f5f044fd30de462059906049d06cf70b2d04c4810523e0a719af0",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "f107f82fca4cba846cb914bbe450753ade0e3036640db79d36ffbbf0594c1f5e",
+    "tests/browser-qualification/ux-ui-adapters.json": "8fb3ed6e87a3776213446a61154f5f6836e5c8376a01be8031f57b0fc01f228a",
+    "tests/browser-qualification/ux-ui-notes-entry-journey.mjs": "6d60bbeb3c2fbfd49f2ea0dcb2c2b2dc0910ce54a39559c0dc2d394fcca1bcb3"
+  },
+  "task_id": "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2",
+  "title": "Fence New note until the Notes component finishes initial loading",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Hold actual Notes store loading while a retained notebook remains readable. Require disabled New note and loading explanation, release the read, activate New once, and retain exact unsaved input without notebook changes. Preserve existing conflict, pending, source and project workflows; require nonzero focused discovery and no required skips.",
+      "criteria": [
+        "New note remains natively disabled with a readable loading explanation until component initialization completes, including a retained readable notebook while the next load is held.",
+        "After loading completes, New note opens and retains the empty editor and exact unsaved text without a notebook write, source switch or weakened original receipt fence."
+      ],
+      "id": "notes-initial-entry-behavior",
+      "parameters": {
+        "report_name": "notes-entry-readiness.trx",
+        "result_directory": ".skill-tree/artifacts/notes-entry-readiness-unit",
+        "test_filter": "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Notes and Tasks routes qualify normal/enlarged light and dark phone/desktop rendering, native held-read refusal, focus and unchanged original storage; owner-only release gates remain unaccepted.",
+      "criteria": [
+        "Current Notes and Tasks routes qualify normal/enlarged light and dark phone/desktop rendering, native held-read refusal, focus and unchanged original storage; owner-only release gates remain unaccepted."
+      ],
+      "id": "notes-initial-entry-rendered",
+      "parameters": {
+        "cases": "Initial held Notes read with retained notebook; disabled New note and readable loading reason; released keyboard entry; exact unsaved text; original dirty-draft review; unchanged notebook and task journal.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/notes-entry-readiness/browser",
+        "routes": [
+          "/notes",
+          "/todo/tasks"
+        ],
+        "task_key": "notes-entry-readiness"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-notes-entry-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "28df3c20ab5fbf65bd94d1156a9d673ac851b322ce68e46d377a14e9bebbc40d"
+}

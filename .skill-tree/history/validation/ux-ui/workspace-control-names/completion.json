@@ -1,0 +1,525 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Repeated task and private-sync controls expose the affected record or section while retaining visible-label text.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.log",
+          "sha256": "ac906dcf8478da5a8e04e1a9c61b66c974b9ffd9617b160160bc6f0dd312e174"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.trx",
+          "sha256": "5f4a04ee3535d4fc4ae2cb7d4defc593f23bf501318b3f01fd3bff78159ee7b9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/acceptance.json",
+          "sha256": "24edc992a9aa201efc8e8a1445c024d53f8e18495ecbe8bfd756a639885d4d9d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+          "sha256": "24540bda451fc43adc6149b054218edf4c48b137f2b94d44fcec02d0408cbe52"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Context labels and associations preserve exact handler targets, disabled fences and sync selection semantics.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.log",
+          "sha256": "ac906dcf8478da5a8e04e1a9c61b66c974b9ffd9617b160160bc6f0dd312e174"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.trx",
+          "sha256": "5f4a04ee3535d4fc4ae2cb7d4defc593f23bf501318b3f01fd3bff78159ee7b9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/acceptance.json",
+          "sha256": "24edc992a9aa201efc8e8a1445c024d53f8e18495ecbe8bfd756a639885d4d9d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+          "sha256": "24540bda451fc43adc6149b054218edf4c48b137f2b94d44fcec02d0408cbe52"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.log",
+          "sha256": "ac906dcf8478da5a8e04e1a9c61b66c974b9ffd9617b160160bc6f0dd312e174"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.trx",
+          "sha256": "5f4a04ee3535d4fc4ae2cb7d4defc593f23bf501318b3f01fd3bff78159ee7b9"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/acceptance.json",
+          "sha256": "24edc992a9aa201efc8e8a1445c024d53f8e18495ecbe8bfd756a639885d4d9d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+          "sha256": "24540bda451fc43adc6149b054218edf4c48b137f2b94d44fcec02d0408cbe52"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Multiple tasks, repeated names, disabled actions, private-sync sections included/excluded, long labels and exact handler-target assertions. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Repeated task and private-sync controls expose the affected record or section while retaining visible-label text.",
+          "Context labels and associations preserve exact handler targets, disabled fences and sync selection semantics."
+        ],
+        "id": "workspace-control-names-behavior",
+        "parameters": {
+          "report_name": "workspace-control-names.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/workspace-control-names/unit",
+          "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~SettingsPageTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-fe9a0a22-af30-4017-a610-80d2b0af3339",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 4,
+          "passed": 36,
+          "skipped": 0
+        },
+        "definition": "97358d29264bf7cf72cbd2d89c0c1cee344315f9736d62b4d5e9b50bd2ae7298",
+        "environment_identity": "70dda536ba4931a41833fd21a83703b7b1d3706912dd35ee3ee919099337891d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-fe9a0a22-af30-4017-a610-80d2b0af3339.log",
+            "sha256": "85015a07cc84ff1dabbce3d8a98095a0244b192122b4cd8293ca3fb085375fb2"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-fe9a0a22-af30-4017-a610-80d2b0af3339.trx",
+            "sha256": "7f57c538ff2b4b2efdaa0b318cfd9e08b9827d4f91c246ebd7c58882bb3b5da0"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "ead096338f96722b088d78f51e4142c71704b6f25ae318498d2ea451a49e99eb",
+        "payload_hash": "aecbb06c611b8dbd48b42031e9d7da62f1160c94308fa9d93c59dd8ed5f6c4f4",
+        "recorded_at": "2026-11-03T18:35:58.631844+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "fce7844ad567f4141d9584c3e9652ab22c569c7702385fce2c036bdce147cdf7",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "7a8a67e0032eee4e2134132375587c94b910c5c0e0dd9b0d3d41b773660ce476",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "1b547050d27c0ba12d3093e100e281b297a1326ffff9b3ded64ea6ffadff63e8"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.229617750272155
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-1de670ae-6edc-4979-add6-eddb8d4a9806",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 0,
+          "passed": 40,
+          "skipped": 0
+        },
+        "definition": "0cf8af38f480365b7b76586330e51cd3c28b1444e870db3d09bfb625e12f8620",
+        "environment_identity": "70dda536ba4931a41833fd21a83703b7b1d3706912dd35ee3ee919099337891d",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.log",
+            "sha256": "ac906dcf8478da5a8e04e1a9c61b66c974b9ffd9617b160160bc6f0dd312e174"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.trx",
+            "sha256": "5f4a04ee3535d4fc4ae2cb7d4defc593f23bf501318b3f01fd3bff78159ee7b9"
+          }
+        ],
+        "execution_sessions": {
+          "8e3d44658a38ee6e35f883aecaf916909376dd5cd12efa59c5386e588e1ab068": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:23:51.416373+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-control-names/launch-1793732871416583000.json"
+            ],
+            "profile_id": "06cb6cf16d31dcc72f7cd0a116ec41a6d8a18632abb5bd71dd5bc8b3ba8e6a01",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f6339e13c7362b84f7920be6c06bab7cc0b8bb8c228b2cc8fae3d041898b5b66": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:50:47.511340+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-control-names/launch-1793734487511589000.json"
+            ],
+            "profile_id": "6ae18953b150eda0056ccc49c5dcc1d212d14bcad744b9f0a6784ff7a11d0a9b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "69541e569ba86ebda116ad0f405a61c69950b8d670954cbcf641553d95cdaea1",
+        "payload_hash": "7fbd2ff360cbc732d3e97aab0619c88754954686edfa7f453639ead325bc114a",
+        "recorded_at": "2026-11-03T19:46:23.144068+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.498190708924085
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix."
+        ],
+        "id": "workspace-control-names-rendered",
+        "parameters": {
+          "cases": "Multiple tasks, repeated names, disabled actions, private-sync sections included/excluded, long labels and exact handler-target assertions.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser",
+          "routes": [
+            "/todo/tasks",
+            "/todo/habits",
+            "/todo/dailies",
+            "/settings"
+          ],
+          "task_key": "workspace-control-names"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-dddb52b8-5cef-457e-8be4-4e1f0159f94b",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 649,
+          "expected": 649,
+          "failed": 0,
+          "passed": 649,
+          "skipped": 0
+        },
+        "definition": "0cf8af38f480365b7b76586330e51cd3c28b1444e870db3d09bfb625e12f8620",
+        "environment_identity": "e4e3e30973b6c65edea1c4036b06da31b7a7a1ee5066ef0dac8bc03aed743095",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+            "sha256": "24540bda451fc43adc6149b054218edf4c48b137f2b94d44fcec02d0408cbe52"
+          }
+        ],
+        "execution_sessions": {
+          "8e3d44658a38ee6e35f883aecaf916909376dd5cd12efa59c5386e588e1ab068": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:23:51.416373+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-control-names/launch-1793732871416583000.json"
+            ],
+            "profile_id": "06cb6cf16d31dcc72f7cd0a116ec41a6d8a18632abb5bd71dd5bc8b3ba8e6a01",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "cba3e44a2333784e84fa307478c45eeeb1c1521bad60e117dd322680ff853887": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T20:02:23.272640+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-control-names/launch-1793735183272835000.json"
+            ],
+            "profile_id": "e7cc99cab045795ec9e4ab0562a1f1dd5781b6ab5dbf66a2a5764cbfb8e090e5",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "f6339e13c7362b84f7920be6c06bab7cc0b8bb8c228b2cc8fae3d041898b5b66": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:50:47.511340+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/workspace-control-names/launch-1793734487511589000.json"
+            ],
+            "profile_id": "6ae18953b150eda0056ccc49c5dcc1d212d14bcad744b9f0a6784ff7a11d0a9b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/workspace-control-names",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "5e3d676dd12b8da4eeac5f0ee52e2f962cdfc46d1e355e720d2d58547c0f7c23",
+        "payload_hash": "745bd65441a5721d28f7210db8e953984d7524fd5e5d57118abed82121d30a25",
+        "recorded_at": "2026-11-03T19:52:09.402188+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "8dced82f004ee12c51b0822ce726fb84c9025e12795ec0ad8c4bf4f5da41ccc1",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+        },
+        "timing": {
+          "tool_wall_seconds": 344.986239916645
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0",
+    "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+    "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/acceptance.json",
+      "sha256": "24edc992a9aa201efc8e8a1445c024d53f8e18495ecbe8bfd756a639885d4d9d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/operation-history.json",
+      "sha256": "b5a4d7df50198afd5c10ebfadc12626cf6de81aabac174544cfe7f27b17962ad"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-cd07f3c6-ef98-412a-a058-f40327f6950e",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Name repeated task and private-sync record controls. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45"
+  ],
+  "recorded_at": "2026-11-03T19:52:24.992781+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "8dced82f004ee12c51b0822ce726fb84c9025e12795ec0ad8c4bf4f5da41ccc1",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+  },
+  "task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "title": "Name repeated task and private-sync record controls",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Multiple tasks, repeated names, disabled actions, private-sync sections included/excluded, long labels and exact handler-target assertions. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Repeated task and private-sync controls expose the affected record or section while retaining visible-label text.",
+        "Context labels and associations preserve exact handler targets, disabled fences and sync selection semantics."
+      ],
+      "id": "workspace-control-names-behavior",
+      "parameters": {
+        "report_name": "workspace-control-names.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/workspace-control-names/unit",
+        "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~SettingsPageTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix."
+      ],
+      "id": "workspace-control-names-rendered",
+      "parameters": {
+        "cases": "Multiple tasks, repeated names, disabled actions, private-sync sections included/excluded, long labels and exact handler-target assertions.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser",
+        "routes": [
+          "/todo/tasks",
+          "/todo/habits",
+          "/todo/dailies",
+          "/settings"
+        ],
+        "task_key": "workspace-control-names"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "0cf8af38f480365b7b76586330e51cd3c28b1444e870db3d09bfb625e12f8620"
+}

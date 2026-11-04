@@ -1,0 +1,27 @@
+{
+  "scope": "Local implementation and synthetic qualification only; no publication, live task edit, Cron or scoring.",
+  "officialSources": [
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js",
+      "lines": "571-654",
+      "finding": "PUT updates the exact task, normalizes startDate and replaces nonempty monthly daysOfMonth with the account-local start-date day before recomputing due state."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js",
+      "lines": "56-100",
+      "finding": "Start-date normalization preserves whole-quarter-hour instants with zero seconds/milliseconds; other values normalize using account offset. Due state delegates to shouldDo."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js",
+      "lines": "351-385",
+      "finding": "Stored Dailies support zero intervals, yearly/month-week forms and default-enabled weekday fields. Unsupported retained fields require explicit refusal rather than truncation."
+    }
+  ],
+  "implementationDecisions": [
+    "Preserve the existing refusal for ordinary recurrence edits on linked tasks. Add a separately reviewed, exact linked-schedule path.",
+    "Only fixed UTC/Etc-GMT zones matching fresh account offset and midnight dayStart can promise parity.",
+    "The update-supported monthly subset has one day matching the local start date. Preserve complete before/after/provider-normalized facts.",
+    "A normal Daily PUT can also rewrite retained monthly rules; unsupported current schedules require a no-write guard.",
+    "Unknown writes keep the original command/attempt authority and never dispatch a replacement. Current provider equality alone must not claim an original schedule-write receipt."
+  ]
+}

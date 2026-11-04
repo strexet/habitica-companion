@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Habitica.Domain.Workspace;
 using Habitica.Domain.Notes;
 using Habitica.Storage;
@@ -15,7 +16,11 @@ public sealed class WorkspaceTransferService(IBrowserWorkspaceTransfer browser,T
         var owner=NotesModel.Scope(account);var inventory=await browser.InventoryAsync(account,owner,token);
         if(inventory.PendingJson is {} pending){var original=JsonSerializer.Deserialize<BrowserTransferState>(pending,Json)??throw new InvalidOperationException("Original transfer unavailable.");Validate(original,account,target);return original;}
         var id=Guid.NewGuid();var now=(clock??TimeProvider.System).GetUtcNow();var plans=new List<BrowserTransferPlan>();
-        if(inventory.NotesJson is {} notes)_=NotesJson.Deserialize(notes);
+        if(inventory.NotesJson is {} notes)
+        {
+            var book=NotesJson.Deserialize(notes);
+            if(book.OwnerScope!=owner||(book.Folders??[]).Any(f=>f.Source!="browser"))throw new InvalidOperationException("Browser Notes owner/source is unavailable for transfer. Original data remains writable.");
+        }
         foreach(var text in inventory.Journals)
         {
             var before=WorkspaceJournalJson.Deserialize(text);
@@ -25,9 +30,19 @@ public sealed class WorkspaceTransferService(IBrowserWorkspaceTransfer browser,T
             if(before.Commands.Any(entry=>entry.ProjectionState is ProjectionCommandState.Leased or ProjectionCommandState.Executing&&entry.Lease!.ExpiresAtUtc>now))throw new InvalidOperationException("Resolve the original active attempt before transfer.");
             var recovered=ProjectionJournal.RecoverExpired(before,now);
             var frozen=recovered with{StoreVersion=before.StoreVersion<WorkspaceDocument.MaxRevision?before.StoreVersion+1:throw new InvalidOperationException("Revision exhausted."),Authority=new(WorkspaceAuthorityMode.Frozen,id)};
-            plans.Add(new(text,WorkspaceJournalJson.Serialize(frozen)));
+            // Authority capture must not rewrite immutable accepted snapshots/events across runtimes.
+            var raw=JsonNode.Parse(text)!;var encoded=JsonNode.Parse(WorkspaceJournalJson.Serialize(frozen))!;
+            raw["storeVersion"]=frozen.StoreVersion;raw["authority"]=encoded["authority"]!.DeepClone();
+            for(var index=0;index<before.Commands.Count;index++)
+            {
+                if(ReferenceEquals(before.Commands[index],recovered.Commands[index]))continue;
+                foreach(var field in new[]{"projectionState","lease","failure"})raw["commands"]![index]![field]=encoded["commands"]![index]![field]?.DeepClone();
+            }
+            var priorEvents=before.Events?.Count??0;
+            if((recovered.Events?.Count??0)>priorEvents){raw["events"]??=new JsonArray();foreach(var item in encoded["events"]!.AsArray().Skip(priorEvents))raw["events"]!.AsArray().Add(item?.DeepClone());}
+            var captured=raw.ToJsonString(Json);_=WorkspaceJournalJson.Deserialize(captured);plans.Add(new(text,captured));
         }
-        var state=await browser.FreezeAsync(account,owner,id,target,plans,token);Validate(state,account,target);return state;
+        var state=await browser.FreezeAsync(account,owner,id,target,plans,token,inventory.NotesJson);Validate(state,account,target);return state;
     }
     public static (Guid TransferId,string Hash) Validate(BrowserTransferState state,string account,Guid target)
     {

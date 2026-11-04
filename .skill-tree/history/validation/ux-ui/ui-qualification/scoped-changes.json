@@ -1,0 +1,20 @@
+{
+  "implementation_paths": [
+    "tests/browser-qualification/qualification-core.mjs",
+    "tests/browser-qualification/qualification-frame.mjs",
+    "tests/browser-qualification/ux-ui-checks.test.mjs",
+    "tests/browser-qualification/ux-ui-contract.mjs",
+    "tests/browser-qualification/ux-ui-adapters.json",
+    "tests/browser-qualification/ux-ui.py",
+    "tests/browser-qualification/ux-ui.mjs",
+    "tests/browser-qualification/ux-ui-native-date.mjs",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+    ".skill-tree/validation-recipes.json",
+    ".skill-tree/documents/testing.md",
+    ".skill-tree/documents/ux-ui-manifest.md"
+  ],
+  "generated_profile": ".skill-tree/installation/profile.json",
+  "generated_skill_resources": "Installed project-profile.md resources refreshed by the local manager.",
+  "application_ui_source_drift": []
+}

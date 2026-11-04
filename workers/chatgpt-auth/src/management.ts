@@ -43,6 +43,7 @@ export async function managementRoute(request:Request,env:AuthEnv):Promise<Respo
    env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM consent_links WHERE profile_id=? AND EXISTS(SELECT 1 FROM integration_profiles WHERE profile_id=? AND grant_epoch=?)').bind(profile.profile_id,profile.profile_id,epoch),
   ]);
   if(!result[0].meta.changes)throw new VaultError('management_changed',409);
+  await env.HABITICA_INTEGRATION_DB.prepare('DELETE FROM integration_event_callbacks WHERE profile_id=? AND grant_epoch<>?').bind(profile.profile_id,epoch).run();
   // The D1 epoch is the immediate barrier even if bounded provider cleanup is unavailable.
   let pendingCleanup=false;
   if(env.OAUTH_ENABLED)try{

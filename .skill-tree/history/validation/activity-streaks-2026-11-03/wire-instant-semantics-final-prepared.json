@@ -1,0 +1,47 @@
+{
+  "assertion": "Portable full-journal day/coverage cases match the independently asserted C# fixtures, including DST, pauses, corrections, negative-only activity, historical timezone refusal and context-bound paging. Malformed input and fabricated coverage refuse without writes.",
+  "attempt_id": "C-d3f29976-21a4-479a-9c4c-ce35014e68e3",
+  "check_id": "activity-wire",
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "dbef3285f85298430713c176ab329720dda85e1ebff0f11aa28870449ef4bde7",
+  "key": "ae89b1b6aa622747339fb40430aef5c5121ff225392276bee7cf8d9135c5092b",
+  "launch": {
+    "assertion": "Canonical activity day-series parity, historical goal/schedule coverage, context paging and exact read permissions.",
+    "authorization": "Direct owner Implement All continuation; pure Node journal fixtures with synthetic identities and no server or external effects.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable day classification, real read-scope fences or guarded journal evaluation.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T18:58:49.040733+00:00",
+    "execution_profile": "activity-streaks-wire-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T18:54:49.450064+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=15000",
+      "workers/companion-workspace/test/activity-streaks.test.mjs"
+    ],
+    "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "deploy/callback-egress/package.json"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+    "workers/companion-workspace/src/activity-coverage-query.ts": "ee619c35518a5bb7c7fdebaa9c45c8ebba77a16084b07788566bc967b644a694",
+    "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+    "workers/companion-workspace/test/activity-streaks.test.mjs": "a88ccb59dd1053ec80372bd78f08e3ac02331804957c2a17b261fd3a2680affe",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

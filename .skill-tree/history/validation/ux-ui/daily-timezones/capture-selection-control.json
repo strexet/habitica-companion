@@ -1,0 +1,5 @@
+{
+  "attempt": "C-dafe9620-3979-493d-af19-c72b88cd4521",
+  "result": "56 checks pass including the added exact selected-option assertion after every offset change. The suspected select serialization gap does not reproduce: bUnit output already retains the correct selected option. PageLayoutEvidence requires no normalization change. The existing capture helper remains unchanged; the new assertion guards truthful fixture selection.",
+  "required_fix": "Actual surrounding linked editor fixture failed caption ink159.78px versus122px available at360/200. Scoped nested editor phone padding decreases from1.25rem to0.5rem, preserving full labels and native arrow reserve."
+}

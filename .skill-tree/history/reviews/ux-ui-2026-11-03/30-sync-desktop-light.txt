@@ -1,0 +1,156 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- heading "Todo Sync" [active] [level=1]
+- paragraph: Manage the active Workspace, restore access, review browser-to-cloud moves and inspect original command outcomes. Saved tasks and confirmed Habitica rewards are shown separately.
+- paragraph:
+  - text: Theme and private device sync preferences remain in
+  - link "account Settings":
+    - /url: /settings
+  - text: ; browser task order stays with the selected task list.
+- generic "Browser Workspace · rev 1"
+- paragraph: "Active Workspace: 224fa4c6-10e2-4fcf-bf49-024c6872c064. Tasks and Notes share this source."
+- button "Refresh Workspace" [disabled]:
+  - generic: Refresh Workspace
+- button "Reload Workspace" [disabled]:
+  - generic: Reload Workspace
+- paragraph: Task creation, field edits and scoring require Habitica correspondence. Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor.
+- region "Tasks and Notes together":
+  - paragraph: One Workspace
+  - heading "Tasks and Notes together" [level=2]
+  - status: Browser is the active Workspace.
+  - paragraph:
+    - text: "Active Workspace:"
+    - code: 224fa4c6-10e2-4fcf-bf49-024c6872c064
+  - paragraph: Browser is the default until you choose cloud. A cloud move includes saved tasks, projects, history and personal Notes. After confirmation, cloud stays selected across sessions; frozen browser copies remain recovery evidence.
+  - button "Restore existing access":
+    - generic: Restore existing access
+  - button "Refresh Workspace inventory":
+    - generic: Refresh Workspace inventory
+  - paragraph: Restore checks existing approved connections only. It never creates a profile, grants access or enables background execution.
+  - paragraph: "Browser inventory: 1 Workspace copy/copies and 0 personal Note(s). Saved command history and trash are included in the review."
+  - button "Move Workspace to cloud":
+    - generic: Move Workspace to cloud
+  - paragraph: Export, pause and disconnect remain available below. Returning cloud data to browser requires a separate ownership transfer and is not available.
+- region "Push devices":
+  - heading "Push devices" [level=2]
+  - paragraph: Web Push is an optional, separate channel for generic review reminders. Lock-screen messages contain no task title or notes. Delivery depends on the browser, system and network; shown and read remain unknown.
+  - paragraph: On iPhone or iPad, add this app to the Home Screen and open that installed app before enrolling this device. Allow notifications only from the explicit device button below. Denied permission must be changed in browser or system settings.
+  - button "Check push setup":
+    - generic: Check push setup
+  - paragraph: "Browser capability: unprepared · Permission: unsupported · Local receipt storage: unavailable or not loaded"
+  - paragraph:
+    - link "Choose a task and review its push schedule":
+      - /url: /todo/reminders
+    - text: . Browser-only foreground cues remain separate in
+    - link "Today":
+      - /url: /todo/today
+    - text: .
+- region "Todo command recovery":
+  - paragraph: Saved work
+  - heading "Command history and original receipt" [level=2]
+  - paragraph: Companion saves and confirmed Habitica effects are separate. Reading an original receipt never repeats a task or game action.
+  - paragraph: "0 retained commands in the selected browser workspace. Pending: 0; blocked: 0; unknown: 0."
+  - text: Original command ID
+  - textbox "Original command ID"
+  - button "Check original receipt" [disabled]:
+    - generic: Check original receipt
+  - list
+- paragraph: Companion workspace
+- heading "Workspace access, execution and backups" [level=2]
+- paragraph: Cloud access follows the active Workspace choice and remains separate from agent linking and encrypted preference sync. The workspace server can read task names, notes, categories, projects, goals, saved views, completion history and commands. Enabling access also stores encrypted Habitica credentials on the integration server.
+- paragraph: Tasks and command history remain until you delete the cloud workspace. Disconnect pauses access and background execution while retaining cloud data. Frozen browser copies retain original recovery evidence. Habitica records keep separate controls. Background execution requires another opt-in.
+- status: Existing cloud access is unavailable in this session. Missing local access does not disconnect the server or change the selected Workspace.
+- button "Restore existing cloud access":
+  - generic: Restore existing cloud access
+- paragraph:
+  - text: New cloud selection and browser record adoption use the
+  - link "reviewed Workspace move":
+    - /url: /todo/sync#workspace-transfer
+  - text: . Restoring access never enrolls or enables execution.
+- heading "Browser backups and recovery copies" [level=3]
+- paragraph: Workspace backups include readable notes and command history, with no credentials. These files are separate from the Habitica data backup and encrypted private sync below. Saved copies retain exact source identities and preserve existing data on conflicts. Browser copies from an accepted move remain frozen. Clear saved browser data also removes local workspaces.
+- button "Find local workspaces":
+  - generic: Find local workspaces
+- text: Restore workspace backup
+- button "Restore workspace backup"
+- paragraph: Habitica correspondence
+- heading "Project and group tags" [level=2]
+- paragraph: Connect categories, projects, sections, labels, goals and saved lists to native Habitica tags. Each linked task keeps its own Habitica record. Tag metadata gives no experience, gold or completion rewards.
+- paragraph: Verify and connect the cloud workspace above before managing tags. Opening another device does not disable existing server access.

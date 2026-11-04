@@ -1,0 +1,18 @@
+{
+  "run": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe",
+  "completed_local_units": 34,
+  "owner_gate": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "owner_gate_status": "Blocked pending answers; no device/account/hosted work resumed or accepted.",
+  "release_parent": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+  "processing_run": "PR-edb0232f-548c-4ab6-b918-e9993e00497e",
+  "deferred_followups": [
+    "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
+    "T-7c76be74-16ad-44ac-a078-46ad8a8e6c6a",
+    "T-f21b11ff-1224-486a-b729-e2f440f4920b",
+    "T-bc1d9dd4-ab18-4c3d-b7dd-c0d53e5372aa",
+    "T-ecb2732c-1fe8-4ccf-b4a0-fbd7ae798f44"
+  ],
+  "admitted_new_followups": [],
+  "validation_scope": "Independent current-source checks for already completed, required local UI contracts. Standing explicit local synthetic build/test authorization remains sufficient.",
+  "checkpoint_correction": "The last completion helper selected the owner gate before the intended final local checks. Record an independent validation phase without changing the blocked task or treating unresolved owner questions as answered. Restore the blocked release handoff after local validation."
+}

@@ -1,0 +1,39 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-8031de5e-250e-488c-a512-7ac2c7f5a85a",
+  "classification": "executed-control",
+  "cleanup": "All synthetic Miniflare Workers and isolated D1 instances disposed by test hooks; dry builds completed; native local TLS servers closed. No real subscription or provider callback in this local qualification. OAuth preview viewport restored; temporary static fixture server remains bounded for the remaining visual review.",
+  "counts": {
+    "discovered": 9,
+    "expected": 9,
+    "failed": 0,
+    "passed": 9,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "007151c21dba4eecdc7394bd29184e3c6053b939f3dac64215b183f78d9aee39",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/callback-authorization-final.log",
+      "sha256": "cf1feef579745b11ce299339477b9cc5ebb7c1a0ffe0acdbf1d0ddeea8b10a91"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+      "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "51bb14b9210f02f56a8a77d247dd5415035d8482bfcf8b80edcbaab1ffff8876",
+  "payload_hash": "0a2c65f5899aecc8908bcf11cd97ea2beec712278ce76f7c384bb9bce17dc5ff",
+  "recorded_at": "2026-11-02T13:18:58.415221+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "ea4d9348dec68f16ff55a8879d94f2c7c73f46cd4a89b6079632f9e4062d99c2"
+  },
+  "timing": {
+    "tool_wall_seconds": 10.718303916975856
+  }
+}

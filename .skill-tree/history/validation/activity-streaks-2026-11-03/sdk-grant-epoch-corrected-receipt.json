@@ -1,0 +1,42 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-3eb58dfb-1f57-4764-862e-d12027b56e3a",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 3,
+    "expected": 3,
+    "failed": 0,
+    "passed": 3,
+    "skipped": 0
+  },
+  "definition": "c3707020c6b035a1010a673b10787abe3de29b616a5a9d015dffeb345906f715",
+  "environment_identity": "21d29c946e3b400ccff0e2a5542fdbde73324a8d446836031a4be1e054cb21dc",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/sdk-grant-epoch-corrected-execution.log",
+      "sha256": "49b3de5fa4ebc2c7f8dc7122208de803a3f2fe8a2e031d583f69dcb66edc9fc4"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "cf64974e729bcecebc9b5e96d4ea29f4c2431f19df4e18df0a111a2edf60f967",
+  "payload_hash": "3747401b3f4df3448f25429c6d3c66609e085a8d3a07c936b19e941bfc913bb0",
+  "recorded_at": "2026-11-02T18:33:33.763694+00:00",
+  "result": "pass",
+  "sources": {
+    "plugin/skills/habitica-activity-review/SKILL.md": "e1dea8d536e50e4efc5db3d72c6a09d716e0d0c70a755638651fa9313a9e017f",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3",
+    "workers/chatgpt-mcp/src/task-tools.ts": "5e9c03dee954a2fbf515701788dd1562ac5a84dc31a0c64e5c9570a6660db213",
+    "workers/companion-workspace/src/activity-statistics-api.ts": "19f5c9cb22477d16553757bd307d441497fcaa5afe0251521fa13eeea0411785",
+    "workers/companion-workspace/src/activity-streaks.ts": "51f7e692de020c0c17123b7b9de62d32301a272f3d48237267ba72581cbe0482",
+    "workers/companion-workspace/src/task-api.ts": "5075707b213a2edef24cfc177afe8ba2e0cc1d5f430dc5e6caccd51ffbbe981e",
+    "workers/companion-workspace/test/activity-statistics-mcp.test.mjs": "e99dc8a3a371336955411cfb6bb475caea3b6d33c4c9975caf6c44d5fb4bcf68",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/build-identity.generated.ts": "cffe7bc66315dcf1be985f9a914ae406f622d43ce8360eb141217df6a738af18",
+    "workers/shared/task-tools.ts": "4e8d34a496192eeb1262c8d7bb346f572fa1cf52a2a63d2463c5cb7603793a91"
+  },
+  "timing": {
+    "tool_wall_seconds": 4.234278916148469
+  }
+}

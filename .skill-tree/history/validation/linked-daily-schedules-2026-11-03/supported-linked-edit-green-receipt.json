@@ -1,0 +1,43 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-bf14c770-ea4e-4920-8b4b-31bafd1c6c28",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 12,
+    "expected": 12,
+    "failed": 0,
+    "passed": 12,
+    "skipped": 0
+  },
+  "definition": "93af30510b23e287e5c18f82a330f93ad48c201709b50d6a2971f3b0396d58cd",
+  "environment_identity": "013b65ae9c598494aaf12aba9e69e03ee0bf26b241678147d1cd608bae13af80",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/supported-linked-edit-green-execution.log",
+      "sha256": "391df7e8dd2a3bf4a484d2adefa326800c54b9f1a0b1190dcc6cfd3d959c58e7"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules/supported-linked-edit-green.trx",
+      "sha256": "051cae9d6e2f7f99faf97af3d8ece05be683c77441baaff9c789de62549dad5e"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "6fe4e4179200e5ff6879511e432bf4c589e648a62214c5b3b068e5cfe410b4c6",
+  "payload_hash": "b2410a3181aa03b95a78d58b91ab36db5a7304329258382c30311ea700ae4e9d",
+  "recorded_at": "2026-11-02T19:15:55.355532+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "c2bd3493d1b133ce11c92266a106da7dd9bd5207b5fc67f076e3e11af3295bba",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs": "ed03cf18f49f511f5bb2faa3e9cbb320aa66b2e2f6a2744c1649a6bd279a2014"
+  },
+  "timing": {
+    "tool_wall_seconds": 6.093759916955605
+  }
+}

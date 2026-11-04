@@ -1,0 +1,18 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-rendering",
+  "attempt_id": "C-55a64387-0f8e-4750-ab34-d553c3a26af9",
+  "environment_identity": "c74f39a3b711d3d7bd6a9bb882e215bfc627ca193deae6e3ae8454cf449f6e8a",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "fail",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "timing": {
+    "tool_wall_seconds": 33.20968787511811
+  },
+  "evidence": [
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-execution.log",
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+  ],
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/activity-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/activity-streaks-ui/1793644645449567000/step-3.log\n"
+}

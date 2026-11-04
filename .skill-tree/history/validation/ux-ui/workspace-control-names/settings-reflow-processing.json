@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735"
+    ],
+    "dispositions": {
+      "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735": {
+        "status": "promoted",
+        "reason": "Current full-route phone evidence proves nested Settings readability loss; a bounded sizing and owning-fixture repair is required before parent acceptance."
+      }
+    },
+    "tasks": [
+      {
+        "key": "settings-content-reflow",
+        "title": "Keep nested Settings content and action labels readable on enlarged phones",
+        "body": "Goal:\nKeep Settings content and action labels readable in nested phone cards.\n\nCurrent behavior:\nCurrent360-pixel200-percent Settings screenshots show cumulative card/action/sync-status padding shrinking text into narrow columns. Export and Upload action words split final letters. The private-section static fixture extracts only the inner list and misses the actual nested geometry. Existing outer document and target checks do not detect intact ordinary action words.\n\nDesired behavior:\nUse available phone width for nested Settings content, sync section names and fixed action labels. Retain44-pixel primary targets and exact controls. Keep current section order; separate frozen Settings section-navigation task owns information architecture.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs`\n- `tests/browser-qualification/ux-ui-workspace-names-journey.mjs`\n- `tests/browser-qualification/ux-ui-settings-reflow-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nNo font/zoom reduction, hidden labels, action removal or backup/source/consent/permission behavior changes. Preserve destructive and original command safeguards. Existing local synthetic build/test authorization applies. No provider, upload, restore, destructive or real account operation is authorized. Physical devices, native file dialogs and assistive technology remain unqualified.\n\nValidation:\nRetain original full-route screenshot as the failing rendered regression. Capture owning Settings markup and run existing meaningful Settings tests. Native Range per-word line checks cover actual visible action labels; section names retain available ordinary-word area. Qualify all declared widths, normal/enlarged text and light/dark schemes including obsidian-glow. Toggle exact private sections independently and restore originals; preserve task journal and owned cleanup.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"settings-content-reflow-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Settings private-section labels, independent exclusion state and original data/consent guards remain unchanged.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~SettingsPageTests\",\n        \"report_name\": \"settings-content-reflow.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/settings-content-reflow/unit\"\n      },\n      \"assertion\": \"Retain Settings exact private-section selection/label tests and existing session/data safeguards. Capture the owning Settings page rather than an extracted inner list; original screenshot supplies the failing layout regression.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"settings-content-reflow-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Nested Settings content and action words remain readable with primary targets across the required rendered matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui-native-date.mjs\",\n        \"tests/browser-qualification/ux-ui-settings-reflow-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"settings-content-reflow\",\n        \"routes\": [\n          \"/settings\"\n        ],\n        \"cases\": \"Full Settings owning layout with nested account/data actions and private-sync names, exact exclusion labels, whole action words and44-pixel targets.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/settings-content-reflow/browser\"\n      },\n      \"assertion\": \"Use full current Settings fixtures and the hydrated route to require ordinary-word width for section context and native Range whole-word action labels. Preserve exact checkbox targeting and restore selections, unchanged task journal, visible keyboard focus and full declared matrix. Do not activate destructive, restore, upload, consent or provider actions.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Settings private-section labels, independent exclusion state and original data/consent guards remain unchanged.\n- Nested Settings content and action words remain readable with primary targets across the required rendered matrix.\n\nDocumentation updates:\nRecord scoped nested Settings sizing and qualification limits in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\nOriginal parent automated report `.skill-tree/history/validation/ux-ui/workspace-control-names/browser/7e3309b9-8b28-4de1-bd1a-4180a374e9de.json` remains unaccepted after manual review. Current SettingsPage nested cards, generic padding and private-section fixture extraction inspected. The frozen section-navigation root remains independent.\n",
+        "parent_pending_ids": [
+          "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "38dd9b2f78266dcd243433fd5481e952ac6d3688741f44b71123438f56980bb0"
+  },
+  "result": {
+    "created_ids": [
+      "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+    ],
+    "dispositions": {
+      "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735": {
+        "reason": "Current full-route phone evidence proves nested Settings readability loss; a bounded sizing and owning-fixture repair is required before parent acceptance.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-0518a1bd-eeaf-4554-8e5a-1ae993a279bf",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-8d4df2b3-ad57-48f4-a3dc-23c53568a735"
+    ],
+    "task_keys": {
+      "settings-content-reflow": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+    }
+  }
+}

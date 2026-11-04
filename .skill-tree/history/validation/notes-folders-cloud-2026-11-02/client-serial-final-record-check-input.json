@@ -1,0 +1,24 @@
+{
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "check_id": "notes-client-contracts",
+  "attempt_id": "C-631a6e9e-39d0-492f-8d46-ebec842694a7",
+  "environment_identity": "c881be60477cceba14fb61e8d2c37b0a3e937e8b6e5f91c86265774498f51004",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 13,
+    "discovered": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 3.148121332982555
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-serial-final-execution.log",
+    ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-serial-final.trx"
+  ]
+}

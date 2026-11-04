@@ -64,7 +64,8 @@ public sealed record CompanionTask(
     RecurrenceRule? Recurrence = null,
     bool IsArchived = false,
     HabiticaTaskDetails? HabiticaDetails = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null) : WorkspaceEntity(Id, Revision, IsArchived);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskCopyLineage? CopyLineage = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
 public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] Guid? TerminalCommandId = null) : WorkspaceEntity(Id, Revision, IsArchived);

@@ -1,0 +1,40 @@
+{
+  "session": "ddc26696-d34c-4f04-81b2-7bedf251495b",
+  "error": "Qualification step1 failed; inspect the original log",
+  "steps": [
+    {
+      "argv": [
+        "dotnet",
+        "publish",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000/published",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "log": ".skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000/step-0.log"
+    },
+    {
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "-m:1",
+        "-nodeReuse:false",
+        "--filter",
+        "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+        "--logger",
+        "trx;LogFileName=capture.trx",
+        "--results-directory",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000"
+      ],
+      "exitCode": 1,
+      "log": ".skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000/step-1.log"
+    }
+  ],
+  "artifacts": ".skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000",
+  "browserCleanup": "Inspect browser failure report when browser execution began; a forced controller timeout never proves child cleanup."
+}

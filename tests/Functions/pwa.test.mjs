@@ -13,7 +13,7 @@ function shellResponse({redirected=false,url='https://companion.invalid/',type='
 
 async function worker(options={}){
  const cacheReads=[],network=[],cachedAssets=[],events={};
- const assets=[{url:'index.html'},{url:'css/app.css'},{url:'js/pwa.js'},{url:'manifest.webmanifest'},{url:'api/private.json'},{url:'https://other.invalid/foreign.js'},{url:'service-worker.js'}];
+ const assets=[{url:'index.html'},{url:'css/app.css'},{url:'js/pwa.js'},{url:'vendor/dexie.mjs'},{url:'manifest.webmanifest'},{url:'api/private.json'},{url:'https://other.invalid/foreign.js'},{url:'service-worker.js'}];
  const stored=[],requests=[];
  const context={URL,Response,Headers,console:{info(){}},Request:class extends Request{constructor(url,options){super(new URL(url,'https://companion.invalid/'),options);}},
   self:{origin:'https://companion.invalid',assetsManifest:{version:'fixture',assets},importScripts(){},addEventListener(name,handler){events[name]=handler;}},
@@ -66,6 +66,7 @@ test('every current app route restores cached shell while sensitive, unknown and
 test('installation caches only same-origin public build assets and includes the manifest',async()=>{
  const w=await worker();await w.context.onInstall({});
  assert.ok(w.cachedAssets.includes('https://companion.invalid/manifest.webmanifest'));
+ assert.ok(w.cachedAssets.includes('https://companion.invalid/vendor/dexie.mjs'),'storage module dependencies must be available for offline startup');
  for(const path of ['api/private.json','other.invalid','service-worker.js'])assert.ok(w.cachedAssets.every(url=>!url.includes(path)));
 });
 
@@ -90,7 +91,7 @@ test('invalid or foreign cached shells fall back to the unchanged navigation req
 
 test('install isolates the repaired cache and stores a compatible shell with same-origin integrity requests',async()=>{
  const w=await worker({shell:{redirected:true}});await w.context.onInstall({});
- assert.equal(w.stored.length,1);assert.equal(w.stored[0].name,'offline-cache-fixture-shell-v2');assert.equal(w.stored[0].key,'index.html');
+ assert.equal(w.stored.length,1);assert.equal(w.stored[0].name,'offline-cache-fixture-shell-v3');assert.equal(w.stored[0].key,'index.html');
  assert.equal(w.stored[0].response.redirected,false);assert.equal(await w.stored[0].response.text(),'<html>fixture shell</html>');
  assert.ok(w.requests.every(r=>r.mode==='same-origin'&&r.cache==='no-cache'));
 });

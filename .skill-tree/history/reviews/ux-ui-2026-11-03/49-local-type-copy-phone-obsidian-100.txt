@@ -1,0 +1,51 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - heading "Copy a task to another type" [level=2]
+  - paragraph: Create a new native copy and retain the original, including history and Habitica links.
+  - paragraph: "Active cloud Workspace: 7a267d09-7139-4f43-95d7-b505fa740512"
+  - button "Reload active Workspace" [disabled]:
+    - generic: Reload active Workspace
+  - link "Workspace access and recovery":
+    - /url: /todo/sync
+  - status: Synthetic preview
+  - region "Review native type copy":
+    - heading "Review before creating the copy" [level=3]
+    - region "Copied and reset fields":
+      - heading "Original remains unchanged" [level=3]
+      - paragraph: Retained source · Todo · Active · archived · ceed4bbe-038e-47b4-84d4-03b5f3c26afd · revision 1
+      - paragraph: "Original schedule: Unscheduled; no automatic every-day rule."
+      - paragraph: "Original planned date: · deadline: · review: · stale since: · stage: ."
+      - paragraph: "Original parent: · dependencies: . Existing goals, recorded activity, checklist and Habitica correspondence remain on the source."
+      - heading "New unlinked Daily" [level=3]
+      - paragraph: "Exact new ID: e08b9eaf-69e2-463e-a484-1116a5bb72f3 · initial revision 11 · state Active · urgency High"
+      - heading "Retained source" [level=4]
+      - generic: Exact private notes
+      - paragraph: "Category: · project: · section: · labels:"
+      - paragraph: "New schedule: Daily, every 1; start 2026-11-03; zone UTC; weekdays []; month dates []"
+      - heading "Copied fields" [level=4]
+      - list:
+        - listitem: Name
+        - listitem: Notes
+        - listitem: Native urgency
+        - listitem: Category/project/section/labels
+      - heading "Reset fields" [level=4]
+      - list:
+        - listitem: State becomes active
+        - listitem: Creation/update timestamps
+        - listitem: Habitica correspondence
+        - listitem: Completion/score/occurrence history
+        - listitem: Game difficulty/attribute/checklist/direction settings
+        - listitem: Planned/deadline/review dates
+        - listitem: Todo stage/parent/dependencies/goal membership
+        - listitem: Source schedule is retained only on the source; Daily target recurrence is a new explicit choice
+        - listitem: No organization mutation
+      - paragraph: No Habitica task, tag, score or Cron action is requested. Link the new copy separately before game activity. Archiving the original requires a separate review.
+    - paragraph: Original command 3594aa9f-9101-4ba0-9a9f-ca45bca6cdbd · expires 2026-11-03 05:44:00Z.
+    - checkbox "Reviewed the exact source, new target and every copied/reset field"
+    - generic: Reviewed the exact source, new target and every copied/reset field
+    - button "Create reviewed copy" [disabled]:
+      - generic: Create reviewed copy
+    - button "Check original copy receipt":
+      - generic: Check original copy receipt
+    - button "Cancel unaccepted review":
+      - generic: Cancel unaccepted review

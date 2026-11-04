@@ -1,0 +1,20 @@
+[
+  {
+    "component": "chatgpt-auth",
+    "exit": 0,
+    "seconds": 4.4502559578977525,
+    "log": ".skill-tree/history/validation/task-type-copies-2026-11-03/chatgpt-auth-initial-dry-build.log"
+  },
+  {
+    "component": "companion-workspace",
+    "exit": 0,
+    "seconds": 3.322225249838084,
+    "log": ".skill-tree/history/validation/task-type-copies-2026-11-03/companion-workspace-initial-dry-build.log"
+  },
+  {
+    "component": "chatgpt-mcp",
+    "exit": 0,
+    "seconds": 3.2165539579000324,
+    "log": ".skill-tree/history/validation/task-type-copies-2026-11-03/chatgpt-mcp-initial-dry-build.log"
+  }
+]

@@ -1,0 +1,71 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-45a94374-955b-4251-8dd5-11e31b792fc0",
+  "check_id": "workspace-readiness-behavior",
+  "definition": "71affb0dce2af30811bb28c26ba7c186bfc2e8e3a056cb34ec430e2cb2d49951",
+  "environment_identity": "22e090a2f9e46f7d33d5b58e3ca64067627acec1a49b2705258ba066b35ba27a",
+  "key": "5a0b1c8941e337e265cb38b8faa9d2d01d3f7abbeee63b907868b0279328f967",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T01:10:31.888637+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T01:05:32.242144+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~WorkspaceTaskControllerTests|FullyQualifiedName~TodoSyncPageTests",
+      "--logger",
+      "trx;LogFileName=workspace-readiness.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/workspace-readiness/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+    "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+    "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "29e4f33f798fe137f7ad006a058ad01691d9ac0d80980c9931d4b3aaffb4d6d7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "fc84917757d9eee1ee642aa9ad2b6f3e98dfe4780126919ae00e2a23511fb45d",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7"
+  },
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+}

@@ -1,0 +1,78 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-9796bc3f-54e7-441f-8b84-c30495faaca5",
+  "classification": "executed-control",
+  "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+  "counts": {
+    "discovered": 43,
+    "expected": 43,
+    "failed": 0,
+    "passed": 43,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "365c064f31787db4e4a6714a3bd8ee3d592a9e35d1e65cbf59ce6822b4642290",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts.json",
+      "sha256": "ec4495be7447c487470f5b860aebdbd68184be3531d51c83f4a081e546c643e3"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-workspace.log",
+      "sha256": "56a4019e648999c4902384e117a1b85a842fd1d2b3b7fb447bbc5a4b50f9d7de"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-auth.log",
+      "sha256": "9b035e3bc50c788c1714cecbeafcab983c502731d9304fb7513a945cd38c50d6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-build-mcp.log",
+      "sha256": "946f47214ca4f63660ba29d8c4a53328fa1b4dd42e6dc1e3db62b41d4ecd4d50"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-subscription-worker-composition.log",
+      "sha256": "e45ed419e765a342c5f000705a7bb53009291738e5d048d1ad1427529fae414d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-gateway-native-tls.log",
+      "sha256": "ec685d59e3896ada04254b04e3eb1eb4988d5f932b2e283b4842308eeed7a7f1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-independent-receiver.log",
+      "sha256": "3e0b8b27322244576fd01093819127cc9999523fa738464ac90088b868f3bdad"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/oauth-ui-matrix.json",
+      "sha256": "165b62d805e79eabca0e89c4e88343ecbd1f3cb34aa16363422f81cdf47b45ff"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/subscription-contracts-operation.json",
+      "sha256": "9d5d788524756d79001b3df8c68be5c4df80383d8f6f5ad419a13a5951e95462"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "adb86ca0e02ce3adbcda9f3f2b119bf8a2b9d08bdfb91e9143de1aa92504d5f4",
+  "payload_hash": "7c7730fdf122b1189c849af627485034ddef0da435c96175fac9329d454b96f1",
+  "recorded_at": "2026-11-02T13:55:18.300293+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/event-subscriptions.md": "cf85618467bed6053329a28d15035df9a0433df4f32e52dc791b9f9939bdba22",
+    "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
+    "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
+    "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073",
+    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+  },
+  "timing": {
+    "tool_wall_seconds": 20.65722420811653
+  }
+}

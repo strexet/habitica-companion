@@ -1,0 +1,50 @@
+{
+  "task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "title": "Name repeated task and private-sync record controls",
+  "operation_history": ".skill-tree/history/validation/ux-ui/workspace-control-names/operation-history.json",
+  "checks": [
+    {
+      "id": "workspace-control-names-behavior",
+      "counts": {
+        "discovered": 40,
+        "expected": 40,
+        "failed": 0,
+        "passed": 40,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.log",
+          "sha256": "ac906dcf8478da5a8e04e1a9c61b66c974b9ffd9617b160160bc6f0dd312e174"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/C-1de670ae-6edc-4979-add6-eddb8d4a9806.trx",
+          "sha256": "5f4a04ee3535d4fc4ae2cb7d4defc593f23bf501318b3f01fd3bff78159ee7b9"
+        }
+      ]
+    },
+    {
+      "id": "workspace-control-names-rendered",
+      "counts": {
+        "discovered": 649,
+        "expected": 649,
+        "failed": 0,
+        "passed": 649,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+          "sha256": "24540bda451fc43adc6149b054218edf4c48b137f2b94d44fcec02d0408cbe52"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

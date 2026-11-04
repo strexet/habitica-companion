@@ -1,0 +1,66 @@
+{
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "status": "normal-delivery-preparation",
+  "authorization_receipt": ".skill-tree/history/validation/implement-all-2026-11-02/owner-scope.json",
+  "scope_revision_receipt": ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json",
+  "provider": "Netlify Functions Free",
+  "required_node_major": 22,
+  "gateway": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+  "auth_worker": "habitica-companion-auth",
+  "netlify": {
+    "team_name": "Flying Monolith",
+    "team_slug": "strexet",
+    "project_id": "04629462-d0c6-4a72-bf02-6170cb1c39f8"
+  },
+  "receiver": {
+    "hosting_candidate": "Existing owner-controlled habitica-companion HTTPS hosting.",
+    "exact_route": null,
+    "deployed_identity": null,
+    "status": "isolated HTTP receiver and reduced counters require preparation"
+  },
+  "per_operation": {
+    "gateway_deadline_ms": 10000,
+    "controller_network_deadline_ms": 15000,
+    "deployment_deadline_seconds": 180,
+    "cleanup_reserve_seconds": 30,
+    "control_deadline_seconds": 45
+  },
+  "safety": {
+    "subscription_activation": false,
+    "real_user_callback": false,
+    "chat_messages": false,
+    "habitica_requests": false,
+    "paid_resources": false,
+    "automatic_upgrade": false,
+    "provider_fallback": false,
+    "test_ca_in_production": false,
+    "new_total_time_budget": null
+  },
+  "required_controls": [
+    "Verify current deployed gateway/Auth source hashes, Node22 runtime, audience/issuer, claim database, available Free quota, provider logging and current rollback identities without secret values.",
+    "Prepare an exact isolated synthetic receiver on existing owned HTTPS hosting and bind the receiver deployment identity and cleanup to the profile.",
+    "Persist the original request identity before minting the synthetic grant; observe valid webhook signature and exact callback bytes, successful claim, exactly one delivery and the successful response within the shared deadline.",
+    "Replay the original request without replacement authority; observe no second receiver delivery and preserve the original claim fence.",
+    "Disable the selected gateway/claim lanes and verify shutdown or scoped rollback; retain original claims and reduced receipts."
+  ],
+  "deferred_controls": {
+    "pending_id": "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+    "blocking_for_normal_delivery": false,
+    "coverage": "Controlled changing/private/mixed DNS answers, independent address-family refusal fixtures, invalid or wrong-host certificates and stalled TLS handshakes.",
+    "result": "unverified; no hosted pass or security-qualification claim"
+  },
+  "retained_production_guards": [
+    "HTTPS only, public-address checks, original-host TLS certificate validation.",
+    "No redirect following, bounded bytes and deadlines, no automatic resend or provider fallback."
+  ],
+  "evidence": [
+    "Exact deployed source/runtime/configuration and rollback identity.",
+    "Reduced expected/received byte hashes, signature-verification verdict, original request identity and receiver counters.",
+    "Replay refusal, bounded successful response and disable/rollback observations.",
+    "Explicit deferred hosted DNS/TLS limitations."
+  ],
+  "stop_policy": "Classify executed control, prerequisite wait, transport uncertainty and host-policy rejection separately. Stop after two consecutive executed controls with the same unresolved signature and no new evidence. Keep targeted repairs in this checkpoint; no provider fallback or replacement request escapes an unknown fence.",
+  "acceptance_limit": "Observed normal synthetic delivery through the selected destination and deployments only; no complete hosted security, real subscription or chat-rendering claim.",
+  "executed_hosted_controls": 0
+}

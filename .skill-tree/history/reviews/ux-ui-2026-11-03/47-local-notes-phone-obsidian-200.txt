@@ -1,0 +1,70 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - generic: Personal knowledge
+  - heading "Notes" [level=1]
+  - paragraph: Capture facts, keep documents and find them later.
+  - button "New note"
+  - paragraph:
+    - strong: Browser Workspace
+    - text: · the same active Workspace as tasks.
+    - link "Workspace access and transfer":
+      - /url: /todo/sync
+  - button "Refresh notes"
+  - paragraph: Browser is the default Workspace. Notes stay on this device until a reviewed cloud move. Clearing browser data removes these notes.
+  - status: Saved. Original command receipt confirmed.
+  - complementary "Find notes":
+    - text: Search titles and Markdown
+    - searchbox "Search titles and Markdown"
+    - checkbox "Show trash"
+    - text: Show trash
+    - text: Project filter
+    - combobox "Project filter":
+      - option "All notes" [selected]
+      - option "Unassigned"
+    - paragraph: Project choices unavailable. Load the matching workspace in Projects. Existing links remain saved and can be cleared.
+    - text: Folder filter
+    - combobox "Folder filter":
+      - option "All notes"
+      - option "Without a folder" [selected]
+      - option "Hotels 🧥 · 94eb5dea-2697-4b83-bd72-3a38f1fe9f8a"
+      - option "Hotels 🧥 · 4162bad6-7b4a-422e-8125-8f7d3196089b"
+    - generic "Manage folders"
+    - option "Outside projects" [selected]
+    - generic "Last confirmed folder receipt"
+    - paragraph: 1 note(s) · This browser only
+    - list:
+      - button "One hotel Revision 3 · 2026-11-03 05:33 UTC":
+        - strong: One hotel
+        - generic: Revision 3 · 2026-11-03 05:33 UTC
+    - button "Previous notes" [disabled]
+    - button "More notes" [disabled]
+  - heading "Edit note" [level=2]
+  - paragraph: This browser only · Stored revision 3
+  - paragraph: "Project: Unassigned"
+  - text: Project
+  - combobox "Project":
+    - option "Unassigned" [selected]
+  - button "Unassigned · clear project" [disabled]
+  - paragraph: "Folder: Without a folder"
+  - text: Folder
+  - combobox "Folder":
+    - option "Without a folder" [selected]
+    - option "Hotels 🧥 · 94eb5dea-2697-4b83-bd72-3a38f1fe9f8a · Outside projects"
+    - option "Hotels 🧥 · 4162bad6-7b4a-422e-8125-8f7d3196089b · Outside projects"
+  - button "Clear folder · keep project" [disabled]
+  - text: Title
+  - textbox "Title": One hotel
+  - group "Editor mode":
+    - button "Markdown"
+    - button "Preview"
+  - text: Markdown
+  - textbox "Markdown": "# Hotel Host: full details Food: exact ```md <>&\\ ```"
+  - paragraph: 54 / 131072 UTF-8 bytes. Preview supports headings, lists, tables and fenced code. HTML is displayed as text; remote images are omitted. Source stays unchanged.
+  - button "Save note"
+  - button "Export Markdown"
+  - text: Import .md
+  - button "Import .md"
+  - paragraph: Imports become unsaved drafts. Exports contain readable private text; keep downloaded files safe.
+  - button "Move to trash"
+  - generic "Version history · 3 retained versions"
+  - generic "Last confirmed receipt"

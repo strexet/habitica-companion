@@ -1,0 +1,4 @@
+{
+  "componentFixture": "The new neutral activity JSON is now explicitly copied into the WebApp test output. The first component attempt executed seven tests and failed three on missing fixture files; no behavioral Red was claimed.",
+  "sdkFixture": "The MCP grant-epoch fence advances store_version on first scoped access without changing canonical document JSON. The fixture warms the existing read-only sync-status authorization boundary before seeding and observing exact statistics-read purity. The original first SDK attempt remains recorded; no product read or security fence was weakened."
+}

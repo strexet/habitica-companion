@@ -1,0 +1,134 @@
+{
+  "purpose": "Native focus under a fixed header: field margin versus document padding. Synthetic date control only.",
+  "results": [
+    {
+      "engine": "chromium",
+      "font": 16,
+      "mode": "none",
+      "top": 20,
+      "active": true,
+      "unobscured": false
+    },
+    {
+      "engine": "chromium",
+      "font": 16,
+      "mode": "margin",
+      "top": 128,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "chromium",
+      "font": 16,
+      "mode": "padding",
+      "top": 484,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "chromium",
+      "font": 16,
+      "mode": "both",
+      "top": 484,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "chromium",
+      "font": 32,
+      "mode": "none",
+      "top": 20,
+      "active": true,
+      "unobscured": false
+    },
+    {
+      "engine": "chromium",
+      "font": 32,
+      "mode": "margin",
+      "top": 256,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "chromium",
+      "font": 32,
+      "mode": "padding",
+      "top": 520,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "chromium",
+      "font": 32,
+      "mode": "both",
+      "top": 520,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 16,
+      "mode": "none",
+      "top": 20,
+      "active": true,
+      "unobscured": false
+    },
+    {
+      "engine": "webkit",
+      "font": 16,
+      "mode": "margin",
+      "top": 128,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 16,
+      "mode": "padding",
+      "top": 128,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 16,
+      "mode": "both",
+      "top": 256,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 32,
+      "mode": "none",
+      "top": 20,
+      "active": true,
+      "unobscured": false
+    },
+    {
+      "engine": "webkit",
+      "font": 32,
+      "mode": "margin",
+      "top": 256,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 32,
+      "mode": "padding",
+      "top": 128,
+      "active": true,
+      "unobscured": true
+    },
+    {
+      "engine": "webkit",
+      "font": 32,
+      "mode": "both",
+      "top": 384,
+      "active": true,
+      "unobscured": true
+    }
+  ],
+  "cleanup": true
+}

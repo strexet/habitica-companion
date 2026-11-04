@@ -1,0 +1,5 @@
+{
+  "observation": "The first passing13-case client control and19-case owner API control overlapped. The Worker recipe requests separate .NET/Worker execution. No shared test data or production effects were involved.",
+  "correction": "Retain both observations; final acceptance will use new serial controls after the complete guard/regression plan is frozen.",
+  "classification": "executed-control"
+}

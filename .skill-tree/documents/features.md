@@ -997,6 +997,8 @@ GET /groups/party
 
 ### Algorithm / rules
 
+Dashboard account readiness uses snapshot freshness and the actual retrieval time; domain refresh history remains a separate fact. Direct account replacement resets the prior account domain history before background refresh entries are created. Missing history never supplies a manufactured successful timestamp.
+
 Dashboard must not contain business formulas. Dashboard displays state computed by rules/application factories and invokes use-case services.
 
 Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, current-user temporary buff expiry, and party buffs per member's next CRON. After confirmed CRON, refresh account/tasks/party state through the session controller and show an inline success or error result in addition to the snackbar.
@@ -3368,6 +3370,8 @@ Local package preparation preserves the source semantic version and adds exact f
 
 ### Local personal Notes foundation
 
+The model and cloud owner API support [single-level Notes folders](notes-folders.md), optional exact folder membership, explicit empty-only removal and project-consistent placement. Folder names never establish ownership. Source/account-bound schema2 backups retain independent folder receipts alongside unchanged legacy note receipts. Browser storage, local D1/client qualification, reviewed MCP tools and folder UI retain separate evidence boundaries.
+
 Personal Markdown notes have independent IDs, revisions, exact source text and recoverable trash. Explicit create, partial update, append, trash, restore and purge commands use expected notebook/note revisions and original command receipts. Purge removes every retained content version while retaining identity/receipt hashes. Notes never create Habitica tasks or rewards.
 
 The local Notes service supplies account-bound export/import with conflict refusal and full Markdown preservation. Drafts remain volatile and clear on account switch or sign-out. The dedicated Notes page now exposes the service through separately selected browser and cloud sources.
@@ -3427,6 +3431,8 @@ Global Settings links to Todo Sync for task consent, execution, tags, backup and
 ### Always-open Todo navigation
 
 Status: implemented locally. The persistent Todo menu exposes Today, Habits, Dailies and Tasks as direct category routes, followed by Projects, Statistics and Sync. Inbox, Planning, Saved lists, History and the legacy Habitica tasks/Rewards page remain reachable in the same open menu. Category tabs repeat the four daily destinations and identify the selected route. The Dashboard opens Today. Existing `/tasks` links continue to open the mixed Habitica view, including Rewards and per-task detail charts.
+
+New Daily capture requires title and the complete schedule before Add Daily. Weekly/monthly fields precede the same explicit preview action; incomplete title Enter remains rejected. Todo and Habit retain immediate title-first capture.
 
 Habits and Dailies compose the shared `TodoTaskPanel` with exact task-kind filters, immediate title capture and visible score or completion actions. Tasks combines immediate Todo capture with the retained hierarchy, subtask, placement and workflow controls. Today places the selected-day grouping and exact Daily occurrence review beside an immediate Add task link to the task capture page. Route entry neither changes a task nor enables cloud execution. All category pages share the selected workspace, original pending intent and Habitica correspondence state; unsupported or unavailable source data remains explicit.
 
@@ -3501,16 +3507,16 @@ Notes retain one optional versioned project association under the existing priva
 
 ## MCP protocol compatibility
 
-Status: implemented and qualified locally. The MCP Worker serves modern2026-07-28 discovery and per-request tools alongside legacy initialize/tools clients using exact server/core SDK2.4.0 pins. The request-local factory preserves the existing OAuth, Origin, quota, tool-scope and original command/receipt boundaries. The interpreter-backed Worker validator requires no unsafe-eval permission. get_connector_compatibility reports qualified transport versions separately from backend identity, tool schemas and caller-reported package installation. No Events capability, subscription, callback or game effect follows protocol discovery. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns package, offline behavior, failure, privacy, rollback and validation boundaries; current host behavior and deployed protocol identity require separate observations.
+Status: implemented and qualified locally. The MCP Worker serves modern2026-07-28 discovery and per-request tools alongside legacy initialize/tools clients using exact server/core SDK2.4.0 pins. The request-local factory preserves the existing OAuth, Origin, quota, tool-scope and original command/receipt boundaries. The interpreter-backed Worker validator requires no unsafe-eval permission. get_connector_compatibility reports qualified transport versions separately from backend identity, tool schemas and caller-reported package installation. Ordinary profiles advertise no Events capability. Explicitly enabled Events discovery remains separate from reviewed task consent, a verified callback subscription and any actual host response; protocol discovery creates no game effect. [mcp-protocol-compatibility.md](mcp-protocol-compatibility.md) owns package, offline behavior, failure, privacy, rollback and validation boundaries; current host behavior and deployed protocol identity require separate observations.
 
 
 ## Protected callback transport candidate
 
-Status: locally implemented, disabled pending hosted qualification. The Node22 Netlify function and Auth single-use claim route bind exact dispatch bytes, identity, audience and expiry; the TLS connection pins an approved public address while verifying the original hostname. Auth retains opaque replay fences; the gateway persists no callback URL, body or webhook key. Unsupported configuration, DNS/TLS refusal, quota exhaustion and missing acknowledgements fail closed without a paid fallback or automatic resend. The feature performs no Habitica request, changes no task and supplies no subscription, scheduler or chat reply. Offline dispatch is unavailable; Workspace must retain original undelivered/unknown state. Local TLS and synthetic Worker/D1 controls remain distinct from hosted checks. [callback-egress.md](callback-egress.md) owns detailed privacy, failure, validation and operator setup.
+Status: implemented with normal hosted synthetic delivery, exact signed-byte receipt, replay refusal and shutdown qualified for the recorded deployment identities. Gateway/claim gates are disabled after qualification; dedicated hosted DNS/TLS failure injection remains deferred. The Node22 Netlify function and Auth single-use claim route bind exact dispatch bytes, identity, audience and expiry; the TLS connection pins an approved public address while verifying the original hostname. The envelope supports the grant-bound subscription header and two signatures during rotation. Auth retains opaque replay fences; the gateway persists no callback URL, body or webhook key. Unsupported configuration, DNS/TLS refusal, quota exhaustion and missing acknowledgements fail closed without a paid fallback or automatic resend. The feature performs no Habitica request, changes no task and supplies no subscription, scheduler or chat reply. Offline dispatch is unavailable; Workspace must retain original undelivered/unknown state. Local TLS and synthetic Worker/D1 controls remain distinct from hosted checks. [callback-egress.md](callback-egress.md) owns detailed privacy, failure, validation and operator setup.
 
 ## Redirect-safe PWA launch
 
-Status: implemented and published in the [production PWA hotfix](../history/releases/2026-10-30-pwa-hotfix/readme.md). The published service worker validates the public HTML shell and removes compatible same-origin redirect history before cached navigation. Fresh installation retains asset integrity and same-origin request mode; a separate shell-v2 cache permits worker-only recovery with the same asset manifest. Invalid or unavailable cached shells use the original network path; offline cache misses remain explicit failures. Activation removes obsolete public build caches without clearing application storage or push enrollment. No Habitica API, credential, task or game mutation occurs.
+Status: implemented. The [redirect hotfix](../history/releases/2026-10-30-pwa-hotfix/readme.md) published redirect-safe navigation; the [UX/UI release](../history/releases/2026-11-04-ux-ui/README.md) adds offline module dependencies and a separate cache namespace. The published service worker validates the public HTML shell and removes compatible same-origin redirect history before cached navigation. Fresh installation retains asset integrity and same-origin request mode; a separate shell-v3 cache includes `.mjs` storage dependencies and permits worker-only recovery with the same asset manifest. Invalid or unavailable cached shells use the original network path; offline cache misses remain explicit failures. Activation removes obsolete public build caches without clearing application storage or push enrollment. No Habitica API, credential, task or game mutation occurs.
 
 Validation uses worker Response fixtures and the isolated published-worker lifecycle in tests/browser/pwa-shell.mjs. Production publication, affected-device worker activation and iPhone Safari/installed-app relaunch remain separate observations under pwa-installation.md.
 
@@ -3528,3 +3534,94 @@ Reviewed cloud adoption includes all selected-account browser Workspaces and per
 ### One Workspace for tasks and Notes
 
 The active browser Workspace needs no first-use setup. Explicit cloud adoption captures and freezes browser records, reviews exact sources and conflicts, then publishes cloud selection only after verified acceptance and local acknowledgement. Tasks and Notes share the selection; ordinary browser/cloud pickers no longer appear. New sessions restore approved access from encrypted account metadata without repeating enrollment consent. Unknown/offline cloud access preserves the source and offers existing-connection recovery. Original transfer receipts and frozen backup copies remain available. Reverse cloud-to-browser ownership transfer remains deferred.
+
+## Separately reviewed Events subscriptions
+
+The gated Auth/Workspace/MCP lifecycle now supports independent exact-task consent and signed callback verification with encrypted Auth-only secrets. Deterministic identities, finite expiry, replacement-key rotation, original receipts and revocation fences are implemented. Ordinary profiles remain disabled; actual ChatGPT response and Codex local delivery are unqualified. See [event-subscriptions.md](event-subscriptions.md).
+
+## Exact-task reminder Events
+
+A default-off Workspace outbox and Auth signer dispatch generic due-cue events through verified separately consented callbacks. Original IDs, pre-send durable intents, current authorization, bounded known-transient retries and unknown-outcome fences prevent blind duplicate sends. Genuine MCP status reads distinguish host receipt from actual chat response. [reminder-events.md](reminder-events.md) owns payload, expiry, queues, cleanup and qualification limits.
+
+The owner-selected production0.3.1 notification release enables the gated Events implementation with separate user consent still required. [Notification release evidence](../history/releases/2026-11-02-notifications/README.md) records the published components, actual normal gateway delivery, original receipts and remaining host/device qualification.
+
+### Reviewed private Notes folder tools
+
+Notes folder discovery, exact reads and create/rename/remove-empty operations use the reviewed MCP preview/accept/original-receipt boundary. Note placement uses the existing note command with explicit project-consistent folder fields and retained content hashes. Separate Notes scopes remain mandatory; project-folder creation and explicit project placement require current canonical authority. Shared preview capacity, private-copy cleanup, original uncertainty recovery and actual SDK limits reside in [notes-folders.md](notes-folders.md). Folder presentation and installed-host behavior remain separately qualified.
+
+### Notes folder navigation and editing
+
+The /notes library and /todo/projects Notes section expose single-level folder browsing and reviewed create/rename/remove-empty controls. Separate thematic notes retain exact content, note identity and history when moved. New-note drafts inherit the selected folder and matching project; association changes require explicit Save review. Clearing membership preserves the project. Folderless and unassigned project filters remain independent. Dirty drafts, unavailable projects, nonempty removal including trash, original uncertain receipts and private source/account changes remain explicit. Markdown import remains unsaved and unfiled. The [folder contract](notes-folders.md) owns data, API/MCP parity and local qualification boundaries.
+
+### Coverage-aware Daily and Habit day series
+
+The statistics route presents bounded per-task calendar-day series through [task activity coverage](task-activity-coverage.md). Exact task, timezone, UTC as-of and start date select a read-only window. Daily schedules/lifecycle, corrections, Habit positive-day deduplication and negative-only frequency preserve causal coverage. Unknown intervals remain unknown; current-day grace preserves a preceding run, and longest observed values never become lifetime records. Reviewed MCP parity uses get_task_activity_statistics with tasks:read and context-bound paging. No task/game/notification effect follows a statistics read.
+
+## Reviewed linked Daily schedule replacement
+
+The cloud recurring editor and reviewed MCP contract support one exact lossless linked Daily schedule replacement through `editLinkedDailySchedule`. The fresh90-second preview binds complete provider fields, account settings and exact identity. Accepted native epochs remain separate from original normalized provider response facts; unsupported/currently uncertain schedules remain read-only. Auth rechecks account/task immediately before one metadata PUT and also protects ordinary Daily updates from destructive monthly normalization. No score, Cron, native-pause translation or backfill occurs. Original unknown outcomes retain the same command/attempt and require original receipt recovery. [linked-daily-schedules.md](linked-daily-schedules.md) defines supported forms, interface semantics, source qualification and upstream race limits. The feature remains source-only until separately authorized publication.
+
+### Native task type copies
+
+Status: implemented locally; unpublished. The [native type-copy contract](task-type-copies.md) defines reviewed new Todo/Daily/Habit copies, exact source/root revision guards, copied/reset-field disclosure and immutable shallow lineage. Application/native IndexedDB and Worker acceptance retain source history and mappings and request zero provider/tag/game effects. `/todo/convert` and scoped MCP preparation/acceptance/original lookup share the same behavior. Daily destinations require explicit native recurrence; organization can be retained only when valid or explicitly cleared. Unknown outcomes retain original identities; private previews disappear on account changes. Migration0023 and independent cross-runtime, component, SDK and rendered-browser controls are required. Production, physical-device and actual provider evidence remain separate.
+
+### Relative dates in saved lists
+
+Status: implemented locally; unpublished. [Relative saved-date rules](relative-saved-dates.md) extend stored planned/deadline intent with explicit presets and UTC/IANA timezone. Application and Worker evaluators report exact as-of/day/bounds, preserve dependency context and reject stale-day/revision pages without mutating tasks. Organization v5 hashes bind the new intent while old absolute commands remain unchanged. `/todo/lists`, typed MCP reads and retained consumers expose interpreted dates, explicit conflict clearing and restart. Relative Habitica tag membership remains visibly unavailable until a separately reviewed day-bound contract exists; existing tags/history and original unknown recovery remain preserved. Independent calendar/hash, native, SDK/D1, typed/component and rendered-browser controls qualify local behavior; real accounts, hosted publication and devices remain separate.
+
+## Project-filtered retained history
+
+Project-filtered retained history now selects current canonical task assignment across completion and Habit events, including archived/removed projects and Unassigned. Accepted event snapshots remain unchanged. History/Projects navigation carries exact Workspace/source guards; MCP retained identity discovery uses `list_projects(includeRetained:true)`. Native original restore recovery remains reviewed. See [project history](project-retained-history.md) for the unpublished local contract and qualification limits.
+
+## Folder-aware Workspace adoption
+
+Reviewed Workspace adoption preserves Notes folders, exact memberships, independent causal baselines and original folder receipts across schema1/schema2 notebooks. Conflict archival never silently associates source notes with an unrelated target folder. See [folder adoption](notes-folder-adoption.md) for unpublished behavior and verification limits.
+
+## Reviewed relative-date tag membership
+
+Relative saved lists support explicit day-bound tag reviews and exact native-tag adoption. Complete member additions/removals, interpreted date bounds, current source revision and original receipt identity remain bound to the approved day. Default planning and midnight grant no effects. See [relative tag reviews](relative-tag-reviews.md) for unpublished behavior and qualification.
+
+## Accessible application navigation
+
+Status: Implemented in local source. Owner: Habitica.WebApp MainLayout. The application shell exposes a named navigation toggle, controlled region and expansion state. Closed navigation is inert. Escape and explicit phone backdrop dismissal restore toggle focus; route changes retain heading-focus ownership. Skip to main content focuses the native main landmark without changing the route. The shell reads existing session display state and performs no Habitica operation. AppNavMenuTests and the accessible-shell browser adapter cover the component and owned synthetic route journeys; physical-device qualification remains separate.
+
+## Workspace readiness presentation
+
+Implemented in `TodoWorkspacePresentation.Readiness` and `TodoTaskPanel`. The deterministic read model explains existing access and command facts without restoring connections, changing sources, granting consent or replaying commands. Existing account/source guards continue to own editing. Local component and synthetic native IndexedDB checks cover loading, invalid snapshots and explicit reload recovery; physical devices, assistive technology and hosted access remain separately unqualified.
+
+A late coordinator transition to an available selected source initiates its snapshot read once. Original reviews and recovery fences retain ownership; unchanged failed reads require explicit reload. No source fallback or connection recovery occurs.
+
+Canonical task navigation: Planning/Inbox Add task and History/Statistics Open tasks resolve to `/todo/tasks`. The legacy `/tasks` cache and its clearly named Habitica navigation entry remain available. This route correction adds no task command, provider call or source switch.
+
+Today reminder access: optional setup follows daily work in a collapsed native disclosure. Existing local preferences and cue data survive opening/closing and selected-day changes. Delivery uncertainty and errors remain visible; no permission, enrollment or task behavior is enabled by disclosure interaction.
+
+Companion collection paging bounds each displayed pet/mount/potion collection to twenty cards while full matching candidate arrays retain queue order and exact keys. Query/type changes reset only view pages; queued selections, dry-run previews, allocation, partial execution and stop behavior remain unchanged. Inventory sales keep an independent cached-inventory scope. Pagination/filtering perform no provider action.
+
+Saved-list definition validation is implemented in `TodoSavedListDraft.Validate` and `TodoSavedListPanel`. Typed constraints cover supported choices, required name, bounded search, valid/ordered dates, fixed-relative conflicts, explicit available timezone, stage/source restrictions and empty reference identities. Errors retain entered values and prevent preparation; domain query validation remains the backstop. Valid relative evaluation and original command/receipt recovery are unchanged. UI source selection no longer clears type/state filters implicitly. Synthetic component and browser qualification cover local review/correction; physical devices and assistive technology remain separate.
+
+Push device presentation distinguishes not checked, checking, observed capability and failed browser checks without changing the BrowserPushCapability wire record. Permission default displays as not requested; denied, granted, installation-required, insecure and unsupported observations remain distinct. Account/source changes reset observations and late/disposed probes are discarded. Browser module read failure retains the existing unprepared wire state. Setup checks request no permission; enrollment retains explicit acknowledgement and direct device gesture, original consent and pending-request recovery. Controller/component qualification includes late probes and actual PwaPushBrowser module failure. Physical devices, service-worker enrollment and notification permission prompts remain unqualified by synthetic review.
+
+The authenticated compact drawer puts canonical Add task and Today/Inbox/Plan/Projects before direct Habits/Dailies/Tasks and secondary tools. More planning and Game tools use native disclosures with the active route group open on entry/navigation. Notes, Settings and Diagnostics remain direct; all prior route URLs and permissions remain. A compact brand/account summary replaces the drawer hero. Qualification covers exact active links including nested Tasks, native summary keyboard operation, drawer Escape/focus, route/capture reachability and original synthetic journal preservation. Physical devices and assistive technology remain unqualified.
+
+### Owned equipment discovery
+
+Status: local implementation; task-scoped rendered qualification records own acceptance.
+Owner and entry: `InventoryPage.razor`, `/inventory`.
+Primary data: cached UserSnapshot owned gear keys and GearCatalogSnapshot displayed names/keys through InventoryViewModelFactory. Search/filter/jump/paging perform no Habitica mutation or fetch; existing explicit equipment actions retain freshness and authorization gates.
+Rules: normalize displayed whitespace and compare names/keys without case sensitivity; combine slot and query; show exact full match count and20 filtered rows per page. Filters reveal matching categories and suppress duplicate best-item strips inside results. Equipped identity and optimizer recommendations remain unfiltered. Reset restores prior fold preferences and keeps optimizer and preset drafts. Explicit View results/Enter focuses the selected category or results heading; selection/typing alone keeps focus. Account changes clear transient query/slot; changed inventory/catalog resets the results page. Query state is not persisted or uploaded.
+Offline and errors: browse retained cached inventory with existing stale/read-only action gates. Empty search has local reset feedback; missing snapshots keep existing sign-in/refresh guidance. No new endpoint, credential, consent or approval contract.
+Validation: component interactions cover301 items, translated name/key lookup, accessory reveal, zero matches,20-item pages, focus requests and unchanged battle/costume snapshots, optimizer and preset drafts. Native browser qualification covers the actual route separately. Existing UI remains battle-only; no costume UI is introduced. Physical devices and assistive technology remain separate.
+
+Linked Daily capture and replacement now expose policy-derived UTC offset selectors with exact schedule ID disclosure. Fresh account observations constrain choices without replacing drafts; unsupported account settings and mismatches receive explicit corrective copy. Native IANA recurrence authoring remains separate. Owners: TodoDailyCreationFields, LinkedDailyTimeZonePicker, TodoRecurringEditor and DailyProjectionSchedule. Presentation performs no additional API call, persistence or provider operation; existing review/executor checks remain authoritative.
+
+Saved lists now display existing definitions and selected results before optional authoring. New list opens name/source/search with additional filters collapsed; editing reveals retained additional values. Closing authoring preserves the current draft and Continue draft reopens the exact editor. Collapsing options never clears values or omits predicates from reviewed commands. Invalid advanced filters reopen before first-field focus. Existing source/revision fences, original-command recovery, relative timezone identity and no-fallback reads remain unchanged; no new provider operation or storage schema is introduced. Owners: TodoSavedListPanel and TodoSavedListDraft.
+
+Responsive Notes navigation now belongs to NotesPanel; NotesController retains the existing source, draft, version, metadata review and original-receipt contracts. Library/editor mode changes perform no save, folder mutation or source switch. Title and writing precede optional associations. Current project browsing never replaces a draft association; mismatched project context has an explicit warning. Container width controls single/split access, including nested Project Notes and enlarged text.
+
+Projects opens with an explicit unselected project picker, existing assigned work and project Notes before optional organization management. The All tasks link keeps unscoped browsing available. Management opens from the page toolbar and closes back to that control without resetting project selection or an alias/name draft. Original reviews and receipt recovery remain visible and lock management closure while unresolved. Active/archived identities, aliases, Notes association and source authority remain unchanged; no default project or organization command is persisted by visibility changes.
+
+Settings begins with current sign-in and last observed agent-connection state. Five native in-page links separate account/access, appearance/install, readable shared Workspace/planning, encrypted private device sync and browser data/backup. Existing handlers, independent consent, exclusion state, import conflict choices and cancelable removal review remain unchanged. General app backup/private sync exclude Notes and Workspace journals; exact export destinations are linked beside shared-data guidance.
+
+Push repeat schedules use native named weekday checkboxes and month-date choices1–31. Empty weekly/monthly selection receives associated specific feedback before preparation. Saved-cue drafting and retained-schedule editing preserve exact weekday/date identities, UTC cue, interval, timezone, DST policy, device revisions and original pending-command recovery. Review includes named weekdays with numeric identity; schedule and task commands remain separate.
+
+Notes capture waits for initial component loading before enabling New note. A visible loading status explains the disabled action; completing the read derives editor state before releasing entry. Existing scoped drafts, pending receipts and dirty-draft review remain unchanged.

@@ -1,0 +1,3039 @@
+{
+  "gear": {
+    "flat": {
+      "weapon_search_000": {
+        "key": "weapon_search_000",
+        "text": "Discovery wand 0",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 1,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_001": {
+        "key": "weapon_search_001",
+        "text": "Discovery wand 1",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 2,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_002": {
+        "key": "weapon_search_002",
+        "text": "Discovery wand 2",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 3,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_003": {
+        "key": "weapon_search_003",
+        "text": "Discovery wand 3",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 4,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_004": {
+        "key": "weapon_search_004",
+        "text": "Discovery wand 4",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 5,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_005": {
+        "key": "weapon_search_005",
+        "text": "Discovery wand 5",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 6,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_006": {
+        "key": "weapon_search_006",
+        "text": "Discovery wand 6",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 7,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_007": {
+        "key": "weapon_search_007",
+        "text": "Discovery wand 7",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 8,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_008": {
+        "key": "weapon_search_008",
+        "text": "Discovery wand 8",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 9,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_009": {
+        "key": "weapon_search_009",
+        "text": "Discovery wand 9",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 10,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_010": {
+        "key": "weapon_search_010",
+        "text": "Discovery wand 10",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 11,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_011": {
+        "key": "weapon_search_011",
+        "text": "Discovery wand 11",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 12,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_012": {
+        "key": "weapon_search_012",
+        "text": "Discovery wand 12",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 13,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_013": {
+        "key": "weapon_search_013",
+        "text": "Discovery wand 13",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 14,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_014": {
+        "key": "weapon_search_014",
+        "text": "Discovery wand 14",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 15,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_015": {
+        "key": "weapon_search_015",
+        "text": "Discovery wand 15",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 16,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_016": {
+        "key": "weapon_search_016",
+        "text": "Discovery wand 16",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 17,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_017": {
+        "key": "weapon_search_017",
+        "text": "Discovery wand 17",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 18,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_018": {
+        "key": "weapon_search_018",
+        "text": "Discovery wand 18",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 19,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_019": {
+        "key": "weapon_search_019",
+        "text": "Discovery wand 19",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 20,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_020": {
+        "key": "weapon_search_020",
+        "text": "Discovery wand 20",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 21,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_021": {
+        "key": "weapon_search_021",
+        "text": "Discovery wand 21",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 22,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_022": {
+        "key": "weapon_search_022",
+        "text": "Discovery wand 22",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 23,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_023": {
+        "key": "weapon_search_023",
+        "text": "Discovery wand 23",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 24,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_024": {
+        "key": "weapon_search_024",
+        "text": "Discovery wand 24",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 25,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_025": {
+        "key": "weapon_search_025",
+        "text": "Discovery wand 25",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 26,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_026": {
+        "key": "weapon_search_026",
+        "text": "Discovery wand 26",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 27,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_027": {
+        "key": "weapon_search_027",
+        "text": "Discovery wand 27",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 28,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_028": {
+        "key": "weapon_search_028",
+        "text": "Discovery wand 28",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 29,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_029": {
+        "key": "weapon_search_029",
+        "text": "Discovery wand 29",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 30,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_030": {
+        "key": "weapon_search_030",
+        "text": "Discovery wand 30",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 31,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_031": {
+        "key": "weapon_search_031",
+        "text": "Discovery wand 31",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 32,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_032": {
+        "key": "weapon_search_032",
+        "text": "Discovery wand 32",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 33,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_033": {
+        "key": "weapon_search_033",
+        "text": "Discovery wand 33",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 34,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_034": {
+        "key": "weapon_search_034",
+        "text": "Discovery wand 34",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 35,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_035": {
+        "key": "weapon_search_035",
+        "text": "Discovery wand 35",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 36,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_036": {
+        "key": "weapon_search_036",
+        "text": "Discovery wand 36",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 37,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_037": {
+        "key": "weapon_search_037",
+        "text": "Discovery wand 37",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 38,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_038": {
+        "key": "weapon_search_038",
+        "text": "Discovery wand 38",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 39,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_039": {
+        "key": "weapon_search_039",
+        "text": "Discovery wand 39",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 40,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_040": {
+        "key": "weapon_search_040",
+        "text": "Discovery wand 40",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 41,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_041": {
+        "key": "weapon_search_041",
+        "text": "Discovery wand 41",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 42,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_042": {
+        "key": "weapon_search_042",
+        "text": "Discovery wand 42",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 43,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_043": {
+        "key": "weapon_search_043",
+        "text": "Discovery wand 43",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 44,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_044": {
+        "key": "weapon_search_044",
+        "text": "Discovery wand 44",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 45,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_045": {
+        "key": "weapon_search_045",
+        "text": "Discovery wand 45",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 46,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_046": {
+        "key": "weapon_search_046",
+        "text": "Discovery wand 46",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 47,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_047": {
+        "key": "weapon_search_047",
+        "text": "Discovery wand 47",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 48,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_048": {
+        "key": "weapon_search_048",
+        "text": "Discovery wand 48",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 49,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_049": {
+        "key": "weapon_search_049",
+        "text": "Discovery wand 49",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 50,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_050": {
+        "key": "weapon_search_050",
+        "text": "Discovery wand 50",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 51,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_051": {
+        "key": "weapon_search_051",
+        "text": "Discovery wand 51",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 52,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_052": {
+        "key": "weapon_search_052",
+        "text": "Discovery wand 52",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 53,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_053": {
+        "key": "weapon_search_053",
+        "text": "Discovery wand 53",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 54,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_054": {
+        "key": "weapon_search_054",
+        "text": "Discovery wand 54",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 55,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_055": {
+        "key": "weapon_search_055",
+        "text": "Discovery wand 55",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 56,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_056": {
+        "key": "weapon_search_056",
+        "text": "Discovery wand 56",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 57,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_057": {
+        "key": "weapon_search_057",
+        "text": "Discovery wand 57",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 58,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_058": {
+        "key": "weapon_search_058",
+        "text": "Discovery wand 58",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 59,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_059": {
+        "key": "weapon_search_059",
+        "text": "Discovery wand 59",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 60,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_060": {
+        "key": "weapon_search_060",
+        "text": "Discovery wand 60",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 61,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_061": {
+        "key": "weapon_search_061",
+        "text": "Discovery wand 61",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 62,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_062": {
+        "key": "weapon_search_062",
+        "text": "Discovery wand 62",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 63,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_063": {
+        "key": "weapon_search_063",
+        "text": "Discovery wand 63",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 64,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_064": {
+        "key": "weapon_search_064",
+        "text": "Discovery wand 64",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 65,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_065": {
+        "key": "weapon_search_065",
+        "text": "Discovery wand 65",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 66,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_066": {
+        "key": "weapon_search_066",
+        "text": "Discovery wand 66",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 67,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_067": {
+        "key": "weapon_search_067",
+        "text": "Discovery wand 67",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 68,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_068": {
+        "key": "weapon_search_068",
+        "text": "Discovery wand 68",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 69,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_069": {
+        "key": "weapon_search_069",
+        "text": "Discovery wand 69",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 70,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_070": {
+        "key": "weapon_search_070",
+        "text": "Discovery wand 70",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 71,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_071": {
+        "key": "weapon_search_071",
+        "text": "Discovery wand 71",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 72,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_072": {
+        "key": "weapon_search_072",
+        "text": "Discovery wand 72",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 73,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_073": {
+        "key": "weapon_search_073",
+        "text": "Discovery wand 73",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 74,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_074": {
+        "key": "weapon_search_074",
+        "text": "Discovery wand 74",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 75,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_075": {
+        "key": "weapon_search_075",
+        "text": "Discovery wand 75",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 76,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_076": {
+        "key": "weapon_search_076",
+        "text": "Discovery wand 76",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 77,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_077": {
+        "key": "weapon_search_077",
+        "text": "Discovery wand 77",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 78,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_078": {
+        "key": "weapon_search_078",
+        "text": "Discovery wand 78",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 79,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_079": {
+        "key": "weapon_search_079",
+        "text": "Discovery wand 79",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 80,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_080": {
+        "key": "weapon_search_080",
+        "text": "Discovery wand 80",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 81,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_081": {
+        "key": "weapon_search_081",
+        "text": "Discovery wand 81",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 82,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_082": {
+        "key": "weapon_search_082",
+        "text": "Discovery wand 82",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 83,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_083": {
+        "key": "weapon_search_083",
+        "text": "Discovery wand 83",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 84,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_084": {
+        "key": "weapon_search_084",
+        "text": "Discovery wand 84",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 85,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_085": {
+        "key": "weapon_search_085",
+        "text": "Discovery wand 85",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 86,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_086": {
+        "key": "weapon_search_086",
+        "text": "Discovery wand 86",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 87,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_087": {
+        "key": "weapon_search_087",
+        "text": "Discovery wand 87",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 88,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_088": {
+        "key": "weapon_search_088",
+        "text": "Discovery wand 88",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 89,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_089": {
+        "key": "weapon_search_089",
+        "text": "Discovery wand 89",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 90,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_090": {
+        "key": "weapon_search_090",
+        "text": "Discovery wand 90",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 91,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_091": {
+        "key": "weapon_search_091",
+        "text": "Discovery wand 91",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 92,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_092": {
+        "key": "weapon_search_092",
+        "text": "Discovery wand 92",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 93,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_093": {
+        "key": "weapon_search_093",
+        "text": "Discovery wand 93",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 94,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_094": {
+        "key": "weapon_search_094",
+        "text": "Discovery wand 94",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 95,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_095": {
+        "key": "weapon_search_095",
+        "text": "Discovery wand 95",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 96,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_096": {
+        "key": "weapon_search_096",
+        "text": "Discovery wand 96",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 97,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_097": {
+        "key": "weapon_search_097",
+        "text": "Discovery wand 97",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 98,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_098": {
+        "key": "weapon_search_098",
+        "text": "Discovery wand 98",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 99,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_099": {
+        "key": "weapon_search_099",
+        "text": "Discovery wand 99",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 100,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_100": {
+        "key": "weapon_search_100",
+        "text": "Discovery wand 100",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 101,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_101": {
+        "key": "weapon_search_101",
+        "text": "Discovery wand 101",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 102,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_102": {
+        "key": "weapon_search_102",
+        "text": "Discovery wand 102",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 103,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_103": {
+        "key": "weapon_search_103",
+        "text": "Discovery wand 103",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 104,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_104": {
+        "key": "weapon_search_104",
+        "text": "Discovery wand 104",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 105,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_105": {
+        "key": "weapon_search_105",
+        "text": "Discovery wand 105",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 106,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_106": {
+        "key": "weapon_search_106",
+        "text": "Discovery wand 106",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 107,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_107": {
+        "key": "weapon_search_107",
+        "text": "Discovery wand 107",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 108,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_108": {
+        "key": "weapon_search_108",
+        "text": "Discovery wand 108",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 109,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_109": {
+        "key": "weapon_search_109",
+        "text": "Discovery wand 109",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 110,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_110": {
+        "key": "weapon_search_110",
+        "text": "Discovery wand 110",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 111,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_111": {
+        "key": "weapon_search_111",
+        "text": "Discovery wand 111",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 112,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_112": {
+        "key": "weapon_search_112",
+        "text": "Discovery wand 112",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 113,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_113": {
+        "key": "weapon_search_113",
+        "text": "Discovery wand 113",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 114,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_114": {
+        "key": "weapon_search_114",
+        "text": "Discovery wand 114",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 115,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_115": {
+        "key": "weapon_search_115",
+        "text": "Discovery wand 115",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 116,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_116": {
+        "key": "weapon_search_116",
+        "text": "Discovery wand 116",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 117,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_117": {
+        "key": "weapon_search_117",
+        "text": "Discovery wand 117",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 118,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_118": {
+        "key": "weapon_search_118",
+        "text": "Discovery wand 118",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 119,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_119": {
+        "key": "weapon_search_119",
+        "text": "Discovery wand 119",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 120,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_120": {
+        "key": "weapon_search_120",
+        "text": "Discovery wand 120",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 121,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_121": {
+        "key": "weapon_search_121",
+        "text": "Discovery wand 121",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 122,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_122": {
+        "key": "weapon_search_122",
+        "text": "Discovery wand 122",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 123,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_123": {
+        "key": "weapon_search_123",
+        "text": "Discovery wand 123",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 124,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_124": {
+        "key": "weapon_search_124",
+        "text": "Discovery wand 124",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 125,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_125": {
+        "key": "weapon_search_125",
+        "text": "Discovery wand 125",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 126,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_126": {
+        "key": "weapon_search_126",
+        "text": "Discovery wand 126",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 127,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_127": {
+        "key": "weapon_search_127",
+        "text": "Discovery wand 127",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 128,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_128": {
+        "key": "weapon_search_128",
+        "text": "Discovery wand 128",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 129,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_129": {
+        "key": "weapon_search_129",
+        "text": "Discovery wand 129",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 130,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_130": {
+        "key": "weapon_search_130",
+        "text": "Discovery wand 130",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 131,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_131": {
+        "key": "weapon_search_131",
+        "text": "Discovery wand 131",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 132,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_132": {
+        "key": "weapon_search_132",
+        "text": "Discovery wand 132",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 133,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_133": {
+        "key": "weapon_search_133",
+        "text": "Discovery wand 133",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 134,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_134": {
+        "key": "weapon_search_134",
+        "text": "Discovery wand 134",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 135,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_135": {
+        "key": "weapon_search_135",
+        "text": "Discovery wand 135",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 136,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_136": {
+        "key": "weapon_search_136",
+        "text": "Discovery wand 136",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 137,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_137": {
+        "key": "weapon_search_137",
+        "text": "Discovery wand 137",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 138,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_138": {
+        "key": "weapon_search_138",
+        "text": "Discovery wand 138",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 139,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_139": {
+        "key": "weapon_search_139",
+        "text": "Discovery wand 139",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 140,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_140": {
+        "key": "weapon_search_140",
+        "text": "Discovery wand 140",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 141,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_141": {
+        "key": "weapon_search_141",
+        "text": "Discovery wand 141",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 142,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_142": {
+        "key": "weapon_search_142",
+        "text": "Discovery wand 142",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 143,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_143": {
+        "key": "weapon_search_143",
+        "text": "Discovery wand 143",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 144,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_144": {
+        "key": "weapon_search_144",
+        "text": "Discovery wand 144",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 145,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_145": {
+        "key": "weapon_search_145",
+        "text": "Discovery wand 145",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 146,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_146": {
+        "key": "weapon_search_146",
+        "text": "Discovery wand 146",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 147,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_147": {
+        "key": "weapon_search_147",
+        "text": "Discovery wand 147",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 148,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_148": {
+        "key": "weapon_search_148",
+        "text": "Discovery wand 148",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 149,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_149": {
+        "key": "weapon_search_149",
+        "text": "Discovery wand 149",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 150,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_150": {
+        "key": "weapon_search_150",
+        "text": "Discovery wand 150",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 151,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_151": {
+        "key": "weapon_search_151",
+        "text": "Discovery wand 151",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 152,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_152": {
+        "key": "weapon_search_152",
+        "text": "Discovery wand 152",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 153,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_153": {
+        "key": "weapon_search_153",
+        "text": "Discovery wand 153",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 154,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_154": {
+        "key": "weapon_search_154",
+        "text": "Discovery wand 154",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 155,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_155": {
+        "key": "weapon_search_155",
+        "text": "Discovery wand 155",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 156,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_156": {
+        "key": "weapon_search_156",
+        "text": "Discovery wand 156",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 157,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_157": {
+        "key": "weapon_search_157",
+        "text": "Discovery wand 157",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 158,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_158": {
+        "key": "weapon_search_158",
+        "text": "Discovery wand 158",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 159,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_159": {
+        "key": "weapon_search_159",
+        "text": "Discovery wand 159",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 160,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_160": {
+        "key": "weapon_search_160",
+        "text": "Discovery wand 160",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 161,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_161": {
+        "key": "weapon_search_161",
+        "text": "Discovery wand 161",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 162,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_162": {
+        "key": "weapon_search_162",
+        "text": "Discovery wand 162",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 163,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_163": {
+        "key": "weapon_search_163",
+        "text": "Discovery wand 163",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 164,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_164": {
+        "key": "weapon_search_164",
+        "text": "Discovery wand 164",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 165,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_165": {
+        "key": "weapon_search_165",
+        "text": "Discovery wand 165",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 166,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_166": {
+        "key": "weapon_search_166",
+        "text": "Discovery wand 166",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 167,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_167": {
+        "key": "weapon_search_167",
+        "text": "Discovery wand 167",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 168,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_168": {
+        "key": "weapon_search_168",
+        "text": "Discovery wand 168",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 169,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_169": {
+        "key": "weapon_search_169",
+        "text": "Discovery wand 169",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 170,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_170": {
+        "key": "weapon_search_170",
+        "text": "Discovery wand 170",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 171,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_171": {
+        "key": "weapon_search_171",
+        "text": "Discovery wand 171",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 172,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_172": {
+        "key": "weapon_search_172",
+        "text": "Discovery wand 172",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 173,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_173": {
+        "key": "weapon_search_173",
+        "text": "Discovery wand 173",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 174,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_174": {
+        "key": "weapon_search_174",
+        "text": "Discovery wand 174",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 175,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_175": {
+        "key": "weapon_search_175",
+        "text": "Discovery wand 175",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 176,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_176": {
+        "key": "weapon_search_176",
+        "text": "Discovery wand 176",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 177,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_177": {
+        "key": "weapon_search_177",
+        "text": "Discovery wand 177",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 178,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_178": {
+        "key": "weapon_search_178",
+        "text": "Discovery wand 178",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 179,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_179": {
+        "key": "weapon_search_179",
+        "text": "Discovery wand 179",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 180,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_180": {
+        "key": "weapon_search_180",
+        "text": "Discovery wand 180",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 181,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_181": {
+        "key": "weapon_search_181",
+        "text": "Discovery wand 181",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 182,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_182": {
+        "key": "weapon_search_182",
+        "text": "Discovery wand 182",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 183,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_183": {
+        "key": "weapon_search_183",
+        "text": "Discovery wand 183",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 184,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_184": {
+        "key": "weapon_search_184",
+        "text": "Discovery wand 184",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 185,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_185": {
+        "key": "weapon_search_185",
+        "text": "Discovery wand 185",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 186,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_186": {
+        "key": "weapon_search_186",
+        "text": "Discovery wand 186",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 187,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_187": {
+        "key": "weapon_search_187",
+        "text": "Discovery wand 187",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 188,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_188": {
+        "key": "weapon_search_188",
+        "text": "Discovery wand 188",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 189,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_189": {
+        "key": "weapon_search_189",
+        "text": "Discovery wand 189",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 190,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_190": {
+        "key": "weapon_search_190",
+        "text": "Discovery wand 190",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 191,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_191": {
+        "key": "weapon_search_191",
+        "text": "Discovery wand 191",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 192,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_192": {
+        "key": "weapon_search_192",
+        "text": "Discovery wand 192",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 193,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_193": {
+        "key": "weapon_search_193",
+        "text": "Discovery wand 193",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 194,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_194": {
+        "key": "weapon_search_194",
+        "text": "Discovery wand 194",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 195,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_195": {
+        "key": "weapon_search_195",
+        "text": "Discovery wand 195",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 196,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_196": {
+        "key": "weapon_search_196",
+        "text": "Discovery wand 196",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 197,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_197": {
+        "key": "weapon_search_197",
+        "text": "Discovery wand 197",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 198,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_198": {
+        "key": "weapon_search_198",
+        "text": "Discovery wand 198",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 199,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_199": {
+        "key": "weapon_search_199",
+        "text": "Discovery wand 199",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 200,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_200": {
+        "key": "weapon_search_200",
+        "text": "Discovery wand 200",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 201,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_201": {
+        "key": "weapon_search_201",
+        "text": "Discovery wand 201",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 202,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_202": {
+        "key": "weapon_search_202",
+        "text": "Discovery wand 202",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 203,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_203": {
+        "key": "weapon_search_203",
+        "text": "Discovery wand 203",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 204,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_204": {
+        "key": "weapon_search_204",
+        "text": "Discovery wand 204",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 205,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_205": {
+        "key": "weapon_search_205",
+        "text": "Discovery wand 205",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 206,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_206": {
+        "key": "weapon_search_206",
+        "text": "Discovery wand 206",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 207,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_207": {
+        "key": "weapon_search_207",
+        "text": "Discovery wand 207",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 208,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_208": {
+        "key": "weapon_search_208",
+        "text": "Discovery wand 208",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 209,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_209": {
+        "key": "weapon_search_209",
+        "text": "Discovery wand 209",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 210,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_210": {
+        "key": "weapon_search_210",
+        "text": "Discovery wand 210",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 211,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_211": {
+        "key": "weapon_search_211",
+        "text": "Discovery wand 211",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 212,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_212": {
+        "key": "weapon_search_212",
+        "text": "Discovery wand 212",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 213,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_213": {
+        "key": "weapon_search_213",
+        "text": "Discovery wand 213",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 214,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_214": {
+        "key": "weapon_search_214",
+        "text": "Discovery wand 214",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 215,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_215": {
+        "key": "weapon_search_215",
+        "text": "Discovery wand 215",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 216,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_216": {
+        "key": "weapon_search_216",
+        "text": "Discovery wand 216",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 217,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_217": {
+        "key": "weapon_search_217",
+        "text": "Discovery wand 217",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 218,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_218": {
+        "key": "weapon_search_218",
+        "text": "Discovery wand 218",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 219,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_219": {
+        "key": "weapon_search_219",
+        "text": "Discovery wand 219",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 220,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_220": {
+        "key": "weapon_search_220",
+        "text": "Discovery wand 220",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 221,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_221": {
+        "key": "weapon_search_221",
+        "text": "Discovery wand 221",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 222,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_222": {
+        "key": "weapon_search_222",
+        "text": "Discovery wand 222",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 223,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_223": {
+        "key": "weapon_search_223",
+        "text": "Discovery wand 223",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 224,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_224": {
+        "key": "weapon_search_224",
+        "text": "Discovery wand 224",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 225,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_225": {
+        "key": "weapon_search_225",
+        "text": "Discovery wand 225",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 226,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_226": {
+        "key": "weapon_search_226",
+        "text": "Discovery wand 226",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 227,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_227": {
+        "key": "weapon_search_227",
+        "text": "Discovery wand 227",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 228,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_228": {
+        "key": "weapon_search_228",
+        "text": "Discovery wand 228",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 229,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_229": {
+        "key": "weapon_search_229",
+        "text": "Discovery wand 229",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 230,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_230": {
+        "key": "weapon_search_230",
+        "text": "Discovery wand 230",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 231,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_231": {
+        "key": "weapon_search_231",
+        "text": "Discovery wand 231",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 232,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_232": {
+        "key": "weapon_search_232",
+        "text": "Discovery wand 232",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 233,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_233": {
+        "key": "weapon_search_233",
+        "text": "Discovery wand 233",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 234,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_234": {
+        "key": "weapon_search_234",
+        "text": "Discovery wand 234",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 235,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_235": {
+        "key": "weapon_search_235",
+        "text": "Discovery wand 235",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 236,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_236": {
+        "key": "weapon_search_236",
+        "text": "Discovery wand 236",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 237,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_237": {
+        "key": "weapon_search_237",
+        "text": "Discovery wand 237",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 238,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_238": {
+        "key": "weapon_search_238",
+        "text": "Discovery wand 238",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 239,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_239": {
+        "key": "weapon_search_239",
+        "text": "Discovery wand 239",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 240,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_240": {
+        "key": "weapon_search_240",
+        "text": "Discovery wand 240",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 241,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_241": {
+        "key": "weapon_search_241",
+        "text": "Discovery wand 241",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 242,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_242": {
+        "key": "weapon_search_242",
+        "text": "Discovery wand 242",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 243,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_243": {
+        "key": "weapon_search_243",
+        "text": "Discovery wand 243",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 244,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_244": {
+        "key": "weapon_search_244",
+        "text": "Discovery wand 244",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 245,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_245": {
+        "key": "weapon_search_245",
+        "text": "Discovery wand 245",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 246,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_246": {
+        "key": "weapon_search_246",
+        "text": "Discovery wand 246",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 247,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_247": {
+        "key": "weapon_search_247",
+        "text": "Discovery wand 247",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 248,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_248": {
+        "key": "weapon_search_248",
+        "text": "Discovery wand 248",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 249,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_249": {
+        "key": "weapon_search_249",
+        "text": "Discovery wand 249",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 250,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_250": {
+        "key": "weapon_search_250",
+        "text": "Discovery wand 250",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 251,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_251": {
+        "key": "weapon_search_251",
+        "text": "Discovery wand 251",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 252,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_252": {
+        "key": "weapon_search_252",
+        "text": "Discovery wand 252",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 253,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_253": {
+        "key": "weapon_search_253",
+        "text": "Discovery wand 253",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 254,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_254": {
+        "key": "weapon_search_254",
+        "text": "Discovery wand 254",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 255,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_255": {
+        "key": "weapon_search_255",
+        "text": "Discovery wand 255",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 256,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_256": {
+        "key": "weapon_search_256",
+        "text": "Discovery wand 256",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 257,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_257": {
+        "key": "weapon_search_257",
+        "text": "Discovery wand 257",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 258,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_258": {
+        "key": "weapon_search_258",
+        "text": "Discovery wand 258",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 259,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_259": {
+        "key": "weapon_search_259",
+        "text": "Discovery wand 259",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 260,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_260": {
+        "key": "weapon_search_260",
+        "text": "Discovery wand 260",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 261,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_261": {
+        "key": "weapon_search_261",
+        "text": "Discovery wand 261",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 262,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_262": {
+        "key": "weapon_search_262",
+        "text": "Discovery wand 262",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 263,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_263": {
+        "key": "weapon_search_263",
+        "text": "Discovery wand 263",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 264,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_264": {
+        "key": "weapon_search_264",
+        "text": "Discovery wand 264",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 265,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_265": {
+        "key": "weapon_search_265",
+        "text": "Discovery wand 265",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 266,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_266": {
+        "key": "weapon_search_266",
+        "text": "Discovery wand 266",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 267,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_267": {
+        "key": "weapon_search_267",
+        "text": "Discovery wand 267",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 268,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_268": {
+        "key": "weapon_search_268",
+        "text": "Discovery wand 268",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 269,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_269": {
+        "key": "weapon_search_269",
+        "text": "Discovery wand 269",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 270,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_270": {
+        "key": "weapon_search_270",
+        "text": "Discovery wand 270",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 271,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_271": {
+        "key": "weapon_search_271",
+        "text": "Discovery wand 271",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 272,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_272": {
+        "key": "weapon_search_272",
+        "text": "Discovery wand 272",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 273,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_273": {
+        "key": "weapon_search_273",
+        "text": "Discovery wand 273",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 274,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_274": {
+        "key": "weapon_search_274",
+        "text": "Discovery wand 274",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 275,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_275": {
+        "key": "weapon_search_275",
+        "text": "Discovery wand 275",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 276,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_276": {
+        "key": "weapon_search_276",
+        "text": "Discovery wand 276",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 277,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_277": {
+        "key": "weapon_search_277",
+        "text": "Discovery wand 277",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 278,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_278": {
+        "key": "weapon_search_278",
+        "text": "Discovery wand 278",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 279,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_279": {
+        "key": "weapon_search_279",
+        "text": "Discovery wand 279",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 280,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_280": {
+        "key": "weapon_search_280",
+        "text": "Discovery wand 280",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 281,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_281": {
+        "key": "weapon_search_281",
+        "text": "Discovery wand 281",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 282,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_282": {
+        "key": "weapon_search_282",
+        "text": "Discovery wand 282",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 283,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_283": {
+        "key": "weapon_search_283",
+        "text": "Discovery wand 283",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 284,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_284": {
+        "key": "weapon_search_284",
+        "text": "Discovery wand 284",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 285,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_285": {
+        "key": "weapon_search_285",
+        "text": "Discovery wand 285",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 286,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_286": {
+        "key": "weapon_search_286",
+        "text": "Discovery wand 286",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 287,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_287": {
+        "key": "weapon_search_287",
+        "text": "Discovery wand 287",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 288,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_288": {
+        "key": "weapon_search_288",
+        "text": "Discovery wand 288",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 289,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_289": {
+        "key": "weapon_search_289",
+        "text": "Discovery wand 289",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 290,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_290": {
+        "key": "weapon_search_290",
+        "text": "Žárová hůl pro dlouhé porovnání výbavy",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 291,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_291": {
+        "key": "weapon_search_291",
+        "text": "Discovery wand 291",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 292,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_292": {
+        "key": "weapon_search_292",
+        "text": "Discovery wand 292",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 293,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_293": {
+        "key": "weapon_search_293",
+        "text": "Discovery wand 293",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 294,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_294": {
+        "key": "weapon_search_294",
+        "text": "Discovery wand 294",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 295,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_295": {
+        "key": "weapon_search_295",
+        "text": "Discovery wand 295",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 296,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_296": {
+        "key": "weapon_search_296",
+        "text": "Discovery wand 296",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 297,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_297": {
+        "key": "weapon_search_297",
+        "text": "Discovery wand 297",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 298,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_298": {
+        "key": "weapon_search_298",
+        "text": "Discovery wand 298",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 299,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_search_299": {
+        "key": "weapon_search_299",
+        "text": "Discovery wand 299",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 300,
+        "con": 0,
+        "per": 0
+      },
+      "back_special_1": {
+        "key": "back_special_1",
+        "text": "Retained cosmetic cape",
+        "type": "back",
+        "klass": "special",
+        "str": 0,
+        "int": 0,
+        "con": 0,
+        "per": 0,
+        "twoHanded": false
+      },
+      "weapon_twohand_1": {
+        "key": "weapon_twohand_1",
+        "text": "Two handed discovery staff",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 401,
+        "con": 0,
+        "per": 0,
+        "twoHanded": true
+      },
+      "headAccessory_discovery_1": {
+        "key": "headAccessory_discovery_1",
+        "text": "Discovery head accessory",
+        "type": "headAccessory",
+        "klass": "special",
+        "str": 0,
+        "int": 401,
+        "con": 0,
+        "per": 0,
+        "twoHanded": false
+      }
+    }
+  }
+}

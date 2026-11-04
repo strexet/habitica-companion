@@ -1,0 +1,9 @@
+{
+  "runId": "d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+  "requestId": "3edd30a4-99c6-459c-bd88-d313eb815ba8",
+  "confirmedNoClaimAfterGrantExpiry": true,
+  "confirmedReceiverCount": 0,
+  "priorResult": "refused_before_claim",
+  "nextControl": "Correct the actual provider gate and refresh authority only for the same original request ID. No replacement request identity or uncertain resend.",
+  "controllerRepair": "Require an isolated verified Netlify site link and a structured setter receipt; inspect active Cloudflare version resources for rollback flags."
+}

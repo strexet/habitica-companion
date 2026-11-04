@@ -19,6 +19,7 @@ else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1>
 @if (_readError is not null) { <p role="alert" class="card-surface">@_readError</p> }
 @if (Todo.Snapshot is not null)
 {
+    var duplicateTitles = Todo.Snapshot.Document.Tasks.Where(task=>task.Kind==CompanionTaskKind.Todo).GroupBy(task=>NormalizeDisplayedName(task.Text),StringComparer.OrdinalIgnoreCase).Where(group=>group.Count()>1).Select(group=>group.Key).ToHashSet(StringComparer.OrdinalIgnoreCase);
     @if (_placementTask is { } placement) { <TodoPlanEditor @ref="_placementEditor" TaskId="placement" Reviewed="ReviewPlacementAsync" Closed="CloseOptionalAsync" /> }
     @if (_workflowTask is { } workflow) { <TodoTaskWorkflowEditor @ref="_workflowEditor" TaskId="workflow" Reviewed="ReviewWorkflowAsync" Closed="CloseOptionalAsync" /> }
     @if (_childParent is { } parentId)
@@ -73,33 +74,35 @@ else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1>
         }
         @if (_context is { } context)
         {
-            <article class="todo-direct-row" data-testid="tree-context"><div class="todo-row-content"><h2>@context.Text</h2><span>@context.State @(context.IsArchived ? "· archived; retained context" : "")</span><span>Parent: @(context.ParentTaskId is { } p ? Name(p) : "Root task")</span><span>Project: @ProjectName(context)</span>@if (context.SectionId is { } contextSection) { <span>Section: @SectionName(contextSection)</span> }<details><summary>References</summary><p>Task: @context.Id · Parent: @context.ParentTaskId</p></details></div>
-                <div class="todo-row-actions">@if(context.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{context.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text">Edit task</MudButton></div>
+            var contextName = ActionContext(context, duplicateTitles);
+            <article class="todo-direct-row" data-testid="tree-context"><div class="todo-row-content"><h2>@context.Text</h2>@if (duplicateTitles.Contains(NormalizeDisplayedName(context.Text))) { <span class="dashboard-stat-note">Task reference: @context.Id.ToString("D")</span> }<span>@context.State @(context.IsArchived ? "· archived; retained context" : "")</span><span>Parent: @(context.ParentTaskId is { } p ? Name(p) : "Root task")</span><span>Project: @ProjectName(context)</span>@if (context.SectionId is { } contextSection) { <span>Section: @SectionName(contextSection)</span> }<details><summary aria-label="@($"References for {contextName}")" aria-controls="@($"tree-context-references-{context.Id:D}")">References</summary><p id="@($"tree-context-references-{context.Id:D}")">Task: @context.Id · Parent: @context.ParentTaskId</p></details></div>
+                <div class="todo-row-actions">@if(context.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{context.Id:D}")" data-layout-primary="true" Variant="Variant.Text" aria-label="@($"Convert checklist to project for {contextName}")">Convert checklist to project</MudButton>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary" aria-label="@($"Add subtask for {contextName}")">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text" aria-label="@($"Edit task for {contextName}")">Edit task</MudButton></div>
             </article>
         }
         @if (_rows.Count == 0) { <p data-testid="tree-empty">@(ProjectMode && _project is null && _focus is null ? "Choose a project." : "No tasks in this branch.")</p> }
         @foreach (var row in _rows)
         {
             var task = row.Task;
+            var taskName = ActionContext(task, duplicateTitles);
             <article class="todo-direct-row" @key="task.Id" data-testid="@($"tree-row-{task.Id:D}")">
-                <div class="todo-row-content"><strong>@task.Text</strong><span>@task.State @(task.IsArchived ? "· archived" : "") @(row.Depth is { } depth ? $"· level {depth}" : "")</span>
+                <div class="todo-row-content"><strong>@task.Text</strong>@if (duplicateTitles.Contains(NormalizeDisplayedName(task.Text))) { <span class="dashboard-stat-note">Task reference: @task.Id.ToString("D")</span> }<span>@task.State @(task.IsArchived ? "· archived" : "") @(row.Depth is { } depth ? $"· level {depth}" : "")</span>
                     @if (task.SectionId is { } taskSection) { <span>Section: @SectionName(taskSection)</span> }
-                    @if (task.ParentTaskId is { } parent) { <span>Parent: @Name(parent) @(Todo.Snapshot.Document.Tasks.FirstOrDefault(task => task.Id == parent)?.IsArchived == true ? "(archived)" : "") · @ParentContext(row.Coverage)</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(parent)" Variant="Variant.Text">Open parent</MudButton> }
+                    @if (task.ParentTaskId is { } parent) { <span>Parent: @Name(parent) @(Todo.Snapshot.Document.Tasks.FirstOrDefault(task => task.Id == parent)?.IsArchived == true ? "(archived)" : "") · @ParentContext(row.Coverage)</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(parent)" Variant="Variant.Text" data-testid="@($"tree-open-parent-{task.Id:D}")" aria-label="@($"Open parent {Name(parent)}, task reference {parent:D}, for {taskName}")">Open parent</MudButton> }
                     @if (task.Deadline is { } deadline) { <span>Deadline: @deadline.ToString("yyyy-MM-dd")</span> }
-                    @if (task.Notes is { Length: > 0 }) { <details><summary>Notes</summary><p>@task.Notes</p></details> }
+                    @if (task.Notes is { Length: > 0 }) { <details><summary aria-label="@($"Notes for {taskName}")" aria-controls="@($"tree-notes-{task.Id:D}")">Notes</summary><p id="@($"tree-notes-{task.Id:D}")">@task.Notes</p></details> }
                 </div>
                 <div class="todo-row-actions">
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived || task.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday))" OnClick="() => CompleteAsync(task.Id)" Variant="Variant.Text">Complete</MudButton>
-                    @if(task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(task.Id)" Variant="Variant.Outlined" data-testid="@($"tree-expand-{task.Id:D}")">Expand subtasks</MudButton>
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => ChildAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-add-{task.Id:D}")">Add subtask</MudButton>
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => EditAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-edit-{task.Id:D}")">Edit</MudButton>
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartPlacementAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-plan-{task.Id:D}")">Plan / assign project</MudButton>
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartWorkflowAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-workflow-{task.Id:D}")">Organize</MudButton>
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartMoveAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-move-{task.Id:D}")">Move</MudButton>
-                    @if (task.ParentTaskId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => DetachAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-detach-{task.Id:D}")">Detach</MudButton> }
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived || task.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday))" OnClick="() => CompleteAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-complete-{task.Id:D}")" aria-label="@($"Complete for {taskName}")">Complete</MudButton>
+                    @if(task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text" aria-label="@($"Convert checklist to project for {taskName}")">Convert checklist to project</MudButton>}
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(task.Id)" Variant="Variant.Outlined" data-testid="@($"tree-expand-{task.Id:D}")" aria-label="@($"Expand subtasks for {taskName}")">Expand subtasks</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => ChildAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-add-{task.Id:D}")" aria-label="@($"Add subtask for {taskName}")">Add subtask</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => EditAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-edit-{task.Id:D}")" aria-label="@($"Edit for {taskName}")">Edit</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartPlacementAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-plan-{task.Id:D}")" aria-label="@($"Plan / assign project for {taskName}")">Plan / assign project</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartWorkflowAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-workflow-{task.Id:D}")" aria-label="@($"Organize for {taskName}")">Organize</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartMoveAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-move-{task.Id:D}")" aria-label="@($"Move for {taskName}")">Move</MudButton>
+                    @if (task.ParentTaskId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => DetachAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-detach-{task.Id:D}")" aria-label="@($"Detach for {taskName}")">Detach</MudButton> }
                 </div>
-                <div class="todo-row-context"><span>Project: @ProjectName(task)</span><details><summary>References</summary><p>Task: @task.Id · Parent: @task.ParentTaskId</p></details></div>
+                <div class="todo-row-context"><span>Project: @ProjectName(task)</span><details><summary aria-label="@($"References for {taskName}")" aria-controls="@($"tree-references-{task.Id:D}")">References</summary><p id="@($"tree-references-{task.Id:D}")">Task: @task.Id · Parent: @task.ParentTaskId</p></details></div>
             </article>
         }
         @if (!ProjectMode) { <a href="/todo/projects" data-layout-primary="true">Browse project tasks</a> }
@@ -141,7 +144,7 @@ else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1>
     }
     private void Changed()
     {
-        if (_source != Todo.Selection) { _source = Todo.Selection; _focus = _project = null; _subtree = false; ClearDraft(); _error = null; }
+        if (_source != Todo.Selection) { _source = Todo.Selection; _focus = _project = null; _subtree = false; ResetDraft(false); _error = null; }
         if (_revision != Todo.Revision) { _revision = Todo.Revision; _offset = _parentOffset = 0; }
         TrackStages(); Rebuild(); _ = InvokeAsync(StateHasChanged);
     }
@@ -166,6 +169,10 @@ else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1>
         catch (InvalidOperationException) { _readError = "The branch is unavailable. Reload the workspace and select the exact task again."; }
         catch (ArgumentException) { _readError = "The branch page is unavailable. Return to the first page."; }
     }
+    private static string NormalizeDisplayedName(string name) => string.Join(" ",name.Split((char[]?)null,StringSplitOptions.RemoveEmptyEntries));
+    private static string ActionContext(CompanionTask task,HashSet<string> duplicateTitles) => $"Todo {task.Text}, {task.State}"
+        + (task.IsArchived ? ", archived" : "")
+        + (duplicateTitles.Contains(NormalizeDisplayedName(task.Text)) ? $", task reference {task.Id:D}" : "");
     private string Name(Guid id) => Todo.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == id)?.Text ?? "Unavailable task";
     private static string ParentContext(WorkspaceHierarchyParentCoverage? coverage) => coverage switch { WorkspaceHierarchyParentCoverage.Page => "shown on this page", WorkspaceHierarchyParentCoverage.EarlierPage => "on an earlier branch page", WorkspaceHierarchyParentCoverage.OutsideSelection => "outside this branch page", _ => "outside this project list" };
     private string SectionName(Guid id) { var row = Todo.Snapshot?.Document.Sections.FirstOrDefault(section => section.Id == id); return row is null ? "Retained section" : row.Name + (row.IsArchived ? " (archived)" : ""); }
@@ -187,7 +194,8 @@ else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1>
     private Task ReviewWorkflowAsync(TodoWorkflowReview review) { if (review.Input.TaskId != _workflowTask || _review is null) throw new InvalidOperationException("Reload exact task workflow context."); return _review.ReviewWorkflowAsync(review); }
     private Task CloseOptionalAsync() { ClearDraft(); return Task.CompletedTask; }
     private bool CanReplaceDraft() { if (_createdTask is null) return true; _error = "Finish attachment or choose Keep as independent Todo before opening another draft."; return false; }
-    private void ClearDraft() { _placementTask = _workflowTask = null; _error = null; _editing = false; _moving = _newParent = _childParent = _createdTask = _createCommand = _attachCommand = _moveCommand = _createRequest = _attachRequest = _moveRequest = _editRequested = null; _childTitle = _childNotes = _childDeadline = ""; _parentOffset = 0; _parents = []; _focusHeading = true; }
+    private void ClearDraft() => ResetDraft(true);
+    private void ResetDraft(bool requestHeadingFocus) { _placementTask = _workflowTask = null; _error = null; _editing = false; _moving = _newParent = _childParent = _createdTask = _createCommand = _attachCommand = _moveCommand = _createRequest = _attachRequest = _moveRequest = _editRequested = null; _childTitle = _childNotes = _childDeadline = ""; _parentOffset = 0; _parents = []; _focusHeading = requestHeadingFocus; }
     private void ReloadDraftContext() { _draftRevision = _revision; _parentOffset = 0; ReadParents(); _error = null; }
     private void ReadParents() { if (_moving is null || Todo.Snapshot is null) return; var page = Todo.Tasks(new(Kind: CompanionTaskKind.Todo, Limit: 20, Offset: _parentOffset, ExpectedRevision: _revision)); _parents = page.Tasks.Where(task => task.Id != _moving).ToArray(); _parentTotal = page.MatchedCount - 1; _nextParents = page.NextOffset; }
     private void PickParent(ChangeEventArgs args) { if (Guid.TryParse(args.Value?.ToString(), out var id) && (_parents.Any(task => task.Id == id) || id == _newParent)) _newParent = id; else _newParent = null; }

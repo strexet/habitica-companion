@@ -2,6 +2,8 @@ using Habitica.Application.Notifications;
 
 namespace Habitica.WebApp.State;
 
+public enum PushCapabilityObservation { NotChecked, Checking, Observed, Failed }
+
 public sealed class PushDeviceController : IDisposable
 {
     private readonly IAppSessionController _session;
@@ -9,6 +11,7 @@ public sealed class PushDeviceController : IDisposable
     private readonly IPushBrowser _browser;
     private readonly INotificationLocalStore _store;
     private string? _account;
+    private bool _disposed;
     private long _clientVersion,_generation;
     private PushBrowserLocalState? _local;
     public PushDeviceController(IAppSessionController session,IPushSubscriptionClient client,IPushBrowser browser,INotificationLocalStore store)
@@ -16,39 +19,78 @@ public sealed class PushDeviceController : IDisposable
     public event Action? Changed;
     public PushStatus? Status { get; private set; }
     public BrowserPushCapability Capability { get; private set; }=new("unprepared","unsupported");
+    public PushCapabilityObservation CapabilityObservation { get; private set; }
+    public string CapabilityText => CapabilityObservation switch
+    {
+        PushCapabilityObservation.NotChecked => "not checked",
+        PushCapabilityObservation.Checking => "checking",
+        PushCapabilityObservation.Failed => "check failed",
+        _ => Capability.State switch { "installation-required" => "installation required", "insecure" => "secure context required", _ => Capability.State }
+    };
+    public string PermissionText => CapabilityObservation switch
+    {
+        PushCapabilityObservation.NotChecked or PushCapabilityObservation.Failed => "not checked",
+        PushCapabilityObservation.Checking => "checking",
+        _ => Capability.Permission == "default" ? "not requested" : Capability.Permission
+    };
+    public string? RegistrationUnavailableReason => CapabilityObservation switch
+    {
+        PushCapabilityObservation.NotChecked => "Check push setup before enrolling this browser. No notification permission is requested by the check.",
+        PushCapabilityObservation.Checking => "Checking browser capability. Enrollment stays unavailable until setup has been checked.",
+        PushCapabilityObservation.Failed => "Browser capability could not be checked. Try Check push setup again.",
+        _ => Capability.State switch
+        {
+            "installation-required" => "Open the installed Home Screen app before enrolling this device.",
+            "unsupported" => "Web Push is unsupported in this browser context.",
+            "insecure" => "A secure browser context is required for Web Push.",
+            _ => Capability.Permission == "denied" ? "Notification permission is denied. Change browser or system settings before enrollment."
+                : Status?.Available != true ? "The subscription service is unavailable; enrollment is disabled."
+                : Status.Enabled != true ? "Enable account push consent before enrolling this browser."
+                : !StorageAvailable ? "Reload local device receipt storage before enrollment."
+                : Pending is not null ? "Resolve the original device request before another enrollment."
+                : null
+        }
+    };
     public BrowserPushCurrent? Current { get; private set; }
     public bool IsBusy { get; private set; }
     public string? Message { get; private set; }
     public PushBrowserBinding? Binding=>_local?.Binding;
     public PendingPushAction? Pending=>_local?.Pending;
     public bool StorageAvailable=>_local is not null;
-    public bool CanChange=>Account is not null&&_session.HasChatGptConnection&&Status is not null&&_local is not null&&!IsBusy&&Pending is null;
-    public bool CanRegister=>CanChange&&Status!.Available&&Status.Enabled&&Status.ConsentEpoch is not null&&Capability.State=="available"&&Capability.Permission!="denied";
+    public bool CanChange=>!_disposed&&Account is not null&&_session.HasChatGptConnection&&Status is not null&&_local is not null&&!IsBusy&&Pending is null;
+    public bool CanRegister=>CapabilityObservation==PushCapabilityObservation.Observed&&CanChange&&Status!.Available&&Status.Enabled&&Status.ConsentEpoch is not null&&Capability.State=="available"&&Capability.Permission!="denied";
     public bool CanRemoveLocal=>CanChange&&Binding is {} binding&&Current is{Exists:true,Fingerprint:{} fingerprint}&&binding.Fingerprint==fingerprint;
     public bool ThisDevice(PushDevice device)=>Binding is {} binding&&binding.DeviceId==device.DeviceId&&binding.SubscriptionId==device.SubscriptionId&&Current?.Fingerprint==binding.Fingerprint;
     private string? Account=>_session.State.IsAuthenticated&&Guid.TryParse(_session.State.UserId,out var id)&&id!=Guid.Empty?id.ToString("D"):null;
     private PushContext Context=>Status is {} status?new(status.ProfileId,status.ConnectionId):throw new InvalidOperationException("Load the current push context first.");
-    private bool CurrentScope(string account,long generation,long version)=>Account==account&&_generation==generation&&_client.ContextVersion==version;
+    private bool CurrentScope(string account,long generation,long version)=>!_disposed&&Account==account&&_generation==generation&&_client.ContextVersion==version;
     private void SessionChanged()
     {
+        if(_disposed)return;
         if(Account==_account&&_clientVersion==_client.ContextVersion&&_session.HasChatGptConnection)return;
-        _account=Account;_clientVersion=_client.ContextVersion;_generation++;Status=null;Current=null;_local=null;IsBusy=false;Message=null;Changed?.Invoke();
+        _account=Account;_clientVersion=_client.ContextVersion;_generation++;Status=null;ResetCapability();_local=null;IsBusy=false;Message=null;Changed?.Invoke();
     }
+    private void ResetCapability() { Capability=new("unprepared","unsupported");Current=null;CapabilityObservation=PushCapabilityObservation.NotChecked; }
     public async Task RefreshAsync()
     {
+        if(_disposed)return;SessionChanged();
         if(IsBusy)return;var account=Account;var generation=_generation;var version=_client.ContextVersion;
-        if(account is null||!_session.HasChatGptConnection){Status=null;_local=null;Message="Sign in and connect the integration in Todo Sync before managing account push.";Changed?.Invoke();return;}
-        IsBusy=true;Message=null;Changed?.Invoke();
+        if(account is null||!_session.HasChatGptConnection){Status=null;ResetCapability();_local=null;Message="Sign in and connect the integration in Todo Sync before managing account push.";Changed?.Invoke();return;}
+        IsBusy=true;ResetCapability();CapabilityObservation=PushCapabilityObservation.Checking;Message=null;Changed?.Invoke();
         try
         {
-            var capability=await _browser.PrepareAsync(default);var current=await _browser.ReadCurrentAsync(default);var status=await _client.ReadPushStatusAsync(default);
-            if(!CurrentScope(account,generation,version))return;Capability=capability;Current=current;
+            var capability=await _browser.PrepareAsync(default);if(!CurrentScope(account,generation,version))return;
+            Capability=capability;
+            if(capability.State=="unprepared") { CapabilityObservation=PushCapabilityObservation.Failed;Status=null;_local=null;Message="Browser capability could not be checked. Try Check push setup again; no permission was requested.";return; }
+            CapabilityObservation=PushCapabilityObservation.Observed;
+            var current=await _browser.ReadCurrentAsync(default);if(!CurrentScope(account,generation,version))return;Current=current;
+            var status=await _client.ReadPushStatusAsync(default);if(!CurrentScope(account,generation,version))return;
             if(!status.Succeeded||status.Value is null){Status=null;_local=null;Message=status.Message;return;}
             Status=status.Value;
             try{var local=await _store.ReadDeviceAsync(account,Context);if(CurrentScope(account,generation,version))_local=local;}
             catch{if(CurrentScope(account,generation,version)){_local=null;Message="Local device receipt storage is unavailable. No subscription or server preference was changed.";}}
         }
-        catch{if(CurrentScope(account,generation,version)){Status=null;_local=null;Message="Push setup is unavailable. Reload status; no permission is requested on load.";}}
+        catch{if(CurrentScope(account,generation,version)){if(CapabilityObservation==PushCapabilityObservation.Checking)CapabilityObservation=PushCapabilityObservation.Failed;Status=null;_local=null;Message="Push setup is unavailable. Reload status; no permission is requested on load.";}}
         finally{if(CurrentScope(account,generation,version)){IsBusy=false;Changed?.Invoke();}}
     }
     private async Task<PushBrowserLocalState> PersistAsync(string account,PushContext context,PushBrowserLocalState state)
@@ -169,5 +211,5 @@ public sealed class PushDeviceController : IDisposable
         catch{if(CurrentScope(account,generation,version))Message="The original device request is unconfirmed. Recover its receipt before another change.";}
         finally{if(CurrentScope(account,generation,version)){IsBusy=false;Changed?.Invoke();}}
     }
-    public void Dispose()=>_session.Changed-=SessionChanged;
+    public void Dispose() { if(_disposed)return;_disposed=true;_generation++;_session.Changed-=SessionChanged;Status=null;ResetCapability();_local=null;IsBusy=false; }
 }

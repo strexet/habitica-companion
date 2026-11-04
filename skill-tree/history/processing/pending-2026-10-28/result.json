@@ -1,0 +1,51 @@
+{
+  "recordedAtUtc": "2026-10-28T10:42:44.377752+00:00",
+  "processingRunIds": [
+    "PR-cc5061a4-7801-422f-b5c3-9cdb86d4c235",
+    "PR-9722057b-0549-4478-8c12-6ee286276060"
+  ],
+  "originalSelectedCount": 8,
+  "ownerDecidedFollowupCount": 2,
+  "promotedPendingCount": 6,
+  "createdCount": 10,
+  "createdIds": [
+    "T-081b9081-8405-4fe8-9375-101cdd1b148e",
+    "T-de7b04d1-82c9-4734-a089-aaded9d2dd20",
+    "T-ee09583d-26dc-4291-880a-0b7a4801842e",
+    "T-5c55057e-b7fb-47e8-9ddb-f0b0a8e6d373",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-788ca84e-e257-47ac-8474-d2e6ea79086d",
+    "T-2a755a29-47eb-44b1-85df-b6da1b35d1d4",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+  ],
+  "reusedIds": [],
+  "retainedIds": [
+    "P-8e7323df-2f47-4e19-864d-821ed108e7f2"
+  ],
+  "resolvedIds": [
+    "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa"
+  ],
+  "sourceHashBefore": "52ea950aaccca0a2a9bdc5a17551466ebf8cbb22f2ea951c92e76eb15d9c27cf",
+  "sourceHashAfter": "c30c2ebb1631d388fc8748fef9510f3b054ccc8e98047ce10978a764f7a7d98a",
+  "sourceFingerprintsUnchanged": true,
+  "activeRunPreservation": {
+    "id": true,
+    "mode": true,
+    "snapshot": true,
+    "root_task_id": true,
+    "current_task_id": true,
+    "required_ids": true,
+    "completed_ids": true,
+    "limits": true,
+    "owner_deferred_priorities": true
+  },
+  "newTasksOutsideInitialSnapshot": true,
+  "runtimeBuildsOrTestsRun": false,
+  "liveOperations": "Read-only exact retained conversion and original tag review; no dispatch, acceptance or native task/tag mutation.",
+  "ownerDecisions": "skill-tree/history/processing/pending-2026-10-28/owner-decisions.json",
+  "research": "skill-tree/history/processing/pending-2026-10-28/research.md",
+  "prioritizedList": "skill-tree/history/processing/pending-2026-10-28/prioritized-list.json",
+  "nextAction": "Await actual owner selection after standalone processing; highest global executable unit is T-081b9081-8405-4fe8-9375-101cdd1b148e, priority105. Original Implement All selection is T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f; a new independent unit cannot silently replace the frozen controller scope."
+}

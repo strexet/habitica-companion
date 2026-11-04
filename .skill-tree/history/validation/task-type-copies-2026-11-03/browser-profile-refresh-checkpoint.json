@@ -1,0 +1,5 @@
+{
+  "phase": "implement",
+  "stop_reason": "Refresh exact native type-copy browser harness inputs after the recorded synthetic recovery-status assertion correction. All attempts are closed and fixture cleanup completed.",
+  "next_action": "Refresh and re-admit the same active run, then repeat the concrete browser control."
+}

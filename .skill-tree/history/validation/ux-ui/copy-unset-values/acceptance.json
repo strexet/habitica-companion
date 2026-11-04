@@ -1,0 +1,50 @@
+{
+  "task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+  "title": "Show explicit unset values in task-copy reviews",
+  "operation_history": ".skill-tree/history/validation/ux-ui/copy-unset-values/operation-history.json",
+  "checks": [
+    {
+      "id": "copy-unset-values-behavior",
+      "counts": {
+        "discovered": 13,
+        "expected": 13,
+        "failed": 0,
+        "passed": 13,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.log",
+          "sha256": "89c22b711c1a2b1c64da03e343667a8ca06fedfb3597ff4c3679f698b56af061"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.trx",
+          "sha256": "b0fb5be44695fc085f26f72cea6cd9ae4f741e5781e542a4660f3bedb37668b3"
+        }
+      ]
+    },
+    {
+      "id": "copy-unset-values-rendered",
+      "counts": {
+        "discovered": 793,
+        "expected": 793,
+        "failed": 0,
+        "passed": 793,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+          "sha256": "398b0608ff567dfa143f8ab9343497fa2a41e4f0cd5b3daf6362cf35b0ac8c91"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

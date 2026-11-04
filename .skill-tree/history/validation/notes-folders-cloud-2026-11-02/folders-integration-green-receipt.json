@@ -1,0 +1,34 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-c318ce59-c701-4a2a-b6e7-e63f4b9e9cdd",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 19,
+    "expected": 19,
+    "failed": 0,
+    "passed": 19,
+    "skipped": 0
+  },
+  "definition": "5357e3f9f3464d53d584dd28ddd8b7ae3a927824462479d29c1a359d45a372db",
+  "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/folders-integration-green-execution.log",
+      "sha256": "5ac815da2028225d28b646e738c4a2030b440f9d63d93d03a0614b4927ca7c3f"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "5e1949da338a8ebf6ded6d02f7144d82631b85afa8228e5d91de89166b38c943",
+  "payload_hash": "949bdda661225d93abe95594ed887e03ca4f21ea682edfd0fd6309c6efe1f920",
+  "recorded_at": "2026-11-02T16:48:14.540597+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/test/notes.test.mjs": "b61bfe64ff3ca4d7f5248f461360088c4a4973fa499d326446d4066ea63a91a4"
+  },
+  "timing": {
+    "tool_wall_seconds": 16.436570124933496
+  }
+}

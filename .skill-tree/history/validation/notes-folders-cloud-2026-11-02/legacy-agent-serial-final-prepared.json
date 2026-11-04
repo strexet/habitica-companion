@@ -1,0 +1,57 @@
+{
+  "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+  "attempt_id": "C-3f3e3152-18f0-43d6-8fec-4e309ea2d5b4",
+  "check_id": "notes-legacy-agent-regressions",
+  "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+  "environment_identity": "10cdb3fc149208e0e6c81e06c12a984c724ea93389bcde68f619e7d9b42ad48a",
+  "key": "c67b88e0641a7091cd0676b80aa586cb954c828b7c1f938e16121ffe6151323d",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T16:58:59.492787+00:00",
+    "execution_profile": "notes-folders-cloud-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T16:54:59.827171+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/note-tools.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+    "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+    "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34"
+}

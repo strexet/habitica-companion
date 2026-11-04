@@ -35,6 +35,7 @@
             <MudButton Size="Size.Small"
                        Variant="Variant.Text"
                        Color="Color.Default"
+                       data-layout-primary="true"
                        data-testid="dashboard-appearance-toggle"
                        OnClick="@(() => _appearanceCollapsed = !_appearanceCollapsed)"
                        EndIcon="@(_appearanceCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.Done)">
@@ -46,6 +47,15 @@
             <ColorSchemePanel Compact="true" />
         }
     </section>
+
+    @if (SessionController.State.IsAuthenticated || SessionController.State.UserSnapshot is not null)
+    {
+        <div class="dashboard-refresh-strip" data-testid="dashboard-refresh-status" aria-label="Recorded refresh history">
+            @RenderDomainStatus(RefreshDomain.UserProfile, "Account")
+            @RenderDomainStatus(RefreshDomain.Tasks, "Tasks")
+            @RenderDomainStatus(RefreshDomain.GearCatalog, "Gear")
+        </div>
+    }
 
     @if (SessionController.State.UserSnapshot is null)
     {
@@ -70,15 +80,20 @@
         var damageEstimate = CreateDamageEstimate(snapshot);
         var recoveryEstimate = RecoveryEstimateFactory.Create(snapshot, damageEstimate);
 
-        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
-            @GetFreshnessLabel(SessionController.State.UserFreshness)
+        <MudAlert Class="inline-banner" data-testid="dashboard-account-readiness" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
+            @if (!SessionController.State.IsAuthenticated) { <span>Signed out. Saved snapshot only. </span> }
+            <span>@GetFreshnessLabel(SessionController.State.UserFreshness).</span>
+            <span class="dashboard-snapshot-time">
+                @if (snapshot.RetrievedAtUtc != default)
+                {
+                    <span>Snapshot retrieved <time datetime="@snapshot.RetrievedAtUtc.ToString("O")">@snapshot.RetrievedAtUtc.ToLocalTime().ToString("g")</time>.</span>
+                }
+                else
+                {
+                    <span>Retrieval time unavailable.</span>
+                }
+            </span>
         </MudAlert>
-
-        <div class="dashboard-refresh-strip" data-testid="dashboard-refresh-status">
-            @RenderDomainStatus(RefreshDomain.UserProfile, "Account")
-            @RenderDomainStatus(RefreshDomain.Tasks, "Tasks")
-            @RenderDomainStatus(RefreshDomain.GearCatalog, "Gear")
-        </div>
 
         @if (!string.IsNullOrWhiteSpace(_startNewDayResultMessage))
         {
@@ -993,10 +1008,19 @@
         var state = GetDomainState(domain);
         builder.OpenElement(sequence++, "span");
         builder.AddAttribute(sequence++, "class", GetDomainStatusClass(state));
+        builder.AddAttribute(sequence++, "data-testid", $"dashboard-refresh-{domain}");
         builder.OpenElement(sequence++, "strong");
-        builder.AddContent(sequence++, label);
+        builder.AddContent(sequence++, $"{label} refresh:");
         builder.CloseElement();
         builder.AddContent(sequence++, $" {GetDomainStatusText(state)}");
+        if (state?.IsFetching != true && string.IsNullOrWhiteSpace(state?.LastError) && state?.LastRefreshedAtUtc is { } completed && completed != default)
+        {
+            builder.AddContent(sequence++, " ");
+            builder.OpenElement(sequence++, "time");
+            builder.AddAttribute(sequence++, "datetime", completed.ToString("O"));
+            builder.AddContent(sequence++, completed.ToLocalTime().ToString("g"));
+            builder.CloseElement();
+        }
         builder.CloseElement();
     };
 
@@ -1314,9 +1338,9 @@
             return "failed";
         }
 
-        return state?.LastRefreshedAtUtc is null
-            ? "not refreshed"
-            : $"updated {state.LastRefreshedAtUtc.Value.ToLocalTime():g}";
+        return state?.LastRefreshedAtUtc is null || state.LastRefreshedAtUtc == default(DateTimeOffset)
+            ? "no later refresh recorded"
+            : "completed";
     }
 
     private static string GetDomainStatusClass(DomainRefreshState? state)
@@ -1331,7 +1355,9 @@
             return "ui-pill refresh-status-pill danger-pill";
         }
 
-        return "ui-pill refresh-status-pill success-pill";
+        return state?.LastRefreshedAtUtc is { } completed && completed != default
+            ? "ui-pill refresh-status-pill success-pill"
+            : "ui-pill refresh-status-pill";
     }
 
     private void HandleStateChanged()

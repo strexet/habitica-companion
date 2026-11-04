@@ -1,0 +1,70 @@
+{
+  "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+  "attempt_id": "C-8ff266ea-7d3b-49fb-bf2b-191747a06d0f",
+  "check_id": "relative-date-rules",
+  "definition": "339f1d016720a334f7dae7c59f1257730e08cf7da25754b179609088624609ab",
+  "environment_identity": "30ad1b054e6db91c3df0b59ccf758c66907f0c12902472825debf2a1045f634a",
+  "key": "5c3bd228861a96beb6845eaf93104fbaad7aad09e96b4c2573602e532bb06c46",
+  "launch": {
+    "assertion": "Relative saved definitions preserve intent and resolve date fields from one explicit UTC clock and IANA timezone, with stable guarded paging.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable date boundaries, current task selection, guarded pagination or no read mutations.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T21:41:14.475338+00:00",
+    "execution_profile": "relative-saved-dates-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T21:33:15.001657+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Saved|FullyQualifiedName~Relative",
+      "--logger",
+      "trx;LogFileName=relative-date-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "e396d33a21cd6cc12d3a250a73760586e72316a75556bf88db84040968955ef6",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/RelativeSavedTaskViewTests.cs": "77214ee44672985aa600e098517423542015c0883d32861575d8c9036cd76252",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs": "43a897582ba97469eb329c80c04f18a852e573cc27f087a3ebbcb297fb0862d9",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs": "c950c6923a4fb3902cad6de948d6372c751dcde5850634aa62081dcc2446d65f"
+  },
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

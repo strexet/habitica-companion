@@ -1,0 +1,23 @@
+{
+  "basis": [
+    "Compact navigation adds a second Tasks URL for capture and native disclosure groups; prior route locators are ambiguous or hidden.",
+    "Notes and saved-list browse-first defaults require actual New actions before authoring controls exist.",
+    "Settings appearance reapplies service-owned scheme; select the matrix scheme through the actual control.",
+    "Saved-error journey waited for a field before opening the editor; reverse the prerequisite order.",
+    "Disabled journey tested DOM presence of Notes/saved-list editor fields, but browse-first markup retains hidden fields; use rendered visibility before invoking the existing New action. Original failed receipt bb109f25 retained.",
+    "Disabled journey per-control async locator sampling selected a Settings control before a readiness render enabled it. Original d5b2fee4 report retains nativeDisabled=false. Synchronous evaluateAll now resolves and measures exact current disabled nodes in one event-loop turn, preserving paint/refusal/opacity assertions and nonzero sample floor.",
+    "5a523911 identifies stale selected New note in WebKit1280/100: nativeDisabled=false/calls1. Locator.evaluateAll can resolve the node array before a separate evaluate protocol turn. Move document.querySelectorAll itself inside page.evaluate; selection, disabled check and refusal probe now occur in one synchronous page function. Original initial-ready product repair and all failure artifacts retained.",
+    "Post-hierarchy-fix f3e01e9f failed backdrop closure while the drawer remained open. Space followed Escape without awaiting the new semantic open state; an old closing-animation scrim could satisfy visibility first. New waitDrawer guards require aria-expanded/aria-hidden/inert agreement after each keyboard/menu transition and menu focus after closure. Pointer hit/geometry/Escape/skip assertions remain unchanged. Desktop closure now also awaits original focus return. Timeout diagnostics retain the actual state and focus trace."
+  ],
+  "changes": [
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+    "tests/browser-qualification/ux-ui-readiness-journey.mjs",
+    "tests/browser-qualification/ux-ui-disabled-journey.mjs",
+    "tests/browser-qualification/ux-ui-daily-order-journey.mjs",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs",
+    "tests/browser-qualification/ux-ui-saved-errors-journey.mjs"
+  ],
+  "assertion_policy": "Retain original product assertions, route coverage, native keyboard behavior and exact unchanged journals. Adapt only explicit current UI entry steps and exact navigation identity.",
+  "product_changes": false
+}

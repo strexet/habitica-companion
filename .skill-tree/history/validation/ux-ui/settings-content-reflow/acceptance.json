@@ -1,0 +1,50 @@
+{
+  "task_id": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7",
+  "title": "Keep nested Settings content and action labels readable on enlarged phones",
+  "operation_history": ".skill-tree/history/validation/ux-ui/settings-content-reflow/operation-history.json",
+  "checks": [
+    {
+      "id": "settings-content-reflow-behavior",
+      "counts": {
+        "discovered": 15,
+        "expected": 15,
+        "failed": 0,
+        "passed": 15,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.log",
+          "sha256": "d5cd5e68f43a8968faf8f64af63370fdd7a06fe632f9d15f85d24f7b4cb6e2ce"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/C-f5156bc3-7c83-474b-8f26-dcbfab448927.trx",
+          "sha256": "74bc7b5d2b05d310e885195d86ea2c7e72ce532ec496072c2da97e481ae25b8e"
+        }
+      ]
+    },
+    {
+      "id": "settings-content-reflow-rendered",
+      "counts": {
+        "discovered": 289,
+        "expected": 289,
+        "failed": 0,
+        "passed": 289,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/settings-content-reflow/browser/13326090-f7cc-4bee-847e-6a6a0b397340.json",
+          "sha256": "887c9768440d318d4e704685903d20c8bcada03e556fe3606476783cd0fd6c30"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

@@ -1,0 +1,65 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - region "Task push schedule":
+    - heading "Task push schedule" [level=2]
+    - paragraph: Save a review cue first, then review a separate push schedule for this exact cloud task. Repeat schedules do not create tasks, complete work or change task recurrence. End dates and daylight-saving policies are explicit.
+    - button "Load current schedule and devices":
+      - generic: Load current schedule and devices
+    - status: Review the exact schedule below. Acceptance saves configuration; notification delivery remains best effort.
+    - paragraph: Workspace b9038528-4bcf-4f5a-a3a3-4bea7a829ce3 · revision 2 · Task 409eae31-659c-4598-99d8-3a7f565deb1f
+    - paragraph: "Scheduling service: available · Account push: enabled · Delivery service: available. Refresh after enabling devices in Todo Sync."
+    - text: Schedule type
+    - combobox "Schedule type" [disabled]:
+      - option "One time at saved review cue" [disabled]
+      - option "Repeat daily" [disabled]
+      - option "Repeat weekly" [disabled] [selected]
+      - option "Repeat monthly" [disabled]
+    - text: Display and civil timezone
+    - textbox "Display and civil timezone" [disabled]: UTC
+    - paragraph: The first repeat occurrence must match the saved UTC review cue exactly, on a whole minute. Change the saved cue first if seconds or an overlap choice differ.
+    - button "Use saved cue for civil draft" [disabled]:
+      - generic: Use saved cue for civil draft
+    - text: First civil date
+    - textbox "First civil date" [disabled]: 2026-11-03
+    - text: Local time (HH:mm)
+    - textbox "Local time (HH:mm)" [disabled]: 07:00
+    - text: Repeat interval
+    - spinbutton "Repeat interval" [disabled]: "1"
+    - text: Weekdays (0 Sunday … 6 Saturday, comma separated)
+    - textbox "Weekdays (0 Sunday … 6 Saturday, comma separated)" [disabled]: "2"
+    - text: Last civil date (maximum 366 days)
+    - textbox "Last civil date (maximum 366 days)" [disabled]: 2026-12-03
+    - paragraph: "Missing local time during a daylight-saving gap: skip that occurrence."
+    - text: Repeated local time during overlap
+    - combobox "Repeated local time during overlap" [disabled]:
+      - option "Choose explicitly" [disabled]
+      - option "Earlier instant" [disabled]
+      - option "Later instant" [disabled] [selected]
+      - option "Skip occurrence" [disabled]
+    - paragraph: Choose exact active devices. Revoked, expired and changed subscriptions cannot receive this schedule.
+    - checkbox "Device e70d4513-6c97-403e-bb42-6491021402f7 · revision 1 · active" [checked] [disabled]
+    - text: Device e70d4513-6c97-403e-bb42-6491021402f7 · revision 1 · active
+    - paragraph: "Editing schedule: current active schedule or a new schedule"
+    - button "Review exact push schedule" [disabled]:
+      - generic: Review exact push schedule
+    - heading "Delivery observations" [level=3]
+    - paragraph: Saved configuration, scheduled, dispatched and accepted by a push service are separate states. Shown and read are unknown. Unknown delivery never retries automatically.
+    - button "Previous deliveries" [disabled]:
+      - generic: Previous deliveries
+    - button "Next deliveries" [disabled]:
+      - generic: Next deliveries
+    - heading "Review set" [level=3]
+    - paragraph: Task 409eae31-659c-4598-99d8-3a7f565deb1f · workspace b9038528-4bcf-4f5a-a3a3-4bea7a829ce3 · document revision 2 · schedule d5ec01bc-4c61-4966-b878-77b1c182f646 · expected schedule revision 0
+    - paragraph: "First cue: 2026-11-03T07:00:00.0000000+00:00 · zone UTC · consent scheduled-reminders-v1"
+    - paragraph: Weekly every 1 · start 11/3/2026 · local time 07:00 · through 12/3/2026 · gap skip · overlap later · weekdays Tuesday · month days
+    - paragraph: Device e70d4513-6c97-403e-bb42-6491021402f7 · revision 1 · subscription d6ee71af-1079-417c-85b1-0220e2a59dae
+    - paragraph: Generic push only. · Preview expires 2026-11-03T05:38:58.7957070+00:00
+    - button "Accept schedule":
+      - generic: Accept schedule
+    - paragraph: Original request 7e6d676b-0522-4422-9150-f2e8c0b7323a · command 3ecd3392-2794-40c0-a05e-661af47fd043. Resolve this command before another schedule in this workspace.
+    - button "Discard unsubmitted preview":
+      - generic: Discard unsubmitted preview
+    - button "Retry original preview":
+      - generic: Retry original preview
+    - button "Check original schedule receipt":
+      - generic: Check original schedule receipt

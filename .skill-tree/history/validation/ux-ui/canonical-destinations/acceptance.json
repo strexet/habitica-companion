@@ -1,0 +1,50 @@
+{
+  "task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+  "title": "Use consistent canonical task destinations from planning views",
+  "operation_history": ".skill-tree/history/validation/ux-ui/canonical-destinations/operation-history.json",
+  "checks": [
+    {
+      "id": "canonical-destinations-behavior",
+      "counts": {
+        "discovered": 63,
+        "expected": 63,
+        "failed": 0,
+        "passed": 63,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.log",
+          "sha256": "cf20c8f4d1d47cf6aa1bf1cb62c1b631a6d90193bafeb03b8be6af0bbc5fa70c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.trx",
+          "sha256": "11bd757c21e390238c5b9f8cc90c6e55f8517e798cf6f038dd51cdfc501aec8f"
+        }
+      ]
+    },
+    {
+      "id": "canonical-destinations-rendered",
+      "counts": {
+        "discovered": 577,
+        "expected": 577,
+        "failed": 0,
+        "passed": 577,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/2b456b79-b27c-4225-ad1e-04d5a4c57ce7.json",
+          "sha256": "29e1f65a5aefbb7be8ace5e1f529601b95a1739dc845fa7e140e3cd6a3099a38"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

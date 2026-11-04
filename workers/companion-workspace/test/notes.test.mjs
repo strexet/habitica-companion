@@ -2,9 +2,15 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {applyNote,noteCommand,noteHash,notesWireJson} from '../../shared/notes.ts';
+import {applyFolder,folderCommand,folderHash} from '../../shared/notes-folders.ts';
 import {fixture,enrolled,authorization,exchange,accounts,issuer,ticket,authPage,form,handle} from '../../chatgpt-auth/test/fixtures/oauth.mjs';
 
 const origin='http://localhost:8789';
+test('a separately connected Notes owner can discover an empty folder namespace without task access',async t=>{
+ const f=await fixture(t,{workspace:true}),n=await connect(f,await enrolled(f));
+ const response=await call(f,'/notes/folders',n.sessionToken,{query:''});assert.equal(response.status,200,await response.clone().text());
+ const result=await response.json();assert.equal(result.notebookId,n.notebookId);assert.deepEqual(result.folders,[]);assert.equal(result.total,0);
+});
 const command=(revision=0,noteId=crypto.randomUUID(),operation='create',patch={title:'Measurements',markdown:'# Private\r\n🧥 size L\n'})=>({id:crypto.randomUUID(),noteId,expectedNotebookRevision:revision,expectedNoteRevision:operation==='create'?0:revision,operation,...patch});
 const call=(f,path,token,input,method=input===undefined?'GET':'POST')=>f.workspace.fetch(origin+path,{method,headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},body:input===undefined?undefined:JSON.stringify(path==='/notes/command'?{expectedNotebookId:f.notesSessions?.get(token),command:input}:path==='/notes/receipt'?{expectedNotebookId:f.notesSessions?.get(token),...input}:input)});
 async function connect(f,p){const r=await call(f,'/notes/connect',p.managementToken,{consentVersion:'notes-v1'});assert.equal(r.status,201,await r.clone().text());const value=await r.json();(f.notesSessions??=new Map()).set(value.sessionToken,value.notebookId);return value;}
@@ -12,6 +18,80 @@ async function book(f,n){const r=await call(f,'/notes/export',n.sessionToken);as
 async function save(f,n,c){const r=await call(f,'/notes/command',n.sessionToken,c);assert.ok([200,201].includes(r.status),await r.clone().text());return r.json();}
 async function token(f,p,scopes){const r=await exchange(f,await authorization(f,p,scopes));assert.equal(r.status,200);return (await r.json()).access_token;}
 async function agent(f,token,operation,args={}){const binding=(await f.mf.getBindings('mcp')).WORKSPACE_SERVER;return binding.fetch('https://workspace.internal/notes',{method:'POST',headers:{authorization:`Bearer ${token}`},body:JSON.stringify({operation,arguments:args})});}
+const folderInput=(n,revision,folderId=crypto.randomUUID(),operation='create',folderRevision=0,patch={name:'Hotels 🧥'})=>({id:crypto.randomUUID(),folderId,expectedNotebookRevision:revision,expectedFolderRevision:folderRevision,operation,ownerScope:n.ownerScope,source:'cloud',...patch});
+const rawFolder=(f,n,c)=>call(f,'/notes/folder-command',n.sessionToken,{expectedNotebookId:n.notebookId,command:c});
+async function saveFolder(f,n,c){const r=await rawFolder(f,n,c);assert.ok([200,201].includes(r.status),await r.clone().text());return r.json();}
+
+test('portable folder C#/Worker wire preserves exact new hashes and the legacy combined journal',async()=>{
+ const fixture=JSON.parse(await readFile(new URL('../../../tests/fixtures/notes/notes-folder-wire-v3.json',import.meta.url),'utf8'));let book=fixture.initial;
+ for(const row of fixture.rows){const c=row.kind==='folder'?folderCommand(row.command):noteCommand(row.command);assert.equal(await(row.kind==='folder'?folderHash(c):noteHash(c)),row.hash);const result=await(row.kind==='folder'?applyFolder(book,c,row.atUtc):applyNote(book,c,row.atUtc));assert.deepEqual(result.book,row.notebook);book=result.book;}
+ assert.equal(book.notes[0].current.folder,undefined);assert.equal(book.notes[0].history[0].folder.folderId,book.folders[0].id);assert.equal(book.folders[0].isRemoved,true);
+});
+test('D1 folder-only lifecycle and stable discovery preserve duplicate labels and original receipts after removal',async t=>{
+ const f=await fixture(t,{workspace:true}),n=await connect(f,await enrolled(f));const first=folderInput(n,0),original=await saveFolder(f,n,first);
+ for(let i=1;i<25;i++)await saveFolder(f,n,folderInput(n,i));
+ const page=await(await call(f,'/notes/folders',n.sessionToken,{query:'HOTELS'})).json();assert.equal(page.total,25);assert.equal(page.folders.length,20);assert.equal(page.nextOffset,20);assert.equal(new Set(page.folders.map(r=>r.id)).size,20);
+ assert.equal((await call(f,'/notes/folders',n.sessionToken,{query:'',offset:20})).status,409);const rest=await(await call(f,'/notes/folders',n.sessionToken,{query:'',offset:20,expectedRevision:25})).json();assert.equal(rest.folders.length,5);
+ await saveFolder(f,n,folderInput(n,25,first.folderId,'rename',1,{name:'Interesting places 尾'}));await saveFolder(f,n,folderInput(n,26,first.folderId,'remove',2,{}));
+ const recovered=await saveFolder(f,n,first);assert.deepEqual(recovered.receipt,original.receipt);assert.equal(recovered.disposition,'duplicate');
+ const receipt=await(await call(f,'/notes/folder-receipt',n.sessionToken,{expectedNotebookId:n.notebookId,commandId:first.id})).json();assert.deepEqual(receipt.receipt,original.receipt);
+ const exact=await(await call(f,'/notes/folder',n.sessionToken,{folderId:first.folderId})).json();assert.equal(exact.folder.isRemoved,true);assert.equal(exact.folder.name,'Interesting places 尾');
+ const exported=await book(f,n);assert.equal(exported.schemaVersion,2);assert.equal(exported.notes.length,0);assert.equal(exported.folderReceipts.length,27);assert.equal(exported.receipts.length,0);
+ assert.equal((await f.workspaceDb.prepare('SELECT count(*) n FROM workspace_commands').first()).n,0);
+});
+test('folder assignment, trash and detach preserve exact Markdown and independent no-folder filters',async t=>{
+ const f=await fixture(t,{workspace:true}),n=await connect(f,await enrolled(f)),folder=folderInput(n,0);await saveFolder(f,n,folder);
+ for(let i=0;i<25;i++)await save(f,n,command(i+1,undefined,'create',{title:'Hotel '+i,markdown:'EXACT\r\n🧥\n',...(i<22?{folder:{folderId:folder.folderId,ownerScope:n.ownerScope,source:'cloud'}}:{})}));
+ const query={query:'exact',folderId:folder.folderId};const first=await(await call(f,'/notes/search',n.sessionToken,query)).json();assert.equal(first.total,22);assert.equal(first.results.length,20);assert.equal(first.results[0].folder.folderId,folder.folderId);
+ const second=await(await call(f,'/notes/search',n.sessionToken,{...query,offset:20,expectedRevision:26})).json();assert.equal(second.results.length,2);assert.equal((await(await call(f,'/notes/search',n.sessionToken,{query:'',noFolder:true})).json()).total,3);
+ const id=first.results[0].id;await save(f,n,{...command(26,id,'trash',{}),expectedNoteRevision:1});assert.equal((await rawFolder(f,n,folderInput(n,27,folder.folderId,'remove',1,{}))).status,409);
+ await save(f,n,{...command(27,id,'restore',{}),expectedNoteRevision:2});await save(f,n,{...command(28,id,'update',{clearFolder:true}),expectedNoteRevision:3});
+ const note=(await book(f,n)).notes.find(n=>n.id===id);assert.equal(note.current.folder,undefined);assert.equal(note.current.markdown,'EXACT\r\n🧥\n');assert.equal(note.history[0].folder.folderId,folder.folderId);
+ assert.equal((await call(f,'/notes/search',n.sessionToken,{query:'',folderId:folder.folderId,noFolder:true})).status,422);
+});
+test('folder receipt failure atomically rolls back metadata and competing commands retain one original',async t=>{
+ const f=await fixture(t,{workspace:true}),n=await connect(f,await enrolled(f)),first=folderInput(n,0);
+ await f.workspaceDb.exec("CREATE TRIGGER fail_folder_receipt BEFORE INSERT ON note_folder_receipts BEGIN SELECT RAISE(ABORT,'synthetic folder rollback'); END");assert.equal((await rawFolder(f,n,first)).status,503);assert.equal((await book(f,n)).revision,0);assert.equal((await f.workspaceDb.prepare('SELECT count(*) n FROM note_folders').first()).n,0);await f.workspaceDb.exec('DROP TRIGGER fail_folder_receipt');
+ const other=folderInput(n,0);const responses=await Promise.all([rawFolder(f,n,first),rawFolder(f,n,other)]);assert.deepEqual(responses.map(r=>r.status).sort(),[201,409]);const winner=responses[0].status===201?first:other;assert.equal((await book(f,n)).folders.length,1);assert.equal((await saveFolder(f,n,winner)).disposition,'duplicate');
+ const b=await connect(f,await enrolled(f,accounts[1]));assert.equal((await call(f,'/notes/folder',b.sessionToken,{folderId:winner.folderId})).status,404);assert.equal((await rawFolder(f,n,{...folderInput(n,1),ownerScope:b.ownerScope})).status,403);
+ for(const patch of [{source:'browser'},{name:'x'.repeat(257)},{name:'\ud800'},{parentFolderId:winner.folderId}])assert.ok([400,403,422].includes((await rawFolder(f,n,{...folderInput(n,1),...patch})).status));
+});
+test('project folders and placement require current exact authority, while retained stale membership remains editable',async t=>{
+ const f=await fixture(t,{workspace:true}),p=await enrolled(f),n=await connect(f,p),w=await(await call(f,'/connect',p.managementToken,{consentVersion:'workspace-v1'})).json(),projectId=crypto.randomUUID();
+ const row=await f.workspaceDb.prepare('SELECT document_json FROM workspaces WHERE profile_id=?').bind(p.profileId).first();const d=JSON.parse(row.document_json);d.projects=[{id:projectId,revision:1,name:'Trip',categoryId:null,isArchived:false}];await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?,store_version=store_version+1 WHERE profile_id=?').bind(JSON.stringify(d),p.profileId).run();const project={projectId,workspaceId:w.workspaceId,source:'cloud',ownerScope:n.ownerScope};
+ const c=folderInput(n,0,undefined,'create',0,{name:'Hotels',project});await saveFolder(f,n,c);const membership={folderId:c.folderId,source:'cloud',ownerScope:n.ownerScope};const note=command(1,undefined,'create',{title:'Exact',markdown:'Body\r\n🧥',project,folder:membership});await save(f,n,note);
+ d.projects[0].isArchived=true;await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?,store_version=store_version+1 WHERE profile_id=?').bind(JSON.stringify(d),p.profileId).run();
+ await save(f,n,{...command(2,note.noteId,'update',{markdown:'Changed\r\n🧥'}),expectedNoteRevision:1});const original=await saveFolder(f,n,c);assert.equal(original.disposition,'duplicate');await save(f,n,{...command(3,note.noteId,'update',{clearFolder:true}),expectedNoteRevision:2});
+ const attach={...command(4,note.noteId,'update',{folder:membership}),expectedNoteRevision:3};assert.equal((await call(f,'/notes/command',n.sessionToken,attach)).status,409);assert.equal((await rawFolder(f,n,folderInput(n,4,undefined,'create',0,{name:'New',project}))).status,409);
+ const exported=await book(f,n);assert.deepEqual(exported.notes[0].current.project,project);assert.equal(exported.notes[0].current.folder,undefined);assert.equal(exported.notes[0].history[0].markdown,'Body\r\n🧥');
+});
+test('disconnect retains private folders but explicit notebook deletion removes all folder metadata and receipts',async t=>{
+ const f=await fixture(t,{workspace:true}),p=await enrolled(f),n=await connect(f,p),c=folderInput(n,0);await saveFolder(f,n,c);assert.equal((await call(f,'/notes/disconnect',n.sessionToken,{})).status,200);assert.equal((await call(f,'/notes/folders',n.sessionToken,{query:''})).status,401);
+ const again=await connect(f,p);assert.equal((await book(f,again)).folders[0].name,c.name);assert.equal((await call(f,'/notes',again.sessionToken,{confirmNotebookId:again.notebookId},'DELETE')).status,200);
+ for(const table of ['notes_notebooks','note_folders','note_folder_receipts'])assert.equal((await f.workspaceDb.prepare('SELECT count(*) n FROM '+table).first()).n,0);
+ const replacement=await connect(f,p);assert.notEqual(replacement.notebookId,n.notebookId);assert.equal((await call(f,'/notes/folder-command',replacement.sessionToken,{expectedNotebookId:n.notebookId,command:folderInput(replacement,0)})).status,409);
+});
+test('expired Notes sessions and integration profile deletion fence and erase private folder state',async t=>{
+ const f=await fixture(t,{workspace:true}),p=await enrolled(f),n=await connect(f,p);await saveFolder(f,n,folderInput(n,0));
+ await f.workspaceDb.prepare("UPDATE notes_sessions SET expires_at_utc='2000-01-01T00:00:00Z' WHERE profile_id=?").bind(p.profileId).run();assert.equal((await call(f,'/notes/folders',n.sessionToken,{query:''})).status,401);
+ const fresh=await connect(f,p);assert.equal((await book(f,fresh)).folders.length,1);
+ const deleted=await f.auth.fetch(`${issuer}/profiles/${p.profileId}`,{method:'DELETE',headers:{authorization:`Bearer ${p.managementToken}`}});assert.equal(deleted.status,200,await deleted.clone().text());
+ for(const table of ['notes_notebooks','note_folders','note_folder_receipts'])assert.equal((await f.workspaceDb.prepare('SELECT count(*) n FROM '+table).first()).n,0);
+ assert.equal((await call(f,'/notes/folders',fresh.sessionToken,{query:''})).status,401);
+});
+test('a project race rolls back a folder commit and lost D1 acknowledgment recovers the original accepted identity',async t=>{
+ const {createRequire}=await import('node:module'),{fileURLToPath}=await import('node:url'),require=createRequire(new URL('../../chatgpt-auth/package.json',import.meta.url)),{build}=require('esbuild');
+ const bundle=await build({entryPoints:[fileURLToPath(new URL('../src/notes-folders-api.ts',import.meta.url))],bundle:true,format:'esm',platform:'node',write:false,plugins:[{name:'unused-entrypoint',setup(b){b.onResolve({filter:/^cloudflare:workers$/},()=>({path:'entrypoint',namespace:'stub'}));b.onLoad({filter:/.*/,namespace:'stub'},()=>({contents:'export class WorkerEntrypoint {}',loader:'js'}));}}]});
+ const {submitFolder}=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
+ const f=await fixture(t,{workspace:true}),p=await enrolled(f),n=await connect(f,p),w=await(await call(f,'/connect',p.managementToken,{consentVersion:'workspace-v1'})).json(),id=crypto.randomUUID();
+ const record=await f.workspaceDb.prepare('SELECT document_json FROM workspaces WHERE profile_id=?').bind(p.profileId).first();const document=JSON.parse(record.document_json);document.projects=[{id,revision:1,name:'Trip',isArchived:false,categoryId:null}];
+ const projectState=async archived=>{document.projects[0].isArchived=archived;await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?,store_version=store_version+1 WHERE profile_id=?').bind(JSON.stringify(document),p.profileId).run();};await projectState(false);
+ const command=folderInput(n,0,undefined,'create',0,{name:'Hotels',project:{projectId:id,workspaceId:w.workspaceId,ownerScope:n.ownerScope,source:'cloud'}}),row=await f.workspaceDb.prepare('SELECT * FROM notes_notebooks WHERE profile_id=?').bind(p.profileId).first(),env=await f.mf.getBindings('workspace');
+ const wrap=after=>{const sql=new WeakMap();return{prepare:query=>{const stmt=env.WORKSPACE_DB.prepare(query);return{bind:(...args)=>{const bound=stmt.bind(...args);sql.set(bound,query);return bound;}};},batch:async statements=>{if(sql.get(statements[0])?.startsWith('UPDATE notes_notebooks SET revision='))return after(statements);return env.WORKSPACE_DB.batch(statements);}};};
+ let enter,release;const ready=new Promise(r=>enter=r),gate=new Promise(r=>release=r),db=wrap(async statements=>{enter();await gate;return env.WORKSPACE_DB.batch(statements);});
+ const pending=submitFolder({...env,WORKSPACE_DB:db},row,command);await Promise.race([ready,pending.then(()=>{throw Error('Folder commit did not enter the explicit SQL write gate');})]);await projectState(true);release();await assert.rejects(pending);assert.equal((await book(f,n)).revision,0);assert.equal((await f.workspaceDb.prepare('SELECT count(*) n FROM note_folders').first()).n,0);
+ await projectState(false);const lost=wrap(async statements=>{await env.WORKSPACE_DB.batch(statements);throw Error('Synthetic lost folder acknowledgment');});await assert.rejects(submitFolder({...env,WORKSPACE_DB:lost},row,command));assert.equal((await book(f,n)).revision,1);assert.equal((await saveFolder(f,n,command)).disposition,'duplicate');
+});
 
 test('portable C# Notes commands have identical hashes, source text, lifecycle and receipt history',async()=>{
  const fixture=JSON.parse(await readFile(new URL('../../../tests/fixtures/notes/notes-wire-v1.json',import.meta.url),'utf8'));let book=fixture.initial;

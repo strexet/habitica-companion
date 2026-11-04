@@ -1,0 +1,6 @@
+{
+  "automated_report": ".skill-tree/history/validation/ux-ui/party-context-reflow/browser/2c7384ff-df8b-4779-8b75-062e171ab578.json",
+  "acceptance": "not accepted; manual screenshot review found hydrated overflow",
+  "observation": "360px viewport fullpage screenshot is923px wide because local Party endpoint warning contains an unbroken stack frame",
+  "repair": "Shared warning text wraps without dropping content; native document geometry now required"
+}

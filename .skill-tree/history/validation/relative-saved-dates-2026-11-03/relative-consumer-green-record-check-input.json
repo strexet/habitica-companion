@@ -1,0 +1,24 @@
+{
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "check_id": "relative-date-components",
+  "attempt_id": "C-2c452470-2238-4448-8ebf-c7cf68c31d3c",
+  "environment_identity": "270542fe897c98955e406c7729cb846c2a2aa06d5cd2ce77edb264761acc41fc",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 43,
+    "discovered": 43,
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 13.0148121251259
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-consumer-green-execution.log",
+    ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-components/relative-consumer-green.trx"
+  ]
+}

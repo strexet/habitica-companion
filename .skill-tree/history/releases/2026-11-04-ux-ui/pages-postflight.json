@@ -1,0 +1,15 @@
+{
+  "deployment_id": "5c45ec2f-2d13-40f0-a0ec-61279c9d1b70",
+  "url": "https://5c45ec2f.habitica-companion.pages.dev",
+  "status": "success",
+  "stable_url": "https://habitica-companion.pages.dev",
+  "previous": "a061255b-d21c-4195-9366-219422259497",
+  "runtime_and_bindings_preserved": true,
+  "public_override_preserved": true,
+  "git_source_settings_preserved": true,
+  "git_output_directory": {
+    "previous": "../../../output/wwwroot",
+    "corrected": "output/wwwroot",
+    "reason": "Repository-root ./build.sh publishes output/wwwroot; prior direct-upload relative path would misconfigure a later Git build."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+  "attempt_id": "C-1d68b761-d134-41d5-ab9f-4009f3b94b49",
+  "check_id": "qualification-contract",
+  "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+  "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+  "key": "958eb11d3c2830f1a56239d6300787f5baa9a175c2f35329b44706a4de03ec7e",
+  "launch": null,
+  "prepared_at": "2026-11-03T07:44:06.502248+00:00",
+  "recipe": {
+    "assertion_contract": "explicit source and artifact assertions",
+    "input_paths": [],
+    "lane": "static"
+  },
+  "sources": {
+    ".skill-tree/documents/testing.md": "3e3808133ad447085936bcabb64673182e9773dfd6b74f60b58f7afd30395c3e",
+    ".skill-tree/installation/profile.json": "04085d6f080ac8a75df610dc9bcb53bf287b272f0e21bdee49322e2cc9bb8864",
+    ".skill-tree/validation-recipes.json": "2c4840fbb2e1d8b771520b94183c65b089ddd88f3832d3dfdc1ff4b8676f2a7f"
+  },
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+}

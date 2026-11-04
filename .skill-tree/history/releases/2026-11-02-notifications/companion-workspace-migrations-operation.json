@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/wrangler/bin/wrangler.js",
+    "d1",
+    "migrations",
+    "apply",
+    "WORKSPACE_DB",
+    "--remote",
+    "--config",
+    "deploy/.production/companion-workspace.json"
+  ],
+  "exit_code": 0,
+  "seconds": 2.4047105410136282,
+  "deadline_seconds": 120,
+  "cleanup_reserve_seconds": 15
+}

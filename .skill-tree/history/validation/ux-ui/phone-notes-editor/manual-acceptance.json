@@ -1,0 +1,24 @@
+{
+  "accepted_report": "f16b14c4-f10e-46cf-ae4b-b4754c3ab585.json",
+  "artifact": "1793744848102168000",
+  "reviewed": [
+    "Chromium gryphy-light360/100: library hidden during capture, title and Markdown precede optional associations; useful Back action and visible focus.",
+    "Chromium gryphy-light360/200: readable heading/title and focus; enlarged content remains scrollable without metadata preceding writing.",
+    "WebKit obsidian-glow360/200 nested Project Notes: title and writing with readable fixed action words and explicit retained-association warning.",
+    "Chromium gryphy-light1280/100: readable desktop library/editor split and retained unsaved text.",
+    "All72 native cases explicitly assert association fields hidden before native disclosure and visibly rendered after expansion; exact project/folder identity and draft preserved."
+  ],
+  "counts": {
+    "focused": 31,
+    "browser": 937,
+    "related_unified_workspace": 7
+  },
+  "related_evidence": "unified-neighbor/unified-neighbor.trx",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "earlier_pass": "59b2ce78-fbab-4277-8db9-676f171dfb05.json precedes explicit disclosure visibility assertions; final accepted source uses f16b14c4.",
+  "limits": "No native note/folder acceptance or provider mutation. Original pending/recovery and failed/conflict state behavior are public component controls plus rendered fixtures. Physical devices, native popovers, virtual keyboards, assistive technology, installed PWA/service workers and publication remain unqualified. Separate header Sync clipping remains captured and deferred."
+}

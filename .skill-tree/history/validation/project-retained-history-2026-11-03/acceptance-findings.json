@@ -1,0 +1,52 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "decision": "Project-filtered retained history and reviewed original native restoration locally qualified.",
+  "checks": {
+    "history-rules": 49,
+    "history-components": 37,
+    "history-wire": 41,
+    "history-rendering": 162
+  },
+  "totalPassed": 289,
+  "implemented": [
+    "Exact project and current Unassigned selectors preserve accepted event text/time/provenance, archive flags, original recovery references, AND filters, full counts and stable revision pages.",
+    "Retained archived/removed identities and duplicate names remain discoverable through explicit includeRetained on the existing list_projects MCP read and UUID-labelled selectors.",
+    "Archived but not removed remains assigned; removed references participate in current Unassigned while exact removed-project selection stays distinct.",
+    "History and Projects route links bind exact Workspace/source/project context and refuse malformed/mismatched fallback. Manual filter selection explicitly starts a current read.",
+    "Actual read-only SDK/Auth/Workspace/D1 controls preserve document/store-version/bytes and refuse stale/cross-profile reads without leaking event details.",
+    "Current Release Chromium/WebKit journeys recover existing synthetic cloud accounts through native IndexedDB and real isolated Workers/D1, follow exact project links, lose one restore acknowledgement and recover the original receipt with one acceptance and zero provider writes.",
+    "160 independent light/obsidian phone/desktop normal/enlarged-text Razor cases verify geometry, contrast, focus, disabled controls and visible actions."
+  ],
+  "originalFailures": [
+    "Initial native Red rejected the requested projectId field while46 existing history controls passed.",
+    "An initial shared fixture lacked required removed-project tombstone provenance. Actual-shaped organization-removal command/hash/snapshot provenance repaired the fixture; no production validation rule was weakened.",
+    "Initial component staging omitted the new fixture in the explicit web test project copy list. The missing prerequisite was recorded, registered and followed by37 passing tests.",
+    "The first browser-recipe registration omitted mandatory empty parameters metadata. Workflow validation refused before launch; metadata repaired and profile re-admitted before execution."
+  ],
+  "limits": [
+    "Local changes remain unpublished and uncommitted. No real account, provider mutation or device/notification operation occurred.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified. Changed-route harnesses block service workers.",
+    "Project selection applies to completion/Habit history; the existing separate archived-task/occurrence recovery browser retains independent discovery filters.",
+    "Project filtering follows current retained canonical task assignment and does not establish event-time project membership."
+  ],
+  "evidence": [
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-execution.log",
+    ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-native-final.trx",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-receipt.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-execution.log",
+    ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-components-final.trx",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-receipt.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-execution.log",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-receipt.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-execution.log",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json",
+    ".skill-tree/artifacts/project-history-ui/1793659336397633000/report.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-receipt.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/future-validation.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/documentation-validation.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/changed-prose-validation.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/auth-dry-build.log",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/workspace-dry-build.log",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/mcp-dry-build.log"
+  ]
+}

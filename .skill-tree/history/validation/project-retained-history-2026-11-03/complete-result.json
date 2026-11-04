@@ -1,0 +1,807 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-execution.log",
+          "sha256": "38e0f2616894593aea59d844c8af9ed036ca19797edf0a0f862fcc6a7b92407a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-native-final.trx",
+          "sha256": "001f9feff05563f2b9178361d852b2d8c7fdb146b1caadd7dc65664d808ff177"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-receipt.json",
+          "sha256": "153e7be7c10b91184262663d6cb2a5acdc647126fefa11005c05e269becdd6fd"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-execution.log",
+          "sha256": "cc1426b156b323382e2a1b455c9fa8f0e19f8e945cbc6954765f605afa126458"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-components-final.trx",
+          "sha256": "e84beb485828d9534c3c0c8293dab41fc96b63dafceb67ccf793a00b3649a0a2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-receipt.json",
+          "sha256": "a9ab993d91c56f5dcac48b671904e2ff579aebce8d261bbb534dc443378510c1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-execution.log",
+          "sha256": "377820be0ab6d8ca07be89e20a6c6b5a599487ae0404fdbfacec5c57cd937fb4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-receipt.json",
+          "sha256": "c9a72b702fe8046e4567eb09afecab1a49ee3715207207c8a47cb68939e7ec95"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-execution.log",
+          "sha256": "151e4b48e9642076bd5ba9543add6675094380f2250bf63e10a714d8605dd94b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json",
+          "sha256": "59c8c162158e9760b543667f10d0934319ce87cfcecdc32615138d33420cc2e2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/project-history-ui/1793659336397633000/report.json",
+          "sha256": "11b967d920a1546497a3c7a1c70c1981c80135b381f7e775524d50fb385b8838"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-receipt.json",
+          "sha256": "84f03f3f4afb61ab0d65926672382bd8d249cf63193fdff95e6b7ae5dd7d62e1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/future-validation.json",
+          "sha256": "4e87c8ca04338c9af9b4d80ef198b20a1ab2740e8f39fd01eb8447f75e84774b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/changed-prose-validation.json",
+          "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/auth-dry-build.log",
+          "sha256": "2accfe73cd51b2ac4463711c55c61f586fb854b97f709cc42503f5527cd74680"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/workspace-dry-build.log",
+          "sha256": "f74c87bac49d57ba259de80ef4038099c002c33364b08c40250c135144c18963"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/mcp-dry-build.log",
+          "sha256": "ce81c446a6731194a923ad80ee09525adb3916d9b8f55ce70a232405fa24bb16"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/acceptance-findings.json",
+          "sha256": "5cda8f215ad0a587969f8a641217eab76f6ffbab33c028b203557d24249cf81b"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+        "criteria": [
+          "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+        ],
+        "id": "history-rules",
+        "parameters": {
+          "report_name": "history-rules.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules",
+          "test_filter": "FullyQualifiedName~History",
+          "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs",
+          "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+          "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+          "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+          "tests/fixtures/workspace/project-retained-history-v1.json",
+          "src/Habitica.Application/Workspace/WorkspaceOrganization.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f4778fd2-8a59-486b-b9aa-ac564ebcdcfc",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 47,
+          "expected": 47,
+          "failed": 1,
+          "passed": 46,
+          "skipped": 0
+        },
+        "definition": "b24e5847b7f47e99883355f5d06c7db53b1bd8d0de6f7f29a4353274aa8d1bfc",
+        "environment_identity": "eaf72f12decfed819cf48df3c82b47e795c53c062421e0a402e69c749b8dc0d7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-filter-red-execution.log",
+            "sha256": "e4c68d8475a8bc349c59c7fd6409340ff373b976314ed9a2060621d646eacb70"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-filter-red.trx",
+            "sha256": "338cc4f2b622f996939c362e943a537a96756ccc86a30d176b73f827b85d9f78"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "a23df7bc227f88ec32bffd4826894519415c745c7c8bdf3cbd6e6c5c1d8570cc",
+        "payload_hash": "0af6f6feafee9149ca84dfd040150031dea266f3f0bad5894bb09e17aa281581",
+        "recorded_at": "2026-11-02T22:15:54.800401+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f7b54b33a5b7739615a4ed5cee70fcd76801cbb06cb58088afc39a1aff9f5fd8",
+          "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "c2164eb0c2df671855caf4c9b976cca1da022c103cba3a964a2b9bf3af5d7a08",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs": "15bcef60bc1c1998d658c1e40b66e4aa30028f1dbd622ce2ea08c13ace811311",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs": "1fe5ab20bf52d55d7c2bc6e2b957cdb7859d107c1cc1dbd0ad0b8f520f07ad4b"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.431222457904369
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-8ff4efc1-0712-4798-91bb-fdaa2cb70401",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 49,
+          "expected": 49,
+          "failed": 0,
+          "passed": 49,
+          "skipped": 0
+        },
+        "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+        "environment_identity": "9c12204fcb259928a0c575a5f3a926b8fb8460f111aedcea23fccd9e37faf507",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-execution.log",
+            "sha256": "38e0f2616894593aea59d844c8af9ed036ca19797edf0a0f862fcc6a7b92407a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-native-final.trx",
+            "sha256": "001f9feff05563f2b9178361d852b2d8c7fdb146b1caadd7dc65664d808ff177"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "3e60576d7c9b229ef0e10d88739e5e9ab872ffd64c468f33c7cef80a14ea0365",
+        "payload_hash": "71aa890df0a65b93be57cdf2559638b12ef70c84eccf452ae3e47e4bb2c49cb5",
+        "recorded_at": "2026-11-02T22:42:09.516115+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f6f13184d35eae86bfce657c1ebe688ccea53877026f2da7f4b7328084c1ed70",
+          "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "37b0a2abaa0264e36e999c698131ef751e37016a8da433380e1b80c60743fe60",
+          "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs": "63fc342aa3fffad40e1af498a8fc8ac7166d21418fe77ea1a603b0ae9c2a4433",
+          "src/Habitica.Application/Workspace/WorkspaceOrganization.cs": "7bbfb2ab43fa71d4814a24ae47a42f75ccf9e1ae94c66bac9fcccdcad84dc047",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs": "eff8cda27cae60ac1134aed1191431e573e2b53e04435e6bd806eb31e574389b",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs": "1fe5ab20bf52d55d7c2bc6e2b957cdb7859d107c1cc1dbd0ad0b8f520f07ad4b",
+          "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.7911752089858055
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+        "criteria": [
+          "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+        ],
+        "id": "history-components",
+        "parameters": {
+          "report_name": "history-components.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components",
+          "test_filter": "FullyQualifiedName~History|FullyQualifiedName~TodoOrganizationPanel",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+          "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+          "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+          "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+          "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+          "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+          "tests/fixtures/workspace/project-retained-history-v1.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f3baefa2-e72f-4fd1-86d7-5d3a5e5c8191",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 37,
+          "expected": 37,
+          "failed": 0,
+          "passed": 37,
+          "skipped": 0
+        },
+        "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+        "environment_identity": "9c7627e0d2a8de637137eb0f21093cfb3928d07f96035304840594eeab8d770e",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-execution.log",
+            "sha256": "cc1426b156b323382e2a1b455c9fa8f0e19f8e945cbc6954765f605afa126458"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-components-final.trx",
+            "sha256": "e84beb485828d9534c3c0c8293dab41fc96b63dafceb67ccf793a00b3649a0a2"
+          }
+        ],
+        "execution_sessions": {
+          "7f14dcdf83a292146ea2c0c9145b80d82a697b2438c17ba992db93ffd4f52425": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T22:55:16.125788+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json"
+            ],
+            "profile_id": "project-history-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-2708e89e",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "a343556b408ea067eea0f279c94733ed4c2f46e8ea762342c5bf7e2e976945f1",
+        "payload_hash": "cdc7a54fefacef6ff0d50194a969f94ad6dcce87c4f7f755c33c7f16f331b284",
+        "recorded_at": "2026-11-02T22:43:27.585284+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f6f13184d35eae86bfce657c1ebe688ccea53877026f2da7f4b7328084c1ed70",
+          "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "37b0a2abaa0264e36e999c698131ef751e37016a8da433380e1b80c60743fe60",
+          "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs": "63fc342aa3fffad40e1af498a8fc8ac7166d21418fe77ea1a603b0ae9c2a4433",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+          "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+          "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "072f7e7e5d3284b83f894bd9e1c2f5563826d46c7d34118ea94a0e88746c43a3",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+          "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "c7d3df0b16e1c04e777829717d542192aeec9345e243fed1382de688b2ee8448",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "e804b8156d602ae53c2c0b21fc315da4aa22fb2fb8f033c4ad3ff93e37f6e062",
+          "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.4147228749934584
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+        "criteria": [
+          "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+        ],
+        "id": "history-wire",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/project-retained-history.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/project-retained-history.test.mjs",
+          "workers/companion-workspace/test/completion-history.test.mjs",
+          "workers/companion-workspace/test/habit-history.test.mjs",
+          "workers/companion-workspace/test/organization-query.test.mjs",
+          "workers/shared/history-projects.ts",
+          "workers/shared/completion-history.ts",
+          "workers/shared/habit-history.ts",
+          "workers/shared/organization-query.ts",
+          "workers/shared/task-tools.ts",
+          "workers/shared/build-identity.generated.ts",
+          "workers/companion-workspace/src/completion-history.ts",
+          "workers/companion-workspace/src/habit-history.ts",
+          "workers/companion-workspace/src/journal.ts",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "tests/fixtures/workspace/project-retained-history-v1.json",
+          "workers/companion-workspace/package.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-62a2d07d-6482-4c0b-867d-3850e680f1ba",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 41,
+          "expected": 41,
+          "failed": 0,
+          "passed": 41,
+          "skipped": 0
+        },
+        "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+        "environment_identity": "9d4bdd50780e27cd3545db72694a0ef8f4866f7840c1e021be7181d891786e66",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-execution.log",
+            "sha256": "377820be0ab6d8ca07be89e20a6c6b5a599487ae0404fdbfacec5c57cd937fb4"
+          }
+        ],
+        "execution_sessions": {
+          "7f14dcdf83a292146ea2c0c9145b80d82a697b2438c17ba992db93ffd4f52425": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T22:55:16.125788+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json"
+            ],
+            "profile_id": "project-history-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-2708e89e",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "119b8786c5a555bb6697251319d526a19ea8f3f4fafab93e8a6d3dbd6f536c85",
+        "payload_hash": "8c09ca98cdf19c724e69b6c9ecd3ec5ffe9a04e02cfdc0ce2dafb9d9f08f8f2e",
+        "recorded_at": "2026-11-02T22:43:36.791399+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/completion-history.ts": "b58abaf1fd81c0d183e652ccb93960bfc870e3c7bca7966d2494837b75249194",
+          "workers/companion-workspace/src/habit-history.ts": "9054ded4e6e304b7922d76ef5efe3dfeeab762dfc31e59bd5c64ae4b4e43b68e",
+          "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+          "workers/companion-workspace/test/completion-history.test.mjs": "f110f8e6454d614b59fb90b6275ceafce89abc014b43290723205f2736d536f2",
+          "workers/companion-workspace/test/habit-history.test.mjs": "3327e8d2ca58c0561be6230907f056ad6c5578896d8816f9534de48a3172ce4f",
+          "workers/companion-workspace/test/organization-query.test.mjs": "a71f6dc5e0487d4d617546d145fb7994e69358c9c8ced81aa36155a9505d0477",
+          "workers/companion-workspace/test/project-retained-history.test.mjs": "fecd16598226826dc9f586abec0f27886bf4f619a1e654eb59f44a12333d6da6",
+          "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547",
+          "workers/shared/completion-history.ts": "20f2580f3c0b903384962dc2b4c222b65a3c69854157d701bf860482e9eb5a82",
+          "workers/shared/habit-history.ts": "48dd802053e925342ce7199fc4f99312f97610421fc0ce5ed23280ea0fccf4a1",
+          "workers/shared/history-projects.ts": "06fcc947ca3887e8d67cef9cd6ef8abf8d054f21625c4e68187f5d06f48630e8",
+          "workers/shared/organization-query.ts": "302f01840a84dda2fb6f4cbbcbfd859a548c75105c5765dfa57005c8bda7d646",
+          "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4"
+        },
+        "timing": {
+          "tool_wall_seconds": 8.654727292014286
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+        "criteria": [
+          "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+        ],
+        "id": "history-rendering",
+        "parameters": {},
+        "recipe_id": "project-history-rendered-browser",
+        "sources": [
+          "tests/browser/project-history-ui.py",
+          "tests/browser/project-history-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj",
+          "tests/browser/project-history-fixture.mjs",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+          "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+          "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+          "tests/fixtures/workspace/project-retained-history-v1.json",
+          "workers/shared/build-identity.generated.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-e9ce5b1d-b3f0-4d0b-96eb-32fb6293cd67",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+        "counts": {
+          "discovered": 162,
+          "expected": 162,
+          "failed": 0,
+          "passed": 162,
+          "skipped": 0
+        },
+        "definition": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212",
+        "environment_identity": "c30378ee1685f58533b8fc4e768d98fd7c754b77c4597051ebc47c1916e55707",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-execution.log",
+            "sha256": "151e4b48e9642076bd5ba9543add6675094380f2250bf63e10a714d8605dd94b"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json",
+            "sha256": "59c8c162158e9760b543667f10d0934319ce87cfcecdc32615138d33420cc2e2"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/project-history-ui/1793659336397633000/report.json",
+            "sha256": "11b967d920a1546497a3c7a1c70c1981c80135b381f7e775524d50fb385b8838"
+          }
+        ],
+        "execution_sessions": {
+          "7f14dcdf83a292146ea2c0c9145b80d82a697b2438c17ba992db93ffd4f52425": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T22:55:16.125788+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json"
+            ],
+            "profile_id": "project-history-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-2708e89e",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "bb5ef81d6b3aeca2accddd64e7c93429ed80dde8504fdf1001ae59b8bde64272",
+        "payload_hash": "76586714eadf82ec95bea3e3db686b5d3b297354c8fc0b49119f4509cb221a79",
+        "recorded_at": "2026-11-02T22:43:09.765913+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+          "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+          "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "072f7e7e5d3284b83f894bd9e1c2f5563826d46c7d34118ea94a0e88746c43a3",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/project-history-fixture.mjs": "5c56c9ebc1c9d8489d293706d6cb7dfc87516d8258e33aa94075b42c1c47c9b8",
+          "tests/browser/project-history-ui.mjs": "67829a381d4b283ec952a364b650bf2aac7492879e50503d7fc1e6e69f0e82e7",
+          "tests/browser/project-history-ui.py": "1519d9ad8a5ce78356fdcda941434904d1a2300ab89acc91a618ae15bbccbcfc",
+          "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+          "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547"
+        },
+        "timing": {
+          "tool_wall_seconds": 52.93438612506725
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-execution.log",
+      "sha256": "38e0f2616894593aea59d844c8af9ed036ca19797edf0a0f862fcc6a7b92407a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules/project-history-native-final.trx",
+      "sha256": "001f9feff05563f2b9178361d852b2d8c7fdb146b1caadd7dc65664d808ff177"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-native-final-receipt.json",
+      "sha256": "153e7be7c10b91184262663d6cb2a5acdc647126fefa11005c05e269becdd6fd"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-execution.log",
+      "sha256": "cc1426b156b323382e2a1b455c9fa8f0e19f8e945cbc6954765f605afa126458"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components/project-history-components-final.trx",
+      "sha256": "e84beb485828d9534c3c0c8293dab41fc96b63dafceb67ccf793a00b3649a0a2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-components-final-receipt.json",
+      "sha256": "a9ab993d91c56f5dcac48b671904e2ff579aebce8d261bbb534dc443378510c1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-execution.log",
+      "sha256": "377820be0ab6d8ca07be89e20a6c6b5a599487ae0404fdbfacec5c57cd937fb4"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-final-receipt.json",
+      "sha256": "c9a72b702fe8046e4567eb09afecab1a49ee3715207207c8a47cb68939e7ec95"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-execution.log",
+      "sha256": "151e4b48e9642076bd5ba9543add6675094380f2250bf63e10a714d8605dd94b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json",
+      "sha256": "59c8c162158e9760b543667f10d0934319ce87cfcecdc32615138d33420cc2e2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/project-history-ui/1793659336397633000/report.json",
+      "sha256": "11b967d920a1546497a3c7a1c70c1981c80135b381f7e775524d50fb385b8838"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-receipt.json",
+      "sha256": "84f03f3f4afb61ab0d65926672382bd8d249cf63193fdff95e6b7ae5dd7d62e1"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/future-validation.json",
+      "sha256": "4e87c8ca04338c9af9b4d80ef198b20a1ab2740e8f39fd01eb8447f75e84774b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/documentation-validation.json",
+      "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/changed-prose-validation.json",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/auth-dry-build.log",
+      "sha256": "2accfe73cd51b2ac4463711c55c61f586fb854b97f709cc42503f5527cd74680"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/workspace-dry-build.log",
+      "sha256": "f74c87bac49d57ba259de80ef4038099c002c33364b08c40250c135144c18963"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/mcp-dry-build.log",
+      "sha256": "ce81c446a6731194a923ad80ee09525adb3916d9b8f55ce70a232405fa24bb16"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/acceptance-findings.json",
+      "sha256": "5cda8f215ad0a587969f8a641217eab76f6ffbab33c028b203557d24249cf81b"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-99a92009-8a08-4be3-a83d-4cfa11f28355",
+  "limitations": [
+    "Local changes remain unpublished and uncommitted. No real account, provider mutation or device/notification operation occurred.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified. Changed-route harnesses block service workers.",
+    "Project selection applies to completion/Habit history; the existing separate archived-task/occurrence recovery browser retains independent discovery filters.",
+    "Project filtering follows current retained canonical task assignment and does not establish event-time project membership."
+  ],
+  "outcome": "Exact current-project and Unassigned completion/Habit history retains original accepted event provenance and stable revision-bound pages across archived/removed identities. Projects links bind Workspace/source/project context; existing MCP discovery gains explicit retained identities. Original native restore recovery creates one acceptance after lost acknowledgement. All289 native/component/shared/SDK/Release-browser controls pass with zero real provider writes.",
+  "parent_pending_ids": [
+    "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+  ],
+  "recorded_at": "2026-11-02T22:44:13.817788+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "source_fingerprints": {
+    ".skill-tree/documents/project-retained-history.md": "61503545be008e4875c7ea20a03552f4159ce8507485172c26229f3eddaf0c30",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "plugin/skills/habitica-activity-review/SKILL.md": "aab5f8dd39bbe7fc41ce48881bd335605ecf6438d297c64f0de0f58d6150d3c3",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "f6f13184d35eae86bfce657c1ebe688ccea53877026f2da7f4b7328084c1ed70",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "37b0a2abaa0264e36e999c698131ef751e37016a8da433380e1b80c60743fe60",
+    "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs": "63fc342aa3fffad40e1af498a8fc8ac7166d21418fe77ea1a603b0ae9c2a4433",
+    "src/Habitica.Application/Workspace/WorkspaceOrganization.cs": "7bbfb2ab43fa71d4814a24ae47a42f75ccf9e1ae94c66bac9fcccdcad84dc047",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "072f7e7e5d3284b83f894bd9e1c2f5563826d46c7d34118ea94a0e88746c43a3",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs": "eff8cda27cae60ac1134aed1191431e573e2b53e04435e6bd806eb31e574389b",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs": "1fe5ab20bf52d55d7c2bc6e2b957cdb7859d107c1cc1dbd0ad0b8f520f07ad4b",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "c7d3df0b16e1c04e777829717d542192aeec9345e243fed1382de688b2ee8448",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "e804b8156d602ae53c2c0b21fc315da4aa22fb2fb8f033c4ad3ff93e37f6e062",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/project-history-fixture.mjs": "5c56c9ebc1c9d8489d293706d6cb7dfc87516d8258e33aa94075b42c1c47c9b8",
+    "tests/browser/project-history-ui.mjs": "67829a381d4b283ec952a364b650bf2aac7492879e50503d7fc1e6e69f0e82e7",
+    "tests/browser/project-history-ui.py": "1519d9ad8a5ce78356fdcda941434904d1a2300ab89acc91a618ae15bbccbcfc",
+    "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/completion-history.ts": "b58abaf1fd81c0d183e652ccb93960bfc870e3c7bca7966d2494837b75249194",
+    "workers/companion-workspace/src/habit-history.ts": "9054ded4e6e304b7922d76ef5efe3dfeeab762dfc31e59bd5c64ae4b4e43b68e",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/test/completion-history.test.mjs": "f110f8e6454d614b59fb90b6275ceafce89abc014b43290723205f2736d536f2",
+    "workers/companion-workspace/test/habit-history.test.mjs": "3327e8d2ca58c0561be6230907f056ad6c5578896d8816f9534de48a3172ce4f",
+    "workers/companion-workspace/test/organization-query.test.mjs": "a71f6dc5e0487d4d617546d145fb7994e69358c9c8ced81aa36155a9505d0477",
+    "workers/companion-workspace/test/project-retained-history.test.mjs": "fecd16598226826dc9f586abec0f27886bf4f619a1e654eb59f44a12333d6da6",
+    "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547",
+    "workers/shared/completion-history.ts": "20f2580f3c0b903384962dc2b4c222b65a3c69854157d701bf860482e9eb5a82",
+    "workers/shared/habit-history.ts": "48dd802053e925342ce7199fc4f99312f97610421fc0ce5ed23280ea0fccf4a1",
+    "workers/shared/history-projects.ts": "06fcc947ca3887e8d67cef9cd6ef8abf8d054f21625c4e68187f5d06f48630e8",
+    "workers/shared/organization-query.ts": "302f01840a84dda2fb6f4cbbcbfd859a548c75105c5765dfa57005c8bda7d646",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4"
+  },
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "title": "Add project-filtered retained task history navigation",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-rules",
+      "parameters": {
+        "report_name": "history-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-rules",
+        "test_filter": "FullyQualifiedName~History",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/ProjectRetainedHistoryTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceHabitHistoryTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "src/Habitica.Application/Workspace/WorkspaceOrganization.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-components",
+      "parameters": {
+        "report_name": "history-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-16e1b491-18c3-498e-82da-81a97ff1294a/history-components",
+        "test_filter": "FullyQualifiedName~History|FullyQualifiedName~TodoOrganizationPanel",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+        "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHistoryProjects.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/project-retained-history.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/project-retained-history.test.mjs",
+        "workers/companion-workspace/test/completion-history.test.mjs",
+        "workers/companion-workspace/test/habit-history.test.mjs",
+        "workers/companion-workspace/test/organization-query.test.mjs",
+        "workers/shared/history-projects.ts",
+        "workers/shared/completion-history.ts",
+        "workers/shared/habit-history.ts",
+        "workers/shared/organization-query.ts",
+        "workers/shared/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/companion-workspace/src/completion-history.ts",
+        "workers/companion-workspace/src/habit-history.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.",
+      "criteria": [
+        "Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained."
+      ],
+      "id": "history-rendering",
+      "parameters": {},
+      "recipe_id": "project-history-rendered-browser",
+      "sources": [
+        "tests/browser/project-history-ui.py",
+        "tests/browser/project-history-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/project-history-fixture.mjs",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoHistoryPage.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+        "tests/fixtures/workspace/project-retained-history-v1.json",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "920d3a3c09573bc7cc437f3454c9a79e27b71d8594325ea4a68c4c864f9d2212"
+}

@@ -1,0 +1,69 @@
+{
+  "assertion": "Retain Settings exact private-section selection/label tests and existing session/data safeguards. Capture the owning Settings page rather than an extracted inner list; original screenshot supplies the failing layout regression.",
+  "attempt_id": "C-f5156bc3-7c83-474b-8f26-dcbfab448927",
+  "check_id": "settings-content-reflow-behavior",
+  "definition": "9414b9cc9c0c68c6b392b789c9fa2c5f70d39fc205cdfa7db9a593a7d5b56143",
+  "environment_identity": "71ba3286636c4a83d91bc37762f97a5ea44e5f645117d427ee0bf738cfffda80",
+  "key": "d95da67beb5e4a7c149b18c2d4545f0d6a507b71c229dc1cbdf593e02acfd3d8",
+  "launch": {
+    "assertion": "Retain Settings exact private-section selection/label tests and existing session/data safeguards. Capture the owning Settings page rather than an extracted inner list; original screenshot supplies the failing layout regression.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T19:48:23.534179+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:43:23.818183+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~SettingsPageTests",
+      "--logger",
+      "trx;LogFileName=settings-content-reflow.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/settings-content-reflow/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e28aaf86060f217921cf119aab0e3786a8b559a56929b9abdc1ddfc5876eae90",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "d3e431b64c74c9bfcb84de92b69274520213e2782c7814558f28ba6c0ba7472a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "f5a1222561da152d97f321a1b5a360ce16024af560137c94e6e0eb7eb448a543"
+  },
+  "task_id": "T-60b23211-1d48-468b-aa37-8ae1a19b82f7"
+}

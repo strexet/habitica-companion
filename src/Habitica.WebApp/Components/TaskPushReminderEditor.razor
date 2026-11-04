@@ -3,6 +3,7 @@
 @using System.Globalization
 @inject TaskReminderController Reminders
 @inject TodoWorkspacePresentation Todo
+@inject IJSRuntime Js
 @implements IDisposable
 
 <section class="card-surface settings-card" aria-label="Task push schedule" data-testid="push-schedule">
@@ -16,7 +17,7 @@
         <p>Workspace @state.WorkspaceId · revision @state.WorkspaceRevision · Task @state.TaskId</p>
         <p>Scheduling service: @(state.Available?"available":"disabled or unconfigured") · Account push: @(state.Push?.Enabled==true?"enabled":"off") · Delivery service: @(state.Push?.DispatchAvailable==true?"available":"disabled or unconfigured"). Refresh after enabling devices in Todo Sync.</p>
         <fieldset disabled="@(!Reminders.CanPrepare)">
-            <label class="field-row">Schedule type<select class="app-input" @bind="_mode" data-testid="schedule-mode"><option value="once">One time at saved review cue</option><option value="daily">Repeat daily</option><option value="weekly">Repeat weekly</option><option value="monthly">Repeat monthly</option></select></label>
+            <label class="field-row">Schedule type<select class="app-input" @bind="_mode" data-testid="schedule-mode"><option value="once">One time</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label>
             <label class="field-row">Display and civil timezone<input class="app-input" maxlength="128" @bind="_zone" data-testid="schedule-zone" /></label>
             @if(_mode!="once")
             {
@@ -25,8 +26,21 @@
                 <label class="field-row">First civil date<input class="app-input" type="date" @bind="_start" data-testid="schedule-start" /></label>
                 <label class="field-row">Local time (HH:mm)<input class="app-input" maxlength="5" @bind="_time" data-testid="schedule-time" /></label>
                 <label class="field-row">Repeat interval<input class="app-input" type="number" min="1" max="365" @bind="_interval" /></label>
-                @if(_mode=="weekly"){<label class="field-row">Weekdays (0 Sunday … 6 Saturday, comma separated)<input class="app-input" maxlength="20" @bind="_days" data-testid="schedule-days" /></label>}
-                @if(_mode=="monthly"){<label class="field-row">Days of month (1 … 31, comma separated)<input class="app-input" maxlength="90" @bind="_monthDays" data-testid="schedule-month-days" /></label>}
+                @if(_mode=="weekly")
+                {
+                    <fieldset class="push-day-choices" aria-describedby="@(_weekdayError is null?null:"schedule-weekdays-error")" aria-invalid="@(_weekdayError is null?null:"true")"><legend tabindex="-1" @ref="_weekdayHeading">Repeat weekdays</legend>
+                        @foreach(var day in Enum.GetValues<DayOfWeek>()) { <label class="checkbox-row"><input type="checkbox" checked="@_weekdays.Contains(day)" @onchange="args=>SetWeekday(day,args.Value is true)" aria-describedby="@(_weekdayError is null?null:"schedule-weekdays-error")" data-testid="@($"schedule-day-{day}")" /><span>@day</span></label> }
+                    </fieldset>
+                    @if(_weekdayError is not null){<p id="schedule-weekdays-error" role="alert">@_weekdayError</p>}
+                }
+                @if(_mode=="monthly")
+                {
+                    <fieldset class="push-day-choices push-month-choices" aria-describedby="@(_monthDayError is null?null:"schedule-monthdays-error")" aria-invalid="@(_monthDayError is null?null:"true")"><legend tabindex="-1" @ref="_monthHeading">Days of the month</legend>
+                        @for(var number=1;number<=31;number++){var day=number;<label class="checkbox-row"><input type="checkbox" checked="@_monthDays.Contains(day)" @onchange="args=>SetMonthDay(day,args.Value is true)" aria-describedby="@(_monthDayError is null?null:"schedule-monthdays-error")" data-testid="@($"schedule-month-day-{day}")" /><span>Day @day</span></label>}
+                    </fieldset>
+                    <p>Dates absent from a month are skipped, including day 31 in shorter months.</p>
+                    @if(_monthDayError is not null){<p id="schedule-monthdays-error" role="alert">@_monthDayError</p>}
+                }
                 <label class="field-row">Last civil date (maximum 366 days)<input class="app-input" type="date" @bind="_through" data-testid="schedule-through" /></label>
                 <p>Missing local time during a daylight-saving gap: skip that occurrence.</p>
                 <label class="field-row">Repeated local time during overlap<select class="app-input" @bind="_overlap" data-testid="schedule-overlap"><option value="">Choose explicitly</option><option value="earlier">Earlier instant</option><option value="later">Later instant</option><option value="skip">Skip occurrence</option></select></label>
@@ -34,7 +48,7 @@
             <p>Choose exact active devices. Revoked, expired and changed subscriptions cannot receive this schedule.</p>
             @foreach(var device in state.Push?.Devices??[])
             {
-                <label class="checkbox-row"><input type="checkbox" checked="@_targets.Contains(device.DeviceId)" disabled="@(device.State!="active")" @onchange="args => Target(device.DeviceId,args)" /> Device @device.DeviceId · revision @device.Revision · @device.State</label>
+                <label class="checkbox-row"><input type="checkbox" checked="@_targets.Contains(device.DeviceId)" disabled="@(device.State!="active")" @onchange="args => Target(device.DeviceId,args)" data-testid="@($"schedule-device-{device.DeviceId:D}")" /> Device @device.DeviceId · revision @device.Revision · @device.State</label>
             }
             <p>Editing schedule: @(_editing?.ToString()??"current active schedule or a new schedule")</p>
             <MudButton HtmlTag="button" data-layout-primary="true" OnClick="Prepare" Variant="Variant.Outlined" data-testid="schedule-prepare">Review exact push schedule</MudButton>
@@ -50,10 +64,15 @@
     }
     @if(Reminders.Preview is {Intent:{} intent} preview)
     {
-        <div class="todo-command-review" data-testid="schedule-preview" tabindex="-1" @ref="_previewElement">
-            <h3>Review @intent.Operation</h3><p>Task @intent.TaskId · workspace @preview.WorkspaceId · document revision @preview.ExpectedWorkspaceRevision · schedule @preview.ScheduleId · expected schedule revision @intent.ExpectedRevision</p>
+        <div class="todo-command-review" data-testid="schedule-preview">
+            <h3 tabindex="-1" @ref="_previewElement">Review @intent.Operation</h3><p>Task @intent.TaskId · workspace @preview.WorkspaceId · document revision @preview.ExpectedWorkspaceRevision · schedule @preview.ScheduleId · expected schedule revision @intent.ExpectedRevision</p>
             <p>First cue: @intent.ReviewAfterUtc?.ToString("O") · zone @intent.TimeZoneId · consent @intent.ConsentVersion</p>
-            @if(intent.Repeat is {} repeat){<p>@repeat.Rule.Frequency every @repeat.Rule.Interval · start @repeat.Rule.StartDate · local time @repeat.Time · through @repeat.Through · gap @repeat.Gap · overlap @repeat.Overlap · weekdays @string.Join(", ",repeat.Rule.Weekdays) · month days @string.Join(", ",repeat.Rule.DaysOfMonth)</p>}
+            @if(intent.Repeat is {} repeat)
+            {
+                <p>@repeat.Rule.Frequency every @repeat.Rule.Interval · start @repeat.Rule.StartDate.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) · local time @repeat.Time · through @repeat.Through.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture) · gap @repeat.Gap · overlap @repeat.Overlap</p>
+                @if(repeat.Rule.Frequency==RecurrenceFrequency.Weekly){<p>Weekdays: @string.Join(", ",repeat.Rule.Weekdays.Select(day=>$"{day} ({(int)day})"))</p>}
+                @if(repeat.Rule.Frequency==RecurrenceFrequency.Monthly){<p>Days of month: @string.Join(", ",repeat.Rule.DaysOfMonth)</p>}
+            }
             else{<p>@(intent.Operation=="cancel"?"Cancel schedule; keep task and review cue.":"One time at the exact saved cue.")</p>}
             @foreach(var target in intent.Targets){<p>Device @target.DeviceId · revision @target.Revision · subscription @target.SubscriptionId</p>}
             <p>@preview.Warning · Preview expires @preview.ExpiresAtUtc?.ToString("O")</p>
@@ -70,7 +89,12 @@
 </section>
 @code {
     [Parameter] public Guid TaskId {get;set;}
-    private string _mode="once",_zone="UTC",_time="09:00",_overlap="",_days="1",_monthDays="1";
+    private string _mode="once",_zone="UTC",_time="09:00",_overlap="";
+    private HashSet<DayOfWeek> _weekdays=[DayOfWeek.Monday];
+    private HashSet<int> _monthDays=[1];
+    private string? _weekdayError,_monthDayError;
+    private ElementReference _weekdayHeading,_monthHeading;
+    private bool _focusWeekdays,_focusMonthDays;
     private int _interval=1;
     private DateTime _start=DateTime.UtcNow.Date,_through=DateTime.UtcNow.Date.AddDays(30);
     private readonly HashSet<Guid> _targets=[];
@@ -82,19 +106,24 @@
     protected override void OnInitialized(){_hadPending=Reminders.Pending is not null;Reminders.Changed+=Changed;}
     private void Changed(){if(_hadPending&&Reminders.Pending is null)_returnFocus=true;_hadPending=Reminders.Pending is not null;_=InvokeAsync(StateHasChanged);}
     private async Task Load(){_targets.Clear();_editing=null;_error=null;await Reminders.LoadAsync(TaskId);}
+    private void SetWeekday(DayOfWeek day,bool selected){if(selected)_weekdays.Add(day);else _weekdays.Remove(day);if(_weekdays.Count>0)_weekdayError=null;}
+    private void SetMonthDay(int day,bool selected){if(selected)_monthDays.Add(day);else _monthDays.Remove(day);if(_monthDays.Count>0)_monthDayError=null;}
     private void Target(Guid id,ChangeEventArgs args){if(args.Value is true)_targets.Add(id);else _targets.Remove(id);}
     private async Task Prepare()
     {
         _error=null;
         try
         {
+            _weekdayError=_monthDayError=null;
+            if(_mode=="weekly"&&_weekdays.Count==0){_weekdayError="Choose at least one weekday.";_focusWeekdays=true;return;}
+            if(_mode=="monthly"&&_monthDays.Count==0){_monthDayError="Choose at least one day of the month.";_focusMonthDays=true;return;}
             var task=Todo.Snapshot?.Document.Tasks.SingleOrDefault(t=>t.Id==TaskId&&!t.IsArchived)??throw new InvalidOperationException("Reload the exact task.");
             if(task.ReviewAfterUtc is null)throw new InvalidOperationException("Save an explicit review cue before scheduling push.");
             ReminderRepeat? repeat=null;
             if(_mode!="once")
             {
-                var weekdays=_mode=="weekly"?_days.Split(',').Select(s=>(DayOfWeek)int.Parse(s.Trim(),CultureInfo.InvariantCulture)).ToArray():Array.Empty<DayOfWeek>();
-                var months=_mode=="monthly"?_monthDays.Split(',').Select(s=>int.Parse(s.Trim(),CultureInfo.InvariantCulture)).ToArray():Array.Empty<int>();
+                var weekdays=_mode=="weekly"?_weekdays.OrderBy(day=>(int)day).ToArray():Array.Empty<DayOfWeek>();
+                var months=_mode=="monthly"?_monthDays.Order().ToArray():Array.Empty<int>();
                 var frequency=_mode switch{"daily"=>RecurrenceFrequency.Daily,"weekly"=>RecurrenceFrequency.Weekly,"monthly"=>RecurrenceFrequency.Monthly,_=>throw new InvalidOperationException("Choose a supported repeat type.")};
                 repeat=new(new(frequency,_interval,DateOnly.FromDateTime(_start),_zone,weekdays,months),_time,DateOnly.FromDateTime(_through),"skip",_overlap);
             }
@@ -114,7 +143,7 @@
             var cue=Todo.Snapshot?.Document.Tasks.SingleOrDefault(task=>task.Id==TaskId)?.ReviewAfterUtc??throw new InvalidOperationException("Save an exact review cue first.");
             if(!WorkspaceTaskReview.ValidZone(_zone))throw new InvalidOperationException("Choose a supported explicit civil timezone first.");
             var civil=TimeZoneInfo.ConvertTime(cue,TimeZoneInfo.FindSystemTimeZoneById(_zone));
-            _start=civil.Date;_time=civil.ToString("HH:mm",CultureInfo.InvariantCulture);_days=((int)civil.DayOfWeek).ToString(CultureInfo.InvariantCulture);_monthDays=civil.Day.ToString(CultureInfo.InvariantCulture);_through=civil.Date.AddDays(30);
+            _start=civil.Date;_time=civil.ToString("HH:mm",CultureInfo.InvariantCulture);_weekdays=[civil.DayOfWeek];_monthDays=[civil.Day];_weekdayError=_monthDayError=null;_through=civil.Date.AddDays(30);
             if(cue.Ticks%TimeSpan.TicksPerMinute!=0)_error="The saved cue includes seconds or fractions. Save a whole-minute cue before creating a repeat schedule.";
         }
         catch(Exception error) when(error is InvalidOperationException or ArgumentException){_error=error.Message;}
@@ -122,13 +151,24 @@
     private void Edit(ReminderSchedule schedule)
     {
         _editing=schedule.ScheduleId;var intent=schedule.Intent;_zone=intent.TimeZoneId;_targets.Clear();foreach(var target in intent.Targets)_targets.Add(target.DeviceId);
-        if(intent.Repeat is {} repeat){_mode=repeat.Rule.Frequency.ToString().ToLowerInvariant();_start=repeat.Rule.StartDate.ToDateTime(TimeOnly.MinValue);_through=repeat.Through.ToDateTime(TimeOnly.MinValue);_time=repeat.Time;_interval=repeat.Rule.Interval;_days=string.Join(",",repeat.Rule.Weekdays.Select(day=>(int)day));_monthDays=string.Join(",",repeat.Rule.DaysOfMonth);_overlap=repeat.Overlap;}
+        if(intent.Repeat is {} repeat){_mode=repeat.Rule.Frequency.ToString().ToLowerInvariant();_start=repeat.Rule.StartDate.ToDateTime(TimeOnly.MinValue);_through=repeat.Through.ToDateTime(TimeOnly.MinValue);_time=repeat.Time;_interval=repeat.Rule.Interval;_weekdays=repeat.Rule.Weekdays.ToHashSet();_monthDays=repeat.Rule.DaysOfMonth.ToHashSet();_weekdayError=_monthDayError=null;_overlap=repeat.Overlap;}
         else _mode="once";
         _error="Editing the selected schedule requires the current saved review cue. Review exact devices and civil time again.";
     }
     private async Task Cancel(ReminderSchedule schedule){await Reminders.PrepareAsync(new("cancel",schedule.ScheduleId,schedule.Revision,TaskId,null,schedule.Intent.TimeZoneId,null,[]));_focus=Reminders.Preview is not null;}
     private async Task Retry(){await Reminders.RetryPreviewAsync();_focus=Reminders.Preview is not null;}
     private async Task Accept(){await Reminders.AcceptAsync();_returnFocus=Reminders.Preview is null;}
-    protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;await _previewElement.FocusAsync();}else if(_returnFocus){_returnFocus=false;await _heading.FocusAsync();}}
+    private async Task FocusAndReveal(ElementReference element)
+    {
+        await element.FocusAsync();
+        try{await using var module=await Js.InvokeAsync<IJSObjectReference>("import","./js/field-focus.js");if(module is not null)await module.InvokeVoidAsync("revealFocusedElement",element);}catch(JSException){}
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(_focusWeekdays){_focusWeekdays=false;await FocusAndReveal(_weekdayHeading);}
+        else if(_focusMonthDays){_focusMonthDays=false;await FocusAndReveal(_monthHeading);}
+        else if(_focus){_focus=false;await FocusAndReveal(_previewElement);}
+        else if(_returnFocus){_returnFocus=false;await FocusAndReveal(_heading);}
+    }
     public void Dispose()=>Reminders.Changed-=Changed;
 }

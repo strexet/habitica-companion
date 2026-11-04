@@ -1,0 +1,48 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-631a51d9-f2e0-4054-ba58-9a769744662a",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 41,
+    "expected": 41,
+    "failed": 0,
+    "passed": 41,
+    "skipped": 0
+  },
+  "definition": "3c357b9f77b6deb7d1c8f6d2355eebc455a52ad6951e3a0211bcb78de2d22589",
+  "environment_identity": "fb3c8703ddf691a6a4343be6b26cca4bb4f662d83a65bfb14b5976825c1ba56e",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/project-retained-history-2026-11-03/project-history-wire-first-execution.log",
+      "sha256": "76feeb7236721353a570ad15b09907186eea7d3726209fecccfc7fcb77361f2f"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "2419aad01f70d4963227efe9a633e85659e242a660edac4b0bcd5a748298c31e",
+  "payload_hash": "e44e555e5afd061402417b9021af38e9ff4f777737901fda1c060467e978ed72",
+  "recorded_at": "2026-11-02T22:41:26.663681+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/project-retained-history-v1.json": "9f434cb1a8821fbeeebf6db100de3f06130cf0289477e2d640da5d40f59a34a9",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/completion-history.ts": "b58abaf1fd81c0d183e652ccb93960bfc870e3c7bca7966d2494837b75249194",
+    "workers/companion-workspace/src/habit-history.ts": "9054ded4e6e304b7922d76ef5efe3dfeeab762dfc31e59bd5c64ae4b4e43b68e",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/test/completion-history.test.mjs": "f110f8e6454d614b59fb90b6275ceafce89abc014b43290723205f2736d536f2",
+    "workers/companion-workspace/test/habit-history.test.mjs": "3327e8d2ca58c0561be6230907f056ad6c5578896d8816f9534de48a3172ce4f",
+    "workers/companion-workspace/test/organization-query.test.mjs": "a71f6dc5e0487d4d617546d145fb7994e69358c9c8ced81aa36155a9505d0477",
+    "workers/companion-workspace/test/project-retained-history.test.mjs": "fecd16598226826dc9f586abec0f27886bf4f619a1e654eb59f44a12333d6da6",
+    "workers/shared/build-identity.generated.ts": "1c09f0dfe624624d08a41b4e941ad81ccd52a27893691682368ff09748ee7547",
+    "workers/shared/completion-history.ts": "20f2580f3c0b903384962dc2b4c222b65a3c69854157d701bf860482e9eb5a82",
+    "workers/shared/habit-history.ts": "48dd802053e925342ce7199fc4f99312f97610421fc0ce5ed23280ea0fccf4a1",
+    "workers/shared/history-projects.ts": "06fcc947ca3887e8d67cef9cd6ef8abf8d054f21625c4e68187f5d06f48630e8",
+    "workers/shared/organization-query.ts": "302f01840a84dda2fb6f4cbbcbfd859a548c75105c5765dfa57005c8bda7d646",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.833065457874909
+  }
+}

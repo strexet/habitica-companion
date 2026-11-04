@@ -1,0 +1,6 @@
+{
+  "attempt": "2ec22764-2cc9-46fd-9396-9c8765f4e0c2",
+  "finding": "The exact selected-source identity is intentionally inside a closed disclosure. innerText returns empty for hidden disclosure contents; this does not show an identity loss.",
+  "repair": "Read the retained source identifier as textContent without claiming it is visible. Keep independent exact journal equality and add native keyboard traversal, visible focus and 44-pixel target assertions before following each changed link.",
+  "cleanup": "Original failure report confirms contexts/server/profiles cleaned."
+}

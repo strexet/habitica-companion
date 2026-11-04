@@ -1,0 +1,38 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-aeabdbde-1a00-4bab-a53d-ef03c9efb57e",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 5,
+    "expected": 5,
+    "failed": 0,
+    "passed": 5,
+    "skipped": 0
+  },
+  "definition": "dd0e1b65d4a13e08969e95b6bf2d6c9e5247c12007023f2eff6eb6ee57d9050a",
+  "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/journeys-green-execution.log",
+      "sha256": "f6112f92020c673a6a685727849b5dadf2915502749e68b9d96752713f995fca"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "bcd099af6f319e301c9201081cb5ab0be66528c9312abddb9e269ccbfd9e14dd",
+  "payload_hash": "c3daa93de7ae2230771d644898e97332c8d09be1a33be78dea4f5adf1f9a67be",
+  "recorded_at": "2026-11-02T17:06:01.678429+00:00",
+  "result": "pass",
+  "sources": {
+    "plugin/skills/habitica-notes/SKILL.md": "08d5458c56cdc49b185bff82483fd6afd5cef6bf3c58ed31cce5a8bac3fa4eef",
+    "workers/chatgpt-mcp/src/note-tools.ts": "aae1c4782df0a0e8bc67665a94f3f4552c6d8f5762b7d43ef69ab88d65814d1c",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-tools-api.ts": "c10662e5ad8aa8c9ba594a3002bdd1f3c464464e74b09910de12f5601fef3968",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "7ce6a737469a1639da5b987b308f8d907283c5aaceed3461b2d2cdf067ed1a82",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.210239625070244
+  }
+}

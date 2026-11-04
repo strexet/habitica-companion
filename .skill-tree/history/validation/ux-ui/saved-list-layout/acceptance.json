@@ -1,0 +1,50 @@
+{
+  "task_id": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+  "title": "Shorten saved-list authoring and prioritize existing lists",
+  "operation_history": ".skill-tree/history/validation/ux-ui/saved-list-layout/operation-history.json",
+  "checks": [
+    {
+      "id": "saved-list-layout-behavior",
+      "counts": {
+        "discovered": 37,
+        "expected": 37,
+        "failed": 0,
+        "passed": 37,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.log",
+          "sha256": "07b0d63023864a23203364690a80ad903829138308a50c520685bb72dc75f176"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/C-887d367b-197a-4eb9-bc76-7517904c3a78.trx",
+          "sha256": "5bc5765cddb02e0dfbe7192735a01cac31e8cf503f68cccfec590908516ba8eb"
+        }
+      ]
+    },
+    {
+      "id": "saved-list-layout-rendered",
+      "counts": {
+        "discovered": 649,
+        "expected": 649,
+        "failed": 0,
+        "passed": 649,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/saved-list-layout/browser/645e83fd-003e-49b5-9df2-ec1efd720bc6.json",
+          "sha256": "580617f11124c8b29875575393c2e3c66ce98bda7a52e4d5bd5a66aef9b50194"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

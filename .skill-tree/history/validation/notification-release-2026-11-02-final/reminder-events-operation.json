@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=30000",
+    "workers/companion-workspace/test/reminder-events.test.mjs"
+  ],
+  "exit_code": 0,
+  "seconds": 16.499538792064413,
+  "artifact_path_override_only": false
+}

@@ -1,0 +1,119 @@
+{
+  "acceptance": [
+    {
+      "criterion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/integrate-production/T-7bba9311-6e90-492e-a7bb-df656c3d26a9/C-b263d99d-4291-4b6c-a293-4081a1127d91.json",
+          "sha256": "c3ad5f14a5ef428fd8e0f4151263a25c60e363882e0c5e2915ae854d5e66d196"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "before-dependent-work",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+        "criteria": [
+          "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials."
+        ],
+        "id": "preserved-source",
+        "parameters": {},
+        "recipe_id": "static-inspection",
+        "sources": [
+          ".gitignore",
+          "AGENTS.md",
+          ".skill-tree/documents/build-and-release.md"
+        ],
+        "timing": "before-dependent-work"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-b263d99d-4291-4b6c-a293-4081a1127d91",
+        "classification": "executed-control",
+        "cleanup": "Read-only source, Git and retained evidence checks completed; no launched product process.",
+        "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/integrate-production/T-7bba9311-6e90-492e-a7bb-df656c3d26a9/C-b263d99d-4291-4b6c-a293-4081a1127d91.json",
+            "sha256": "c3ad5f14a5ef428fd8e0f4151263a25c60e363882e0c5e2915ae854d5e66d196"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "c51a0b9a700247eb30e9a696204e3f23e75fe61eac34bfca659720d9f3f17fa8",
+        "payload_hash": "65db7e308e574df1a4813479f6cfd54cb8b6fccf861869fe5652da9a4cb3319e",
+        "recorded_at": "2026-11-04T17:12:21.180359+00:00",
+        "result": "pass",
+        "sources": {
+          ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+          ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+          "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+        },
+        "timing": {
+          "tool_wall_seconds": 1.2198204579763114
+        }
+      }
+    }
+  ],
+  "commits": [
+    "6434dccc2a1900a7517f999d05d49fc55f896680"
+  ],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/integrate-production/T-7bba9311-6e90-492e-a7bb-df656c3d26a9/C-b263d99d-4291-4b6c-a293-4081a1127d91.json",
+      "sha256": "c3ad5f14a5ef428fd8e0f4151263a25c60e363882e0c5e2915ae854d5e66d196"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-325ece0c-5938-4227-af96-a40c9f9f9cbc",
+  "limitations": [],
+  "outcome": "The complete completed-source snapshot is committed and recoverable. Every preserved file matches the frozen inventory; protected values remain excluded, and the original stopped controller retains the owner qualification boundary.",
+  "parent_pending_ids": [
+    "P-9579af1d-3709-4bca-961a-6947585c7747"
+  ],
+  "recorded_at": "2026-11-04T17:12:22.062055+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+  "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "source_fingerprints": {
+    ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+    ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+    "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+  },
+  "task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+  "title": "Preserve completed source and planning state for full integration",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+      "criteria": [
+        "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials."
+      ],
+      "id": "preserved-source",
+      "parameters": {},
+      "recipe_id": "static-inspection",
+      "sources": [
+        ".gitignore",
+        "AGENTS.md",
+        ".skill-tree/documents/build-and-release.md"
+      ],
+      "timing": "before-dependent-work"
+    }
+  ],
+  "validation_signature": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9"
+}

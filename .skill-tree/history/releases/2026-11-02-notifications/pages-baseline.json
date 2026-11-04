@@ -1,0 +1,14 @@
+{
+  "project": "habitica-companion",
+  "production_branch": "main",
+  "previous_deployment": "a5f9a28a-c2c7-4180-a56f-93e94524af19",
+  "fail_open_production": true,
+  "fail_open_preview": true,
+  "compatibility_date": "2026-10-12",
+  "kv_bindings": [
+    "HABITICA_SYNC_KV"
+  ],
+  "d1_bindings": [
+    "HABITICA_PARTY_DB"
+  ]
+}

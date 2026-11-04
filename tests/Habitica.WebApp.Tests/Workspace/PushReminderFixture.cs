@@ -63,9 +63,11 @@ internal sealed class PushReminderFixture
         public BrowserPushCapability Capability=new("available","default");
         public BrowserPushCurrent Current=new("available","default",false,null);
         public BrowserPushResult Result=new("subscribed",new string('f',43),new("https://web.push.apple.com/synthetic-private",new(new string('p',87),new string('a',22)),null));
-        public int Permissions,Removals;
+        public int Permissions,Removals,CapabilityReads;
+        public TaskCompletionSource<BrowserPushCapability>? PrepareGate;
+        public bool FailPrepare;
         public TaskCompletionSource<BrowserPushResult>? SubscribeGate;
-        public Task<BrowserPushCapability> PrepareAsync(CancellationToken t)=>System.Threading.Tasks.Task.FromResult(Capability);
+        public Task<BrowserPushCapability> PrepareAsync(CancellationToken t){CapabilityReads++;if(FailPrepare)throw new InvalidOperationException("Synthetic browser capability failure");return PrepareGate?.Task??System.Threading.Tasks.Task.FromResult(Capability);}
         public Task<BrowserPushCurrent> ReadCurrentAsync(CancellationToken t)=>System.Threading.Tasks.Task.FromResult(Current);
         public Task<BrowserPushResult> SubscribeAsync(string key,bool consent,CancellationToken t){Permissions++;return SubscribeGate?.Task??System.Threading.Tasks.Task.FromResult(Result);}
         public Task<BrowserPushResult> UnsubscribeAsync(string fp,CancellationToken t){Removals++;Current=Current with{Exists=false,Fingerprint=null};return System.Threading.Tasks.Task.FromResult(new BrowserPushResult("unsubscribed"));}

@@ -1,3 +1,5 @@
+import {reviewLinkedDailySchedule} from '../../shared/linked-daily-schedule.ts';
+import {sameDailySchedule} from '../../shared/daily-projection.ts';
 import {normalizeDailySchedule} from '../../shared/daily-projection.ts';
 import type { HabiticaTaskDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask, type Projection } from "../../shared/workspace-domain.ts";
@@ -25,6 +27,7 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
  const blocked = (code: string): ProjectionStep => ({ kind: "blocked",code });
  if (!task || task.id !== entry.command.taskId || task.revision !== entry.command.expectedRevision+1) return blocked("accepted_task_snapshot_required");
  if (!mapping || ["unlinked","externalConflict"].includes(mapping.state) || mapping.state === "unknownOutcome" && entry.projectionState !== "unknownOutcome") return blocked("projection_review_required");
+ if(entry.command.operation==='editLinkedDailySchedule'&&entry.projectionState==='unknownOutcome')return blocked('schedule_outcome_requires_original_receipt');
  const effect = entry.effects[entry.confirmedEffects]; if (!effect) return blocked("no_pending_effect");
  const alias = projectionAlias(document.id, task.id);
  if (mapping.correlationAlias && mapping.correlationAlias !== alias) return blocked("projection_identity_conflict");
@@ -32,7 +35,7 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
 
  const target = creating ? alias : mapping.habiticaTaskId;
  if (!target) return blocked("adoption_required");
- if ((creating || effect.startsWith("score")) && task.kind === "daily" && !account) return {kind:"account"};
+ if ((creating || effect.startsWith("score") || entry.command.operation==='editLinkedDailySchedule') && task.kind === "daily" && !account) return {kind:"account"};
  if (!observation) return {kind:"inspect",operation:task.kind==="daily"&&!creating?"inspectDaily":"inspect",selector:target};
  const remote = observation.task;
  if (creating) {
@@ -50,11 +53,18 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
  if (!remote) return blocked("external_deleted");
  if (remote.id !== target || remote.kind !== task.kind || mapping.correlationAlias && remote.alias !== alias) return blocked("projection_identity_conflict");
  if (entry.projectionState === "unknownOutcome") {
+  if(entry.command.operation==='editLinkedDailySchedule')return blocked("schedule_outcome_requires_original_receipt");
   if (effect === "update" && patchMatches(remote,updatePatch(entry))) return {kind:"observedApplied",task:remote,evidence:"verified-update-state"};
   return blocked("score_outcome_requires_review");
  }
  if (!mapping.fingerprint || mapping.fingerprint !== remote.fingerprint) return blocked("external_edit_review_required");
  if (effect === "create") return {kind:"observedApplied",task:remote,evidence:"verified-existing-adoption"};
+ if (effect === "update" && entry.command.operation==='editLinkedDailySchedule') {
+  const context=entry.command.patch?.linkedSchedule,rule=entry.command.patch?.recurrence;
+  if(!context||!rule||!remote.schedule||!account||account.needsCron||account.timezoneOffset!==context.account.timezoneOffset||account.dayStart!==context.account.dayStart||!sameDailySchedule(remote.schedule,context.before))return blocked('linked_schedule_precondition_changed');
+  try{if(!sameDailySchedule(reviewLinkedDailySchedule(remote.schedule,rule,context.account).expectedAfter,context.expectedAfter))return blocked('daily_schedule_mismatch');}catch(error){return blocked(error instanceof WorkspaceError?error.code:'daily_schedule_mismatch');}
+  return {kind:'write',operation:'update',arguments:{selector:target,checkToken:observation.checkToken,expectedFingerprint:remote.fingerprint,accountCheckToken:account.accountCheckToken,linkedSchedule:context,recurrence:rule,patch:context.expectedAfter}};
+ }
  if (effect === "update") {
   const patch = updatePatch(entry); if (Object.keys(patch).length===0) return {kind:"observedApplied",task:remote,evidence:"companion-only-metadata"};
   return {kind:"write",operation:"update",arguments:{selector:target,checkToken:observation.checkToken,expectedFingerprint:remote.fingerprint,patch}};

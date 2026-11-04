@@ -1,0 +1,74 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-092a63ea-7359-467f-baca-444b5a0664d0",
+  "classification": "executed-control",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+  "diagnostic_key": "b4f2d2e7f9d275ffc3b702e1ab087bbb8c696cde161ccd55a0f16db5bd18dd54",
+  "environment_identity": "23b60ad14877c5ffd0cf0d40cf0757c922c0879d8b3fd63ea97b4a236f7d4db8",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-c86fb65b-execution.log",
+      "sha256": "3a8cb09f8bc376fba86615dfe48402b2474d51ef6dfc5d367030c5077f09b624"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-c86fb65b-identity.json",
+      "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+    }
+  ],
+  "execution_sessions": {
+    "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+      "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+      ],
+      "profile_id": "task-type-copy-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-cc1d0534",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "98b596d0d132005637fc2ae4a942a4d40a3abf3f793088dbd21b6adf169e6d9a": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T21:37:20.976416+00:00",
+      "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-c86fb65b-identity.json"
+      ],
+      "profile_id": "task-type-copy-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-c86fb65b",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/task-type-copy-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/task-type-copy-ui/1793654661261898000/step-3.log\n",
+  "key": "6c761c7cc2e979fe351ca6f334faefe55ea7a01660b96c3f566cbbfbf6c7fb60",
+  "payload_hash": "04ff1d96ed894977b3112d45ca5c0fbe7a21578744ecf03c131cbe12bfec468b",
+  "recorded_at": "2026-11-02T21:24:55.449086+00:00",
+  "result": "fail",
+  "sources": {
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "15ca587e33b70a1ed975c135814d0a1de736bba423ac5eda572fc689bc0e303f",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+    "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+    "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528"
+  },
+  "timing": {
+    "tool_wall_seconds": 34.024913540808484
+  }
+}

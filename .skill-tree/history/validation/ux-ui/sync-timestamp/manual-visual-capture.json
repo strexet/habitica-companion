@@ -1,0 +1,38 @@
+{
+  "sourceArtifact": "1793748598283243000",
+  "evidence": [
+    {
+      "engine": "chromium",
+      "width": 360,
+      "text": "User profile\nUploaded\n2 KB at 4/2/2026 8:04 PM (local time)\nUploaded",
+      "scheme": "gryphy-light",
+      "file": "chromium-gryphy-light-360-200-timestamp-row.png",
+      "datetime": "2026-04-02T13:04:05.0000000+00:00"
+    },
+    {
+      "engine": "chromium",
+      "width": 1280,
+      "text": "User profile\nUploaded\n2 KB at 4/2/2026 8:04 PM (local time)\nUploaded",
+      "scheme": "obsidian-glow",
+      "file": "chromium-obsidian-glow-1280-100-timestamp-row.png",
+      "datetime": "2026-04-02T13:04:05.0000000+00:00"
+    },
+    {
+      "engine": "webkit",
+      "width": 360,
+      "text": "User profile\nUploaded\n2 KB at 4/2/2026 8:04 PM (local time)\nUploaded",
+      "scheme": "gryphy-light",
+      "file": "webkit-gryphy-light-360-200-timestamp-row.png",
+      "datetime": "2026-04-02T13:04:05.0000000+00:00"
+    },
+    {
+      "engine": "webkit",
+      "width": 1280,
+      "text": "User profile\nUploaded\n2 KB at 4/2/2026 8:04 PM (local time)\nUploaded",
+      "scheme": "obsidian-glow",
+      "file": "webkit-obsidian-glow-1280-100-timestamp-row.png",
+      "datetime": "2026-04-02T13:04:05.0000000+00:00"
+    }
+  ],
+  "cleanup": "Owned browser pages/contexts and loopback server closed; no real account or external operation."
+}

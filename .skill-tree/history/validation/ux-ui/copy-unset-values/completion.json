@@ -1,0 +1,450 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Absent scalar and collection values have explicit readable placeholders without hiding meaningful zero-valued fields.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.log",
+          "sha256": "89c22b711c1a2b1c64da03e343667a8ca06fedfb3597ff4c3679f698b56af061"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.trx",
+          "sha256": "b0fb5be44695fc085f26f72cea6cd9ae4f741e5781e542a4660f3bedb37668b3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/acceptance.json",
+          "sha256": "6d354e9ad41bbbc64f17f6da913c18bde2deb58c166a325fc213b411696eb66a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+          "sha256": "398b0608ff567dfa143f8ab9343497fa2a41e4f0cd5b3daf6362cf35b0ac8c91"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Source/target identity, populated metadata and copied/reset disclosures remain exact without command changes.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.log",
+          "sha256": "89c22b711c1a2b1c64da03e343667a8ca06fedfb3597ff4c3679f698b56af061"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.trx",
+          "sha256": "b0fb5be44695fc085f26f72cea6cd9ae4f741e5781e542a4660f3bedb37668b3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/acceptance.json",
+          "sha256": "6d354e9ad41bbbc64f17f6da913c18bde2deb58c166a325fc213b411696eb66a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+          "sha256": "398b0608ff567dfa143f8ab9343497fa2a41e4f0cd5b3daf6362cf35b0ac8c91"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Task-copy review reading order and geometry pass the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.log",
+          "sha256": "89c22b711c1a2b1c64da03e343667a8ca06fedfb3597ff4c3679f698b56af061"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.trx",
+          "sha256": "b0fb5be44695fc085f26f72cea6cd9ae4f741e5781e542a4660f3bedb37668b3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/acceptance.json",
+          "sha256": "6d354e9ad41bbbc64f17f6da913c18bde2deb58c166a325fc213b411696eb66a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+          "sha256": "398b0608ff567dfa143f8ab9343497fa2a41e4f0cd5b3daf6362cf35b0ac8c91"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Absent scalar and collection values have explicit readable placeholders without hiding meaningful zero-valued fields.",
+          "Source/target identity, populated metadata and copied/reset disclosures remain exact without command changes."
+        ],
+        "id": "copy-unset-values-behavior",
+        "parameters": {
+          "report_name": "copy-unset-values.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/copy-unset-values/unit",
+          "test_filter": "FullyQualifiedName~TaskTypeConversionPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-ce129c8f-9f11-439c-b905-bbfb6ea43b14",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 12,
+          "expected": 12,
+          "failed": 2,
+          "passed": 10,
+          "skipped": 0
+        },
+        "definition": "7c424f6bcb8028298cce4155638620356888fedb3f7810b7b2f1349bff5767cf",
+        "environment_identity": "7de212861a7c12e2756dd3665f2f8d7fac20996ba55329d719fda205d17e927a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-ce129c8f-9f11-439c-b905-bbfb6ea43b14.log",
+            "sha256": "bdff08ca1e609399eb40c4277b49749176d5ee4ff92283b1094ef900e4e22dc5"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-ce129c8f-9f11-439c-b905-bbfb6ea43b14.trx",
+            "sha256": "fba6d443feb7cca7254b02b1ea185fdc7e2c05d8077ea59c419174f6d274c917"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "9e1923ccdac1f711503569068d123118abeaaa5ed9be5a8617cfc5248c8590bd",
+        "payload_hash": "7985ea3b9ef1110f9a8ff680da9acd061639a022640419f889634be1ee83d113",
+        "recorded_at": "2026-11-03T23:33:16.118212+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "a5238b18cc6116d3e09fe94cc457dfe63cba86708568a87757ffbf15e6a1a441"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.390109458006918
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-5b887f35-86ce-4297-9fbd-c086dd4be187",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 13,
+          "expected": 13,
+          "failed": 0,
+          "passed": 13,
+          "skipped": 0
+        },
+        "definition": "7c424f6bcb8028298cce4155638620356888fedb3f7810b7b2f1349bff5767cf",
+        "environment_identity": "7de212861a7c12e2756dd3665f2f8d7fac20996ba55329d719fda205d17e927a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.log",
+            "sha256": "89c22b711c1a2b1c64da03e343667a8ca06fedfb3597ff4c3679f698b56af061"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/C-5b887f35-86ce-4297-9fbd-c086dd4be187.trx",
+            "sha256": "b0fb5be44695fc085f26f72cea6cd9ae4f741e5781e542a4660f3bedb37668b3"
+          }
+        ],
+        "execution_sessions": {
+          "39419c6ad3757304f35ed98270e54c5c41ed3dd8a6c34ecdf08b9304a89591e4": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "16d23ebf13321ecd8e96849bd45d740854eefd81b572a1ae4a2cec9f965191ed",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:53:16.088017+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/copy-unset-values/launch-1793749036088241000.json"
+            ],
+            "profile_id": "923c7e175588b25e5de6dda9abb9771b6cb16717be8e33fcf3c0b263976243ac",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/copy-unset-values",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "dd13acd171786de211f800d8ccff8095c5daa0e18b07ef4b69c21cdcced816c1",
+        "payload_hash": "f93005543d734365a86dffc15191f60e959d5e387e1ea048502870be3d885cb9",
+        "recorded_at": "2026-11-03T23:38:40.188131+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "669e3a239dbbad93b6df84027ef2431ce83c5be1cc672de5e9193ffbe7c53ea6",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "5f422fcc38ac8e712f7d60598858fa2b79fae1e60d47e44fe8b9d986f5205eb5"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.2176467501558363
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Task-copy review reading order and geometry pass the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Task-copy review reading order and geometry pass the required rendered matrix."
+        ],
+        "id": "copy-unset-values-rendered",
+        "parameters": {
+          "cases": "Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser",
+          "routes": [
+            "/todo/convert",
+            "/todo/tasks",
+            "/todo/habits",
+            "/todo/dailies"
+          ],
+          "task_key": "copy-unset-values"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-e21260e0-65db-4666-82bc-43255f7173f6",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 793,
+          "expected": 793,
+          "failed": 0,
+          "passed": 793,
+          "skipped": 0
+        },
+        "definition": "7c424f6bcb8028298cce4155638620356888fedb3f7810b7b2f1349bff5767cf",
+        "environment_identity": "db35c9a76ceeae0b6a3593adfbe3842309ea9b6eb81d0b71467df6b464a1d594",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+            "sha256": "398b0608ff567dfa143f8ab9343497fa2a41e4f0cd5b3daf6362cf35b0ac8c91"
+          }
+        ],
+        "execution_sessions": {
+          "39419c6ad3757304f35ed98270e54c5c41ed3dd8a6c34ecdf08b9304a89591e4": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:54:41.624331+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/copy-unset-values/launch-1793749121624525000.json"
+            ],
+            "profile_id": "923c7e175588b25e5de6dda9abb9771b6cb16717be8e33fcf3c0b263976243ac",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/copy-unset-values",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "8a6837441281aae3f1f331e0a989695e8228e11808dd04b0a4efd4b96bd92cf8",
+        "payload_hash": "870c7f16d0f5f7b6e58eff1ffafffd735b641648fd8af05acac6a96eb6b94035",
+        "recorded_at": "2026-11-03T23:40:09.666519+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "669e3a239dbbad93b6df84027ef2431ce83c5be1cc672de5e9193ffbe7c53ea6",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "5f422fcc38ac8e712f7d60598858fa2b79fae1e60d47e44fe8b9d986f5205eb5",
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 87.01482512522489
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/acceptance.json",
+      "sha256": "6d354e9ad41bbbc64f17f6da913c18bde2deb58c166a325fc213b411696eb66a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/copy-unset-values/operation-history.json",
+      "sha256": "e2211f3795e5c440f9cbeb0eab9dc47c15f6f451e8d1d90c8c5672d2747917fa"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-0f1b758d-fa7a-4a49-adb1-d3f2953e9eea",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Show explicit unset values in task-copy reviews. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f"
+  ],
+  "recorded_at": "2026-11-03T23:41:33.441727+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+  "source_fingerprints": {
+    ".skill-tree/documents/testing.md": "22694804154f2aa7f8c048967367dc123cdf1a253b0ba5547a63538214b87773",
+    ".skill-tree/documents/ux-ui-manifest.md": "820ae01159c007f7379e3164f7f75c73c0d8b1c2c8edfb8886b5609e9225af26",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "669e3a239dbbad93b6df84027ef2431ce83c5be1cc672de5e9193ffbe7c53ea6",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "5f422fcc38ac8e712f7d60598858fa2b79fae1e60d47e44fe8b9d986f5205eb5",
+    "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+    "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+    "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+    "tests/browser-qualification/ux-ui-copy-values-journey.mjs": "78424d393541edd1bc4adab60bae86e551b0d27453ae6e5e562d902694c2edb6"
+  },
+  "task_id": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+  "title": "Show explicit unset values in task-copy reviews",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Absent scalar and collection values have explicit readable placeholders without hiding meaningful zero-valued fields.",
+        "Source/target identity, populated metadata and copied/reset disclosures remain exact without command changes."
+      ],
+      "id": "copy-unset-values-behavior",
+      "parameters": {
+        "report_name": "copy-unset-values.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/copy-unset-values/unit",
+        "test_filter": "FullyQualifiedName~TaskTypeConversionPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Task-copy review reading order and geometry pass the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Task-copy review reading order and geometry pass the required rendered matrix."
+      ],
+      "id": "copy-unset-values-rendered",
+      "parameters": {
+        "cases": "Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/copy-unset-values/browser",
+        "routes": [
+          "/todo/convert",
+          "/todo/tasks",
+          "/todo/habits",
+          "/todo/dailies"
+        ],
+        "task_key": "copy-unset-values"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "7c424f6bcb8028298cce4155638620356888fedb3f7810b7b2f1349bff5767cf"
+}

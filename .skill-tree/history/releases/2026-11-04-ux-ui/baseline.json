@@ -1,0 +1,128 @@
+{
+  "workers": {
+    "chatgpt-auth": {
+      "name": "habitica-companion-auth",
+      "version": "148f5324-fa99-413a-b477-bafd5b833574",
+      "source_hashes": {
+        "index.js": "8caef336610e9ce31eaf0f0003dbb197394cf6abd22a3f0ec8fac113631af02a",
+        "index.js.map": "a8d59f91c831f93a135608be5bae79e6a55864dd7a8987647af144f9c294b573"
+      }
+    },
+    "companion-workspace": {
+      "name": "habitica-companion-workspace",
+      "version": "45c6d965-cbf7-4fb3-9e64-3a08ddb7afe5",
+      "source_hashes": {
+        "index.js": "407ff4da1ecb51ef0a7dbb3fc926065ee714e89d25d09d5fe019978873836ee2",
+        "index.js.map": "46c968111c1b5a9de661b86e0f5255da8d62b0db62517746096751436793e03e"
+      }
+    },
+    "chatgpt-mcp": {
+      "name": "habitica-companion-mcp",
+      "version": "d8fb17bc-8400-4e5a-9541-a63fab609b82",
+      "source_hashes": {
+        "index.js": "d711c2982ea1341566ac86f0a6e3c9d6be827a93515a00371fef94bca2c90223",
+        "index.js.map": "3f832ff66975a2dcc9dbf9ecf15575150559297d1f171a20c867dc2e0fd6e999"
+      }
+    }
+  },
+  "bookmarks": {
+    "chatgpt-auth": {
+      "bookmark": "0000032a-00000134-00005119-e98d0c2de4474582604c9af3672935ab"
+    },
+    "companion-workspace": {
+      "bookmark": "000000b2-00000278-00005119-2ad1dd0723249b603abe4c00993ae015"
+    }
+  },
+  "migrations": {
+    "chatgpt-auth": {
+      "database": "ada5184c-865d-4c6a-864a-88618f19c06f",
+      "applied": [
+        "0001-integration-profiles.sql",
+        "0002-linking.sql",
+        "0003-read-state.sql",
+        "0004-management-identity.sql",
+        "0005-projection-gateway.sql",
+        "0006-grant-revocation.sql",
+        "0007-credential-key-jobs.sql",
+        "0008-upstream-pacing.sql",
+        "0009-tag-gateway.sql",
+        "0010-push-subscriptions.sql",
+        "0011-push-dispatches.sql",
+        "0012-callback-egress.sql",
+        "0013-recovery-sessions.sql",
+        "0014-event-callbacks.sql",
+        "0015-event-dispatches.sql"
+      ],
+      "pending": []
+    },
+    "companion-workspace": {
+      "database": "383e0502-7be4-42f9-b818-ee9710f3fa4d",
+      "applied": [
+        "0001-workspace.sql",
+        "0002-execution-ownership.sql",
+        "0003-prepared-commands.sql",
+        "0004-authenticated-party-planning.sql",
+        "0005-reviewed-spell-actions.sql",
+        "0006-reviewed-cron-actions.sql",
+        "0007-mcp-grant-epoch.sql",
+        "0008-tag-reconciliation.sql",
+        "0009-group-tag-reviews.sql",
+        "0010-source-retirement.sql",
+        "0011-personal-notes.sql",
+        "0012-note-previews.sql",
+        "0013-scheduled-reminders.sql",
+        "0014-linked-task-recovery.sql",
+        "0015-task-adoption.sql",
+        "0016-diagnostics.sql",
+        "0017-note-project-links.sql",
+        "0018-workspace-transfers.sql",
+        "0019-event-subscriptions.sql",
+        "0020-event-outbox.sql"
+      ],
+      "pending": [
+        "0021-note-folders.sql",
+        "0022-note-folder-previews.sql",
+        "0023-task-type-copy-previews.sql"
+      ]
+    }
+  },
+  "executor_counts": [
+    {
+      "executor_enabled": 1,
+      "count": 1
+    }
+  ],
+  "pages": {
+    "id": "a061255b-d21c-4195-9366-219422259497",
+    "production_branch": "main",
+    "build_config": {
+      "build_command": "./build.sh",
+      "destination_dir": "../../../output/wwwroot",
+      "root_dir": "",
+      "web_analytics_tag": null,
+      "web_analytics_token": null
+    },
+    "source": {
+      "type": "github",
+      "config": {
+        "owner": "strexet",
+        "owner_id": "5337404",
+        "repo_name": "habitica-companion",
+        "repo_id": "1219684338",
+        "production_branch": "main",
+        "pr_comments_enabled": true,
+        "deployments_enabled": true,
+        "production_deployments_enabled": true,
+        "preview_deployment_setting": "all",
+        "preview_branch_includes": [
+          "*"
+        ],
+        "preview_branch_excludes": [],
+        "path_includes": [
+          "*"
+        ],
+        "path_excludes": []
+      }
+    }
+  }
+}

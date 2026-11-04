@@ -1377,6 +1377,8 @@ Deployment preparation stamps only a fresh local package after endpoint selectio
 
 ### Independent Notes journal
 
+The [Notes folder model](notes-folders.md) extends notebooks to schema2 with independently typed folder commands and a combined causal receipt sequence. Legacy schema1 notebooks and note hashes retain compatibility. Exact project-folder authority shares the browser Notes/Workspace transaction; local storage preserves folder tombstones and rejects format downgrade. Cloud owner routes use additive migration0021 and guarded D1 batches, with typed NotesCloudClient validation. Folder MCP tools and folder UI remain separately queued.
+
 NotesNotebook schema1 resides outside WorkspaceDocument and generic private-sync bundles. IndexedDB version3 adds a scope-keyed notes table while preserving kv and existing workspace stores. IndexedDbNotesDatabase validates typed notebook content and account scope before optimistic revision commits. Transactions preserve accepted receipts and purged identities. NotesService recovers original receipts after ambiguous storage acknowledgement; unknown acceptance retains the original command ID.
 
 Limits are128KiB UTF-8 Markdown,256UTF-16 title units,16previous causal content versions,200retained notes including trash and2048ordinary command receipts. A400-receipt lifecycle reserve and2MiB byte reserve permit explicit trash/purge after ordinary quota exhaustion. The absolute notebook bound is16MiB. Capacity exhaustion refuses rather than silently truncating content or evicting receipts. Invalid Unicode, unknown/duplicate JSON fields and inconsistent receipt/revision histories refuse. Append inserts exactly the supplied source without generated separators.
@@ -1457,11 +1459,11 @@ NotesModel/NotesEngine and shared notes.ts preserve legacy encodings while optio
 
 ## Protected callback egress candidate
 
-The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace remains the later subscription/outbox/receipt owner. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.
+The owner-selected Netlify Functions Free gateway uses native Node22 TLS with approved-address binding and original-host verification. Auth owns a separate service-authenticated, single-use D1 grant fence; Workspace owns opaque subscription/outbox/receipt metadata. The gateway stores no callback/signing material and receives exact already-signed bytes only. Default rollout flags remain off. Local tests and packaging do not establish hosted activation. [callback-egress.md](callback-egress.md) owns authentication, retention, address policy, setup, quota behavior and rollback.
 
 ## Public PWA shell response ownership
 
-service-worker.published.js owns Release cache installation, navigation shell validation and public-cache activation. The cache identity combines the generated manifest version and shell-v2 worker format. Same-origin integrity requests populate public assets; a validated root/index HTML response loses followed-redirect history through Response reconstruction before installation succeeds. Navigation repeats the guard for cached shells and preserves the original network request on cache refusal. Reconstruction retains decoded bytes and security headers while removing wire encoding/length. Worker activation remains browser-managed; storage, account consent and push subscriptions have no migration operation. pwa-installation.md owns update/relaunch instructions and the separate physical-device gate.
+service-worker.published.js owns Release cache installation, navigation shell validation and public-cache activation. The cache identity combines the generated manifest version and shell-v3 worker format. Same-origin integrity requests populate public assets, including `.mjs` storage dependencies; a validated root/index HTML response loses followed-redirect history through Response reconstruction before installation succeeds. Navigation repeats the guard for cached shells and preserves the original network request on cache refusal. Reconstruction retains decoded bytes and security headers while removing wire encoding/length. Worker activation remains browser-managed; storage, account consent and push subscriptions have no migration operation. pwa-installation.md owns update/relaunch instructions and the separate physical-device gate.
 
 ## Existing-only connection recovery
 
@@ -1476,3 +1478,29 @@ Workspace migration `0018-workspace-transfers.sql` supports atomic task/Notes ad
 ## Skill Tree installation scope
 
 Repository workflow uses the project-scoped web flavor. [Installation state](skill-tree-installation.md) records profile ownership, schema adaptation and preserved checkpoint boundaries; product stack and package pins remain unchanged.
+
+## Auth-owned Events subscriptions
+
+The default-off Events extension uses a separate OAuth permission and reviewed exact-task consent. Auth migration0014 owns encrypted callback material and reduced verification receipts; Workspace migration0019 owns opaque resource-bound subscriptions and consent commands. The private EventSubscriptionService/EventDeliveryService bindings expose no callback secrets. [event-subscriptions.md](event-subscriptions.md) records authority generations, verification, rotation, cleanup, quotas and local/hosted limits.
+
+Workspace migration0020 and Auth migration0015 add independent Events outbox/dispatch receipts. The Workspace scheduler uses bounded D1 leases; Auth signs only the current verified callback after fresh resource/consent checks. Public MCP status reports original reduced outcomes without callback material. [reminder-events.md](reminder-events.md) defines retry/unknown/retention boundaries.
+
+## Native type-copy command and lineage
+
+[Native task copies](task-type-copies.md) add the null-omitted `CompanionTask.CopyLineage` extension and v13 command identity over unchanged legacy hashes. A dedicated atomic command branch creates one new unlinked target after exact source/root guards, retains the source and journals an original shallow source snapshot with no provider/tag effects. Creation coverage recognizes the explicit new target kind and nested Daily recurrence. Journal validators bind immutable lineage across later snapshots; revision-offset transfer preserves original nested revisions and exact source-import provenance. Migration0023 durably stores bounded copied/reset review metadata on preparations. Browser IndexedDB and cloud/MCP prepare/accept/original lookup share typed contracts; no new credential policy or deployment is implied.
+
+## Relative saved-query evaluation
+
+[Relative saved-date queries](relative-saved-dates.md) append null-omitted preset selectors and query timezone without changing old encodings. Organization v5 binds the extension. A pure native/shared policy resolves one supplied UTC instant into local civil-day bounds; public Worker reads capture server UTC. Canonical eligible predicates preserve full dependency source context for missing dates. Relative pages require explicit evaluation day and source revision. No evaluated results or dates are stored back into the definition. Existing tag adapters fail closed for relative groups and stop old pending dispatch before a new provider request; no revision-only tag plan can imply a reviewed day selection. Full day-bound projection remains separately tracked.
+
+## Project-filtered retained history
+
+Completion/Habit query adapters share current retained project selection, optional placement metadata and explicit missing-project refusal. Existing event provenance, full counts, stable revision pages and original restoration receipts remain intact. The existing organization read adds opt-in retained project discovery. See [project history](project-retained-history.md). No schema migration or provider write is required.
+
+## Folder-aware Workspace adoption
+
+Folder-aware transfer markers retain original note/folder revisions without fabricated command receipts. D1 acceptance saves folder metadata, memberships and the original transfer receipt atomically. Hashed metadata templates permit original folder-receipt recovery independently of explicitly purged Note bodies. Native capture preserves accepted command snapshots/event encodings across runtimes. See [folder adoption](notes-folder-adoption.md).
+
+## Reviewed relative-date tag membership
+
+Relative tag evaluation metadata remains immutable in previews, work and original receipts. Atomic acceptance expires at the local-day boundary; Workspace and Auth both refuse stale-day fresh dispatch. Optional day/timezone extends only new attempt hashes. Scoped coverage validates current accepted context against source/consent provenance; canonical-only reads remain conservative. See [relative tag reviews](relative-tag-reviews.md).

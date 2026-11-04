@@ -1,0 +1,11 @@
+{
+  "observed_at_utc": "2026-11-02T12:43:55.078987+00:00",
+  "team": "Flying Monolith",
+  "slug": "strexet",
+  "plan": "Free",
+  "remaining_credits": 198,
+  "plan_credits": 300,
+  "production_deploys_in_period": 6,
+  "paid_upgrade": false,
+  "source": "Authenticated Netlify Usage & billing UI."
+}

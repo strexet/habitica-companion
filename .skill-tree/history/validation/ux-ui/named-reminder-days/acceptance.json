@@ -1,0 +1,50 @@
+{
+  "task_id": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+  "title": "Use named day controls for repeating push reminders",
+  "operation_history": ".skill-tree/history/validation/ux-ui/named-reminder-days/operation-history.json",
+  "checks": [
+    {
+      "id": "named-reminder-days-behavior",
+      "counts": {
+        "discovered": 35,
+        "expected": 35,
+        "failed": 0,
+        "passed": 35,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+          "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+          "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+        }
+      ]
+    },
+    {
+      "id": "named-reminder-days-rendered",
+      "counts": {
+        "discovered": 721,
+        "expected": 721,
+        "failed": 0,
+        "passed": 721,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+          "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

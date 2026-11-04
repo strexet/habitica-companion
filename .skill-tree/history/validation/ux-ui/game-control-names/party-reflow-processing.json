@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-610488a7-9f77-4420-b83c-83396a2f68b1"
+    ],
+    "dispositions": {
+      "P-610488a7-9f77-4420-b83c-83396a2f68b1": {
+        "status": "promoted",
+        "reason": "Current rendered geometry and source minimums demonstrate a required scoped Party layout repair."
+      }
+    },
+    "tasks": [
+      {
+        "key": "party-context-reflow",
+        "title": "Keep Party grids and disclosure actions bounded with enlarged text",
+        "body": "Goal:\nBound Party summary and member grids with enlarged text.\n\nCurrent behavior:\nCurrent rendered evidence records 592-pixel document width in a 360-pixel viewport at 200-percent text. The summary grid has an unconditional 18-rem minimum. Member action minimum width can also exceed card content; fixed desktop member columns must adapt to available text width.\n\nDesired behavior:\nUse available-width-bounded minimums and responsive member columns. Keep public record context readable, preserve complete content and existing native details behavior.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/browser-qualification/ux-ui-game-names-journey.mjs`\n- `tests/browser-qualification/ux-ui-party-reflow-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nNo hidden overflow, smaller text, removed actions, new command, provider mutation or preference change. Existing local synthetic build/test authorization applies. Physical devices and assistive technology remain unqualified.\n\nValidation:\nRetain the original failing rendered receipt, full real Party fixtures and native disclosure/focus journey. Check the complete required matrix and ordinary-word name width rather than accepting glyph-wide columns.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"party-context-reflow-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Party disclosure behavior, names and stable regions remain unchanged.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/PartyPage.razor\",\n        \"src/Habitica.WebApp/Pages/InventoryPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~PartyPageTests\",\n        \"report_name\": \"party-context-reflow.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/party-context-reflow/unit\"\n      },\n      \"assertion\": \"Preserve public Party disclosure, exact member identity and existing filters/quest gates; the original rendered regression supplies the failing layout oracle.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"party-context-reflow-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Party summary and member grids, public context and actions retain bounded readable geometry throughout the required rendered matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/PartyPage.razor\",\n        \"src/Habitica.WebApp/Pages/InventoryPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui.mjs\",\n        \"tests/browser-qualification/ux-ui-contract.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui-game-names-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-game-user.json\",\n        \"tests/browser-qualification/ux-ui-game-party.json\",\n        \"tests/browser-qualification/ux-ui-game-content.json\",\n        \"tests/browser-qualification/ux-ui-party-reflow-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"party-context-reflow\",\n        \"routes\": [\n          \"/party\"\n        ],\n        \"cases\": \"Same-named long member identities, public references, closed/open details, summary and action reflow.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/party-context-reflow/browser\"\n      },\n      \"assertion\": \"The real Party overview, summary grid and member controls stay within the viewport at all required widths, root text sizes and schemes. Native keyboard opens/closes the exact member region and retains visible focus.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Party disclosure behavior, names and stable regions remain unchanged.\n- Party summary and member grids, public context and actions retain bounded readable geometry throughout the required rendered matrix.\n\nDocumentation updates:\nRecord Party reflow and qualification in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\nCurrent `party-detail-grid`, `party-member-summary-row`, `party-member-actions` and responsive rules were inspected. Original failure artifacts reside in `.skill-tree/artifacts/ux-ui/game-control-names/1793725405172118000`.\n",
+        "parent_pending_ids": [
+          "P-610488a7-9f77-4420-b83c-83396a2f68b1"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "af7c865327e8cb58899fa6337982943973e6967ff54ff09009f54158469f6dfc"
+  },
+  "result": {
+    "created_ids": [
+      "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb"
+    ],
+    "dispositions": {
+      "P-610488a7-9f77-4420-b83c-83396a2f68b1": {
+        "reason": "Current rendered geometry and source minimums demonstrate a required scoped Party layout repair.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-f9d821c4-f0e3-4ba6-b673-ad6fcce78288",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-610488a7-9f77-4420-b83c-83396a2f68b1"
+    ],
+    "task_keys": {
+      "party-context-reflow": "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb"
+    }
+  }
+}

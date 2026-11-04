@@ -1,0 +1,38 @@
+{
+  "_id": "00000000-0000-4000-8000-000000000011",
+  "profile": {
+    "name": "Same member with a long displayed name for accessible record navigation"
+  },
+  "stats": {
+    "class": "wizard",
+    "lvl": 15,
+    "hp": 50,
+    "maxHealth": 50,
+    "mp": 100,
+    "maxMP": 100,
+    "str": 10,
+    "int": 20,
+    "con": 10,
+    "per": 10,
+    "gp": 100
+  },
+  "preferences": {
+    "dayStart": 0,
+    "timezoneOffset": 0
+  },
+  "party": {
+    "_id": "synthetic-party"
+  },
+  "items": {
+    "gear": {
+      "equipped": {
+        "weapon": "weapon_int_12"
+      },
+      "costume": {},
+      "owned": {
+        "weapon_int_12": true,
+        "weapon_str_10": true
+      }
+    }
+  }
+}

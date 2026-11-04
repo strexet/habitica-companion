@@ -6,7 +6,7 @@ import {frontendSettings} from './frontend-settings.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),'utf8'));
 const pilotFlags=new Set(['OAUTH_ENABLED','ENROLLMENT_ENABLED','WORKSPACE_ENABLED']);
-const separatelyProvisionedFlags=new Set(['CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED']);
+const separatelyProvisionedFlags=new Set(['EVENTS_ENABLED','CALLBACK_EGRESS_ENABLED','PUSH_ENABLED','PUSH_DISPATCH_ENABLED','PUSH_REMINDERS_ENABLED']);
 const developmentFlags=new Set([...pilotFlags,'PROJECTION_ENABLED','PARTY_ENABLED','SPELLS_ENABLED','CRON_ENABLED','KEY_OPERATIONS_ENABLED','ADAPTIVE_PACING_ENABLED','EXECUTOR_ENABLED']);
 export function deploymentFlags(vars,profile='pilot'){
  if(!['pilot','development'].includes(profile))throw new Error('Unknown capability profile; use pilot or development.');

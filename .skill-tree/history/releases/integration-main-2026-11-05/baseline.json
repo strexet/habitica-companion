@@ -1,0 +1,32 @@
+{
+  "worker_versions": {
+    "chatgpt-auth": "d78ff6f7-f294-4f3f-8bcc-29cbdf1efffd",
+    "companion-workspace": "a6d853b0-f595-4251-b97b-1751ec1a1578",
+    "chatgpt-mcp": "b8323e80-155a-4ca4-a21f-d1e3328f20b0"
+  },
+  "pages": "6d12b727-d035-4f18-b2b1-10aeb4ba91ac",
+  "migrations": {
+    "chatgpt-auth": {
+      "applied_count": 15,
+      "pending": []
+    },
+    "companion-workspace": {
+      "applied_count": 23,
+      "pending": []
+    }
+  },
+  "bookmarks": {
+    "chatgpt-auth": {
+      "bookmark": "00000350-00000000-00005119-e39f6d9a25ad161efbaef010ebbeb1b1"
+    },
+    "companion-workspace": {
+      "bookmark": "000000b7-000000b0-00005119-71505efd9931193a5fe3b39893a6f021"
+    }
+  },
+  "executor_counts": [
+    {
+      "executor_enabled": 1,
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "labels": [
+    "relative-tag-receipt-review",
+    "relative-tag-removals-final",
+    "relative-tag-terminal-receipts-final",
+    "rendered-c0967448"
+  ],
+  "checks": {
+    "reviewSdk": 21,
+    "executionGateway": 19,
+    "nativeTypedComponents": 21,
+    "browser": 162
+  },
+  "totalPassed": 223,
+  "outcome": "Relative saved-list tag reconciliation and exact adoption now require an explicit reviewed UTC/timezone/local-day context and complete member selection. Atomic acceptance expires at local midnight; Workspace and Auth refuse stale-day fresh dispatch while original uncertain receipts recover before source/day checks. Exact managed additions/removals preserve unrelated tags and source records. Scoped current coverage uses accepted context and current source/consent provenance; original receipts retain evaluation metadata. Direct Sync startup recovers controls without navigation or automatic reads. All223 native/typed/component/shared/actual SDK/D1/gateway/Release-browser controls pass without real provider or notification operations.",
+  "extra_sources": [
+    ".skill-tree/documents/relative-tag-reviews.md",
+    ".skill-tree/documents/relative-saved-dates.md",
+    "workers/shared/group-tag-status.ts",
+    "workers/shared/reviewed-tag-dates.ts",
+    "workers/companion-workspace/src/group-tag-api.ts",
+    "workers/companion-workspace/src/group-tag-outcomes.ts",
+    "workers/companion-workspace/test/fixtures/relative-tags.mjs",
+    "workers/companion-workspace/test/fixtures/group-tags.mjs",
+    "workers/shared/build-identity.generated.ts",
+    "plugin/skills/habitica-task-management/references/saved-task-views.md"
+  ],
+  "limitations": [
+    "No commit, push, publication, real provider/account operation or notification qualification occurred. Synthetic provider mutations are confined to disposable fixtures.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified; changed-route harnesses block service workers.",
+    "Canonical-only coverage without scoped accepted work/context remains conservative. Wakes and midnight never grant automatic daily refresh permission."
+  ],
+  "repairs": [
+    "Meaningful Red rejects the explicit relativeDayReview field while16 legacy API controls pass.",
+    "A combined imported Worker suite reached the existing30-second file deadline; existing reconciliation and new day-bound execution controls were split into independently bounded files without dropping controls.",
+    "A new typed fixture initially used numeric enum JSON instead of the existing wire serializer. The fixture now uses WorkspaceTaskApiJson and preserves malformed/missing-context refusals.",
+    "A browser harness local variable shadowed the context factory before startup; the harness name was repaired before product qualification.",
+    "Actual direct Sync startup showed a stale tag panel after Workspace recovery. Session/Workspace events now update controls and clear private state without automatic tag reads.",
+    "Final review found the typed terminal-receipt allowlist needed the new stale-day/context reasons with mandatory valid evaluation metadata; two controls retain the uncertainty fence when that metadata is absent.",
+    "Current/source-scoped coverage retains accepted evaluation context; stale contexts revert to review-required evidence without state mutation.",
+    "Actual native IndexedDB verification refuses changed Notes inventory before any transfer authority fence and preserves the concurrent committed bytes."
+  ]
+}

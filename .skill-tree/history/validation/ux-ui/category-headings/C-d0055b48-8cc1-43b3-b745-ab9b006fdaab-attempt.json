@@ -1,0 +1,71 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-d0055b48-8cc1-43b3-b745-ab9b006fdaab",
+  "check_id": "category-headings-behavior",
+  "definition": "647e6cfc56424d7db2e3896d3b91d05a173c34f3c6ddf1ee6c39583290831b33",
+  "environment_identity": "e2bab03a1f8c554ad01eaabcbf24ca4e2037f1068668fad9f274030fb1d74f1b",
+  "key": "9a11bf60ca171e41eb491e9a9b3084f99395b91b765cd26d3ed99121185c3b6e",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T12:25:17.833231+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T12:20:18.083815+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoCategoryPageTests",
+      "--logger",
+      "trx;LogFileName=category-headings.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/category-headings/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Components/TodoCategoryTabs.razor": "bdfddddb321a3e6fb82fcd0684c77e75c90f94be531c7f6406390a3c24cb7c27",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "c50a43db9919ac57bb95b5dc094d675c8d5c96f5690940354dabd118780efac9",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+    "src/Habitica.WebApp/Pages/TodoDailiesPage.razor": "c9143486ce9fd8e89a0eb04ee282ea68e9b7d73172b7a53417a31cd6c345e4b6",
+    "src/Habitica.WebApp/Pages/TodoHabitsPage.razor": "eadb6bd1f7e66e0f698c3bc67f3c795af7e58a0509f747e2bb14f3cc931c3c4e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc"
+  },
+  "task_id": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4"
+}

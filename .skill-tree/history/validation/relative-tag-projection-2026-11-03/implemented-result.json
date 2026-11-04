@@ -1,0 +1,110 @@
+{
+  "checks": [
+    {
+      "assertion": "Actual SDK/Auth/Workspace/D1 preview binds one server evaluation instant/day/timezone and complete additions/removals; stale day/revision/consent refuses without effects and original unknown receipts remain recoverable.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-review",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/relative-tag-review.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/relative-saved-dates.ts",
+        "workers/shared/tag-membership.ts",
+        "workers/shared/group-tag-tools.ts",
+        "workers/companion-workspace/src/group-tag-reviews.ts",
+        "workers/companion-workspace/src/tag-planner.ts",
+        "workers/companion-workspace/src/tag-executor.ts",
+        "workers/companion-workspace/src/tag-reconciliation.ts",
+        "workers/companion-workspace/test/group-tag-api.test.mjs",
+        "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+        "workers/companion-workspace/test/relative-tag-review.test.mjs",
+        "workers/shared/reviewed-tag-dates.ts",
+        "workers/chatgpt-auth/src/tag-gateway.ts",
+        "workers/chatgpt-mcp/src/group-tag-tools.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Synthetic provider counters prove no wake or midnight automatically dispatches unreviewed membership; changed context stops queued work before fresh HTTP and retains original uncertainty fences.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-execution",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/relative-tag-execution.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/relative-saved-dates.ts",
+        "workers/shared/tag-membership.ts",
+        "workers/shared/group-tag-tools.ts",
+        "workers/companion-workspace/src/group-tag-reviews.ts",
+        "workers/companion-workspace/src/tag-planner.ts",
+        "workers/companion-workspace/src/tag-executor.ts",
+        "workers/companion-workspace/src/tag-reconciliation.ts",
+        "workers/companion-workspace/test/group-tag-api.test.mjs",
+        "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+        "workers/companion-workspace/test/relative-tag-execution.test.mjs",
+        "workers/companion-workspace/test/relative-tag-review.test.mjs",
+        "workers/shared/reviewed-tag-dates.ts",
+        "workers/chatgpt-auth/src/tag-gateway.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Typed review displays exact date/timezone/bounds and every member page, disables incomplete/stale acceptance and preserves original-command recovery after reload/account changes.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-components",
+      "parameters": {
+        "report_name": "day-bound-tags.trx",
+        "result_directory": ".skill-tree/artifacts/validation/day-bound-tags",
+        "test_filter": "FullyQualifiedName~WorkspaceTagPanel|FullyQualifiedName~RelativeTagReview|FullyQualifiedName~Tag_wire|FullyQualifiedName~Tag_terminal|FullyQualifiedName~Relative_tag_wire",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTags.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Release explicit day-bound review, complete membership/empty approval, stale-day refusal and original acceptance recovery qualify across both browser engines and required theme/layout/text cases.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-rendering",
+      "parameters": {},
+      "recipe_id": "relative-tag-rendered-browser",
+      "sources": [
+        "tests/browser/relative-tag-ui.py",
+        "tests/browser/relative-tag-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/relative-tag-fixture.mjs",
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+}

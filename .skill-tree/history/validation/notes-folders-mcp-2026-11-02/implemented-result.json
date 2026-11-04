@@ -1,0 +1,95 @@
+{
+  "checks": [
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-mcp-contracts",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-folder-tools.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-existing-tools-regressions",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md",
+        "workers/companion-workspace/test/note-tools.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+      "criteria": [
+        "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+        "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects."
+      ],
+      "id": "notes-existing-project-tools",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/note-folder-tools.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/note-tools.ts",
+        "workers/chatgpt-mcp/src/note-tools.ts",
+        "workers/companion-workspace/src/note-tools-api.ts",
+        "plugin/skills/habitica-notes/SKILL.md",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/src/note-folder-tools-api.ts",
+        "workers/companion-workspace/migrations/0022-note-folder-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "plugin/skills/habitica-notes/references/folders.md",
+        "workers/companion-workspace/test/note-projects.test.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5"
+}

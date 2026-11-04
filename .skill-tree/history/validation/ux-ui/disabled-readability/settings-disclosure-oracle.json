@@ -1,0 +1,6 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/7f9deeda-6254-491a-8047-d600cc71da36-failure.json",
+  "observed": "The Settings appearance disclosure remained collapsed after the journey content step. Browser cleanup passed.",
+  "source_ordering_defect": "The journey closed the phone drawer after the Settings content interaction. Content controls must be reachable before invoking their actual handlers.",
+  "repair": "Close the phone drawer before route-specific controls. Verify the disclosure receives the pointer and changes its label to Done before waiting for native fields. No application source change."
+}

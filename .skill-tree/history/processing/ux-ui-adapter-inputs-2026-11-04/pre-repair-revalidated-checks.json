@@ -1,0 +1,449 @@
+{
+  "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0": [
+    {
+      "check": {
+        "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+        "criteria": [
+          "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures."
+        ],
+        "id": "qualification-contract",
+        "parameters": {
+          "review": "recipe argv, parameter schema, registered input paths, profile refresh and pinned browser identity"
+        },
+        "recipe_id": "static-inspection",
+        "sources": [
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          ".skill-tree/documents/testing.md"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "static",
+        "assertions": [
+          {
+            "assertion": "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+            "result": "pass"
+          }
+        ],
+        "attempt_id": "C-08112e87-8238-4301-bcc0-7fe533c26ae2",
+        "classification": "executed-control",
+        "cleanup": "Read-only JSON/source inspection exited; no product process or external state.",
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/C-08112e87-8238-4301-bcc0-7fe533c26ae2-static.json",
+            "sha256": "4c9d48852460012797d5c4b71ba578b1d934201f7e0703e1560137cb7d37fb66"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "96b3f44ca2530332cb0cfd40be6820474c318f3378a27bca4d8da180c5ab3730",
+        "payload_hash": "10365cdc1b437f677af44445a98be338f3853a421197694223320a9dfd105e83",
+        "recorded_at": "2026-11-03T23:51:24.157700+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/testing.md": "22694804154f2aa7f8c048967367dc123cdf1a253b0ba5547a63538214b87773",
+          ".skill-tree/installation/profile.json": "cd6ce379d8a2852d2af4c571bfa7e3ef7bd322a473d199b5d6ff3746397f2976",
+          ".skill-tree/validation-recipes.json": "1905df2c791a86c4af86f05111d9032330819f28cf24bc403a860e795f0995da"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.3667807918973267
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+        "criteria": [
+          "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass."
+        ],
+        "id": "qualification-canaries",
+        "parameters": {
+          "test_file": "tests/browser-qualification/ux-ui-checks.test.mjs"
+        },
+        "recipe_id": "node-focused-tests",
+        "sources": [
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-bb95d513-6c9e-4024-9d9d-c3dbf2e3cdef",
+        "classification": "executed-control",
+        "cleanup": "Pure Node test process exited; no product/session state.",
+        "counts": {
+          "discovered": 39,
+          "expected": 39,
+          "failed": 0,
+          "passed": 39,
+          "skipped": 0
+        },
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "f4ae04dd01240c0f2a014e3938ecd2d1f0b28ad05029460440f495c4f7b3be41",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/C-bb95d513-6c9e-4024-9d9d-c3dbf2e3cdef.tap",
+            "sha256": "cc288466e9524f656e673b6b83426fbcde1bafa2fcae9fc60ff1a51a97e50a60"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "507b8b1726576c674517a471f631ffc1c2772cf982694415ffe9c0a5e956f4a0",
+        "payload_hash": "6aac9d987ea5526c6e97c39fcf5d8e83e9fd58d62571cb1176be270a4e08a730",
+        "recorded_at": "2026-11-03T23:51:25.089518+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "e5682166fc50f3d1cabba7c39d41a3c1c2fdb604408a5c05347c999be818ace2",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68"
+        },
+        "timing": {
+          "tool_wall_seconds": 0.1370503748767078
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+        ],
+        "id": "ui-qualification-rendered",
+        "parameters": {
+          "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+          "expected_product_baseline_failures": [
+            "unfixed disabled readability",
+            "unfixed native date content clipping"
+          ],
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "mode": "harness-canaries-and-baseline-observation",
+          "report_directory": ".skill-tree/history/validation/ux-ui/ui-qualification/browser",
+          "routes": [
+            "/todo/today",
+            "/todo/tasks",
+            "/todo/dailies",
+            "/notes",
+            "/inventory",
+            "/settings"
+          ],
+          "task_key": "ui-qualification"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          ".skill-tree/validation-recipes.json",
+          ".skill-tree/installation/profile.json",
+          ".skill-tree/documents/testing.md",
+          "tests/browser-qualification/ux-ui-checks.test.mjs",
+          "tests/browser-qualification/ux-ui.py",
+          "tests/browser-qualification/ux-ui.mjs",
+          "tests/browser-qualification/ux-ui-contract.mjs",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-shared-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-3ebf0e79-ce7e-4ba2-bc11-32620de5e7c5",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+        "environment_identity": "e2514d66021998d5d849ade4b3de6328fa3a3df5f631361a47133f447bff342b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/ui-qualification/browser/08472a6b-1e0e-42b1-b2fe-85d377b149c7.json",
+            "sha256": "d39ade979ccdada1f19e342cd1a6b96555417542fd58753bd75242e4f7832eca"
+          }
+        ],
+        "execution_sessions": {
+          "2b8fc728cfe47db94f084afc6c581f85f3eee78eda0a0c3cf7f30fa8ced8ca81": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-04T00:07:25.163971+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/ui-qualification/launch-1793749885164279000.json"
+            ],
+            "profile_id": "a8aa635a3eceb70bae754f5c33e97bff9cd68e9020685f05b490db73207fa88c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/ui-qualification",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "e65ecac25b6c20dd5845ca97a5b7278fe0af23d472c5027bff4d4052a50bc7dd",
+        "payload_hash": "359919a4bdf9b71a95c594c798f381e05c81e907a8a7a751df6d049579e34890",
+        "recorded_at": "2026-11-03T23:53:23.686460+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/testing.md": "22694804154f2aa7f8c048967367dc123cdf1a253b0ba5547a63538214b87773",
+          ".skill-tree/installation/profile.json": "cd6ce379d8a2852d2af4c571bfa7e3ef7bd322a473d199b5d6ff3746397f2976",
+          ".skill-tree/validation-recipes.json": "1905df2c791a86c4af86f05111d9032330819f28cf24bc403a860e795f0995da",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/browser-qualification/prepare.py": "bbebcae5500166e49c03c103d924f569b3df76b49bf915fd8a7e5c8e08e7b047",
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+          "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+          "tests/browser-qualification/ux-ui-checks.test.mjs": "e5682166fc50f3d1cabba7c39d41a3c1c2fdb604408a5c05347c999be818ace2",
+          "tests/browser-qualification/ux-ui-contract.mjs": "0812b78abde8013fe459e981816535351decbedf0ab0818525555b55af336e68",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "f6de859b603f456ef509ca3846f297dccdbc43d1e0a0f5bf7e010ac985763f7d",
+          "tests/browser-qualification/ux-ui-shared-journey.mjs": "012a98dffcc0b7de545ceb60a284797be5db052ee4e3c6a38050238895d9f81b",
+          "tests/browser-qualification/ux-ui.mjs": "2a4d10d4938ad3cda7c7d8ab96c956c01d9cb68af5f32f2136741687760510a8",
+          "tests/browser-qualification/ux-ui.py": "386d778fb3be2e3d5d1ee090d1e7dd5cda210b08c138431dcfbb3a29fc2d64b5"
+        },
+        "timing": {
+          "tool_wall_seconds": 117.45690720807761
+        }
+      }
+    }
+  ],
+  "T-ea2058ab-c817-4368-9431-b26314f58a2e": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+          "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target."
+        ],
+        "id": "accessible-shell-behavior",
+        "parameters": {
+          "report_name": "accessible-shell.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/unit",
+          "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/App.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-e3c1102b-4f8d-4772-8c2f-39580d5e090c",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 0,
+          "passed": 40,
+          "skipped": 0
+        },
+        "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+        "environment_identity": "144c7a0b4bd6f9721c8d7b6aedadef0ee6c9e219b57eec878b72c644e1ea9842",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-e3c1102b-4f8d-4772-8c2f-39580d5e090c.log",
+            "sha256": "ba23e12cb3bc2a10cfc0647ceffff2887bd6e6c78d496bc64656e4f3ac15b66a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-e3c1102b-4f8d-4772-8c2f-39580d5e090c.trx",
+            "sha256": "1298dcad623b82e557c8d0784e010d660654c903ebd31f21de687ff6b71050bd"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "9c6c854d03a64f7687bf8598faca819ebe7d97df57cd7a764018c3ce75c42178",
+        "payload_hash": "e54b5bed1af14dad559b7f31a7a4904daa8d05d5b67f7d6c1e9ca2f23567e7b7",
+        "recorded_at": "2026-11-03T23:53:28.355197+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.4098810837604105
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix."
+        ],
+        "id": "accessible-shell-rendered",
+        "parameters": {
+          "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/browser",
+          "routes": [
+            "/dashboard",
+            "/todo/today",
+            "/todo/tasks",
+            "/settings"
+          ],
+          "task_key": "accessible-shell"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/App.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-064e0074-f5d9-4c30-8fe3-e90ed3c31a91",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 793,
+          "expected": 793,
+          "failed": 0,
+          "passed": 793,
+          "skipped": 0
+        },
+        "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+        "environment_identity": "3951abf9de6bc51e406f0b88e8277514f6c520ac9b85980cb40f71384fc2f974",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/7e61642c-bfe2-4de7-b832-de708f615ad1.json",
+            "sha256": "fa6282d2955adc6af45013bb62a6a868ebe2b97c6ae30f0d17f600ac8e602fdf"
+          }
+        ],
+        "execution_sessions": {
+          "cef0a6925ec82d53250a5e10816714adcf4c5d1971383df2ad213b11b651e058": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-04T00:09:28.421722+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/accessible-shell/launch-1793750008421741000.json"
+            ],
+            "profile_id": "a8aa635a3eceb70bae754f5c33e97bff9cd68e9020685f05b490db73207fa88c",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/accessible-shell",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "25829adcfd0c405c28391ea53e57dbed7b79d80fb821c642b9cd08f015025237",
+        "payload_hash": "95fae274564adc4cd2240cd8fe14bab6eb68e045db8ebc8e53dc8149e57ba861",
+        "recorded_at": "2026-11-03T23:56:32.532793+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+          "tests/browser-qualification/qualification-core.mjs": "f7230093e383a72bf40f60eeb4ff858e0e718b608c1951083ef2d91ed6fc6e75",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d",
+          "tests/browser-qualification/ux-ui-adapters.json": "1667c29c56283187930dc63541eda4315cc4ff9dc0f3e1afaf76cf16aa54e5b4",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs": "65f92619627e9c49a44c0a2f97d43bcb579b8eb6b5673185e8c1997713e4c05c"
+        },
+        "timing": {
+          "tool_wall_seconds": 182.86199091607705
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "pages-publish",
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "pages",
+    "deploy",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/frontend/wwwroot",
+    "--project-name",
+    "habitica-companion",
+    "--branch",
+    "main",
+    "--commit-hash",
+    "d6de9811e71f93eb0f73854ebf216aa6115905ca",
+    "--commit-message",
+    "UX/UI reviewed local changes 2026-11-04",
+    "--commit-dirty=true"
+  ],
+  "exit_code": 0,
+  "seconds": 17.405,
+  "deadline_seconds": 300,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/pages-publish.log"
+}

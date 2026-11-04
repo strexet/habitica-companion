@@ -1,0 +1,29 @@
+{
+  "future": {
+    "exit_code": 0,
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "repository": {
+    "exit_code": 0,
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Latest recorded audit is stale; historical verdicts remain unchanged"
+    ]
+  },
+  "report_links": {
+    "missing": []
+  },
+  "owner_credential_scan": {
+    "matching_files": []
+  },
+  "original_queue_content": {
+    "preserved": true
+  },
+  "diff_whitespace": {
+    "exit_code": 0,
+    "output": ""
+  }
+}

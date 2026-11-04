@@ -1,0 +1,20 @@
+{
+  "name": "webapp-full-final",
+  "argv": [
+    "./dotnet/dotnet",
+    "test",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+    "-c",
+    "Release",
+    "-m:1",
+    "-nodeReuse:false",
+    "--logger",
+    "trx;LogFilePrefix=webapp-release-final",
+    "--results-directory",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/test-results"
+  ],
+  "exit_code": 0,
+  "seconds": 46.263,
+  "deadline_seconds": 600,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/webapp-full-final.log"
+}

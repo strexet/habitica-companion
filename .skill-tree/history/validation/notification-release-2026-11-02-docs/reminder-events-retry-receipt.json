@@ -1,0 +1,56 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-a41795fb-4b2a-4a3b-accf-7105459e218a",
+  "classification": "executed-control",
+  "cleanup": "Fresh synthetic fixtures disposed; Node process and local Worker children exit normally. Original aggregate timeout receipt remains separate; no runtime source or production state changed.",
+  "counts": {
+    "discovered": 8,
+    "expected": 8,
+    "failed": 0,
+    "passed": 8,
+    "skipped": 0
+  },
+  "definition": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c",
+  "environment_identity": "8b445ba6d15d17999fd091c78a0b48b3111e75c9cf8aa6ffee623896e9478740",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/reminder-events-retry.log",
+      "sha256": "0595881ec6e2c86b5988179ca023bb55db1d5d8fe8373be490702bf27a958b15"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-docs/burst-focused.log",
+      "sha256": "f179fba728ad229d7d7251db1bc090b0b5fe6c53216f2b50723a021d5fe47320"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/releases/2026-11-02-notifications/prose-validation-final.log",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "a3e93617919e77c3e0b137a3697cd76d655a69b4c26ba513b78617ee88eaeecb",
+  "payload_hash": "5814ce7bb77be8f23587528f6a205807266953eeb0c2994453f67558c591d051",
+  "recorded_at": "2026-11-02T15:21:05.149141+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/reminder-events.md": "4892b3c01f006a33830b50b812a3197eca91931b9fd46b9a54be414993878760",
+    "deploy/prepare-dev.mjs": "bc6ab6338036850ef6042baa647ce5b37d2d4ca11127737dc30624615ebd2124",
+    "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+    "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+    "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+    "workers/chatgpt-auth/src/events.ts": "a406630ba0312dd42b821681e87891282fa76de39d2b75e8143033cb62062c0f",
+    "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+    "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+    "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+    "workers/companion-workspace/test/reminder-events.test.mjs": "75cb8f334ddd2ebdcc05202a7750e173ab12121edd7fe1977510dd423e630478",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+  },
+  "timing": {
+    "tool_wall_seconds": 19.602840082952753
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+  "title": "Keep dashboard Appearance actions readable at enlarged phone widths",
+  "operation_history": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/operation-history.json",
+  "checks": [
+    {
+      "id": "dashboard-appearance-reflow-behavior",
+      "counts": {
+        "discovered": 119,
+        "expected": 119,
+        "failed": 0,
+        "passed": 119,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.log",
+          "sha256": "f130f7e51d08a1b1730e4f99392ffba78445dcfa58ab3e2d381b05940d172f5f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/C-b6162855-9464-4e78-813c-7ea270bbfc13.trx",
+          "sha256": "19acfefd5eba304d718fd31a4f543a04d823c47363712dee5cf6dc0ac799e0bf"
+        }
+      ]
+    },
+    {
+      "id": "dashboard-appearance-reflow-rendered",
+      "counts": {
+        "discovered": 217,
+        "expected": 217,
+        "failed": 0,
+        "passed": 217,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-appearance-reflow/browser/4ecb0117-274f-41a1-9dbf-489cc142992b.json",
+          "sha256": "cf0434c36a10ece606886cb92da6264e3db46a39908cb07b79bb8fb1d4596689"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

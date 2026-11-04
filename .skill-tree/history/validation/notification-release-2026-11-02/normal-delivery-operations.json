@@ -1,0 +1,20 @@
+[
+  {
+    "operation": "normal_delivery_and_original_replay",
+    "exit_code": 1,
+    "tool_wall_seconds": 1.386,
+    "deadline_seconds": 45,
+    "cleanup_reserve_seconds": 30,
+    "stdout": "",
+    "stderr": "(node:69430) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n{\"runId\":\"d6e008ec-fb83-48c0-9ee7-64467342f9e5\",\"stage\":\"dispatch_intent\",\"failureCategory\":\"assertion_failed\"}\n"
+  },
+  {
+    "operation": "restore_auth_disabled_baseline",
+    "exit_code": 1,
+    "tool_wall_seconds": 6.269,
+    "deadline_seconds": 120,
+    "cleanup_reserve_seconds": 30,
+    "stdout": "{\"stage\": \"controller_stopped\", \"error\": \"auth_gate_or_source_verification_failed\"}",
+    "stderr": ""
+  }
+]

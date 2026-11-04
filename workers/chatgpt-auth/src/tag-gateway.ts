@@ -1,3 +1,4 @@
+import {tagDay,requireTagDay} from '../../shared/reviewed-tag-dates.ts';
 import {activeProfile,credentialKeys,boundedJson,VaultError} from './vault';
 import {decryptCredential} from './cryptography';
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit} from './traffic';
@@ -34,12 +35,13 @@ async function register(env:AuthEnv,who:Who,context:TagGatewayContext,tag:{id:st
  if(!result.meta.changes)throw new WorkspaceError('tag_identity_conflict',409);
 }
 export async function tagOperation(request:Request,env:AuthEnv):Promise<Response>{
- let who:Who|undefined,attemptId:string|undefined,lease:string|undefined,reserved=false;
+ let who:Who|undefined,attemptId:string|undefined,lease:string|undefined,reserved=false,providerDispatched=false;
  try{
   if(!env.WORKSPACE_ENABLED||!env.PROJECTION_ENABLED||request.method!=='POST')throw new WorkspaceError('unauthorized',401);
-  const input=object(await workspaceJson(request,65536),['profileId','connectionId','context','operation','arguments','attemptId','attemptAtUtc','automated','expectedConsentEpoch','requiredGrantEpoch']);
+  const input=object(await workspaceJson(request,65536),['profileId','connectionId','context','operation','arguments','attemptId','attemptAtUtc','automated','expectedConsentEpoch','requiredGrantEpoch','relativeDay']);
   if(typeof input.profileId!=='string'||!/^prf_[A-Za-z0-9_-]{43}$/.test(input.profileId)||typeof input.automated!=='boolean')throw new WorkspaceError('invalid_request',422);
   who={profileId:input.profileId,connectionId:uuid(input.connectionId)};const profile=await activeProfile(env,who.profileId,who.connectionId);
+  if(input.relativeDay!==undefined)input.relativeDay=tagDay(input.relativeDay);
   const context=tagContext(input.context),contextHash=await workspaceTokenHash(JSON.stringify(context)),operation=input.operation;
   if(typeof operation!=='string'||!['inspectTags','inspectMembership','lookupTagAttempt','prepareTagRecovery','acceptTagRecovery',...writes].includes(operation))throw new WorkspaceError('invalid_operation',422);
   if(operation==='prepareTagRecovery'||operation==='acceptTagRecovery')return await recoverTagAttempt(env,who,context,contextHash,input,operation);
@@ -48,7 +50,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
   if(writing||operation==='lookupTagAttempt'){
    attemptId=uuid(input.attemptId);const originalOperation=operation==='lookupTagAttempt'?String(args.operation):operation;
    if(!writes.includes(originalOperation))throw new WorkspaceError('invalid_operation',422);
-   payloadHash=await tagAttemptHash('tags.'+originalOperation,{context,arguments:operation==='lookupTagAttempt'?object(args.arguments):args},input.attemptAtUtc);
+   payloadHash=await tagAttemptHash('tags.'+originalOperation,{context,arguments:operation==='lookupTagAttempt'?object(args.arguments):args,...(input.relativeDay?{relativeDay:input.relativeDay}:{})},input.attemptAtUtc);
    const prior=await env.HABITICA_INTEGRATION_DB.prepare('SELECT payload_hash,outcome_json FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND attempt_id=?').bind(who.profileId,who.connectionId,attemptId).first<{payload_hash:string;outcome_json:string|null}>();
    if(prior){if(prior.payload_hash!==payloadHash)throw new WorkspaceError('attempt_id_reused',409);return json(prior.outcome_json?JSON.parse(prior.outcome_json):{kind:'unknown',code:'outcome_unknown'});}
    if(operation==='lookupTagAttempt')return json({kind:'unknown',code:'attempt_not_found'});
@@ -106,6 +108,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
   }else await upstreamBudget(env,who.profileId);
   await activeProfile(env,who.profileId,who.connectionId);
   const finalConsent=await requireTagConsent(env,who.profileId,who.connectionId);if(finalConsent.consent_epoch!==consent.consent_epoch)throw new WorkspaceError('tag_consent_changed',409);
+  if(writing&&input.relativeDay!==undefined)requireTagDay(input.relativeDay,new Date().toISOString());
   let outcome:TagOutcome;
   if(operation==='setMembership'&&(observed!.tags as string[]).includes(tagId!)===args.present){outcome={kind:'applied',code:'already_matches',task:{id:taskId!,kind:String(observed!.kind),fingerprint:String(observed!.fingerprint)},receiptId:attemptId};}
   else if(operation==='adoptTag'){
@@ -114,6 +117,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
    const currentProfile=await activeProfile(env,who.profileId,who.connectionId);if(input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==currentProfile.grant_epoch)throw new WorkspaceError('tag_authority_changed',409);const currentConsent=await requireTagConsent(env,who.profileId,who.connectionId);if(currentConsent.consent_epoch!==consent.consent_epoch)throw new WorkspaceError('tag_consent_changed',409);
    const path=operation==='inspectTags'||operation==='createTag'?'tags':operation==='renameTag'?'tags/'+tagId:'tasks/'+taskId+(operation==='setMembership'?'/tags/'+tagId:'');
    const method=operation==='createTag'?'POST':operation==='renameTag'?'PUT':operation==='setMembership'?args.present?'POST':'DELETE':'GET';
+   if(input.relativeDay!==undefined)requireTagDay(input.relativeDay,new Date().toISOString());providerDispatched=true;
    const response=await upstreamFetch(env,'https://habitica.com/api/v3/'+path,{method,redirect:'manual',headers:{'x-api-user':credential.habiticaUserId,'x-api-key':credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,accept:'application/json','content-type':'application/json'},...(operation==='createTag'||operation==='renameTag'?{body:JSON.stringify({...(operation==='createTag'?{id:tagId}:{}),name:tagNameValue})}:{}),signal:AbortSignal.timeout(10000)},who.profileId);
    await observeUpstream(env,response,who.profileId);const retryAtUtc=await rateState(env,who,response);
    if(!writing){
@@ -144,6 +148,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
   if(outcome.kind==='applied'&&outcome.tag)await register(env,who,context,outcome.tag,attemptId!,consent.consent_epoch);
   await env.HABITICA_INTEGRATION_DB.prepare('UPDATE integration_projection_attempts SET state=?,outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?').bind(outcome.kind,JSON.stringify(outcome),who.profileId,who.connectionId,attemptId!).run();return json(outcome);
  }catch(error){
+  if(reserved&&!providerDispatched&&who&&attemptId&&error instanceof WorkspaceError&&error.code==='stale_evaluation_day'){const outcome={kind:'refused',code:error.code};await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state='refused',outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(JSON.stringify(outcome),who.profileId,who.connectionId,attemptId).run();return json(outcome,409);}
   if(reserved&&who&&attemptId){try{await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state='unknown',outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(JSON.stringify({kind:'unknown',code:'outcome_unknown'}),who.profileId,who.connectionId,attemptId).run();}catch{/* Durable dispatched record preserves the original fence. */}return json({kind:'unknown',code:'outcome_unknown'});}
   if(error instanceof TrafficLimit)return json({kind:'refused',code:'rate_limited',retryAtUtc:error.retryAtUtc},429);
   return json({kind:'refused',code:error instanceof WorkspaceError||error instanceof VaultError?error.code:'tag_gateway_unavailable'},error instanceof WorkspaceError||error instanceof VaultError?error.status:503);
@@ -154,7 +159,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
 async function recoverTagAttempt(env:AuthEnv,who:Who,context:TagGatewayContext,contextHash:string,input:Record<string,unknown>,operation:string):Promise<Response>{
  const args=object(input.arguments,operation==='prepareTagRecovery'?['operation','arguments']:['operation','arguments','checkToken','expectedFingerprint']),originalOperation=String(args.operation),original=object(args.arguments),attemptId=uuid(input.attemptId);
  if(!writes.includes(originalOperation))throw new WorkspaceError('invalid_operation',422);
- const hash=await tagAttemptHash('tags.'+originalOperation,{context,arguments:original},input.attemptAtUtc);
+ const hash=await tagAttemptHash('tags.'+originalOperation,{context,arguments:original,...(input.relativeDay?{relativeDay:input.relativeDay}:{})},input.attemptAtUtc);
  const prior=await env.HABITICA_INTEGRATION_DB.prepare('SELECT payload_hash,state,outcome_json FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND attempt_id=?').bind(who.profileId,who.connectionId,attemptId).first<{payload_hash:string;state:string;outcome_json:string|null}>();
  if(!prior)return json({kind:'unknown',code:'attempt_not_found'});if(prior.payload_hash!==hash)throw new WorkspaceError('attempt_id_reused',409);
  if(!['unknown','dispatched'].includes(prior.state))return json(prior.outcome_json?JSON.parse(prior.outcome_json):{kind:'unknown',code:'outcome_unknown'});

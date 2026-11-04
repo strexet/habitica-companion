@@ -23,6 +23,61 @@ public sealed class TodoHierarchyPanelTests : BunitContext
     private static void Save(string name,string markup,string state,string test,string route="/todo/tasks")=>Qualification.PageLayoutEvidence.Save(name,markup,route,state,["form","actions","confirmation","disabled-controls","error","navigation"],test);
     private static void Button(IRenderedComponent<TodoHierarchyPanel> cut,string text)=>cut.FindAll("button").Single(button=>button.TextContent.Trim()==text).Click();
     [Fact]
+    public async Task Passive_source_restore_clears_private_branch_drafts_without_requesting_heading_focus()
+    {
+        var firstRoot=Task("First workspace root");var first=Doc(firstRoot);var(f,todo)=await Setup(first,false);
+        var secondRoot=Task("Restored root");var child=Task("Restored child",secondRoot.Id);var second=Doc(secondRoot,child);
+        Assert.True(await f.Database.ForScope(WorkspaceTaskFixture.User).TryCommitAsync(0,new(second,10,[],[]),default));
+        await todo.RefreshSourcesAsync();var cut=Render<TodoHierarchyPanel>();
+        cut.Find($"[data-testid='tree-add-{firstRoot.Id:D}']").Click();cut.Find("[data-testid='child-title']").Input("Private unsaved branch draft");
+        var focusBeforeRestore=JSInterop.Invocations.Count(row=>row.Identifier=="Blazor._internal.domWrapper.focus");
+        var before=f.Js.Rows.ToDictionary(row=>row.Key,row=>row.Value);
+        await cut.InvokeAsync(()=>todo.SelectAsync(new(TodoWorkspaceSource.Browser,second.Id)));
+        cut.WaitForAssertion(()=>{Assert.Equal(second.Id,todo.Selection!.WorkspaceId);Assert.Single(cut.FindAll($"[data-testid='tree-row-{secondRoot.Id:D}']"));Assert.Empty(cut.FindAll("[data-testid='child-title']"));Assert.Equal(focusBeforeRestore,JSInterop.Invocations.Count(row=>row.Identifier=="Blazor._internal.domWrapper.focus"));});
+        Assert.Equal(before.OrderBy(row=>row.Key.Id),f.Js.Rows.OrderBy(row=>row.Key.Id));Assert.Empty(f.Client.AcceptedIds);
+        cut.Find($"[data-testid='tree-expand-{secondRoot.Id:D}']").Click();
+        cut.WaitForAssertion(()=>Assert.True(JSInterop.Invocations.Count(row=>row.Identifier=="Blazor._internal.domWrapper.focus")>focusBeforeRestore));
+        Assert.Single(cut.FindAll($"[data-testid='tree-row-{child.Id:D}']"));Assert.Empty(f.Client.AcceptedIds);
+    }
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Same_named_hierarchy_actions_name_exact_records_and_keep_native_disclosure_and_review_fences(bool projectMode)
+    {
+        var project=new WorkspaceProject(Guid.NewGuid(),1,"Synthetic accessible project");
+        const string title="Same task with a long descriptive title for record navigation";
+        var one=Task(title) with {ProjectId=project.Id,Notes="Retained first task notes"};
+        var two=Task(title.Replace(" ","  ")) with {ProjectId=project.Id,Notes="Retained second task notes"};
+        var child=Task("Nested followup task",one.Id) with {Notes="Retained child notes"};
+        var (f,_)=await Setup(Doc(one,two,child) with {Projects=[project]},false);
+        var cut=Render<TodoHierarchyPanel>(p=>p.Add(x=>x.ProjectMode,projectMode));
+        if(projectMode)cut.Find("[data-testid='plan-project']").Change(project.Id.ToString());
+        Assert.Equal(2,cut.FindAll("[data-testid^='tree-row-']").Count);
+        foreach(var task in new[]{one,two})
+        {
+            var row=cut.Find($"[data-testid='tree-row-{task.Id:D}']");Assert.Contains("Task reference: "+task.Id.ToString("D"),row.TextContent);
+            foreach(var action in row.QuerySelectorAll(".todo-row-actions button,.todo-row-actions a"))
+            {var name=action.GetAttribute("aria-label");Assert.Contains(task.Id.ToString("D"),name);Assert.Contains(task.Text,name);Assert.Contains(action.TextContent.Trim(),name);}
+            foreach(var summary in row.QuerySelectorAll("summary"))
+            {Assert.Contains(task.Id.ToString("D"),summary.GetAttribute("aria-label"));Assert.NotNull(cut.Find("#"+summary.GetAttribute("aria-controls")));}
+        }
+        var route=projectMode?"/todo/projects":"/todo/tasks";var key=projectMode?"project":"tasks";
+        Save("hierarchy-names-"+key+"-ready",cut.Markup,"same-named-canonical-hierarchy-ready",nameof(Same_named_hierarchy_actions_name_exact_records_and_keep_native_disclosure_and_review_fences),route);
+        var evidence=Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");
+        if(!string.IsNullOrWhiteSpace(evidence))File.WriteAllText(Path.Combine(evidence,"hierarchy-names-"+key+"-journal.json"),WorkspaceJournalJson.Serialize(f.Controller.Snapshot!));
+        var before=WorkspaceJournalJson.Serialize(f.Controller.Snapshot!);cut.Find($"[data-testid='tree-complete-{two.Id:D}']").Click();
+        Assert.Equal(two.Id,f.Controller.Preview!.Command.TaskId);Assert.Equal(WorkspaceOperation.CompleteTask,f.Controller.Preview.Command.Operation);
+        Assert.True(cut.Find($"[data-testid='tree-complete-{one.Id:D}']").HasAttribute("disabled"));
+        Save("hierarchy-names-"+key+"-frozen",cut.Markup,"same-named-canonical-original-review-fence",nameof(Same_named_hierarchy_actions_name_exact_records_and_keep_native_disclosure_and_review_fences),route);
+        cut.Find("[data-testid='todo-cancel']").Click();Assert.Equal(before,WorkspaceJournalJson.Serialize(f.Controller.Snapshot!));
+        cut.Find($"[data-testid='tree-expand-{one.Id:D}']").Click();var context=cut.Find("[data-testid='tree-context']");
+        foreach(var action in context.QuerySelectorAll(".todo-row-actions button,.todo-row-actions a"))Assert.Contains(one.Id.ToString("D"),action.GetAttribute("aria-label"));
+        var parent=cut.Find($"[data-testid='tree-row-{child.Id:D}']").QuerySelector("button[data-testid='tree-open-parent-"+child.Id.ToString("D")+"']")!;
+        Assert.Contains(one.Id.ToString("D"),parent.GetAttribute("aria-label"));parent.Click();Assert.Contains(one.Id.ToString("D"),cut.Find("[data-testid='tree-context']").TextContent);
+        Assert.Empty(f.Client.AcceptedIds);Assert.Equal(before,WorkspaceJournalJson.Serialize(f.Controller.Snapshot!));
+    }
+
+    [Fact]
     public async Task Retained_branches_expand_collapse_and_page_with_exact_parent_context_and_no_writes()
     {
         var root=Task("Same name");var archived=Task("Archived parent",root.Id) with {IsArchived=true};var child=Task("Same name",archived.Id);var other=Task("Other root");var(f,_)=await Setup(Doc(root,archived,child,other));

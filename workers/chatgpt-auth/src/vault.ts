@@ -1,3 +1,4 @@
+import {clearEvents} from './events';
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
@@ -124,7 +125,7 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     .bind(profileId, connectionId, profileId, hash));
   const results = await env.HABITICA_INTEGRATION_DB.batch(writes);
   if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
-  if(previous&&previous.connection_id!==connectionId)await clearPushContext(env,profileId,previous.connection_id,false);
+  if(previous&&previous.connection_id!==connectionId){await clearPushContext(env,profileId,previous.connection_id,false);await clearEvents(env,profileId,previous.connection_id);}
   return Response.json({ profileId, managementToken, descriptor:recoveryDescriptor({profile_id:profileId,connection_id:connectionId}) }, { status: 201, headers });
 }
 export async function managementTokenMatches(env:AuthEnv, profile:IntegrationProfile, token:string):Promise<boolean> {

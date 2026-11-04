@@ -1,0 +1,66 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-c0d45a2e-ce27-4351-86c0-7c1ad273b62a",
+  "check_id": "bounded-companions-behavior",
+  "definition": "a5bf38c196d071c7b73bd0fdb759c5c3b87ea2a4a22b58ea8fa4c8443a113d5f",
+  "environment_identity": "daedcafac478ef4d5909719bc4da9e6a4adc91347f1f6745f3617beea12508be",
+  "key": "763e27cc6342df1514878936588c4533126891e6038f0dfa23a376f42bfe8e55",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T13:50:45.029099+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T13:45:45.607824+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~PetsMountsPageTests",
+      "--logger",
+      "trx;LogFileName=bounded-companions.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/bounded-companions/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "6caa6f66a09215037c2e9bb9ff1477e7ddc7663fcc9536f9d9ba5d7edd0ba64d",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "89f0edf389932fea3b30e01ba586b5eff0be845a94db2ef5a3b7ac584a8f8335",
+    "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "c656a73f7e72c02d29b38ef70eea6ccd8794c36791b740357998e15bbed86e2a"
+  },
+  "task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583"
+}

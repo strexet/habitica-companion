@@ -1,0 +1,5 @@
+{
+  "finding": "The enlarged-phone hydrated capture shows Desert Dragon broken into small fragments because thumbnail and name stay on one narrow row. Outer geometry passes while the human name is difficult to scan.",
+  "evidence": ".skill-tree/artifacts/ux-ui/bounded-companions/1793713605510894000/chromium-gryphy-light-360-200-companions-page-two.png",
+  "repair": "Scope wrapping to companion cards and give the name a useful flexible basis. Require name width sufficient for an ordinary word when the card has enough content width. Keep exact keys, page bounds and queue semantics unchanged."
+}

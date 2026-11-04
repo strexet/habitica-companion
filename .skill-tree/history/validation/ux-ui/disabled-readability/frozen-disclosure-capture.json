@@ -1,0 +1,6 @@
+{
+  "prior_pass": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/05c84235-e410-4848-9ed5-1e6141b6d0aa.json",
+  "visual_finding": "The frozen-editor screenshots show a closed More details disclosure despite the intended open state label. The DOM SetAttribute mutation was absent from bUnit cut.Markup serialization. The prior run remains recorded but is insufficient for the corrected explicit advanced-field inventory.",
+  "repair": "Serialize the actual panel OuterHtml after the native disclosure state change. Require control-value samples for disabled title, Notes and Urgency in both frozen fixtures. The complete matrix must pass again.",
+  "bounded_measurement": "Cache ancestor geometry/style handles after snapshot settlement per static document; all text samples, native values, colours, negative controls and coverage remain required."
+}

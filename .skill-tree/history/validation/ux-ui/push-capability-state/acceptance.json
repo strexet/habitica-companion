@@ -1,0 +1,50 @@
+{
+  "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+  "title": "Distinguish unchecked push capability from unsupported browsers",
+  "operation_history": ".skill-tree/history/validation/ux-ui/push-capability-state/operation-history.json",
+  "checks": [
+    {
+      "id": "push-capability-state-behavior",
+      "counts": {
+        "discovered": 32,
+        "expected": 32,
+        "failed": 0,
+        "passed": 32,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+          "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+          "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+        }
+      ]
+    },
+    {
+      "id": "push-capability-state-rendered",
+      "counts": {
+        "discovered": 865,
+        "expected": 865,
+        "failed": 0,
+        "passed": 865,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+          "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

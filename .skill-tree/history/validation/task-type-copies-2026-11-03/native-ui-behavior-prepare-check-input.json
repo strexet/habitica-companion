@@ -1,0 +1,13 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-components",
+  "launch": {
+    "assertion": "Native task-type copy preserves the original, copies selected fields, resets target history/game state and retains exact lineage.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish atomic cross-kind acceptance, original command recovery or portable lineage validation.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "deadline_utc": "2026-11-02T21:19:14.165466+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "task-type-copies-local-v1"
+  }
+}

@@ -1,0 +1,309 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Skills and buffs
+- heading "Spells" [level=1]
+- paragraph: Cast current-class skills from fresh Habitica data. Estimates are approximate and use saved stats, task values, and gear data.
+- region "Saved equipment recovery":
+  - heading "Equipment recovery" [level=2]
+  - paragraph: Check saved original gear after an interrupted cast. Recovery never casts a spell.
+  - button "Check saved recovery":
+    - generic: Check saved recovery
+- generic: Account data is up to date
+- region "Current mana":
+  - text: Available mana
+  - strong: 161 / 162 MP
+  - generic: Warrior
+  - generic: Max 162 MP
+- article:
+  - generic "Brutal Smash":
+    - img "Brutal Smash"
+  - paragraph: Task
+  - heading "Brutal Smash" [level=2]
+  - paragraph: "Damage a selected task and contribute quest damage. Best cached target: Встать с первого будильника (value 18.46)."
+  - generic: 10 MP
+  - generic: Available
+  - generic: Count
+  - spinbutton "Count": "1"
+  - generic: Target
+  - combobox "Target" [active]:
+    - option "Встать с первого будильника (Habit, value 18.46)" [selected]
+    - option "Запланировать вечер (Habit, value 0)"
+    - option "Изучить психологические записи (Habit, value 0)"
+    - option "Отработать помидор (Habit, value 0)"
+    - option "Позаниматься гитарой (Habit, value 0)"
+    - option "Потренироваться (Habit, value 0)"
+    - option "Поупражнять спину (Habit, value 0)"
+    - option "Почистить фото (Habit, value 0)"
+    - option "Сделал дело из списка (Habit, value 0)"
+    - option "Байкал (Todo, value -7.6)"
+    - option "Египет — лето 2027 (Todo, value -7.6)"
+    - option "Мне — кофта, не слишком тёплая (Todo, value -7.6)"
+    - option "Мне — обычные повседневные, но тёплые штаны (Todo, value -7.6)"
+    - option "Мне — термобельё (Todo, value -7.6)"
+    - option "Мурманск (Todo, value -7.6)"
+    - option "Насте — болоневые штаны (Todo, value -7.6)"
+    - option "Насте — зимняя обувь (Todo, value -7.6)"
+    - option "Насте — термобельё (Todo, value -7.6)"
+    - option "Продумать путешествия (Todo, value -7.6)"
+    - option "Напомнить про карту казахов (Todo, value -58.67)"
+  - generic: Mana spent
+  - strong: 10 MP
+  - generic: Available
+  - strong: 161 MP
+  - generic: After cast
+  - strong: 151 MP
+  - checkbox "Auto equip" [checked]
+  - generic: Auto equip
+  - button "Spend All Mana":
+    - generic: Spend All Mana
+  - button "Cast":
+    - generic: Cast
+  - paragraph: Effect preview
+  - paragraph: Best cast on Встать с первого будильника. You will add approximately 1.88 task value and deal 33 boss damage before possible critical hits.
+  - paragraph: Equipment recommendations
+  - generic: Auto equip option
+  - combobox "Auto equip option":
+    - option "Maximize STR" [selected]
+    - option "Balanced STR/CON"
+    - option "Maximize CON"
+  - strong: Maximize STR
+  - generic "Maximize STR gear":
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - generic "Roguish Rainbow Messenger Robes":
+      - img "Roguish Rainbow Messenger Robes"
+    - generic "Stephen Weber's Shaft of the Dragon":
+      - img "Stephen Weber's Shaft of the Dragon"
+    - generic "Loot Bag":
+      - img "Loot Bag"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes STR. STR 92 / INT 26 / CON 11 / PER 26
+  - button "Equipped" [disabled]:
+    - generic: Equipped
+  - strong: Balanced STR/CON
+  - generic "Balanced STR/CON gear":
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - generic "Jean Chalard's Noble Tunic":
+      - img "Jean Chalard's Noble Tunic"
+    - generic "Stephen Weber's Shaft of the Dragon":
+      - img "Stephen Weber's Shaft of the Dragon"
+    - generic "Mustaine's Milestone Mashing Morning Star":
+      - img "Mustaine's Milestone Mashing Morning Star"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes STR, CON. STR 61 / INT 51 / CON 61 / PER 51
+  - button "Equip":
+    - generic: Equip
+  - strong: Maximize CON
+  - generic "Maximize CON gear":
+    - generic "Dandy Hat":
+      - img "Dandy Hat"
+    - generic "Jean Chalard's Noble Tunic":
+      - img "Jean Chalard's Noble Tunic"
+    - generic "Skeleton Key":
+      - img "Skeleton Key"
+    - generic "Mustaine's Milestone Mashing Morning Star":
+      - img "Mustaine's Milestone Mashing Morning Star"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes CON. STR 11 / INT 26 / CON 94 / PER 26
+  - button "Equip":
+    - generic: Equip
+- article:
+  - generic "Defensive Stance":
+    - img "Defensive Stance"
+  - paragraph: Self
+  - heading "Defensive Stance" [level=2]
+  - paragraph: Increase Constitution.
+  - generic: 25 MP
+  - generic: Available
+  - generic: Count
+  - spinbutton "Count": "1"
+  - generic: Mana spent
+  - strong: 25 MP
+  - generic: Available
+  - strong: 161 MP
+  - generic: After cast
+  - strong: 136 MP
+  - checkbox "Auto equip" [checked]
+  - generic: Auto equip
+  - button "Spend All Mana":
+    - generic: Spend All Mana
+  - button "Cast":
+    - generic: Cast
+  - paragraph: Effect preview
+  - paragraph: Adds approximately 14 CON to you.
+  - paragraph: Equipment recommendations
+  - strong: Maximize CON
+  - generic "Maximize CON gear":
+    - generic "Dandy Hat":
+      - img "Dandy Hat"
+    - generic "Jean Chalard's Noble Tunic":
+      - img "Jean Chalard's Noble Tunic"
+    - generic "Skeleton Key":
+      - img "Skeleton Key"
+    - generic "Mustaine's Milestone Mashing Morning Star":
+      - img "Mustaine's Milestone Mashing Morning Star"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes CON. STR 11 / INT 26 / CON 94 / PER 26
+  - button "Equip":
+    - generic: Equip
+- article:
+  - generic "Valorous Presence":
+    - img "Valorous Presence"
+  - paragraph: Party
+  - heading "Valorous Presence" [level=2]
+  - paragraph: Increase party Strength.
+  - generic: 20 MP
+  - generic: Available
+  - generic: Count
+  - spinbutton "Count": "1"
+  - generic: Mana spent
+  - strong: 20 MP
+  - generic: Available
+  - strong: 161 MP
+  - generic: After cast
+  - strong: 141 MP
+  - checkbox "Auto equip" [checked]
+  - generic: Auto equip
+  - button "Spend All Mana":
+    - generic: Spend All Mana
+  - button "Cast":
+    - generic: Cast
+  - paragraph: Effect preview
+  - paragraph: Adds approximately 7 STR to each party member.
+  - paragraph: Equipment recommendations
+  - strong: Maximize STR
+  - generic "Maximize STR gear":
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - generic "Roguish Rainbow Messenger Robes":
+      - img "Roguish Rainbow Messenger Robes"
+    - generic "Stephen Weber's Shaft of the Dragon":
+      - img "Stephen Weber's Shaft of the Dragon"
+    - generic "Loot Bag":
+      - img "Loot Bag"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes STR. STR 92 / INT 26 / CON 11 / PER 26
+  - button "Equipped" [disabled]:
+    - generic: Equipped
+- article:
+  - generic "Intimidating Gaze":
+    - img "Intimidating Gaze"
+  - paragraph: Party
+  - heading "Intimidating Gaze" [level=2]
+  - paragraph: Increase party Constitution.
+  - generic: 15 MP
+  - generic: Available
+  - generic: Count
+  - spinbutton "Count": "1"
+  - generic: Mana spent
+  - strong: 15 MP
+  - generic: Available
+  - strong: 161 MP
+  - generic: After cast
+  - strong: 146 MP
+  - checkbox "Auto equip" [checked]
+  - generic: Auto equip
+  - button "Spend All Mana":
+    - generic: Spend All Mana
+  - button "Cast":
+    - generic: Cast
+  - paragraph: Effect preview
+  - paragraph: Adds approximately 9 CON to each party member.
+  - paragraph: Equipment recommendations
+  - strong: Maximize CON
+  - generic "Maximize CON gear":
+    - generic "Dandy Hat":
+      - img "Dandy Hat"
+    - generic "Jean Chalard's Noble Tunic":
+      - img "Jean Chalard's Noble Tunic"
+    - generic "Skeleton Key":
+      - img "Skeleton Key"
+    - generic "Mustaine's Milestone Mashing Morning Star":
+      - img "Mustaine's Milestone Mashing Morning Star"
+    - generic "Take This Wings":
+      - img "Take This Wings"
+  - paragraph: Prioritizes CON. STR 11 / INT 26 / CON 94 / PER 26
+  - button "Equip":
+    - generic: Equip

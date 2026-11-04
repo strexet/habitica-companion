@@ -1,0 +1,18 @@
+### Native task type copies
+
+Status: implemented locally; unpublished. The [native type-copy contract](task-type-copies.md) defines reviewed new Todo/Daily/Habit copies, exact source/root revision guards, copied/reset-field disclosure and immutable shallow lineage. Application/native IndexedDB and Worker acceptance retain source history and mappings and request zero provider/tag/game effects. `/todo/convert` and scoped MCP preparation/acceptance/original lookup share the same behavior. Daily destinations require explicit native recurrence; organization can be retained only when valid or explicitly cleared. Unknown outcomes retain original identities; private previews disappear on account changes. Migration0023 and independent cross-runtime, component, SDK and rendered-browser controls are required. Production, physical-device and actual provider evidence remain separate.
+
+
+### Native type-copy review
+
+`/todo/convert` and the exact-source route provide a new type-copy panel alongside retained checklist conversion. Source search pages twenty active/historical/archived exact identities. Different kind, optional valid organization and complete explicit Daily fields precede full original/target/copied/reset disclosure. Review receives keyboard focus; explicit acknowledgement enables the primary confirmation. Unknown requests keep original recovery controls and disable replacement actions. Account changes clear private source/review data. Todo Sync retains the same full copy review during navigation. Light/obsidian, phone/desktop, normal/enlarged-text and keyboard/disabled-state evidence belongs to `task-type-copy-rendered-browser`; real device, assistive-technology and installed-PWA paths remain separate. See [task type copies](task-type-copies.md).
+
+
+### Native task type copies
+
+`TaskTypeConversionPolicyTests` shares six independently generated kind-pair/hash examples with `task-type-copy.test.mjs`. Native/Worker journals validate reset fields, stale revisions, shallow immutable lineage and portable transfer. Actual local SDK/D1 tests verify original prepared reviews/receipts, zero provider/tag effects and private scope/profile fences. `TaskTypeConversionPanelTests` and typed transport controls cover explicit review, Daily inputs, browser atomic saves, unknown recovery and account cleanup, alongside existing checklist regression controls. `task-type-copy-rendered-browser` publishes current Release assets locally, captures current Razor states and validates light/obsidian360/1280px100/200-percent layouts and focus in Chromium/WebKit. Hydrated conversion/Sync navigation uses actual isolated Auth/Workspace Workers/D1 and native IndexedDB. No hosted, real-account, device, assistive-technology or service-worker qualification follows from local evidence. Details: [native task copies](task-type-copies.md).
+
+
+## Native type-copy command and lineage
+
+[Native task copies](task-type-copies.md) add the null-omitted `CompanionTask.CopyLineage` extension and v13 command identity over unchanged legacy hashes. A dedicated atomic command branch creates one new unlinked target after exact source/root guards, retains the source and journals an original shallow source snapshot with no provider/tag effects. Creation coverage recognizes the explicit new target kind and nested Daily recurrence. Journal validators bind immutable lineage across later snapshots; revision-offset transfer preserves original nested revisions and exact source-import provenance. Migration0023 durably stores bounded copied/reset review metadata on preparations. Browser IndexedDB and cloud/MCP prepare/accept/original lookup share typed contracts; no new credential policy or deployment is implied.

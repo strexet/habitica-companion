@@ -1,0 +1,9 @@
+{
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "check_id": "workspace-readiness-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T12:18:29.071281+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7"
+}

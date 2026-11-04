@@ -1,0 +1,50 @@
+{
+  "task_id": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+  "title": "Make phone note capture reach the editor directly",
+  "operation_history": ".skill-tree/history/validation/ux-ui/phone-notes-editor/operation-history.json",
+  "checks": [
+    {
+      "id": "phone-notes-editor-behavior",
+      "counts": {
+        "discovered": 31,
+        "expected": 31,
+        "failed": 0,
+        "passed": 31,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.log",
+          "sha256": "d7199548a52d49655b4df8e28d228aed72426e391c3e9505c7733e5659a68808"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/C-4e4fa265-6d89-427f-934f-8290ad7be887.trx",
+          "sha256": "b2e3e1268c233d10b7a632f32913be5e1d3d8b44dc10f4d11c8b45bcbcca5a37"
+        }
+      ]
+    },
+    {
+      "id": "phone-notes-editor-rendered",
+      "counts": {
+        "discovered": 937,
+        "expected": 937,
+        "failed": 0,
+        "passed": 937,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/phone-notes-editor/browser/f16b14c4-f10e-46cf-ae4b-b4754c3ab585.json",
+          "sha256": "50ccbad32de043d85f105454d85253f0619eb6c0c7f0d06a99087b3bf1e61b96"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

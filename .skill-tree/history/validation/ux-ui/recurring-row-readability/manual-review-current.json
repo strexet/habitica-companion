@@ -1,0 +1,21 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser/fee49d91-e535-4dd0-8c25-87dd43c0afbf.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/recurring-row-readability/1793733879250347000",
+  "reviewed": [
+    "webkit-obsidian-glow-360-200-workspace-names-habit.png",
+    "chromium-gryphy-light-1280-100-workspace-names-daily.png"
+  ],
+  "observations": [
+    "Confirm and Save remain whole words in original Habit review.",
+    "Desktop Daily identity/action columns remain readable with exact selected occurrence dates.",
+    "Current native Range assertions cover row and original review labels; full matrix primary target checks retain44-pixel minima."
+  ],
+  "rejected_earlier_passes": [
+    "723db63c-db14-4ce1-b794-3e3dc7479238",
+    "e6ba380e-8b16-42d4-b003-9f013b0f70b6"
+  ],
+  "limitations": [
+    "Existing header Sync text clipping remains separately captured for the pending compact-navigation root.",
+    "Physical devices, native popovers and assistive technology remain unqualified."
+  ]
+}

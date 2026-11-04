@@ -1,0 +1,70 @@
+{
+  "assertion": "Typed review displays exact date/timezone/bounds and every member page, disables incomplete/stale acceptance and preserves original-command recovery after reload/account changes.",
+  "attempt_id": "C-f596300b-2421-44ab-a6b3-ef3f839df706",
+  "check_id": "day-bound-tag-components",
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+  "key": "99e9bc59a0427195ccbb4f82fb5e130236145a2b9dd48d75abd76258a26a7011",
+  "launch": {
+    "assertion": "Exact reviewed folder adoption or evaluation-day tag membership preserves original identities, causal receipts, refusal boundaries and no implicit effects.",
+    "authorization": "Direct owner selection of the two researched tasks; local synthetic fixtures only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove serialization, actual isolated D1 atomic acceptance or original uncertain-receipt recovery.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T02:19:51.505939+00:00",
+    "execution_profile": "selected-followups-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T02:10:51.711058+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~WorkspaceTagPanel|FullyQualifiedName~RelativeTagReview|FullyQualifiedName~Tag_wire|FullyQualifiedName~Tag_terminal|FullyQualifiedName~Relative_tag_wire",
+      "--logger",
+      "trx;LogFileName=day-bound-tags.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/day-bound-tags"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "9ecf14cbea75b45038f9126005fac2d5ffce75fc688683baa088f64b70de0505",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "32eef1eb833b568311eb58a93396cabc847ad9a0a1ba8859b41a0c1d9e9067fe",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "24985cc1a1821255eea8f82252c86db3f14f10a2ea7f85533200857eca36916d",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "55a7271ea04026560f9fb53317c3f8a61f2b65ee77fa06d50bdd2a7999dccf4f",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5"
+  },
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+}

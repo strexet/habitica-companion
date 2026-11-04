@@ -1,0 +1,148 @@
+{
+  "checks": [
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-rules",
+      "parameters": {
+        "report_name": "relative-date-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules",
+        "test_filter": "FullyQualifiedName~Saved|FullyQualifiedName~Relative",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "tests/Habitica.Application.Tests/Workspace/RelativeSavedTaskViewTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs",
+        "src/Habitica.Application/Workspace/WorkspaceOrganizationEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs",
+        "src/Habitica.Application/Workspace/WorkspaceUnblockedTodos.cs",
+        "tests/fixtures/workspace/relative-saved-dates-v1.json",
+        "tests/fixtures/workspace/relative-saved-command-v5.json",
+        "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+        "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/relative-saved-dates.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/saved-view-api.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/test/relative-saved-dates.test.mjs",
+        "workers/shared/relative-saved-dates.ts",
+        "workers/shared/saved-task-views.ts",
+        "workers/shared/saved-task-query.ts",
+        "workers/shared/saved-task-read.ts",
+        "workers/shared/workspace-organization.ts",
+        "workers/shared/unblocked-todos.ts",
+        "workers/companion-workspace/src/organization-commands.ts",
+        "workers/companion-workspace/src/saved-task-reads.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/chatgpt-mcp/src/organization-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "tests/fixtures/workspace/relative-saved-dates-v1.json",
+        "tests/fixtures/workspace/relative-saved-command-v5.json",
+        "workers/shared/tag-membership.ts",
+        "workers/shared/tag-correspondence.ts",
+        "workers/shared/group-tag-status.ts",
+        "workers/companion-workspace/src/tag-planner.ts",
+        "workers/companion-workspace/src/tag-reconciliation.ts",
+        "workers/companion-workspace/src/tag-executor.ts",
+        "workers/companion-workspace/src/group-tag-reviews.ts",
+        "workers/companion-workspace/test/tag-membership.test.mjs",
+        "workers/companion-workspace/test/tag-reconciliation.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Saved-list editing preserves relative intent, exposes explicit interpreted bounds and timezone, refuses conflicting dates and stale-day paging, recovers original definitions and clears private account data.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-components",
+      "parameters": {
+        "report_name": "relative-date-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-components",
+        "test_filter": "FullyQualifiedName~SavedList|FullyQualifiedName~SavedView|FullyQualifiedName~WorkspaceTagPanel|FullyQualifiedName~CompanionTaskList",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/RelativeSavedViewClientTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceSavedViewClientTests.cs",
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+        "src/Habitica.WebApp/Components/TodoSavedQuerySummary.razor",
+        "src/Habitica.WebApp/Components/RelativeSavedDateSummary.razor",
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.SavedViews.cs",
+        "src/Habitica.Application/Workspace/IWorkspaceSavedTaskViewApi.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTags.cs",
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "src/Habitica.WebApp/Components/WorkspaceTagChangeReview.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "src/Habitica.WebApp/Components/CompanionTaskList.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/CompanionTaskListTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Release saved-list and Sync routes expose exact relative intent, explicit interpreted bounds and unavailable tag membership; readable light/dark phone/desktop normal/enlarged layouts, focus, disabled controls and actual local persistence preserve identities without task duplication or provider effects.",
+      "criteria": [
+        "Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.",
+        "Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks."
+      ],
+      "id": "relative-date-rendering",
+      "parameters": {},
+      "recipe_id": "relative-saved-rendered-browser",
+      "sources": [
+        "tests/browser/relative-saved-ui.py",
+        "tests/browser/relative-saved-ui.mjs",
+        "tests/browser/linked-daily-fixture.mjs",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+        "src/Habitica.WebApp/Components/TodoSavedQuerySummary.razor",
+        "src/Habitica.WebApp/Components/RelativeSavedDateSummary.razor",
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.SavedViews.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "validate",
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

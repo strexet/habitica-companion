@@ -1,0 +1,28 @@
+{
+  "native_report": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+  "reviewed_images": [
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/chromium-gryphy-light-360-200-hierarchy-names-tasks.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/chromium-obsidian-glow-360-200-hierarchy-names-tasks.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/webkit-gryphy-light-1280-100-hierarchy-names-tasks.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/chromium-obsidian-glow-1280-100-hierarchy-names-tasks.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/chromium-gryphy-light-360-200-hierarchy-names-projects.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/webkit-obsidian-glow-360-200-hierarchy-names-projects.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/webkit-gryphy-light-1280-100-hierarchy-names-projects.png",
+    ".skill-tree/artifacts/ux-ui/hierarchy-control-names/1793766152639907000/webkit-obsidian-glow-1280-100-hierarchy-names-projects.png"
+  ],
+  "review": "Tasks and Projects retain readable branch content, action stacking, distinct record references, disabled pagination and visible native focus in the reviewed light/obsidian phone/desktop views. Full-page captures place fixed chrome at the captured scroll position; actual header/focus clearance is separately asserted in native shell journeys. The passive-source repair changes no spacing or label content.",
+  "deferred_findings": [
+    {
+      "id": "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c",
+      "finding": "Optional Projects Organization management heading and Open management words split at360px200percent text. Captured and processed once as a separate Ready followup outside the frozen run."
+    },
+    {
+      "id": "T-6bb354c0-1f8e-4619-8696-a4bdc4b4741e",
+      "finding": "Previously deferred enlarged-phone header truncation remains visible."
+    }
+  ],
+  "limits": [
+    "Physical devices, assistive technology and untested native interaction paths remain unqualified.",
+    "Optional Projects management word readability is not accepted by the focus repair."
+  ]
+}

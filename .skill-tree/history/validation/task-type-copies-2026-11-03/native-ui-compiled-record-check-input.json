@@ -1,0 +1,25 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-components",
+  "attempt_id": "C-b51f9242-6697-4281-b54b-59b58482489a",
+  "environment_identity": "76b4facaf90e2a74d6eaefe063dcfe844ae74ed2661405c84501f6138217c33c",
+  "actual_lane": "unit",
+  "classification": "executed-control",
+  "result": "fail",
+  "counts": {
+    "expected": 25,
+    "discovered": 25,
+    "passed": 22,
+    "failed": 3,
+    "skipped": 0
+  },
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "timing": {
+    "tool_wall_seconds": 16.660442874999717
+  },
+  "evidence": [
+    ".skill-tree/history/validation/task-type-copies-2026-11-03/native-ui-compiled-execution.log",
+    ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/native-ui-compiled.trx"
+  ],
+  "failure_signature": "activity_suite_failure_conversion-components"
+}

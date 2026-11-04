@@ -1,0 +1,17 @@
+{
+  "created_ids": [
+    "T-6ec3d90c-0cb8-4968-b794-d68f9cde898c"
+  ],
+  "dispositions": {
+    "P-3663dfd8-1ecc-4dc3-9577-fc0fd9afb49f": {
+      "reason": "Current paired light/obsidian native screenshots and existing Projects/organization markup establish a scoped optional-management label defect. The current word detector covers equipment and Notes copy, while Projects organization headings/actions have only outer geometry coverage. A bounded layout fix and independent native word-line oracle are sufficiently understood. This independent finding stays outside the frozen run; no current focus repair or release requirement depends on the layout change.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-9724479e-a259-40ca-9850-0e5e70e1a4b3",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-3663dfd8-1ecc-4dc3-9577-fc0fd9afb49f"
+  ],
+  "task_keys": {}
+}

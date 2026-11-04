@@ -1,0 +1,8 @@
+{
+  "current_source_changes": "Only reviewed integration/release setup changes were added after preservation; the immutable original snapshot remains reachable.",
+  "old_controller_stop_preserved": "{\n  \"error\": \"Selected required task has blocking unresolved questions: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc\",\n  \"ok\": false\n}\n",
+  "pass": true,
+  "profile_verified_for_current_worktree": true,
+  "snapshot_commit": "6434dccc2a1900a7517f999d05d49fc55f896680",
+  "verified_frozen_blob_count": 3022
+}

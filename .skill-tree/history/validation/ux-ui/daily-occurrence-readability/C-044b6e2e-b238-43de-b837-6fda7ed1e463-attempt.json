@@ -1,0 +1,69 @@
+{
+  "assertion": "Retain exact Daily occurrence drafts, review targets and original fences; current failing native screenshot is the layout regression.",
+  "attempt_id": "C-044b6e2e-b238-43de-b837-6fda7ed1e463",
+  "check_id": "daily-occurrence-readability-behavior",
+  "definition": "fca685955e7a3a322a49225e196d84b1131408197f0abfab607c12b061f7c615",
+  "environment_identity": "d20cf5a340aa8817ec71cd024ac55007d6f2f686cb19cdb5887b6a76d3f193c1",
+  "key": "f8cf889fdc8bf8c6d46aaa469e3d6530a483f191f99c64eed4f58b94a22870d3",
+  "launch": {
+    "assertion": "Retain exact Daily occurrence drafts, review targets and original fences; current failing native screenshot is the layout regression.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T19:14:48.898572+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:09:49.169854+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoTaskPanelTests",
+      "--logger",
+      "trx;LogFileName=daily-occurrence-readability.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e6041c2ae06f6c7ad0eeb5a8e02218efaa155a610601210db011d79660a19c2a",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "92caae0f3644f4f2a880054caa5ad12f3dbe204284817a00cc192af8ca6289ac"
+  },
+  "task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073"
+}

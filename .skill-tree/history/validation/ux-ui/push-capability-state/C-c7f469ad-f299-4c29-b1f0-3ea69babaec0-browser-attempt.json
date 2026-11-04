@@ -1,0 +1,61 @@
+{
+  "assertion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0",
+  "check_id": "push-capability-state-rendered",
+  "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+  "environment_identity": "13f3c8327e9d88e6e9f75d799d520dd9cc8f2d580261770d4e0ddb2e65c292b8",
+  "key": "24b56801bc411f54f7aecf2432a646f5e71b42084b2198ed9867b437fd950a7b",
+  "launch": {
+    "assertion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:59:59.901345+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "push-capability-state",
+      ".skill-tree/history/validation/ux-ui/push-capability-state/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+    "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+  },
+  "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3"
+}

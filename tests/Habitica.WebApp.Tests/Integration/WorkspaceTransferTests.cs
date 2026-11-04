@@ -12,11 +12,11 @@ public sealed class WorkspaceTransferTests
     private static readonly JsonSerializerOptions Json=new(JsonSerializerDefaults.Web);
     private sealed class Browser:IBrowserWorkspaceTransfer
     {
-        public BrowserTransferInventory Inventory=new([],null,null);public int Captures;public bool Acknowledged;
+        public BrowserTransferInventory Inventory=new([],null,null);public int Captures;public bool Acknowledged;public IReadOnlyList<BrowserTransferPlan>? LastPlans;
         public Task<BrowserTransferInventory> InventoryAsync(string account,string owner,CancellationToken token)=>Task.FromResult(Inventory);
-        public Task<BrowserTransferState> FreezeAsync(string account,string owner,Guid id,Guid target,IReadOnlyList<BrowserTransferPlan> plans,CancellationToken token)
+        public Task<BrowserTransferState> FreezeAsync(string account,string owner,Guid id,Guid target,IReadOnlyList<BrowserTransferPlan> plans,CancellationToken token,string? expectedNotesJson=null)
         {
-            Captures++;var artifact=JsonSerializer.Serialize(new{version="companion-adoption-v1",transferId=id,ownerScope=owner,targetWorkspaceId=target,workspaces=plans.Where(plan=>!plan.RetainCloud).Select(plan=>new{workspaceId=WorkspaceJournalJson.Deserialize(plan.FrozenJson).Document.Id,archive=plan.FrozenJson}),notes=Inventory.NotesJson},Json);
+            Captures++;LastPlans=plans;var artifact=JsonSerializer.Serialize(new{version="companion-adoption-v1",transferId=id,ownerScope=owner,targetWorkspaceId=target,workspaces=plans.Where(plan=>!plan.RetainCloud).Select(plan=>new{workspaceId=WorkspaceJournalJson.Deserialize(plan.FrozenJson).Document.Id,archive=plan.FrozenJson}),notes=Inventory.NotesJson},Json);
             var state=new BrowserTransferState(artifact,false,null);Inventory=Inventory with{PendingJson=JsonSerializer.Serialize(state,Json)};return Task.FromResult(state);
         }
         public Task<bool> AcknowledgeAsync(string account,string owner,Guid id,string hash,string receipt,CancellationToken token){Acknowledged=true;return Task.FromResult(true);}
@@ -74,4 +74,39 @@ public sealed class WorkspaceTransferTests
         Assert.Equal(1,drafts.UnsavedBrowserDrafts);Assert.Contains("Retain private unsaved text",drafts.ExportUnsavedBrowserDrafts());
         drafts.DiscardBrowserDrafts();Assert.Equal(0,drafts.UnsavedBrowserDrafts);Assert.DoesNotContain("Retain private unsaved text",drafts.ExportUnsavedBrowserDrafts());
     }
+    [Fact]public async Task Unsupported_or_foreign_folder_notebooks_refuse_before_freeze()
+    {
+        var owner=NotesModel.Scope(Account);var bad=new Browser{Inventory=new([],"{\"schemaVersion\":3}",null)};
+        await Assert.ThrowsAsync<JsonException>(()=>new WorkspaceTransferService(bad).CaptureAsync(Account,Target,default));Assert.Equal(0,bad.Captures);
+        var folder=new NoteFolder(Guid.NewGuid(),1,"Private folder","cloud",DateTimeOffset.Parse("2026-11-01T00:00:00Z"),DateTimeOffset.Parse("2026-11-01T00:00:00Z"));
+        var book=new NotesNotebook(2,owner,1,[],[],[],null,[folder],[new(Guid.NewGuid(),new string('a',64),folder.Id,1,1)]);
+        bad.Inventory=new([],NotesJson.Serialize(book),null);await Assert.ThrowsAsync<InvalidOperationException>(()=>new WorkspaceTransferService(bad).CaptureAsync(Account,Target,default));Assert.Equal(0,bad.Captures);
+    }
+    [Fact]public void Imported_folder_baselines_remain_causal_and_allow_later_rename_without_fabricated_receipts()
+    {
+        var owner=NotesModel.Scope(Account);var at=DateTimeOffset.Parse("2026-11-01T00:00:00Z");var folder=new NoteFolder(Guid.NewGuid(),2,"Imported","cloud",at,at);
+        var marker=new NotesTransferMarker(Guid.NewGuid(),1,[],[new(folder.Id,2)]);var book=new NotesNotebook(2,owner,1,[],[],[],[marker],[folder],[]);
+        NotesModel.Validate(book);Assert.Equal(book,NotesJson.Deserialize(NotesJson.Serialize(book)) with{Transfers=book.Transfers,Folders=book.Folders,FolderReceipts=book.FolderReceipts,Notes=book.Notes,Receipts=book.Receipts,Purged=book.Purged});
+        Assert.Throws<JsonException>(()=>NotesModel.Validate(book with{Transfers=[marker with{Folders=null}]}));
+        var after=book with{Revision=2,Folders=[folder with{Revision=3,Name="Renamed"}],FolderReceipts=[new(Guid.NewGuid(),new string('b',64),folder.Id,3,2)]};NotesModel.Validate(after);
+    }
+
+    [Fact]public void Actual_schema2_D1_adoption_preserves_folder_membership_and_original_revision_baselines()
+    {
+        var book=NotesJson.Deserialize(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"fixtures","workspace-transfer","folder-adoption-accepted.json")));
+        Assert.Equal(2,book.SchemaVersion);Assert.Single(book.Folders!);Assert.Empty(book.FolderReceipts!);Assert.Equal(book.Folders![0].Id,book.Notes[0].Current.Folder!.FolderId);Assert.Equal("cloud",book.Notes[0].Current.Folder!.Source);Assert.Single(book.Transfers![0].Folders!);
+    }
+
+    [Fact]public async Task Cross_runtime_capture_preserves_accepted_snapshot_and_event_timestamp_encodings()
+    {
+        var inventory=JsonSerializer.Deserialize<BrowserTransferInventory>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"fixtures","workspace-transfer","folder-browser-inventory.json")),Json)!;
+        var book=NotesJson.Deserialize(inventory.NotesJson!);var browser=new Browser{Inventory=inventory};
+        // The fixture belongs to the exact synthetic account used by the local Worker/browser control.
+        var account="00000000-0000-4000-8000-000000000011";Assert.Equal(NotesModel.Scope(account),book.OwnerScope);
+        await new WorkspaceTransferService(browser).CaptureAsync(account,Target,default);
+        using var before=JsonDocument.Parse(inventory.Journals[0]);using var after=JsonDocument.Parse(browser.LastPlans![0].FrozenJson);
+        Assert.Equal(before.RootElement.GetProperty("commands")[0].GetProperty("taskSnapshot").GetProperty("createdAtUtc").GetString(),after.RootElement.GetProperty("commands")[0].GetProperty("taskSnapshot").GetProperty("createdAtUtc").GetString());
+        Assert.Equal(before.RootElement.GetProperty("events")[0].GetProperty("atUtc").GetString(),after.RootElement.GetProperty("events")[0].GetProperty("atUtc").GetString());
+    }
+
 }
