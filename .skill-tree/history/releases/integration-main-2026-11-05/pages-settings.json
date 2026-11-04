@@ -1,0 +1,5 @@
+{
+  "runtime_bindings_preserved": true,
+  "git_build_output": "output/wwwroot",
+  "public_plugin_endpoint": "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+}

@@ -1,0 +1,89 @@
+{
+  "commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+  "assets": {
+    "index.html": {
+      "sha256": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+      "bytes": 1356
+    },
+    "appsettings.json": {
+      "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+      "bytes": 583
+    },
+    "_framework/blazor.webassembly.js": {
+      "sha256": "82f1df9e775f12ed6d45fd2b15be7df3cad6abb213228b4e684f3e00c6ca61b7",
+      "bytes": 60300
+    },
+    "_framework/blazor.boot.json": {
+      "sha256": "07f33951ed3b49fac9cc09b9419f63c22fea2ce49b56bef43ed55a81a79c8fa7",
+      "bytes": 5994
+    },
+    "_framework/Habitica.WebApp.wasm": {
+      "sha256": "5312ca1c2962b51c6c706734b672dcb76eca6523721924bb7425852af13a14bd",
+      "bytes": 3024665
+    },
+    "service-worker.js": {
+      "sha256": "fe6cd00e0ac4e15f9a082e8be1b4e342d2dadb2e98c91274f55042edd81541a7",
+      "bytes": 5521
+    },
+    "service-worker-assets.js": {
+      "sha256": "aca3ab95e1c538a70234a48597696c06aa79973e46dafd06c8a69bc38e901a14",
+      "bytes": 12987
+    },
+    "css/app.css": {
+      "sha256": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+      "bytes": 132848
+    },
+    "js/field-focus.js": {
+      "sha256": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+      "bytes": 538
+    },
+    "vendor/dexie.mjs": {
+      "sha256": "1fc889ddb3a0d6561cd0e86fa64b7f88ff6c7f4da8278769ff42b51097f0e862",
+      "bytes": 228343
+    },
+    "downloads/habitica-companion-0.3.2.zip": {
+      "sha256": "4759c6e511d8a5b8be88064065c011a47354600640bc0d7384cf6576fa331e92",
+      "bytes": 165265
+    }
+  },
+  "workers": {
+    "chatgpt-auth": {
+      "version": "dde51db1-1a56-42d5-adda-35a3edda7d0b",
+      "health": {
+        "service": "auth",
+        "authorization": "enabled"
+      }
+    },
+    "companion-workspace": {
+      "version": "175065cc-1a18-4070-9ad2-1dcb4850608f",
+      "health": {
+        "service": "workspace",
+        "enabled": true
+      }
+    },
+    "chatgpt-mcp": {
+      "version": "e6af24ce-57af-4e8d-a30d-1cb725947071",
+      "health": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      }
+    }
+  },
+  "migrations": {
+    "chatgpt-auth": {
+      "applied": 15,
+      "missing": []
+    },
+    "companion-workspace": {
+      "applied": 23,
+      "missing": []
+    }
+  },
+  "oauth": {
+    "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+    "pkce_s256": true,
+    "resource": "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+  },
+  "checks": 19
+}

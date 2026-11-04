@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "node",
+    "deploy/frontend-settings.mjs",
+    "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/src/Habitica.WebApp/wwwroot/appsettings.json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.079,
+  "log": ".skill-tree/artifacts/integrate-production/release/release-frontend-settings.log"
+}

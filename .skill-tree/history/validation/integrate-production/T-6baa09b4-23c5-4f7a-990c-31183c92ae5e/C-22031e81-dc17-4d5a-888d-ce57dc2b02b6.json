@@ -1,0 +1,24 @@
+{
+  "both_original_histories_preserved": true,
+  "develop_commit": "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+  "main_commit": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+  "matching_backend": "All three0.3.2 bundles were active and reported coherent before main publication.",
+  "pass": true,
+  "policy": "No branch protection/rulesets; current Cloudflare Pages status passed. GitHub Actions is not configured.",
+  "prs": [
+    {
+      "html_url": "https://github.com/strexet/habitica-companion/pull/2",
+      "merge_commit_sha": "6294d4b359fadc11ed18a41b0661102b80fcd54a",
+      "merged_at": "2026-11-04T18:07:00Z",
+      "number": 2
+    },
+    {
+      "html_url": "https://github.com/strexet/habitica-companion/pull/3",
+      "merge_commit_sha": "102b056a37d8198e1b4c0d3a3d942df2eebb44d9",
+      "merged_at": "2026-11-04T18:10:25Z",
+      "number": 3
+    }
+  ],
+  "review": "Full exact head/base Git inventories, current provider reviews/discussions/status and branch policy inspected under shared publication locks. Conditional expected-head merges confirmed by GitHub. Self-review is not independent approval.",
+  "source_and_test_files_matching_qualified_result": 1163
+}
