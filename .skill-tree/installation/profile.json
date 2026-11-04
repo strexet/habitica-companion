@@ -1,0 +1,989 @@
+{
+  "bridges": {
+    "AGENTS.md": {
+      "hash": "d34b5166e288879ffacf3a0339292f9fffb3f8b73dfe7da3c57bb2db18c1fbbe",
+      "providers": [
+        "codex"
+      ]
+    }
+  },
+  "bundle_digests": {
+    ".skill-tree/installation/manager.js": "ba94a4a05ef6cd75041f6d80a96c82972024bca84597b1e487a53ae0ed7a059e",
+    ".skill-tree/installation/source/common/references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+    ".skill-tree/installation/source/common/references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+    ".skill-tree/installation/source/common/references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+    ".skill-tree/installation/source/common/references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+    ".skill-tree/installation/source/common/references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+    ".skill-tree/installation/source/common/references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+    ".skill-tree/installation/source/common/references/orchestration.md": "79313308e0b2f1833ab131ffd2b2c5fed4f18163b26b682f9234b17f285f8ca5",
+    ".skill-tree/installation/source/common/references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+    ".skill-tree/installation/source/common/references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+    ".skill-tree/installation/source/common/references/pr-review-cycle.md": "b23b9c746922a4be7e7ba2423d2d495483ea36fdb5677fd6ff822bc0fbfda5b2",
+    ".skill-tree/installation/source/common/references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+    ".skill-tree/installation/source/common/references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+    ".skill-tree/installation/source/common/references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+    ".skill-tree/installation/source/common/references/unity-safety.md": "ff6e0063e3a26f60d8655a08beb33ef19ffa2f27fce9c5efd573480b1b81e6ac",
+    ".skill-tree/installation/source/common/references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+    ".skill-tree/installation/source/common/references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+    ".skill-tree/installation/source/common/scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741",
+    ".skill-tree/installation/source/common/scripts/inspect-unity-repository.py": "794230aca0f338a9d5a6ce7dd62df2016c9d13fb9622174429f9188225fb78e9",
+    ".skill-tree/installation/source/common/scripts/pr-review-state.py": "1cbe0550c6d1fe8ba300fd41297be3806e256fc73c334dae2d0bda78a0b8923d",
+    ".skill-tree/installation/source/common/scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+    ".skill-tree/installation/source/common/scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+    ".skill-tree/installation/source/common/scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+    ".skill-tree/installation/source/common/scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+    ".skill-tree/installation/source/common/scripts/validate-repository-documentation.py": "a9833b258675765a24de4205f5b87a6e34a90913408e97957582e007c78ba911",
+    ".skill-tree/installation/source/common/scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723",
+    ".skill-tree/installation/source/config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
+    ".skill-tree/installation/source/config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
+    ".skill-tree/installation/source/config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
+    ".skill-tree/installation/source/config/resource-map.json": "faf33e768cd6ffebb59328fbc076287b199ee5289a56db22ec8a4e48e7fb2c7f",
+    ".skill-tree/installation/source/domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+    ".skill-tree/installation/source/domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
+    ".skill-tree/installation/source/domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",
+    ".skill-tree/installation/source/lib/composer.js": "736ea68276158e8ba07729dec9d8fe0f56c76f0439a403ea3073611ebb8112ec",
+    ".skill-tree/installation/source/lib/execution-bindings.js": "4087f0855eac260dc7ec4008be24015b3645ac7f53e11b3f7f7eccab5434a852",
+    ".skill-tree/installation/source/lib/installation.js": "cd380f155c2ad21f49f51ca190d73955d3934d820afc35f8764ea0ed85a5d3b5",
+    ".skill-tree/installation/source/src/init-rules/skill-tree-skills.md": "74cb9a275ce1bcd845c31eae44101e79e5adcd02875d84f1a4c8feb1744716fd",
+    ".skill-tree/installation/source/templates/invariants.json": "4545894b07fab5f222d15eddd17c220408a4be8a5e5f25da3a4a34ef06bb87b5",
+    ".skill-tree/installation/source/templates/operations.json": "f0e3f0b8668e862f8ef8024cf1257500dacdf11a158dc08cce9aa9fe9c26ff3a"
+  },
+  "composer_version": "1.0.0",
+  "destinations": {
+    ".agents/skills/skill-tree-add-pending-task": {
+      "files": {
+        "SKILL.md": "4e22ecf5434e9accfe4bfbad82735a1512f2fffd0bf79acf385d2627f37d28d0",
+        "agents/openai.yaml": "94c2cbb46483713fbd990e37c62cff1332c04f29622a2414dac3b7800960c279",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "672d7dc4549ae8668043d049bfa3912d3bab28c3ffe2fda461097eba0242b338",
+      "name": "skill-tree-add-pending-task",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-create-documents-snapshot": {
+      "files": {
+        "SKILL.md": "4e00a6fd00870a7111b6fe29b63ea60f7b18cfaf8cfff97369840d47984c7e09",
+        "agents/openai.yaml": "870ad8c1d5c0644618f1b1082212c2a9c09dafcd58a21c532d876f723f7dd77a",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741"
+      },
+      "flavor": "web",
+      "identity": "37b11572b7ca312399ee1566b1c3df48cdb6d50a9c9847713a774fd39d7095b7",
+      "name": "skill-tree-create-documents-snapshot",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-implement-all": {
+      "files": {
+        "SKILL.md": "d8c602820335d3c6a4d79aba09e81dedd1645ec538da658fe0054bb9835abaac",
+        "agents/openai.yaml": "2d4a8d52b557c9473ba1f73e7a144169fdfeba4f207335b9341a9a1b127ea516",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/orchestration.md": "79313308e0b2f1833ab131ffd2b2c5fed4f18163b26b682f9234b17f285f8ca5",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/pr-review-cycle.md": "b23b9c746922a4be7e7ba2423d2d495483ea36fdb5677fd6ff822bc0fbfda5b2",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/pr-review-state.py": "1cbe0550c6d1fe8ba300fd41297be3806e256fc73c334dae2d0bda78a0b8923d",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "88c455dd791444b270f76abb00c2f0f36554b14cc32634110217a3709ebf24f7",
+      "name": "skill-tree-implement-all",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-implement-next-future-task": {
+      "files": {
+        "SKILL.md": "445a4f743a2509b64e3445d519245c59f7abff9febd08ce988bbbb8fd284f902",
+        "agents/openai.yaml": "54f2ca57647dadda1176102aebcbb3850dea38c06c6ac46fbdc311d4832fd0fc",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "ce66bebc6a9f4ea210275b0bfdba6328661a8d4312ff31354042ecd523d3673c",
+      "name": "skill-tree-implement-next-future-task",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-pr-review-cycle": {
+      "files": {
+        "SKILL.md": "3695694298322a3ea68da2cbeb39502ba2a7bfe730ea66f49b9f036b4e4bc289",
+        "agents/openai.yaml": "6d3aa99f8efa36ed62159dbeff4f565992c121909be10e0c38ca0ff6ba44db53",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pr-review-cycle.md": "b23b9c746922a4be7e7ba2423d2d495483ea36fdb5677fd6ff822bc0fbfda5b2",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/pr-review-state.py": "1cbe0550c6d1fe8ba300fd41297be3806e256fc73c334dae2d0bda78a0b8923d",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "182da0f8fd4aab84e7575d0345ac682518716377413dfd09e13ab32e0fa86a62",
+      "name": "skill-tree-pr-review-cycle",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-process-future-pending": {
+      "files": {
+        "SKILL.md": "24af57bdd0817513dd6500e270c4cb3d54453e884d8b218f6250de4bf74463b7",
+        "agents/openai.yaml": "c53fa1b0209f9cca9de1d01ac1ebef76bbfa6221a58a0d41be9cf1acbd1a7344",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "1c2091b871e97b1bdfecce2fe3d93452dd0096f043d38c0a8aff8e6bf77fa570",
+      "name": "skill-tree-process-future-pending",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-repo-documentation": {
+      "files": {
+        "SKILL.md": "2d7548dc0c6e97b9105846e2e4a5fe8d438eea881a3a6fc5ea9488f610dfff29",
+        "agents/openai.yaml": "db26fd1ed65f841df1ae73c78181b9eca294a69ec8bdf41a7e4cb0e4ec7e345c",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/validate-repository-documentation.py": "a9833b258675765a24de4205f5b87a6e34a90913408e97957582e007c78ba911",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "f0dde4def2d9c6085789592759558cf04ba48553b6f85a52bd6db9b3ebe63944",
+      "name": "skill-tree-repo-documentation",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-repo-documentation-audit": {
+      "files": {
+        "SKILL.md": "bcda5816efbe8de71a83d6f91b12d9ec7c229b3dd67f98c110884915ecd1454a",
+        "agents/openai.yaml": "29784697a7e809dd3031d2eef0c0fc20c1f4a1e07fa843810f9c5fd8c892e54c",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+        "scripts/validate-repository-documentation.py": "a9833b258675765a24de4205f5b87a6e34a90913408e97957582e007c78ba911",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "39a0e4e51e56e723563982e435a6dfe21410278ecc0d2863cc97d46474dfa1e5",
+      "name": "skill-tree-repo-documentation-audit",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    },
+    ".agents/skills/skill-tree-work-through-next": {
+      "files": {
+        "SKILL.md": "5a0bf12d2997b164b212fac8c5be00a3f44b76fc9204fc37cdd3c58614315963",
+        "agents/openai.yaml": "b5575ab3a7a3fa376a0351d4ac7e0b671c033a6f79fbcd7f69903389378ca8e8",
+        "references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+        "references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+        "references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+        "references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+        "references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+        "references/orchestration.md": "79313308e0b2f1833ab131ffd2b2c5fed4f18163b26b682f9234b17f285f8ca5",
+        "references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+        "references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+        "references/pr-review-cycle.md": "b23b9c746922a4be7e7ba2423d2d495483ea36fdb5677fd6ff822bc0fbfda5b2",
+        "references/project-profile.md": "338227654cf8adb54a321ea8739aa306628a51759c61e80185a81fe749c54744",
+        "references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+        "references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+        "references/web-development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+        "references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+        "scripts/pr-review-state.py": "1cbe0550c6d1fe8ba300fd41297be3806e256fc73c334dae2d0bda78a0b8923d",
+        "scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+        "scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+        "scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723"
+      },
+      "flavor": "web",
+      "identity": "0c96bbfaf931ad5ebd6c7fb73df9b1e2a2e8d522e20649c403f374751350e058",
+      "name": "skill-tree-work-through-next",
+      "provider": "codex",
+      "providers": [
+        "codex"
+      ]
+    }
+  },
+  "environment_id": "f7407930d00854f85e1e8d357d5f2bb8ff822412a7e884c5d77bb8858097119d",
+  "execution_bindings": {},
+  "facts": {
+    "capabilities": {
+      "playwright-test": {
+        "package": "@playwright/test",
+        "state": "absent",
+        "version": null
+      }
+    },
+    "node": "22",
+    "package_manager": "npm",
+    "packages": {},
+    "test_assemblies": [],
+    "ui": []
+  },
+  "flavor": "web",
+  "format": "skill-tree-profile",
+  "gaps": [],
+  "identity": "bf04b07f4bcd4f2cc9e9418b7183d1eb1b594f061d9a80fead7564ab81a7b6bc",
+  "inputs": {
+    ".node-version": "423ac78849675de002e33e705bf9e62af9fe8ca9910de136ef55bb93ea6d72a1",
+    ".nvmrc": null,
+    ".skill-tree/validation-recipes.json": "5062c75599ff64f4a81bb9a30ea4f0d9652f20cb9362a41689b122957a5616a1",
+    ".skill-tree/worktree-profile.json": null,
+    "Cargo.toml": null,
+    "Directory.Build.props": "efc75c2ec58a3644f8d66d0749108ef9361ffff26c109feedbf4235b9dd24885",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "Packages/manifest.json": null,
+    "Packages/packages-lock.json": null,
+    "ProjectSettings/EditorSettings.asset": null,
+    "ProjectSettings/ProjectSettings.asset": null,
+    "ProjectSettings/ProjectVersion.txt": null,
+    "bun.lock": null,
+    "bun.lockb": null,
+    "deploy/callback-egress/package.json": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+    "deploy/callback-egress/src/gateway.mjs": "8d6eb943c8737dc0ba503c84f9e793700e5060088d8a8901347fa9052e2df48f",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "global.json": "9fd12b1529d47d4b26921fc36fc85fe821f2ab83149b5c52994d97e41d117d6c",
+    "npm-shrinkwrap.json": null,
+    "package-lock.json": null,
+    "package.json": null,
+    "pnpm-lock.yaml": null,
+    "pyproject.toml": null,
+    "pytest.ini": null,
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/package-lock.json": "5aa1533f6dfb042df98b0e435b2a40d7d22aa5a33bcb81666a57d6f30a8137e0",
+    "src/Habitica.WebApp/package.json": "214cc3d44c28eebc447028224fef5d4387cb922397fcb87b773f97524b7ea0ad",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "f5306dcfce7da31942aaa6822a6c24b0ce864b78432191011fb2ef1c5b072917",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "eac6856ba62bfac765c0f8e983edc2346692f6123755382131323b525065312b",
+    "tests/Functions/subscription-contracts.py": null,
+    "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj": "04701b12ecf14d03108f7c38cd2d221b0ba665a79ac720a70c5636fa9372a20b",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj": "e76a831efc80eae479ae18cf3584e800a6885870730ba83d40003756c631c766",
+    "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj": "52070060b47393cda6ef37bda6bc21470b705d37819d68700cb723e9830f5027",
+    "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj": "dbdeeff4bba812d44a01623f7c51830c59d48db523143aa2c07ca7a9bd5e423e",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "132303de10ee830183129eab16fb471746a0f5485d1ac518f3beae0104f29f50",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser-qualification/qualification-session.mjs": "a3787f07a47d9a95532afef7b8514898455c87226aeafe2df53c03f2065bb39e",
+    "tests/browser-qualification/ux-ui-adapters.json": null,
+    "tests/browser-qualification/ux-ui-canonical-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-category-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-checks.test.mjs": null,
+    "tests/browser-qualification/ux-ui-compact-navigation-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-companions-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-companions-user.json": null,
+    "tests/browser-qualification/ux-ui-contract.mjs": null,
+    "tests/browser-qualification/ux-ui-copy-values-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-counts-user.json": null,
+    "tests/browser-qualification/ux-ui-daily-order-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-daily-timezones-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-daily-timezones-user.json": null,
+    "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-dashboard-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-date-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-disabled-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-discovery-content.json": null,
+    "tests/browser-qualification/ux-ui-discovery-user.json": null,
+    "tests/browser-qualification/ux-ui-equipment-counts-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-equipment-metrics.mjs": null,
+    "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-game-content.json": null,
+    "tests/browser-qualification/ux-ui-game-names-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-game-party.json": null,
+    "tests/browser-qualification/ux-ui-game-user.json": null,
+    "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-native-date.mjs": null,
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-notes-entry-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-notes-metrics.mjs": null,
+    "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-party-reflow-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-phone-notes-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-planning-date-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-projects-browse-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-push-capability-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-readiness-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-recurring-row-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-reminder-days-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-saved-errors-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-saved-layout-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-settings-sections-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-shared-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-today-work-journey.mjs": null,
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": null,
+    "tests/browser-qualification/ux-ui.mjs": null,
+    "tests/browser-qualification/ux-ui.py": null,
+    "tests/browser/activity-ui.mjs": null,
+    "tests/browser/activity-ui.py": null,
+    "tests/browser/folder-adoption-fixture.mjs": null,
+    "tests/browser/folder-adoption-ui.mjs": null,
+    "tests/browser/folder-adoption-ui.py": null,
+    "tests/browser/linked-daily-fixture.mjs": null,
+    "tests/browser/linked-daily-ui.mjs": null,
+    "tests/browser/linked-daily-ui.py": null,
+    "tests/browser/notes-folders.mjs": null,
+    "tests/browser/notes-ui.mjs": null,
+    "tests/browser/notes-ui.py": null,
+    "tests/browser/project-history-fixture.mjs": null,
+    "tests/browser/project-history-ui.mjs": null,
+    "tests/browser/project-history-ui.py": null,
+    "tests/browser/pwa-shell.mjs": null,
+    "tests/browser/relative-saved-ui.mjs": null,
+    "tests/browser/relative-saved-ui.py": null,
+    "tests/browser/relative-tag-fixture.mjs": null,
+    "tests/browser/relative-tag-ui.mjs": null,
+    "tests/browser/relative-tag-ui.py": null,
+    "tests/browser/task-type-copy-ui.mjs": null,
+    "tests/browser/task-type-copy-ui.py": null,
+    "tests/fixtures/notes/notes-folder-wire-v3.json": null,
+    "tests/hosted/callback-receiver.mjs": null,
+    "tests/hosted/normal-delivery.mjs": null,
+    "workers/chatgpt-auth/package-lock.json": "fc3d5e89b1e6391bfe2acbf688c8ece7d0e2cb6ac098179512bc0875d489d792",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/callback-egress-protocol.ts": "472664bd823c3cc806419b83d30e0ef7c96cfabce00b159c99003f051dd8ea2d",
+    "workers/chatgpt-auth/src/event-dispatch.ts": null,
+    "workers/chatgpt-auth/src/events.ts": null,
+    "workers/chatgpt-auth/test/events.test.mjs": null,
+    "workers/chatgpt-auth/test/fixtures/events.mjs": null,
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "d2ba16b8eb9031e45e858080be1dd39c80da33c581236512192bb9f1091ccf9d",
+    "workers/chatgpt-auth/wrangler.jsonc": "127f46a52e8d6faab302264b37ce972be62bb1c5f07e6613f21a9b2998a53571",
+    "workers/chatgpt-mcp/package-lock.json": "4dbfae81aea31f4cc16b8a81d83529a1d2c5f4505fab4f564ea1d6725c70ec11",
+    "workers/chatgpt-mcp/package.json": "87aa23dd438efcfef334b03bdd8197b6b2b77d873f9e75dfbcd9685c97fc2bab",
+    "workers/chatgpt-mcp/wrangler.jsonc": "d55620f5fb0759d4fcd19844ebc6075147b2ac7372d91215eabb2a3bc342fe86",
+    "workers/companion-workspace/package-lock.json": "26eb784d6fce23c7b1cb2d8f9ead7ebed256324ef1775eb5dc3bb287bf483e37",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/event-scheduler.ts": null,
+    "workers/companion-workspace/src/events.ts": null,
+    "workers/companion-workspace/wrangler.jsonc": "c6ce3e7141962ecb61b6e0ff1c6b13fad544c3ce31e5b1c84f7d75a0c76b2d2d",
+    "workers/shared/events.ts": null,
+    "yarn.lock": null
+  },
+  "inventory": [],
+  "project_root": "/Users/petr/Projects/.agent-workspaces/habitica-complete-production",
+  "qualification": "static compatibility only; product execution unqualified",
+  "recipes": {
+    "activity-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/activity-ui.py"
+      ],
+      "execution_notes": "Bounded current Release publish, real Razor capture,112 light/obsidian phone/desktop normal/enlarged-text state cases and2 actual hydrated statistics journeys with real isolated IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, hosted qualification, mutation or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/activity-ui.py",
+        "tests/browser/activity-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "dotnet-focused-tests": {
+      "argv": [
+        "dotnet",
+        "test",
+        "{test_project}",
+        "-m:1",
+        "-nodeReuse:false",
+        "--filter",
+        "{test_filter}",
+        "--logger",
+        "trx;LogFileName={report_name}",
+        "--results-directory",
+        "{result_directory}"
+      ],
+      "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "global.json",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+        "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+        "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+        "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      ],
+      "lane": "unit",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "csharp": "12.0",
+        "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+        "framework": "Blazor WebAssembly net8.0",
+        "sdk_declaration": "8.0.125",
+        "test_frameworks": {
+          "Microsoft.NET.Test.Sdk": "18.4.0",
+          "bunit": "2.7.2",
+          "xunit": "2.9.3"
+        }
+      }
+    },
+    "folder-adoption-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/folder-adoption-ui.py"
+      ],
+      "execution_notes": "Current Release Sync route,112 light/obsidian phone/desktop normal/enlarged-text Razor cases and two real hydrated folder-adoption journeys with isolated Auth/Workspace/D1 and native IndexedDB. Recover original acceptance after lost reply; no real account/provider or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/folder-adoption-ui.py",
+        "tests/browser/folder-adoption-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/folder-adoption-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "linked-daily-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/linked-daily-ui.py"
+      ],
+      "execution_notes": "Bounded current Release build and current Razor capture qualify144 light/obsidian phone/desktop100/200-percent layout/focus cases plus2 real hydrated Daily/Sync journeys using exact existing synthetic cloud recovery, isolated Auth/Workspace Workers/D1 and IndexedDB. Synthetic provider observations never leave the fixture; executor disabled, no upstream write, score, Cron, live account, publication or device permission. Own localhost5081 for exact local CORS; fail safely if occupied. Dispose all fixture Workers and profiles.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/linked-daily-ui.py",
+        "tests/browser/linked-daily-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "netlify-hosted-controls": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "tests/hosted/normal-delivery.mjs",
+        "{session_file}",
+        "{report_file}"
+      ],
+      "execution_notes": "The owner-approved controller snapshots and enables the exact provider lanes before delivery. The command persists original authority before sending, verifies exact signed bytes and replay, then resumes the same report after controller shutdown to verify refusals and an unchanged receiver count. Complete only with deployed-identity/configuration/logging evidence and a final pass report. No real subscription or user payload is permitted.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/hosted/normal-delivery.mjs",
+        "tests/hosted/callback-receiver.mjs",
+        "deploy/callback-egress/src/gateway.mjs",
+        "deploy/callback-egress/src/transport.mjs",
+        "workers/chatgpt-auth/src/callback-egress-protocol.ts"
+      ],
+      "lane": "server",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node_declaration": "22.x",
+        "qualification": "Exact deployed gateway/Auth and ephemeral owned receiver; original request ID survives interruptions."
+      }
+    },
+    "node-focused-tests": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=15000",
+        "{test_file}"
+      ],
+      "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "deploy/callback-egress/package.json"
+      ],
+      "lane": "unit",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node_declaration": "22.x"
+      }
+    },
+    "notes-indexeddb-browser": {
+      "argv": [
+        "node",
+        "tests/browser/notes-folders.mjs"
+      ],
+      "execution_notes": "Actual source adapter and neutral C# wire fixture on an owned loopback origin. Two isolated persistent browser profiles; hard90-second fixture deadline and120-second controller deadline with30-second cleanup reserve. No real account, service or permission.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/notes-folders.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache; no package upgrades",
+        "node": "22.x"
+      }
+    },
+    "notes-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/notes-ui.py",
+        "{mode}"
+      ],
+      "execution_notes": "Bounded Release publish and current Razor capture precede128 light/obsidian phone/desktop100/200-percent state cases and2 actual hydrated /notes + /todo/projects journeys on isolated persistent profiles and real IndexedDB. Synthetic provider GET replies never leave the browser. Service workers blocked; no real account, device, hosted qualification or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/notes-ui.py",
+        "tests/browser/notes-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "project-history-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/project-history-ui.py"
+      ],
+      "execution_notes": "Bounded current Release, actual project/history Razor states,160 light/obsidian phone/desktop normal/enlarged-text layout/focus cases and2 actual hydrated scoped navigation/original-receipt journeys under Chromium/WebKit with isolated Auth/Workspace/D1 and IndexedDB. No real account, provider writes, device permissions or publication. Service workers blocked.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/project-history-ui.py",
+        "tests/browser/project-history-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/project-history-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "pwa-shell-browser": {
+      "argv": [
+        "node",
+        "tests/browser/pwa-shell.mjs"
+      ],
+      "execution_notes": "Requires documented current Release fixture, pinned PLAYWRIGHT_MODULE, exact owned loopback session, isolated persistent browser profiles and cleanup. No browser execution during installation.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/pwa-shell.mjs",
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+        "src/Habitica.WebApp/package.json",
+        "src/Habitica.WebApp/package-lock.json"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified"
+    },
+    "relative-saved-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/relative-saved-ui.py"
+      ],
+      "execution_notes": "Bounded current Release, current saved-list/tag Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, focus and disabled controls under Chromium/WebKit, plus actual hydrated saved-list/Sync journeys using isolated Auth/Workspace Workers/D1 and native IndexedDB. Relative definitions retain intent; unavailable time-bound tag projection stays explicitly fenced. Service workers blocked; no real account, provider writes or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/relative-saved-ui.py",
+        "tests/browser/relative-saved-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "relative-tag-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/relative-tag-ui.py"
+      ],
+      "execution_notes": "Current Release Sync route,160 light/obsidian phone/desktop normal/enlarged-text Razor cases and two actual hydrated day-bound tag review/original-receipt journeys with isolated Auth/Workspace/D1 and native IndexedDB. No real provider operation, executor opt-in or notification qualification.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/relative-tag-ui.py",
+        "tests/browser/relative-tag-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/relative-tag-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "subscription-contracts-execution-profile": {
+      "argv": [
+        "python3",
+        "tests/Functions/subscription-contracts.py",
+        "{report_file}"
+      ],
+      "execution_notes": "Serial dry builds then nonzero synthetic Worker/MCP/D1, independent receiver and native local TLS tests. No hosted callbacks or user subscription.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/Functions/subscription-contracts.py",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/shared/events.ts",
+        "workers/chatgpt-auth/test/events.test.mjs",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "workers/chatgpt-auth/wrangler.jsonc",
+        "workers/companion-workspace/wrangler.jsonc",
+        "workers/chatgpt-mcp/wrangler.jsonc",
+        "deploy/callback-egress/src/gateway.mjs",
+        "workers/chatgpt-auth/test/fixtures/events.mjs",
+        "workers/chatgpt-auth/src/event-dispatch.ts",
+        "workers/companion-workspace/src/event-scheduler.ts"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "node": "22.x",
+        "python": "3.x",
+        "workers": "pinned Wrangler4.151.0/Miniflare5; actual local D1"
+      }
+    },
+    "task-type-copy-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser/task-type-copy-ui.py"
+      ],
+      "execution_notes": "Bounded current Release publish, current conversion Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, disabled controls and focus in Chromium/WebKit, plus actual hydrated type-copy routes with isolated Auth/Workspace Workers/D1 and native IndexedDB. Service workers blocked; no real provider write, device permission or publication.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser/task-type-copy-ui.py",
+        "tests/browser/task-type-copy-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/linked-daily-fixture.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright Chromium/WebKit cache",
+        "framework": "Blazor WebAssembly8 Release"
+      }
+    },
+    "ux-ui-rendered-browser": {
+      "argv": [
+        "python3",
+        "tests/browser-qualification/ux-ui.py",
+        "{task_key}",
+        "{report_directory}"
+      ],
+      "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "tests/browser-qualification/ux-ui.py",
+        "tests/browser-qualification/ux-ui.mjs",
+        "tests/browser-qualification/ux-ui-contract.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-shared-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-checks.test.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-session.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+        "tests/browser-qualification/ux-ui-notes-metrics.mjs",
+        "tests/browser-qualification/ux-ui-canonical-journey.mjs",
+        "tests/browser-qualification/ux-ui-category-journey.mjs",
+        "tests/browser-qualification/ux-ui-compact-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-companions-journey.mjs",
+        "tests/browser-qualification/ux-ui-companions-user.json",
+        "tests/browser-qualification/ux-ui-copy-values-journey.mjs",
+        "tests/browser-qualification/ux-ui-counts-user.json",
+        "tests/browser-qualification/ux-ui-daily-order-journey.mjs",
+        "tests/browser-qualification/ux-ui-daily-timezones-journey.mjs",
+        "tests/browser-qualification/ux-ui-daily-timezones-user.json",
+        "tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs",
+        "tests/browser-qualification/ux-ui-dashboard-journey.mjs",
+        "tests/browser-qualification/ux-ui-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-disabled-journey.mjs",
+        "tests/browser-qualification/ux-ui-discovery-content.json",
+        "tests/browser-qualification/ux-ui-discovery-user.json",
+        "tests/browser-qualification/ux-ui-equipment-counts-journey.mjs",
+        "tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs",
+        "tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-content.json",
+        "tests/browser-qualification/ux-ui-game-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-game-party.json",
+        "tests/browser-qualification/ux-ui-game-user.json",
+        "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-party-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-phone-notes-journey.mjs",
+        "tests/browser-qualification/ux-ui-planning-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-projects-browse-journey.mjs",
+        "tests/browser-qualification/ux-ui-push-capability-journey.mjs",
+        "tests/browser-qualification/ux-ui-readiness-journey.mjs",
+        "tests/browser-qualification/ux-ui-recurring-row-journey.mjs",
+        "tests/browser-qualification/ux-ui-reminder-days-journey.mjs",
+        "tests/browser-qualification/ux-ui-saved-errors-journey.mjs",
+        "tests/browser-qualification/ux-ui-saved-layout-journey.mjs",
+        "tests/browser-qualification/ux-ui-settings-reflow-journey.mjs",
+        "tests/browser-qualification/ux-ui-settings-sections-journey.mjs",
+        "tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs",
+        "tests/browser-qualification/ux-ui-today-work-journey.mjs",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-notes-entry-journey.mjs"
+      ],
+      "lane": "browser",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+        "framework": "Blazor WebAssembly8 Release",
+        "node": "22.x"
+      }
+    },
+    "webapp-release-build": {
+      "argv": [
+        "dotnet",
+        "publish",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "{output_directory}",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "execution_notes": "Local build only; no deployment. Build authorization and isolated output remain task-specific.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "global.json",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj"
+      ],
+      "lane": "build",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "csharp": "12.0",
+        "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+        "framework": "Blazor WebAssembly net8.0",
+        "sdk_declaration": "8.0.125",
+        "test_frameworks": {
+          "Microsoft.NET.Test.Sdk": "18.4.0",
+          "bunit": "2.7.2",
+          "xunit": "2.9.3"
+        }
+      }
+    },
+    "worker-focused-tests": {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=30000",
+        "{test_file}"
+      ],
+      "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+      "input_paths": [
+        ".skill-tree/validation-recipes.json",
+        "workers/chatgpt-auth/package.json",
+        "workers/chatgpt-auth/package-lock.json",
+        "workers/chatgpt-mcp/package.json",
+        "workers/chatgpt-mcp/package-lock.json",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/package-lock.json"
+      ],
+      "lane": "integration",
+      "qualification": "owner-declared static recipe; runner unqualified",
+      "toolchain": {
+        "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+        "node_declaration": "22.x"
+      }
+    }
+  },
+  "schema": 1,
+  "source_digests": {
+    "common/references/development-practices.md": "e49e939299c92d945d2aaa0d88cadde03639ae951670f8e46e62289cd5734664",
+    "common/references/document-rules.md": "6a8500da7426257490a1c7f1234f4f4f4cb705e02e5271b947fb961b38872b69",
+    "common/references/documentation-output-contract.md": "34d40d7d8a53b08c5078421cb999b1b3d606506c8b6c9cb5d78273cce73e1008",
+    "common/references/future-workflow.md": "6998f580e8003760859acf89d61d330f80b36f2b8102a250685b28993804a4ce",
+    "common/references/history-retention.md": "e34302d1665162c5c94bd1adea7cbdf32a36325bb4a6db1eafab24fc236c3585",
+    "common/references/installation-profile.md": "fe30975220c2587a4a15c21091126ad0333d8cba6b84e75c8259d577aa29c106",
+    "common/references/orchestration.md": "79313308e0b2f1833ab131ffd2b2c5fed4f18163b26b682f9234b17f285f8ca5",
+    "common/references/pending-task-format.md": "6c0a90ea992f2c19a26e4f95fc4e45b7ff89d25c0cc8e2c49c11cfa8bad2d8ba",
+    "common/references/pending-task-intake.md": "d3a108aa459637d70f348937c8e93d18ee226a261eb0ac7cdfe9630865a87b88",
+    "common/references/pr-review-cycle.md": "b23b9c746922a4be7e7ba2423d2d495483ea36fdb5677fd6ff822bc0fbfda5b2",
+    "common/references/repository-discovery-checklist.md": "a112230c076fea515c437e3e7407c575ee6690d772eaa28e68f80c720c7a621c",
+    "common/references/run-workspaces.md": "2b4acdabcc91075a9aaa21d574637d3ca9e05b06d31da516920a2db46543c1c3",
+    "common/references/snapshot-rules.md": "18142120546fcd532e496fbd14aefbe449fa63da40cbcca577db249b91dcd30e",
+    "common/references/unity-safety.md": "ff6e0063e3a26f60d8655a08beb33ef19ffa2f27fce9c5efd573480b1b81e6ac",
+    "common/references/validation-policy.md": "1f82ebad4bcbd71e7180849ddf4048a58fffb0b28f7a8a3f2d340d94c35b60f9",
+    "common/references/workflow-metadata.md": "0a90f558c84ba3ff7b0227c2ae6fedfe510fb5bfd835c780b58b9ae3d79c1b3e",
+    "common/scripts/create-documentation-snapshot.py": "c47fed16988ab9fecc6dc18f0fbc7d61df5a94de80eef2ef066f208a002e5741",
+    "common/scripts/inspect-unity-repository.py": "794230aca0f338a9d5a6ce7dd62df2016c9d13fb9622174429f9188225fb78e9",
+    "common/scripts/pr-review-state.py": "1cbe0550c6d1fe8ba300fd41297be3806e256fc73c334dae2d0bda78a0b8923d",
+    "common/scripts/run-workspaces.py": "af4e8301a5d24e94353f5e805a53718681c46bbc77349039df508b3e38112077",
+    "common/scripts/select-prioritized-task.py": "93f12ac5a333fb072bf8d9d849d08e3b422af856d582d492902647efe35c896f",
+    "common/scripts/validate-document-rules.py": "1f19fe0450a1bc8210953660950f45169e729d46196bcd75464ee32faa46f8a7",
+    "common/scripts/validate-future-document.py": "54647bb7dc7b7ec670d29a2f395b3bee53b90ff37bc646ce5d3aa98d562518d5",
+    "common/scripts/validate-repository-documentation.py": "a9833b258675765a24de4205f5b87a6e34a90913408e97957582e007c78ba911",
+    "common/scripts/workflow-state.py": "dbb195136aef1ae9341f00f7a0417957d85b09eee3a3a25eed6361bfd18a1723",
+    "config/capabilities.json": "fc9572cc6a65f689fd7a750560a897593fd7b90df50eadea3954e242556626c5",
+    "config/flavors.json": "67c9e7e39886ddc8eedd7e9956e85c61c97c278f2bdbd81970a430f0dab348c2",
+    "config/providers.json": "80255fe3fb67e32d71cc7791aee1e51c1d34a508d4c77b6ca852521907ede97a",
+    "config/resource-map.json": "faf33e768cd6ffebb59328fbc076287b199ee5289a56db22ec8a4e48e7fb2c7f",
+    "domains/web/development.md": "a8e55f4d58ad64056707801a3c31aa56eb884755fd12ef08c341680d73645bc9",
+    "domains/web/playwright-testing.md": "661393b4329bbe03f68f1570919fe8bf02dcebb5bf77555f3c5c46e05d4739a7",
+    "domains/web/sections.json": "705a5dca39a2a0baa64f0043d6d188ade153c7dff553fcf55bfd25256b2bb2c7",
+    "lib/composer.js": "736ea68276158e8ba07729dec9d8fe0f56c76f0439a403ea3073611ebb8112ec",
+    "lib/execution-bindings.js": "4087f0855eac260dc7ec4008be24015b3645ac7f53e11b3f7f7eccab5434a852",
+    "lib/installation.js": "cd380f155c2ad21f49f51ca190d73955d3934d820afc35f8764ea0ed85a5d3b5",
+    "src/init-rules/skill-tree-skills.md": "74cb9a275ce1bcd845c31eae44101e79e5adcd02875d84f1a4c8feb1744716fd",
+    "templates/invariants.json": "4545894b07fab5f222d15eddd17c220408a4be8a5e5f25da3a4a34ef06bb87b5",
+    "templates/operations.json": "f0e3f0b8668e862f8ef8024cf1257500dacdf11a158dc08cce9aa9fe9c26ff3a"
+  },
+  "worktree_environment": {
+    "exclusive_resources": [],
+    "isolated_directories": [],
+    "required_files": [],
+    "schema": 1
+  }
+}

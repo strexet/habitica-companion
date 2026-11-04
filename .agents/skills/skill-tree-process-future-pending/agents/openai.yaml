@@ -1,7 +1,3 @@
 interface:
-  display_name: "Skill-Tree: Process Pending Tasks"
-  short_description: "Process Pending Tasks"
-  default_prompt: "Apply Process Pending Tasks to the selected repository under applicable rules."
-
-policy:
-  allow_implicit_invocation: true
+  display_name: "Skill-Tree: Process Pending Tasks (web)"
+  short_description: "web Skill Tree workflow"

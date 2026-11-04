@@ -1,5 +1,3 @@
-<!-- GENERATED FILE; Source: skill-tree/common/references/pending-task-format.md; generator: skill-tree/scripts/sync-skill-references.py -->
-
 # Pending Task Format
 
 Pending entries use a level-three title, the fixed metadata header and concise nested bullets under Description, Expected behavior and Source. Include useful Current context, priority rationale, constraints or unresolved technical details only when relevant. No empty sections or prioritized implementation plan.
