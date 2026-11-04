@@ -1,0 +1,12 @@
+{
+  "name": "worker-identity",
+  "argv": [
+    "python3",
+    "workers/scripts/generate-build-identity.py",
+    "--check"
+  ],
+  "exit_code": 0,
+  "seconds": 0.087,
+  "deadline_seconds": 30,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/worker-identity.log"
+}

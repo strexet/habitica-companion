@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb"
+    ],
+    "dispositions": {
+      "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb": {
+        "status": "promoted",
+        "reason": "Current screenshots and fixed artwork grid demonstrate a required Equipment identity/stat readability blocker distinct from queued count summaries and search."
+      }
+    },
+    "tasks": [
+      {
+        "key": "equipment-identity-reflow",
+        "title": "Keep equipment identity text and stat tokens readable in constrained cards",
+        "body": "Goal:\nKeep equipment identities and stat tokens readable at constrained card widths.\n\nCurrent behavior:\nA current automated433-case pass remains unaccepted after screenshot review found glyph-wide identity text and vertical stat labels in enlarged-phone cards. The fixed artwork/text grid reserves artwork before allowing text to use a full row. Nested preset cards reduce the remaining column further.\n\nDesired behavior:\nStack or wrap artwork and copy when the available width cannot hold both. Keep complete stat tokens together while allowing the token group to wrap. Retain ordinary long-ID wrapping and complete displayed values.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/browser-qualification/ux-ui-game-names-journey.mjs`\n- `tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nScope identity/stat changes to Equipment. Preserve artwork, full names, numeric values and explicit item/preset actions. No smaller text, hidden overflow, changed optimizer decisions or provider mutation. The existing count-summary task only covers RenderImageCountChip and remains independent; the search/discovery task also remains unchanged. Local synthetic build/test authorization applies. Physical devices and assistive technology remain unqualified.\n\nValidation:\nKeep original full screenshots as the failing regression. Add ordinary-word width and unbroken stat-token assertions to real Razor fixtures and the native journey, alongside normal geometry, contrast, focus and disabled states. Use the entire required matrix.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"equipment-identity-reflow-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Equipment action targets, preset drafts and disabled gates remain unchanged.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/PartyPage.razor\",\n        \"src/Habitica.WebApp/Pages/InventoryPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~InventoryPageTests\",\n        \"report_name\": \"equipment-identity-reflow.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/equipment-identity-reflow/unit\"\n      },\n      \"assertion\": \"Retain Inventory public action targets, persistent preset fields and preview/freshness gates; original rendered screenshots supply the failing layout regression.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"equipment-identity-reflow-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Pages/PartyPage.razor\",\n        \"src/Habitica.WebApp/Pages/InventoryPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui.mjs\",\n        \"tests/browser-qualification/ux-ui-contract.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui-game-names-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-game-user.json\",\n        \"tests/browser-qualification/ux-ui-game-party.json\",\n        \"tests/browser-qualification/ux-ui-game-content.json\",\n        \"tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"equipment-identity-reflow\",\n        \"routes\": [\n          \"/inventory\"\n        ],\n        \"cases\": \"Same-named long gear, preset mini cards, best-item and equipped identity rows, intact stat tokens and disabled equipment controls.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser\"\n      },\n      \"assertion\": \"Inspect full Equipment fixtures and actual hydrated card word width; require each stat label and value to fit an unbroken token. Preserve action names, native focus and unchanged preset/inventory stores across the complete matrix.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Equipment action targets, preset drafts and disabled gates remain unchanged.\n- Equipment identity copy uses the available card width and stat labels and values remain intact across the required rendered matrix.\n\nDocumentation updates:\nRecord Equipment identity/stat wrapping and exact rendered evidence in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\nCurrent inventory identity two-column grid, nested preset mini-card padding and wrapping stat-pill/value rules were inspected. Original phone screenshots and433-case unaccepted pass reside in `.skill-tree/artifacts/ux-ui/game-control-names/1793726429958835000`.\n",
+        "parent_pending_ids": [
+          "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "9240e1f1056ec4f9c869aa5749e980a4e3f4431d503d2ed9d635c0639ccb6ce9"
+  },
+  "result": {
+    "created_ids": [
+      "T-e3859337-1a25-48e6-a37d-817868623ec7"
+    ],
+    "dispositions": {
+      "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb": {
+        "reason": "Current screenshots and fixed artwork grid demonstrate a required Equipment identity/stat readability blocker distinct from queued count summaries and search.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-e9b0390a-d2d3-4614-a2e6-b39af5052d33",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-e6a4b73f-a1e8-4df5-a9ae-52a4f84290eb"
+    ],
+    "task_keys": {
+      "equipment-identity-reflow": "T-e3859337-1a25-48e6-a37d-817868623ec7"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "task_id": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+  "title": "Bound companion collection rendering and clarify search results",
+  "operation_history": ".skill-tree/history/validation/ux-ui/bounded-companions/operation-history.json",
+  "checks": [
+    {
+      "id": "bounded-companions-behavior",
+      "counts": {
+        "discovered": 47,
+        "expected": 47,
+        "failed": 0,
+        "passed": 47,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.log",
+          "sha256": "e3f4a78cc6524e4aa44942f1be5fad1f82b07f59455a010ea20782e9afdb53fa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-28beb8d3-749c-4741-a0e3-7bd9786ee3d0.trx",
+          "sha256": "9b9a0a4a61cc27ec70108542f26f77ac9b2505c83d0e4eb8e3e6216dec046339"
+        }
+      ]
+    },
+    {
+      "id": "bounded-companions-rendered",
+      "counts": {
+        "discovered": 505,
+        "expected": 505,
+        "failed": 0,
+        "passed": 505,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/browser/444aec10-5eae-45b2-a6ad-42df3f8d9688.json",
+          "sha256": "9d26ea64c02e413e98e87c7a7b1d9d88a8ae00402e87879a0be5daa36ebcd693"
+        }
+      ]
+    },
+    {
+      "id": "bounded-companions-fixture-boundary",
+      "counts": {
+        "discovered": 29,
+        "expected": 29,
+        "failed": 0,
+        "passed": 29,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/bounded-companions/C-d69320fc-7f1c-448f-954e-2e68fdc934c4.tap",
+          "sha256": "8dc870da9646fcaa94c2d0aca4946e1f7040f89260410c28608e16140602c900"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-35b4b5ad-947b-45e2-8475-bc9442b516bb",
+  "classification": "executed-control",
+  "cleanup": "Owned isolated Worker/D1 instances and native local TLS servers disposed by test hooks. No actual host subscription, chat message, real provider credential or task/game effect. The shorter-TTL behavioral Red is separate from this final passing suite.",
+  "counts": {
+    "discovered": 10,
+    "expected": 10,
+    "failed": 0,
+    "passed": 10,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/callback-authorization-execution.log",
+      "sha256": "359fdf8dd78830fd4bc2cabc86154019e474c84ac8e92e15e073a2587e5c4a55"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-ttl/callback-authorization-operation.json",
+      "sha256": "ee5158f6ce70d52b3132574ce9ccc81874ab3c623d042c9736bb98e66c3df8c2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/shorter-ttl-red.log",
+      "sha256": "4dc727ca50933d68523a8aeb3fb2dd01e70509ed2e558139e33f77d1106ea787"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/shorter-ttl-green.log",
+      "sha256": "ec58ab64a603325c9d0c2f8b8b60de8b5348473cf42e3e6d27cc414260005cc7"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "06217c018c7d6f0afb38e922a1640810ec526909e5d59a43e5fa87b13d840537",
+  "payload_hash": "a845456d52b3ed3db40a97db99725d97b83dc2696d609bb68d9d96a04b378d7b",
+  "recorded_at": "2026-11-02T14:36:26.921835+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "4dfa4873e9dbc523145b10990b914b8ecd2e5ef7aa0a57817c29e8daed1b7461"
+  },
+  "timing": {
+    "tool_wall_seconds": 10.506476083071902
+  }
+}

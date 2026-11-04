@@ -5,30 +5,32 @@
 @inject TimeProvider Clock
 
 <section class="card-surface todo-task-panel todo-recurring-editor" aria-label="Recurring task" data-testid="recurring-editor">
-    <h2 tabindex="-1" @ref="_heading">@(_original?.Kind == CompanionTaskKind.Habit ? "Habit lifecycle" : "Daily schedule and occurrences"): @_original?.Text</h2>
-    <p>Schedule, skip and pause controls change Companion only; completion requests required Habitica effects. A Companion pause does not pause Habitica penalties. Linked Habitica schedules, type conversion and reward reversal are unavailable here.</p>
+    <h2 tabindex="-1" @ref="_heading">@(VisibleTask?.Kind == CompanionTaskKind.Habit ? "Habit lifecycle" : "Daily schedule"): @VisibleTask?.Text</h2>
+    <p>Native skip and pause controls change Companion only; completion requests required Habitica effects. A Companion pause does not pause Habitica penalties. Linked Daily schedule replacement requires a fresh separate Habitica review in the connected cloud Workspace.</p>
     @if (Stale) { <p role="status">Task data changed. Reload the current task before reviewing another change.</p> }
     @if (_error is not null) { <p role="alert">@_error</p> }
-    @if (_original is { } task)
+    @if (VisibleTask is { } task)
     {
         <p>Saved state: @task.State · @task.Id</p>
-        @if (GameLinked) { <p role="status">A retained Habitica mapping blocks this Companion-only editor. Use the main task completion action and review the requested game effects for a linked task. Manage the Habitica schedule separately.</p> }
+        @if (GameLinked) { <p role="status">A retained Habitica mapping blocks native occurrence and lifecycle actions. Supported schedule replacement is available in the connected cloud Workspace; yearly, month-week, mixed and unrepresentable retained schedules remain read-only. Use the main task completion action for linked game effects.</p> }
         @if (task.Kind == CompanionTaskKind.Daily)
         {
             <p data-testid="recurring-saved-rule">Loaded schedule: @RuleText(task.Recurrence)</p>
-            <form @onsubmit="ReviewScheduleAsync" @onsubmit:preventDefault><fieldset disabled="@NativeDisabled">
-                <h3>Optional schedule</h3>
+            <form @onsubmit="ReviewScheduleAsync" @onsubmit:preventDefault><fieldset disabled="@ScheduleDisabled">
+                <h3>@(GameLinked ? "Reviewed linked schedule" : "Optional schedule")</h3>
                 <label class="field-row">Frequency<select class="app-input" @bind="_frequency" data-testid="recurring-frequency"><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option></select></label>
                 <label class="field-row">Interval (1–366)<input class="app-input" type="number" min="1" max="366" value="@_interval" @onchange="args=>_interval=args.Value?.ToString()??string.Empty" data-testid="recurring-interval" /></label>
                 <label class="field-row">Start date<input class="app-input" type="date" value="@_start" @onchange="args=>_start=args.Value?.ToString()??string.Empty" data-testid="recurring-start" /></label>
-                <label class="field-row">Time zone (UTC or IANA region, for example Europe/Paris)<input class="app-input" maxlength="128" @bind="_zone" data-testid="recurring-zone" /></label>
+                @if (GameLinked) { <LinkedDailyTimeZonePicker @bind-Value="_zone" Account="Todo.ObservedDailyAccountSchedule" TestId="recurring-zone" /> }
+                else { <label class="field-row">Time zone (UTC or IANA region)<input class="app-input" maxlength="128" @bind="_zone" data-testid="recurring-zone" aria-describedby="recurring-zone-help" /></label><p id="recurring-zone-help" data-testid="recurring-zone-help">Native Companion schedules support UTC and available IANA regions such as Europe/Paris, including daylight-saving transitions. Choose civil dates in the saved zone.</p> }
                 @if (_frequency == "Weekly")
                 {
                     <fieldset class="recurring-weekdays"><legend>Weekdays</legend>@foreach (var day in Weekdays) { <label class="checkbox-row"><input type="checkbox" checked="@_weekdays.Contains(day)" @onchange="args => SetWeekday(day,args.Value is true)" data-testid="@($"recurring-day-{day}")" /><span>@day</span></label> }</fieldset>
                 }
                 @if (_frequency == "Monthly") { <label class="field-row">Month dates (1–31, separated by commas)<input class="app-input" maxlength="100" @bind="_monthDays" data-testid="recurring-month-days" /></label><p>Months without a selected date produce no occurrence for that date; the date is not moved to another day.</p> }
-                <p>The review replaces the complete schedule. Clearing leaves an unscheduled Daily. Saved completions and skips remain; replacement does not erase history or backfill rewards.</p>
-                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="recurring-review-schedule">Review schedule replacement</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(task.Recurrence is null)" OnClick="ReviewClearAsync" Variant="Variant.Outlined" data-testid="recurring-clear">Review clear schedule</MudButton></div>
+                <p>The review replaces the complete schedule. Clearing is available only for an unlinked Daily. Saved completions and skips remain; replacement does not erase history or backfill rewards. </p>
+                @if (GameLinked) { <p>Linked schedules require a matching fixed UTC offset, midnight Habitica day start and one month date matching the start date. DST zones are unavailable for linked schedules. Fresh server review retains the full provider rule and current/next dates before confirmation.</p> }
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="recurring-review-schedule">Review schedule replacement</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(GameLinked || task.Recurrence is null)" OnClick="ReviewClearAsync" Variant="Variant.Outlined" data-testid="recurring-clear">Review clear schedule</MudButton></div>
             </fieldset></form>
             <fieldset disabled="@NativeDisabled">
                 <h3>Exact occurrence</h3>
@@ -62,10 +64,12 @@
     private string? _error;
     private bool _focus;
     private ElementReference _heading;
+    private CompanionTask? VisibleTask=>_source==Todo.Selection&&Todo.Snapshot?.Document.Tasks.Any(row=>row.Id==TaskId)==true?_original:null;
     private bool Stale=>_source!=Todo.Selection||_revision!=Todo.Revision||Todo.Snapshot?.Document.Tasks.FirstOrDefault(row=>row.Id==TaskId)!=_original;
     private bool GameLinked=>Todo.Snapshot?.Document.Projections.Any(row=>row.TaskId==TaskId&&(row.State!=ProjectionState.Unlinked||row.HabiticaTaskId is not null))==true;
     private bool Disabled=>_original is null||Stale||Todo.IsReadOnly||Todo.IsBusy||Todo.Commands.HasPendingIntent;
     private bool NativeDisabled=>Disabled||GameLinked;
+    private bool ScheduleDisabled=>Disabled||GameLinked&&(Todo.Selection?.Source!=TodoWorkspaceSource.Cloud||_original?.State!=CompanionTaskState.Active||Todo.Snapshot?.Document.Projections.Any(row=>row.TaskId==TaskId&&!row.IsArchived&&row.State==ProjectionState.Linked&&row.HabiticaTaskId is not null)!=true);
     private IReadOnlyList<TaskOccurrence> History=>Todo.Snapshot?.Document.Occurrences.Where(row=>row.TaskId==TaskId).OrderByDescending(row=>row.Date).ToArray()??[];
     protected override void OnParametersSet(){if(_original?.Id!=TaskId)Reload();}
     protected override async Task OnAfterRenderAsync(bool firstRender){if(_focus){_focus=false;try{await _heading.FocusAsync();}catch(JSException){}}}
@@ -80,10 +84,11 @@
     {
         if(!Enum.TryParse<RecurrenceFrequency>(_frequency,out var frequency)||!Enum.IsDefined(frequency))throw new InvalidOperationException("Choose Daily, Weekly or Monthly.");
         if(!int.TryParse(_interval,NumberStyles.None,CultureInfo.InvariantCulture,out var interval)||interval is <1 or >366)throw new InvalidOperationException("Choose an interval from 1 to 366.");
+        if(GameLinked && LinkedDailyTimeZones.Failure(_zone,Todo.ObservedDailyAccountSchedule) is {} failure) throw new InvalidOperationException(failure);
         var start=TodoTaskDraft.Date(_start)??throw new InvalidOperationException("Choose an explicit start date.");
         var dates=new List<int>();if(frequency==RecurrenceFrequency.Monthly)foreach(var text in _monthDays.Split(',')){if(!int.TryParse(text.Trim(),NumberStyles.None,CultureInfo.InvariantCulture,out var day)||day is <1 or >31||dates.Contains(day))throw new InvalidOperationException("Enter distinct month dates from 1 to 31, separated by commas.");dates.Add(day);}
         var rule=new RecurrenceRule(frequency,interval,start,_zone,frequency==RecurrenceFrequency.Weekly?Weekdays.Where(_weekdays.Contains).ToArray():[],dates);
-        var check=RecurrenceCalendar.Expand(rule,start,start);if(!check.Succeeded)throw new InvalidOperationException(check.Failure=="invalid_time_zone"?"This time zone is unavailable. Use UTC or a supported IANA region such as Europe/Paris.":"Choose a start date, interval from 1 to 366 and the required weekdays or month dates.");return rule;
+        var check=RecurrenceCalendar.Expand(rule,start,start);if(!check.Succeeded)throw new InvalidOperationException(check.Failure=="invalid_time_zone"?(GameLinked?"Choose a supported fixed UTC offset matching Habitica.":"This time zone is unavailable. Use UTC or a supported IANA region such as Europe/Paris."):"Choose a start date, interval from 1 to 366 and the required weekdays or month dates.");return rule;
     }
     private DateOnly? Date()=>TodoTaskDraft.Date(_date);
     private string OccurrenceText()
@@ -108,9 +113,9 @@
     }
     private async Task ReviewAsync(WorkspaceOperation operation,RecurrenceRule? rule=null,bool clear=false,DateOnly? date=null)
     {
-        _error=null;try{if(NativeDisabled||_source is null||_revision is null)throw new InvalidOperationException("Reload a writable unlinked task before reviewing.");await Reviewed.InvokeAsync(new(_source,_revision.Value,TaskId,operation,rule,clear,date));}catch(InvalidOperationException error){_error=error.Message;}
+        _error=null;try{if((operation==WorkspaceOperation.EditLinkedDailySchedule?ScheduleDisabled:NativeDisabled)||_source is null||_revision is null)throw new InvalidOperationException("Reload an eligible writable task before reviewing; linked schedules require the connected cloud Workspace.");await Reviewed.InvokeAsync(new(_source,_revision.Value,TaskId,operation,rule,clear,date));}catch(InvalidOperationException error){_error=error.Message;}
     }
-    private Task ReviewScheduleAsync(){try{var rule=Rule();var old=_original?.Recurrence;if(old is not null&&old.Frequency==rule.Frequency&&old.Interval==rule.Interval&&old.StartDate==rule.StartDate&&old.TimeZoneId==rule.TimeZoneId&&old.Weekdays.SequenceEqual(rule.Weekdays)&&old.DaysOfMonth.SequenceEqual(rule.DaysOfMonth)){_error="Change the schedule before reviewing.";return Task.CompletedTask;}return ReviewAsync(WorkspaceOperation.UpdateTask,rule);}catch(InvalidOperationException error){_error=error.Message;return Task.CompletedTask;}}
+    private Task ReviewScheduleAsync(){try{var rule=Rule();var old=_original?.Recurrence;if(old is not null&&old.Frequency==rule.Frequency&&old.Interval==rule.Interval&&old.StartDate==rule.StartDate&&old.TimeZoneId==rule.TimeZoneId&&old.Weekdays.SequenceEqual(rule.Weekdays)&&old.DaysOfMonth.SequenceEqual(rule.DaysOfMonth)){_error="Change the schedule before reviewing.";return Task.CompletedTask;}return ReviewAsync(GameLinked?WorkspaceOperation.EditLinkedDailySchedule:WorkspaceOperation.UpdateTask,rule);}catch(InvalidOperationException error){_error=error.Message;return Task.CompletedTask;}}
     private Task ReviewClearAsync()=>ReviewAsync(WorkspaceOperation.UpdateTask,clear:true);
     private Task ReviewOccurrenceAsync(bool skip){if(!CanOccurrence(skip)){_error="Choose an available exact occurrence. Completed, skipped and archived dates cannot be repeated.";return Task.CompletedTask;}return ReviewAsync(skip?WorkspaceOperation.SkipOccurrence:WorkspaceOperation.CompleteTask,date:Date());}
     private Task ReviewLifecycleAsync()=>ReviewAsync(_original?.State==CompanionTaskState.Paused?WorkspaceOperation.ResumeTask:WorkspaceOperation.PauseTask);

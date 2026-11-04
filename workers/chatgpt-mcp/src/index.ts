@@ -1,3 +1,5 @@
+import {workspaceTransferScopes,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
+import {eventsScope,eventToolNames} from '../../shared/events';
 import {diagnosticToolNames,diagnosticReadScope} from '../../shared/diagnostics';
 import {adoptionScopes,type AdoptionTool} from '../../shared/adoption-tools';
 import {conversionToolScopes,type ConversionTool} from '../../shared/conversion-tools';
@@ -56,9 +58,11 @@ export default {
           catch { return Response.json({ error: "invalid_request" }, { status: 400, headers }); }
           const call = body as { method?: string; params?: { name?: string } } | null;
           const name = call?.method === "tools/call" ? call.params?.name : undefined;
-          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_task_adoption_command","get_note_command","get_source_retirement_command","get_checklist_conversion_command","get_group_tag_command","recover_group_tag_receipt","get_task_command","get_organization_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
+          if((call?.method?.startsWith('events/')||name&&(eventToolNames as readonly string[]).includes(name))&&Boolean(mcpEnv.EVENTS_ENABLED)&&!['tasks:read',eventsScope].every(s=>context.auth.scope?.includes(s)))return insufficientScope(context.auth,['profile:read','tasks:read',eventsScope]);
+          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_workspace_transfer_status","get_workspace_transfer_receipt","get_workspace_transfer_record","get_task_adoption_command","get_note_command","get_source_retirement_command","get_checklist_conversion_command","get_group_tag_command","recover_group_tag_receipt","get_task_command","get_organization_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
           if(!quota.ok)return quota;
           if(name&&(diagnosticToolNames as readonly string[]).includes(name)&&!context.auth.scope?.includes(diagnosticReadScope))return insufficientScope(context.auth,['profile:read',diagnosticReadScope]);
+          if(name&&Object.hasOwn(workspaceTransferScopes,name)&&workspaceTransferScopes[name as WorkspaceTransferTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...workspaceTransferScopes[name as WorkspaceTransferTool]]);
           if(name&&Object.hasOwn(adoptionScopes,name)&&adoptionScopes[name as AdoptionTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...adoptionScopes[name as AdoptionTool]]);
           if(name&&Object.hasOwn(noteToolScopes,name)&&noteToolScopes[name as NoteTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,['profile:read',...noteToolScopes[name as NoteTool]]);
           if (name && Object.hasOwn(readScopes, name)) {

@@ -1,0 +1,14 @@
+{
+  "observed_at_utc": "2026-11-02T14:09:59.016620+00:00",
+  "source": "Authenticated Netlify Usage & billing UI; read-only refresh",
+  "team": "Flying Monolith / strexet",
+  "plan": "Free",
+  "remaining_credits": 198,
+  "monthly_credits": 300,
+  "observed_deploys": 6,
+  "deploy_credits": 90,
+  "selected_remaining_production_deploys": 3,
+  "expected_additional_deploy_credits": 45,
+  "paid_upgrade": false,
+  "limits": "Provider consumption may lag; stop rather than upgrade on quota refusal."
+}

@@ -1,0 +1,101 @@
+{
+  "workers": {
+    "chatgpt-auth": {
+      "version": "d78ff6f7-f294-4f3f-8bcc-29cbdf1efffd",
+      "health": {
+        "service": "auth",
+        "authorization": "enabled"
+      },
+      "bindings_preserved": true
+    },
+    "companion-workspace": {
+      "version": "a6d853b0-f595-4251-b97b-1751ec1a1578",
+      "health": {
+        "service": "workspace",
+        "enabled": true
+      },
+      "bindings_preserved": true
+    },
+    "chatgpt-mcp": {
+      "version": "b8323e80-155a-4ca4-a21f-d1e3328f20b0",
+      "health": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      },
+      "bindings_preserved": true
+    }
+  },
+  "migrations": {
+    "chatgpt-auth": {
+      "applied_count": 15,
+      "pending": []
+    },
+    "companion-workspace": {
+      "applied_count": 23,
+      "pending": []
+    }
+  },
+  "assets": {
+    "index.html": {
+      "bytes": 1356,
+      "sha256": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+      "matches_reviewed_artifact": true
+    },
+    "appsettings.json": {
+      "bytes": 583,
+      "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+      "matches_reviewed_artifact": true
+    },
+    "_framework/blazor.webassembly.js": {
+      "bytes": 60300,
+      "sha256": "82f1df9e775f12ed6d45fd2b15be7df3cad6abb213228b4e684f3e00c6ca61b7",
+      "matches_reviewed_artifact": true
+    },
+    "_framework/blazor.boot.json": {
+      "bytes": 5994,
+      "sha256": "762072937858573f6f8b08c26e1d7727eac39c4d13e0fad3cae093fd099e6929",
+      "matches_reviewed_artifact": true
+    },
+    "_framework/Habitica.WebApp.wasm": {
+      "bytes": 3024665,
+      "sha256": "d07027fc2e0744a55580b4c8139f69347b6d6176d465d2be87b0b6161546d8eb",
+      "matches_reviewed_artifact": true
+    },
+    "service-worker.js": {
+      "bytes": 5521,
+      "sha256": "eefbc8b79da78ec1eb31a0f615c525399297f26e39a17a58466249085d777d1a",
+      "matches_reviewed_artifact": true
+    },
+    "service-worker-assets.js": {
+      "bytes": 12371,
+      "sha256": "af7d0497429e4b9fabfd9204e656d32e4b8824ca4263f4f98ed2407a8b084714",
+      "matches_reviewed_artifact": true
+    },
+    "css/app.css": {
+      "bytes": 132848,
+      "sha256": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+      "matches_reviewed_artifact": true
+    },
+    "js/field-focus.js": {
+      "bytes": 538,
+      "sha256": "147ad63b0da9f7897e33ed1fcc9ba3c70ba1c104814ad7e61e6e4cbd1a30232f",
+      "matches_reviewed_artifact": true
+    },
+    "js/pwa.js": {
+      "bytes": 512,
+      "sha256": "3bf614d0170d92eb85b8be88dd731cf4ba85b793b39b13a669e02418d97d132f",
+      "matches_reviewed_artifact": true
+    },
+    "downloads/habitica-companion-0.3.1-ux-ui-20261104.zip": {
+      "bytes": 165265,
+      "sha256": "7cd22dbd95b6aaf9f924adadf5d34dbabcc18480e5a5008a99541938721e6f1b",
+      "matches_reviewed_artifact": true
+    }
+  },
+  "oauth": {
+    "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+    "pkce_s256": true,
+    "resource": "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+  }
+}

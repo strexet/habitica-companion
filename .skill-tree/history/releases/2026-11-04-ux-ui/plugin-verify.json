@@ -1,0 +1,13 @@
+{
+  "name": "plugin-verify",
+  "argv": [
+    "python3",
+    "deploy/package-plugin.py",
+    "verify-archive",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/plugin.zip"
+  ],
+  "exit_code": 0,
+  "seconds": 0.08,
+  "deadline_seconds": 30,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/plugin-verify.log"
+}

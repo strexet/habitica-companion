@@ -1,0 +1,18 @@
+{
+  "chatgpt-auth": {
+    "database": "ada5184c-865d-4c6a-864a-88618f19c06f",
+    "pending": [
+      "0014-event-callbacks.sql",
+      "0015-event-dispatches.sql"
+    ],
+    "applied_count": 13
+  },
+  "companion-workspace": {
+    "database": "383e0502-7be4-42f9-b818-ee9710f3fa4d",
+    "pending": [
+      "0019-event-subscriptions.sql",
+      "0020-event-outbox.sql"
+    ],
+    "applied_count": 18
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "check": "prose",
+    "path": "skill-tree/history/releases/2026-10-30-session-recovery/readme.md",
+    "errors": []
+  },
+  {
+    "check": "prose",
+    "path": "skill-tree/documents/session-recovery.md",
+    "errors": []
+  },
+  {
+    "command": [
+      "python3",
+      ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+      "skill-tree/documents/future.md",
+      "--strict",
+      "--format",
+      "json"
+    ],
+    "result": {
+      "ok": true,
+      "errors": []
+    }
+  },
+  {
+    "command": [
+      "python3",
+      ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+      ".",
+      "--format",
+      "json"
+    ],
+    "result": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    }
+  },
+  {
+    "check": "git diff --check",
+    "exit_code": 0
+  }
+]

@@ -1,6 +1,8 @@
+import {clearEvents} from './events';
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
+import {recoveryDescriptor} from '../../shared/connection-recovery';
 import {clearPushContext} from './push-subscriptions';
 
 export const consentVersion = "integration-v1";
@@ -8,6 +10,7 @@ const headers = { "cache-control": "no-store", "x-content-type-options": "nosnif
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export interface IntegrationProfile {
   profile_id: string;
+  consent_version: string;
   credential_ciphertext: string | null;
   credential_iv: string | null;
   credential_key_version: string | null;
@@ -61,7 +64,7 @@ export async function activeProfile(env: AuthEnv, id: string, connectionId?: str
   }
   return profile;
 }
-async function verifyHabitica(credential: HabiticaCredential, env: AuthEnv): Promise<string | null> {
+export async function verifyHabitica(credential: HabiticaCredential, env: AuthEnv): Promise<string | null> {
   if (!env.HABITICA_X_CLIENT_HEADER) throw new VaultError("integration_unavailable", 503);
   await upstreamBudget(env);
   const response = await upstreamFetch(env,"https://habitica.com/api/v3/user?userFields=_id,profile", {
@@ -122,20 +125,30 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     .bind(profileId, connectionId, profileId, hash));
   const results = await env.HABITICA_INTEGRATION_DB.batch(writes);
   if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
-  if(previous&&previous.connection_id!==connectionId)await clearPushContext(env,profileId,previous.connection_id,false);
-  return Response.json({ profileId, managementToken }, { status: 201, headers });
+  if(previous&&previous.connection_id!==connectionId){await clearPushContext(env,profileId,previous.connection_id,false);await clearEvents(env,profileId,previous.connection_id);}
+  return Response.json({ profileId, managementToken, descriptor:recoveryDescriptor({profile_id:profileId,connection_id:connectionId}) }, { status: 201, headers });
+}
+export async function managementTokenMatches(env:AuthEnv, profile:IntegrationProfile, token:string):Promise<boolean> {
+  if (await tokenMatches(token,profile.management_token_hash)) return true;
+  const hash=await tokenHash(token);
+  const session=await env.HABITICA_INTEGRATION_DB.prepare(`SELECT token_hash FROM integration_recovery_sessions
+    WHERE token_hash=? AND profile_id=? AND connection_id=? AND management_anchor_hash=? AND expires_at_utc>?`)
+    .bind(hash,profile.profile_id,profile.connection_id,profile.management_token_hash,new Date().toISOString()).first<{token_hash:string}>();
+  return session !== null && await tokenMatches(token,session.token_hash);
 }
 export async function managedProfile(request: Request, env: AuthEnv, profileId: string, applyBudget = true): Promise<IntegrationProfile> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
-  if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  if (!token || !profile || !await managementTokenMatches(env,profile,token)) throw new VaultError("unauthorized", 401);
   if(applyBudget)await charge(env,"management:profile:"+profileId,30);
-  return activeProfile(env, profileId);
+  const current = await activeProfile(env, profileId, profile.connection_id);
+  if (current.management_token_hash !== profile.management_token_hash) throw new VaultError("unauthorized",401);
+  return current;
 }
 async function manage(request: Request, env: AuthEnv, profileId: string, cleanup?: (id: string, connectionId: string, deleteProfile:boolean) => Promise<void>): Promise<Response> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
-  if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  if (!token || !profile || !await managementTokenMatches(env,profile,token)) throw new VaultError("unauthorized", 401);
   await charge(env,"management:recovery:"+profileId,20);
   const now = new Date().toISOString();
   const blocked = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,

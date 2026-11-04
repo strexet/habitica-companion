@@ -14,7 +14,7 @@ public sealed class PwaPushBrowser(IJSRuntime javascript) : IPushBrowser, IAsync
             return await _module.InvokeAsync<BrowserPushCapability>("capability", cancellationToken);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
-        catch (JSException) { return new("unsupported", "unsupported"); }
+        catch (JSException) { return new("unprepared", "unsupported"); }
     }
     public Task<BrowserPushCurrent> ReadCurrentAsync(CancellationToken cancellationToken) => InvokeAsync("current", new BrowserPushCurrent("unprepared", "unsupported", false, null), cancellationToken);
     // Prepare before rendering an enabled action. Never await a module import in the click path.

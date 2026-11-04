@@ -1,0 +1,55 @@
+{
+  "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+  "attempt_id": "C-fadec9e5-be4f-436c-a4d0-277b62ca4a28",
+  "check_id": "daily-schedule-gateway",
+  "definition": "65b1097bf79329fbf02f69e1a7767fc96600d77ae013cbb3b9293d6c55c1ad25",
+  "environment_identity": "55406b9e6b3c299e3b8c8be7a95c3019d8157ee4af9b072aef7fa22424947157",
+  "key": "1dc8d3430d226ee7c39f8a187672d71d96884c57126922af40182121de2dda44",
+  "launch": {
+    "assertion": "Lossless linked Daily schedule edits, fresh provider preconditions and original outcome authority.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove actual Auth gateway persistence, fresh refusal or lost acknowledgement behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T20:02:25.727407+00:00",
+    "execution_profile": "linked-daily-schedule-gateway-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T19:58:25.915621+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/linked-daily-schedule-v1.json": "b7bf77dea01f949414db3b4c0cdda44b2f58801c5ed74ff86f6b45e1ffb2475c",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/linked-daily-schedule.test.mjs": "b1f91d0eb79ef7167796a7d6b9647ef1c6bbfb97f569a24a37070f04a6e70f89",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "2cb3f94ff39aebc0419ebcb9edfa5d4e46ad029ee6dccccd6836a7c9dbba9a95",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

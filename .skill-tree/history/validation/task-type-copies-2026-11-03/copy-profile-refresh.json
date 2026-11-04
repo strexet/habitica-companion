@@ -1,0 +1,31 @@
+{
+  "action": "installed",
+  "changed": [
+    ".agents/skills/skill-tree-add-pending-task",
+    ".agents/skills/skill-tree-create-documents-snapshot",
+    ".agents/skills/skill-tree-implement-all",
+    ".agents/skills/skill-tree-implement-next-future-task",
+    ".agents/skills/skill-tree-process-future-pending",
+    ".agents/skills/skill-tree-repo-documentation",
+    ".agents/skills/skill-tree-repo-documentation-audit",
+    ".agents/skills/skill-tree-work-through-next",
+    ".skill-tree/installation/profile.json",
+    ".skill-tree/documents/future.json"
+  ],
+  "facts": {
+    "capabilities": {
+      "playwright-test": {
+        "package": "@playwright/test",
+        "state": "absent",
+        "version": null
+      }
+    },
+    "node": "22",
+    "package_manager": "npm",
+    "packages": {},
+    "test_assemblies": [],
+    "ui": []
+  },
+  "gaps": []
+}
+

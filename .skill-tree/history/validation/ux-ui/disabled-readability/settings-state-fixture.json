@@ -1,0 +1,10 @@
+{
+  "failure": ".skill-tree/history/validation/ux-ui/disabled-readability/browser/7fa8185c-596a-442f-8ebb-65ff6b83fd47-failure.json",
+  "observed": "The settings-actions capture is a session-action subtree with no disabled elements. The frozen task, Daily, uncertain Notes, Notes consent and stale inventory samples passed before the required-sample guard rejected that empty classification.",
+  "repair": "Select the existing connection-fresh-tab full Settings capture instead. Its independent test verifies the enrollment button remains disabled without consent before invoking the separate existing-access restoration action. Keep the nonzero disabled-sample guard.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

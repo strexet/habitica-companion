@@ -1,0 +1,18 @@
+{
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "check_id": "daily-schedule-rendering",
+  "execution": {
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+    "profile_id": "linked-daily-ui-browser-v1",
+    "deadline_utc": "2026-11-02T20:01:16.636370+00:00",
+    "cleanup_seconds": 30,
+    "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22",
+    "session_identity": "rendered-c03c23f8",
+    "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+    "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "identity_evidence": [
+      ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-c03c23f8-identity.json"
+    ]
+  }
+}

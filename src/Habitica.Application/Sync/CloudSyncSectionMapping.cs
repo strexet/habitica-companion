@@ -14,6 +14,7 @@ public static class CloudSyncSectionMapping
         CloudSyncSection.PartyCurrent,
         CloudSyncSection.PartyCronHistory,
         CloudSyncSection.ColorSchemes,
+        CloudSyncSection.CompanionPreferences,
         CloudSyncSection.Diagnostics,
         CloudSyncSection.SyncMetadata
     };
@@ -39,6 +40,7 @@ public static class CloudSyncSectionMapping
             CloudSyncSection.PartyCurrent => StorageKeys.LatestPartySnapshot,
             CloudSyncSection.PartyCronHistory => StorageKeys.PartyCronHistory,
             CloudSyncSection.ColorSchemes => StorageKeys.ColorSchemePreferences,
+            CloudSyncSection.CompanionPreferences => StorageKeys.CompanionPreferences,
             CloudSyncSection.Diagnostics => StorageKeys.DiagnosticsLogEntries,
             CloudSyncSection.SyncMetadata => null,
             _ => null
@@ -57,6 +59,7 @@ public static class CloudSyncSectionMapping
             StorageKeys.LatestPartySnapshot => CloudSyncSection.PartyCurrent,
             StorageKeys.PartyCronHistory => CloudSyncSection.PartyCronHistory,
             StorageKeys.ColorSchemePreferences => CloudSyncSection.ColorSchemes,
+            StorageKeys.CompanionPreferences => CloudSyncSection.CompanionPreferences,
             StorageKeys.DiagnosticsLogEntries => CloudSyncSection.Diagnostics,
             _ => null
         };
@@ -74,6 +77,7 @@ public static class CloudSyncSectionMapping
             CloudSyncSection.PartyCurrent => "party-current",
             CloudSyncSection.PartyCronHistory => "party-cron-history",
             CloudSyncSection.ColorSchemes => "color-schemes",
+            CloudSyncSection.CompanionPreferences => "companion-preferences",
             CloudSyncSection.Diagnostics => "diagnostics",
             CloudSyncSection.SyncMetadata => "sync-metadata",
             _ => section.ToString().ToLowerInvariant()

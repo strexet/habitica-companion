@@ -1,0 +1,18 @@
+{
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+  "changed_files": [
+    "tests/browser-qualification/qualification-core.mjs",
+    "tests/browser-qualification/qualification-frame.mjs",
+    "tests/browser-qualification/ux-ui-checks.test.mjs",
+    "tests/browser-qualification/ux-ui-contract.mjs",
+    "tests/browser-qualification/ux-ui-adapters.json",
+    "tests/browser-qualification/ux-ui.py",
+    "tests/browser-qualification/ux-ui.mjs",
+    "tests/browser-qualification/ux-ui-native-date.mjs",
+    "tests/browser-qualification/ux-ui-shared-journey.mjs",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+    ".skill-tree/validation-recipes.json",
+    ".skill-tree/documents/testing.md",
+    ".skill-tree/documents/ux-ui-manifest.md"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "assertion": "Current Release conversion routes preserve exact source identities, explicit field-loss review, original receipt recovery, keyboard focus and readable light/dark phone/desktop normal/enlarged-text layouts without provider mutations.",
+  "attempt_id": "C-092a63ea-7359-467f-baca-444b5a0664d0",
+  "check_id": "conversion-rendering",
+  "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+  "environment_identity": "23b60ad14877c5ffd0cf0d40cf0757c922c0879d8b3fd63ea97b4a236f7d4db8",
+  "key": "6c761c7cc2e979fe351ca6f334faefe55ea7a01660b96c3f566cbbfbf6c7fb60",
+  "launch": null,
+  "prepared_at": "2026-11-02T21:24:21.170663+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/task-type-copy-ui.py"
+    ],
+    "execution_notes": "Bounded current Release publish, current conversion Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, disabled controls and focus in Chromium/WebKit, plus actual hydrated type-copy routes with isolated Auth/Workspace Workers/D1 and native IndexedDB. Service workers blocked; no real provider write, device permission or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/task-type-copy-ui.py",
+      "tests/browser/task-type-copy-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser/linked-daily-fixture.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "15ca587e33b70a1ed975c135814d0a1de736bba423ac5eda572fc689bc0e303f",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+    "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+    "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528"
+  },
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

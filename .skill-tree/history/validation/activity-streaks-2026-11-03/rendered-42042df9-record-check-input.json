@@ -1,0 +1,25 @@
+{
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+  "check_id": "activity-rendering",
+  "attempt_id": "C-f77bc2c9-33a5-4d4e-9d9b-c4d5cf2efeb4",
+  "environment_identity": "9a067715b90d8398612834b758e727eb4a505792877f5f948bfc22e07634677e",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. No external request, real login, cloud write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 44.31062504183501
+  },
+  "evidence": [
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-execution.log",
+    ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-42042df9-identity.json",
+    ".skill-tree/artifacts/activity-streaks-ui/1793645919457593000/report.json"
+  ],
+  "counts": {
+    "expected": 114,
+    "discovered": 114,
+    "passed": 114,
+    "failed": 0,
+    "skipped": 0
+  }
+}

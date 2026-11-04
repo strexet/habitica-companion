@@ -15,6 +15,8 @@ public interface IWorkspaceCloudClient
     Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceStatusResult(false, "Workspace status is unavailable."));
     bool ConnectionStatusVerified => false;
     Task<WorkspaceActionResult> RefreshConnectionStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceActionResult(false, "Cloud connection status is unavailable."));
+    Task<WorkspaceActionResult> RecoverConnectionAsync(Guid? expectedWorkspaceId, CancellationToken cancellationToken)
+        => Task.FromResult(new WorkspaceActionResult(false, "recovery_unavailable"));
     bool IsAvailable { get; }
     bool PartyPlanningAvailable => false;
     Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken cancellationToken) => Task.FromResult(new PartyPlanningResult(false, "Authenticated party planning is unavailable."));

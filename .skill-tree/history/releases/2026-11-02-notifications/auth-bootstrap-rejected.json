@@ -1,0 +1,7 @@
+{
+  "classification": "executed-control",
+  "state": "provider_http_400_before_version_creation",
+  "active_version_unchanged": "736020af-860e-40f3-9679-1715bd25da5e",
+  "source_hashes_unchanged": true,
+  "secret_value_never_logged": true
+}

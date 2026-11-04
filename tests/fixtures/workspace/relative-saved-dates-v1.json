@@ -1,0 +1,433 @@
+{
+  "version": 1,
+  "oracle": "Python datetime and IANA ZoneInfo civil calendar; no application or Worker algorithm used.",
+  "cases": [
+    {
+      "name": "UTC midnight",
+      "asOfUtc": "2026-11-03T00:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "beforeToday"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-03T00:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-11-03",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-03",
+          "through": "2026-11-03"
+        },
+        "deadline": {
+          "preset": "beforeToday",
+          "from": null,
+          "through": "2026-11-02"
+        }
+      }
+    },
+    {
+      "name": "New York preceding day",
+      "asOfUtc": "2026-11-03T00:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "nextSevenDays"
+        },
+        "timeZoneId": "America/New_York"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-03T00:00:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-11-02",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-02",
+          "through": "2026-11-02"
+        },
+        "deadline": {
+          "preset": "nextSevenDays",
+          "from": "2026-11-02",
+          "through": "2026-11-08"
+        }
+      }
+    },
+    {
+      "name": "Tokyo next day",
+      "asOfUtc": "2026-11-02T20:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "thisWeek"
+        },
+        "timeZoneId": "Asia/Tokyo"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-02T20:00:00Z",
+        "timeZoneId": "Asia/Tokyo",
+        "localDate": "2026-11-03",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-03",
+          "through": "2026-11-03"
+        },
+        "deadline": {
+          "preset": "thisWeek",
+          "from": "2026-11-02",
+          "through": "2026-11-08"
+        }
+      }
+    },
+    {
+      "name": "DST spring before gap",
+      "asOfUtc": "2026-03-08T06:59:59Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "thisWeek"
+        },
+        "timeZoneId": "America/New_York"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-03-08T06:59:59Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-03-08",
+        "planned": {
+          "preset": "today",
+          "from": "2026-03-08",
+          "through": "2026-03-08"
+        },
+        "deadline": {
+          "preset": "thisWeek",
+          "from": "2026-03-02",
+          "through": "2026-03-08"
+        }
+      }
+    },
+    {
+      "name": "DST spring after gap",
+      "asOfUtc": "2026-03-08T07:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "thisWeek"
+        },
+        "timeZoneId": "America/New_York"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-03-08T07:00:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-03-08",
+        "planned": {
+          "preset": "today",
+          "from": "2026-03-08",
+          "through": "2026-03-08"
+        },
+        "deadline": {
+          "preset": "thisWeek",
+          "from": "2026-03-02",
+          "through": "2026-03-08"
+        }
+      }
+    },
+    {
+      "name": "DST fall first local hour",
+      "asOfUtc": "2026-11-01T05:30:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "nextSevenDays"
+        },
+        "timeZoneId": "America/New_York"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-01T05:30:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-11-01",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-01",
+          "through": "2026-11-01"
+        },
+        "deadline": {
+          "preset": "nextSevenDays",
+          "from": "2026-11-01",
+          "through": "2026-11-07"
+        }
+      }
+    },
+    {
+      "name": "DST fall repeated local hour",
+      "asOfUtc": "2026-11-01T06:30:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "nextSevenDays"
+        },
+        "timeZoneId": "America/New_York"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-01T06:30:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-11-01",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-01",
+          "through": "2026-11-01"
+        },
+        "deadline": {
+          "preset": "nextSevenDays",
+          "from": "2026-11-01",
+          "through": "2026-11-07"
+        }
+      }
+    },
+    {
+      "name": "Leap day",
+      "asOfUtc": "2028-02-29T12:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "beforeToday"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2028-02-29T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2028-02-29",
+        "planned": {
+          "preset": "today",
+          "from": "2028-02-29",
+          "through": "2028-02-29"
+        },
+        "deadline": {
+          "preset": "beforeToday",
+          "from": null,
+          "through": "2028-02-28"
+        }
+      }
+    },
+    {
+      "name": "Year crossing seven days",
+      "asOfUtc": "2026-12-29T12:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "nextSevenDays",
+          "deadlineRelative": "thisWeek"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-12-29T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-12-29",
+        "planned": {
+          "preset": "nextSevenDays",
+          "from": "2026-12-29",
+          "through": "2027-01-04"
+        },
+        "deadline": {
+          "preset": "thisWeek",
+          "from": "2026-12-28",
+          "through": "2027-01-03"
+        }
+      }
+    },
+    {
+      "name": "Year crossing Monday week",
+      "asOfUtc": "2026-01-01T12:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "thisWeek",
+          "deadlineRelative": "noDate"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-01-01T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-01-01",
+        "planned": {
+          "preset": "thisWeek",
+          "from": "2025-12-29",
+          "through": "2026-01-04"
+        },
+        "deadline": {
+          "preset": "noDate",
+          "from": null,
+          "through": null
+        }
+      }
+    },
+    {
+      "name": "Sunday week end",
+      "asOfUtc": "2026-11-08T23:59:59Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "thisWeek",
+          "deadlineRelative": "beforeToday"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-08T23:59:59Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-11-08",
+        "planned": {
+          "preset": "thisWeek",
+          "from": "2026-11-02",
+          "through": "2026-11-08"
+        },
+        "deadline": {
+          "preset": "beforeToday",
+          "from": null,
+          "through": "2026-11-07"
+        }
+      }
+    },
+    {
+      "name": "Monday week start",
+      "asOfUtc": "2026-11-09T00:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "thisWeek",
+          "deadlineRelative": "nextSevenDays"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-09T00:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-11-09",
+        "planned": {
+          "preset": "thisWeek",
+          "from": "2026-11-09",
+          "through": "2026-11-15"
+        },
+        "deadline": {
+          "preset": "nextSevenDays",
+          "from": "2026-11-09",
+          "through": "2026-11-15"
+        }
+      }
+    },
+    {
+      "name": "Missing dates only",
+      "asOfUtc": "2026-11-03T12:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "noDate",
+          "deadlineRelative": "noDate"
+        },
+        "timeZoneId": "UTC"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-03T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-11-03",
+        "planned": {
+          "preset": "noDate",
+          "from": null,
+          "through": null
+        },
+        "deadline": {
+          "preset": "noDate",
+          "from": null,
+          "through": null
+        }
+      }
+    },
+    {
+      "name": "Only deadline relative",
+      "asOfUtc": "2026-11-03T12:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "deadlineRelative": "beforeToday"
+        },
+        "timeZoneId": "Europe/Berlin"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-03T12:00:00Z",
+        "timeZoneId": "Europe/Berlin",
+        "localDate": "2026-11-03",
+        "planned": null,
+        "deadline": {
+          "preset": "beforeToday",
+          "from": null,
+          "through": "2026-11-02"
+        }
+      }
+    },
+    {
+      "name": "Half hour zone",
+      "asOfUtc": "2026-11-02T19:00:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "nextSevenDays"
+        },
+        "timeZoneId": "Asia/Kolkata"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-02T19:00:00Z",
+        "timeZoneId": "Asia/Kolkata",
+        "localDate": "2026-11-03",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-03",
+          "through": "2026-11-03"
+        },
+        "deadline": {
+          "preset": "nextSevenDays",
+          "from": "2026-11-03",
+          "through": "2026-11-09"
+        }
+      }
+    },
+    {
+      "name": "Date line zone",
+      "asOfUtc": "2026-11-02T10:30:00Z",
+      "query": {
+        "source": "tasks",
+        "filter": {
+          "plannedRelative": "today",
+          "deadlineRelative": "thisWeek"
+        },
+        "timeZoneId": "Pacific/Kiritimati"
+      },
+      "evaluation": {
+        "asOfUtc": "2026-11-02T10:30:00Z",
+        "timeZoneId": "Pacific/Kiritimati",
+        "localDate": "2026-11-03",
+        "planned": {
+          "preset": "today",
+          "from": "2026-11-03",
+          "through": "2026-11-03"
+        },
+        "deadline": {
+          "preset": "thisWeek",
+          "from": "2026-11-02",
+          "through": "2026-11-08"
+        }
+      }
+    }
+  ]
+}

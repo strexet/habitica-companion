@@ -1,0 +1,475 @@
+{
+  "admission": {
+    "environment_id": "0556541b487e3234387f81a3c2522f19211405cc9f4de74adbdc38b6a91fcd77",
+    "flavor": "web",
+    "identity": "e7cc99cab045795ec9e4ab0562a1f1dd5781b6ab5dbf66a2a5764cbfb8e090e5",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "checks": {
+    "push-capability-state-behavior": {
+      "attempt": {
+        "attempt_id": "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec",
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+        "key": "66712fd238f58ccad038204119de979a3b9a2b86cf5a16cf3c056dbe4509a706",
+        "launch": {
+          "assertion": "Exercise public component/controller behavior with independent expected outcomes: Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts. Require nonzero discovery and no required skips.",
+          "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+          "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+          "cleanup_seconds": 15,
+          "deadline_utc": "2026-11-03T20:02:15.898519+00:00",
+          "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T19:57:16.628765+00:00",
+        "recipe": {
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "-m:1",
+            "-nodeReuse:false",
+            "--filter",
+            "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+            "--logger",
+            "trx;LogFileName=push-capability-state.trx",
+            "--results-directory",
+            ".skill-tree/history/validation/ux-ui/push-capability-state/unit"
+          ],
+          "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "global.json",
+            "Directory.Build.props",
+            "Directory.Packages.props",
+            "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+            "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+            "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "csharp": "12.0",
+            "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+            "framework": "Blazor WebAssembly net8.0",
+            "sdk_declaration": "8.0.125",
+            "test_frameworks": {
+              "Microsoft.NET.Test.Sdk": "18.4.0",
+              "bunit": "2.7.2",
+              "xunit": "2.9.3"
+            }
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        }
+      },
+      "receipts": {
+        "C-323aa80a-42db-41bb-9003-476284dc1f0f": {
+          "actual_lane": "unit",
+          "attempt_id": "C-323aa80a-42db-41bb-9003-476284dc1f0f",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 32,
+            "expected": 32,
+            "failed": 8,
+            "passed": 24,
+            "skipped": 0
+          },
+          "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+          "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.log",
+              "sha256": "cbf3a11c4209c687395dbadd5cc44c42ea520935d818c8ebde37d95f208c31d0"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.trx",
+              "sha256": "9507b6263a6df4e22159acf59d9a9420ec4073208068bb5b4f6c114b6b16ca12"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_category": "expected-behavior",
+          "key": "c88ce3524eff7e4bac28383db41e8c992e7c0ef5386037467cfc7fcee43691a4",
+          "payload_hash": "185bda516360da359ab65c3bf75b44f520ab14a47aac8cf2d1c586238bfb3ff1",
+          "recorded_at": "2026-11-03T19:54:20.654153+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Components/PushDevicePanel.razor": "0750315a9dd7b99ad44a07243548edc5cf29de1a7fe6006fb1d7a57b24d5cb90",
+            "src/Habitica.WebApp/State/PushDeviceController.cs": "2fe2c225bfede92169b62c99cb4e026e2ebcfa633cd6ef8e7f19f791df474622",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.724502415861934
+          }
+        },
+        "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec": {
+          "actual_lane": "unit",
+          "attempt_id": "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 32,
+            "expected": 32,
+            "failed": 0,
+            "passed": 32,
+            "skipped": 0
+          },
+          "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+          "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+              "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+              "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "66712fd238f58ccad038204119de979a3b9a2b86cf5a16cf3c056dbe4509a706",
+          "payload_hash": "940ecfff46bab5e74deddaafe5f8765f3517dc5476716e882bed6e3c5ee55d36",
+          "recorded_at": "2026-11-03T19:57:26.983024+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+            "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 9.806024541612715
+          }
+        },
+        "C-4827f372-92b4-452d-a521-636104949eab": {
+          "actual_lane": "unit",
+          "attempt_id": "C-4827f372-92b4-452d-a521-636104949eab",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 32,
+            "expected": 32,
+            "failed": 1,
+            "passed": 31,
+            "skipped": 0
+          },
+          "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+          "diagnostic_key": "44229f6167edb40bd33c93c73e5c7687fd4d6a2017b1de8b6b88a9ced37415ac",
+          "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-4827f372-92b4-452d-a521-636104949eab.log",
+              "sha256": "0f5845737e1c5f7f6bab21ea0c10d2723fb0f8839a65dc6d8e3fb9e56c3a1eec"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-4827f372-92b4-452d-a521-636104949eab.trx",
+              "sha256": "8eefd9be0f11ba9c99de7f2b585c32f2a2c9203f5b4acde3c9fa599588961108"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_signature": "d0da1c20514a4163a079fa627f5d862c504934b09027c518bbe3275358412cec",
+          "key": "f155d2b20fd4151c696a462bb8546058b6f4c968223eb1135046cb549843a9a6",
+          "payload_hash": "2b1ce2b7858990456b79d1f25b64029e2e841c906a4ad8674fa39e9f163b9d6f",
+          "recorded_at": "2026-11-03T19:55:41.795538+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+            "src/Habitica.WebApp/State/PushDeviceController.cs": "db42339a364d30560344adb51cbab3412cfd16b7f13fbff2232d1a3397c00af5",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.109161874745041
+          }
+        }
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-323aa80a-42db-41bb-9003-476284dc1f0f",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 32,
+          "expected": 32,
+          "failed": 8,
+          "passed": 24,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.log",
+            "sha256": "cbf3a11c4209c687395dbadd5cc44c42ea520935d818c8ebde37d95f208c31d0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-323aa80a-42db-41bb-9003-476284dc1f0f.trx",
+            "sha256": "9507b6263a6df4e22159acf59d9a9420ec4073208068bb5b4f6c114b6b16ca12"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "c88ce3524eff7e4bac28383db41e8c992e7c0ef5386037467cfc7fcee43691a4",
+        "payload_hash": "185bda516360da359ab65c3bf75b44f520ab14a47aac8cf2d1c586238bfb3ff1",
+        "recorded_at": "2026-11-03T19:54:20.654153+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "0750315a9dd7b99ad44a07243548edc5cf29de1a7fe6006fb1d7a57b24d5cb90",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "2fe2c225bfede92169b62c99cb4e026e2ebcfa633cd6ef8e7f19f791df474622",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.724502415861934
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 32,
+          "expected": 32,
+          "failed": 0,
+          "passed": 32,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.log",
+            "sha256": "52c3bb32ae2894fb338f51bad3f844f233639c4e9362387004c00e8289fb54e1"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/C-3816fdf9-3f34-4cc7-87bb-4a551f8888ec.trx",
+            "sha256": "bed90fb15ea1034947f6aa0a49c955cd2496ca95802a036f9c4ea7108a4781a6"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "66712fd238f58ccad038204119de979a3b9a2b86cf5a16cf3c056dbe4509a706",
+        "payload_hash": "940ecfff46bab5e74deddaafe5f8765f3517dc5476716e882bed6e3c5ee55d36",
+        "recorded_at": "2026-11-03T19:57:26.983024+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.806024541612715
+        }
+      }
+    },
+    "push-capability-state-rendered": {
+      "attempt": {
+        "attempt_id": "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0",
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "13f3c8327e9d88e6e9f75d799d520dd9cc8f2d580261770d4e0ddb2e65c292b8",
+        "key": "24b56801bc411f54f7aecf2432a646f5e71b42084b2198ed9867b437fd950a7b",
+        "launch": {
+          "assertion": "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+          "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+          "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+          "cleanup_seconds": 30,
+          "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+          "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T19:59:59.901345+00:00",
+        "recipe": {
+          "argv": [
+            "python3",
+            "tests/browser-qualification/ux-ui.py",
+            "push-capability-state",
+            ".skill-tree/history/validation/ux-ui/push-capability-state/browser"
+          ],
+          "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "tests/browser-qualification/ux-ui.py",
+            "tests/browser-qualification/ux-ui.mjs",
+            "tests/browser-qualification/ux-ui-contract.mjs",
+            "tests/browser-qualification/ux-ui-native-date.mjs",
+            "tests/browser-qualification/ux-ui-shared-journey.mjs",
+            "tests/browser-qualification/ux-ui-adapters.json",
+            "tests/browser-qualification/ux-ui-checks.test.mjs",
+            "tests/browser-qualification/prepare.py",
+            "tests/browser-qualification/qualification-core.mjs",
+            "tests/browser-qualification/qualification-frame.mjs",
+            "tests/browser-qualification/qualification-session.mjs",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+            "src/Habitica.WebApp/Habitica.WebApp.csproj",
+            "tests/browser-qualification/ux-ui-equipment-metrics.mjs"
+          ],
+          "lane": "browser",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+            "framework": "Blazor WebAssembly8 Release",
+            "node": "22.x"
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+        }
+      },
+      "receipts": {
+        "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0": {
+          "actual_lane": "browser",
+          "attempt_id": "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 865,
+            "expected": 865,
+            "failed": 0,
+            "passed": 865,
+            "skipped": 0
+          },
+          "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+          "environment_identity": "13f3c8327e9d88e6e9f75d799d520dd9cc8f2d580261770d4e0ddb2e65c292b8",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+              "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+            }
+          ],
+          "execution_sessions": {
+            "341007fb67682d17035f3df4e2952ebc779f94744b19a65544990b861a966564": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "8c138a75133081c6f502db3a3c4a22237e0fa622a0c05740ee8cf1b5a55dc3d2",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/push-capability-state/launch-1793735999598814000.json"
+              ],
+              "profile_id": "aae098d94cd18a820a06e444c424f200783000ee33bce4c6befbd8f95ad7ad49",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/push-capability-state",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "24b56801bc411f54f7aecf2432a646f5e71b42084b2198ed9867b437fd950a7b",
+          "payload_hash": "258c799bfa641c5b061268e68b69e7e99ece9d633f96c0151f236d118eb55a9f",
+          "recorded_at": "2026-11-03T20:02:43.180600+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+            "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+          },
+          "timing": {
+            "tool_wall_seconds": 162.44799458328635
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-c7f469ad-f299-4c29-b1f0-3ea69babaec0",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 865,
+          "expected": 865,
+          "failed": 0,
+          "passed": 865,
+          "skipped": 0
+        },
+        "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+        "environment_identity": "13f3c8327e9d88e6e9f75d799d520dd9cc8f2d580261770d4e0ddb2e65c292b8",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/push-capability-state/browser/0e23ef1d-737d-4baa-99e8-a98fc2e69aa6.json",
+            "sha256": "98bf53bcf5cd603df26b635cf1152ab98ee03f2308bb96df6b7e6f659f4e78ee"
+          }
+        ],
+        "execution_sessions": {
+          "341007fb67682d17035f3df4e2952ebc779f94744b19a65544990b861a966564": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "8c138a75133081c6f502db3a3c4a22237e0fa622a0c05740ee8cf1b5a55dc3d2",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/push-capability-state/launch-1793735999598814000.json"
+            ],
+            "profile_id": "aae098d94cd18a820a06e444c424f200783000ee33bce4c6befbd8f95ad7ad49",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/push-capability-state",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "24b56801bc411f54f7aecf2432a646f5e71b42084b2198ed9867b437fd950a7b",
+        "payload_hash": "258c799bfa641c5b061268e68b69e7e99ece9d633f96c0151f236d118eb55a9f",
+        "recorded_at": "2026-11-03T20:02:43.180600+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/PushDevicePanel.razor": "1c60f88af5f28c6d7cd20f517cf98a02848009c74c247e5f8cd861cc5b9fef8a",
+          "src/Habitica.WebApp/State/PushDeviceController.cs": "814ecaa4e80579d36787fe016a415fdb5ae9ecdbefa1f7c368433b08118e657f",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+        },
+        "timing": {
+          "tool_wall_seconds": 162.44799458328635
+        }
+      }
+    }
+  },
+  "execution_sessions": {
+    "341007fb67682d17035f3df4e2952ebc779f94744b19a65544990b861a966564": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "8c138a75133081c6f502db3a3c4a22237e0fa622a0c05740ee8cf1b5a55dc3d2",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T20:15:59.598363+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/push-capability-state/launch-1793735999598814000.json"
+      ],
+      "profile_id": "aae098d94cd18a820a06e444c424f200783000ee33bce4c6befbd8f95ad7ad49",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/push-capability-state",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    }
+  },
+  "partial_work": [],
+  "stage": "implementing"
+}

@@ -1,0 +1,10 @@
+{
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "fixture": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+  "source_hashes": {
+    "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+    "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f"
+  }
+}

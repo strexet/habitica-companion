@@ -1,3 +1,4 @@
+import {hasRelativeDates} from './relative-saved-dates.ts';
 import {savedTaskQuery,savedTaskQueryFields,savedTaskQueriesEqual,type SavedTaskQuery} from './saved-task-views.ts';
 import type {WorkspaceDocument} from './workspace-domain.ts';
 import {workspaceObject,uuid,WorkspaceError} from './workspace-http.ts';
@@ -53,7 +54,8 @@ export async function organizationCommandHash(command:OrganizationCommand):Promi
  const extended=command.kind==='savedTaskView'||patch?.query!==undefined;if(extended){fields.push(patch?.query?'1':'0');if(patch?.query)fields.push(...savedTaskQueryFields(patch.query));}
  const removal=command.operation==='remove'||patch?.removal!==undefined;if(removal){fields.push(patch?.removal?'1':'0');if(patch?.removal)fields.push(String(patch.removal.taskIds.length),...patch.removal.taskIds,String(patch.removal.sectionIds.length),...patch.removal.sectionIds);}
  const alias=patch?.alias!==undefined||patch?.clearAlias===true;if(alias)fields.push(patch?.alias??null,patch?.clearAlias?'1':'0');
- const encoder=new TextEncoder(),payload=(alias?'companion-organization-command-v4\n':removal?'companion-organization-command-v3\n':extended?'companion-organization-command-v2\n':'companion-organization-command-v1\n')+fields.map(value=>value===null?'-1:':encoder.encode(value).length+':'+value).join('');
+ const relative=patch?.query!==undefined&&hasRelativeDates(patch.query);
+ const encoder=new TextEncoder(),payload=(relative?'companion-organization-command-v5\n':alias?'companion-organization-command-v4\n':removal?'companion-organization-command-v3\n':extended?'companion-organization-command-v2\n':'companion-organization-command-v1\n')+fields.map(value=>value===null?'-1:':encoder.encode(value).length+':'+value).join('');
  return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(payload))),value=>value.toString(16).padStart(2,'0')).join('');
 }
 export function organizationSnapshot(input:unknown):OrganizationSnapshot {

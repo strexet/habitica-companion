@@ -1,0 +1,123 @@
+{
+  "actual_lane": "server",
+  "assertions": [
+    {
+      "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
+      "evidence": [
+        ".skill-tree/history/validation/notification-release-2026-11-02/hosted-normal-delivery.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/receiver-deployment.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/receiver-cleanup.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/gateway-source-manifest.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/gateway-runtime.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/netlify-enabled.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/netlify-disabled.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/auth-enabled.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/auth-disabled.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/provider-logging-review.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/quota-observation.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/original-identity-recovery.json"
+      ],
+      "result": "pass"
+    }
+  ],
+  "attempt_id": "C-95c800f8-f3e4-48a0-86e8-842e53d63927",
+  "classification": "executed-control",
+  "cleanup": "Auth baseline736020af-860e-40f3-9679-1715bd25da5e restored with flagfalse; Netlify disabled deployment6ae8838a89732fb5891c56b6 ready. Both refusal routes are observed503, the receiver count remains1, the temporary receiver Worker and synthetic table are removed, and original Auth claim fences remain.",
+  "definition": "98c4f43b158832e4a635b0f8bdfb2c29044b3ca352c06e55f9b681faffbfc511",
+  "environment_identity": "cf458a6f7c70b031868523501356ecea428f759b821536257bd3cbaedf6c9963",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/hosted-normal-delivery.json",
+      "sha256": "dc35ab05e7a102aaca2078958e8cb8be69662cfb82f28860b6658bd561993a2b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/receiver-deployment.json",
+      "sha256": "468b995117ad638e1cddffb45494b616ed69fdee0873428f2e173d19c4680f58"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/receiver-cleanup.json",
+      "sha256": "3c69e073d8ca2983da93fc150dda8b82d2b46848bf2d6a669c256aedcdf2583a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/gateway-source-manifest.json",
+      "sha256": "c52de7434d706a768b496078de532da5a68765e7841143113d471657de072f3a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/gateway-runtime.json",
+      "sha256": "55737b398781a919d6da05677395aea45c0cc31fc2298f7bba379e2656841f38"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/netlify-enabled.json",
+      "sha256": "1114630ca42a30bdefc65c34249f120acb34dbd7dd6534c410d780407c13cc6d"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/netlify-disabled.json",
+      "sha256": "446074f4e2c42514d51c81ae8e4a655d377f175163774d485f061cd51485fd67"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/auth-enabled.json",
+      "sha256": "36248772038806e7f8c0dcfa822ef9a729e128b00b2aa9cba3c186dc882398a9"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/auth-disabled.json",
+      "sha256": "0e9c3131e4147d527900917c97f3f7fff5da024c01bcf33cc3b0b3f2c0a91360"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/provider-logging-review.json",
+      "sha256": "4b47f84e5c5052cffafc1b46e86e4bb821142db36afebd166a8fe83df878a34f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/quota-observation.json",
+      "sha256": "05b5b30f9b288861e2c1d277c4bc50f9f7f65e125a64689b5dc51d6e0888cb96"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02/original-identity-recovery.json",
+      "sha256": "cf944ca64cd10c6e4b9d6782b998b40c409ebc44cd9150401e130b5e6d175a79"
+    }
+  ],
+  "execution_sessions": {
+    "85482a53d110fa73cb397da1f2c452f5f119bc5e7f9524beaef6bec2feed8de1": {
+      "authorization": "Direct owner publication request, retained hosted scope and explicit Netlify CLI authorization in the current chat.",
+      "build_identity": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T12:46:06.293156+00:00",
+      "fixture_identity": "Exact isolated signed receiver, synthetic-only D1 observation table and run d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "identity_evidence": [
+        ".skill-tree/history/validation/notification-release-2026-11-02/receiver-deployment.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/gateway-source-manifest.json",
+        ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json"
+      ],
+      "profile_id": "normal-delivery-d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "d6e008ec-fb83-48c0-9ee7-64467342f9e5",
+      "tool_identity": "Node22.12.0; Netlify CLI26.0.1; pinned Cloudflare compatibility2026-10-12"
+    }
+  },
+  "key": "2b954abac60421366affb89ab6afee207e978160e24b0f4224610d6638a23e7b",
+  "payload_hash": "5f8bddb0e1f100467b29d3d68755e81191381feddcc2959cae85a69fe73c867e",
+  "recorded_at": "2026-11-02T12:43:55.391789+00:00",
+  "result": "pass",
+  "sources": {
+    ".skill-tree/documents/technical.md": "5c8108e11ba33376539b2a621b6ffe7ece8ae7050fc7574213e9258a1ade5188",
+    ".skill-tree/documents/testing.md": "c9628ea1882bbb19d13f9e20880e62f2b51e81b33a39da256e37c1ed5ae8fdd8",
+    "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "tests/Functions/callback-receiver.test.mjs": "e8fc2401efd82c8d68bd9cbaf7abb56b56dbe35f52b1138ac479864b9cc1edf7",
+    "tests/hosted/callback-receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+    "tests/hosted/normal-delivery.mjs": "4b40ce3da580f21097554799eb501004996f87e4f96fc855dc4a31f55ca77216",
+    "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93"
+  },
+  "timing": {}
+}

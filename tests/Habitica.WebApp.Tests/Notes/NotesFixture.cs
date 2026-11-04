@@ -22,6 +22,7 @@ internal sealed class NotesFixture
         public string OwnerScope=>scope; public NotesNotebook? Book {get;set;}
         public int ProjectCommits {get;private set;}
         public Task<bool> TryCommitProjectAsync(long expected,NotesNotebook value,Guid noteId,string account,long version,CancellationToken token){ProjectCommits++;return TryCommitAsync(expected,value,token);}
+        public Task<bool> TryCommitFolderProjectAsync(long expected,NotesNotebook value,Guid folderId,string account,long version,CancellationToken token){ProjectCommits++;return TryCommitAsync(expected,value,token);}
         public bool LoseResponse {get;set;}public bool Unavailable {get;set;}
         public TaskCompletionSource? Entered {get;set;}public TaskCompletionSource? Release {get;set;}
         public async Task<NotesNotebook?> LoadAsync(CancellationToken token){Entered?.TrySetResult();if(Release is not null)await Release.Task;if(Unavailable)throw new IOException();return Book;}
@@ -31,6 +32,9 @@ internal sealed class NotesFixture
     {
         public NotesProjectAuthority? ProjectAuthority {get;set;}
         public bool Connected {get;set;}
+        public int ConnectionRecoveries {get;private set;}
+        public Task<NotesCloudResult<bool>> RecoverConnectionAsync(Guid? expectedNotebookId,CancellationToken token)
+        { ConnectionRecoveries++;if(expectedNotebookId is not null&&expectedNotebookId!=Id)return Task.FromResult(new NotesCloudResult<bool>(false,false,"notebook_mismatch"));Connected=true;return Task.FromResult(new NotesCloudResult<bool>(true,true,"recovered")); }
         public bool IsAvailable {get;set;}=true;public bool IsConnected=>Connected;
         public Guid? NotebookId=>Connected?Id:null;public Guid Id {get;set;}=Guid.NewGuid();public string? OwnerScope=>Book.OwnerScope;
         public NotesNotebook Book {get;set;}=NotesModel.Empty(NotesModel.Scope("synthetic-profile"));
@@ -39,6 +43,10 @@ internal sealed class NotesFixture
         public Task<NotesCloudResult<NotesNotebook>> LoadAsync(CancellationToken token)=>Task.FromResult(new NotesCloudResult<NotesNotebook>(!FailLoads,FailLoads?null:Book,"read"));
         public Task<NotesCloudResult<NoteReceipt>> SubmitAsync(NoteCommand command,CancellationToken token){Submits++;var result=NotesEngine.Apply(Book,command,DateTimeOffset.UtcNow,ProjectAuthority);Book=result.Notebook;if(LoseResponse){LoseResponse=false;return Task.FromResult(new NotesCloudResult<NoteReceipt>(false,null,"acceptance_unknown",true));}return Task.FromResult(new NotesCloudResult<NoteReceipt>(result.Accepted,result.Receipt,result.Code));}
         public Task<NotesCloudResult<NoteReceipt>> RecoverAsync(NoteCommand command,CancellationToken token){Recoveries++;var receipt=Book.Receipts.FirstOrDefault(r=>r.CommandId==command.Id&&r.PayloadHash==NotesJson.Hash(command));return Task.FromResult(new NotesCloudResult<NoteReceipt>(receipt is not null,receipt,"read"));}
+        public int FolderSubmits {get;private set;}public int FolderRecoveries {get;private set;}
+        public TaskCompletionSource? FolderEntered {get;set;}public TaskCompletionSource? FolderRelease {get;set;}
+        public async Task<NotesCloudResult<NoteFolderReceipt>> SubmitFolderAsync(NoteFolderCommand command,CancellationToken token){FolderSubmits++;FolderEntered?.TrySetResult();if(FolderRelease is not null)await FolderRelease.Task;var result=NotesFolders.Apply(Book,command,DateTimeOffset.UtcNow,ProjectAuthority);Book=result.Notebook;if(LoseResponse){LoseResponse=false;return new NotesCloudResult<NoteFolderReceipt>(false,null,"acceptance_unknown",true);}return new NotesCloudResult<NoteFolderReceipt>(result.Accepted,result.Receipt,result.Code);}
+        public Task<NotesCloudResult<NoteFolderReceipt>> RecoverFolderAsync(NoteFolderCommand command,CancellationToken token){FolderRecoveries++;var receipt=Book.FolderReceipts?.FirstOrDefault(r=>r.CommandId==command.Id&&r.PayloadHash==NotesJson.Hash(command));return Task.FromResult(new NotesCloudResult<NoteFolderReceipt>(receipt is not null,receipt,"read"));}
         public Task<NotesCloudResult<NotesSearchPage>> SearchAsync(string query,bool trash,int offset,long? expectedRevision,CancellationToken token)=>throw new NotSupportedException();
         public Task<NotesCloudResult<CloudNote>> ReadAsync(Guid id,CancellationToken token)=>throw new NotSupportedException();
         public Task<NotesCloudResult<bool>> DisconnectAsync(bool delete,CancellationToken token){CleanupCalls++;Connected=false;if(delete)Book=NotesModel.Empty(Book.OwnerScope);return Task.FromResult(new NotesCloudResult<bool>(true,true,"done"));}

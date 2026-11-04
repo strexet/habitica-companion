@@ -1,0 +1,8 @@
+{
+  "original_failure": ".skill-tree/artifacts/ux-ui/shell-content-visibility/1793750996031258000/failure.json",
+  "original_screenshot": ".skill-tree/artifacts/ux-ui/shell-content-visibility/1793750996031258000/failure.png",
+  "observed": "Immediate skip-link visibility assertion failed after drawer closure at390px100percent. Screenshot shows focus on a Todo category link. No original detailed focus trace exists.",
+  "distinct_control": "Add focused-element, exact rectangle, outline and last20 native focus events to the existing assertion; require actual focused skip identity as well as original geometry. No product code changed or assertion weakened.",
+  "result": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/bdd0da8b-2122-4431-81b9-b7dfd954f32b.json",
+  "diagnosis": "Intermittent focus-transfer cause remains unproven. Preserve the original failure and separate followup; one diagnostic matrix pass does not establish absence of intermittency."
+}

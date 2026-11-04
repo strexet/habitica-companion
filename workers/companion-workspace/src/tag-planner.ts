@@ -2,19 +2,23 @@ import {workspaceDocument,type WorkspaceDocument} from '../../shared/workspace-d
 import {desiredTagMembership,type DesiredTagGroup} from '../../shared/tag-membership.ts';
 import {tagAlias,type TagMapping,type TagIntent,type TagMember} from '../../shared/tag-projection.ts';
 import {workspaceTokenHash} from '../../shared/workspace-http.ts';
+import {tagSelectionHash} from '../../shared/reviewed-tag-dates.ts';
+import type {RelativeDateEvaluation} from '../../shared/relative-saved-dates.ts';
 import {tagAuthorityGap,type TagAuthority} from './tag-authority.ts';
-export interface TagWorkPlan {manualReview?:boolean;id:string;intentId:string;commandId:string;sourceRevision:number;desiredHash:string;context:{workspaceId:string;entityId:string;kind:DesiredTagGroup['kind']};accountId:string;consentEpoch:string;origin:TagAuthority;operation:'ensureTag'|'setMembership';mappingId:string;plannedTagId:string;name:string;members:TagMember[];state:'pending'|'needsReview';error:string|null}
+export interface TagWorkPlan {manualReview?:boolean;evaluation?:RelativeDateEvaluation;id:string;intentId:string;commandId:string;sourceRevision:number;desiredHash:string;context:{workspaceId:string;entityId:string;kind:DesiredTagGroup['kind']};accountId:string;consentEpoch:string;origin:TagAuthority;operation:'ensureTag'|'setMembership';mappingId:string;plannedTagId:string;name:string;members:TagMember[];state:'pending'|'needsReview';error:string|null}
 export interface PlannedTags {document:WorkspaceDocument;work:TagWorkPlan[];gap:string|null}
 const bytes=(value:unknown)=>new TextEncoder().encode(JSON.stringify(value)).length;
-export async function planTags(source:WorkspaceDocument,authority:TagAuthority,commandId:string,beforeSource?:WorkspaceDocument,entityId?:string):Promise<PlannedTags>{
- const document=workspaceDocument(source),desired=desiredTagMembership(document),prior=document.tagLedger;
+export async function planTags(source:WorkspaceDocument,authority:TagAuthority,commandId:string,beforeSource?:WorkspaceDocument,entityId?:string,review?:{entityId:string;asOfUtc:string}):Promise<PlannedTags>{
+ const document=workspaceDocument(source),desired=desiredTagMembership(document,review),prior=document.tagLedger;
  if(prior&&prior.accountId!==authority.accountId)return {document,work:[],gap:'tag_account_mismatch'};
  const ledger=structuredClone(prior??{accountId:authority.accountId,mappings:[],intents:[]}),work:TagWorkPlan[]=[],gap=tagAuthorityGap(authority);
+ let unavailableReason:string|null=null;
  const taskMappings=new Map(document.projections.map(row=>[row.taskId,row]));
  const previousGroups=beforeSource?new Map(desiredTagMembership(beforeSource).groups.map(group=>[group.entityId,group])):null;
- const signature=(group:DesiredTagGroup)=>JSON.stringify({kind:group.kind,name:group.name,archived:group.archived,removed:group.removed,taskIds:group.taskIds,retainMembership:group.retainMembership});
+ const signature=(group:DesiredTagGroup)=>JSON.stringify({kind:group.kind,name:group.name,archived:group.archived,removed:group.removed,taskIds:group.taskIds,retainMembership:group.retainMembership,unavailableReason:group.unavailableReason??null});
  for(const group of desired.groups){
   if(entityId!==undefined&&group.entityId!==entityId)continue;
+  if(group.unavailableReason){unavailableReason??=group.unavailableReason;continue;}
   const previous=previousGroups?.get(group.entityId);if(previousGroups&&previous&&signature(previous)===signature(group))continue;
   let mapping=ledger.mappings.find(row=>row.entityId===group.entityId&&row.kind===group.kind);
   const uncertain=mapping?.state==='unknownOutcome'||ledger.intents.some(row=>row.mappingId===mapping?.id&&row.state==='unknownOutcome');
@@ -38,7 +42,7 @@ export async function planTags(source:WorkspaceDocument,authority:TagAuthority,c
   async function add(operation:'ensureTag'|'setMembership'){
    const intent:TagIntent={id:crypto.randomUUID(),revision:document.revision,isArchived:group.archived,mappingId:mapping!.id,commandId,correlationId:crypto.randomUUID(),desiredRevision:document.revision,operation,state:scopeGap?'needsReview':'pending',habiticaTagId:operation==='ensureTag'?mapping!.habiticaTagId:plannedTagId,desiredName:operation==='ensureTag'?group.name:null,members:operation==='setMembership'?members:null,evidence:null};
    ledger.intents.push(intent);
-   if(intent.state!=='confirmed')work.push({id:crypto.randomUUID(),intentId:intent.id,commandId,sourceRevision:document.revision,desiredHash:await workspaceTokenHash(JSON.stringify({context,name:group.name,members:group.taskIds,removed:group.removed})),context,accountId:authority.accountId,consentEpoch:authority.consentEpoch??'',origin:authority,operation,mappingId:mapping!.id,plannedTagId,name:group.name,members:operation==='setMembership'?members:[],state:scopeGap?'needsReview':'pending',error:scopeGap});
+   if(intent.state!=='confirmed')work.push({...(group.evaluation?{evaluation:group.evaluation}:{}),id:crypto.randomUUID(),intentId:intent.id,commandId,sourceRevision:document.revision,desiredHash:await tagSelectionHash(context,group),context,accountId:authority.accountId,consentEpoch:authority.consentEpoch??'',origin:authority,operation,mappingId:mapping!.id,plannedTagId,name:group.name,members:operation==='setMembership'?members:[],state:scopeGap?'needsReview':'pending',error:scopeGap});
   }
   if(!identityCurrent){mapping.state=scopeGap?'needsReview':'pending';await add('ensureTag');}
   await add('setMembership');
@@ -46,5 +50,5 @@ export async function planTags(source:WorkspaceDocument,authority:TagAuthority,c
  const next={...document,tagLedger:ledger};
  // Preserve all prior receipts and the canonical save when expanded membership cannot fit.
  if(bytes(ledger)>262144||bytes(next)>1024*1024)return {document,work:[],gap:'tag_ledger_capacity'};
- return {document:workspaceDocument(next),work,gap};
+ return {document:workspaceDocument(next),work,gap:gap??unavailableReason};
 }

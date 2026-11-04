@@ -1,0 +1,13 @@
+{
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "check_id": "conversion-wire",
+  "launch": {
+    "assertion": "Native type-copy parity, exact original target/lineage recovery and independent read/write scope fences.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 duplicate acceptance, durable original reviews or no provider/tag effects.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "deadline_utc": "2026-11-02T20:59:37.428074+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "linked-conversion-wire-local-v1"
+  }
+}

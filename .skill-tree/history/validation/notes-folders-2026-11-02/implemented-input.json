@@ -1,0 +1,25 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "changed_files": [
+    ".skill-tree/documents/technical.md",
+    ".skill-tree/documents/testing.md",
+    "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+    "tests/browser/notes-folders.mjs",
+    "tests/fixtures/notes/notes-folder-wire-v3.json",
+    "Directory.Packages.props",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs",
+    "src/Habitica.Application/Notes/NotesEngine.cs",
+    "src/Habitica.Application/Notes/NotesFolders.cs",
+    "src/Habitica.Application/Notes/NotesProjects.cs",
+    "src/Habitica.Application/Notes/NotesQueries.cs",
+    "src/Habitica.Application/Notes/NotesService.cs",
+    "src/Habitica.Domain/Notes/NotesModel.cs",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
+    "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+    "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
+    ".skill-tree/documents/notes-folders.md"
+  ]
+}

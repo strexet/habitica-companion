@@ -1,0 +1,940 @@
+{
+  "scope": "Standalone processing of the exact24 reviewed Pending IDs; no implementation or controller resume.",
+  "selected_count": 24,
+  "proposed_count": 26,
+  "decisions": [
+    {
+      "key": "ui-qualification",
+      "findings": [
+        "F19",
+        "F20"
+      ],
+      "title": "Extend shared UI qualification for disabled text and native date content",
+      "current": "The audit matrix covers rendered Razor geometry and enabled text. Disabled text is deliberately skipped and native date text is absent from sampled text nodes. Existing specialist runners already provide current Release, Chromium/WebKit, isolated IndexedDB and hydrated journey foundations; a generic changed-route recipe is absent.",
+      "design": "Extend the existing browser-qualification core with a parameterized ux-ui-rendered-browser recipe. Add route/state selection and a semantic journey-adapter interface. The shared task owns representative date and disabled-control adapters; each dependent task owns the affected route/state journey adapter. Use a runner interface that reads the selected task key from future.md and writes the declared report directory; recipe argv placeholders bind task_key and report_directory. Register the recipe in validation-recipes.json and refresh the installed profile before preparing dependent checks. Add explicit disabled foreground/surface sampling and native-date visual/read/edit checks, including positive and deliberately broken canaries. Preserve specialist runners and use existing synthetic fixtures rather than creating another application framework.",
+      "constraints": "The planned recipe is unavailable until recipe registration and profile refresh complete. Dependent tasks declare a dependency on the qualification task. No application appearance fix belongs in the harness task. Validate the harness with readable synthetic controls and seeded negative controls; report known unfixed product baseline failures as expected detected regressions rather than requiring the harness task to fix dependent product issues. Product-disabled text uses an explicit 3:1 readability floor; inactive controls are exempt from WCAG text-contrast conformance. Native date value and outer bounds alone cannot pass content visibility. Record manual visual evidence when native shadow content prevents a reliable automatic visibility assertion, and block acceptance when required evidence is missing.",
+      "sources": [
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        ".skill-tree/validation-recipes.json",
+        ".skill-tree/installation/profile.json",
+        ".skill-tree/documents/testing.md"
+      ],
+      "tests": [
+        "tests/browser-qualification/ux-ui-checks.test.mjs"
+      ],
+      "routes": [
+        "/todo/today",
+        "/todo/tasks",
+        "/todo/dailies",
+        "/notes",
+        "/inventory",
+        "/settings"
+      ],
+      "cases": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+      "criteria": [
+        "The installed profile exposes the registered parameterized browser recipe without replacing the existing pinned browser or specialist fixtures.",
+        "Independent canaries reject unreadable disabled text and clipped selected dates while readable controls pass.",
+        "An owned current-build Chromium and WebKit harness run passes readable positive controls, detects seeded negative controls and records route-state coverage, semantic interactions, visual evidence, engine limitations and cleanup without live provider effects."
+      ],
+      "dependencies": [],
+      "priority": 105
+    },
+    {
+      "key": "accessible-shell",
+      "findings": [
+        "F01"
+      ],
+      "title": "Make global navigation identifiable and keyboard accessible",
+      "current": "MainLayout renders an unnamed menu icon without an expanded-state association or skip link. App FocusOnNavigate targets h1. The audit does not establish a focus-trap defect.",
+      "design": "Give the menu a meaningful accessible name, expansion state and stable drawer association; add a visible-on-focus skip link to the main landmark. Verify the existing MudBlazor 9.3 drawer behavior before adjusting phone Escape, backdrop dismissal and focus return. Preserve desktop navigation and route focus.",
+      "constraints": "Use actual native or supported pinned component attributes. Avoid inventing a new focus trap or keyboard shortcut conflicting with browser shortcuts. Preserve sign-in and account boundaries.",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/App.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+      ],
+      "routes": [
+        "/dashboard",
+        "/todo/today",
+        "/todo/tasks",
+        "/settings"
+      ],
+      "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+      "criteria": [
+        "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+        "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target.",
+        "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 105
+    },
+    {
+      "key": "category-headings",
+      "findings": [
+        "F02"
+      ],
+      "title": "Provide page headings and route focus for Habits and Dailies",
+      "current": "Habits and Dailies set PageTitle but expose no h1. The shared task panel starts with an h2, leaving the application h1 navigation-focus selector without a matching heading.",
+      "design": "Add one descriptive page-level heading per route and retain the category tabs and title-first capture. Use the existing route-focus mechanism and verify focus reaches the new heading after client navigation and browser history.",
+      "constraints": "Avoid duplicate h1 elements when shared panels are composed. No task-kind or schedule behavior changes.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/TodoHabitsPage.razor",
+        "src/Habitica.WebApp/Pages/TodoDailiesPage.razor",
+        "src/Habitica.WebApp/App.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs"
+      ],
+      "routes": [
+        "/todo/habits",
+        "/todo/dailies"
+      ],
+      "cases": "Direct load, category-tab navigation, back/forward, empty and populated categories, disabled capture and long task titles.",
+      "criteria": [
+        "Each category route exposes exactly one descriptive h1 and correct active-tab semantics.",
+        "Client route changes and history navigation move focus usefully without submitting capture.",
+        "Headings, tabs and capture remain visible and usable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 104
+    },
+    {
+      "key": "canonical-destinations",
+      "findings": [
+        "F03"
+      ],
+      "title": "Use consistent canonical task destinations from planning views",
+      "current": "Planning, History and Statistics link ordinary Add task or Open tasks actions to /tasks, while Today uses /todo/tasks. The legacy /tasks route also exposes separate Habitica cached data.",
+      "design": "Point ordinary canonical task capture and return actions consistently to /todo/tasks. Inventory the affected links and preserve explicitly named Habitica tasks links to /tasks, including exact task/workspace/project context where already supported.",
+      "constraints": "Do not redirect or remove /tasks, merge provider cache rows into canonical records, or change reward and correspondence semantics. No new capture mutation or MCP command is required for route-link correction.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs"
+      ],
+      "routes": [
+        "/todo/plan",
+        "/todo/history",
+        "/todo/statistics",
+        "/todo/tasks",
+        "/tasks"
+      ],
+      "cases": "Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope.",
+      "criteria": [
+        "Ordinary planning capture and return links resolve to the canonical task route consistently.",
+        "Intentional Habitica-cache links remain clearly named and retain separate record identities and context.",
+        "Actual routing and keyboard link activation pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 103
+    },
+    {
+      "key": "workspace-readiness",
+      "findings": [
+        "F04"
+      ],
+      "title": "Explain workspace readiness and disabled editor recovery",
+      "current": "TodoWorkspacePresentation combines shared-source gating, linked recovery, missing snapshots, controller authority and organization fences into IsReadOnly. The audit observed a disabled Browser workspace after restoring, but does not prove the exact underlying cause.",
+      "design": "Introduce a deterministic presentation readiness/reason model derived from existing coordinator and controller facts. Show source, load state and the highest actionable read-only cause with one relevant existing recovery action. Cover every coordinator state and command/organization fence. Repair stale presentation transitions only when a controlled regression proves an ownership or load defect.",
+      "constraints": "The task does not authorize cloud restore, consent, executor activation, source fallback, transfer or replay. Never infer writable authority from a displayed revision. Keep account/generation cancellation, frozen/cloud-owned browser copies, pending original commands and unknown receipts intact. Preserve an explicit unclassified-read-only fallback when no observed cause is available.",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs",
+        "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/TodoSyncPage.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs"
+      ],
+      "routes": [
+        "/todo/today",
+        "/todo/tasks",
+        "/todo/habits",
+        "/todo/dailies",
+        "/todo/sync"
+      ],
+      "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+      "criteria": [
+        "Every observed readiness or read-only cause has an accurate source-aware message and a relevant existing recovery or wait action.",
+        "Readiness transitions never enable edits across source/account changes, frozen authority or unresolved original-command fences.",
+        "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 105
+    },
+    {
+      "key": "today-work-first",
+      "findings": [
+        "F05"
+      ],
+      "title": "Put daily work before optional reminder setup on Today",
+      "current": "TodoTodayPanel places optional TodoReminderPanel before task groups. The phone audit reaches daily work only after a long setup section, especially with enlarged text.",
+      "design": "Place the selected day and daily task groups before optional reminder configuration. Expose reminder status and setup through a concise disclosure after work. Keep urgent readiness, source and original-command notices before unsafe actions and retain explicit empty-day feedback.",
+      "constraints": "Do not hide pending or unknown outcomes, auto-enable reminders, change selected civil date or remove the reminder path. Reordering must preserve component state and drafts.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/Components/TodoReminderPanel.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/today"
+      ],
+      "cases": "Populated and empty day; reminders unset/enabled; unavailable source; pending command; opening and closing configuration after editing.",
+      "criteria": [
+        "The selected day and daily task groups precede optional reminder configuration in visual and keyboard order.",
+        "Urgent readiness and command fences remain visible and reminder disclosure preserves configuration and consent.",
+        "Daily work and reminder access remain promptly reachable across the required rendered matrix."
+      ],
+      "dependencies": [
+        "workspace-readiness"
+      ],
+      "priority": 103
+    },
+    {
+      "key": "compact-navigation",
+      "findings": [
+        "F06"
+      ],
+      "title": "Make primary planning navigation reachable without a long drawer scan",
+      "current": "The drawer contains a large explanatory hero and more than twenty destinations. The adopted navigation study favors compact frequent planning entry points and secondary tools on demand, while current direct category routes remain in use.",
+      "design": "Replace the drawer hero with a compact identity summary and arrange frequent Today, Inbox, Plan and Projects entry points before secondary destinations. Retain direct Habits, Dailies and Tasks access in the planning group, a clearly named Habitica cache entry, game tools and Settings/account access. Use one clear active-section cue and an existing canonical capture link.",
+      "constraints": "Keep route URLs, existing direct links and destination permissions. No automatic account changes, new capture mutation or marketing copy. Returning User Copy Compression backlog remains separate because the backlog excludes navigation redesign.",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+        ".skill-tree/documents/navigation-study.md"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+      ],
+      "routes": [
+        "/todo/today",
+        "/todo/inbox",
+        "/todo/plan",
+        "/todo/projects",
+        "/todo/tasks",
+        "/inventory",
+        "/settings"
+      ],
+      "cases": "Phone and desktop, secondary group expansion, active nested category, direct route entry, capture link and account actions.",
+      "criteria": [
+        "Frequent planning routes and canonical capture are reachable before secondary tool groups without a long hero scan.",
+        "Every existing destination remains reachable with accurate active-section and expanded-state semantics.",
+        "Navigation hierarchy and keyboard focus pass across the required rendered matrix."
+      ],
+      "dependencies": [
+        "accessible-shell"
+      ],
+      "priority": 100
+    },
+    {
+      "key": "bounded-companions",
+      "findings": [
+        "F07"
+      ],
+      "title": "Bound companion collection rendering and clarify search results",
+      "current": "PetsMountsPage renders every matching item inside expanded groups. Active filters force groups open; retained expanded collections produced extremely long pages. Fresh default groups are partly folded, so the issue is not an assertion about every fresh visit.",
+      "design": "Page each expanded pet/mount collection at twenty cards with total and range feedback, stable group navigation and query-change page reset. Show aggregate filtered counts, a single useful no-results state and reset. Preserve filtered full candidate sets for explicit group queue actions independently of visible pages, and keep inventory-sale planning separately labeled.",
+      "constraints": "Filtering and pagination perform no hatch, feed or sale. Preserve exact keys, queued selections, previews, partial outcomes, stop rules and surplus-sale semantics. Define Add all as all matching candidates and show the exact count before review; never silently redefine Add all as the visible page.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PetsMountsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs"
+      ],
+      "routes": [
+        "/pets-mounts"
+      ],
+      "cases": "Thousands of synthetic owned/unowned pets and mounts, retained expanded state, empty query, zero matches, group page boundaries, query reset, queue selections across pages and separate sale filters.",
+      "criteria": [
+        "Expanded collection rendering is bounded to twenty cards per collection page with accurate range and aggregate search feedback.",
+        "Selections and full matching group candidate counts remain exact across paging and filtering without provider writes.",
+        "Search, reset, pagination and explicit preview access pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 103
+    },
+    {
+      "key": "equipment-discovery",
+      "findings": [
+        "F08"
+      ],
+      "title": "Add direct discovery for equipment slots and owned items",
+      "current": "InventoryPage offers category folds, equipped sets and best-in-category cards but no direct global owned-item search or slot jump. The reviewed account has 291 owned items.",
+      "design": "Add a labeled owned-equipment search and direct slot/category navigation with result count, clear/reset and empty feedback. Reveal the matching category when jumping or filtering and preserve equipped identity and explicit item actions. Keep optimizer recommendations separate from the owned-result filter.",
+      "constraints": "Use existing view-model item keys and search displayed names plus stable keys. Do not reinterpret optimizer constraints, silently equip a result or erase preset/selection state on query changes.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+      ],
+      "routes": [
+        "/inventory"
+      ],
+      "cases": "Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset.",
+      "criteria": [
+        "Owned equipment can be located by displayed name or exact key and reached directly by slot/category.",
+        "Result filtering preserves equipped identity, optimizer constraints and explicit equipment reviews without mutations.",
+        "Search, jumps, empty feedback and item-action access pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "daily-form-order",
+      "findings": [
+        "F09"
+      ],
+      "title": "Place required Daily schedule fields before the add action",
+      "current": "The shared task capture row places Add Daily beside the title before required repeat, interval, start-date and timezone fields.",
+      "design": "Keep the title first, render Daily schedule fields next, and place the Daily primary add/review action after all required inputs in DOM and visual order. Preserve compact title-first Todo and Habit capture and existing Enter-key behavior where safe.",
+      "constraints": "Preserve schedule validation, required Habitica correspondence, explicit previews and pending-command fences. Do not submit an incomplete Daily from Enter on the title or change recurrence defaults silently.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs"
+      ],
+      "routes": [
+        "/todo/dailies",
+        "/todo/tasks",
+        "/todo/habits"
+      ],
+      "cases": "Daily incomplete/valid weekly/monthly form; title Enter; invalid start and interval; busy/read-only; Todo and Habit regression.",
+      "criteria": [
+        "Daily capture follows title, required schedule fields and primary action in DOM and visual order.",
+        "Incomplete Daily capture remains rejected while valid Daily and title-first Todo/Habit behavior retain existing contracts.",
+        "Tab order, errors, native fields and primary actions pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 102
+    },
+    {
+      "key": "daily-timezones",
+      "findings": [
+        "F10"
+      ],
+      "title": "Offer understandable supported timezone choices for linked Dailies",
+      "current": "Linked Daily capture exposes raw UTC/Etc-GMT identity strings; Etc/GMT signs are reversed relative to displayed UTC offsets. DailyProjectionSchedule only accepts fixed whole-hour offsets matching the account and a midnight day start. Generic recurring help suggests IANA zones even in linked-only context.",
+      "design": "Offer human-readable UTC offset labels backed by the exact currently accepted UTC/Etc-GMT identifiers. Derive allowed linked choices from the existing policy and account offset; retain exact normalized identity in review. Separate linked-only help from native recurring schedules with IANA/DST support and explain unsupported account settings explicitly.",
+      "constraints": "No new DST conversion, fractional-offset support, nonmidnight day start, Cron or provider schedule behavior. Preserve offset sign mapping, policy range and existing recurrence checks. A verified account offset may suggest a choice but must not silently rewrite an existing draft.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor",
+        "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs",
+        "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs",
+        ".skill-tree/documents/linked-daily-schedules.md"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/dailies",
+        "/todo/tasks",
+        "/todo/sync"
+      ],
+      "cases": "UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence.",
+      "criteria": [
+        "Readable offset labels map exactly to supported normalized linked identities and account constraints.",
+        "Unsupported linked account settings remain explicit refusals and native IANA recurrence support remains intact.",
+        "Selection, review, context-specific help and disabled reasons pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "saved-list-layout",
+      "findings": [
+        "F11"
+      ],
+      "title": "Shorten saved-list authoring and prioritize existing lists",
+      "current": "The full saved-list creation form precedes existing definitions and results. The phone audit encounters roughly 3387 pixels of authoring controls before saved work; selected-result filters already have a disclosure.",
+      "design": "Show existing definitions and selected results first. Open a compact labeled New list authoring flow with name, source and search; disclose additional filters deliberately. Editing reveals retained nondefault values or a clear active-filter summary, and the final review lists the complete exact definition.",
+      "constraints": "Preserve relative-date timezone identity, explicit fixed/relative conflict rejection, invalid/unavailable-result safeguards, drafts and original commands. Collapsing advanced filters must never clear or ignore hidden values.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor",
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/lists"
+      ],
+      "cases": "No definitions, many definitions, selected results, new/edit/cancel, advanced retained values, unavailable source and invalid fixed/relative dates.",
+      "criteria": [
+        "Existing saved definitions and results precede optional authoring with a clear New list action.",
+        "Collapsed authoring preserves every draft filter and complete reviewed definition with explicit validation.",
+        "New, edit, cancel, invalid-field focus and result navigation pass across the required rendered matrix."
+      ],
+      "dependencies": [
+        "saved-list-errors"
+      ],
+      "priority": 100
+    },
+    {
+      "key": "saved-list-errors",
+      "findings": [
+        "F12"
+      ],
+      "title": "Identify the exact invalid saved-list fields and preserve focus",
+      "current": "TodoSavedListDraft.Query throws a broad message for invalid query combinations. TodoSavedListPanel displays a general alert without field-specific invalid state or associated error text.",
+      "design": "Return typed field/constraint validation results for enum choices, date parsing/order, fixed/relative conflicts, required timezone, search length, active-Todo stage restrictions and unblocked-source restrictions. Present inline linked error text plus a concise announced summary and focus the first invalid field after review. Retain domain validation as the authoritative backstop.",
+      "constraints": "Preserve exact entered values and never clear conflicts automatically. Map cross-field constraints to all affected controls; prevent acceptance while invalid. Server and domain validation remain unchanged unless a demonstrated consistency bug requires a scoped repair.",
+      "sources": [
+        "src/Habitica.WebApp/State/TodoSavedListDraft.cs",
+        "src/Habitica.WebApp/Components/TodoSavedListPanel.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/lists"
+      ],
+      "cases": "One and multiple simultaneous errors; invalid date; reversed ranges; absolute plus relative; missing/invalid timezone;257-character search; stage/kind/state conflict; unblocked source conflict; successful correction.",
+      "criteria": [
+        "Each invalid saved-list constraint identifies the actual fields and a specific corrective message.",
+        "Failed review preserves the draft, rejects persistence and exposes associated invalid state plus useful error-summary focus.",
+        "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 102
+    },
+    {
+      "key": "phone-notes-editor",
+      "findings": [
+        "F13"
+      ],
+      "title": "Make phone note capture reach the editor directly",
+      "current": "NotesPanel places the library and project/folder controls before the editor on phones. New note already focuses and scrolls to the editor heading, but title and writing remain below association controls.",
+      "design": "Introduce an explicit responsive library/editor mode on phones. New note and Open note enter the editor with title and writing first and project/folder metadata on demand. Provide a clear return-to-library action restoring the selected item or list control. Preserve desktop split access where space permits.",
+      "constraints": "Preserve drafts on navigation, account/source boundaries, exact note/project/folder context, versions, recovery receipts and unsaved-change safeguards. No automatic save, folder mutation or new agent-only command is introduced. Existing heading focus is a baseline to preserve.",
+      "sources": [
+        "src/Habitica.WebApp/Components/NotesPanel.razor",
+        "src/Habitica.WebApp/State/NotesController.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs"
+      ],
+      "routes": [
+        "/notes",
+        "/todo/projects"
+      ],
+      "cases": "New/open/back, unsaved note, long library, selected project/folder, new folder, failed save, original pending command, reload, phone-to-desktop resize.",
+      "criteria": [
+        "Phone New note and Open note reveal title and writing before optional association controls.",
+        "Returning to the library preserves drafts, exact context, versions, original commands and useful focus.",
+        "Hydrated note journeys and responsive editor geometry pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "projects-browse-first",
+      "findings": [
+        "F14"
+      ],
+      "title": "Open Projects on existing work and reveal management on demand",
+      "current": "TodoProjectsPage composes organization creation and alias-management forms before existing project selection, tasks and Notes.",
+      "design": "Open Projects on existing project selection and associated work. Move creation, alias editing and organization management into deliberately opened sections with clear return paths. Retain explicit all/unscoped selection instead of choosing an arbitrary project.",
+      "constraints": "Preserve project aliases, exact identity, archived references/history, Notes folder context, original reviews and pending organization fences. Management visibility changes cannot change source authority or persist a new default selection implicitly.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/TodoProjectsPage.razor",
+        "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoProjectAliasTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/projects"
+      ],
+      "cases": "Empty/many projects, all/unscoped/selected project, create/cancel, alias conflict, retained archived project, notes draft and pending organization review.",
+      "criteria": [
+        "Existing projects and associated tasks and Notes precede optional organization management.",
+        "Management disclosures preserve exact project scope, aliases, archived identity, drafts and original command fences.",
+        "Project selection, management return focus and scoped work access pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "settings-sections",
+      "findings": [
+        "F15"
+      ],
+      "title": "Organize Settings around clear account and data-management sections",
+      "current": "Settings is a long mixed surface with installation guidance preceding the h1 and interleaved session, appearance, integration, shared planning and several backup mechanisms.",
+      "design": "Put the page heading and current account/connection summary first. Add accessible in-page section navigation for account/access, appearance/install, shared Workspace, private device sync and browser data/backup. State the data source and scope beside each backup/restore action and keep installation guidance contextual.",
+      "constraints": "Preserve independent consent, cloud-source selection, existing backup formats, inclusion/exclusion state and original commands. Settings Danger Zone Confirmation backlog owns additional destructive confirmation design; sectioning must preserve existing destructive safeguards without treating the backlog as completed.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "routes": [
+        "/settings"
+      ],
+      "cases": "Signed out/in, disconnected/cloud/browser, private-sync on/off, each backup mechanism, section navigation, install advice, narrow and long account content.",
+      "criteria": [
+        "Settings begins with a descriptive heading and current account state plus scannable section navigation.",
+        "Browser backup, private device sync and readable shared Workspace actions identify distinct data scope and preserve consent and safeguards.",
+        "Section navigation, focus, backup-action reachability and long-content geometry pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "push-capability-state",
+      "findings": [
+        "F16"
+      ],
+      "title": "Distinguish unchecked push capability from unsupported browsers",
+      "current": "PushDeviceController initializes BrowserPushCapability as unprepared/unsupported, so PushDevicePanel labels permission unsupported before capability has been checked.",
+      "design": "Represent unchecked capability and permission explicitly in presentation state without violating the BrowserPushCapability wire contract. After an explicit check, distinguish available/default/granted, denied, installation-required, unsupported and check failure. Reset observations on account/source changes and discard late results.",
+      "constraints": "No Notification permission prompt on load or render. Keep permission request inside the existing explicit acknowledged device action. Preserve register/revoke consent, device identity and pending-request recovery.",
+      "sources": [
+        "src/Habitica.WebApp/State/PushDeviceController.cs",
+        "src/Habitica.WebApp/Components/PushDevicePanel.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+      ],
+      "routes": [
+        "/todo/sync"
+      ],
+      "cases": "Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts.",
+      "criteria": [
+        "Unchecked capability is displayed as not checked without an unsupported-browser claim.",
+        "Observed capability outcomes and failures remain distinct while permission prompts require the explicit acknowledged device action.",
+        "Capability checking, disabled registration reasons and keyboard access pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 101
+    },
+    {
+      "key": "named-reminder-days",
+      "findings": [
+        "F17"
+      ],
+      "title": "Use named day controls for repeating push reminders",
+      "current": "TaskPushReminderEditor requires comma-separated numeric weekdays and month dates, while TodoRecurringEditor already exposes named weekday choices.",
+      "design": "Use labeled weekday checkbox groups and month-day selection controls with specific validation and a readable exact recurrence review. Reuse presentation primitives where compatible, while keeping push schedule rules separate from task recurrence. Preserve retained schedule editing and explicit empty-selection errors.",
+      "constraints": "Keep Sunday=0 mapping, first instant matching the saved UTC cue, timezone, DST gap/overlap choice, interval, end date, device revisions, consent and original-request recovery. No task completion, recurrence mutation or automatic push scheduling.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor",
+        "src/Habitica.WebApp/Components/TodoRecurringEditor.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs"
+      ],
+      "routes": [
+        "/todo/reminders",
+        "/todo/tasks"
+      ],
+      "cases": "All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command.",
+      "criteria": [
+        "Named weekday and month-day controls produce the exact reviewed recurrence with correct Sunday and month-date identities.",
+        "Invalid selections receive specific associated messages while UTC cue, DST, consent and original-command safeguards remain intact.",
+        "Selection, retained editing and review are keyboard usable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "game-control-names",
+      "findings": [
+        "F18"
+      ],
+      "title": "Name repeated game controls and equipment preset inputs",
+      "current": "Party Details and equipment actions repeat short labels without sufficient accessible context; Party details lacks expanded-state association. Equipment preset inputs rely on placeholders.",
+      "design": "Add record-aware accessible names to repeated Party details and equipment equip/unequip/recommendation/preset controls, including RenderFragment-generated controls. Add persistent preset labels and stable details-region relationships with accurate expansion state. Preserve short visible action text and include the visible label in the accessible name.",
+      "constraints": "Names must use safe displayed entity context and avoid secrets. Do not add confirmation steps, alter previews or invoke mutations during tests; synthetic handlers must prove the exact targeted record. Do not claim full screen-reader qualification from DOM assertions.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+      ],
+      "routes": [
+        "/party",
+        "/inventory"
+      ],
+      "cases": "Multiple same-named members/items with distinguishing context, long labels, details closed/open, battle/costume action and preset-name inputs.",
+      "criteria": [
+        "Repeated game actions expose distinct record context and preset inputs retain persistent programmatic labels.",
+        "Party disclosure state and controlled regions remain accurate and synthetic actions target the selected record without changed authorization.",
+        "Accessible-name navigation, disclosure keyboard behavior and long names pass across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 102
+    },
+    {
+      "key": "workspace-control-names",
+      "findings": [
+        "F18"
+      ],
+      "title": "Name repeated task and private-sync record controls",
+      "current": "Repeated task Complete controls and Settings private-sync Exclude controls lack sufficient record or section context. The broad audit finding spans independent game and workspace surfaces.",
+      "design": "Give repeated canonical task actions and private-sync section controls contextual accessible names, retaining the visible action label. Inventory and correct repeated labels and disclosure associations within the shared task rows and Settings sync rows only. Use stable record/section identity for associations.",
+      "constraints": "Preserve exact task/workspace selection, unknown-outcome fences and private-sync inclusion/exclusion semantics. No new command, consent or provider behavior. Game controls and preset inputs belong to the separate game-control task.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "routes": [
+        "/todo/tasks",
+        "/todo/habits",
+        "/todo/dailies",
+        "/settings"
+      ],
+      "cases": "Multiple tasks, repeated names, disabled actions, private-sync sections included/excluded, long labels and exact handler-target assertions.",
+      "criteria": [
+        "Repeated task and private-sync controls expose the affected record or section while retaining visible-label text.",
+        "Context labels and associations preserve exact handler targets, disabled fences and sync selection semantics.",
+        "Keyboard and accessible-name navigation remain unambiguous across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 102
+    },
+    {
+      "key": "disabled-readability",
+      "findings": [
+        "F19"
+      ],
+      "title": "Keep disabled control text readable in built-in themes",
+      "current": "Shared disabled tokens use low-alpha foregrounds and Notes adds container opacity. The audit matrix skips disabled contrast, so the previous passing matrix does not establish disabled readability.",
+      "design": "Set semantic disabled foreground, border and surface tokens to meet the product 3:1 disabled-text readability floor in built-in schemes. Remove or compensate compound opacity where rendered disabled text falls below the floor. Preserve a visibly inactive affordance and nearby cause text when the disabled reason is not obvious.",
+      "constraints": "The 3:1 floor is a product readability target rather than a WCAG inactive-control requirement. Do not enable controls to improve contrast, rewrite user palettes or rely on color alone. Preserve custom-palette data and document any unqualified palette behavior explicitly.",
+      "sources": [
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs",
+        "tests/browser-qualification/qualification-frame.mjs"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/tasks",
+        "/todo/dailies",
+        "/notes",
+        "/inventory",
+        "/settings"
+      ],
+      "cases": "Disabled text inputs, selects, buttons and nested Notes fieldsets across every built-in scheme; custom-palette preservation; compound opacity; visible disabled cause.",
+      "criteria": [
+        "Disabled text meets the product 3:1 rendered readability floor in every built-in scheme without changing interactivity.",
+        "Disabled controls retain a distinguishable inactive appearance and relevant cause text while custom palette data remains intact.",
+        "Disabled and enabled controls pass the required rendered matrix with explicit compound-opacity sampling."
+      ],
+      "dependencies": [],
+      "priority": 102
+    },
+    {
+      "key": "native-date-reflow",
+      "findings": [
+        "F20"
+      ],
+      "title": "Keep selected native dates readable with enlarged text",
+      "current": "At 360 pixels and 200-percent text the Today date input shrinks to roughly 105 pixels for 30.4-pixel text; the selected date disappears although the value remains valid. Outer geometry passes the existing matrix.",
+      "design": "Let the day selector and Today action stack when the native date minimum readable size cannot fit. Keep the selected civil date visibly readable and editable in Chromium and WebKit, with stable labels and focus. Audit shared day-selector reuse before changing generic input sizing.",
+      "constraints": "Preserve DateOnly semantics, selected-day behavior, min/max constraints and native input compatibility. Do not count input.value or a valid bounding box as proof of visible native content. Do not globally force fixed widths on every input.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTodayPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/qualification-frame.mjs"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/today"
+      ],
+      "cases": "Long locale-formatted dates, focus/edit/calendar input, selected-date change, Today reset,360/390/430/768/1024/1280 widths with100/200-percent text in Chromium and WebKit.",
+      "criteria": [
+        "The selected native civil date remains visibly readable at narrow phone widths and enlarged text.",
+        "Date editing and Today reset preserve exact selected-day semantics and useful keyboard focus.",
+        "Native content visibility and action geometry pass the required rendered matrix in Chromium and WebKit."
+      ],
+      "dependencies": [],
+      "priority": 104
+    },
+    {
+      "key": "equipment-count-wrap",
+      "findings": [
+        "F21"
+      ],
+      "title": "Prevent mid-word wrapping in equipment count summaries",
+      "current": "RenderImageCountChip composes artwork, count and text inside a narrow nested grid. Hatching potions breaks into mid-word fragments even at 1280-pixel desktop width.",
+      "design": "Give count-chip labels enough inline space or stack artwork/count/text at constrained card widths. Allow natural word wrapping and reserve art dimensions while retaining numeric and image context.",
+      "constraints": "Keep numeric values, item meanings and artwork unchanged. Scope wrapping rules to summary chips rather than weakening long-ID wrapping globally.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs"
+      ],
+      "routes": [
+        "/inventory"
+      ],
+      "cases": "Hatching potions and longer localized labels, large counts, narrow desktop cards, phone cards, image unavailable and enlarged text.",
+      "criteria": [
+        "Count-summary labels wrap at word boundaries without crowding the artwork or count.",
+        "Summary values and image fallbacks remain accurate at narrow card widths.",
+        "Desktop and phone summary geometry pass the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "sync-timestamp",
+      "findings": [
+        "F22"
+      ],
+      "title": "Format private-sync timestamps without literal format suffixes",
+      "current": "Settings places :g after a Razor ToLocalTime expression, causing a literal format suffix to appear in private-sync status metadata.",
+      "design": "Format the complete timestamp expression explicitly using the established local date/time presentation and concise local-time context. Test final rendered strings with deterministic timestamp/culture inputs, including missing metadata.",
+      "constraints": "Keep stored UTC values, section state, payload size and synchronization decisions unchanged. Avoid culture-specific hardcoded expected dates without a controlled culture.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "routes": [
+        "/settings"
+      ],
+      "cases": "Known UTC timestamp, nonzero local offset, at least two controlled cultures, null status date and narrow long metadata.",
+      "criteria": [
+        "Private-sync status shows a correctly formatted local date and time without a literal format suffix.",
+        "Formatting preserves stored UTC metadata, missing-value behavior and sync status.",
+        "Timestamp rows remain readable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "copy-unset-values",
+      "findings": [
+        "F23"
+      ],
+      "title": "Show explicit unset values in task-copy reviews",
+      "current": "TaskTypeCopyReview directly interpolates nullable schedule, review, stage, parent and organization fields and joins empty dependencies/labels, leaving blank separators.",
+      "design": "Use explicit Not set for absent scalar values and None for empty collections, with a scannable source/target summary. Preserve meaningful zero-valued enum members and render populated dates and exact identifiers unambiguously. Keep copied/reset lists and source-preservation disclosure.",
+      "constraints": "Presentation only: preserve source, new target, preview hash, consent and original receipt semantics. No automatic link, archive or Habitica task action. Existing unlinked-copy product limits remain explicit.",
+      "sources": [
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs"
+      ],
+      "routes": [
+        "/todo/convert",
+        "/todo/tasks",
+        "/todo/habits",
+        "/todo/dailies"
+      ],
+      "cases": "Every nullable field absent/populated, empty/nonempty dependencies and labels, enum zero versus null, long IDs, recurrence, copies across all supported kinds.",
+      "criteria": [
+        "Absent scalar and collection values have explicit readable placeholders without hiding meaningful zero-valued fields.",
+        "Source/target identity, populated metadata and copied/reset disclosures remain exact without command changes.",
+        "Task-copy review reading order and geometry pass the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 100
+    },
+    {
+      "key": "dashboard-freshness",
+      "findings": [
+        "F24"
+      ],
+      "title": "Reconcile dashboard account freshness and refresh-history labels",
+      "current": "Dashboard freshness uses UserFreshness while the Account chip reads optional UserProfile DomainRefreshState. A fresh sign-in snapshot can coexist with a missing domain entry rendered as not refreshed.",
+      "design": "Present snapshot readiness and latest refresh attempt as distinct coherent facts. Use the actual snapshot retrieval timestamp for loaded data and real domain attempt state for refreshing, success or failure. Explain absent refresh history as no later refresh recorded instead of contradicting available fresh data.",
+      "constraints": "Do not manufacture successful refresh timestamps, erase failed-refresh warnings, change freshness policy or trigger an extra provider call to repair a label. Keep stale cached data distinct from usable fresh data and retain action gates.",
+      "sources": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/State/IAppSessionController.cs"
+      ],
+      "tests": [
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs"
+      ],
+      "routes": [
+        "/dashboard"
+      ],
+      "cases": "Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps.",
+      "criteria": [
+        "Fresh sign-in data and absent later refresh history produce coherent account status with actual timestamp provenance.",
+        "Refreshing, failed, stale and missing states remain distinct without invented timestamps, extra requests or weakened action gates.",
+        "Account readiness and refresh feedback remain readable across the required rendered matrix."
+      ],
+      "dependencies": [],
+      "priority": 103
+    }
+  ],
+  "source_fingerprints": {
+    ".skill-tree/documents/habitica-api.md": "0ce13ba74e576734c1762674db50f6c4d14ed2549e0b9ff5c0a51519028981ec",
+    ".skill-tree/documents/linked-daily-schedules.md": "bce951dac0900083a910d1284d61ab37d99a0ea936cefd3d441b41e5506816d3",
+    ".skill-tree/documents/navigation-study.md": "d48e79f4f4f448ceb39084aacf28ab67c1f08293e5a3e476d2dee6f5ad3c34d5",
+    ".skill-tree/documents/rules.md": "2b1b0e17c42440f6572da02342a9e7e04faacf3a869a4c502162ca4f40b7f30c",
+    ".skill-tree/documents/testing.md": "e7487d7edced80c6a49f90f9000a65dcdbbac1f63d8f700b01fb4e873a5afe40",
+    ".skill-tree/documents/ux-ui-manifest.md": "947fa8202af97790d62043ff5136a95efe03fe148a46526a31dfe25e1a72d435",
+    ".skill-tree/installation/profile.json": "1f9ecf0de072809bfb5b12668ecd9c5007e0a7b51e5de25880778d6ec99f0d03",
+    ".skill-tree/skill-tree.json": "9bbc4d4157f5025b07638a1e6313538f7385b49ee36e05944e252d8f65549959",
+    ".skill-tree/validation-recipes.json": "4644a9f7b802d3ec1dc31b36b408de9d85e4acf4a400ebe10a92b8a557b6145e",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+    "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+    "src/Habitica.WebApp/Components/PushDevicePanel.razor": "0750315a9dd7b99ad44a07243548edc5cf29de1a7fe6006fb1d7a57b24d5cb90",
+    "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "f169253b9bec0d62042089342933b75f31322f00347769815fc0be3e3af15222",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "914726a32f74a4517297d610d07b77187ab2bec545ef98d9caa4dc07e3d8c706",
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "9fb1c48c54053cd6475a4036edea2806fec820fb14e6a99146521de3dcea1102",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoReminderPanel.razor": "08f13f231e3f2f1babeb4f0b66d8eaecd290e6885352682f9318e3fa5f409e21",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "aa2e37bd8343f9d6ce6de41ecfa8e44af7541eda7e3dc81641b644f9a2957c67",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "95dde4c6e82c353c32dc51972c6e34c4b81eb3cba06979d58bfd5373c6505286",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "8e96f1e347a75fabf3e08fd17e7b1c929a7d6a687b2365045d95d84b361b6360",
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "e526224d408c79bc8d73d2c5ab33ea7e5f387940db7f82a9e3885817df941b9b",
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "d68393c8ef9892deecbf0a78dc8b9c5418b881cda2aeba2235f08cc773ff4c64",
+    "src/Habitica.WebApp/Pages/PartyPage.razor": "e2df3bcb2732e27a8b827cd41c69d0ffe21b003056ce0a2d0f8064145471aef0",
+    "src/Habitica.WebApp/Pages/PetsMountsPage.razor": "439450feeb96865199f1408546d47fd1ea76d24bba3a3a551cfebf83a70ccf19",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "7a8a67e0032eee4e2134132375587c94b910c5c0e0dd9b0d3d41b773660ce476",
+    "src/Habitica.WebApp/Pages/TodoDailiesPage.razor": "4f581f125cef803309dd137ad0b7ca00611d7f4578a277537523455cd070e56c",
+    "src/Habitica.WebApp/Pages/TodoHabitsPage.razor": "d23daa72975a7acfbd96ba22040a245e2c77fde4f4e8199c31c89136a40f8b28",
+    "src/Habitica.WebApp/Pages/TodoProjectsPage.razor": "ec56d59a5f1411c979299e174b05d16ba57dc65b29cb50e97de39c8191707b83",
+    "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "98a32b618bfcf01a74623a9ecc54a25da27a1ca0cddf9ec46decc69d53eb6424",
+    "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+    "src/Habitica.WebApp/State/PushDeviceController.cs": "2fe2c225bfede92169b62c99cb4e026e2ebcfa633cd6ef8e7f19f791df474622",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "56bc9d13d35195e8f0866cf04d4c77e75afeb0ea43074c93e996c46d8c8e3df4",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "5e2d80e4bbba94f37feeb21febb99d4f78be1bd3d0f076391da12adbc6ec91df",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs": "f557e894bbcb91905e831658e9b13be7ec0bb04ac17c4502fc7947cbe093eb68",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "63f84f61061d7a25c5526d28d74f9403d8ef89e6c48547a6a87a4ba5aa03f177",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "431a6adf9c4c0581b403234188fbbdeedec0fe439f85ce2920cce83b87396b1a",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "d5e54e1860a7ad5529291282304596b4396757f7df8dee0ba23979c6a8e85777",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "c3063b003aad7d70b3a2181c259b6ec55feae943dba8e23d03cef6a6c6494157",
+    "tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs": "69d829bc9f855a2e7f9d4d96a1e88c4c63001e1f1766ade2a2cc6cf2bfeabb54",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "9e5eefb439736fe1f09869deb140083469df94fd9e11c8c958b3c239cf93892d",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "1ef9dc1ef18b66be8d14c4cd3287b8c98257f87f92c7027479548ed7e173a6d4",
+    "tests/Habitica.WebApp.Tests/Workspace/ProjectHistoryPanelTests.cs": "b62273f091e7ea52a271091d5e8c96a1e3c29fae18de116fe14cc6aff5d2a7a0",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "97131f2ed2ab62411d844cf709c351b350a176d43153f8b23e42bbc567381303",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "d37b88675bc040726f6a3b45993b5b4e0dea918c485b22a0fc7a013be1fcfb7e",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "3c4f37383454d4a43dd2af912b81c6f8d6356c343ba34ff7ec66842b4c4f8974",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "c7d3df0b16e1c04e777829717d542192aeec9345e243fed1382de688b2ee8448",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "e804b8156d602ae53c2c0b21fc315da4aa22fb2fb8f033c4ad3ff93e37f6e062",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "8c6cdb158a9f48d263749062859dce7c84746e75f8be80561390d48717f10562",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoProjectAliasTests.cs": "b741c5db382d7578ae45ccbb93654936663b9aa17b99dc470e070bdf0246576c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoReminderPanelTests.cs": "53b37aa424117a5d9c6c87b90c1328ec15a0bc12352f58b1a10a803fde3ebf2c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "ff1d3f36bba2402c09ae96c8055407847564cb46c92c2b1259d1f85143f5452e",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "1f3843dd0f2f709c2609d503b55ea47a503207cb3a3ca22275f35fa325e398ba",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "add50950f494c9598d890e21e2a489e901d1b0947a35c5f78409189b44a6d60e",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "c0ba4b06add5951c259124bf45ef85b748104f11d3dd79768538c0f39dbd2059",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "2749be3545acf9dc0283b40bbfce94e5de58674b89851b068c779f2df08b8b17",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53"
+  },
+  "planned_new_test_paths": [
+    "tests/browser-qualification/ux-ui-checks.test.mjs"
+  ],
+  "audit_ui_drift": [],
+  "validation_availability": {
+    "existing": [
+      "dotnet-focused-tests",
+      "node-focused-tests",
+      "webapp-release-build",
+      "specialist rendered-browser runners"
+    ],
+    "planned": "ux-ui-rendered-browser is intentionally unavailable until the shared prerequisite registers the recipe and refreshes the installed profile. Dependent checks cannot be prepared before the prerequisite completes.",
+    "foundation": "Existing pinned browser and Blazor fixtures suffice. No new testing framework or package upgrade is proposed."
+  },
+  "external_references": [
+    {
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "application": "Accessible names, labels, error identification, resize/reflow and enabled contrast. Inactive controls have no WCAG text-contrast minimum; the disabled3:1 floor is an explicit product readability target, not a conformance claim."
+    }
+  ],
+  "deduplication": {
+    "reused": [],
+    "unchanged_backlog": [
+      "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+      "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+      "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+      "B-57737f45-83d5-5e6d-866e-28e80c882602",
+      "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81"
+    ],
+    "reason": "No existing Prioritized task covers the selected fixes. Related Backlog entries retain distinct scope and are not accepted or promoted."
+  },
+  "limits": [
+    "Audit observations do not prove the F04 live root cause; readiness presentation is derived from deterministic existing facts.",
+    "No application build, test, browser run, provider mutation, publication or new physical-device evidence during processing.",
+    "Earlier audit Release,1029 passing bUnit tests and1240 static cases remain a baseline with documented gaps, not acceptance for planned changes.",
+    "Native date visibility needs engine-specific rendered evidence; input value and outer bounds are insufficient."
+  ]
+}

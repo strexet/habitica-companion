@@ -7,7 +7,7 @@ using Habitica.Storage;
 namespace Habitica.WebApp.State;
 
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
-    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null, RecurrenceRule? Recurrence = null, bool ClearRecurrence = false, WorkspaceTaskReview? Review = null, WorkspaceTaskUnarchive? Unarchive = null, WorkspaceOccurrenceCorrection? CorrectOccurrence = null);
+    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null, RecurrenceRule? Recurrence = null, bool ClearRecurrence = false, WorkspaceTaskReview? Review = null, WorkspaceTaskUnarchive? Unarchive = null, WorkspaceOccurrenceCorrection? CorrectOccurrence = null,WorkspaceTaskTypeCopy? TypeCopy=null);
 
 public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null)
 {
@@ -21,9 +21,12 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     public bool IsCloud { get; private set; }
     public bool CloudConnected => cloud.WorkspaceId is not null;
     public IReadOnlyList<Guid> LocalIds { get; private set; } = [];
-    public WorkspaceCommandPreview? Preview { get; private set; }
-    public WorkspaceProjectionPreview? LinkPreview { get; private set; }
-    public WorkspaceMutationReceipt? LastReceipt { get; private set; }
+    private WorkspaceCommandPreview? _preview;
+    public WorkspaceCommandPreview? Preview { get=>CurrentScope==_scope?_preview:null; private set=>_preview=value; }
+    private WorkspaceProjectionPreview? _linkPreview;
+    public WorkspaceProjectionPreview? LinkPreview { get=>CurrentScope==_scope?_linkPreview:null; private set=>_linkPreview=value; }
+    private WorkspaceMutationReceipt? _lastReceipt;
+    public WorkspaceMutationReceipt? LastReceipt { get=>CurrentScope==_scope?_lastReceipt:null; private set=>_lastReceipt=value; }
     public string? Message { get; private set; }
     private bool _preparationUnknown;
     public bool PreparationRejected { get; private set; }
@@ -87,7 +90,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (!cloudSource && localId is null && (Snapshot is null || IsCloud) && ids.Count > 1)
         {
             _scope = scope; _snapshot = null; LocalIds = ids; IsCloud = false; RequiresReload = true;
-            Message = "Choose the exact browser workspace. Independent workspaces are never merged."; return;
+            Message = "Existing browser Workspaces need reviewed consolidation in Todo Sync. Original records remain preserved."; return;
         }
         var id = localId ?? (Snapshot is not null && !IsCloud ? Snapshot.Document.Id : ids.FirstOrDefault());
         var snapshot = cloudSource ? await cloud.LoadWorkspaceAsync(cancellationToken) : id == Guid.Empty ? null : await database.ForScope(scope).LoadAsync(id, cancellationToken);
@@ -119,13 +122,14 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         var current = snapshot.Document.Tasks.FirstOrDefault(task => task.Id == input.TaskId);
         if (input.Recurrence is not null || input.ClearRecurrence)
         {
-            if (input.Operation != WorkspaceOperation.CreateDaily && (input.Operation != WorkspaceOperation.UpdateTask || current?.Kind != CompanionTaskKind.Daily)
+            if (input.Operation != WorkspaceOperation.CreateDaily && (input.Operation is not (WorkspaceOperation.UpdateTask or WorkspaceOperation.EditLinkedDailySchedule) || current?.Kind != CompanionTaskKind.Daily)
                 || input.ClearRecurrence && (input.Recurrence is not null || input.Operation == WorkspaceOperation.CreateDaily)
                 || input.Recurrence is { } rule && !RecurrenceCalendar.Expand(rule, rule.StartDate, rule.StartDate).Succeeded)
                 throw new InvalidOperationException("Choose a valid complete Daily recurrence replacement or explicit clearing on an existing Daily.");
         }
         WorkspaceTaskPatch? patch = null;
         var creating = input.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
+        var allocatesTarget=creating||input.Operation==WorkspaceOperation.CopyTaskType;
         if (creating) patch = new(input.Text, input.Notes.Length == 0 ? null : input.Notes, Priority: input.Priority, Deadline: input.Deadline, HabiticaDetails: input.Details, Recurrence: input.Recurrence, ClearRecurrence: input.ClearRecurrence);
         if (input.Operation == WorkspaceOperation.UpdateTask)
         {
@@ -142,6 +146,14 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 && (input.Details.Down is null || input.Details.Down == current.HabiticaDetails?.Down)
                 && (input.Details.Checklist is null || input.Details.Checklist.SequenceEqual(current.HabiticaDetails?.Checklist ?? []))))
         { input = input with { Operation = WorkspaceOperation.EnsureProjection }; patch = null; }
+        if(input.Operation==WorkspaceOperation.EditLinkedDailySchedule){
+            if(!IsCloud||input.Recurrence is null||input.ClearRecurrence||current?.Kind!=CompanionTaskKind.Daily)throw new InvalidOperationException("A connected cloud Workspace and a complete linked Daily rule are required for fresh Habitica review.");
+            patch=new(Recurrence:input.Recurrence);input=input with{ProjectToHabitica=true};
+        }
+        if(input.Operation==WorkspaceOperation.CopyTaskType){
+            if(input.ProjectToHabitica||input.TypeCopy is null||!input.TypeCopy.IsValid())throw new InvalidOperationException("Choose an exact source revision, a different target kind, valid organization and an explicit Daily rule.");
+            patch=new(TypeCopy:input.TypeCopy);
+        }
         if (input.Operation == WorkspaceOperation.PlanTask) patch = new(Planning: input.Planning);
         if (input.Operation == WorkspaceOperation.ReviewTask) patch = new(Review:input.Review);
         if (input.Operation == WorkspaceOperation.SetTodoStage) patch = new(TodoStage:input.TodoStage);
@@ -150,7 +162,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (input.Operation == WorkspaceOperation.UnarchiveTask) patch = new(Unarchive: input.Unarchive);
         if (input.Operation == WorkspaceOperation.CorrectOccurrence) patch = new(CorrectOccurrence: input.CorrectOccurrence);
         if (input.Operation == WorkspaceOperation.RestoreTodo) patch = new(RestoreTodo: input.RestoreTodo);
-        return WorkspaceTodoProjectionPolicy.Prepare(snapshot.Document, new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
+        return WorkspaceTodoProjectionPolicy.Prepare(snapshot.Document, new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, allocatesTarget ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
             input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica));
     }
@@ -177,6 +189,16 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             PreparationRejected = !result.Succeeded && !_preparationUnknown;
             if (result.Succeeded && result.Value is { } preview)
             {
+                if(preview.Command.Operation==WorkspaceOperation.CopyTaskType&&!preview.SavedInCompanion){
+                    if(Snapshot is null||preview.Command.ExpectedRevision!=Snapshot.Document.Revision||preview.TypeCopyPreview is not {} copyReview||!WorkspaceTaskTypeCopyPolicy.ReviewMatches(Snapshot.Document,preview.Command.Patch!.TypeCopy!,preview.Command.TaskId,copyReview)){
+                        Message="The exact copied/reset-field review no longer matches the loaded source. Recover the original request and reload before a new copy.";return;
+                    }
+                }
+                if(preview.Command.Operation==WorkspaceOperation.EditLinkedDailySchedule){
+                    var mapping=Snapshot?.Document.Projections.FirstOrDefault(row=>row.TaskId==preview.Command.TaskId&&!row.IsArchived);
+                    var context=preview.Command.Patch?.LinkedSchedule;
+                    if(context is null||mapping?.State!=ProjectionState.Linked||mapping.HabiticaTaskId!=context.HabiticaTaskId.ToString("D")||mapping.Fingerprint!=context.Fingerprint||preview.Command.ExpectedRevision!=Snapshot?.Document.Revision){Message="The exact linked task context changed. Recover the original preview before proceeding.";return;}
+                }
                 _preparationUnknown = PreparationRejected = false; Preview = preview;
                 if (preview.SavedInCompanion && preview.Receipt is { } receipt) await SavedAsync(receipt, cancellationToken);
             }
@@ -194,7 +216,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             if (result.Disposition != SubmissionDisposition.Accepted) { Message = _intent.Operation == WorkspaceOperation.EnsureProjection
                 ? $"Counterpart creation is unavailable ({result.ErrorCode}). Recover an original pending create, or review an existing Habitica record for adoption; historical tasks must not be scored or reopened."
                 : "The preview is invalid or stale. Check the task, field bounds and current revision."; _intent = null; return; }
-            Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false);
+            Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false,
+                TypeCopyPreview:_intent.Operation==WorkspaceOperation.CopyTaskType?WorkspaceTaskTypeCopyPolicy.Review(Snapshot.Document,_intent.Patch!.TypeCopy!,_intent.TaskId,result.Entry.AcceptedAtUtc):null);
             Message = _intent.Operation == WorkspaceOperation.ReviewTask ? "Review the voluntary cue action and timezone. Only explicit review metadata and retained history change; no completion or game effect occurs." : _intent.Operation == WorkspaceOperation.SetTodoStage ? "Review the active Todo stage preference. Current state, dates, dependencies, history and accepted game commands remain unchanged." : _intent.Operation == WorkspaceOperation.SetTodoState ? "Review the native Todo planning state. Completion history, dependencies and accepted game commands remain unchanged; no new game effect occurs." : _intent.Operation == WorkspaceOperation.RelateTodo ? "Review the exact Todo parent and full dependency replacement. This command changes native relationships only." : _intent.Operation == WorkspaceOperation.RestoreTodo ? "Review the exact Todo completion to restore. Earlier completion history remains; no Habitica effect or reward reversal occurs." : _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
         }
     }
@@ -248,6 +271,14 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     }
     private async Task SavedAsync(WorkspaceMutationReceipt receipt, CancellationToken cancellationToken)
     {
+        if(Preview is {Command.Operation:WorkspaceOperation.CopyTaskType} original){
+            var command=original.Command;var choice=command.Patch!.TypeCopy!;var line=receipt.CopyLineage;
+            if(line is null||!line.HasValidShape()||line.SourceWorkspaceId!=command.WorkspaceId||line.CommandId!=command.Id||line.TargetTaskId!=command.TaskId||line.PayloadHash!=WorkspaceCommandIdentity.Hash(command)
+                ||line.InitialTargetRevision!=command.ExpectedRevision+1||line.TargetKind!=choice.TargetKind||line.CopyOrganization!=choice.CopyOrganization||!WorkspaceTaskTypeCopyPolicy.RulesEqual(line.Recurrence,choice.Recurrence)
+                ||original.TypeCopyPreview?.Source is not {} source||!WorkspaceTaskCopyLineage.SourceFieldsEqual(source,line.SourceSnapshot)){
+                AcceptanceUnknown=true;Message="The original copy receipt does not match the reviewed source and target. Preserve the original command ID.";return;
+            }
+        }
         LastReceipt = receipt; AcceptanceUnknown = false; _preparationUnknown = PreparationRejected = false; _intent = null; Preview = null;
         var scope = _scope; var generation = _generation; var id = _snapshot?.Document.Id;
         var refreshed = false;
@@ -294,5 +325,5 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.Command.Operation.ToString()), entry.Command.TaskId, entry.Command.Id, correlationId, entry.TaskSnapshot?.Text ?? "", true,
         entry.ProjectionState == ProjectionCommandState.UnknownOutcome ? "UnknownOutcome" : entry.ProjectionState is ProjectionCommandState.Leased or ProjectionCommandState.Executing ? "pending" : System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.ProjectionState.ToString()),
         entry.Command.Operation == WorkspaceOperation.ScoreHabit ? entry.Command.Count : entry.Command.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence or WorkspaceOperation.RestoreTodo or WorkspaceOperation.ReviewTask or WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence ? 1 : 0,
-        entry.ConfirmedEffects, entry.Effects.Count, entry.Failure == ProjectionFailure.None ? null : entry.ConfirmedEffects + 1, entry.Failure.ToString(), entry.RetryAtUtc, true, entry.ProjectionState == ProjectionCommandState.UnknownOutcome);
+        entry.ConfirmedEffects, entry.Effects.Count, entry.Failure == ProjectionFailure.None ? null : entry.ScheduleResult is {MatchesExpected:false}?1:entry.ConfirmedEffects + 1, entry.Failure.ToString(), entry.RetryAtUtc, true, entry.ProjectionState == ProjectionCommandState.UnknownOutcome,entry.Command.Operation==WorkspaceOperation.EditLinkedDailySchedule?new(entry.AcceptedAtUtc,entry.Command.Patch!.Recurrence!,entry.Command.Patch.LinkedSchedule!,entry.ScheduleResult):null,entry.Command.Operation==WorkspaceOperation.CopyTaskType?entry.TaskSnapshot?.CopyLineage:null);
 }

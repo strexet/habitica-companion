@@ -14,6 +14,7 @@
     <li>Habitica mapping: @(Query.Filter.ProjectionState?.ToString()??"Any mapping state")</li>
     <li>Planned from (fixed): @Date(Query.Filter.PlannedFrom) · through (fixed): @Date(Query.Filter.PlannedTo)</li>
     <li>Deadline from (fixed): @Date(Query.Filter.DeadlineFrom) · through (fixed): @Date(Query.Filter.DeadlineTo)</li>
+    @if(Query.HasRelativeDates){<li>Planned relative: @(Query.Filter.PlannedRelative?.ToString()??"None") · deadline relative: @(Query.Filter.DeadlineRelative?.ToString()??"None") · timezone: @Query.TimeZoneId. Relative choices are retained rather than frozen dates.</li>}
 </ul>
 
 @code {

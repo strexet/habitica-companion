@@ -1,0 +1,43 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-23b15de0-fd82-490e-9223-4d5eb39eb3ab",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 17,
+    "expected": 17,
+    "failed": 1,
+    "passed": 16,
+    "skipped": 0
+  },
+  "definition": "94373d8f381966b78ea034af24700efad56ddf435174d07a98e6bbac32d1146c",
+  "environment_identity": "4c4f4eb130016c62d954d4bc316b63aa0c751c78c5a67a6f5e7dabb3c24a066a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-2026-11-02/compatibility-red-execution.log",
+      "sha256": "ef40eb42d5c2090a5b64a22e7c4892e5da28434288aa9ba704d81cf775ef6cad"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/notes-local-model.trx",
+      "sha256": "84e073a9bfab44b3f626fbe09b3404af80dda8573c4923b914e1d99d14eb8e9e"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_category": "expected-behavior",
+  "key": "019a23c06db9d34e38a0fd7c1f236a87afc177c572cb94f9e0dfba7f82c05227",
+  "payload_hash": "f092f9b884f7d38ffa5a09b24d64dbbb1dbcdbdfe64595bee2c22b8dfeb8604d",
+  "recorded_at": "2026-11-02T16:27:19.234015+00:00",
+  "result": "red",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "99f5cfd03db029ca3268a33293ca1f6166cc85b150386be55bc881c340a285ec",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "d3767a823661d01bdf52466bc22a1bd4fce5625076152e96b417c4b91852a171",
+    "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "b8caae5c59507ce06bb893999bbaa0285c3bee6ba160a84f82b04bd5f56ad6b8"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.476562874857336
+  }
+}

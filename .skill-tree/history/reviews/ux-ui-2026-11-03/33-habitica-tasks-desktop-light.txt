@@ -1,0 +1,305 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Companion workspace
+- heading "Tasks" [level=2]
+- link "Tasks and subtasks":
+  - /url: /todo/tasks
+- link "Saved lists":
+  - /url: /todo/lists
+- text: Task type
+- combobox "Task type":
+  - option "Tasks" [selected]
+  - option "Dailies"
+  - option "Habits"
+- generic "Browser Workspace · rev 1"
+- text: New Todo
+- textbox "New Todo"
+- button "Add Todo":
+  - generic: Add Todo
+- generic "More details"
+- option "Low"
+- option "Normal" [selected]
+- option "High"
+- option "Urgent"
+- option "Default / unchanged" [selected]
+- option "Trivial"
+- option "Easy"
+- option "Medium"
+- option "Hard"
+- option "Default / unchanged" [selected]
+- option "Str"
+- option "Int"
+- option "Per"
+- option "Con"
+- generic "Tasks":
+  - paragraph: No tasks in this workspace.
+- generic: 0 matching tasks · 0–0
+- button "Previous" [disabled]:
+  - generic: Previous
+- button "Next" [disabled]:
+  - generic: Next
+- paragraph:
+  - text: Task creation, field edits and scoring require Habitica correspondence. Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor.
+  - link "Open Todo Sync":
+    - /url: /todo/sync
+- paragraph: Task workspace
+- heading "Habitica tasks" [active] [level=1]
+- paragraph: Browse and score the latest Habitica tasks saved on this device. Mutations require fresh data and refresh account/task state after completion.
+- generic: Search
+- textbox "Search"
+- generic: Sort
+- combobox "Sort":
+  - option "Habitica" [selected]
+  - option "Name"
+  - option "Highest value"
+  - option "Lowest value"
+  - option "Due soon"
+- link "Statistics":
+  - /url: /todo/statistics
+- generic "Task type filters":
+  - checkbox "To-Do" [checked]
+  - generic: To-Do
+  - checkbox "Daily" [checked]
+  - generic: Daily
+  - checkbox "Habit" [checked]
+  - generic: Habit
+  - checkbox "Reward" [checked]
+  - generic: Reward
+- generic: Tasks are up to date
+- heading "To-Dos" [level=2]
+- generic: "11"
+- button "Rearrange"
+- button "Hide completed"
+- button "Collapse To-Dos": "-"
+- article:
+  - generic: Египет — лето 2027
+  - paragraph: "Продумать путешествие в Египет летом 2027 года: места, сроки, маршрут, транспорт и примерный бюджет. Точные даты пока не назначены."
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Мурманск
+  - paragraph: "Продумать поездку в Мурманск и окрестности: сезон, интересные места, длительность, маршрут, транспорт и примерный бюджет."
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Байкал
+  - paragraph: "Продумать поездку на Байкал: сезон, места и маршрут, длительность, транспорт и примерный бюджет."
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Продумать путешествия
+  - paragraph: "Рассмотреть три направления: Байкал, Мурманск и Египет (лето 2027). Определить подходящий сезон, длительность, маршрут и примерный бюджет для каждой поездки."
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Насте — термобельё
+  - paragraph: Список покупок одежды для меня и Насти.
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Насте — болоневые штаны
+  - paragraph: Список покупок одежды для меня и Насти.
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Насте — зимняя обувь
+  - paragraph: Список покупок одежды для меня и Насти.
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Мне — обычные повседневные, но тёплые штаны
+  - paragraph: Список покупок одежды для меня и Насти.
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Мне — термобельё
+  - paragraph: Список покупок одежды для меня и Насти.
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Мне — кофта, не слишком тёплая
+  - paragraph: "Список покупок одежды для меня и Насти. Ориентир: кофта как «Азур», не слишком тёплая."
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- article:
+  - generic: Напомнить про карту казахов
+  - button "Complete":
+    - generic: Complete
+  - button "Details"
+- heading "Habits" [level=2]
+- generic: "9"
+- button "Rearrange"
+- button "Hide completed"
+- button "Collapse Habits": "-"
+- article:
+  - generic: Сделал дело из списка
+  - paragraph: Отметил дело из списка задач
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Отработать помидор
+  - paragraph: Посмотреть, сколько помидоров отработал, и столько добавить.
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Поупражнять спину
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Позаниматься гитарой
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Встать с первого будильника
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Почистить фото
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Потренироваться
+  - paragraph: Или пройти 10 000 шагов
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Изучить психологические записи
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"
+- article:
+  - generic: Запланировать вечер
+  - paragraph: Кино театр, или просто фильм. Посмотреть, что идет, что выходило, что выйдет. Запланировать. Позвать на прогулку. Сходить куда-то в определенное интересное место или на мероприятие. Мастер класс. Или просто прогуляться. Позвать друзей, или побыть вдвоём. Устроить свидание. Что-то приготовить. Сделать сюрприз. Или устроить тусу. С программой или без. Алкоголь или настолки. Или собрать киноклуб. Вспомнить, кто уезжал и приехал. Или скоро уедет. Предложить встретиться. Закончить пораньше и встретить. Или даже предложить поиграть в игры.
+  - generic: Score count
+  - spinbutton "Score count": "1"
+  - button "Score +1":
+    - generic: Score +1
+  - button "Score -1" [disabled]:
+    - generic: Score -1
+  - button "Details"

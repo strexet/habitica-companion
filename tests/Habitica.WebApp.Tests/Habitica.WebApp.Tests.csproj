@@ -25,9 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="../fixtures/workspace-transfer/*.json" Link="fixtures/workspace-transfer/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../fixtures/workspace/activity-streaks-v1.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../fixtures/workspace/linked-recovery-*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../fixtures/workspace/conversion-retirement-*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../fixtures/workspace/checklist-conversion-*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../fixtures/workspace/project-retained-history-v1.json" Link="fixtures/project-retained-history-v1.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

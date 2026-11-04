@@ -1,0 +1,15 @@
+{
+  "report": "browser/027de67f-a8a2-49b1-9c62-cb6a7331e6b6.json",
+  "reviewed": [
+    "chromium light360/200 fieldgroups",
+    "webkit obsidian1280/100 fieldgroups"
+  ],
+  "observations": [
+    "Labeled source/target groups preserve exact IDs and metadata; explicit Not set/None prevent blank separators.",
+    "ISO dates and Low/Inbox zero enum values remain readable; phone gutters prevent Dependencies splitting.",
+    "Every required route retains original unaccepted target; cancellations leave journal unchanged."
+  ],
+  "limitations": [
+    "Physical devices, AT, live providers and accepted-copy integration remain unqualified by this presentation task. Existing original-receipt and all-kind component fixtures retain separate evidence."
+  ]
+}

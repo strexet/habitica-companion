@@ -1,0 +1,61 @@
+{
+  "assertion": "Synthetic provider counters prove no wake or midnight automatically dispatches unreviewed membership; changed context stops queued work before fresh HTTP and retains original uncertainty fences.",
+  "attempt_id": "C-37461fe5-f473-4310-b70b-015d1eac03b4",
+  "check_id": "day-bound-tag-execution",
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "e4db5272e61c678dfac0c41ab99ef6e60b9a51ed270d3e93f6d92ae81f4b415f",
+  "key": "1740a143eb0fc7e76086e6cea6360bfd88be4a4037c3c178306056593f5a7129",
+  "launch": {
+    "assertion": "Exact reviewed folder adoption or evaluation-day tag membership preserves original identities, causal receipts, refusal boundaries and no implicit effects.",
+    "authorization": "Direct owner selection of the two researched tasks; local synthetic fixtures only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove serialization, actual isolated D1 atomic acceptance or original uncertain-receipt recovery.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T02:06:31.778454+00:00",
+    "execution_profile": "selected-followups-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T01:57:32.218825+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/relative-tag-execution.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "069feb3017beb6c7c7df02e21bef0c39297d2d00d63732bf735a252cbd1c5066",
+    "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+    "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-execution.test.mjs": "b7739484bd1f132975403907e3632813d56c7ce47b4e891cd0d5680d7ab44b52",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "f6de2bd6f58fa6b78c4e82cc556960f5952422809f94f9316fbba80edeeabc7a",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+    "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+  },
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+}

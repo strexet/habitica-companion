@@ -1,0 +1,243 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:26 PM": Synced 12:26 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Account overview
+- heading "Local Habitica dashboard" [level=1]
+- paragraph: "This view summarizes the latest Habitica data saved on this device: class stats, task counts, spend-gold actions, and what is ready to explore next."
+- paragraph: Appearance
+- button "Customize theme" [active]:
+  - text: Customize theme
+- generic: Account data is up to date
+- strong: Account
+- text: not refreshed
+- strong: Tasks
+- text: updated 11/3/2026 12:26 PM
+- strong: Gear
+- text: updated 11/3/2026 12:26 PM
+- article:
+  - generic: Account
+  - strong: Strixetus
+  - generic: Level 27
+  - generic: Warrior
+- article:
+  - generic: HP
+  - strong: 50 / 50
+  - generic: Health
+- article:
+  - generic: MP
+  - strong: 161 / 162
+  - generic: Mana
+- article:
+  - generic: XP
+  - strong: 109 / 590
+  - generic: Current / to next level
+- article:
+  - generic: Gold
+  - strong: 56 GP
+  - generic: Synced currency
+- article:
+  - generic: Open tasks
+  - strong: "20"
+  - generic: Across saved tasks
+- paragraph: Navigation
+- heading "Companion links" [level=2]
+- link "Open Habitica":
+  - /url: https://habitica.com
+- article:
+  - strong: Todo
+  - generic: Plan and act on today's Companion tasks.
+  - link "Open Todo":
+    - /url: /todo/today
+    - text: Open
+- article:
+  - strong: Equipment
+  - generic: Plan gear and inspect owned gear.
+  - link "Open Equipment":
+    - /url: /inventory
+    - text: Open
+- article:
+  - strong: Pets & Mounts
+  - generic: Review companions, feed pets, and plan surplus sales.
+  - link "Open Pets & Mounts":
+    - /url: /pets-mounts
+    - text: Open
+- article:
+  - strong: Party
+  - generic: Review members, roles, and CRON timing.
+  - link "Open Party":
+    - /url: /party
+    - text: Open
+- article:
+  - strong: Quests
+  - generic: Manage active quests and shared planning.
+  - link "Open Quests":
+    - /url: /quests
+    - text: Open
+- article:
+  - strong: Spells
+  - generic: Cast class skills against task targets.
+  - link "Open Spells":
+    - /url: /spells
+    - text: Open
+- paragraph: Character stats
+- heading "Stats and allocation" [level=2]
+- strong: "0"
+- generic: points available
+- table:
+  - rowgroup:
+    - row "Stat Base Equipment Buffs Effective Allocate":
+      - columnheader "Stat"
+      - columnheader "Base"
+      - columnheader "Equipment"
+      - columnheader "Buffs"
+      - columnheader "Effective"
+      - columnheader "Allocate"
+  - rowgroup:
+    - row "STR Strength 0 +92 0 92 0 +":
+      - rowheader "STR Strength":
+        - generic: STR
+        - generic: Strength
+      - cell "0"
+      - cell "+92"
+      - cell "0"
+      - cell "92":
+        - strong: "92"
+      - cell "0 +":
+        - generic: "0"
+        - button "+" [disabled]:
+          - generic: +
+    - row "INT Intelligence 27 +26 0 53 0 +":
+      - rowheader "INT Intelligence":
+        - generic: INT
+        - generic: Intelligence
+      - cell "27"
+      - cell "+26"
+      - cell "0"
+      - cell "53":
+        - strong: "53"
+      - cell "0 +":
+        - generic: "0"
+        - button "+" [disabled]:
+          - generic: +
+    - row "CON Constitution 0 +11 0 11 0 +":
+      - rowheader "CON Constitution":
+        - generic: CON
+        - generic: Constitution
+      - cell "0"
+      - cell "+11"
+      - cell "0"
+      - cell "11":
+        - strong: "11"
+      - cell "0 +":
+        - generic: "0"
+        - button "+" [disabled]:
+          - generic: +
+    - row "PER Perception 0 +26 0 26 0 +":
+      - rowheader "PER Perception":
+        - generic: PER
+        - generic: Perception
+      - cell "0"
+      - cell "+26"
+      - cell "0"
+      - cell "26":
+        - strong: "26"
+      - cell "0 +":
+        - generic: "0"
+        - button "+" [disabled]:
+          - generic: +
+- button "Apply allocation" [disabled]:
+  - generic: Apply allocation
+- article:
+  - paragraph: Spend gold
+  - heading "Bulk armoire" [level=2]
+  - paragraph: Spend 100 GP per opening. Subscriber bonus openings are only offered inside the official Android and iOS apps, so this button spends gold for every opening.
+  - generic: Open count
+  - spinbutton "Open count": "1"
+  - button "Open armoire" [disabled]:
+    - generic: Open armoire
+  - generic: Needs 100 GP.
+- article:
+  - paragraph: Spend gold
+  - heading "Buy gems with gold" [level=2]
+  - paragraph: Spend 20 GP per gem. Habitica applies subscription eligibility and monthly limits.
+  - generic: Gem count
+  - spinbutton "Gem count": "2"
+  - button "Buy gems":
+    - generic: Buy gems
+  - generic: "Gem balance 145. Gold can buy 2 gems at 20 GP each. Monthly limit: 46 gems remaining. Available: buy up to 2 gems."

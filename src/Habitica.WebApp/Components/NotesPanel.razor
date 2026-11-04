@@ -7,17 +7,18 @@
 @inject IJSRuntime Js
 @implements IAsyncDisposable
 
-<section class="card-surface notes-panel" data-testid="notes-panel">
+<section class="card-surface notes-panel" data-testid="notes-panel" aria-busy="@(_initializing ? "true" : "false")">
     <div class="notes-heading"><div><span class="section-label">Personal knowledge</span>@if (ProjectId is null) { <h1>Notes</h1> } else { <h2>Project Notes</h2> }<p class="panel-copy">Capture facts, keep documents and find them later.</p></div>
-        <button data-layout-primary="true" class="notes-button notes-primary" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null || !SignedIn || ProjectSource is not null && ProjectSource != Notes.Source || ProjectId is {} contextProject && Notes.ProjectLink(contextProject) is null)" @onclick="New" data-testid="note-new">New note</button></div>
+        <button data-layout-primary="true" class="notes-button notes-primary" disabled="@NewDisabled" @onclick="New" @ref="_newButton" data-testid="note-new">New note</button></div>
+    @if (_initializing) { <p role="status" class="panel-copy" data-testid="notes-initializing">Loading Notes. Wait before starting a new note.</p> }
     @if (!SignedIn) { <p role="status">Sign in to use your personal Notes.</p><a href="/sign-in">Sign in</a> }
     else
     {
         <div class="notes-toolbar">
-            <label>Store notes in<select class="app-input" @bind:get="Notes.Source" @bind:set="Switch" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" data-testid="note-source"><option value="Browser">This browser</option><option value="Cloud">Cloud Notes · accessible to connected agents</option></select></label>
-            <button data-layout-primary="true" class="notes-button" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" @onclick="Refresh">Refresh notes</button>
+            <p data-testid="note-active-source"><strong>@(Notes.Source==NotesSource.Cloud?"Cloud Workspace":"Browser Workspace")</strong> · the same active Workspace as tasks. <a href="/todo/sync">Workspace access and transfer</a></p>
+            <button data-layout-primary="true" class="notes-button" disabled="@(Notes.Busy || Notes.HasPending || (Notes.ProjectReview is not null || Notes.FolderReview is not null))" @onclick="Refresh">Refresh notes</button>
         </div>
-        <p class="panel-copy">@(Notes.Source == NotesSource.Browser ? "Browser notes stay on this device and are unavailable to agents. Changing source does not copy notes. Clearing browser data removes these notes." : "Cloud Notes are shared across connected devices and authorized agents. Browser notes are never uploaded automatically. This tab’s connection is forgotten at sign-out.")</p>
+        <p class="panel-copy">@(Notes.Source == NotesSource.Browser ? "Browser is the default Workspace. Notes stay on this device until a reviewed cloud move. Clearing browser data removes these notes." : "Cloud is the selected Workspace across sessions. Notes access restores independently from saved consent; unavailable cloud never creates a writable browser fallback.")</p>
         @if (_discard is not null)
         {
             <aside class="notes-review" role="region" aria-label="Unsaved draft"><h2 tabindex="-1" @ref="_reviewHeading">Keep this draft?</h2><p>You have unsaved changes. Export Markdown to keep a copy, or discard the draft to continue.</p><div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export">Export draft</button><button data-layout-primary="true" class="notes-button" @onclick="CancelDiscard">Keep editing</button><button data-layout-primary="true" class="notes-button" @onclick="Discard" data-testid="note-discard">Discard draft and continue</button></div></aside>
@@ -25,7 +26,7 @@
         @if (Notes.Source == NotesSource.Cloud && !Notes.CloudConnected)
         {
             <aside class="notes-review" aria-label="Cloud Notes consent" data-testid="notes-consent"><h2>Connect cloud Notes</h2>
-                @if (!Notes.CloudAvailable) { <p>Cloud Notes is unavailable in this deployment. Browser Notes still works.</p> }
+                @if (!Notes.CloudAvailable) { <p>Cloud Notes is unavailable in this deployment. The selected cloud Workspace remains selected; existing drafts stay preserved.</p> }
                 else
                 {
                     <p>This separate connection sends Habitica credentials for encrypted storage. The Companion server can read note titles, Markdown and up to 16 prior versions per note. Authorized agents need separate Notes permissions. No conversation text is saved automatically.</p>
@@ -39,14 +40,16 @@
         @if (_error is not null) { <p role="alert">@_error</p> }
         @if (Notes.HasPending) { <aside class="notes-review" aria-label="Uncertain save"><h2>Check the original save</h2><p>Original command: @Notes.PendingCommandId. The result is uncertain. Your draft is preserved. This check reads the original receipt and does not repeat the write.</p><button data-layout-primary="true" class="notes-button" disabled="@Notes.Busy" @onclick="() => Notes.RecoverAsync()">Check original receipt</button></aside> }
         @if (Notes.HasConflict) { <aside class="notes-review" aria-label="Note conflict"><h2>The stored note changed</h2><p>Export your draft before loading the latest stored revision. Saving is paused to avoid replacing someone else’s changes.</p><div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export">Export draft</button><button data-layout-primary="true" class="notes-button" disabled="@Notes.HasPending" @onclick="ReloadStored" data-testid="notes-reload">Load stored revision</button></div></aside> }
-        @if (ProjectSource is not null && ProjectSource != Notes.Source) { <p role="status">This project uses @ProjectSource Notes. Choose that source explicitly above. Sources are independent; no content was copied.</p> }
+        @if (ProjectSource is not null && ProjectSource != Notes.Source) { <p role="status">This project uses @ProjectSource Notes. Restore the shared active source in Todo Sync. Resolve or export the current draft before continuing.</p> }
         @if (SourceReadable && Notes.Book is not null)
         {
             @if (ProjectId is {} contextId && Notes.ProjectLink(contextId) is null) { <p role="status">This project is unavailable for new links. Existing Notes and private drafts remain available; clear a stale link explicitly.</p> }
             var matches = Matches;
-            <div class="notes-workbench">
-                <aside class="notes-library" aria-label="Find notes">
-                    <label>Search titles and Markdown<input type="search" class="app-input" @bind="_search" @bind:event="oninput" data-testid="notes-search" /></label>
+            _visibleNoteIds = matches.Select(note=>note.Id).ToHashSet();
+            <div class="notes-workbench" data-testid="notes-workbench" data-notes-mode="@(_editorMode ? "editor" : "library")">
+                <aside class="notes-library" id="@(_panelId+"-library")" aria-label="Find notes">
+                    @if (_hasEditor) { <button type="button" data-layout-primary="true" class="notes-button" disabled="@Notes.Busy" @onclick="()=>EnterEditor()" aria-controls="@(_panelId+"-editor")" data-testid="note-resume">@(Notes.SelectedId is null?"Continue draft":"Continue current note")</button> }
+                    <label>Search titles and Markdown<input type="search" class="app-input" @bind="_search" @bind:event="oninput" data-testid="notes-search" @ref="_librarySearch" /></label>
                     <label class="notes-check"><input type="checkbox" @bind="_trash" data-testid="notes-trash-filter" /> Show trash</label>
                     <label>Project filter<select class="app-input" value="@FilterValue" @onchange="FilterProject" data-testid="notes-project-filter"><option value="all">All notes</option><option value="unassigned">Unassigned</option>
                         @if (ProjectId is not null) { <option value="context">This exact project</option> }
@@ -54,29 +57,46 @@
                         @foreach (var project in Notes.ProjectChoices) { <option value="@project.Id">@project.Name · @project.Id</option> }
                     </select></label>
                     @if (!Notes.ProjectContextAvailable) { <p>Project choices unavailable. Load the matching workspace in Projects. Existing links remain saved and can be cleared.</p> }
+                    <label>Folder filter<select class="app-input" value="@_folderFilter" @onchange="FilterFolder" data-testid="notes-folder-filter"><option value="all">All notes</option><option value="none">Without a folder</option>
+                        @if (SelectedFolderId is {} retainedFolderId && !FolderChoices.Any(f=>f.Id==retainedFolderId)) { <option value="@retainedFolderId">Retained folder · @retainedFolderId</option> }
+                        <optgroup label="Folders outside projects">@foreach (var folder in FolderChoices.Where(f=>f.Project is null)) { <option value="@folder.Id">@folder.Name · @folder.Id</option> }</optgroup>
+                        <optgroup label="Project folders">@foreach (var folder in FolderChoices.Where(f=>f.Project is not null)) { <option value="@folder.Id">@folder.Name · @folder.Project!.ProjectId · @folder.Id</option> }</optgroup>
+                    </select></label>
+                    @if (SelectedFolderId is {} unavailableFolder && !Notes.FolderSelectable(unavailableFolder)) { <p>The selected folder is unavailable for new notes. Existing notes remain readable; choose another folder or All notes to capture.</p> }
+                    <NotesFolderPanel SelectedId="@SelectedFolderId" ProjectId="@ProjectId" SelectedChanged="SelectFolder" />
                     <p class="panel-copy">@(_page?.Total ?? 0) note(s) · @SourceLabel</p>
-                    <ul class="notes-list">@foreach (var note in matches) { <li @key="note.Id"><button data-layout-primary="true" class="notes-button @(Notes.SelectedId == note.Id ? "notes-selected" : "")" aria-current="@(Notes.SelectedId == note.Id ? "true" : null)" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" @onclick="() => Open(note.Id)" data-testid="note-open"><strong>@note.Title</strong><small>Revision @note.NoteRevision · @note.AtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'")</small></button></li> }</ul>
+                    <ul class="notes-list">@foreach (var note in matches) { var noteKey=note.Id; <li @key="note.Id"><button @ref="_noteButtons[noteKey]" data-note-id="@note.Id" data-layout-primary="true" class="notes-button @(Notes.SelectedId == note.Id ? "notes-selected" : "")" aria-current="@(Notes.SelectedId == note.Id ? "true" : null)" disabled="@(Notes.Busy || Notes.HasPending || (Notes.ProjectReview is not null || Notes.FolderReview is not null))" @onclick="() => Open(note.Id)" data-testid="note-open"><strong>@note.Title</strong><small>Revision @note.NoteRevision · @note.AtUtc.ToString("yyyy-MM-dd HH:mm 'UTC'")</small></button></li> }</ul>
                     <div class="notes-actions"><button data-layout-primary="true" class="notes-button" disabled="@(_offset == 0)" @onclick="PreviousPage" data-testid="notes-previous">Previous notes</button><button data-layout-primary="true" class="notes-button" disabled="@(_page?.NextOffset is null)" @onclick="NextPage" data-testid="notes-next">More notes</button></div>
                     @if (matches.Count == 0) { <p>@(_search.Length > 0 ? "No matching notes. Try a different phrase." : _trash ? "Trash is empty." : "No notes yet. Start a new note.")</p> }
                 </aside>
-                <div class="notes-editor">
+                <div class="notes-editor" id="@(_panelId+"-editor")" role="region" aria-label="Note editor">
+                    <button type="button" data-layout-primary="true" class="notes-button notes-back" disabled="@NavigationDisabled" @onclick="BackToLibrary" aria-controls="@(_panelId+"-library")" data-testid="notes-back">Back to library</button>
                     <h2 tabindex="-1" @ref="_editorHeading">@(Notes.SelectedId is null ? "New note" : Notes.Selected?.Current.IsTrashed == true ? "Note in trash" : "Edit note")</h2>
                     <p class="panel-copy">@SourceLabel · @(Notes.Dirty ? "Unsaved changes" : Notes.SelectedId is null ? "Unsaved draft" : $"Stored revision {Notes.Selected?.Current.Revision}")</p>
-                    <form @onsubmit="Save" @onsubmit:preventDefault><fieldset disabled="@(Notes.Busy || Notes.HasPending || Notes.Selected?.Current.IsTrashed == true || Notes.ProjectReview is not null)">
+                    @if (ProjectId is {} contextProject && Notes.Draft.Project is {} draftProject && (draftProject.ProjectId != contextProject || draftProject.WorkspaceId != ProjectWorkspaceId)) { <p role="status" data-testid="note-context-warning">The draft retains its existing project association. Open Project and folder to inspect the exact link; browsing another project does not reassign this note.</p> }
+                    <form @onsubmit="Save" @onsubmit:preventDefault><fieldset disabled="@(Notes.Busy || Notes.HasPending || Notes.Selected?.Current.IsTrashed == true || (Notes.ProjectReview is not null || Notes.FolderReview is not null))">
+                        <label>Title<input class="app-input" maxlength="256" @bind="Notes.Draft.Title" @bind:event="oninput" data-testid="note-title" /></label>
+                        <div class="notes-actions" role="group" aria-label="Editor mode"><button data-layout-primary="true" type="button" class="notes-button" aria-pressed="@(!_preview)" @onclick="() => _preview = false">Markdown</button><button data-layout-primary="true" type="button" class="notes-button" aria-pressed="@_preview" @onclick="() => _preview = true" data-testid="note-preview">Preview</button></div>
+                        @if (_preview) { <div class="notes-markdown" data-testid="notes-preview">@NotesMarkdownRenderer.Render(Notes.Draft.Markdown)</div> }
+                        else { <label>Markdown<textarea class="app-input notes-body" @bind="Notes.Draft.Markdown" @bind:event="oninput" spellcheck="true" data-testid="note-body"></textarea></label> }
+                        <p class="panel-copy">@ByteCount / 131072 UTF-8 bytes. Preview supports headings, lists, tables and fenced code. HTML is displayed as text; remote images are omitted. Source stays unchanged.</p>
+                        <details class="notes-associations" data-testid="note-associations" @key="_associationEpoch"><summary data-layout-primary="true">Project and folder · @(Notes.Draft.Project is null?"No project":"Project linked") · @(Notes.DraftFolder is null?"No folder":"Folder linked")</summary>
                         <p class="notes-reference" data-testid="note-project-current">Project: @Notes.ProjectLabel(Notes.Draft.Project)</p>
                         <label>Project<select class="app-input" value="@DraftProjectValue" @onchange="PickProject" data-testid="note-project-picker"><option value="">Unassigned</option>
                             @if (Notes.Draft.Project is { } retained && !Notes.ProjectChoices.Any(p => Notes.ProjectLink(p.Id) == retained)) { <option value="retained">Retained link · @retained.ProjectId</option> }
                             @foreach (var project in Notes.ProjectChoices) { <option value="@project.Id">@project.Name · @project.Id</option> }
                         </select></label>
                         <button data-layout-primary="true" type="button" class="notes-button" disabled="@(Notes.Draft.Project is null)" @onclick="() => Notes.ChooseProject(null)" data-testid="note-unassign">Unassigned · clear project</button>
-                        <label>Title<input class="app-input" maxlength="256" @bind="Notes.Draft.Title" @bind:event="oninput" data-testid="note-title" /></label>
-                        <div class="notes-actions" role="group" aria-label="Editor mode"><button data-layout-primary="true" type="button" class="notes-button" aria-pressed="@(!_preview)" @onclick="() => _preview = false">Markdown</button><button data-layout-primary="true" type="button" class="notes-button" aria-pressed="@_preview" @onclick="() => _preview = true" data-testid="note-preview">Preview</button></div>
-                        @if (_preview) { <div class="notes-markdown" data-testid="notes-preview">@NotesMarkdownRenderer.Render(Notes.Draft.Markdown)</div> }
-                        else { <label>Markdown<textarea class="app-input notes-body" @bind="Notes.Draft.Markdown" @bind:event="oninput" spellcheck="true" data-testid="note-body"></textarea></label> }
-                        <p class="panel-copy">@ByteCount / 131072 UTF-8 bytes. Preview supports headings, lists, tables and fenced code. HTML is displayed as text; remote images are omitted. Source stays unchanged.</p>
+                        <p class="notes-reference" data-testid="note-folder-current">Folder: @Notes.FolderLabel(Notes.DraftFolder)</p>
+                        <label>Folder<select class="app-input" value="@DraftFolderValue" @onchange="PickFolder" data-testid="note-folder-picker"><option value="">Without a folder</option>
+                            @if (Notes.DraftFolder is {} retainedFolder && !Notes.FolderSelectable(retainedFolder.FolderId)) { <option value="retained">@Notes.FolderLabel(retainedFolder)</option> }
+                            @foreach (var folder in Notes.Folders.Where(f=>Notes.FolderSelectable(f.Id))) { <option value="@folder.Id">@folder.Name · @folder.Id · @(folder.Project is null?"Outside projects":"Project folder")</option> }
+                        </select></label>
+                        <button data-layout-primary="true" type="button" class="notes-button" disabled="@(Notes.DraftFolder is null)" @onclick="() => Notes.ChooseFolder(null)" data-testid="note-clear-folder">Clear folder · keep project</button>
+                        </details>
                         <button data-layout-primary="true" type="submit" class="notes-button notes-primary" disabled="@(!Notes.CanWrite || Notes.HasConflict)" data-testid="note-save">Save note</button>
                     </fieldset></form>
-                    <div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export" data-testid="note-export">Export Markdown</button><label class="notes-file">Import .md<InputFile OnChange="Import" accept=".md,text/markdown,text/plain" disabled="@(Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null)" data-testid="note-import" /></label></div>
+                    <div class="notes-actions"><button data-layout-primary="true" class="notes-button" @onclick="Export" data-testid="note-export">Export Markdown</button><label class="notes-file">Import .md<InputFile OnChange="Import" accept=".md,text/markdown,text/plain" disabled="@(Notes.Busy || Notes.HasPending || (Notes.ProjectReview is not null || Notes.FolderReview is not null))" data-testid="note-import" /></label></div>
                     <p class="panel-copy">Imports become unsaved drafts. Exports contain readable private text; keep downloaded files safe.</p>
                     @if (Notes.Selected is { } selected)
                     {
@@ -92,9 +112,10 @@
         }
         @if (SourceReadable && Notes.ProjectReview is { } projectReview)
         {
-            <aside class="notes-review" aria-label="Review note project" data-testid="note-project-review"><h2 tabindex="-1" @ref="_reviewHeading">Review note project and content</h2>
+            <aside class="notes-review" aria-label="Review note project" data-testid="note-project-review"><h2 tabindex="-1" @ref="_reviewHeading">@(projectReview.FolderBefore!=projectReview.FolderAfter?"Review note project, folder and content":"Review note project and content")</h2>
                 <p class="notes-reference">Exact note: @projectReview.Command.NoteId · revision @projectReview.Command.ExpectedNoteRevision</p>
                 <p class="notes-reference">Before: @projectReview.BeforeLabel</p><p class="notes-reference">After: @projectReview.AfterLabel</p>
+                @if (projectReview.FolderBefore!=projectReview.FolderAfter) { <p class="notes-reference">Folder before: @Notes.FolderLabel(projectReview.FolderBefore)<br />Folder after: @Notes.FolderLabel(projectReview.FolderAfter)</p><p>Review the matching project and folder changes together. The displayed Markdown remains exact.</p> }
                 <p>Save the displayed title and Markdown with this project association. Retained versions keep their original context. No task or game effect occurs.</p>
                 <div class="notes-actions"><button data-layout-primary="true" class="notes-button" disabled="@(Notes.Busy || Notes.HasPending)" @onclick="Notes.CancelReview">Keep editing</button><button data-layout-primary="true" class="notes-button notes-primary" disabled="@(Notes.Busy || Notes.HasPending)" @onclick="() => Notes.AcceptProjectAsync()" data-testid="note-project-confirm">Confirm note project</button></div>
             </aside>
@@ -129,7 +150,28 @@
     private bool? _cleanup;
     private Guid? _cleanupNotebook;
     private string? _account;
-    private ElementReference _editorHeading, _reviewHeading;
+    private ElementReference _editorHeading, _reviewHeading, _librarySearch, _newButton;
+    private readonly Dictionary<Guid,ElementReference> _noteButtons=[];
+    private HashSet<Guid> _visibleNoteIds=[];
+    private readonly string _panelId="notes-"+Guid.NewGuid().ToString("N");
+    private bool _editorMode,_hasEditor,_disposed;
+    private bool _initializing=true;
+    private long _associationEpoch;
+    private Task<IJSObjectReference>? _focusImport;
+    private bool NewDisabled => _initializing || Notes.Busy || Notes.HasPending || Notes.ProjectReview is not null || Notes.FolderReview is not null || !SignedIn
+        || SelectedFolderId is {} selectedFolder && !Notes.FolderSelectable(selectedFolder)
+        || ProjectSource is not null && ProjectSource != Notes.Source || ProjectId is {} contextProject && Notes.ProjectLink(contextProject) is null;
+    private bool NavigationDisabled => Notes.Busy || Notes.ProjectReview is not null || Notes.FolderReview is not null || Notes.Review is not null || _discard is not null || _cleanup is not null;
+    private void EnterEditor(bool resetAssociations=false){_editorMode=true;_hasEditor=true;if(resetAssociations){_associationEpoch++;_preview=false;}_focus="editor";}
+    private void BackToLibrary(){if(NavigationDisabled)return;_editorMode=false;_focus="library";}
+    private ElementReference LibraryFocus => Notes.SelectedId is {} id && _visibleNoteIds.Contains(id) && !Notes.Busy && !Notes.HasPending && Notes.ProjectReview is null && Notes.FolderReview is null && _noteButtons.TryGetValue(id,out var row)
+        ? row : Notes.SelectedId is null && !NewDisabled ? _newButton : _librarySearch;
+    private async Task FocusAndReveal(ElementReference target)
+    {
+        var context=Notes.ContextIdentity;if(_disposed)return;await target.FocusAsync();
+        var module=await (_focusImport??=Js.InvokeAsync<IJSObjectReference>("import","./js/field-focus.js").AsTask());
+        if(!_disposed&&context==Notes.ContextIdentity&&module is not null)await module.InvokeVoidAsync("revealFocusedElement",target);
+    }
     private string? _focus;
     private IJSObjectReference? _export;
     private bool SourceReadable => Notes.CanRead && (ProjectSource is null || ProjectSource == Notes.Source);
@@ -140,6 +182,12 @@
     [Parameter] public Guid? ProjectWorkspaceId {get;set;}
     [Parameter] public NotesSource? ProjectSource {get;set;}
     private string _projectFilter = "all";
+    private string _folderFilter="all";
+    private string? _folderContext;
+    private Guid? SelectedFolderId=>Guid.TryParse(_folderFilter,out var id)?id:null;
+    private IEnumerable<NoteFolder> FolderChoices=>Notes.Folders.Where(f=>Filter.Matches(f.Project));
+    private NotesFolderFilter FolderFilter=>_folderFilter=="none"?new(NoFolder:true):SelectedFolderId is {} id?new(id,Notes.Source==NotesSource.Cloud?"cloud":"browser"):new();
+    private string DraftFolderValue=>Notes.DraftFolder is {} link?(Notes.FolderSelectable(link.FolderId)?link.FolderId.ToString():"retained"):"";
     private NoteProjectLink? _filterLink;
     private bool RetainedFilter => _filterLink is {} filter && !Notes.ProjectChoices.Any(p=>Notes.ProjectLink(p.Id)==filter);
     private string FilterValue => RetainedFilter?"retained":_projectFilter;
@@ -148,7 +196,7 @@
     private long? _pageRevision;
     private NotesQueryPage? _page;
     private string? _queryKey;
-    private Guid? _context;
+    private string? _context;
     private NotesProjectFilter Filter => _projectFilter == "unassigned" ? new(Unassigned:true)
         : _projectFilter == "context" && ProjectId is {} context && ProjectWorkspaceId is {} workspace ? new(context,workspace,ProjectSource==NotesSource.Cloud?"cloud":"browser")
         : _filterLink is {} link ? new(link.ProjectId,link.WorkspaceId,link.Source) : new();
@@ -156,38 +204,53 @@
     {
         get
         {
-            var key=$"{_search}:{_trash}:{_projectFilter}:{Notes.Source}:{ProjectId}:{ProjectWorkspaceId}:{Notes.ProjectWorkspaceId}";
+            var key=$"{_search}:{_trash}:{_projectFilter}:{_folderFilter}:{Notes.Source}:{ProjectId}:{ProjectWorkspaceId}:{Notes.ProjectWorkspaceId}";
             if(_queryKey!=key||_pageRevision!=Notes.Book?.Revision){_queryKey=key;_offset=0;_pageRevision=Notes.Book?.Revision;}
-            try{_page=Notes.Search(_search,_trash,_offset,_pageRevision,Filter);return _page?.Results??[];}
+            try{_page=Notes.Search(_search,_trash,_offset,_pageRevision,Filter,FolderFilter);return _page?.Results??[];}
             catch(ArgumentException){_page=null;return [];}
             catch(InvalidOperationException){_offset=0;_page=null;return [];}
         }
     }
-    protected override void OnParametersSet(){if(_context!=ProjectId){_context=ProjectId;_projectFilter=ProjectId is null?"all":"context";_offset=0;}}
-    private void FilterProject(ChangeEventArgs args){var value=args.Value?.ToString()??"all";if(value=="retained")return;if(Guid.TryParse(value,out var id)){if(Notes.ProjectLink(id) is not {} link)return;_filterLink=link;}else _filterLink=null;_projectFilter=value;_offset=0;}
+    protected override void OnParametersSet(){var context=$"{ProjectId}:{ProjectWorkspaceId}:{ProjectSource}";if(_context!=context){_context=context;_projectFilter=ProjectId is null?"all":"context";_folderFilter="all";Notes.CancelFolderReview();_offset=0;}}
+    private void FilterProject(ChangeEventArgs args){var value=args.Value?.ToString()??"all";if(value=="retained")return;if(Guid.TryParse(value,out var id)){if(Notes.ProjectLink(id) is not {} link)return;_filterLink=link;}else _filterLink=null;_projectFilter=value;_folderFilter="all";_offset=0;}
+    private void FilterFolder(ChangeEventArgs args)=>SelectFolder(args.Value?.ToString()=="none"?null:Guid.TryParse(args.Value?.ToString(),out var id)?id:null,args.Value?.ToString()=="none");
+    private void SelectFolder(Guid? id)=>SelectFolder(id,false);
+    private void SelectFolder(Guid? id,bool noFolder){if(id is {} target&&Notes.Folders.FirstOrDefault(f=>f.Id==target) is {} folder&&!Filter.Matches(folder.Project)){_projectFilter="all";_filterLink=null;}_folderFilter=id?.ToString()??(noFolder?"none":"all");_offset=0;}
+    private void PickFolder(ChangeEventArgs args){if(args.Value?.ToString()=="retained")return;Notes.ChooseFolder(Guid.TryParse(args.Value?.ToString(),out var id)?id:null);}
     private void PickProject(ChangeEventArgs args){if(args.Value?.ToString()=="retained")return;Notes.ChooseProject(Guid.TryParse(args.Value?.ToString(),out var id)?id:null);}
     private void PreviousPage()=>_offset=Math.Max(0,_offset-20);
     private void NextPage(){if(_page?.NextOffset is {} next)_offset=next;}
-    protected override async Task OnInitializedAsync() { _account = Session.State.UserId; Notes.Changed += Changed; await Notes.LoadAsync(); }
-    private void Changed() => _ = InvokeAsync(() => { if (!SignedIn || _account != Session.State.UserId) { _account = Session.State.UserId; _discard = null; _cleanup = null; _error = null; _consent = false; _search = ""; _trash = false; _projectFilter=ProjectId is null?"all":"context";_filterLink=null; } StateHasChanged(); });
-    protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focus is { } focus) { _focus = null; try { await (focus == "review" ? _reviewHeading : _editorHeading).FocusAsync(); } catch (JSException) { } } }
+    protected override async Task OnInitializedAsync()
+    {
+        _account=Session.State.UserId;_folderContext=Notes.ContextIdentity;Notes.Changed+=Changed;
+        try
+        {
+            await Notes.LoadAsync();_folderContext=Notes.ContextIdentity;
+            _hasEditor=Notes.Dirty||Notes.SelectedId is not null;_editorMode=_hasEditor;
+            if(_editorMode&&SourceReadable&&Notes.Book is not null)_focus="editor";
+        }
+        finally {_initializing=false;}
+    }
+    private void Changed() => _ = InvokeAsync(() => { if(_folderContext!=Notes.ContextIdentity){_folderContext=Notes.ContextIdentity;_folderFilter="all";_editorMode=false;_hasEditor=Notes.Dirty||Notes.SelectedId is not null;_focus=null;_noteButtons.Clear();_visibleNoteIds.Clear();} if (!SignedIn || _account != Session.State.UserId) { _account = Session.State.UserId; _discard = null; _cleanup = null; _error = null; _consent = false; _search = ""; _trash = false; _projectFilter=ProjectId is null?"all":"context";_filterLink=null; } StateHasChanged(); });
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focus is { } focus && (focus == "review" || SourceReadable && Notes.Book is not null)) { _focus = null; try { await FocusAndReveal(focus == "review" ? _reviewHeading : focus == "library" ? LibraryFocus : _editorHeading); } catch (JSException) { } } }
     private async Task Guard(Func<Task> action) { _cleanup = null; Notes.CancelReview(); if (Notes.Dirty) { _discard = action; _focus = "review"; } else await action(); }
-    private Task New() => Guard(() => { Notes.NewNote(true); if(ProjectId is {} id && ProjectSource==Notes.Source && ProjectWorkspaceId==Notes.ProjectWorkspaceId)Notes.ChooseProject(id); _preview = false; _focus = "editor"; return Task.CompletedTask; });
-    private Task Open(Guid id) => Guard(() => { Notes.Open(id, true); _preview = false; _focus = "editor"; return Task.CompletedTask; });
+    private Task New() => NewDisabled ? Task.CompletedTask : Guard(() => { if(!Notes.NewNote(true))return Task.CompletedTask; if(ProjectId is {} id && ProjectSource==Notes.Source && ProjectWorkspaceId==Notes.ProjectWorkspaceId)Notes.ChooseProject(id); if(SelectedFolderId is {} folder)Notes.ChooseFolder(folder); EnterEditor(true); return Task.CompletedTask; });
+    private Task Open(Guid id) => Notes.SelectedId==id ? ResumeCurrent() : Guard(() => { if(Notes.Open(id,true))EnterEditor(true);return Task.CompletedTask; });
+    private Task ResumeCurrent(){EnterEditor();return Task.CompletedTask;}
     private Task Switch(NotesSource source) => Guard(async () => { await Notes.SwitchAsync(source, true); _projectFilter=ProjectId is null?"all":"context";_filterLink=null; _consent = false; _preview = false; });
     private Task Refresh() => Notes.LoadAsync();
-    private Task ReloadStored() => Guard(() => { if (Notes.SelectedId is { } id) Notes.Open(id, true); return Task.CompletedTask; });
+    private Task ReloadStored() => Guard(() => { if (Notes.SelectedId is { } id && Notes.Open(id,true))EnterEditor(true);return Task.CompletedTask; });
     private async Task Discard() { var action = _discard; _discard = null; if (action is not null) await action(); }
-    private void CancelDiscard() { _discard = null; _focus = "editor"; }
-    private async Task Save() { _error = null; await Notes.SaveAsync(); if(Notes.ProjectReview is not null)_focus="review"; }
+    private void CancelDiscard() { _discard = null; EnterEditor(); }
+    private async Task Save() { _error = null; await Notes.SaveAsync(); if((Notes.ProjectReview is not null || Notes.FolderReview is not null))_focus="review"; }
     private async Task Connect() { _working = true; try { await Notes.ConnectAsync(_consent); } finally { _working = false; } }
     private void Lifecycle(NoteOperation operation) { _irreversible = false; if (Notes.PrepareLifecycle(operation)) _focus = "review"; }
-    private async Task AcceptLifecycle() { await Notes.AcceptLifecycleAsync(); _focus = "editor"; }
-    private Task Version(long revision) => Guard(() => { Notes.UseVersion(revision, true); _preview = false; _focus = "editor"; return Task.CompletedTask; });
+    private async Task AcceptLifecycle() { await Notes.AcceptLifecycleAsync(); EnterEditor(); }
+    private Task Version(long revision) => Guard(() => { Notes.UseVersion(revision, true); EnterEditor(true); return Task.CompletedTask; });
     private async Task Import(InputFileChangeEventArgs args)
     {
         _error = null; var account = Session.State.UserId; var source = Notes.Source;
-        try { var file = args.File; if (!file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase)) { _error = "Choose a .md Markdown file."; return; } await using var stream = file.OpenReadStream(NotesModel.BodyBytes); using var memory = new MemoryStream(); await stream.CopyToAsync(memory); var text = new UTF8Encoding(false, true).GetString(memory.ToArray()); if (account != Session.State.UserId || !SignedIn || source != Notes.Source) return; await Guard(() => { Notes.ImportMarkdown(file.Name, text, true); _preview = false; _focus = "editor"; return Task.CompletedTask; }); }
+        try { var file = args.File; if (!file.Name.EndsWith(".md", StringComparison.OrdinalIgnoreCase)) { _error = "Choose a .md Markdown file."; return; } await using var stream = file.OpenReadStream(NotesModel.BodyBytes); using var memory = new MemoryStream(); await stream.CopyToAsync(memory); var text = new UTF8Encoding(false, true).GetString(memory.ToArray()); if (account != Session.State.UserId || !SignedIn || source != Notes.Source) return; await Guard(() => { Notes.ImportMarkdown(file.Name, text, true); EnterEditor(true); return Task.CompletedTask; }); }
         catch (Exception ex) when (ex is IOException or DecoderFallbackException or InvalidOperationException) { _error = "The file could not be read as UTF-8 Markdown within the 128 KiB limit. Your existing draft was preserved."; }
     }
     private async Task Export()
@@ -198,5 +261,5 @@
     private Task Cleanup(bool delete) => Guard(() => { _cleanup = delete; _cleanupNotebook = Notes.CloudNotebookId; _irreversible = false; _focus = "review"; return Task.CompletedTask; });
     private void CancelCleanup() { _cleanup = null; _irreversible = false; }
     private async Task ConfirmCleanup() { if (_cleanup is not { } delete || _cleanupNotebook != Notes.CloudNotebookId) { _cleanup = null; _error = "The cloud notebook changed. Review cleanup again."; return; } _working = true; try { await Notes.DisconnectCloudAsync(delete); _cleanup = null; } finally { _working = false; } }
-    public async ValueTask DisposeAsync() { Notes.Changed -= Changed; if (_export is not null) await _export.DisposeAsync(); }
+    public async ValueTask DisposeAsync() { _disposed=true;_focus=null;Notes.Changed -= Changed; if (_export is not null) await _export.DisposeAsync(); if(_focusImport is not null)try{var module=await _focusImport;if(module is not null)await module.DisposeAsync();}catch(JSException){} }
 }

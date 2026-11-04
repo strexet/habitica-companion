@@ -1,0 +1,122 @@
+{
+  "pass_result": true,
+  "lane": "dotnet",
+  "counts": {
+    "expected": 1861,
+    "discovered": 1861,
+    "passed": 1861,
+    "failed": 0,
+    "skipped": 0
+  },
+  "details": {
+    "suites": [
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003858.trx",
+        "total": 94,
+        "passed": 94,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003903.trx",
+        "total": 354,
+        "passed": 354,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003904.trx",
+        "total": 36,
+        "passed": 36,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003905.trx",
+        "total": 43,
+        "passed": 43,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003906.trx",
+        "total": 41,
+        "passed": 41,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      {
+        "path": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx/integrated_net8.0_20261105003957.trx",
+        "total": 1190,
+        "passed": 1190,
+        "failed": 0,
+        "notExecuted": 0
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "sdk",
+      "argv": [
+        "/Users/petr/Projects/habitica-tool/dotnet/dotnet",
+        "--version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.26,
+      "deadline_seconds": 30,
+      "log": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/sdk.log"
+    },
+    {
+      "name": "solution",
+      "argv": [
+        "/Users/petr/Projects/habitica-tool/dotnet/dotnet",
+        "test",
+        "Habitica.sln",
+        "-c",
+        "Release",
+        "-m:1",
+        "-nodeReuse:false",
+        "--logger",
+        "trx;LogFilePrefix=integrated",
+        "--results-directory",
+        "/Users/petr/Projects/.agent-workspaces/habitica-complete-production/.skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/trx"
+      ],
+      "exit_code": 0,
+      "seconds": 124.565,
+      "deadline_seconds": 900,
+      "log": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/solution.log"
+    },
+    {
+      "name": "functions",
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "tests/Functions/callback-receiver.test.mjs",
+        "tests/Functions/cloudflare-party-sync-bridge.test.mjs",
+        "tests/Functions/color-schemes.test.mjs",
+        "tests/Functions/dev-preparation.test.mjs",
+        "tests/Functions/diagnostics-export.test.mjs",
+        "tests/Functions/foreground-reminders.test.mjs",
+        "tests/Functions/gear-recovery-storage.test.mjs",
+        "tests/Functions/mcp-events-prototype.test.mjs",
+        "tests/Functions/notification-storage.test.mjs",
+        "tests/Functions/page-qualification.test.mjs",
+        "tests/Functions/party-quest-pool.test.mjs",
+        "tests/Functions/party-sync-access.test.mjs",
+        "tests/Functions/push-notifications.test.mjs",
+        "tests/Functions/pwa-push.test.mjs",
+        "tests/Functions/pwa.test.mjs",
+        "tests/Functions/qualification-session.test.mjs"
+      ],
+      "exit_code": 0,
+      "seconds": 7.443,
+      "deadline_seconds": 300,
+      "log": ".skill-tree/artifacts/integration-qualification/dotnet/1a9b5d15-fa54-4c63-8e04-d28e99aa725c/functions.log"
+    }
+  ],
+  "cleanup": "Every launched command exited; browser/fixture controllers own isolated resources and record cleanup.",
+  "seconds": 132.301
+}

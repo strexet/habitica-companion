@@ -1,0 +1,416 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Recurring row action targets, exact occurrence drafts and original review fences remain unchanged.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.log",
+          "sha256": "25e5e0c8a44914d7e7ba838dcffb953acad5ffb17f113ea18ae6d8e8addac870"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.trx",
+          "sha256": "3481dc151bd844d0fc8e4ee4b097307ac1edd2c6190c184f1c473f25cbd7af34"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/acceptance.json",
+          "sha256": "81d09593bc1916f8da1b8fd3c7dc1b6b488b81b49d046c395747d315407f597a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser/fee49d91-e535-4dd0-8c25-87dd43c0afbf.json",
+          "sha256": "8b1793bcbd518fd30094e7d21c9dc620647676dd74cbdd8e7103122a1be2f2e5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Habit and Daily task identity copy and native Notes use readable space beside or above actions across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.log",
+          "sha256": "25e5e0c8a44914d7e7ba838dcffb953acad5ffb17f113ea18ae6d8e8addac870"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.trx",
+          "sha256": "3481dc151bd844d0fc8e4ee4b097307ac1edd2c6190c184f1c473f25cbd7af34"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/acceptance.json",
+          "sha256": "81d09593bc1916f8da1b8fd3c7dc1b6b488b81b49d046c395747d315407f597a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser/fee49d91-e535-4dd0-8c25-87dd43c0afbf.json",
+          "sha256": "8b1793bcbd518fd30094e7d21c9dc620647676dd74cbdd8e7103122a1be2f2e5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Keep existing exact task/date interactions and disabled original preview tests; retained native row screenshot supplies the layout regression.",
+        "criteria": [
+          "Recurring row action targets, exact occurrence drafts and original review fences remain unchanged."
+        ],
+        "id": "recurring-row-readability-behavior",
+        "parameters": {
+          "report_name": "recurring-row-readability.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/recurring-row-readability/unit",
+          "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-025b020a-3645-424b-a063-bcb628367689",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 25,
+          "expected": 25,
+          "failed": 0,
+          "passed": 25,
+          "skipped": 0
+        },
+        "definition": "d7be653417c536695f5bd01fa9af820ed4f048226af8321dc3847a1281b350ff",
+        "environment_identity": "110c6a0b74589248747eaabd26850aed7a43cfdffa3d4c9be4b0fcd46bc73693",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.log",
+            "sha256": "25e5e0c8a44914d7e7ba838dcffb953acad5ffb17f113ea18ae6d8e8addac870"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.trx",
+            "sha256": "3481dc151bd844d0fc8e4ee4b097307ac1edd2c6190c184f1c473f25cbd7af34"
+          }
+        ],
+        "execution_sessions": {
+          "fd62e6a26a52726e958c88e3b7c7f46e18e29c71a3f63f245e20ef63736b59df": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "942121be8b8aa83a58fed4beed38edc9b6a221cacfc201a5a2e26efb2bd8dfb2",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:34:59.590834+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/recurring-row-readability/launch-1793733539591081000.json"
+            ],
+            "profile_id": "6ae18953b150eda0056ccc49c5dcc1d212d14bcad744b9f0a6784ff7a11d0a9b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/recurring-row-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "c3a46e295564f492d64b9de1d25229cb54843409afdaf8ba05350e9362e820be",
+        "payload_hash": "af30af662e46ca887921287f1a9b9e8479d919e6e5b9d13c057244f81b1ca6ae",
+        "recorded_at": "2026-11-03T19:24:38.722984+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+        },
+        "timing": {
+          "tool_wall_seconds": 3.686530292034149
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Require task text to retain available ordinary-word width, native Notes to open visibly, exact action names and selected Daily dates to stay readable. Exercise actual routes and original previews without accepting commands; retain full matrix and journal equality.",
+        "criteria": [
+          "Habit and Daily task identity copy and native Notes use readable space beside or above actions across the required rendered matrix."
+        ],
+        "id": "recurring-row-readability-rendered",
+        "parameters": {
+          "cases": "Same-named long Habit and Daily ready/frozen rows, readable title and Notes areas, bounded actions and selected Daily dates.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser",
+          "routes": [
+            "/todo/habits",
+            "/todo/dailies"
+          ],
+          "task_key": "recurring-row-readability"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs",
+          "tests/browser-qualification/ux-ui-recurring-row-journey.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-9bc8838c-8861-48cf-9263-dfe611fe1c0d",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 433,
+          "expected": 433,
+          "failed": 0,
+          "passed": 433,
+          "skipped": 0
+        },
+        "definition": "d7be653417c536695f5bd01fa9af820ed4f048226af8321dc3847a1281b350ff",
+        "environment_identity": "85a62ef09c84fbf6e3d732840c10d5559e675974362909eabc6307c0520a0b82",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser/fee49d91-e535-4dd0-8c25-87dd43c0afbf.json",
+            "sha256": "8b1793bcbd518fd30094e7d21c9dc620647676dd74cbdd8e7103122a1be2f2e5"
+          }
+        ],
+        "execution_sessions": {
+          "fd62e6a26a52726e958c88e3b7c7f46e18e29c71a3f63f245e20ef63736b59df": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T19:40:38.852379+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/recurring-row-readability/launch-1793733878852622000.json"
+            ],
+            "profile_id": "6ae18953b150eda0056ccc49c5dcc1d212d14bcad744b9f0a6784ff7a11d0a9b",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/recurring-row-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "7b9ff112aa9b8f1d1966765ba2daf9e83fd129d94a4e64634b2dc3947db95e82",
+        "payload_hash": "61b8de261beb117d01db9ce98186fbbd69a00c09be5d88e79731e3f8cf7f98dc",
+        "recorded_at": "2026-11-03T19:29:35.651374+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+          "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+          "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+          "tests/browser-qualification/ux-ui-adapters.json": "b8fc241dfd334cb2e1782828ab11a3a57394835f07f5378bc6105e966d114672",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+          "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs": "585fb5384ddfc1a5b729e6f9bf49cd30efc47f0813e618e5a0621075f6b1600f",
+          "tests/browser-qualification/ux-ui-recurring-row-journey.mjs": "411f1fdcaab5d5f407fa6db37f1d5f61f1e57da1b918fc0493f81dd8d81750c9",
+          "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+        },
+        "timing": {
+          "tool_wall_seconds": 295.66373908286914
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/acceptance.json",
+      "sha256": "81d09593bc1916f8da1b8fd3c7dc1b6b488b81b49d046c395747d315407f597a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/operation-history.json",
+      "sha256": "b3574cc65e0914bfcea9770aa66c3376e97c0c72ddd8dc2f439835dee33a02c1"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-67186dff-5299-45be-bf13-b5a79bbfc064",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep recurring task identities readable beside row actions. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-5403c100-334b-41bf-9f4b-0d4a66794ea5"
+  ],
+  "recorded_at": "2026-11-03T19:29:50.322066+00:00",
+  "related_task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+  "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "8b4cd22949bdfb4556cce3222678bc4c0a9783a3a9b6e3e5e4e155880bf38605",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "2626ea8b25be95b88d1908f6a169f46d83dfd77191d55f9d727ad010bb13bb4b",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "3500240d443f1d7b0825495f7cb0cacb4bc370460eff878e1496f75195891ca6",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "2dd320dfa5213b89ba55f18aa85dc98f01bb418a8e0d1e5b610ab955b4b5a050",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "24c50c03059f9698c32cd2cb65ca6f4d4d00a98050da611288a814b2f5a4adf7",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "b8fc241dfd334cb2e1782828ab11a3a57394835f07f5378bc6105e966d114672",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs": "585fb5384ddfc1a5b729e6f9bf49cd30efc47f0813e618e5a0621075f6b1600f",
+    "tests/browser-qualification/ux-ui-recurring-row-journey.mjs": "411f1fdcaab5d5f407fa6db37f1d5f61f1e57da1b918fc0493f81dd8d81750c9",
+    "tests/browser-qualification/ux-ui-workspace-names-journey.mjs": "736eba2c454a3e3936c0c06f28a46c62127fa46faa1d360cf5e78e997cfe5e4c"
+  },
+  "task_id": "T-d123dff7-af96-45ab-9690-a0932de03df9",
+  "title": "Keep recurring task identities readable beside row actions",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Keep existing exact task/date interactions and disabled original preview tests; retained native row screenshot supplies the layout regression.",
+      "criteria": [
+        "Recurring row action targets, exact occurrence drafts and original review fences remain unchanged."
+      ],
+      "id": "recurring-row-readability-behavior",
+      "parameters": {
+        "report_name": "recurring-row-readability.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/recurring-row-readability/unit",
+        "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Require task text to retain available ordinary-word width, native Notes to open visibly, exact action names and selected Daily dates to stay readable. Exercise actual routes and original previews without accepting commands; retain full matrix and journal equality.",
+      "criteria": [
+        "Habit and Daily task identity copy and native Notes use readable space beside or above actions across the required rendered matrix."
+      ],
+      "id": "recurring-row-readability-rendered",
+      "parameters": {
+        "cases": "Same-named long Habit and Daily ready/frozen rows, readable title and Notes areas, bounded actions and selected Daily dates.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser",
+        "routes": [
+          "/todo/habits",
+          "/todo/dailies"
+        ],
+        "task_key": "recurring-row-readability"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-workspace-names-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-occurrence-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-recurring-row-journey.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "d7be653417c536695f5bd01fa9af820ed4f048226af8321dc3847a1281b350ff"
+}

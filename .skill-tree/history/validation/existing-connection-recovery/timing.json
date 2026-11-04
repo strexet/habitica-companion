@@ -1,0 +1,16 @@
+{
+  "run_id": "WR-13d5cdea-5809-4560-aa67-683a4416507c",
+  "tracked_operation_count": 20,
+  "tool_process_wall_seconds_sum": 327.901,
+  "tracked_tool_wall_union_seconds_approx": 309.048,
+  "controller_elapsed_seconds": 3412.787,
+  "active_controller_seconds_approx": 3103.738,
+  "prerequisite_wait_seconds": 0,
+  "timing_method": "Controller active-time approximation subtracts the union of recorded operation intervals inferred from receipt mtime and process duration; includes source/document inspection tool overhead. No cumulative task budget is enforced.",
+  "unchanged_failure_stop_triggered": false,
+  "initial_repairs": [
+    "WorkspaceRow needed the existing consent_version field during initial type checking.",
+    "The first recovery fixture sent a raw Note command instead of the required notebook-bound envelope; the corrected fixture passes.",
+    "Review added token-issuance guards around session pruning and parallel-session negative controls."
+  ]
+}

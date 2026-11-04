@@ -1,0 +1,89 @@
+- banner:
+  - toolbar:
+    - strong: Habitica Tool
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - link "Sign in":
+      - /url: /sign-in
+      - generic: Sign in
+- paragraph: Habitica companion
+- heading "Plan Habitica with clearer data." [active] [level=1]
+- link "Sign in":
+  - /url: "#sign-in-form-card"
+  - text: Sign in
+  - generic: ↓
+- paragraph: Review account health, party timing, quest options, gear choices, spells, and tasks from one focused app.
+- generic: Account health and stat points
+- generic: Party quest queue and CRON timing
+- generic: Gear comparison and presets
+- generic: Spell and task-value helpers
+- generic: Color scheme
+- combobox "Color scheme":
+  - option "Gryphy (Light)" [selected]
+  - option "Gryphy (Dark)"
+  - option "Forest Legacy"
+  - option "Frosted Cake"
+  - option "Blessed Skyhaven"
+  - option "Frost Healer"
+  - option "Sunlit Stable"
+  - option "Mosswood Quest"
+  - option "Potion Shop"
+  - option "Quiet Ledger"
+  - option "Treasure Vault"
+  - option "Mana Spring"
+  - option "Stonewatch Sanctuary"
+  - option "Arcane Wraith"
+  - option "Phantom Fair"
+  - option "Toxic Swamp"
+  - option "Green Menace"
+  - option "Abyssal Blackwater"
+  - option "Obsidian Glow"
+  - option "Infernal Covenant"
+  - option "Midnight Tavern"
+  - option "Dragonfire Keep"
+  - option "Boss Battle"
+  - option "Celestial Inn"
+- paragraph: Connect this browser
+- heading "Sign in with Habitica" [level=2]
+- paragraph: Use the User ID and API Token from Habitica settings. Your token works like a password, so it stays private and is used only to talk to Habitica.
+- generic: Session-only by default
+- generic: No export includes credentials
+- generic: Saved credentials are optional
+- generic: Habitica User ID
+- textbox "Habitica User ID Shown on Habitica Settings -> API."
+- generic: Shown on Habitica Settings -> API.
+- generic: Habitica API Token
+- textbox "Habitica API Token Treat this like a password. It is sent only to Habitica for sign-in."
+- generic: Treat this like a password. It is sent only to Habitica for sign-in.
+- checkbox "Remember credentials on this device. Leave unchecked for this tab only."
+- generic: Remember credentials on this device. Leave unchecked for this tab only.
+- button "Sign In":
+  - generic: Sign In
+- link "Open Saved Data":
+  - /url: /dashboard
+  - generic: Open Saved Data
+- generic: Where to find them
+- list:
+  - listitem: "Website: User icon menu -> Settings -> API."
+  - listitem: "Android: Settings -> API."
+  - listitem: "iOS: Settings -> Account Details."
+  - listitem: Copy User ID and API Token into this form.
+- link "Open Habitica API settings":
+  - /url: https://habitica.com/user/settings/api
+- generic: Safety model
+- list:
+  - listitem: Your API Token is a password. Keep it private.
+  - listitem: Sign in sends credentials only to Habitica for account data.
+  - listitem: Sign in and refresh read data; Habitica-changing actions are explicit.
+  - listitem: Session-only sign-in is the default.
+  - listitem: Remembering credentials is optional and stored only in this browser.
+  - listitem: Credentials are never saved in exports, app messages, or device sync.
+- paragraph:
+  - text: Sign out ends the current tab session. Clear local data removes saved credentials and saved app data.
+  - link "Privacy and data handling":
+    - /url: /privacy
+- generic: Saved Habitica data is already available on this device. You can browse it now or sign in to refresh it.
+- paragraph: Use Companion as an app
+- heading "Install on iPhone" [level=2]
+- paragraph: Open Habitica Companion from your Home Screen in its own window.
+- button "Show installation steps":
+  - generic: Show installation steps

@@ -1,0 +1,68 @@
+{
+  "assertion": "Keep independent existing date/filter, invalid-date, timezone-unavailable, current-project and account/source scope regressions passing; no command or date semantics change.",
+  "attempt_id": "C-01a5ce33-028a-458c-8ffe-b488e6d97759",
+  "check_id": "planning-date-readability-behavior",
+  "definition": "45e3eb8723bd38fcf4ce186c8ec739ad8bf87aeb10a4d9c42422d3323ea10734",
+  "environment_identity": "f893e599c36dd4f1253dcb83dfecf2402186fe3f4a340ec7355b39bcc4ada606",
+  "key": "166251523fab8664f779607d1623a9be09fae43da1080ecaf17b75f9a8fb20ea",
+  "launch": {
+    "assertion": "Keep independent existing date/filter, invalid-date, timezone-unavailable, current-project and account/source scope regressions passing; no command or date semantics change.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-04T01:18:19.486865+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-04T01:13:19.819887+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoStatisticsPanelTests",
+      "--logger",
+      "trx;LogFileName=planning-date-readability.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/planning-date-readability/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "eb62016c3fde712672f67efa3ab5af1a6bfd57df4afd9268b569ebce5cb3a740",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0"
+  },
+  "task_id": "T-b8a05278-292d-4f91-a882-35e0944a742d"
+}

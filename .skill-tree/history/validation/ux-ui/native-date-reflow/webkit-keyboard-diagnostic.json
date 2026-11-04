@@ -1,0 +1,80 @@
+{
+  "source": "Owned native input/button diagnostic, Playwright WebKit1.62.1; no provider or application hook",
+  "rows": [
+    {
+      "key": "Tab",
+      "trace": [
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "next",
+          "focusVisible": true
+        },
+        {
+          "id": "",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "next",
+          "focusVisible": true
+        }
+      ]
+    },
+    {
+      "key": "Alt+Tab",
+      "trace": [
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "today",
+          "focusVisible": true
+        },
+        {
+          "id": "next",
+          "focusVisible": true
+        },
+        {
+          "id": "",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        },
+        {
+          "id": "date",
+          "focusVisible": false
+        }
+      ]
+    }
+  ],
+  "cleanup": "Browser closes in finally."
+}

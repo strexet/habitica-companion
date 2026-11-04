@@ -1,0 +1,10 @@
+{
+  "completed_task_id": "T-c913de5b-0eff-4973-be07-089ea4391c1b",
+  "outcome_id": "O-f8655298-0f86-4439-a03e-c4eacc3fce6f",
+  "finished_run_id": "WR-134bb673-21a3-4041-ac89-9c898c972b34",
+  "parked_controller_restored": true,
+  "old_controller_resumed": false,
+  "writer_lock_present": false,
+  "acceptance_evidence_hashes_match": true,
+  "retention": "Post-finish pruning was deferred after the restoration wrapper encountered the helper recursive writer lock. The completed run summary and task outcome are persisted; no stale-lock removal, pruning or second completion occurred."
+}

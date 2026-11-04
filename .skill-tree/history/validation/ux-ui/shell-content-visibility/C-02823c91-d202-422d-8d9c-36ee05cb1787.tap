@@ -1,0 +1,209 @@
+TAP version 13
+# (node:14485) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: opaque disabled text uses the product floor without skipping the control
+ok 1 - opaque disabled text uses the product floor without skipping the control
+  ---
+  duration_ms: 0.735958
+  ...
+# Subtest: unreadable disabled text fails independently of enabled-text exemptions
+ok 2 - unreadable disabled text fails independently of enabled-text exemptions
+  ---
+  duration_ms: 0.1815
+  ...
+# Subtest: group opacity composites foreground and background together over the parent
+ok 3 - group opacity composites foreground and background together over the parent
+  ---
+  duration_ms: 0.099125
+  ...
+# Subtest: nested disabled opacity cannot pass by measuring the unpainted foreground
+ok 4 - nested disabled opacity cannot pass by measuring the unpainted foreground
+  ---
+  duration_ms: 0.07725
+  ...
+# Subtest: matching actual native-date ink and full-date reference qualifies visible content
+ok 5 - matching actual native-date ink and full-date reference qualifies visible content
+  ---
+  duration_ms: 0.1355
+  ...
+# Subtest: a valid date value and valid outer geometry cannot excuse missing rendered date text
+ok 6 - a valid date value and valid outer geometry cannot excuse missing rendered date text
+  ---
+  duration_ms: 0.052792
+  ...
+# Subtest: missing or empty native reference evidence remains unavailable rather than passing
+ok 7 - missing or empty native reference evidence remains unavailable rather than passing
+  ---
+  duration_ms: 0.098708
+  ...
+# Subtest: existing enabled contrast and geometry contracts remain available
+ok 8 - existing enabled contrast and geometry contracts remain available
+  ---
+  duration_ms: 0.317375
+  ...
+# Subtest: route and state selection resolves only reviewed exact fixtures
+ok 9 - route and state selection resolves only reviewed exact fixtures
+  ---
+  duration_ms: 1.0865
+  ...
+# Subtest: unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+ok 10 - unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+  ---
+  duration_ms: 1.081375
+  ...
+# Subtest: a responding server cannot substitute for exact owner, checkout and build identity
+ok 11 - a responding server cannot substitute for exact owner, checkout and build identity
+  ---
+  duration_ms: 0.356916
+  ...
+# Subtest: failed qualification still awaits owned resource cleanup and retains the original failure
+ok 12 - failed qualification still awaits owned resource cleanup and retains the original failure
+  ---
+  duration_ms: 0.221667
+  ...
+# Subtest: a successful session also closes resources before returning
+ok 13 - a successful session also closes resources before returning
+  ---
+  duration_ms: 0.054917
+  ...
+# Subtest: native ink probes use actual channel differences and reject changed screenshot geometry
+ok 14 - native ink probes use actual channel differences and reject changed screenshot geometry
+  ---
+  duration_ms: 0.13125
+  ...
+# Subtest: declared native fixtures cannot pass with zero measured date inputs
+ok 15 - declared native fixtures cannot pass with zero measured date inputs
+  ---
+  duration_ms: 0.102792
+  ...
+# Subtest: strict non-date adapters can qualify without inventing a native-date journey
+ok 16 - strict non-date adapters can qualify without inventing a native-date journey
+  ---
+  duration_ms: 0.335375
+  ...
+# Subtest: cleanup attempts every browser and the server after a browser close failure
+ok 17 - cleanup attempts every browser and the server after a browser close failure
+  ---
+  duration_ms: 0.286958
+  ...
+# Subtest: header clearance rejects fully covered main content
+ok 18 - header clearance rejects fully covered main content
+  ---
+  duration_ms: 0.080625
+  ...
+# Subtest: header clearance rejects partial overlap and missing content evidence
+ok 19 - header clearance rejects partial overlap and missing content evidence
+  ---
+  duration_ms: 0.050542
+  ...
+# Subtest: clear or horizontally separated content is not header overlap
+ok 20 - clear or horizontally separated content is not header overlap
+  ---
+  duration_ms: 0.042667
+  ...
+# Subtest: parallel matrix coverage requires every declared case exactly once
+ok 21 - parallel matrix coverage requires every declared case exactly once
+  ---
+  duration_ms: 0.297583
+  ...
+# Subtest: parallel coverage rejects duplicate cases even when counts match
+ok 22 - parallel coverage rejects duplicate cases even when counts match
+  ---
+  duration_ms: 0.095834
+  ...
+# Subtest: parallel coverage rejects an unselected engine or text scale
+ok 23 - parallel coverage rejects an unselected engine or text scale
+  ---
+  duration_ms: 0.163333
+  ...
+# Subtest: disabled state evidence requires the exact visible native fields
+ok 24 - disabled state evidence requires the exact visible native fields
+  ---
+  duration_ms: 0.154625
+  ...
+# Subtest: hydrated appearance accepts the observed selected scheme and enlarged root text
+ok 25 - hydrated appearance accepts the observed selected scheme and enlarged root text
+  ---
+  duration_ms: 0.048667
+  ...
+# Subtest: a light page cannot qualify as the requested dark scheme
+ok 26 - a light page cannot qualify as the requested dark scheme
+  ---
+  duration_ms: 0.092667
+  ...
+# Subtest: a requested enlarged-text case rejects an unchanged root font
+ok 27 - a requested enlarged-text case rejects an unchanged root font
+  ---
+  duration_ms: 0.05725
+  ...
+# Subtest: synthetic provider data rejects external or traversing fixture paths before browser launch
+ok 28 - synthetic provider data rejects external or traversing fixture paths before browser launch
+  ---
+  duration_ms: 0.199625
+  ...
+# Subtest: synthetic provider data accepts one explicit owned local fixture filename
+ok 29 - synthetic provider data accepts one explicit owned local fixture filename
+  ---
+  duration_ms: 0.04975
+  ...
+# Subtest: synthetic party data rejects external and traversing paths
+ok 30 - synthetic party data rejects external and traversing paths
+  ---
+  duration_ms: 0.144417
+  ...
+# Subtest: synthetic party data accepts one owned reviewed filename
+ok 31 - synthetic party data accepts one owned reviewed filename
+  ---
+  duration_ms: 0.215875
+  ...
+# Subtest: synthetic content data rejects external and traversing paths
+ok 32 - synthetic content data rejects external and traversing paths
+  ---
+  duration_ms: 0.13125
+  ...
+# Subtest: synthetic content data accepts one owned reviewed filename
+ok 33 - synthetic content data accepts one owned reviewed filename
+  ---
+  duration_ms: 0.043166
+  ...
+# Subtest: equipment readable copy may stack but retains a full ordinary-word area
+ok 34 - equipment readable copy may stack but retains a full ordinary-word area
+  ---
+  duration_ms: 0.087958
+  ...
+# Subtest: equipment glyph-wide copy fails even when the outer document fits
+ok 35 - equipment glyph-wide copy fails even when the outer document fits
+  ---
+  duration_ms: 0.049208
+  ...
+# Subtest: equipment stat labels and numeric values cannot split across lines
+ok 36 - equipment stat labels and numeric values cannot split across lines
+  ---
+  duration_ms: 0.035125
+  ...
+# Subtest: missing equipment text geometry is unavailable rather than accepted
+ok 37 - missing equipment text geometry is unavailable rather than accepted
+  ---
+  duration_ms: 0.082708
+  ...
+# Subtest: equipment action word line boxes reject a split inside the geometry tolerance
+ok 38 - equipment action word line boxes reject a split inside the geometry tolerance
+  ---
+  duration_ms: 0.057125
+  ...
+# Subtest: count labels reject a split ordinary word even inside geometry tolerance
+ok 39 - count labels reject a split ordinary word even inside geometry tolerance
+  ---
+  duration_ms: 0.049209
+  ...
+1..39
+# tests 39
+# suites 0
+# pass 39
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 83.936584
+(node:14484) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

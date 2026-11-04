@@ -1,0 +1,52 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-d3cfc72a-7b74-45cf-9c57-49c0d7fce2dc",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 6,
+    "expected": 6,
+    "failed": 0,
+    "passed": 6,
+    "skipped": 0
+  },
+  "definition": "1e9f1f75fbb1eef1513c875beb17832b9ac5f3e62e27a06b572a54b7ce2f2b0a",
+  "environment_identity": "1bb7e558bbb6c518d19515e50bb1eb33263f183bff38c002ed0036c678d8f32f",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-scope-enforcement-green-execution.log",
+      "sha256": "c048e27b049ee840df85502775ad7856938079bdd879be306a3aafafe403d3de"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "fea1dac2bd0abb375a57d68cae0acc34eebe6c789f4c2eb9e45a43474c79a106",
+  "payload_hash": "ecab90112b1a3cacb3ef4346d3dbe9eb290b8a3607a67ec2f5711a83d2458dbc",
+  "recorded_at": "2026-11-02T19:42:36.913749+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/linked-daily-command-v12.json": "27fc41b8742549f43c742bba545f41fe74a7f88c2c2423e479fd0ab25250f983",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-mcp/src/task-tools.ts": "fa767047d4af02addd93b378820fca7c6882b6bbe2f2a5e83466868b6f3fb240",
+    "workers/companion-workspace/src/commands.ts": "cd1f692fae2bf806bf06fa76d7b69782fb977a9b3633f025e3ce67c364f265e8",
+    "workers/companion-workspace/src/executor.ts": "593f9d24b1ac6d3e4472e741aadee1dd322796906aab5bd5858cd95b52f2347f",
+    "workers/companion-workspace/src/journal.ts": "12846580de3cfe78e188b3623f03353cdb329e865a3bd452392c8a78a9c0108e",
+    "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+    "workers/companion-workspace/src/projection-adapter.ts": "0652ae9e311a00408264ca96d345503b5efcaae7b2d0ebc790a1f46798388cbb",
+    "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+    "workers/companion-workspace/src/task-recovery-store.ts": "77c1b8e4eb5e6b0f503f006e1e5faa8c6a976ea2ed1702d973136a5eab6891d3",
+    "workers/companion-workspace/test/linked-daily-schedule.test.mjs": "3da2386efe22c076f576b1e354409a4002846d7396539596c86854a9adea76c4",
+    "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+    "workers/shared/build-identity.generated.ts": "9118fb938fa3032aa9e584a64f2334a64fde3b7096d44d2f5937bac35838d414",
+    "workers/shared/daily-projection.ts": "88a61bb7125b1308d5b11b7f5e9d88a4f592ccde57408699596740ee9497ef13",
+    "workers/shared/linked-daily-schedule.ts": "05c35241c66bb8e6df08639197b21d2d6d1380851bd046fcb2ebe084548aec80",
+    "workers/shared/projection.ts": "4edb0a929b0d5550f098d0713896981e698fedbce58525e6ab3621cc728dd002",
+    "workers/shared/task-tools.ts": "8f62a8c580b9f72334bba5edd0d7438053171b1b2325a7f9f8e64a712bf56fbf",
+    "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5",
+    "workers/shared/workspace-domain.ts": "3a8371e9e24878c8fe4756f6d2263e749a381d0434fde5334fa4811b3f29fb9b"
+  },
+  "timing": {
+    "tool_wall_seconds": 8.165269790915772
+  }
+}

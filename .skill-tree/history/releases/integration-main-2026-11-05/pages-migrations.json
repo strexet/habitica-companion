@@ -1,0 +1,16 @@
+{
+  "HABITICA_PARTY_DB": {
+    "applied": [
+      "0001_party_sync.sql",
+      "0002_party_quest_queue.sql",
+      "0003_quest_lifecycle.sql",
+      "0004_party_sync_management.sql",
+      "0005_app_admins.sql",
+      "0006_detected_quest_completion.sql",
+      "0007_queue_selection_controls.sql",
+      "0008_party_sync_invite_proofs.sql",
+      "seed_app_admins_strexet.sql"
+    ],
+    "pending": []
+  }
+}

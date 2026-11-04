@@ -1,0 +1,373 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Native civil-date editing retains date limits, filtering, exact source and read-only/command fences.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.log",
+          "sha256": "4e587c9b752e1497c9c2ced9c7622b270ece623155b0e0e788e03e67cc195fc0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.trx",
+          "sha256": "0b0e3b9ebc9b49f72baa863f84897b87104cab0b86ceb489a7feaa2840d2b023"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/acceptance.json",
+          "sha256": "3ab72321a30faaadaf7817313c9d0ffa9ec85d1dbc7dd3c7014fe74aecdaf961"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser/6ff76cf4-c98d-43c9-9b04-664e3cec7dcb.json",
+          "sha256": "06ab5b6185f6f708e86267b72aeb3bcecf29f572659d79505f322a86f64280a5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Selected native dates retain complete visible civil-date segments across the required light/dark phone/desktop normal/enlarged matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.log",
+          "sha256": "4e587c9b752e1497c9c2ced9c7622b270ece623155b0e0e788e03e67cc195fc0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.trx",
+          "sha256": "0b0e3b9ebc9b49f72baa863f84897b87104cab0b86ceb489a7feaa2840d2b023"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/acceptance.json",
+          "sha256": "3ab72321a30faaadaf7817313c9d0ffa9ec85d1dbc7dd3c7014fe74aecdaf961"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser/6ff76cf4-c98d-43c9-9b04-664e3cec7dcb.json",
+          "sha256": "06ab5b6185f6f708e86267b72aeb3bcecf29f572659d79505f322a86f64280a5"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Keep independent existing date/filter, invalid-date, timezone-unavailable, current-project and account/source scope regressions passing; no command or date semantics change.",
+        "criteria": [
+          "Native civil-date editing retains date limits, filtering, exact source and read-only/command fences."
+        ],
+        "id": "planning-date-readability-behavior",
+        "parameters": {
+          "report_name": "planning-date-readability.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/planning-date-readability/unit",
+          "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoStatisticsPanelTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-bee43069-83d2-45ac-a29f-4eb178a0bb41",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 12,
+          "expected": 12,
+          "failed": 0,
+          "passed": 12,
+          "skipped": 0
+        },
+        "definition": "45e3eb8723bd38fcf4ce186c8ec739ad8bf87aeb10a4d9c42422d3323ea10734",
+        "environment_identity": "50390bded04c8a31ab28104e675b97c6be0f4264df20a8516461dfecfcff77ef",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.log",
+            "sha256": "4e587c9b752e1497c9c2ced9c7622b270ece623155b0e0e788e03e67cc195fc0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/C-bee43069-83d2-45ac-a29f-4eb178a0bb41.trx",
+            "sha256": "0b0e3b9ebc9b49f72baa863f84897b87104cab0b86ceb489a7feaa2840d2b023"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "eb7f95d230f854ea5412db472139daf64048e887ef304856d906f6106e296f48",
+        "payload_hash": "e0bde8734143dd860ab69ebddb7239757a66b54fbd1e4cad8b9bd2a9b9fdfe19",
+        "recorded_at": "2026-11-03T12:43:19.126033+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.783851583022624
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Require full selected-date ink against an unfocused same-engine full-width reference in every changed route; actual date editing and min/max preserve existing semantics. No value-only or bounding-box-only substitute.",
+        "criteria": [
+          "Selected native dates retain complete visible civil-date segments across the required light/dark phone/desktop normal/enlarged matrix."
+        ],
+        "id": "planning-date-readability-rendered",
+        "parameters": {
+          "cases": "Planning/Inbox and Statistics selected date, exact native edit, retained min/max, focused input, no command writes; same-engine ink reference and independent clipped negative controls.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "Current Release identity, exact cases, native screenshots/ink, actual appearance, isolated synthetic source and owned cleanup.",
+            "require": [
+              "complete native selected-date paint",
+              "visible keyboard focus",
+              "bounded primary controls and readable disabled states",
+              "normal enabled text contrast"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser",
+          "routes": [
+            "/todo/plan",
+            "/todo/inbox",
+            "/todo/statistics"
+          ],
+          "task_key": "planning-date-readability"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+          "tests/browser-qualification/ux-ui-planning-date-journey.mjs",
+          "tests/browser-qualification/ux-ui-native-date.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-c05f1126-14e3-4919-b1f9-40f9e24cfa4b",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 361,
+          "expected": 361,
+          "failed": 0,
+          "passed": 361,
+          "skipped": 0
+        },
+        "definition": "45e3eb8723bd38fcf4ce186c8ec739ad8bf87aeb10a4d9c42422d3323ea10734",
+        "environment_identity": "a1fb12c4fea390e1ad559b6f0697d3471f4c74c78f01f71229070207709f16c3",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser/6ff76cf4-c98d-43c9-9b04-664e3cec7dcb.json",
+            "sha256": "06ab5b6185f6f708e86267b72aeb3bcecf29f572659d79505f322a86f64280a5"
+          }
+        ],
+        "execution_sessions": {
+          "86094ed9f41a48c250a9316c398fb35dc8078b3cf2b8e656db1ac741f249a628": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:59:35.652639+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/planning-date-readability/launch-1793709815652869000.json"
+            ],
+            "profile_id": "d3fda1184fcbf8a9b30ec0b661da9a9f1514f50551ec652761f49e18639fed98",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/planning-date-readability",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "f4a8faade5a0fa14ab5832f3716966e5ad13181748a9c63e163e28e15028895f",
+        "payload_hash": "c8c42073db51b4dc8fd1aef436370f3f470e69d10a4c5ff43b01e792106c06d6",
+        "recorded_at": "2026-11-03T12:50:06.828230+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0",
+          "tests/browser-qualification/ux-ui-adapters.json": "01ab9e7be3e9f63e87269939a38ec19ab29945c0dab94ea01592e08dbbad3248",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+          "tests/browser-qualification/ux-ui-planning-date-journey.mjs": "5193f96ffc48d45f8bafcad55b5ce60e5b4699ee9b194f51ea2942c5f58eebb2"
+        },
+        "timing": {
+          "tool_wall_seconds": 390.13455362501554
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/acceptance.json",
+      "sha256": "3ab72321a30faaadaf7817313c9d0ffa9ec85d1dbc7dd3c7014fe74aecdaf961"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/planning-date-readability/operation-history.json",
+      "sha256": "20353d3ee44d947d99ca800f8fba1d9cfc04833ca486d471ed889cfac13d0d37"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-ca82725d-7e90-4cc8-802a-fcaf107fbe77",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Keep planning and statistics native dates readable at enlarged text. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-210e1da2-6bef-4a8b-8155-08dffa892bac"
+  ],
+  "recorded_at": "2026-11-03T12:50:25.496103+00:00",
+  "related_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+  "root_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0",
+    "tests/browser-qualification/ux-ui-adapters.json": "01ab9e7be3e9f63e87269939a38ec19ab29945c0dab94ea01592e08dbbad3248",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad",
+    "tests/browser-qualification/ux-ui-planning-date-journey.mjs": "5193f96ffc48d45f8bafcad55b5ce60e5b4699ee9b194f51ea2942c5f58eebb2"
+  },
+  "task_id": "T-b8a05278-292d-4f91-a882-35e0944a742d",
+  "title": "Keep planning and statistics native dates readable at enlarged text",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Keep independent existing date/filter, invalid-date, timezone-unavailable, current-project and account/source scope regressions passing; no command or date semantics change.",
+      "criteria": [
+        "Native civil-date editing retains date limits, filtering, exact source and read-only/command fences."
+      ],
+      "id": "planning-date-readability-behavior",
+      "parameters": {
+        "report_name": "planning-date-readability.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/planning-date-readability/unit",
+        "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoStatisticsPanelTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Require full selected-date ink against an unfocused same-engine full-width reference in every changed route; actual date editing and min/max preserve existing semantics. No value-only or bounding-box-only substitute.",
+      "criteria": [
+        "Selected native dates retain complete visible civil-date segments across the required light/dark phone/desktop normal/enlarged matrix."
+      ],
+      "id": "planning-date-readability-rendered",
+      "parameters": {
+        "cases": "Planning/Inbox and Statistics selected date, exact native edit, retained min/max, focused input, no command writes; same-engine ink reference and independent clipped negative controls.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "Current Release identity, exact cases, native screenshots/ink, actual appearance, isolated synthetic source and owned cleanup.",
+          "require": [
+            "complete native selected-date paint",
+            "visible keyboard focus",
+            "bounded primary controls and readable disabled states",
+            "normal enabled text contrast"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/planning-date-readability/browser",
+        "routes": [
+          "/todo/plan",
+          "/todo/inbox",
+          "/todo/statistics"
+        ],
+        "task_key": "planning-date-readability"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/browser-qualification/ux-ui-planning-date-journey.mjs",
+        "tests/browser-qualification/ux-ui-native-date.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "45e3eb8723bd38fcf4ce186c8ec739ad8bf87aeb10a4d9c42422d3323ea10734"
+}

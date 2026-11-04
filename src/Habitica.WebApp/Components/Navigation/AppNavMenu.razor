@@ -1,61 +1,52 @@
 @inject IAppSessionController SessionController
+@inject NavigationManager NavigationManager
+@implements IDisposable
 
 <MudNavMenu Class="app-nav-menu">
     @if (SessionController.State.IsAuthenticated)
     {
-        <MudNavLink Href="/dashboard" Icon="@Icons.Material.Outlined.DashboardCustomize">
-            Dashboard
-        </MudNavLink>
-
-        <section class="todo-nav-section" aria-label="Todo navigation" data-testid="todo-nav-section">
-            <div class="todo-nav-heading"><MudIcon Icon="@Icons.Material.Outlined.TaskAlt" /> <span>Todo</span></div>
-            <div class="todo-nav-links">
+        <a class="nav-capture" href="/todo/tasks" data-layout-primary="true">Add task</a>
+        <section class="todo-nav-section" aria-label="Planning navigation" data-testid="todo-nav-section">
+            <div class="todo-nav-heading"><MudIcon Icon="@Icons.Material.Outlined.TaskAlt" /> <span>Planning</span></div>
+            <div class="todo-nav-links" data-testid="nav-primary-planning">
                 <MudNavLink Href="/todo/today" Match="NavLinkMatch.All">Today</MudNavLink>
+                <MudNavLink Href="/todo/inbox" Match="NavLinkMatch.All">Inbox</MudNavLink>
+                <MudNavLink Href="/todo/plan" Match="NavLinkMatch.All">Plan</MudNavLink>
+                <MudNavLink Href="/todo/projects" Match="NavLinkMatch.All">Projects</MudNavLink>
+            </div>
+            <div class="todo-nav-links">
                 <MudNavLink Href="/todo/habits" Match="NavLinkMatch.All">Habits</MudNavLink>
                 <MudNavLink Href="/todo/dailies" Match="NavLinkMatch.All">Dailies</MudNavLink>
-                <MudNavLink Href="/todo/tasks" Match="NavLinkMatch.All">Tasks</MudNavLink>
-                <MudNavLink Href="/todo/projects" Match="NavLinkMatch.All">Projects</MudNavLink>
-                <MudNavLink Href="/todo/statistics" Match="NavLinkMatch.All">Statistics</MudNavLink>
-                <MudNavLink Href="/todo/sync" Match="NavLinkMatch.All">Sync</MudNavLink>
-                <div class="todo-nav-subheading">More planning</div>
-                <MudNavLink Href="/todo/inbox" Match="NavLinkMatch.All">Inbox</MudNavLink>
-                <MudNavLink Href="/todo/plan" Match="NavLinkMatch.All">Planning</MudNavLink>
+                <MudNavLink Href="/todo/tasks" Match="NavLinkMatch.Prefix">Tasks</MudNavLink>
+            </div>
+            <details class="nav-secondary @(PlanningToolsActive ? "nav-group-current" : null)" data-testid="nav-more-planning" open="@PlanningToolsActive" @key="Path">
+                <summary data-layout-primary="true">More planning</summary>
                 <MudNavLink Href="/todo/lists" Match="NavLinkMatch.All">Saved lists</MudNavLink>
                 <MudNavLink Href="/todo/history" Match="NavLinkMatch.All">History</MudNavLink>
+                <MudNavLink Href="/todo/statistics" Match="NavLinkMatch.All">Statistics</MudNavLink>
+                <MudNavLink Href="/todo/sync" Match="NavLinkMatch.All">Sync</MudNavLink>
                 <MudNavLink Href="/tasks" Match="NavLinkMatch.All">Habitica tasks &amp; Rewards</MudNavLink>
-            </div>
+            </details>
         </section>
-
-        <MudNavLink Href="/notes" Icon="@Icons.Material.Outlined.Description">
-            Notes
-        </MudNavLink>
-
-        <MudNavLink Href="/inventory" Icon="@Icons.Material.Outlined.Shield">
-            Equipment
-        </MudNavLink>
-
-        <MudNavLink Href="/pets-mounts" Icon="@Icons.Material.Outlined.Pets">
-            Pets &amp; Mounts
-        </MudNavLink>
-
-        <MudNavLink Href="/party" Icon="@Icons.Material.Outlined.Groups2">
-            Party
-        </MudNavLink>
-
-        <MudNavLink Href="/quests" Icon="@Icons.Material.Outlined.AutoStories">
-            Quests
-        </MudNavLink>
-
-        <MudNavLink Href="/spells" Icon="@Icons.Material.Outlined.AutoFixHigh">
-            Spells
-        </MudNavLink>
-
-        <MudNavLink Href="/settings" Icon="@Icons.Material.Outlined.Settings">
-            Settings
-        </MudNavLink>
-
-        <MudNavLink Href="/diagnostics" Icon="@Icons.Material.Outlined.Science">
-            Diagnostics
-        </MudNavLink>
+        <MudNavLink Href="/notes" Match="NavLinkMatch.Prefix">Notes</MudNavLink>
+        <details class="nav-secondary @(GameToolsActive ? "nav-group-current" : null)" data-testid="nav-game-tools" open="@GameToolsActive" @key="Path">
+            <summary data-layout-primary="true">Game tools</summary>
+            <MudNavLink Href="/dashboard" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+            <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix">Equipment</MudNavLink>
+            <MudNavLink Href="/pets-mounts" Match="NavLinkMatch.Prefix">Pets &amp; Mounts</MudNavLink>
+            <MudNavLink Href="/party" Match="NavLinkMatch.Prefix">Party</MudNavLink>
+            <MudNavLink Href="/quests" Match="NavLinkMatch.Prefix">Quests</MudNavLink>
+            <MudNavLink Href="/spells" Match="NavLinkMatch.Prefix">Spells</MudNavLink>
+        </details>
+        <MudNavLink Href="/settings" Match="NavLinkMatch.Prefix">Settings</MudNavLink>
+        <MudNavLink Href="/diagnostics" Match="NavLinkMatch.Prefix">Diagnostics</MudNavLink>
     }
 </MudNavMenu>
+@code {
+    private string Path => new Uri(NavigationManager.Uri).AbsolutePath.TrimEnd('/');
+    private bool PlanningToolsActive => Path is "/todo/lists" or "/todo/history" or "/todo/statistics" or "/todo/sync" or "/tasks";
+    private bool GameToolsActive => new[]{"/dashboard","/inventory","/pets-mounts","/party","/quests","/spells"}.Any(route=>Path==route||Path.StartsWith(route+"/",StringComparison.Ordinal));
+    protected override void OnInitialized() => NavigationManager.LocationChanged+=LocationChanged;
+    private void LocationChanged(object? sender,Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs args) => _=InvokeAsync(StateHasChanged);
+    public void Dispose() => NavigationManager.LocationChanged-=LocationChanged;
+}

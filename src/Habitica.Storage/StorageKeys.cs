@@ -2,6 +2,7 @@ namespace Habitica.Storage;
 
 public static class StorageKeys
 {
+    public const string CompanionPreferences = "preferences/companionAccounts";
     public const string PersistentCredentials = "auth/persistentCredentials";
     public const string LatestTaskSnapshot = "tasks/latestSnapshot";
     public const string LatestUserSnapshot = "user/latestSnapshot";
@@ -27,7 +28,8 @@ public static class StorageKeys
             PartyCronHistory,
             DiagnosticsLogEntries,
             TaskOrderPreferences,
-            ColorSchemePreferences
+            ColorSchemePreferences,
+            CompanionPreferences
         };
 }
 

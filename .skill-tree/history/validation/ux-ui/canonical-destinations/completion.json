@@ -1,0 +1,545 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Ordinary planning capture and return links resolve to the canonical task route consistently.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.log",
+          "sha256": "cf20c8f4d1d47cf6aa1bf1cb62c1b631a6d90193bafeb03b8be6af0bbc5fa70c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.trx",
+          "sha256": "11bd757c21e390238c5b9f8cc90c6e55f8517e798cf6f038dd51cdfc501aec8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/acceptance.json",
+          "sha256": "05c016e11f82bfca8a1c95299227cf734c795d54757a3ddacdf6607d51fcc058"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/2b456b79-b27c-4225-ad1e-04d5a4c57ce7.json",
+          "sha256": "29e1f65a5aefbb7be8ace5e1f529601b95a1739dc845fa7e140e3cd6a3099a38"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Intentional Habitica-cache links remain clearly named and retain separate record identities and context.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.log",
+          "sha256": "cf20c8f4d1d47cf6aa1bf1cb62c1b631a6d90193bafeb03b8be6af0bbc5fa70c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.trx",
+          "sha256": "11bd757c21e390238c5b9f8cc90c6e55f8517e798cf6f038dd51cdfc501aec8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/acceptance.json",
+          "sha256": "05c016e11f82bfca8a1c95299227cf734c795d54757a3ddacdf6607d51fcc058"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/2b456b79-b27c-4225-ad1e-04d5a4c57ce7.json",
+          "sha256": "29e1f65a5aefbb7be8ace5e1f529601b95a1739dc845fa7e140e3cd6a3099a38"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Actual routing and keyboard link activation pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.log",
+          "sha256": "cf20c8f4d1d47cf6aa1bf1cb62c1b631a6d90193bafeb03b8be6af0bbc5fa70c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.trx",
+          "sha256": "11bd757c21e390238c5b9f8cc90c6e55f8517e798cf6f038dd51cdfc501aec8f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/acceptance.json",
+          "sha256": "05c016e11f82bfca8a1c95299227cf734c795d54757a3ddacdf6607d51fcc058"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/2b456b79-b27c-4225-ad1e-04d5a4c57ce7.json",
+          "sha256": "29e1f65a5aefbb7be8ace5e1f529601b95a1739dc845fa7e140e3cd6a3099a38"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Ordinary planning capture and return links resolve to the canonical task route consistently.",
+          "Intentional Habitica-cache links remain clearly named and retain separate record identities and context."
+        ],
+        "id": "canonical-destinations-behavior",
+        "parameters": {
+          "report_name": "canonical-destinations.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/canonical-destinations/unit",
+          "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoHistoryPanelTests|FullyQualifiedName~TodoStatisticsPanelTests|FullyQualifiedName~TodoTaskLinkTests|FullyQualifiedName~TodoCategoryPageTests|FullyQualifiedName~AppNavMenuTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3653b8ba-2d8b-4b52-8e48-c16a3f21a62f",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 30,
+          "expected": 30,
+          "failed": 3,
+          "passed": 27,
+          "skipped": 0
+        },
+        "definition": "13605c9b27a041ea141c2afa8af6bb37cdfd0422991d08d6d8eb2f3f081036a3",
+        "environment_identity": "8002fc637fa6a28b44d00b1d9db4c53388ff73d2e61b34a077dadf57daa65da6",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-3653b8ba-2d8b-4b52-8e48-c16a3f21a62f.log",
+            "sha256": "8b90c363abb7803c5658512e5e59d6858ea69d43f1cae43c18c6d5bf1d79fd97"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-3653b8ba-2d8b-4b52-8e48-c16a3f21a62f.trx",
+            "sha256": "e49d2fd30597b8d9f3e0e3b903c5cf8b6c30586a801e2e364a542570022504e1"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "33912aacfcf20d85bfcc2d6c174f13b05fe8610a57c5348ef5e82bdfff14893a",
+        "payload_hash": "d2ae5257f7649fe1e5c3d6d4b5b019d38f45d6719e9348b382684594f3765052",
+        "recorded_at": "2026-11-03T12:32:53.199177+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "aa2904533fcc9f7e8aa8cd070bf7cd9f78ebe27c8f77b7ad58f7021218863bb8",
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "9fb1c48c54053cd6475a4036edea2806fec820fb14e6a99146521de3dcea1102",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "e19f4c6549f96bc03b790bac578f5c906c1d48f811e282ad7b2ef2a409e918e0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "f1a65809cc2544ee61c696ef90b5973d1d41f149c16793a1b52e4e8b4e50a5b2",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "853fb3ec5bfdd0a98b96a0bd4391b1f7fc3571f2f3f5fde25b1b96989f10b6c0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.4460764159448445
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-29e5c463-2c2b-4e69-9426-b26292fd6a59",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 63,
+          "expected": 63,
+          "failed": 0,
+          "passed": 63,
+          "skipped": 0
+        },
+        "definition": "bf301d167b884dbe35b45b0392ba8a4782cc34efb9da8bc18bb4c2550efc08a2",
+        "environment_identity": "89f5035244d8a8bb966426aa12495c176e645c4f0b3fbd0886c805ac2590973b",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.log",
+            "sha256": "cf20c8f4d1d47cf6aa1bf1cb62c1b631a6d90193bafeb03b8be6af0bbc5fa70c"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/C-29e5c463-2c2b-4e69-9426-b26292fd6a59.trx",
+            "sha256": "11bd757c21e390238c5b9f8cc90c6e55f8517e798cf6f038dd51cdfc501aec8f"
+          }
+        ],
+        "execution_sessions": {
+          "a5f3f0e12d16d26cc114b067f622ed6f06caeda855c49d519ec1b8b8b62b5b74": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:53:12.202829+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/canonical-destinations/launch-1793709432203055000.json"
+            ],
+            "profile_id": "296cd26e2c1dd6ef7090dcff9d061016d688ca26f807b3150f0fddb71626c036",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/canonical-destinations",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "9c50dc0ccdce8d3a12f5c0163a5f26c5d9640a57045afacfc48896e7643b566b",
+        "payload_hash": "6f5f9617b9feb82258eaf2044cdefd476deedf5317b38a9757277ba060dafdea",
+        "recorded_at": "2026-11-03T12:50:59.711630+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "c6f3611184cfa7f9633c234a02ed88bd5314ed4b9a50bc7079f9dc92d8b7b4b2",
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e03ef4bb7feb59abb3163d71a05745e8e02e6060cfd2ab8e1ff51a847deae5e2",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "e19f4c6549f96bc03b790bac578f5c906c1d48f811e282ad7b2ef2a409e918e0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.031190624926239
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Actual routing and keyboard link activation pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Actual routing and keyboard link activation pass across the required rendered matrix."
+        ],
+        "id": "canonical-destinations-rendered",
+        "parameters": {
+          "cases": "Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser",
+          "routes": [
+            "/todo/plan",
+            "/todo/inbox",
+            "/todo/history",
+            "/todo/statistics",
+            "/todo/tasks",
+            "/tasks"
+          ],
+          "task_key": "canonical-destinations"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/browser-qualification/ux-ui-canonical-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json",
+          "tests/browser-qualification/ux-ui-native-date.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-433e6f35-1a2f-4884-9bae-c6f9f1838719",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 577,
+          "expected": 577,
+          "failed": 0,
+          "passed": 577,
+          "skipped": 0
+        },
+        "definition": "bf301d167b884dbe35b45b0392ba8a4782cc34efb9da8bc18bb4c2550efc08a2",
+        "environment_identity": "9e95e5fa9b8a26f887e8361d42233c1c86608edb5b52f85df0b97d47c387efe4",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/2b456b79-b27c-4225-ad1e-04d5a4c57ce7.json",
+            "sha256": "29e1f65a5aefbb7be8ace5e1f529601b95a1739dc845fa7e140e3cd6a3099a38"
+          }
+        ],
+        "execution_sessions": {
+          "529ba79b7f147333aa7c29e4926d8442b525e48e8e4dc77140a973d612a12627": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T13:07:06.471843+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/canonical-destinations/launch-1793710266472075000.json"
+            ],
+            "profile_id": "d3fda1184fcbf8a9b30ec0b661da9a9f1514f50551ec652761f49e18639fed98",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/canonical-destinations",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "a5f3f0e12d16d26cc114b067f622ed6f06caeda855c49d519ec1b8b8b62b5b74": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "d7edd66f9647d27d96d06a2a56cbca55653dd265460629e62da23dcd11e34de7",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T12:53:12.202829+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/canonical-destinations/launch-1793709432203055000.json"
+            ],
+            "profile_id": "296cd26e2c1dd6ef7090dcff9d061016d688ca26f807b3150f0fddb71626c036",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/canonical-destinations",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "ae335808351c1e802d5ed45fed5f591231c8d1d763b9006b54aae0d13bdfaab2",
+        "payload_hash": "6ecedf526008f1a8c77a76f81ebb0e366940bfb2f20a0160c3def4be2f930a0e",
+        "recorded_at": "2026-11-03T13:00:22.063458+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+          "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "c6f3611184cfa7f9633c234a02ed88bd5314ed4b9a50bc7079f9dc92d8b7b4b2",
+          "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+          "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e03ef4bb7feb59abb3163d71a05745e8e02e6060cfd2ab8e1ff51a847deae5e2",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "e19f4c6549f96bc03b790bac578f5c906c1d48f811e282ad7b2ef2a409e918e0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0",
+          "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338",
+          "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+          "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+          "tests/browser-qualification/ux-ui-adapters.json": "01ab9e7be3e9f63e87269939a38ec19ab29945c0dab94ea01592e08dbbad3248",
+          "tests/browser-qualification/ux-ui-canonical-journey.mjs": "b527865d5d22d1dce550ebd7296a35419b4c71471499d675686ff6005b7e901b",
+          "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad"
+        },
+        "timing": {
+          "tool_wall_seconds": 554.5581695830915
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-b8a05278-292d-4f91-a882-35e0944a742d"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/acceptance.json",
+      "sha256": "05c016e11f82bfca8a1c95299227cf734c795d54757a3ddacdf6607d51fcc058"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/canonical-destinations/operation-history.json",
+      "sha256": "10cb3c7c23fcf1854bc5178d0cb9ecea2428c6795c8a788c0188b91969c7b977"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-47c85023-1ad3-450f-ba13-5a0d95bdd1cb",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Use consistent canonical task destinations from planning views. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635"
+  ],
+  "recorded_at": "2026-11-03T13:00:28.998404+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "c6f3611184cfa7f9633c234a02ed88bd5314ed4b9a50bc7079f9dc92d8b7b4b2",
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "095db74e573d65bae95b598e0c2c4c478b35d7b54b4e3ffaebf07bcd06bc17eb",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "9d94009cb0ce6cb334e79a5341143ab2fa582c29e86d1ee0147ce5dffcd077f4",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "d98e053d68f23b5b201a3c32d46788076202a9adb69613dcf579f1785f59bb2c",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e03ef4bb7feb59abb3163d71a05745e8e02e6060cfd2ab8e1ff51a847deae5e2",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs": "ced02ffd75086c0e6ee82890ab22c9ee1457edc5bea6a99b331756799afcf5bc",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "e19f4c6549f96bc03b790bac578f5c906c1d48f811e282ad7b2ef2a409e918e0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b1c3b3ff186b263062257e98e2522975db6f0df9aa0145ed629a3628e66688d0",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "42bc09742e8d6d6aa92d016e29eb908a7f6ea8d0c2e1812247f99659e61fb338",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "01ab9e7be3e9f63e87269939a38ec19ab29945c0dab94ea01592e08dbbad3248",
+    "tests/browser-qualification/ux-ui-canonical-journey.mjs": "b527865d5d22d1dce550ebd7296a35419b4c71471499d675686ff6005b7e901b",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "3ed7468b35d1e94b1044ae8041689cae1291c5096cc74537b9fd64963d6064ad"
+  },
+  "task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+  "title": "Use consistent canonical task destinations from planning views",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Ordinary planning capture and return links resolve to the canonical task route consistently.",
+        "Intentional Habitica-cache links remain clearly named and retain separate record identities and context."
+      ],
+      "id": "canonical-destinations-behavior",
+      "parameters": {
+        "report_name": "canonical-destinations.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/canonical-destinations/unit",
+        "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoHistoryPanelTests|FullyQualifiedName~TodoStatisticsPanelTests|FullyQualifiedName~TodoTaskLinkTests|FullyQualifiedName~TodoCategoryPageTests|FullyQualifiedName~AppNavMenuTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Actual routing and keyboard link activation pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Actual routing and keyboard link activation pass across the required rendered matrix."
+      ],
+      "id": "canonical-destinations-rendered",
+      "parameters": {
+        "cases": "Activate each ordinary capture/return link, intentional Habitica-cache link, browser back, selected source and project scope.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/canonical-destinations/browser",
+        "routes": [
+          "/todo/plan",
+          "/todo/inbox",
+          "/todo/history",
+          "/todo/statistics",
+          "/todo/tasks",
+          "/tasks"
+        ],
+        "task_key": "canonical-destinations"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Components/TodoPlanningPanel.razor",
+        "src/Habitica.WebApp/Components/TodoHistoryPanel.razor",
+        "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TodoCategoryPageTests.cs",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/browser-qualification/ux-ui-canonical-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json",
+        "tests/browser-qualification/ux-ui-native-date.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "bf301d167b884dbe35b45b0392ba8a4782cc34efb9da8bc18bb4c2550efc08a2"
+}

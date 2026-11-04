@@ -1,0 +1,763 @@
+{
+  "contract": "linked-daily-schedule-v1",
+  "examples": [
+    {
+      "name": "daily_preserves_inactive_default_weekdays",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "expectedAfter": {
+        "frequency": "daily",
+        "everyX": 3,
+        "startDate": "2026-11-02T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "weekly_replaces_exact_weekdays",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "weekly",
+        "interval": 1,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [
+          "monday",
+          "wednesday"
+        ],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "expectedAfter": {
+        "frequency": "weekly",
+        "everyX": 1,
+        "startDate": "2026-11-02T00:00:00.000Z",
+        "repeat": {
+          "su": false,
+          "m": true,
+          "t": false,
+          "w": true,
+          "th": false,
+          "f": false,
+          "s": false
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "monthly_missing_months_are_not_clamped",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "monthly",
+        "interval": 1,
+        "startDate": "2026-10-31",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": [
+          31
+        ]
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "expectedAfter": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-10-31T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [
+          31
+        ],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "monthly_retained_single_day",
+      "before": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-10-31T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [
+          31
+        ],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": null,
+      "expectedAfter": {
+        "frequency": "daily",
+        "everyX": 3,
+        "startDate": "2026-11-02T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "monthly_multiple_retained_days_read_only",
+      "before": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [
+          5,
+          27
+        ],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_month_update_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "monthly_retained_start_mismatch",
+      "before": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [
+          5
+        ],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_month_update_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "monthly_proposed_multiple_days_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "monthly",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": [
+          2,
+          15
+        ]
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_month_update_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "yearly_retained_read_only",
+      "before": {
+        "frequency": "yearly",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "unsupported_retained_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "monthly_weeks_retained_read_only",
+      "before": {
+        "frequency": "monthly",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": [
+          1
+        ]
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "unsupported_retained_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "mixed_inactive_month_days_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [
+          27
+        ],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "unsupported_retained_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "zero_interval_retained_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 0,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "unsupported_retained_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "non_midnight_provider_start_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T05:15:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_start_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "custom_day_start_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 3
+      },
+      "failure": "daily_account_day_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "named_dst_zone_read_only",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "America/New_York",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_timezone_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "account_zone_mismatch",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": -420,
+        "dayStart": 0
+      },
+      "failure": "daily_timezone_mismatch",
+      "expectedAfter": null
+    },
+    {
+      "name": "multiweek_non_monday_anchor",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "weekly",
+        "interval": 2,
+        "startDate": "2026-11-03",
+        "timeZoneId": "UTC",
+        "weekdays": [
+          "monday"
+        ],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_week_anchor_unrepresentable",
+      "expectedAfter": null
+    },
+    {
+      "name": "fixed_offset_daily",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-26T17:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "Etc/GMT-7",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": -420,
+        "dayStart": 0
+      },
+      "failure": null,
+      "expectedAfter": {
+        "frequency": "daily",
+        "everyX": 3,
+        "startDate": "2026-11-01T17:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      }
+    },
+    {
+      "name": "raw_year_min_readonly",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "0001-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "invalid_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "raw_year_max_readonly",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "9999-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "invalid_daily_schedule",
+      "expectedAfter": null
+    },
+    {
+      "name": "desired_year_bound_refused",
+      "before": {
+        "frequency": "daily",
+        "everyX": 1,
+        "startDate": "2026-10-27T00:00:00.000Z",
+        "repeat": {
+          "su": true,
+          "m": true,
+          "t": true,
+          "w": true,
+          "th": true,
+          "f": true,
+          "s": true
+        },
+        "daysOfMonth": [],
+        "weeksOfMonth": []
+      },
+      "proposed": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "9999-11-02",
+        "timeZoneId": "UTC",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "account": {
+        "timezoneOffset": 0,
+        "dayStart": 0
+      },
+      "failure": "daily_start_unrepresentable",
+      "expectedAfter": null
+    }
+  ]
+}

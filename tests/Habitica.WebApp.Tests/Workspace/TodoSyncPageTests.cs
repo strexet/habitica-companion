@@ -27,12 +27,92 @@ public sealed class TodoSyncPageTests : BunitContext
         return (fixture, todo);
     }
 
+    [Theory]
+    [InlineData("workspace-readiness-today", "/todo/today", CompanionTaskKind.Todo, false)]
+    [InlineData("workspace-readiness-habits", "/todo/habits", CompanionTaskKind.Habit, true)]
+    [InlineData("workspace-readiness-dailies", "/todo/dailies", CompanionTaskKind.Daily, true)]
+    public async Task Shared_readiness_region_retains_category_and_capture_context(string name,string route,CompanionTaskKind kind,bool capture)
+    {
+        var (fixture, _) = await SetupAsync();
+        var cut=Render<TodoTaskPanel>(p=>p.Add(x=>x.Kind,kind).Add(x=>x.ShowCapture,capture));
+        Assert.Contains("Cloud workspace",cut.Find("[data-testid='workspace-readiness']").TextContent);
+        Assert.Empty(fixture.Client.AcceptedIds);
+        Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save(name,cut.Markup,route,"loaded-shared-panel",["status","form","disabled-controls"],nameof(Shared_readiness_region_retains_category_and_capture_context));
+    }
+
+    [Fact]
+    public async Task Access_failure_exposes_one_recovery_action_before_source_details_and_reload_recovers()
+    {
+        var (fixture, todo) = await SetupAsync();
+        fixture.Client.FailLoads = true; await todo.LoadSelectedAsync();
+        var cut = Render<TodoTaskPanel>();
+        var status = cut.Find("[data-testid='workspace-readiness']");
+        Assert.Contains("Cloud workspace", status.TextContent); Assert.Contains("unavailable", status.TextContent);
+        Assert.True(cut.Markup.IndexOf("workspace-readiness", StringComparison.Ordinal) < cut.Markup.IndexOf("todo-source-picker", StringComparison.Ordinal));
+        Assert.Single(status.QuerySelectorAll("button"));
+        Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save("workspace-readiness-unavailable", cut.Markup, "/todo/tasks", "terminal-load-failure", ["status", "recovery"], nameof(Access_failure_exposes_one_recovery_action_before_source_details_and_reload_recovers));
+        fixture.Client.FailLoads = false; cut.Find("[data-testid='workspace-readiness-action']").Click();
+        cut.WaitForAssertion(() => Assert.Contains("Task editing is available", cut.Find("[data-testid='workspace-readiness']").TextContent));
+        Assert.False(cut.Find("fieldset").HasAttribute("disabled"));
+        Assert.Empty(fixture.Client.PreparationIds); Assert.Empty(fixture.Client.AcceptedIds);
+        Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save("workspace-readiness-ready", cut.Markup, "/todo/tasks", "loaded-source", ["status", "form"], nameof(Access_failure_exposes_one_recovery_action_before_source_details_and_reload_recovers));
+    }
+
+    [Fact]
+    public async Task Readiness_review_action_focuses_original_heading_and_cancel_preserves_unaccepted_intent()
+    {
+        var (fixture, todo) = await SetupAsync();
+        var cut = Render<TodoTaskPanel>();
+        await cut.InvokeAsync(() => todo.PrepareAsync(WorkspaceTaskFixture.Todo("Retained review title")));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find("[data-testid='todo-review']")));
+        var original = todo.Commands.Preview!.PreparedCommandId;
+        var heading = cut.Find("h3[data-testid='original-request-title']");
+        Assert.Equal("Original request", heading.TextContent); Assert.Equal("-1", heading.GetAttribute("tabindex"));
+        var before = JSInterop.Invocations.Count(row => row.Identifier == "Blazor._internal.domWrapper.focus");
+        cut.Find("[data-testid='workspace-readiness-action']").Click();
+        cut.WaitForAssertion(() => Assert.True(JSInterop.Invocations.Count(row => row.Identifier == "Blazor._internal.domWrapper.focus") > before));
+        Assert.Equal(original, todo.Commands.Preview!.PreparedCommandId);
+        cut.Find("[data-testid='todo-cancel']").Click();
+        cut.WaitForAssertion(() => Assert.Equal("ready", todo.Readiness.Code));
+        Assert.Empty(cut.FindAll("[data-testid='original-request-title']"));
+        Assert.Empty(fixture.Client.AcceptedIds); Assert.Empty(fixture.Client.State.Commands);
+    }
+
+    [Fact]
+    public async Task Reload_read_failure_does_not_invent_an_uncertain_save_or_original_receipt()
+    {
+        var (fixture, _) = await SetupAsync(); var cut = Render<TodoTaskPanel>();
+        fixture.Client.LoadAction = _ => Task.FromException<WorkspaceJournalSnapshot?>(new IOException("Synthetic read failure"));
+        cut.FindAll(".todo-source-controls button").Single(button => button.TextContent.Contains("Reload Workspace")).Click();
+        cut.WaitForAssertion(() => Assert.Contains("Workspace data could not be loaded", cut.Markup));
+        Assert.DoesNotContain("check its receipt before another save", cut.Markup);
+        Assert.NotNull(cut.Find("[data-readiness='reload-required']"));
+        Assert.Empty(fixture.Client.PreparationIds); Assert.Empty(fixture.Client.AcceptedIds);
+    }
+
+    [Fact]
+    public async Task Loading_state_offers_wait_guidance_and_sync_does_not_link_to_itself()
+    {
+        var (fixture, todo) = await SetupAsync();
+        var cut = Render<TodoTaskPanel>(p => p.Add(x=>x.ShowCapture, false).Add(x=>x.ShowSyncLink, false));
+        fixture.Client.LoadGate = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        fixture.Client.LoadEntered = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        var pending = cut.InvokeAsync(() => todo.LoadSelectedAsync());
+        await fixture.Client.LoadEntered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        cut.WaitForAssertion(() => Assert.Contains("Wait", cut.Find("[data-testid='workspace-readiness']").TextContent));
+        Assert.Empty(cut.Find("[data-testid='workspace-readiness']").QuerySelectorAll("button,a"));
+        Habitica.WebApp.Tests.Qualification.PageLayoutEvidence.Save("workspace-readiness-loading", cut.Markup, "/todo/sync", "load-in-progress", ["status", "disabled-controls"], nameof(Loading_state_offers_wait_guidance_and_sync_does_not_link_to_itself));
+        fixture.Client.LoadGate.SetResult(); await pending;
+        fixture.Client.FailLoads=true; await cut.InvokeAsync(()=>todo.LoadSelectedAsync());
+        Assert.Empty(cut.Find("[data-testid='workspace-readiness']").QuerySelectorAll("a[href='/todo/sync']"));
+    }
+
     [Fact]
     public async Task Sync_page_uses_shared_source_and_policy_without_automatic_writes()
     {
         var (fixture, _) = await SetupAsync();
         var cut = Render<Habitica.WebApp.Pages.TodoSyncPage>();
-        Assert.NotNull(cut.Find("[data-testid='todo-source']"));
+        Assert.NotNull(cut.Find("[data-testid='todo-active-source']"));Assert.Empty(cut.FindAll("[data-testid='todo-source']"));
         Assert.NotNull(cut.Find("[data-testid='todo-command-history']"));
         Assert.NotNull(cut.Find("[data-testid='workspace-tags']"));
         Assert.NotNull(cut.Find("[data-testid='workspace-executor-enable']"));

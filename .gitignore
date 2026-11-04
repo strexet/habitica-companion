@@ -68,9 +68,9 @@ Thumbs.db
 /migrations/seed_app_admins*
 
 # Skill Tree transient state
-/skill-tree/.writer-lock
-/skill-tree/.transaction.json
-/skill-tree/artifacts/
+/.skill-tree/.writer-lock
+/.skill-tree/.transaction.json
+/.skill-tree/artifacts/
 **/__pycache__/
 
 # Worker local secrets and generated preview output
@@ -94,3 +94,15 @@ Thumbs.db
 
 # Owner-provided credentials for bounded live tests (never commit)
 /test-login.json
+
+# Owned Skill Tree installation recovery state
+/.skill-tree/installation/.install-lock
+/.skill-tree/installation/.journal.json
+/.skill-tree/installation/.last-transaction.json
+/.skill-tree/installation/.staging/
+/.skill-tree/installation/.backups/
+
+# Reviewed public plugin releases survive production Git builds.
+!src/Habitica.WebApp/wwwroot/downloads/
+!src/Habitica.WebApp/wwwroot/downloads/*.zip
+!src/Habitica.WebApp/wwwroot/downloads/*.json

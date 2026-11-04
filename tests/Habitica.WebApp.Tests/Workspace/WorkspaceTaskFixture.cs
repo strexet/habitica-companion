@@ -75,6 +75,7 @@ internal sealed class WorkspaceTaskFixture
         public int StatusReads { get; private set; }
         public Func<Task<WorkspaceStatusResult>> StatusAction { get; set; } = () => Task.FromResult(new WorkspaceStatusResult(false, "Unavailable"));
         public Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken token) { StatusReads++; return StatusAction(); }
+        public Func<WorkspaceCommand,WorkspaceCommand>? PreparationTransform {get;set;}
         public bool LoseAcceptance { get; set; }
         public bool LosePreparation { get; set; }
         public bool RejectPreparation { get; set; }
@@ -93,6 +94,9 @@ internal sealed class WorkspaceTaskFixture
         public List<Guid> AcceptedIds { get; } = [];
         public List<Guid> ReceiptReads { get; } = [];
         public Func<Guid, Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>>>? ReceiptReadAction { get; set; }
+        public int ConnectionRecoveries {get;private set;}
+        public Task<WorkspaceActionResult> RecoverConnectionAsync(Guid? expectedWorkspaceId,CancellationToken token)
+        { ConnectionRecoveries++;if(expectedWorkspaceId is not null&&expectedWorkspaceId!=State.Document.Id)return Task.FromResult(new WorkspaceActionResult(false,"workspace_mismatch"));Connected=true;ConnectionStatusVerified=true;return Task.FromResult(new WorkspaceActionResult(true,"recovered")); }
         public bool IsAvailable => true;
         public Guid? WorkspaceId => Connected ? State.Document.Id : null;
         public bool ConnectionStatusVerified { get; set; } = true;
@@ -109,8 +113,9 @@ internal sealed class WorkspaceTaskFixture
             if (RejectPreparation) return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(false,null,"Synthetic definitive rejection"));
             if (!_previews.TryGetValue(requestId, out var preview))
             {
-                var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : intent.TaskId };
-                preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(ExpirePreparation ? -1 : 10), false, command, intent.ProjectToHabitica, false);
+                var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CopyTaskType ? Guid.NewGuid() : intent.TaskId };
+                command=PreparationTransform?.Invoke(command)??command;
+                preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(ExpirePreparation ? -1 : 10), false, command, intent.ProjectToHabitica, false, TypeCopyPreview:command.Operation==WorkspaceOperation.CopyTaskType?WorkspaceTaskTypeCopyPolicy.Review(State.Document,command.Patch!.TypeCopy!,command.TaskId,DateTimeOffset.UtcNow):null);
                 _previews[requestId] = preview;
             }
             if (LosePreparation) { LosePreparation = false; return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(false, null, "Synthetic lost preparation", true)); }

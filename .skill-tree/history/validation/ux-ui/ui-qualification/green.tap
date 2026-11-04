@@ -1,0 +1,84 @@
+TAP version 13
+# (node:72468) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: opaque disabled text uses the product floor without skipping the control
+ok 1 - opaque disabled text uses the product floor without skipping the control
+  ---
+  duration_ms: 1.111
+  ...
+# Subtest: unreadable disabled text fails independently of enabled-text exemptions
+ok 2 - unreadable disabled text fails independently of enabled-text exemptions
+  ---
+  duration_ms: 0.145542
+  ...
+# Subtest: group opacity composites foreground and background together over the parent
+ok 3 - group opacity composites foreground and background together over the parent
+  ---
+  duration_ms: 0.129959
+  ...
+# Subtest: nested disabled opacity cannot pass by measuring the unpainted foreground
+ok 4 - nested disabled opacity cannot pass by measuring the unpainted foreground
+  ---
+  duration_ms: 0.074459
+  ...
+# Subtest: matching actual native-date ink and full-date reference qualifies visible content
+ok 5 - matching actual native-date ink and full-date reference qualifies visible content
+  ---
+  duration_ms: 0.146792
+  ...
+# Subtest: a valid date value and valid outer geometry cannot excuse missing rendered date text
+ok 6 - a valid date value and valid outer geometry cannot excuse missing rendered date text
+  ---
+  duration_ms: 0.055458
+  ...
+# Subtest: missing or empty native reference evidence remains unavailable rather than passing
+ok 7 - missing or empty native reference evidence remains unavailable rather than passing
+  ---
+  duration_ms: 0.094625
+  ...
+# Subtest: existing enabled contrast and geometry contracts remain available
+ok 8 - existing enabled contrast and geometry contracts remain available
+  ---
+  duration_ms: 0.335667
+  ...
+# Subtest: route and state selection resolves only reviewed exact fixtures
+ok 9 - route and state selection resolves only reviewed exact fixtures
+  ---
+  duration_ms: 0.993375
+  ...
+# Subtest: unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+ok 10 - unknown schemes, unqualified dark-only matrices and duplicate routes fail before launch
+  ---
+  duration_ms: 0.804875
+  ...
+# Subtest: a responding server cannot substitute for exact owner, checkout and build identity
+ok 11 - a responding server cannot substitute for exact owner, checkout and build identity
+  ---
+  duration_ms: 0.325083
+  ...
+# Subtest: failed qualification still awaits owned resource cleanup and retains the original failure
+ok 12 - failed qualification still awaits owned resource cleanup and retains the original failure
+  ---
+  duration_ms: 0.207
+  ...
+# Subtest: a successful session also closes resources before returning
+ok 13 - a successful session also closes resources before returning
+  ---
+  duration_ms: 0.057916
+  ...
+# Subtest: native ink probes use actual channel differences and reject changed screenshot geometry
+ok 14 - native ink probes use actual channel differences and reject changed screenshot geometry
+  ---
+  duration_ms: 0.126917
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.560625
+(node:72467) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

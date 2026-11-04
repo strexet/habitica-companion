@@ -25,7 +25,7 @@ test('source archive contains only allowlisted bytes and refuses stale archive r
     for(const file of files){const target=path.join(tmp,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(repo,file),target);}
     fs.writeFileSync(path.join(tmp,'.env'),'synthetic-secret-not-for-export');
     const run=()=>execFileSync(process.execPath,[path.join(tmp,prefix,'prepare-source.mjs')],{timeout:10000,stdio:'pipe'});
-    run();const staging=path.join(tmp,'skill-tree/artifacts/callback-egress/source'),zip=path.join(tmp,'skill-tree/artifacts/callback-egress/callback-egress-source.zip');
+    run();const staging=path.join(tmp,'.skill-tree/artifacts/callback-egress/source'),zip=path.join(tmp,'.skill-tree/artifacts/callback-egress/callback-egress-source.zip');
     const entries=execFileSync('unzip',['-Z1',zip],{timeout:5000,encoding:'utf8'}).trim().split('\n').filter(x=>!x.endsWith('/')).sort();
     assert.deepEqual(entries,[...files,'netlify.toml','source-manifest.json'].sort());
     const manifest=JSON.parse(fs.readFileSync(path.join(staging,'source-manifest.json')));assert.deepEqual(Object.keys(manifest.files).sort(),files.sort());assert.equal(manifest.publication,false);

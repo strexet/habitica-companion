@@ -1,18 +1,22 @@
+using System.Text.Json.Serialization;
 using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceHabitHistoryFilter(string? Query = null, Guid? TaskId = null, HabitScoreDirection? Direction = null,
     DateTimeOffset? RecordedFromUtc = null, DateTimeOffset? RecordedThroughUtc = null,
-    int Limit = 50, int Offset = 0, long? ExpectedRevision = null);
+    int Limit = 50, int Offset = 0, long? ExpectedRevision = null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Guid? ProjectId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] bool Unassigned=false);
 public sealed record WorkspaceHabitHistoryItem(Guid EventId, Guid TaskId, Guid CommandId, HabitScoreDirection Direction,
-    string TaskText, string? Notes, string DetailSource, DateTimeOffset RecordedAtUtc, bool TaskArchived, bool EventArchived);
+    string TaskText, string? Notes, string DetailSource, DateTimeOffset RecordedAtUtc, bool TaskArchived, bool EventArchived,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceHistoryProjectPlacement? CurrentPlacement=null);
 
 public static class WorkspaceHabitHistory
 {
     public static WorkspaceReadPage<WorkspaceHabitHistoryItem> Evaluate(WorkspaceJournalSnapshot snapshot, WorkspaceHabitHistoryFilter filter)
     {
-        if (filter.Query?.Length > 256 || filter.TaskId == Guid.Empty || filter.Direction is { } direction && !Enum.IsDefined(direction)
+        if (filter.Query?.Length > 256 || filter.TaskId == Guid.Empty || filter.ProjectId==Guid.Empty || filter.ProjectId is not null&&filter.Unassigned || filter.Direction is { } direction && !Enum.IsDefined(direction)
             || filter.Limit is < 1 or > 100 || filter.Offset is < 0 or > 100000 || filter.ExpectedRevision is < 1 or > WorkspaceDocument.MaxRevision
             || filter.Offset > 0 && filter.ExpectedRevision is null || !Utc(filter.RecordedFromUtc) || !Utc(filter.RecordedThroughUtc)
             || filter.RecordedFromUtc is not null && filter.RecordedThroughUtc is not null && filter.RecordedFromUtc > filter.RecordedThroughUtc)
@@ -20,12 +24,13 @@ public static class WorkspaceHabitHistory
         var document = snapshot.Document;
         if (filter.ExpectedRevision is { } revision && revision != document.Revision) throw new InvalidOperationException("stale_revision");
         if (WorkspaceRules.Validate(document).Count != 0) throw new InvalidOperationException("history_unavailable");
+        var projectSelection=new WorkspaceHistoryProjects(document,filter.ProjectId,filter.Unassigned);
         var tasks = document.Tasks.ToDictionary(task => task.Id); var commands = snapshot.Commands.ToDictionary(entry => entry.Command.Id);
         var query = WorkspaceTaskQuery.Fold(filter.Query ?? ""); var rows = new List<(long Revision,int Order,WorkspaceHabitHistoryItem Item)>();
         for (var index = 0; index < document.HabitScores.Count; index++)
         {
             var value = document.HabitScores[index]; var task = tasks[value.TaskId];
-            if (filter.TaskId is { } id && value.TaskId != id || filter.Direction is { } selected && value.Direction != selected
+            if (!projectSelection.Matches(task) || filter.TaskId is { } id && value.TaskId != id || filter.Direction is { } selected && value.Direction != selected
                 || filter.RecordedFromUtc is { } from && value.RecordedAtUtc < from || filter.RecordedThroughUtc is { } through && value.RecordedAtUtc > through) continue;
             CompanionTask? accepted = null;
             if (commands.TryGetValue(value.CommandId,out var command))
@@ -38,7 +43,7 @@ public static class WorkspaceHabitHistory
             }
             var text = accepted?.Text ?? task.Text; var notes = accepted is null ? task.Notes : accepted.Notes;
             if (query.Length > 0 && !WorkspaceTaskQuery.Fold(text).Contains(query,StringComparison.Ordinal) && !WorkspaceTaskQuery.Fold(notes ?? "").Contains(query,StringComparison.Ordinal)) continue;
-            rows.Add((value.Revision,index,new(value.Id,task.Id,value.CommandId,value.Direction,text,notes,accepted is null ? "currentTask" : "commandSnapshot",value.RecordedAtUtc,task.IsArchived,value.IsArchived)));
+            rows.Add((value.Revision,index,new(value.Id,task.Id,value.CommandId,value.Direction,text,notes,accepted is null ? "currentTask" : "commandSnapshot",value.RecordedAtUtc,task.IsArchived,value.IsArchived,projectSelection.Placement(task))));
         }
         var ordered = rows.OrderByDescending(row => row.Item.RecordedAtUtc).ThenByDescending(row => row.Revision).ThenBy(row => row.Order).ToArray();
         var items = ordered.Skip(filter.Offset).Take(filter.Limit).Select(row => row.Item).ToArray(); var next = filter.Offset + items.Length;

@@ -1,0 +1,23 @@
+{
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "check_id": "relative-date-wire",
+  "attempt_id": "C-4a068fdf-932d-4c1e-b7d3-cb872ea532da",
+  "environment_identity": "e659a6b4e2ad6f1acc89d41ddb7274a29b78ae5600b431ab199b1053ce091d0d",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "pass",
+  "counts": {
+    "expected": 42,
+    "discovered": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 18.26078858296387
+  },
+  "evidence": [
+    ".skill-tree/history/validation/relative-saved-dates-2026-11-03/relative-tag-wire-execution.log"
+  ]
+}

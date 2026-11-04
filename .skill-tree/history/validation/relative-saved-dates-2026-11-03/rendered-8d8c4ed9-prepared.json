@@ -1,0 +1,52 @@
+{
+  "assertion": "Current Release saved-list and Sync routes expose exact relative intent, explicit interpreted bounds and unavailable tag membership; readable light/dark phone/desktop normal/enlarged layouts, focus, disabled controls and actual local persistence preserve identities without task duplication or provider effects.",
+  "attempt_id": "C-0da8ba8e-8600-4193-91a9-d3248908240d",
+  "check_id": "relative-date-rendering",
+  "definition": "2e7aecb1f52b656372f6d47cea10679d0c377f37a5fe46cf328fdc160ed652ca",
+  "environment_identity": "335b42e26482af3a6cf0e3a0c1bcef38c2eb1075ff32f8d68a977f9dc1be23c3",
+  "key": "6d3a52c9198c9051a898103c651f5fa2c6788318dd3feaec21e507515dbb19b4",
+  "launch": null,
+  "prepared_at": "2026-11-02T22:05:12.239201+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser/relative-saved-ui.py"
+    ],
+    "execution_notes": "Bounded current Release, current saved-list/tag Razor states, light/obsidian phone/desktop normal/enlarged-text geometry, focus and disabled controls under Chromium/WebKit, plus actual hydrated saved-list/Sync journeys using isolated Auth/Workspace Workers/D1 and native IndexedDB. Relative definitions retain intent; unavailable time-bound tag projection stays explicitly fenced. Service workers blocked; no real account, provider writes or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser/relative-saved-ui.py",
+      "tests/browser/relative-saved-ui.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj",
+      "tests/browser/linked-daily-fixture.mjs"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright Chromium/WebKit cache",
+      "framework": "Blazor WebAssembly8 Release"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/RelativeSavedDateSummary.razor": "142f4d548186305c3f98338c8599e90aadc3b306438da6d3cf8b95772933939e",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "aa2e37bd8343f9d6ce6de41ecfa8e44af7541eda7e3dc81641b644f9a2957c67",
+    "src/Habitica.WebApp/Components/TodoSavedQuerySummary.razor": "493206fac451f09a7f85ea27e96c67bc110c88479324216b419f09c1f9bd6480",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "1a416444cffd7ea2786872748f2c956aebbf94d05bf5c555bfed19c637645770",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.SavedViews.cs": "75285676efafed0a0aecb5411acf7c29a9a250ff4c2f8f61288b3c7168f4f8d0",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "56bc9d13d35195e8f0866cf04d4c77e75afeb0ea43074c93e996c46d8c8e3df4",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "5e2d80e4bbba94f37feeb21febb99d4f78be1bd3d0f076391da12adbc6ec91df",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "ed5e1d0aba39869bceee4878bfe38e4fffd4355c92ea1ab75da777e8ab9eaa1d",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "a11711486450a70fdebc48daa97d93655937ac2af90faac97c8ffb17ae9dcba7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "ff1d3f36bba2402c09ae96c8055407847564cb46c92c2b1259d1f85143f5452e",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "2044b3715067f8124ec11178edefbb07f9ee6e1b14ceecf8c7cf3d8a723fbba0",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/relative-saved-ui.mjs": "596ef67ce98bcbfb39f5bd870d12b5b858030b23cbdec61be111417873b8ba9c",
+    "tests/browser/relative-saved-ui.py": "0c82dfb909230505ecd779265c6f5f5f15e541c1bd4e29182a219187e81ffd74",
+    "workers/shared/build-identity.generated.ts": "ce30eec557463a0a79e521e5ba998c18b849d76a8bdc4e837aab9af6c52a4278"
+  },
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

@@ -1,0 +1,17 @@
+{
+  "created_ids": [
+    "T-ed221b8e-06f2-4e52-9e2e-b7cb38e405a2"
+  ],
+  "dispositions": {
+    "P-c23c68b6-4223-465b-bf33-83629fb5b074": {
+      "reason": "NotesPanel initializes editor mode after awaiting a load, while NewDisabled omits initialization and NotesController LoadCore does not set Busy. Native failure preserves an empty library after New entry. Existing MemoryStore supports deterministic held-load reproduction; native IndexedDB readwrite holds can qualify the same refusal without production hooks.",
+      "status": "promoted"
+    }
+  },
+  "id": "PR-bc65a473-f85b-443b-a8c8-a35a659f0a82",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-c23c68b6-4223-465b-bf33-83629fb5b074"
+  ],
+  "task_keys": {}
+}

@@ -1,0 +1,137 @@
+{
+  "task_id": "T-c913de5b-0eff-4973-be07-089ea4391c1b",
+  "qualification": "Local Release worker with synthetic shell and persistent disposable browser profiles",
+  "checks": {
+    "release_publish": true,
+    "published_worker_identity": {
+      "source_sha256": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+      "published_sha256": "6c8d7027ea31d54fb491ff9a71ef1af8286cd787b8e0e23055737a39f0789ec3",
+      "published_matches_source_plus_sdk_manifest_comment": true,
+      "sdk_suffix": "/* Manifest version: f7SPt1U3 */",
+      "bootstrap_sha256": "154b56c447bc16cad001d201f77fcb25f21838db5a9e96ee5b7bfb38eaa47636",
+      "manifest_sha256": "af5bea2c71c22281f07a6e2e7994b73219ed1d94da3546821ca6981ec2e381e2"
+    },
+    "node_tests": {
+      "passed": 19,
+      "failed": 0
+    },
+    "browser": {
+      "ok": true,
+      "results": [
+        {
+          "engine": "chromium",
+          "version": "151.0.7922.34",
+          "oldRedirectedShell": {
+            "redirected": true,
+            "url": "http://127.0.0.1:50708/",
+            "status": 200
+          },
+          "preFixNavigationFailed": true,
+          "workerOnlyUpgradeSameManifest": true,
+          "repairedShell": {
+            "redirected": false,
+            "type": "default",
+            "header": "retained",
+            "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+          },
+          "offlineRoutes": 3,
+          "freshInstall": true,
+          "failedIntegrityUpdateRefused": true,
+          "missingShellOnlineFallback": true,
+          "missingShellOfflineFailure": true,
+          "canariesPreserved": true,
+          "realPushEnrollment": false,
+          "realPushInspection": false
+        },
+        {
+          "engine": "webkit",
+          "version": "26.5",
+          "oldRedirectedShell": {
+            "redirected": true,
+            "url": "http://127.0.0.1:50708/",
+            "status": 200
+          },
+          "preFixNavigationFailed": true,
+          "workerOnlyUpgradeSameManifest": true,
+          "repairedShell": {
+            "redirected": false,
+            "type": "default",
+            "header": "retained",
+            "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+          },
+          "offlineRoutes": 3,
+          "freshInstall": true,
+          "failedIntegrityUpdateRefused": true,
+          "missingShellOnlineFallback": true,
+          "missingShellOfflineFailure": true,
+          "canariesPreserved": true,
+          "realPushEnrollment": false,
+          "realPushInspection": false
+        }
+      ],
+      "loopbackOnly": true,
+      "publishedWorkerSha256": "6c8d7027ea31d54fb491ff9a71ef1af8286cd787b8e0e23055737a39f0789ec3",
+      "requests": 71
+    },
+    "planning": true,
+    "diff_check": true
+  },
+  "operations": {
+    "first_publish": {
+      "classification": "executed_control",
+      "result": "deadline",
+      "deadline_seconds": 180
+    },
+    "serial_publish": {
+      "classification": "executed_control",
+      "result": "pass",
+      "wall_seconds": 22.97
+    },
+    "final_publish": {
+      "classification": "executed_control",
+      "result": "pass",
+      "deadline_seconds": 120
+    },
+    "loopback_sandbox_refusal": {
+      "classification": "host_policy_rejection",
+      "result": "EPERM before application control",
+      "contributes_to_unchanged_failure_counter": false
+    },
+    "browser_fixture_repairs": [
+      "Use absolute cache request URL at nested routes.",
+      "Bound fixture stages and avoid platform Push API reads.",
+      "Use direct server connection failure rather than engine offline emulation.",
+      "Use persistent temporary profiles for tab-closure storage retention; ephemeral WebKit loses the unrelated-cache canary."
+    ],
+    "browser_final": {
+      "classification": "executed_control",
+      "result": "pass",
+      "deadline_seconds": 135,
+      "outer_cleanup_seconds": 25
+    }
+  },
+  "limitations": [
+    "No production publication, affected-iPhone controller observation or physical Safari/standalone qualification.",
+    "The browser fixture runs the actual emitted worker with a synthetic integrity manifest and shell; full Blazor startup is not established by the fixture.",
+    "Private/ephemeral WebKit storage behavior is not qualified by the passing persistent-profile controls.",
+    "Synthetic subscription marker only; no actual push subscription, permission, inspection or delivery.",
+    "Release publication retains the existing optional wasm-tools optimization warning.",
+    "The initial shared-build-server publish timed out; serial builds pass."
+  ],
+  "source_fingerprints": {
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "1acd8959b0eba24128b755849b8e35433566754404d2dea2d6279f2a5dd83eb7",
+    "tests/Functions/pwa.test.mjs": "4d7c982c5f9176a1be2384a3d99b23598d4f9bbdad55ecca5d684b85f402d316",
+    "tests/browser/pwa-shell.mjs": "df211da0683bef1b921b706d693cb02007b5f471355ce4aa3f991fb53f1f2473",
+    "skill-tree/documents/pwa-installation.md": "f55d712627f849de854520233575288e018105e3ad6e501571028ca5b2978a83",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "4f4012f498408d9372b15fdb5578a2cfe3cf2fd1aa4084915914d6c15851e384",
+    "skill-tree/documents/testing.md": "f697813089cd641f8d4f2fd7b631443738724403ed02ec5872ec8033d330109e",
+    "skill-tree/documents/technical.md": "c61fb9bd4dc55da50e9eac8a89aaba65cc22c896d3bfb56a43d68da5432f53fc",
+    "skill-tree/documents/features.md": "b070e6daa99ae4c567bde36468c22e2dc585676ee43c3f2f9ad146896af87b9c"
+  },
+  "timing": {
+    "active_controller_seconds": null,
+    "tool_wall_seconds": null,
+    "prerequisite_wait_seconds": null,
+    "limitation": "Separate cumulative timing was not instrumented from the first operation; only explicitly observed operation durations and hard deadlines are recorded. No cumulative root budget is inferred."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "gear": {
+    "flat": {
+      "weapon_str_10": {
+        "key": "weapon_str_10",
+        "text": "Same named wand with long descriptive comparison text",
+        "type": "weapon",
+        "klass": "special",
+        "str": 30,
+        "int": 0,
+        "con": 0,
+        "per": 0
+      },
+      "weapon_int_12": {
+        "key": "weapon_int_12",
+        "text": "Same  named  wand  with  long  descriptive  comparison  text",
+        "type": "weapon",
+        "klass": "special",
+        "str": 0,
+        "int": 12,
+        "con": 0,
+        "per": 0
+      }
+    }
+  }
+}

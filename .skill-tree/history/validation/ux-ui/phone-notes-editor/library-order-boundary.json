@@ -1,0 +1,9 @@
+{
+  "original_report": "0def8623-c58e-46e0-a85d-e83880a13673-failure.json",
+  "diagnosis": "Native20/6 paging and cancelled new-folder preview completed. The journey then assumed newest-first note order, but NotesQueries preserves notebook order and the required project record is on the second page. The journey now uses the existing title/Markdown search to select the exact target after proving pagination. NotesQueries and the application remain unchanged.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

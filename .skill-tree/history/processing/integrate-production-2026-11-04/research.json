@@ -1,0 +1,16 @@
+{
+  "develop": "d03bc1baff3674519d1c27b9f40c608d1f034d3f",
+  "divergence": "73\t20",
+  "execution": "Separate run registry can preserve the stopped legacy controller. Owner explicitly permits branch manipulation, PR creation/merge, conflict resolution, commits, pushes and production deployment; worktree isolation is optional under the owner override.",
+  "existing_gate": "Owner host/device/multi-user acceptance stays blocked; publication of completed development capabilities is authorized independently.",
+  "hosting": "Existing Pages production main slot with Auth/MCP/Workspace services. Main push can trigger Git-connected Pages builds. Runtime flags, secrets, service bindings and current applied migrations need fresh read-only preflight.",
+  "main": "d6de9811e71f93eb0f73854ebf216aa6115905ca",
+  "merge_base": "8adb4c35528f7a8876f57b474de2c4c6276c816f",
+  "pending": "P-9579af1d-3709-4bca-961a-6947585c7747",
+  "policy": "GitHub returned no rulesets and branch-not-protected for develop/main with the existing owner credential. No CI workflows exist in the checked-out source. Recheck actual provider policy/checks at merge.",
+  "remote_alias": "git@github.personal:strexet/habitica-tool.git",
+  "repository_full_name": "strexet/habitica-companion",
+  "repository_id": 1219684338,
+  "validation": "Pinned .NET8.0.125, Node22 and Playwright1.62.1; complete current .NET/Functions/Worker suites and current Release/browser/PWA evidence. Existing UI receipts qualify only matching source/environment; no inherited current merge acceptance.",
+  "working_changes": "252 tracked paths plus approximately 2,764 untracked implementation/evidence files before intake; preserve a frozen manifest before commit."
+}

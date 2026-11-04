@@ -1,0 +1,24 @@
+{
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "changed_files": [
+    "Directory.Packages.props",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs",
+    "src/Habitica.Domain/Notes/NotesModel.cs",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+    "tests/fixtures/notes/notes-folder-wire-v3.json",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+    "workers/companion-workspace/migrations/0021-note-folders.sql",
+    "workers/companion-workspace/package.json",
+    "workers/companion-workspace/src/notes-api.ts",
+    "workers/companion-workspace/src/notes-folders-api.ts",
+    "workers/companion-workspace/test/note-tools.test.mjs",
+    "workers/companion-workspace/test/notes.test.mjs",
+    "workers/shared/notes-folders.ts",
+    "workers/shared/notes.ts",
+    "workers/companion-workspace/test/note-projects.test.mjs",
+    ".skill-tree/documents/notes-folders.md"
+  ]
+}

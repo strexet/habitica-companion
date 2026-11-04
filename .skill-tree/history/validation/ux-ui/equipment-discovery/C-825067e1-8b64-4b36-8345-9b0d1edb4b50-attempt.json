@@ -1,0 +1,66 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-825067e1-8b64-4b36-8345-9b0d1edb4b50",
+  "check_id": "equipment-discovery-behavior",
+  "definition": "2bc12c1b4589e5277550fdc9e2d879478e5c1e656ab8b68713ba1bb14ce714eb",
+  "environment_identity": "d1c4ddb55ad19f6d830c99d763ca703cae4e402321cbb0b5a414594af8b8659d",
+  "key": "3592fff5ea5ec9575f4fe7e8252d1c877db66b7f820075303e454649bddb8836",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Hundreds of items; translated/long names; key search; empty results; folded matching category; battle/costume identity; optimizer and preset state after reset. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T20:34:50.703889+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T20:29:51.326409+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~InventoryPageTests",
+      "--logger",
+      "trx;LogFileName=equipment-discovery.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/equipment-discovery/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "bc776550abbd4676a47e7e10d80f54cca90231d06f5834b73d84edc2bb6020b7",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "3f46b08fc0a875396ce66f0ec2ee494c6e0ead76ff8b6d80dc036204188fdeb0",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "7da86a2dc7d35cf4bc929efb1a043a4fe38133f6aa12d77eb53a8f4b616ad041"
+  },
+  "task_id": "T-6b6dacdb-8702-4788-b595-52241a31cf74"
+}

@@ -1,0 +1,61 @@
+{
+  "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+  "attempt_id": "C-d399ccae-2941-42b7-99dd-0c16ab970f4c",
+  "check_id": "notes-mcp-contracts",
+  "definition": "38d7f07809cead441950927358fbb253c3e1e6c30ba4f77d44b20a8cb7e51596",
+  "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+  "key": "dbf3d55984e215b155a20251c9be65b9d0bee94edadbb174b2e85c35765a5f3b",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T17:16:14.372280+00:00",
+    "execution_profile": "notes-folders-cloud-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T17:12:14.540429+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/note-folder-tools.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+    "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-mcp/src/note-tools.ts": "aae1c4782df0a0e8bc67665a94f3f4552c6d8f5762b7d43ef69ab88d65814d1c",
+    "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+    "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+    "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+    "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5"
+}

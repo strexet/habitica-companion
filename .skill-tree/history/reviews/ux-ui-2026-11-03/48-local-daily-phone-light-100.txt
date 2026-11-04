@@ -1,0 +1,102 @@
+- main:
+  - paragraph: Synthetic Razor output. Component interactions are qualified separately.
+  - paragraph: Companion workspace
+  - heading "Dailies" [level=2]
+  - generic "Cloud Workspace · rev 10"
+  - text: New Daily
+  - textbox "New Daily"
+  - button "Add Daily":
+    - generic: Add Daily
+  - text: Repeat
+  - combobox "Repeat":
+    - option "Daily" [selected]
+    - option "Weekly"
+    - option "Monthly"
+  - text: Every interval
+  - spinbutton "Every interval": "1"
+  - text: Start date (required)
+  - textbox "Start date (required)"
+  - text: Fixed timezone, matching Habitica
+  - textbox "Fixed timezone, matching Habitica": UTC
+  - paragraph: "Creates a linked Habitica Daily after separate consent and executor setup. Choose the complete schedule. Fixed zones: UTC or Etc/GMT−style IDs (for UTC+7 use Etc/GMT-7). Multiweek intervals require a Monday start. DST zones and nonmidnight Habitica day starts are unavailable here. No past completion or Cron is run; future missed Dailies can have normal Habitica penalties."
+  - generic "More details"
+  - option "Low"
+  - option "Normal" [selected]
+  - option "High"
+  - option "Urgent"
+  - option "Default / unchanged" [selected]
+  - option "Trivial"
+  - option "Easy"
+  - option "Medium"
+  - option "Hard"
+  - option "Default / unchanged" [selected]
+  - option "Str"
+  - option "Int"
+  - option "Per"
+  - option "Con"
+  - generic "Dailies":
+    - article:
+      - strong: Linked Daily fixture
+      - generic: Active · Normal
+      - generic: "Habitica mapping: Linked"
+      - text: Occurrence date
+      - textbox "Occurrence date"
+      - button "Complete":
+        - generic: Complete
+      - button "Habitica link":
+        - generic: Habitica link
+      - button "Edit":
+        - generic: Edit
+      - button "Schedule / occurrences":
+        - generic: Schedule / occurrences
+  - generic: 1 matching tasks · 1–1
+  - button "Previous" [disabled]:
+    - generic: Previous
+  - button "Next" [disabled]:
+    - generic: Next
+  - paragraph:
+    - text: Task creation, field edits and scoring require Habitica correspondence. Cloud task execution is unavailable. Canonical saves do not confirm Habitica presence or rewards.
+    - link "Open Todo Sync":
+      - /url: /todo/sync
+  - region "Recurring task":
+    - 'heading "Daily schedule and occurrences: Linked Daily fixture" [level=2]'
+    - paragraph: Native skip and pause controls change Companion only; completion requests required Habitica effects. A Companion pause does not pause Habitica penalties. Linked Daily schedule replacement requires a fresh separate Habitica review in the connected cloud Workspace.
+    - paragraph: "Saved state: Active · c9a6ad62-1a71-4b01-8f4b-2a23fdb13c34"
+    - status: A retained Habitica mapping blocks native occurrence and lifecycle actions. Supported schedule replacement is available in the connected cloud Workspace; yearly, month-week, mixed and unrepresentable retained schedules remain read-only. Use the main task completion action for linked game effects.
+    - paragraph: "Loaded schedule: Daily, every 1; start 2026-10-27; zone UTC; weekdays []; month dates []"
+    - heading "Reviewed linked schedule" [level=3]
+    - text: Frequency
+    - combobox "Frequency":
+      - option "Daily" [selected]
+      - option "Weekly"
+      - option "Monthly"
+    - text: Interval (1–366)
+    - spinbutton "Interval (1–366)": "1"
+    - text: Start date
+    - textbox "Start date": 2026-10-27
+    - text: Time zone (UTC or IANA region, for example Europe/Paris)
+    - textbox "Time zone (UTC or IANA region, for example Europe/Paris)": UTC
+    - paragraph: The review replaces the complete schedule. Clearing is available only for an unlinked Daily. Saved completions and skips remain; replacement does not erase history or backfill rewards. Linked rules require a matching fixed UTC/Etc-GMT zone, midnight account day start and one month date matching the start date. The fresh server review retains the full provider rule and current/next calendar dates before confirmation.
+    - button "Review schedule replacement":
+      - generic: Review schedule replacement
+    - button "Review clear schedule" [disabled]:
+      - generic: Review clear schedule
+    - heading "Exact occurrence" [level=3]
+    - text: Civil date
+    - textbox "Civil date" [disabled]
+    - button "Use current day in saved schedule zone" [disabled]:
+      - generic: Use current day in saved schedule zone
+    - status: Choose an exact civil date; no occurrence is selected.
+    - button "Review completion for date" [disabled]:
+      - generic: Review completion for date
+    - button "Review skip for date" [disabled]:
+      - generic: Review skip for date
+    - generic "Retained occurrence history (0)"
+    - heading "Companion lifecycle" [level=3]
+    - paragraph: Pause stops native actions and generated pending occurrences. Resume retains the schedule and history and creates no completion, skip or reward.
+    - button "Review Companion pause" [disabled]:
+      - generic: Review Companion pause
+    - button "Reload current task":
+      - generic: Reload current task
+    - button "Close recurring editor":
+      - generic: Close recurring editor

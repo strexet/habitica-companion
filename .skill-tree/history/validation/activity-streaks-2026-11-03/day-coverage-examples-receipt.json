@@ -1,0 +1,45 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-1f1eb1cd-864b-4b0d-bd7a-e99515207f5b",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 19,
+    "expected": 19,
+    "failed": 0,
+    "passed": 19,
+    "skipped": 0
+  },
+  "definition": "b4b44b3c733ae7ad9522f238e0299190ebcb486e922bfc6042da7770f0537a2a",
+  "environment_identity": "ea294348e7c4762c21cf8cbdd175abf1245866ff1a9b2c422949db57307eb638",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/day-coverage-examples-execution.log",
+      "sha256": "0589b8e7a5ef6933ef48ec14957aca95c2659fd153871253fc37ddca4b220103"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-rules/day-coverage-examples.trx",
+      "sha256": "966fb986e3eacf63a55b3064e15dce22836241f9d0e806efe0f9ec28e030f3b0"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "a451310253bb2b74d443bad23c42fa8d29dda4d0b8186f84af64db4586c970f3",
+  "payload_hash": "ed141e22ee1051ca6abfc78df5d1a043d179ee3c200680846dc1df7cc70715ac",
+  "recorded_at": "2026-11-02T18:15:24.391081+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "0e738ce91873bd65e8ad3307c567ce4e4594f9280e1736bb028ab5fd089772c3",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "878e7818dcd00a93ec4cb38382cb55432ed148d4ec3a8fa68058dac7946df782",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityCoverageTests.cs": "e6887d64f4c10c771bb0a440ae320134c256efd0cb797c307298c721cf6700bb",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceActivityStreakTests.cs": "40bffb42616bde254bec7b5c483af4c33faf95120e1baaff3df5c90d29c6ff85"
+  },
+  "timing": {
+    "tool_wall_seconds": 5.111112375045195
+  }
+}

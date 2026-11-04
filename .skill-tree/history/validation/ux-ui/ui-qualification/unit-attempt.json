@@ -1,0 +1,37 @@
+{
+  "assertion": "A correctly readable disabled field, low-contrast disabled canary, clipped native-date canary, readable date, enabled baseline, keyboard focus, changed-route configuration, server ownership mismatch and cleanup after failure.",
+  "attempt_id": "C-64bac7ed-8172-4550-a584-417600f4e53a",
+  "check_id": "qualification-canaries",
+  "definition": "a81ecacb643381a3cc8ad307c8390ead85b0b94d71c76c6018e6f1d77026aac9",
+  "environment_identity": "88724f285cdc65bb0109232adec7a5d51c7ae5ac777fa6bc7a1c27bee20ddad6",
+  "key": "01cf98161d77865b4fff03ad67c156d1226e58b0651793700f4fd1a389eab366",
+  "launch": null,
+  "prepared_at": "2026-11-03T07:26:35.005034+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=15000",
+      "tests/browser-qualification/ux-ui-checks.test.mjs"
+    ],
+    "execution_notes": "Explicit test-file selection; no wildcard shell evaluation.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "deploy/callback-egress/package.json"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+    "tests/browser-qualification/qualification-frame.mjs": "84ba431955964e1c8394cc747c6ec3095bc586148b6cc4820b5079b5d921414f",
+    "tests/browser-qualification/ux-ui-checks.test.mjs": "c37a0c775e38a2c43aa058fa17f5cdb8b64950948a626f7df5e8f4c93a8aed8a",
+    "tests/browser-qualification/ux-ui-contract.mjs": "b57c7b70a42f9dc75b264fc3a17419c76ef1e91be3d30055d6e49c72e89d7394"
+  },
+  "task_id": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+}

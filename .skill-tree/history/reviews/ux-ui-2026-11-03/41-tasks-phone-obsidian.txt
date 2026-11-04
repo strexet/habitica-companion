@@ -1,0 +1,122 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- navigation "Todo categories":
+  - link "Today":
+    - /url: /todo/today
+  - link "Habits":
+    - /url: /todo/habits
+  - link "Dailies":
+    - /url: /todo/dailies
+  - link "Tasks":
+    - /url: /todo/tasks
+- heading "Tasks and subtasks" [active] [level=1]
+- paragraph: Companion workspace
+- heading "Tasks" [level=2]
+- generic "Browser Workspace · rev 1"
+- text: New Todo
+- textbox "New Todo"
+- button "Add Todo":
+  - generic: Add Todo
+- generic "More details"
+- option "Low"
+- option "Normal" [selected]
+- option "High"
+- option "Urgent"
+- option "Default / unchanged" [selected]
+- option "Trivial"
+- option "Easy"
+- option "Medium"
+- option "Hard"
+- option "Default / unchanged" [selected]
+- option "Str"
+- option "Int"
+- option "Per"
+- option "Con"
+- generic "Habitica sync status"
+- region "Todo branches":
+  - paragraph: No tasks in this branch.
+  - link "Browse project tasks":
+    - /url: /todo/projects
+  - paragraph: Root Todos. Expand a task to navigate one level at a time.
+  - generic: 0 tasks in selected view · revision 1
+  - button "Previous branch rows" [disabled]:
+    - generic: Previous branch rows
+  - button "Next branch rows" [disabled]:
+    - generic: Next branch rows
+  - paragraph: Opening a branch never completes or moves descendants. Project membership and links to Habitica stay unchanged. Parent references stay available across pages; deep levels use labels instead of increasing indentation.

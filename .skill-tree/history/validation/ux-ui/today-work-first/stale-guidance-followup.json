@@ -1,0 +1,23 @@
+{
+  "request": {
+    "title": "Clear retained review guidance after cancelled previews",
+    "description": "The Today browser journey cancels an unaccepted task preview and returns to ready editing, but the presentation still displays earlier review-before-saving guidance. The command controller clears the command message; the presentation retains the copied message.",
+    "expected_behavior": "After a known unaccepted preview is cancelled, show guidance matching current readiness. Preserve original-command references and refusal fences for unknown preparation or acceptance; do not accept or replay a task command.",
+    "priority": 102,
+    "context": "Nonblocking finding from completed Today work-first task T-e23a628d-1649-4e5e-bb14-17d2194dc4fa. Native command state and the exact task journal remain correct.",
+    "source": ".skill-tree/artifacts/ux-ui/today-work-first/1793711400946120000/chromium-gryphy-light-1280-100-today-work-first.png; TodoWorkspacePresentation.CancelPreview and RunAsync message propagation; WorkspaceTaskController.CancelPreview clears Message.",
+    "expected_source_hash": "c07c1fcf5e59c8482aa1cba65e114221b905f8154a404164a2ee95d417a40392"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-d70cd514-c714-48e7-8e9d-f2c10e3399d4",
+    "parent_pending_ids": [],
+    "priority": 102,
+    "processing_run_id": null,
+    "related_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "relation": "followup",
+    "root_task_id": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "status": "Pending"
+  },
+  "capture_recovery": "Initial wording was rejected by the prose validator. The task completion then advanced. Official intake was retried with corrected wording; an atomic metadata correction preserves the verified completed parent and deferred followup relation. No terminal outcome or implementation scope was rewritten."
+}

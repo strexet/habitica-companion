@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep planning and statistics native date fields readable at enlarged text",
+    "description": "The current canonical-destination browser check reproduces clipped selected-date segments in Planning at phone width with 200-percent text. The date stays valid while the year runs under the native calendar affordance.",
+    "expected_behavior": "Keep selected native civil dates visibly readable and editable in Planning, Inbox and Statistics without changing date limits, filtering, source identity or command behavior. Qualify the reused field layouts in both engines.",
+    "root_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "related_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/canonical-destinations/1793709433021989000/failure.json and pixels/chromium-gryphy-light-360-200-hydrated-0-actual.png; TodoPlanningPanel.razor, TodoStatisticsPanel.razor and app.css.",
+    "priority_reason": "Required native-content acceptance blocks the active canonical-destination task; the earlier completed native-date task changed Today only.",
+    "expected_source_hash": "38597d25a6c3426e58afd3f07514e2ddb0e81231aa635ccc58854809aa5a3c49"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-210e1da2-6bef-4a8b-8155-08dffa892bac",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "relation": "blocker",
+    "root_task_id": "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "status": "Pending"
+  }
+}

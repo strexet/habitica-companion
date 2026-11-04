@@ -1,0 +1,68 @@
+{
+  "assertion": "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-bfd525df-c151-40ec-a546-1aad7d4710cb",
+  "check_id": "saved-list-errors-rendered",
+  "definition": "5c651217236c91abddf2381a516a2917ce832acbe4474b6b4e4ceee02b454564",
+  "environment_identity": "da173415ec0daf3ca090f53499f6ef2c8359f770d328c06e106ee54f16482330",
+  "key": "bae7893d7866674fab128900396237e25ccac7c729261adf1ca5988e73173836",
+  "launch": {
+    "assertion": "Keyboard correction, error announcement structure and successful retry pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T16:01:15.501605+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T15:45:15.776035+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "saved-list-errors",
+      ".skill-tree/history/validation/ux-ui/saved-list-errors/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "1d601ad29a6aa247afdee578a97c01d4423f660e43522464c596cef38fdf8878",
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "6e309184044ec699b6d89e0db879c2d026386c3899254120e052cdfcf2687e68",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "fd76c0fe1eedb6995c9efcf5b03e772464acddd106b3322bce4e5bc18f0f30f2",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "93bfdc78e7d76df02b205f37b25f43c7674db46c332d3ad55ae936030bab9ccc",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeSavedListPanelTests.cs": "a11711486450a70fdebc48daa97d93655937ac2af90faac97c8ffb17ae9dcba7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "4d77bf06491a8862d93f78a9d6f504e685de5f302824419b7a682d9269b38252",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "2ad584758d061d95ada29a327e0f042048af563a57c2710b9e3eec1b86d1bb85",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "d74cc0f93f10a0bbaa39fa11305cf5fcadddd5a72a3808f7777df22d6957b3d2",
+    "tests/browser-qualification/ux-ui-adapters.json": "27d88356693e0d1e022036dc58cd33ff725bb431a2b29f7b58223088ddc5b6c3",
+    "tests/browser-qualification/ux-ui-native-date.mjs": "9f91155cd7e13cab672ba9b9ff4890f53a1d9cd73d772d11a3c7838b0973409d",
+    "tests/browser-qualification/ux-ui-saved-errors-journey.mjs": "5d03d980c83333d3cee04ff90ee8fe8a65a8a98228674c4b7f96b37dfd565341"
+  },
+  "task_id": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18"
+}

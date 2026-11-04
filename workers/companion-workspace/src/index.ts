@@ -1,3 +1,7 @@
+import {scheduledEvents} from './event-scheduler';
+import {eventService} from './events';
+import {workspaceTransferScopes,workspaceTransferInput,type WorkspaceTransferTool} from '../../shared/workspace-transfer-tools.ts';
+import {stageWorkspaceTransfer,workspaceTransferApi,exportWorkspaceTransfer,transferContainsNotes,type TransferTool} from './workspace-transfer-api.ts';
 import {diagnosticOwnerApi,diagnosticAgentApi,cleanupDiagnostics} from './diagnostic-api';
 import {diagnosticToolNames,type DiagnosticTool} from '../../shared/diagnostics';
 import {adoptionApi} from './adoption-api.ts';
@@ -37,7 +41,7 @@ import {partyToolScopes,publicPartyContext,type PartyTool} from '../../shared/pa
 import { purgeExpiredPreparations } from "./preparation-retention";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { taskApi } from "./task-api";
-import { taskToolScopes, type TaskTool } from "../../shared/task-tools";
+import { taskToolScopes, taskRequiredScopes, type TaskTool } from "../../shared/task-tools";
 import { handoff } from "./handoff";
 import { executeScheduled, cloudAuthority, type WorkspaceRow } from "./executor";
 import { adoptProjection } from "./projection-adapter";
@@ -52,7 +56,7 @@ const consentVersion = "workspace-v1";
 const bytes = (value: string) => new TextEncoder().encode(value).length;
 const json = (value: unknown, status = 200) => Response.json(value, { status, headers });
 async function identity(env: WorkspaceEnv, path: string, authorization?: string, value?: Identity): Promise<Identity> {
- const response = await env.AUTH_IDENTITY.fetch("https://identity.internal/" + path, { method: "POST", headers: { "content-type": "application/json", ...(authorization ? { authorization } : {}) }, body: value ? JSON.stringify(value) : undefined });
+ const response = await env.AUTH_IDENTITY.fetch("https://identity.internal/" + path, { method: "POST", headers: { "content-type": "application/json", ...(authorization ? { authorization } : {}) }, body: value ? JSON.stringify(value) : undefined, signal:AbortSignal.timeout(5000) });
  if (!response.ok) throw new WorkspaceError("unauthorized", 401);
  const result = await response.json<Identity>();
  if (!/^prf_[A-Za-z0-9_-]{43}$/.test(result.profileId)) throw new WorkspaceError("unauthorized", 401);
@@ -68,32 +72,46 @@ async function session(request: Request, env: WorkspaceEnv): Promise<WorkspaceRo
  WHERE s.token_hash=? AND s.expires_at_utc>? AND s.access_epoch=? AND w.access_epoch=s.access_epoch AND w.active=1`).bind(hash,new Date().toISOString(),row.access_epoch).first<WorkspaceRow>();
  if (!current) throw new WorkspaceError("unauthorized", 401); return current;
 }
-async function connect(request: Request, env: WorkspaceEnv): Promise<Response> {
- const body = workspaceObject(await workspaceJson(request), ["consentVersion", "workspaceId"]);
- if (body.consentVersion !== consentVersion) throw new WorkspaceError("consent_required", 403);
+async function connect(request: Request, env: WorkspaceEnv, recover = false): Promise<Response> {
+ const body = workspaceObject(await workspaceJson(request), recover ? ["expectedWorkspaceId"] : ["consentVersion", "workspaceId"]);
+ if (!recover && body.consentVersion !== consentVersion) throw new WorkspaceError("consent_required", 403);
  const who = await identity(env, "management", `Bearer ${bearer(request)}`);
- const workspaceId = body.workspaceId === undefined ? crypto.randomUUID() : uuid(body.workspaceId);
- const existing = await env.WORKSPACE_DB.prepare("SELECT workspace_id FROM workspaces WHERE profile_id=?").bind(who.profileId).first<{ workspace_id: string }>();
- if (body.workspaceId !== undefined && existing && existing.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
- const now = new Date().toISOString(); const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
- // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
- await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
- VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET mcp_grant_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id THEN workspaces.mcp_grant_epoch ELSE NULL END,connection_id=excluded.connection_id,consent_version=excluded.consent_version,
- consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
- .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
- const row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
- if (!row || row.connection_id !== who.connectionId) throw new WorkspaceError("connection_changed", 409);
- if (body.workspaceId !== undefined && row.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ const now = new Date().toISOString();
+ let row:WorkspaceRow|null;
+ if (recover) {
+  row=await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
+  if (!row) throw new WorkspaceError("workspace_missing",404);
+  if (!row.active) throw new WorkspaceError("workspace_disconnected",403);
+  if (row.connection_id!==who.connectionId) throw new WorkspaceError("workspace_connection_changed",409);
+  if (row.consent_version!==consentVersion) throw new WorkspaceError("workspace_consent_unsupported",403);
+  if (body.expectedWorkspaceId!==undefined && uuid(body.expectedWorkspaceId)!==row.workspace_id) throw new WorkspaceError("workspace_mismatch",409);
+ } else {
+  const workspaceId = body.workspaceId === undefined ? crypto.randomUUID() : uuid(body.workspaceId);
+  const existing = await env.WORKSPACE_DB.prepare("SELECT workspace_id FROM workspaces WHERE profile_id=?").bind(who.profileId).first<{ workspace_id: string }>();
+  if (body.workspaceId !== undefined && existing && existing.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+  const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
+  // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
+  await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
+  VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET mcp_grant_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id THEN workspaces.mcp_grant_epoch ELSE NULL END,connection_id=excluded.connection_id,consent_version=excluded.consent_version,
+  consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
+  .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
+  row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
+  if (!row || row.connection_id !== who.connectionId) throw new WorkspaceError("connection_changed", 409);
+  if (body.workspaceId !== undefined && row.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ }
+ if(recover)await identity(env,"epoch",undefined,who);
  const token = workspaceSessionToken(); const hash = await workspaceTokenHash(token); const expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
  await env.WORKSPACE_DB.batch([
   env.WORKSPACE_DB.prepare(`INSERT INTO workspace_sessions(token_hash,profile_id,connection_id,access_epoch,created_at_utc,expires_at_utc)
    SELECT ?,profile_id,connection_id,access_epoch,?,? FROM workspaces WHERE profile_id=? AND active=1 AND connection_id=? AND access_epoch=?`).bind(hash, now, expires, who.profileId, who.connectionId, row.access_epoch),
-  env.WORKSPACE_DB.prepare(`DELETE FROM workspace_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND access_epoch=? AND active=1) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN
-   (SELECT token_hash FROM workspace_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId, who.profileId, row.access_epoch, row.access_epoch, now, who.profileId),
+  env.WORKSPACE_DB.prepare(`DELETE FROM workspace_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM workspace_sessions WHERE token_hash=?) AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND access_epoch=? AND active=1) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN
+   (SELECT token_hash FROM workspace_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId, hash, who.profileId, row.access_epoch, row.access_epoch, now, who.profileId),
  ]);
- const check = await env.WORKSPACE_DB.prepare("SELECT token_hash FROM workspace_sessions WHERE token_hash=?").bind(hash).first();
+ await identity(env,"epoch",undefined,who);
+ const check = await env.WORKSPACE_DB.prepare(`SELECT w.* FROM workspace_sessions s JOIN workspaces w ON w.profile_id=s.profile_id
+  WHERE s.token_hash=? AND w.active=1 AND s.access_epoch=w.access_epoch AND s.connection_id=w.connection_id AND w.consent_version=?`).bind(hash,consentVersion).first<WorkspaceRow>();
  if (!check) throw new WorkspaceError("connection_changed", 409);
- return json({ workspaceId: row.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) }, 201);
+ return json({ workspaceId: check.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(check.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED), ...(recover?{recovered:true}:{}) }, 201);
 }
 async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash: string): Promise<Response | null> {
  const receipt = await env.WORKSPACE_DB.prepare("SELECT c.payload_hash,c.entry_json FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1").bind(row.profile_id, id, row.access_epoch).first<{ payload_hash: string; entry_json: string }>();
@@ -105,6 +123,11 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
+ if(input.operation==='editLinkedDailySchedule'&&!prepared)throw new WorkspaceError('prepared_linked_schedule_required',409);
+ if(input.projectToHabitica||input.operation==='ensureProjection'){
+  const fence=await env.WORKSPACE_DB.prepare('SELECT transfer_id FROM workspace_transfer_fences WHERE profile_id=? AND task_id=?').bind(row.profile_id,input.taskId).first();
+  if(fence)throw new WorkspaceError('imported_effect_review_required',409);
+ }
  requireTodoProjection(JSON.parse(row.document_json),input);
  if(input.operation==='ensureProjection'){
   const pending=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
@@ -112,7 +135,7 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  }
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString(),await recoveryCommands(env,row.profile_id,input));
  const approval=prepared?await env.WORKSPACE_DB.prepare('SELECT tag_authority_json FROM workspace_preparations WHERE profile_id=? AND command_id=?').bind(row.profile_id,input.id).first<{tag_authority_json:string|null}>():undefined;
- const tags=['unarchiveTask','correctOccurrence'].includes(input.operation)?{document:accepted.document,work:[],gap:null}:await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
+ const tags=['copyTaskType','unarchiveTask','correctOccurrence'].includes(input.operation)?{document:accepted.document,work:[],gap:null}:await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
  accepted.document=tags.document;
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
@@ -156,6 +179,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if(path.startsWith('/diagnostics/'))return diagnosticOwnerApi(request,env);
  if(path==='/notes'||path.startsWith('/notes/'))return notesRoute(request,env);
  if (path === "/connect" && request.method === "POST") return connect(request, env);
+ if (path === "/recover" && request.method === "POST") return connect(request, env, true);
  if(path==='/cron/history'&&request.method==='GET'){
   const who=await identity(env,'management',`Bearer ${bearer(request)}`);await identity(env,'epoch',undefined,who);
   return json(await cronHistory(env,who.profileId));
@@ -222,6 +246,15 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
   return json(await taskApi(env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),env,row,true)));
  }
+ if(path==='/workspace-transfer/stage'&&request.method==='POST'){
+  const input=workspaceObject(await workspaceJson(request,16*1024*1024),['artifact']);if(typeof input.artifact!=='string')throw new WorkspaceError('invalid_transfer',422);
+  return json(await stageWorkspaceTransfer(env,row,input.artifact));
+ }
+ if(path==='/workspace-transfer/api'&&request.method==='POST'){
+  const input=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);if(!['list_workspace_transfers','get_workspace_transfer_status','preview_workspace_transfer','accept_workspace_transfer','get_workspace_transfer_receipt','get_workspace_transfer_record'].includes(String(input.tool)))throw new WorkspaceError('invalid_tool',422);
+  return json(await workspaceTransferApi(env,row,input.tool as TransferTool,input.arguments));
+ }
+ if(path.startsWith('/workspace-transfer/export/')&&request.method==='GET')return json(await exportWorkspaceTransfer(env,row,path.slice('/workspace-transfer/export/'.length)));
  if (path === "/handoff" && request.method === "POST") return handoff(request,env,row);
  if (path === "/executor" && request.method === "POST") {
   const body=workspaceObject(await workspaceJson(request),["enabled","consentVersion"]);
@@ -243,9 +276,12 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
    env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_deliveries SET state=CASE WHEN state='dispatched' THEN 'unknown' ELSE 'cancelled' END,code='workspace_disconnected' WHERE profile_id=? AND state IN ('scheduled','retryable','dispatched') AND EXISTS(SELECT 1 FROM workspace_reminder_schedules s WHERE s.profile_id=workspace_reminder_deliveries.profile_id AND s.schedule_id=workspace_reminder_deliveries.schedule_id AND s.connection_id=? AND s.access_epoch=?)").bind(row.profile_id,row.connection_id,row.access_epoch),
   ]);
   if (!stopped[0].meta.changes) throw new WorkspaceError("unauthorized", 401);
-  return json({ disconnected: true, retained: true });
+  const cleanup=await env.AUTH_EVENTS.fetch('https://events.internal/cleanup',{method:'POST',body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id}),signal:AbortSignal.timeout(5000)}).catch(()=>null);
+  return json({ disconnected: true, retained: true,eventsCleanupPending:cleanup?.ok!==true });
  }
  if (path === "/workspace" && request.method === "DELETE") {
+  const retainedNotes=await env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_transfers WHERE profile_id=? AND state='accepted' AND json_extract(manifest_json,'$.includesNotes')=1 LIMIT 1").bind(row.profile_id).first();
+  if(retainedNotes)throw new WorkspaceError('transfer_notes_archive_retention_required',409);
   const body = workspaceObject(await workspaceJson(request), ["confirmWorkspaceId"]);
   if (uuid(body.confirmWorkspaceId) !== row.workspace_id) throw new WorkspaceError("confirmation_required", 409);
   const deleted = await env.WORKSPACE_DB.prepare("DELETE FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch).run();
@@ -263,6 +299,16 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
     const body=workspaceObject(await workspaceJson(request),['tool','arguments']);if(typeof body.tool!=='string'||!(diagnosticToolNames as readonly string[]).includes(body.tool))throw new WorkspaceError('invalid_tool',422);
     return json(await diagnosticAgentApi(request,this.env,body.tool as DiagnosticTool,body.arguments));
    }
+   if(new URL(request.url).pathname==='/workspace-transfer-tools'){
+    const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(workspaceTransferScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
+    const tool=body.tool as WorkspaceTransferTool,args=workspaceTransferInput(tool,body.arguments),verified=await this.env.AUTH_IDENTITY.fetch('https://identity.internal/mcp',{method:'POST',headers:{authorization:request.headers.get('authorization')??''},signal:AbortSignal.timeout(5000)});
+    if(!verified.ok)throw new WorkspaceError('unauthorized',401);const who=await verified.json<Identity&{scopes:string[];grantEpoch:string}>();
+    if(!Array.isArray(who.scopes)||workspaceTransferScopes[tool].some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
+    let row=await this.env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1 AND consent_version=?').bind(who.profileId,who.connectionId,'workspace-v1').first<WorkspaceRow>();if(!row)throw new WorkspaceError('workspace_consent_required',403);row=await mcpEpoch(this.env,row,who.grantEpoch);
+    const notesIncluded=tool!=='list_workspace_transfers'&&!(tool==='get_workspace_transfer_record'&&!['noteReceipt','folderReceipt'].includes(String(args.kind)))&&await transferContainsNotes(this.env,row,String(args.transferId));
+    if(notesIncluded){const required=['notes.read',...(['preview_workspace_transfer','accept_workspace_transfer'].includes(tool)?['notes.write']:[])];if(required.some(scope=>!who.scopes.includes(scope)))return json({error:'independent_notes_scope_required',requiredScopes:required,outcomeUnknown:false},403);}
+    return json(await workspaceTransferApi(this.env,row,tool,args,who.grantEpoch));
+   }
    if(new URL(request.url).pathname==='/note-tools'){
     const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(noteToolScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
     return json(await noteToolsApi(request,this.env,body.tool as NoteTool,body.arguments));
@@ -278,7 +324,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
    const requiredScope=Object.hasOwn(groupTagScopes,body.tool)?groupTagScopes[body.tool as GroupTagTool]:Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
-   const required=Object.hasOwn(adoptionScopes,body.tool)?adoptionScopes[body.tool as AdoptionTool]:Object.hasOwn(linkedRecoveryScopes,body.tool)?linkedRecoveryScopes[body.tool as LinkedRecoveryTool]:Object.hasOwn(reminderToolScopes,body.tool)?reminderToolScopes[body.tool as ReminderTool]:Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
+   const required=Object.hasOwn(adoptionScopes,body.tool)?adoptionScopes[body.tool as AdoptionTool]:Object.hasOwn(linkedRecoveryScopes,body.tool)?linkedRecoveryScopes[body.tool as LinkedRecoveryTool]:Object.hasOwn(reminderToolScopes,body.tool)?reminderToolScopes[body.tool as ReminderTool]:Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:Object.hasOwn(taskToolScopes,body.tool)?taskRequiredScopes(body.tool as TaskTool,body.arguments):['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
@@ -311,5 +357,10 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { try{await cleanupDiagnostics(env);}catch{/* Diagnostic reads enforce logical expiry; a cleanup outage cannot dispatch or stop task work. */} await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await scheduledReminders(env); await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { try{await cleanupDiagnostics(env);}catch{/* Diagnostic reads enforce logical expiry; a cleanup outage cannot dispatch or stop task work. */} await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await scheduledReminders(env);try{await scheduledEvents(env);}catch{console.warn('events_scheduler_unavailable');} await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;
+
+// Auth-only binding: no public routing to subscription metadata.
+export class EventSubscriptionService extends WorkerEntrypoint<WorkspaceEnv> {
+ async fetch(request:Request):Promise<Response>{return eventService(request,this.env);}
+}

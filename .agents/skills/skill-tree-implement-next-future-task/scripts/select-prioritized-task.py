@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# GENERATED FILE
-# Source: skill-tree/common/scripts/select-prioritized-task.py; generator: skill-tree/scripts/sync-skill-references.py
 """Select the highest-priority or exact prioritized task."""
 import argparse
 import json

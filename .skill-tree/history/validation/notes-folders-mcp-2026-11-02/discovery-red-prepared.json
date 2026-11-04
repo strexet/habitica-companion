@@ -1,0 +1,53 @@
+{
+  "assertion": "- Actual MCP SDK controls cover advertised schemas/annotations, read/write and project permission separation, duplicate names, untrusted folder/note instructions, full Altai hotel/place journeys, unchanged Markdown, stale/expired/revoked previews, two profiles and original receipt recovery after later rename/removal.\n- Keep existing note/project tool discovery and content-preservation fixtures; qualify server/tool behavior separately from installed host or actual model decisions.",
+  "attempt_id": "C-5bb1e921-5b3b-47ed-8e6f-dab3eecf706d",
+  "check_id": "notes-mcp-contracts",
+  "definition": "dd0e1b65d4a13e08969e95b6bf2d6c9e5247c12007023f2eff6eb6ee57d9050a",
+  "environment_identity": "4a312964209bdc4e86a8016d04f171f60aa87f6862ffa00edbf9799f153e12bb",
+  "key": "6604f7009a3b5d6d6028cd17215a65227dbad5c2fcc52413052f10ff06a843db",
+  "launch": {
+    "assertion": "Cloud Notes folder owner routes, exact original receipts and atomic D1 behavior.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot prove actual Worker/D1 rollback or guarded owner routes.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T17:03:23.927501+00:00",
+    "execution_profile": "notes-folders-cloud-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T16:59:24.087647+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/note-folder-tools.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "plugin/skills/habitica-notes/SKILL.md": "890ba94faefcffdf5f1fa3e427bd1c14c2013a84f7fca834a4b5f63e3efbef1e",
+    "workers/chatgpt-mcp/src/note-tools.ts": "2e73820fc982f0f63c48f17c80be4ad33c5f38b981c13cd6a7481a5a0f455616",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-tools-api.ts": "1da58249244ab0fa3873c3cf6e4902aba0bbc67fea80456a7689cd641fe92eaa",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "bd8b80150dc29401f32abc31d78ed08ed7e6d06fdb87fe50acbe716ca5909c1c",
+    "workers/shared/note-tools.ts": "4aff1206f98d75d083f3372bef4e09cb8fbed6ebda6eab72234e50ff499dc009"
+  },
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5"
+}

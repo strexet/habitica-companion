@@ -1,0 +1,184 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-execution.log",
+          "sha256": "e7a903096fc8f816892acae96d66277a3dfb86452902884da641f39042f0c11a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-operation.json",
+          "sha256": "47e0fb282e03e23539901dacabbaabb40450e87be4b775d8bc7ba1cb1bbdcdc3"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-execution.log",
+          "sha256": "e7a903096fc8f816892acae96d66277a3dfb86452902884da641f39042f0c11a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-operation.json",
+          "sha256": "47e0fb282e03e23539901dacabbaabb40450e87be4b775d8bc7ba1cb1bbdcdc3"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
+        "criteria": [
+          "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
+          "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification."
+        ],
+        "id": "reminder-events",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/reminder-events.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/reminder-events.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/companion-workspace/src/event-scheduler.ts",
+          "workers/chatgpt-auth/src/event-dispatch.ts",
+          "workers/chatgpt-auth/test/fixtures/events.mjs",
+          ".skill-tree/documents/reminder-events.md",
+          "workers/shared/events.ts",
+          "workers/companion-workspace/src/events.ts",
+          "workers/chatgpt-auth/src/events.ts",
+          "workers/chatgpt-auth/migrations/0015-event-dispatches.sql",
+          "workers/companion-workspace/migrations/0020-event-outbox.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "deploy/prepare-dev.mjs",
+          "plugin/skills/habitica-task-management/references/event-reminders.md"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-f8ffe2f9-d1d0-4a47-a3da-6e048481768a",
+        "classification": "executed-control",
+        "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+        "counts": {
+          "discovered": 8,
+          "expected": 8,
+          "failed": 0,
+          "passed": 8,
+          "skipped": 0
+        },
+        "definition": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c",
+        "environment_identity": "8b445ba6d15d17999fd091c78a0b48b3111e75c9cf8aa6ffee623896e9478740",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-execution.log",
+            "sha256": "e7a903096fc8f816892acae96d66277a3dfb86452902884da641f39042f0c11a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/reminder-events-operation.json",
+            "sha256": "47e0fb282e03e23539901dacabbaabb40450e87be4b775d8bc7ba1cb1bbdcdc3"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "febc72eb8557ee438fab7a8f4b03e00ec9ac2bf06dd15ac351cee9fc027bdd6b",
+        "payload_hash": "579ff2b8ddb366f9e4117105e24e09e1bdecbba0e41a3ca4adde91bfc9ba37ff",
+        "recorded_at": "2026-11-02T13:55:18.502463+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/reminder-events.md": "90c940ddb95847b1fb4b95c23b5b48ce1a534d992d11c521469729fb2476ac1e",
+          "deploy/prepare-dev.mjs": "bc6ab6338036850ef6042baa647ce5b37d2d4ca11127737dc30624615ebd2124",
+          "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+          "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+          "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+          "workers/chatgpt-auth/src/events.ts": "31e9c827f34f0f88759d450480fb9a957ef8fec873a1e95dd46eb8ea98ea82a1",
+          "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+          "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+          "workers/companion-workspace/src/events.ts": "1cddb298bd9ce4a0b0018bda771cf10c9bd3ba09a5fd3f49c45a072230873f59",
+          "workers/companion-workspace/test/reminder-events.test.mjs": "75cb8f334ddd2ebdcc05202a7750e173ab12121edd7fe1977510dd423e630478",
+          "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+        },
+        "timing": {
+          "tool_wall_seconds": 16.499538792064413
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a"
+  ],
+  "disposition": "completed",
+  "evidence": [],
+  "followup_ids": [],
+  "id": "O-477dcb28-6c15-422a-8082-b620f9ddd6d4",
+  "limitations": [
+    "Ordinary configuration profiles remain default-off. Publication/optional key provisioning and final hosted gateway revalidation are separate selected release operations.",
+    "No actual host subscription, rendered ChatGPT response, local Codex chat delivery or physical-device Web Push outcome is claimed. Dedicated hosted DNS/TLS negative fixtures remain deferred."
+  ],
+  "outcome": "Implemented the independently consented exact-cue Events reminder channel with durable original Workspace/Auth intents and receipts, minimal signed payloads, bounded known-transient retries and preserved unknown-outcome identity. Actual local Worker/D1/MCP composition covers current ownership, consent/revoke, repeated wakes, burst fairness, restart/acknowledgment loss, expiry, DST interruption and410/413 controls.",
+  "parent_pending_ids": [
+    "P-5d1f3c86-1df1-4b4c-ab7f-96762dc2b192"
+  ],
+  "recorded_at": "2026-11-02T13:55:18.917336+00:00",
+  "related_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+  "source_fingerprints": {
+    ".skill-tree/documents/reminder-events.md": "90c940ddb95847b1fb4b95c23b5b48ce1a534d992d11c521469729fb2476ac1e",
+    "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+    "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+    "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+    "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+    "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+    "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+  },
+  "task_id": "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+  "title": "Deliver due task reminder events with durable original receipts",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
+      "criteria": [
+        "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
+        "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification."
+      ],
+      "id": "reminder-events",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/reminder-events.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/reminder-events.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/src/event-scheduler.ts",
+        "workers/chatgpt-auth/src/event-dispatch.ts",
+        "workers/chatgpt-auth/test/fixtures/events.mjs",
+        ".skill-tree/documents/reminder-events.md",
+        "workers/shared/events.ts",
+        "workers/companion-workspace/src/events.ts",
+        "workers/chatgpt-auth/src/events.ts",
+        "workers/chatgpt-auth/migrations/0015-event-dispatches.sql",
+        "workers/companion-workspace/migrations/0020-event-outbox.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "deploy/prepare-dev.mjs",
+        "plugin/skills/habitica-task-management/references/event-reminders.md"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c"
+}

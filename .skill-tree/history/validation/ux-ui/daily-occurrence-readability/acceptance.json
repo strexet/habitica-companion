@@ -1,0 +1,50 @@
+{
+  "task_id": "T-b1d64983-0be2-4d15-90c2-7720b34ab073",
+  "title": "Keep selected Daily occurrence dates readable with enlarged phone text",
+  "operation_history": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/operation-history.json",
+  "checks": [
+    {
+      "id": "daily-occurrence-readability-behavior",
+      "counts": {
+        "discovered": 25,
+        "expected": 25,
+        "failed": 0,
+        "passed": 25,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.log",
+          "sha256": "eea9f24b54f0c936ecdb328a0856483c0ab59bfc2db4ad97d2bf26ff71b4048d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/C-c850eb2a-61d3-4d94-9564-42136b703581.trx",
+          "sha256": "673977095a11c49b54584cce2522b182ea1ffa7c347eb9f9170f6d6709cb4d4e"
+        }
+      ]
+    },
+    {
+      "id": "daily-occurrence-readability-rendered",
+      "counts": {
+        "discovered": 289,
+        "expected": 289,
+        "failed": 0,
+        "passed": 289,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/4a4b25f6-ecc5-48bc-83db-46d3d54163b1.json",
+          "sha256": "f08953496398c0b3836d56e6e17a02abe49a6078b12022c813651aa48b5226d4"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

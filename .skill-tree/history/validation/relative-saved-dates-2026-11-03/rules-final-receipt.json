@@ -1,0 +1,69 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-7315e93a-86ac-471d-9aa4-7bc3cfcc79da",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 15,
+    "expected": 15,
+    "failed": 0,
+    "passed": 15,
+    "skipped": 0
+  },
+  "definition": "2e7aecb1f52b656372f6d47cea10679d0c377f37a5fe46cf328fdc160ed652ca",
+  "environment_identity": "dac11adcf8c444a04344dd04ee47173f4e004f0c1d2c49f29fd9bc25ca66d833",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rules-final-execution.log",
+      "sha256": "d2ceb887afcb8867389282dd6f393220578bb1394bb3b2b62f2eecfd0ee7b440"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-916deee7-8be7-44aa-9cd2-b9d86e90e56d/relative-date-rules/rules-final.trx",
+      "sha256": "bdc728d33615a38153c4caa857fce4a37df0432c8ac8e156bfa15b69c17231ac"
+    }
+  ],
+  "execution_sessions": {
+    "3d8f70810fe35d3912e8f44b3a92fe1a3cb2ef751533dfda6fb7cb522b2d7b0b": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T22:18:12.054811+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/relative-saved-dates-2026-11-03/rendered-8d8c4ed9-identity.json"
+      ],
+      "profile_id": "relative-saved-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-8d8c4ed9",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "620ff737a56c4fbacc130e92eb590e5b32c4bb6e1f57ed986716a654802ffd72",
+  "payload_hash": "ebe205ce950f0219fc546a84edae88a1ca811f1f21c2dc89c913a66024946a2b",
+  "recorded_at": "2026-11-02T22:07:22.893075+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "4ce309b8ad228b8b4e4822ee83f32e4380c0f57cef647b14cfebb59391f8702e",
+    "src/Habitica.Application/Workspace/WorkspaceOrganizationEngine.cs": "6a7255c268851cf628c63475203d42aa880860123eb0ff97c48b71f84c543b93",
+    "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs": "c2c9e0eefb13e65bfd88b6ee50c6941df108db94e68efd783e7fd7548b954723",
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "d441ac7d17bd0a3f4acd70958700b025b2f988fb7241770464293695485b735a",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs": "7398a2e7699125b40b0a858b03be3b35b1d4061f5544a69daea94648e5e6f904",
+    "src/Habitica.Application/Workspace/WorkspaceUnblockedTodos.cs": "0cc3fd55bb7cba9bf2c9c648dc419648c41b410e28b8df6875cd6a07aef23f5f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs": "7b1070fe28ed96c382e2aff664df483fe021b8050d4f0e6d74ca061a95f7e8ac",
+    "src/Habitica.Domain/Workspace/WorkspaceRelativeDates.cs": "ca439f0a1b4813d5fc609468b3dea2bc70636ef36e4f8c53c53c6cc78e57774c",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "55a467022b5bf36bda418583b2d2e67a4e824e30b80b1b38bed1295ab3b7f779",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/RelativeSavedTaskViewTests.cs": "8a9edfeaeae0a14a5f10cd28db4320e0ef0c154afafd8c8e9eea2f7e1e6ca9da",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedTaskViewTests.cs": "43a897582ba97469eb329c80c04f18a852e573cc27f087a3ebbcb297fb0862d9",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceSavedViewCommandTests.cs": "c950c6923a4fb3902cad6de948d6372c751dcde5850634aa62081dcc2446d65f",
+    "tests/fixtures/workspace/relative-saved-command-v5.json": "25c5ae701b44ae288a86c1687bf4ef42f6f73394306d2d587c7726969bf5630c",
+    "tests/fixtures/workspace/relative-saved-dates-v1.json": "e212cf5e2e8a996d65b3303b26ca8c0c8459cf9a78348bb974c3d3aeafebec6b"
+  },
+  "timing": {
+    "tool_wall_seconds": 2.231990958098322
+  }
+}

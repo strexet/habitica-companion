@@ -766,7 +766,12 @@ public static partial class ColorSchemeCatalog
             {
                 Primary = "#68747b", Accent = "#917552", AppBarBackground = "#4b565c", DrawerBackground = "#394348"
             })
-        };
+        }.Select(scheme => scheme with
+        {
+            // Opaque muted ink keeps disabled labels readable without changing
+            // stored custom palettes or making native disabled controls active.
+            Tokens = scheme.Tokens with { DisabledText = scheme.Tokens.Muted }
+        }).ToArray();
     }
 
     private static ColorSchemeDefinition LegacyAs(string legacyId, string name, bool isDark, string? id = null)

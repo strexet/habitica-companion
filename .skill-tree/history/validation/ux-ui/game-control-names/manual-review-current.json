@@ -1,0 +1,20 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/game-control-names/browser/d7c9c016-5625-47b4-b82f-9d8e951471dc.json",
+  "result": "Current65 focused,38 controls and577 rendered cases pass with matching source. Review covers exact-name and whitespace-equivalent member, gear and preset names, stable disclosure regions and persistent labels. Scoped visual repairs have separate accepted child outcomes.",
+  "reviewed_screenshots": [
+    ".skill-tree/artifacts/ux-ui/game-control-names/1793730494884000000/webkit-obsidian-glow-360-200-game-control-names.png",
+    ".skill-tree/artifacts/ux-ui/game-control-names/1793730494884000000/chromium-gryphy-light-1280-100-game-control-names.png",
+    ".skill-tree/artifacts/ux-ui/game-control-names/1793730494884000000/webkit-obsidian-glow-game-party-normalized.png",
+    ".skill-tree/artifacts/ux-ui/game-control-names/1793730494884000000/chromium-gryphy-light-game-inventory-normalized-context.png"
+  ],
+  "separate_repairs": [
+    "T-ef51ab99-1f6a-42db-bf0d-91375ee0b2fb",
+    "T-e3859337-1a25-48e6-a37d-817868623ec7"
+  ],
+  "limitations": [
+    "Existing Equipment UI exposes battle actions only.",
+    "Physical devices, assistive technology and actual provider execution remain unqualified.",
+    "Raw Party error copy, header Sync clipping and navigation density retain recorded Pending/snapshot scope."
+  ],
+  "final_revalidation": "New source and harness changes stale earlier completed contracts; this task establishes scoped current-source acceptance only."
+}

@@ -1,0 +1,472 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.log",
+          "sha256": "b460bc0b0e2e5b43586576ea884553f0ac0271e0beff43b6511e69a5a9dc7068"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.trx",
+          "sha256": "6320f721622dc80668cf6dabbad11ec2f9e4c1c10d110b5f6d6d139d92ab643d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/acceptance.json",
+          "sha256": "98a64ca617743ff7eadf8bee4efc3e37f719d310991fb9be7028d552b4ce81ed"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json",
+          "sha256": "cee4bcccfc0fdbbb473111009dfd119e454da7ce1e5eadec261195f158aec30e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.log",
+          "sha256": "b460bc0b0e2e5b43586576ea884553f0ac0271e0beff43b6511e69a5a9dc7068"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.trx",
+          "sha256": "6320f721622dc80668cf6dabbad11ec2f9e4c1c10d110b5f6d6d139d92ab643d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/acceptance.json",
+          "sha256": "98a64ca617743ff7eadf8bee4efc3e37f719d310991fb9be7028d552b4ce81ed"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json",
+          "sha256": "cee4bcccfc0fdbbb473111009dfd119e454da7ce1e5eadec261195f158aec30e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.log",
+          "sha256": "b460bc0b0e2e5b43586576ea884553f0ac0271e0beff43b6511e69a5a9dc7068"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.trx",
+          "sha256": "6320f721622dc80668cf6dabbad11ec2f9e4c1c10d110b5f6d6d139d92ab643d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/acceptance.json",
+          "sha256": "98a64ca617743ff7eadf8bee4efc3e37f719d310991fb9be7028d552b4ce81ed"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json",
+          "sha256": "cee4bcccfc0fdbbb473111009dfd119e454da7ce1e5eadec261195f158aec30e"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+          "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target."
+        ],
+        "id": "accessible-shell-behavior",
+        "parameters": {
+          "report_name": "accessible-shell.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/unit",
+          "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/App.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-48f8f763-97bd-431a-ac1f-2bf073fd6f3a",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 15,
+          "expected": 15,
+          "failed": 3,
+          "passed": 12,
+          "skipped": 0
+        },
+        "definition": "3d11e000f6901ae055fb3f26ccdeaeb6fa0f798a00cd1f6d81bbae51f81c337a",
+        "environment_identity": "a4e42c790784bdca624ed16355ce06bea6c955ed05eebc158be10639384f0de3",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-48f8f763-97bd-431a-ac1f-2bf073fd6f3a.log",
+            "sha256": "c133a2a8af64f82b2fd95ec165780a81613952fbe645754feb3a4aeca45c98d9"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-48f8f763-97bd-431a-ac1f-2bf073fd6f3a.trx",
+            "sha256": "73a27b04221d3c9964f524943cf6f307e4bfbee8659e927e7b5ef4f0ea119dc2"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "871dc0976cad60419f20e441cec74615930ad9234d8f078e458871b0b634a3b7",
+        "payload_hash": "da5104475eaf1977e4b70680969183bdc75ecfe40f6b877b7180c9572526fd91",
+        "recorded_at": "2026-11-03T08:02:39.591011+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "8e96f1e347a75fabf3e08fd17e7b1c929a7d6a687b2365045d95d84b361b6360",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "93994658e6d41b0a7922a78954edba5dee9672e20cf9ba637fdd53afd3fec857",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.966757541988045
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-cd227387-914a-46a6-89a8-bdc2cdeba0ae",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 20,
+          "expected": 20,
+          "failed": 0,
+          "passed": 20,
+          "skipped": 0
+        },
+        "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+        "environment_identity": "a4e42c790784bdca624ed16355ce06bea6c955ed05eebc158be10639384f0de3",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.log",
+            "sha256": "b460bc0b0e2e5b43586576ea884553f0ac0271e0beff43b6511e69a5a9dc7068"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/C-cd227387-914a-46a6-89a8-bdc2cdeba0ae.trx",
+            "sha256": "6320f721622dc80668cf6dabbad11ec2f9e4c1c10d110b5f6d6d139d92ab643d"
+          }
+        ],
+        "execution_sessions": {
+          "73aa5c34bb7bd385215c0d45d51f69a50afdf4d090e3e764a1de0d7b11927f98": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T08:32:48.705591+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/accessible-shell/launch-1793693808705895000.json"
+            ],
+            "profile_id": "9d2fbc6344c1cd66287c65431285d7d01e775fa8e4791370a22d6adc5fefbb15",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/accessible-shell",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "60572ecf6d1785c67b193a8f0d04f45257755f8efef8c85e3512e11a8fafe9b7",
+        "payload_hash": "0528f270c9a53e746a459f3ff24717b45fa9c95e2c76837989754da9ebedcbca",
+        "recorded_at": "2026-11-03T08:18:26.226508+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "22ac34f3a470b02ef899facb43427810a8643c4444d014e9c909d558263342b9",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.981134624918923
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix."
+        ],
+        "id": "accessible-shell-rendered",
+        "parameters": {
+          "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/browser",
+          "routes": [
+            "/dashboard",
+            "/todo/today",
+            "/todo/tasks",
+            "/settings"
+          ],
+          "task_key": "accessible-shell"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/App.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+          "tests/browser-qualification/ux-ui-adapters.json"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-3a973ab3-2327-43d3-9294-e497ece6ce57",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 937,
+          "expected": 937,
+          "failed": 0,
+          "passed": 937,
+          "skipped": 0
+        },
+        "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+        "environment_identity": "ff40129305b414aaa5d69b2b238a2d4ff3b1a5406118151becddd544ae0ff10a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json",
+            "sha256": "cee4bcccfc0fdbbb473111009dfd119e454da7ce1e5eadec261195f158aec30e"
+          }
+        ],
+        "execution_sessions": {
+          "73aa5c34bb7bd385215c0d45d51f69a50afdf4d090e3e764a1de0d7b11927f98": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T08:44:23.346404+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/accessible-shell/launch-1793694503346683000.json"
+            ],
+            "profile_id": "9d2fbc6344c1cd66287c65431285d7d01e775fa8e4791370a22d6adc5fefbb15",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/accessible-shell",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "088b7104644ad7b539414c74fc349593765f8b61db955917b79cbf8fd1df317c",
+        "payload_hash": "f6eb14b3339059969b30688b77f1c4670c8a4cc4e0504dc3fb12230232b292ab",
+        "recorded_at": "2026-11-03T08:35:24.526275+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "22ac34f3a470b02ef899facb43427810a8643c4444d014e9c909d558263342b9",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "7ece158db80258e871d8b76d3794cf6adbb4573891063151f2a759de24f8d04f",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+          "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+          "tests/browser-qualification/qualification-frame.mjs": "ce941e260812ccf4bbf8a1cfc7dfa1d167c517bfeb4550f9eb2945c6dc5bff55",
+          "tests/browser-qualification/ux-ui-adapters.json": "f66b757f9c95e2a22b8b7dcbfa65103bc2548bd06537c31cc6522fd0dabc3f8f",
+          "tests/browser-qualification/ux-ui-navigation-journey.mjs": "07b2266439776730dc4f29713c225134f40a01cd6e2aca0bdc5420c78ae873cf"
+        },
+        "timing": {
+          "tool_wall_seconds": 420.0048124999739
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/accessible-shell/acceptance.json",
+      "sha256": "98a64ca617743ff7eadf8bee4efc3e37f719d310991fb9be7028d552b4ce81ed"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-9926a5e9-82a3-4d1e-9141-b03c49f26136",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Make global navigation identifiable and keyboard accessible. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea"
+  ],
+  "recorded_at": "2026-11-03T08:36:57.468698+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "22ac34f3a470b02ef899facb43427810a8643c4444d014e9c909d558263342b9",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "7ece158db80258e871d8b76d3794cf6adbb4573891063151f2a759de24f8d04f",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+    "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+    "tests/browser-qualification/qualification-frame.mjs": "ce941e260812ccf4bbf8a1cfc7dfa1d167c517bfeb4550f9eb2945c6dc5bff55",
+    "tests/browser-qualification/ux-ui-adapters.json": "f66b757f9c95e2a22b8b7dcbfa65103bc2548bd06537c31cc6522fd0dabc3f8f",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "07b2266439776730dc4f29713c225134f40a01cd6e2aca0bdc5420c78ae873cf"
+  },
+  "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+  "title": "Make global navigation identifiable and keyboard accessible",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "The menu exposes a meaningful name, accurate expanded state and a stable relationship to the controlled drawer.",
+        "Keyboard activation can skip navigation and dismiss the phone drawer with focus returning to a useful visible target."
+      ],
+      "id": "accessible-shell-behavior",
+      "parameters": {
+        "report_name": "accessible-shell.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/unit",
+        "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/App.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix."
+      ],
+      "id": "accessible-shell-rendered",
+      "parameters": {
+        "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings"
+        ],
+        "task_key": "accessible-shell"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/App.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "tests/browser-qualification/ux-ui-navigation-journey.mjs",
+        "tests/browser-qualification/ux-ui-adapters.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452"
+}

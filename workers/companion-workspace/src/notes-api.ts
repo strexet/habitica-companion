@@ -1,6 +1,7 @@
 import {purgeDiagnosticProfile} from './diagnostic-api';
 import {WorkerEntrypoint} from 'cloudflare:workers';
-import {applyNote,emptyNotes,noteCommand,noteText,notesConsentVersion,notesLimits,notesReadScope,notesWriteScope,notesWireJson,noteProject,type NoteProjectLink,type NoteProjectAuthority,type NoteReceipt,type NotesNotebook,type NoteVersion} from '../../shared/notes';
+import {applyNote,emptyNotes,noteCommand,noteText,notesConsentVersion,notesLimits,notesReadScope,notesWriteScope,notesWireJson,noteProject,noteFolderLink,type NoteProjectLink,type NoteProjectAuthority,type NoteReceipt,type NoteFolder,type NoteFolderReceipt,type NotesNotebook,type NoteVersion} from '../../shared/notes';
+import {folderOperation} from './notes-folders-api';
 import {bearer,uuid,workspaceJson,workspaceObject,WorkspaceError,workspaceSessionToken,workspaceTokenHash} from '../../shared/workspace-http';
 
 export interface NotesIdentity {profileId:string;connectionId:string;scopes?:string[];grantEpoch?:string}
@@ -18,26 +19,40 @@ async function identify(env:WorkspaceEnv,path:string,authorization?:string,value
  if(!response.ok)throw new WorkspaceError('unauthorized',401);
  const who=await response.json<NotesIdentity>();if(!profileId(who.profileId))throw new WorkspaceError('unauthorized',401);uuid(who.connectionId);return who;
 }
-async function connect(request:Request,env:WorkspaceEnv):Promise<Response>{
- const body=workspaceObject(await workspaceJson(request),['consentVersion']);if(body.consentVersion!==notesConsentVersion)throw new WorkspaceError('notes_consent_required',403);
+async function connect(request:Request,env:WorkspaceEnv,recover=false):Promise<Response>{
+ const body=workspaceObject(await workspaceJson(request),recover?['expectedNotebookId']:['consentVersion']);if(!recover&&body.consentVersion!==notesConsentVersion)throw new WorkspaceError('notes_consent_required',403);
  const who=await identify(env,'management',`Bearer ${bearer(request)}`),now=new Date().toISOString();
- const scope=await workspaceTokenHash(who.profileId);
- await env.WORKSPACE_DB.prepare(`INSERT INTO notes_notebooks(profile_id,notebook_id,owner_scope,connection_id,access_epoch,consent_version,active,commit_tag,consented_at_utc)
- VALUES(?,?,?,?,?,?,1,?,?) ON CONFLICT(profile_id) DO UPDATE SET access_epoch=CASE WHEN notes_notebooks.connection_id=excluded.connection_id AND notes_notebooks.active=1 THEN notes_notebooks.access_epoch ELSE excluded.access_epoch END,
- connection_id=excluded.connection_id,consent_version=excluded.consent_version,active=1,consented_at_utc=excluded.consented_at_utc`)
- .bind(who.profileId,crypto.randomUUID(),scope,who.connectionId,crypto.randomUUID(),notesConsentVersion,crypto.randomUUID(),now).run();
- const row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND active=1').bind(who.profileId,who.connectionId).first<NotesRow>();
- if(!row)throw new WorkspaceError('connection_changed',409);
+ let row:NotesRow|null;
+ if(recover){
+  row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=?').bind(who.profileId).first<NotesRow>();
+  if(!row)throw new WorkspaceError('notes_missing',404);
+  if(!row.active)throw new WorkspaceError('notes_disconnected',403);
+  if(row.connection_id!==who.connectionId)throw new WorkspaceError('notes_connection_changed',409);
+  if(row.consent_version!==notesConsentVersion)throw new WorkspaceError('notes_consent_unsupported',403);
+  if(body.expectedNotebookId!==undefined&&uuid(body.expectedNotebookId)!==row.notebook_id)throw new WorkspaceError('notebook_mismatch',409);
+ }else{
+  const scope=await workspaceTokenHash(who.profileId);
+  await env.WORKSPACE_DB.prepare(`INSERT INTO notes_notebooks(profile_id,notebook_id,owner_scope,connection_id,access_epoch,consent_version,active,commit_tag,consented_at_utc)
+  VALUES(?,?,?,?,?,?,1,?,?) ON CONFLICT(profile_id) DO UPDATE SET access_epoch=CASE WHEN notes_notebooks.connection_id=excluded.connection_id AND notes_notebooks.active=1 THEN notes_notebooks.access_epoch ELSE excluded.access_epoch END,
+  connection_id=excluded.connection_id,consent_version=excluded.consent_version,active=1,consented_at_utc=excluded.consented_at_utc`)
+  .bind(who.profileId,crypto.randomUUID(),scope,who.connectionId,crypto.randomUUID(),notesConsentVersion,crypto.randomUUID(),now).run();
+  row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND active=1').bind(who.profileId,who.connectionId).first<NotesRow>();
+  if(!row)throw new WorkspaceError('connection_changed',409);
+ }
  // Recheck connection identity before issuing a new tab credential.
  await identify(env,'epoch',undefined,who);
  const token=workspaceSessionToken(),hash=await workspaceTokenHash(token),expires=new Date(Date.now()+8*60*60*1000).toISOString();
  const result=await env.WORKSPACE_DB.batch([
   env.WORKSPACE_DB.prepare(`INSERT INTO notes_sessions(token_hash,profile_id,connection_id,access_epoch,created_at_utc,expires_at_utc)
    SELECT ?,profile_id,connection_id,access_epoch,?,? FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1`).bind(hash,now,expires,who.profileId,who.connectionId,row.access_epoch),
-  env.WORKSPACE_DB.prepare(`DELETE FROM notes_sessions WHERE profile_id=? AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN (SELECT token_hash FROM notes_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId,row.access_epoch,now,who.profileId)
+  env.WORKSPACE_DB.prepare(`DELETE FROM notes_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM notes_sessions WHERE token_hash=?) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN (SELECT token_hash FROM notes_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId,hash,row.access_epoch,now,who.profileId)
  ]);
  if(!result[0].meta.changes)throw new WorkspaceError('connection_changed',409);
- return json({notebookId:row.notebook_id,ownerScope:row.owner_scope,accessEpoch:row.access_epoch,consentVersion:notesConsentVersion,sessionToken:token,expiresAtUtc:expires},201);
+ await identify(env,'epoch',undefined,who);
+ const current=await env.WORKSPACE_DB.prepare(`SELECT s.token_hash FROM notes_sessions s JOIN notes_notebooks n ON n.profile_id=s.profile_id
+  WHERE s.token_hash=? AND n.active=1 AND n.connection_id=s.connection_id AND n.access_epoch=s.access_epoch AND n.consent_version=?`).bind(hash,notesConsentVersion).first();
+ if(!current)throw new WorkspaceError('connection_changed',409);
+ return json({notebookId:row.notebook_id,ownerScope:row.owner_scope,accessEpoch:row.access_epoch,consentVersion:notesConsentVersion,sessionToken:token,expiresAtUtc:expires,...(recover?{recovered:true}:{})},201);
 }
 async function session(request:Request,env:WorkspaceEnv):Promise<NotesRow>{
  const hash=await workspaceTokenHash(bearer(request));
@@ -47,21 +62,27 @@ async function session(request:Request,env:WorkspaceEnv):Promise<NotesRow>{
 }
 export async function loadNotes(env:WorkspaceEnv,row:NotesRow):Promise<NotesNotebook>{
  const results=await env.WORKSPACE_DB.batch<Record<string,unknown>>([
-  env.WORKSPACE_DB.prepare('SELECT revision FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND consent_version=?').bind(row.profile_id,row.notebook_id,row.connection_id,row.access_epoch,notesConsentVersion),
+  env.WORKSPACE_DB.prepare('SELECT revision,schema_version FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND consent_version=?').bind(row.profile_id,row.notebook_id,row.connection_id,row.access_epoch,notesConsentVersion),
   env.WORKSPACE_DB.prepare('SELECT * FROM personal_notes WHERE profile_id=? ORDER BY rowid').bind(row.profile_id),
   env.WORKSPACE_DB.prepare('SELECT note_id,version_json FROM personal_note_versions WHERE profile_id=? ORDER BY note_id,revision').bind(row.profile_id),
   env.WORKSPACE_DB.prepare('SELECT receipt_json FROM personal_note_receipts WHERE profile_id=? ORDER BY sequence').bind(row.profile_id),
+  env.WORKSPACE_DB.prepare('SELECT marker_json FROM notes_transfer_markers WHERE profile_id=? ORDER BY notebook_revision').bind(row.profile_id),
+  env.WORKSPACE_DB.prepare('SELECT folder_json FROM note_folders WHERE profile_id=? ORDER BY rowid').bind(row.profile_id),
+  env.WORKSPACE_DB.prepare('SELECT receipt_json FROM note_folder_receipts WHERE profile_id=? ORDER BY sequence').bind(row.profile_id),
  ]);
- const current=results[0].results[0] as {revision:number}|undefined;if(!current)throw new WorkspaceError('unauthorized',401);
+ const current=results[0].results[0] as {revision:number;schema_version:1|2}|undefined;if(!current)throw new WorkspaceError('unauthorized',401);
  const book=emptyNotes(row.owner_scope);book.revision=current.revision;
+ book.schemaVersion=current.schema_version;
+ if(book.schemaVersion===2){book.folders=results[5].results.map(v=>JSON.parse(String(v.folder_json)) as NoteFolder);book.folderReceipts=results[6].results.map(v=>JSON.parse(String(v.receipt_json)) as NoteFolderReceipt);}
  for(const value of results[1].results){
-  const note=value as {note_id:string;created_at_utc:string;revision:number;title:string|null;markdown:string|null;is_trashed:number;is_purged:number;at_utc:string;project_json:string|null};
+  const note=value as {note_id:string;created_at_utc:string;revision:number;title:string|null;markdown:string|null;is_trashed:number;is_purged:number;at_utc:string;project_json:string|null;folder_json:string|null};
   if(note.is_purged){book.purged.push({id:note.note_id,revision:note.revision});continue;}
   if(note.title===null||note.markdown===null)throw new WorkspaceError('notes_unavailable',503);
-  book.notes.push({id:note.note_id,createdAtUtc:note.created_at_utc,current:{revision:note.revision,title:note.title,markdown:note.markdown,isTrashed:Boolean(note.is_trashed),atUtc:note.at_utc,...(note.project_json?{project:noteProject(JSON.parse(note.project_json))}:{})},history:results[2].results.filter(version=>version.note_id===note.note_id).map(version=>JSON.parse(String(version.version_json)) as NoteVersion)});
+  book.notes.push({id:note.note_id,createdAtUtc:note.created_at_utc,current:{revision:note.revision,title:note.title,markdown:note.markdown,isTrashed:Boolean(note.is_trashed),atUtc:note.at_utc,...(note.project_json?{project:noteProject(JSON.parse(note.project_json))}:{}),...(note.folder_json?{folder:noteFolderLink(JSON.parse(note.folder_json))}:{})},history:results[2].results.filter(version=>version.note_id===note.note_id).map(version=>JSON.parse(String(version.version_json)) as NoteVersion)});
  }
  for(const note of book.notes)for(const version of [note.current,...note.history])if(version.project){version.project=noteProject(version.project);if(version.project.ownerScope!==row.owner_scope)throw new WorkspaceError('notes_project_ownership_invalid',503);}
  book.receipts=results[3].results.map(value=>JSON.parse(String(value.receipt_json)) as NoteReceipt);
+ if(results[4].results.length)book.transfers=results[4].results.map(value=>JSON.parse(String(value.marker_json)));
  return book;
 }
 export async function projectAuthority(env:WorkspaceEnv,row:NotesRow,link:NoteProjectLink){
@@ -74,11 +95,14 @@ export async function projectAuthority(env:WorkspaceEnv,row:NotesRow,link:NotePr
 }
 export function requireProjectRead(who:NotesIdentity|undefined){if(who&&!who.scopes?.includes('tasks:read'))throw new WorkspaceError('project_read_scope_required',403);}
 const guard='EXISTS(SELECT 1 FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1)';
-export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,preview?:{grantEpoch:string}):Promise<Response>{
+export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,preview?:{grantEpoch:string},who?:NotesIdentity):Promise<Response>{
  const command=noteCommand(value),before=await loadNotes(env,row);
+ if(command.folder&&(command.folder.source!=='cloud'||command.folder.ownerScope!==row.owner_scope))throw new WorkspaceError('folder_owner_or_source_mismatch',403);
  const current=before.notes.find(n=>n.id===command.noteId)?.current.project;
  const changed=command.project&&notesWireJson(command.project)!==notesWireJson(current??null)&&!before.receipts.some(r=>r.commandId===command.id);
- const project=changed?await projectAuthority(env,row,command.project!):null;
+ const membership=command.folder&&notesWireJson(command.folder)!==notesWireJson(before.notes.find(n=>n.id===command.noteId)?.current.folder??null)&&!before.receipts.some(r=>r.commandId===command.id)?before.folders?.find(f=>f.id===command.folder!.folderId)?.project:undefined;
+ if(command.project||membership)requireProjectRead(who);
+ const project=changed||membership?await projectAuthority(env,row,changed?command.project!:membership!):null;
  const result=await applyNote(before,command,new Date().toISOString(),project?.authority);
  const output=()=>json({notebookId:row.notebook_id,ownerScope:row.owner_scope,receipt:result.receipt,disposition:result.disposition,saved:true},result.disposition==='accepted'?201:200);
  if(result.disposition==='duplicate')return output();
@@ -90,14 +114,15 @@ export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,pre
  const writes=[env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET revision=?,commit_tag=? WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND revision=?'+previewGuard+projectGuard).bind(...parameters)];
  const previous=before.notes.find(note=>note.id===command.noteId);
  if(command.operation==='purge'){
-  writes.push(env.WORKSPACE_DB.prepare(`UPDATE personal_notes SET title=NULL,markdown=NULL,project_json=NULL,revision=?,is_purged=1,at_utc=? WHERE profile_id=? AND note_id=? AND ${guard}`).bind(result.receipt.noteRevision,new Date().toISOString(),row.profile_id,command.noteId,row.profile_id,tag));
+  writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part=? AND ${guard}`).bind(row.profile_id,'note:'+command.noteId,row.profile_id,tag));
+  writes.push(env.WORKSPACE_DB.prepare(`UPDATE personal_notes SET title=NULL,markdown=NULL,project_json=NULL,folder_json=NULL,revision=?,is_purged=1,at_utc=? WHERE profile_id=? AND note_id=? AND ${guard}`).bind(result.receipt.noteRevision,new Date().toISOString(),row.profile_id,command.noteId,row.profile_id,tag));
   writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM personal_note_versions WHERE profile_id=? AND note_id=? AND ${guard}`).bind(row.profile_id,command.noteId,row.profile_id,tag));
  }else{
   const note=result.book.notes.find(note=>note.id===command.noteId)!;
-  writes.push(env.WORKSPACE_DB.prepare(`INSERT INTO personal_notes(profile_id,note_id,created_at_utc,revision,title,markdown,is_trashed,at_utc,project_json)
-   SELECT profile_id,?,?,?,?,?,?,?,? FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1
-   ON CONFLICT(profile_id,note_id) DO UPDATE SET revision=excluded.revision,title=excluded.title,markdown=excluded.markdown,is_trashed=excluded.is_trashed,at_utc=excluded.at_utc,project_json=excluded.project_json`)
-   .bind(note.id,note.createdAtUtc,note.current.revision,note.current.title,note.current.markdown,Number(note.current.isTrashed),note.current.atUtc,note.current.project?JSON.stringify(note.current.project):null,row.profile_id,tag));
+  writes.push(env.WORKSPACE_DB.prepare(`INSERT INTO personal_notes(profile_id,note_id,created_at_utc,revision,title,markdown,is_trashed,at_utc,project_json,folder_json)
+   SELECT profile_id,?,?,?,?,?,?,?,?,? FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1
+   ON CONFLICT(profile_id,note_id) DO UPDATE SET revision=excluded.revision,title=excluded.title,markdown=excluded.markdown,is_trashed=excluded.is_trashed,at_utc=excluded.at_utc,project_json=excluded.project_json,folder_json=excluded.folder_json`)
+   .bind(note.id,note.createdAtUtc,note.current.revision,note.current.title,note.current.markdown,Number(note.current.isTrashed),note.current.atUtc,note.current.project?JSON.stringify(note.current.project):null,note.current.folder?JSON.stringify(note.current.folder):null,row.profile_id,tag));
   if(previous)writes.push(env.WORKSPACE_DB.prepare(`INSERT INTO personal_note_versions(profile_id,note_id,revision,version_json) SELECT profile_id,?,?,? FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1`).bind(note.id,previous.current.revision,JSON.stringify(previous.current),row.profile_id,tag));
   writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM personal_note_versions WHERE profile_id=? AND note_id=? AND revision<=? AND ${guard}`).bind(row.profile_id,note.id,note.current.revision-notesLimits.history-1,row.profile_id,tag));
  }
@@ -113,11 +138,12 @@ export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,pre
  return output();
 }
 export async function notesOperation(env:WorkspaceEnv,row:NotesRow,operation:string,input:unknown,who?:NotesIdentity):Promise<Response>{
+ if(['folders','folder','folder-command','folder-receipt'].includes(operation))return folderOperation(env,row,operation,input,who);
  if(operation==='command'){
   const envelope=workspaceObject(input,['expectedNotebookId','command']);if(uuid(envelope.expectedNotebookId)!==row.notebook_id)throw new WorkspaceError('notebook_changed',409);
-  if(noteCommand(envelope.command).project)requireProjectRead(who);return submitNote(env,row,envelope.command);
+  if(noteCommand(envelope.command).project)requireProjectRead(who);return submitNote(env,row,envelope.command,undefined,who);
  }
- const allowed=operation==='search'?['query','trash','offset','expectedRevision','projectId','projectWorkspaceId','unassigned']:operation==='get'?['noteId']:operation==='receipt'?['expectedNotebookId','commandId']:[];
+ const allowed=operation==='search'?['query','trash','offset','expectedRevision','projectId','projectWorkspaceId','unassigned','folderId','noFolder']:operation==='get'?['noteId']:operation==='receipt'?['expectedNotebookId','commandId']:[];
  const args=workspaceObject(input,allowed),book=await loadNotes(env,row),context={notebookId:row.notebook_id,ownerScope:row.owner_scope,revision:book.revision};
  if(operation==='export')return new Response(notesWireJson(book),{headers:{...headers,'content-type':'application/json'}});
  if(operation==='get'){
@@ -133,9 +159,11 @@ export async function notesOperation(env:WorkspaceEnv,row:NotesRow,operation:str
   if(args.expectedRevision!==undefined&&args.expectedRevision!==book.revision||Number(offset)>0&&args.expectedRevision!==book.revision)throw new WorkspaceError('stale_notebook',409);
   if(args.unassigned!==undefined&&typeof args.unassigned!=='boolean'||args.unassigned===true&&(args.projectId!==undefined||args.projectWorkspaceId!==undefined)||args.projectId===undefined&&args.projectWorkspaceId!==undefined)throw new WorkspaceError('invalid_project_filter',422);
   const projectId=args.projectId===undefined?undefined:uuid(args.projectId),projectWorkspaceId=projectId===undefined?undefined:uuid(args.projectWorkspaceId);
+  if(args.noFolder!==undefined&&typeof args.noFolder!=='boolean'||args.noFolder===true&&args.folderId!==undefined)throw new WorkspaceError('invalid_folder_filter',422);
+  const folderId=args.folderId===undefined?undefined:uuid(args.folderId);
   const fold=(value:string)=>value.normalize('NFKC').toLowerCase(),query=fold(args.query);
-  const matches=book.notes.filter(note=>note.current.isTrashed===(args.trash??false)&&(args.unassigned!==true||!note.current.project)&&(projectId===undefined||note.current.project?.projectId===projectId&&note.current.project.workspaceId===projectWorkspaceId&&note.current.project.source==='cloud')&&fold(note.current.title+'\n'+note.current.markdown).includes(query));
-  const results=matches.slice(Number(offset),Number(offset)+20).map(note=>({id:note.id,title:note.current.title,noteRevision:note.current.revision,isTrashed:note.current.isTrashed,atUtc:note.current.atUtc,snippet:Array.from(note.current.markdown).slice(0,320).join(''),contentTruncated:Array.from(note.current.markdown).length>320,...(note.current.project?{project:note.current.project}:{})}));
+  const matches=book.notes.filter(note=>note.current.isTrashed===(args.trash??false)&&(args.unassigned!==true||!note.current.project)&&(projectId===undefined||note.current.project?.projectId===projectId&&note.current.project.workspaceId===projectWorkspaceId&&note.current.project.source==='cloud')&&(args.noFolder!==true||!note.current.folder)&&(folderId===undefined||note.current.folder?.folderId===folderId&&note.current.folder.source==='cloud')&&fold(note.current.title+'\n'+note.current.markdown).includes(query));
+  const results=matches.slice(Number(offset),Number(offset)+20).map(note=>({id:note.id,title:note.current.title,noteRevision:note.current.revision,isTrashed:note.current.isTrashed,atUtc:note.current.atUtc,snippet:Array.from(note.current.markdown).slice(0,320).join(''),contentTruncated:Array.from(note.current.markdown).length>320,...(note.current.project?{project:note.current.project}:{}),...(note.current.folder?{folder:note.current.folder}:{})}));
   return json({...context,results,total:matches.length,nextOffset:Number(offset)+results.length<matches.length?Number(offset)+results.length:null,fullContentIncluded:false});
  }
  throw new WorkspaceError('not_found',404);
@@ -143,20 +171,24 @@ export async function notesOperation(env:WorkspaceEnv,row:NotesRow,operation:str
 export async function notesRoute(request:Request,env:WorkspaceEnv):Promise<Response>{
  const path=new URL(request.url).pathname;
  if(path==='/notes/connect'&&request.method==='POST')return connect(request,env);
+ if(path==='/notes/recover'&&request.method==='POST')return connect(request,env,true);
  const row=await session(request,env);
- await quota(env,{profileId:row.profile_id,connectionId:row.connection_id},path==='/notes/receipt');
+ await quota(env,{profileId:row.profile_id,connectionId:row.connection_id},['/notes/receipt','/notes/folder-receipt'].includes(path));
  if(path==='/notes/disconnect'&&request.method==='POST'){
   workspaceObject(await workspaceJson(request),[]);
-  const result=await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(crypto.randomUUID(),row.profile_id,row.notebook_id,row.access_epoch),env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch),env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch)]);
+  const result=await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(crypto.randomUUID(),row.profile_id,row.notebook_id,row.access_epoch),env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch),env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch),env.WORKSPACE_DB.prepare('UPDATE note_folder_preparations SET command_json=NULL WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch)]);
   if(!result[0].meta.changes)throw new WorkspaceError('unauthorized',401);return json({disconnected:true,retained:true});
  }
  if(path==='/notes'&&request.method==='DELETE'){
   const args=workspaceObject(await workspaceJson(request),['confirmNotebookId']);if(uuid(args.confirmNotebookId)!==row.notebook_id)throw new WorkspaceError('confirmation_required',409);
-  const result=await env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(row.profile_id,row.notebook_id,row.access_epoch).run();if(!result.meta.changes)throw new WorkspaceError('unauthorized',401);return json({deleted:true});
+  const results=await env.WORKSPACE_DB.batch([
+   env.WORKSPACE_DB.prepare('DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part<>? AND EXISTS(SELECT 1 FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1)').bind(row.profile_id,'tasks',row.profile_id,row.notebook_id,row.access_epoch),
+   env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(row.profile_id,row.notebook_id,row.access_epoch),
+  ]);if(!results[1].meta.changes)throw new WorkspaceError('unauthorized',401);return json({deleted:true});
  }
  const operation=path.slice('/notes/'.length);
  if(request.method==='GET'&&operation==='export')return notesOperation(env,row,'export',{});
- if(request.method==='POST'&&['search','get','receipt','command'].includes(operation))return notesOperation(env,row,operation,await workspaceJson(request,1024*1024));
+ if(request.method==='POST'&&['search','get','receipt','command','folders','folder','folder-command','folder-receipt'].includes(operation))return notesOperation(env,row,operation,await workspaceJson(request,1024*1024));
  throw new WorkspaceError('not_found',404);
 }
 // Private MCP entry invokes the same owner operations without accepting an account selector.
@@ -170,7 +202,7 @@ export async function notesAgentContext(request:Request,env:WorkspaceEnv,write:b
  return {row,who};
 }
 export async function agentNotes(request:Request,env:WorkspaceEnv,operation:string,args:unknown):Promise<Response>{
- const {row,who}=await notesAgentContext(request,env,operation==='command',operation==='receipt');return notesOperation(env,row,operation,args,who);
+ const {row,who}=await notesAgentContext(request,env,['command','folder-command'].includes(operation),['receipt','folder-receipt'].includes(operation));return notesOperation(env,row,operation,args,who);
 }
 // Only Auth receives this binding. No public request dispatches this entrypoint.
 export class NotesLifecycleService extends WorkerEntrypoint<WorkspaceEnv>{
@@ -180,10 +212,12 @@ export class NotesLifecycleService extends WorkerEntrypoint<WorkspaceEnv>{
    const input=workspaceObject(await workspaceJson(request),['profileId','connectionId','deleteProfile']);
    if(!profileId(input.profileId)||typeof input.deleteProfile!=='boolean')throw new WorkspaceError('invalid_request',400);uuid(input.connectionId);
    if(!await purgeDiagnosticProfile(this.env,String(input.profileId)))throw new WorkspaceError('diagnostic_cleanup_pending',503);
-   if(input.deleteProfile)await this.env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=?').bind(input.profileId).run();
-   else await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND connection_id=?').bind(crypto.randomUUID(),input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND connection_id=?').bind(input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=?').bind(input.profileId)]);
-   if(input.deleteProfile)await this.env.WORKSPACE_DB.batch(['workspace_reminder_deliveries','workspace_reminder_commands','workspace_reminder_schedules','workspace_reminder_runtime'].map(table=>this.env.WORKSPACE_DB.prepare(`DELETE FROM ${table} WHERE profile_id=?`).bind(input.profileId)));
+   if(input.deleteProfile)await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare("DELETE FROM workspace_transfer_chunks WHERE profile_id=? AND part<>'tasks'").bind(input.profileId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=?').bind(input.profileId)]);
+   else await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND connection_id=?').bind(crypto.randomUUID(),input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND connection_id=?').bind(input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=?').bind(input.profileId),this.env.WORKSPACE_DB.prepare('UPDATE note_folder_preparations SET command_json=NULL WHERE profile_id=?').bind(input.profileId)]);
+   if(input.deleteProfile)await this.env.WORKSPACE_DB.batch(['workspace_event_outbox','workspace_event_subscriptions','workspace_event_commands','workspace_event_consents','workspace_reminder_deliveries','workspace_reminder_commands','workspace_reminder_schedules','workspace_reminder_runtime'].map(table=>this.env.WORKSPACE_DB.prepare(`DELETE FROM ${table} WHERE profile_id=?`).bind(input.profileId)));
    else await this.env.WORKSPACE_DB.batch([
+    this.env.WORKSPACE_DB.prepare("UPDATE workspace_event_subscriptions SET state='revoked',revision=revision+1 WHERE profile_id=? AND connection_id=?").bind(input.profileId,input.connectionId),
+    this.env.WORKSPACE_DB.prepare("UPDATE workspace_event_consents SET enabled=0 WHERE profile_id=? AND connection_id=?").bind(input.profileId,input.connectionId),
     this.env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_schedules SET state='paused',reason='profile_disconnected',next_at_utc=NULL,next_civil_date=NULL WHERE profile_id=? AND connection_id=?").bind(input.profileId,input.connectionId),
     this.env.WORKSPACE_DB.prepare("UPDATE workspace_reminder_deliveries SET state=CASE WHEN state='dispatched' THEN 'unknown' ELSE 'cancelled' END,code='profile_disconnected' WHERE profile_id=? AND state IN ('scheduled','retryable','dispatched') AND EXISTS(SELECT 1 FROM workspace_reminder_schedules s WHERE s.profile_id=workspace_reminder_deliveries.profile_id AND s.schedule_id=workspace_reminder_deliveries.schedule_id AND s.connection_id=?)").bind(input.profileId,input.connectionId),
    ]);

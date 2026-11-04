@@ -1,0 +1,57 @@
+{
+  "task_id": "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+  "outcome": "Reviewed private Notes folder discovery, exact reads, metadata lifecycle and project-consistent note placement are exposed through MCP with original request/receipt recovery and shared preview quotas. Actual SDK contracts and unchanged Notes/project regressions pass24 controls.",
+  "acceptance": [
+    {
+      "criterion": "An authorized agent can complete every scoped folder workflow through reviewed MCP tools and verify exact original outcomes without browser-only gaps.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log"
+      ]
+    },
+    {
+      "criterion": "Ambiguous targets, foreign ownership, nonempty removal, missing project authority and uncertain outcomes cannot create unintended changes or task effects.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log"
+      ]
+    }
+  ],
+  "source_fingerprints": {
+    "plugin/skills/habitica-notes/SKILL.md": "9e3d53ba234d453065a2e8b6833c8a2ac7fca4418a37a468b717e4b6d3d9cba9",
+    "plugin/skills/habitica-notes/references/folders.md": "ebfd711c7a166e84141eb8f1c3be6fb4202b4784e8134dfecaa24e6a11e0a441",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+    "workers/chatgpt-mcp/src/note-tools.ts": "701d6c26d3accbe6f23896ef5bda9d7dec6d04797ad2e5ae2e9d33a4f8e5198c",
+    "workers/companion-workspace/migrations/0022-note-folder-previews.sql": "b4a7ed61d07e9990136815569c5885dd541eb475b58cffeb163363adeaea53d5",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/note-folder-tools-api.ts": "9cf7a30bd0abdcbf5007b904ae5c0fd44b5a82d96fc62a6999046deb1137dc71",
+    "workers/companion-workspace/src/note-tools-api.ts": "94df152d5253af4403977f4f18647ef4846a1a20630a5fd45c4174f87624ee7a",
+    "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+    "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+    "workers/companion-workspace/test/note-folder-tools.test.mjs": "076a8871e29056b7d89291cdd9f1a99d1c121f09981f6eeb12ba723810e05ef6",
+    "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+    "workers/shared/note-tools.ts": "eb3981c301e379d21650d9c718d252fb3ece9699829f4b4a6eeb7132ab417be3",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/shared/build-identity.generated.ts": "cc6aa3a3cbca86b8ded99344941a22c777e635333eeb517c06830cedaea0f70d",
+    ".skill-tree/documents/notes-folders.md": "a8746760bc16fd3ee3dc3c4daf110fd9a2e7d4e8bc312eca4cd3256098bd84e0"
+  },
+  "limitations": [
+    "Browser folder presentation remains the selected parent task. Migration0022 and the changed plugin package remain unpublished.",
+    "Actual host installation, model decisions, real accounts and device behavior are unqualified. Reviewed browser-folder adoption remains the separate captured followup."
+  ],
+  "followup_ids": [],
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-projects-final-execution.log",
+    ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/legacy-notes-final-execution.log",
+    ".skill-tree/history/validation/notes-folders-mcp-2026-11-02/descriptions-final-execution.log"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-323aa80a-42db-41bb-9003-476284dc1f0f",
+  "check_id": "push-capability-state-behavior",
+  "definition": "c937398972cc780b5686adf25cc332fbb41762a034ff27063e3ac81427edc7ad",
+  "environment_identity": "fb8d68ca73255b2b80148e08805c584d277fedf190e2d805a1331031a32392c7",
+  "key": "c88ce3524eff7e4bac28383db41e8c992e7c0ef5386037467cfc7fcee43691a4",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Before check, check pending/error, supported default/granted, denied, installation-required, unsupported, account switch and late response; render/check permission call counts. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T19:59:13.226780+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T19:54:13.547148+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+      "--logger",
+      "trx;LogFileName=push-capability-state.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/push-capability-state/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/PushDevicePanel.razor": "0750315a9dd7b99ad44a07243548edc5cf29de1a7fe6006fb1d7a57b24d5cb90",
+    "src/Habitica.WebApp/State/PushDeviceController.cs": "2fe2c225bfede92169b62c99cb4e026e2ebcfa633cd6ef8e7f19f791df474622",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "69946c89a48ff533b1d58b267be6ceeddbecf9231a602af2e363c1c1496f0532",
+    "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+  },
+  "task_id": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3"
+}

@@ -1,0 +1,214 @@
+{
+  "scope": "Actual Worker-rendered OAuth HTML in a static local fixture. Built-in light and obsidian dark declarations forced deterministically; root text100/200percent. No form submission or physical-device claim.",
+  "cases": [
+    {
+      "theme": "light",
+      "size": 100,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "16px",
+      "muted": {
+        "background": "rgb(255, 252, 255)",
+        "foreground": "rgb(106, 92, 119)",
+        "contrast": 6.05
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(123, 45, 214)",
+        "foreground": "rgb(255, 247, 255)",
+        "height": 46.796875,
+        "text": "Allow selected access",
+        "contrast": 6.27
+      },
+      "width": 360
+    },
+    {
+      "theme": "light",
+      "size": 200,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "32px",
+      "muted": {
+        "background": "rgb(255, 252, 255)",
+        "foreground": "rgb(106, 92, 119)",
+        "contrast": 6.05
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(123, 45, 214)",
+        "foreground": "rgb(255, 247, 255)",
+        "height": 187.59375,
+        "text": "Allow selected access",
+        "contrast": 6.27
+      },
+      "width": 360
+    },
+    {
+      "theme": "obsidian-glow",
+      "size": 100,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "16px",
+      "muted": {
+        "background": "rgb(12, 14, 22)",
+        "foreground": "rgb(152, 162, 184)",
+        "contrast": 7.52
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(127, 168, 255)",
+        "foreground": "rgb(9, 13, 24)",
+        "height": 46.796875,
+        "text": "Allow selected access",
+        "contrast": 8.27
+      },
+      "width": 360
+    },
+    {
+      "theme": "obsidian-glow",
+      "size": 200,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "32px",
+      "muted": {
+        "background": "rgb(12, 14, 22)",
+        "foreground": "rgb(152, 162, 184)",
+        "contrast": 7.52
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(127, 168, 255)",
+        "foreground": "rgb(9, 13, 24)",
+        "height": 187.59375,
+        "text": "Allow selected access",
+        "contrast": 8.27
+      },
+      "width": 360
+    },
+    {
+      "theme": "light",
+      "size": 100,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "16px",
+      "muted": {
+        "background": "rgb(255, 252, 255)",
+        "foreground": "rgb(106, 92, 119)",
+        "contrast": 6.05
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(123, 45, 214)",
+        "foreground": "rgb(255, 247, 255)",
+        "height": 46.796875,
+        "text": "Allow selected access",
+        "contrast": 6.27
+      },
+      "width": 1280
+    },
+    {
+      "theme": "light",
+      "size": 200,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "32px",
+      "muted": {
+        "background": "rgb(255, 252, 255)",
+        "foreground": "rgb(106, 92, 119)",
+        "contrast": 6.05
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(123, 45, 214)",
+        "foreground": "rgb(255, 247, 255)",
+        "height": 91.59375,
+        "text": "Allow selected access",
+        "contrast": 6.27
+      },
+      "width": 1280
+    },
+    {
+      "theme": "obsidian-glow",
+      "size": 100,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "16px",
+      "muted": {
+        "background": "rgb(12, 14, 22)",
+        "foreground": "rgb(152, 162, 184)",
+        "contrast": 7.52
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(127, 168, 255)",
+        "foreground": "rgb(9, 13, 24)",
+        "height": 46.796875,
+        "text": "Allow selected access",
+        "contrast": 8.27
+      },
+      "width": 1280
+    },
+    {
+      "theme": "obsidian-glow",
+      "size": 200,
+      "disabledVisible": true,
+      "escapedControls": 0,
+      "focus": {
+        "label": "Manage separately approved reminder subscriptions",
+        "outline": "solid",
+        "outlineWidth": "3px"
+      },
+      "font": "32px",
+      "muted": {
+        "background": "rgb(12, 14, 22)",
+        "foreground": "rgb(152, 162, 184)",
+        "contrast": 7.52
+      },
+      "overflow": false,
+      "primary": {
+        "background": "rgb(127, 168, 255)",
+        "foreground": "rgb(9, 13, 24)",
+        "height": 91.59375,
+        "text": "Allow selected access",
+        "contrast": 8.27
+      },
+      "width": 1280
+    }
+  ],
+  "result": "pass"
+}

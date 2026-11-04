@@ -1,0 +1,21 @@
+{
+  "label": "unified-auth-final-render",
+  "started_at_utc": "2026-11-02T04:32:01.575270+00:00",
+  "classification": "executed_control",
+  "command": [
+    "env",
+    "HABITICA_AUTH_BROWSER_EVIDENCE=/Users/petr/Projects/habitica-tool/output/unified-workspace-auth",
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-name-pattern=migration.permission",
+    "test/oauth.test.mjs"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth",
+  "deadline_seconds": 60.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 1.289,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 0,
+  "timed_out": false
+}

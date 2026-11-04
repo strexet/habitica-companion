@@ -1,0 +1,43 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-3d5efbd9-7076-4b31-b189-38661f140344",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 17,
+    "expected": 17,
+    "failed": 0,
+    "passed": 17,
+    "skipped": 0
+  },
+  "definition": "bae45524f624e95e28479f5beb86483892f79046c83e50f62dbbe83d12ae1a38",
+  "environment_identity": "2e59cf5a3e910bd5cb3bf6c676c586af43d96d6d7453783fcde32b45812d124a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-review-first-execution.log",
+      "sha256": "2fc1dc3f0f7a804176b90f51a08037ebe572f9c4b262f4b94c85a6f6d8a79309"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "a6728fea0930ede6e331d93c388161f0226ad3b41ac11f0ac94cfc69f8b1bc7c",
+  "payload_hash": "18c99199f06e14f44771416e13c2da5f6b2c039cc2db9ac2cb111826847ee6b6",
+  "recorded_at": "2026-11-03T01:46:13.915380+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "ee3f689f7ebc3a42df20fc01eac2c33167fe450bac4a7fdc070c2cd72ea6f87a",
+    "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+    "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "e37a849ed7220bd81cf2aeed872c8794ce08bd01ef15066b77bfcb2544dcf252",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+  },
+  "timing": {
+    "tool_wall_seconds": 16.74899062491022
+  }
+}

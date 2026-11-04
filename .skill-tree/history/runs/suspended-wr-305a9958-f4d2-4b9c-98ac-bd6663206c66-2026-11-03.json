@@ -1,0 +1,1393 @@
+{
+  "admission": {
+    "environment_id": "2eff78dcddffde2bd79948937bf02c815727e4fd75e059703b3dff618a1e5cae",
+    "flavor": "web",
+    "identity": "f82b9cfa954b0088f6bba5235c9fd70b6566d2270fb109270d8c7f5affa94828",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "admitted_groups": {},
+  "admitted_task_ids": [
+    "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+    "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+    "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+    "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+    "T-34491faa-090e-4d97-b496-1fe947770688",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "T-5737120b-52a5-4a57-9072-fce514adaf33",
+    "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+    "T-65810da7-9524-45ce-b280-668d04c86441",
+    "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+    "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "T-70901e97-738c-42c2-ae50-68dd71417a32",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+    "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+    "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+    "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+    "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+  ],
+  "completed_ids": [
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a"
+  ],
+  "completion_refs": {
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a": "O-99a92009-8a08-4be3-a83d-4cfa11f28355",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d": "O-1c1a5bae-dcb5-4451-895f-fde1ff5e521e",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a": "O-35d232e0-34ca-4ea1-ba69-f45cc20570c9",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f": "O-93b4af73-0351-46ec-8cb1-0a53ebc086f3",
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f": "O-b8fd90fd-f9c9-440e-9590-98a4165652ff",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae": "O-477dcb28-6c15-422a-8082-b620f9ddd6d4",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528": "O-8edcb3f6-d48b-4cfd-87a2-4235c48467be",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34": "O-6820d4e0-f998-4968-b397-b46d62ec3ae5",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d": "O-5611de29-f238-4c8d-9da0-b3074bb0706e",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5": "O-cc257fcc-fb2d-411b-b719-6cb2fb427a63",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9": "O-6d0ab2a7-dea8-45d7-bb36-77106500c192",
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2": "O-41ccfdf9-5fc4-4ecd-812c-1db654ef06e2"
+  },
+  "current_task_id": null,
+  "cycle_signature": "87272b17871591794fa1cd9d74f63257b02dd892b09687fd8c210d2c186a87e5",
+  "deferred_ids": [
+    "T-925d1068-d6c5-4334-8438-3996c46b5455",
+    "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+    "T-21881802-f186-479d-9111-295192ce2de8",
+    "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+    "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+    "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+    "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+    "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+    "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "T-84818186-be62-46d9-be33-c237da0054f2",
+    "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+    "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+    "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+    "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+    "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+    "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+    "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+    "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+    "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+    "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+    "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+    "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+    "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+    "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "T-39daa4c0-239d-445b-b812-62007877b49e",
+    "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+    "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+  ],
+  "history_refs": [
+    ".skill-tree/history/validation/implement-all-2026-11-02/hosted-prerequisite.json",
+    ".skill-tree/history/validation/callback-egress-netlify/hosted-profile.json",
+    ".skill-tree/history/validation/callback-egress-netlify/auth-setup-scope.json",
+    ".skill-tree/history/validation/callback-egress-netlify/auth-setup-result.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/owner-scope.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/operator-setup.md",
+    ".skill-tree/history/validation/implement-all-2026-11-02/provider-inspection.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/dns-tls-followup-intake.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-profile.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/normal-delivery-scope-revision.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02/owner-publication-scope.json",
+    ".skill-tree/history/releases/2026-11-02-notifications/deployment.json",
+    ".skill-tree/history/releases/2026-11-02-notifications/README.md",
+    ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-ttl/subscription-contracts-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-ttl/reminder-events-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-docs/subscription-contracts-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-docs/reminder-events-retry-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-recovery/reminder-events-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-receipt.json",
+    ".skill-tree/history/validation/notification-release-2026-11-02-recovery/callback-authorization-receipt.json",
+    ".skill-tree/history/releases/2026-11-02-notifications/recovery-mcp.json",
+    ".skill-tree/history/releases/2026-11-02-notifications/recovery-workspace.json",
+    ".skill-tree/history/releases/2026-11-02-notifications/recovery-auth.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/owner-continuation.json",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/acceptance-findings.json",
+    ".skill-tree/history/processing/implement-all-followups-2026-11-03/research.json",
+    ".skill-tree/history/processing/implement-all-followups-2026-11-03/process-result.json",
+    ".skill-tree/history/validation/implement-all-2026-11-02/development-handoff-source-review.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/owner-selection.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/restored-active-run-proof.json",
+    ".skill-tree/history/validation/folder-adoption-2026-11-03/complete-result.json",
+    ".skill-tree/history/validation/relative-tag-projection-2026-11-03/complete-result.json"
+  ],
+  "id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "limits": {},
+  "mode": "all",
+  "next_action": "Select required task",
+  "partial_work": [
+    "Initial snapshot frozen: 14 prioritized roots; no active run existed at invocation.",
+    "Gateway entry, transport and gateway/TLS test hashes match retained local qualification; prepare-source.mjs and package.test.mjs differ. Historical packaging evidence is not current qualification.",
+    "Existing Auth setup receipt identifies the gateway and disabled claim candidate; current live state remains unverified.",
+    "Hosted execution authorization is supplied by the direct owner reply and retained in owner-scope.json; accepted gateway/claim scope requires no repeated confirmation.",
+    "Owner sign-in and selected Netlify team/project are verified. Team Flying Monolith (strexet), project 04629462-d0c6-4a72-bf02-6170cb1c39f8 uses Free with 258 of 300 credits available at observation.",
+    "The owner identifies the existing habitica-companion public project. Provider-managed HTTPS permits an HTTP receiver subset; independently controlled authoritative DNS and raw public TLS fixtures remain unavailable.",
+    "Detailed platform coverage and operator handoff reside in operator-setup.md. No receiver deployment, hosted control, callback or provider mutation executed.",
+    "The repository owner selects normal hosted delivery before unavailable dedicated DNS/TLS failure injection. The current task specification is revised before acceptance; no missing hosted scenario is reported as passing.",
+    "Pending P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b, priority100, retains dedicated hosted DNS/TLS fixture qualification outside the initial snapshot.",
+    "The selected normal-delivery stage needs an isolated owned HTTPS receiver and a concrete hosted recipe; separate DNS zones/raw TLS servers are no longer prerequisites for the selected contract. Production destination/certificate guards and local negative tests remain unchanged.",
+    "The owner requests a commit of the reviewed task-owned planning/checkpoint changes. Actual hosted delivery and task acceptance remain unexecuted.",
+    "The owner selects notification tasks T-ec421773-5864-4bc5-b17f-ce04e0d818c2, T-280cb859-c0f7-46e5-97db-bbd41dc6a99a and T-569ff3a0-8765-49b6-9b37-a62e091617ae plus required predecessors, then publication. The original snapshot/run remain preserved.",
+    "An isolated signed synthetic receiver and real Miniflare/D1 tests are implemented; four receiver controls pass. No user data or production notification has been sent.",
+    "The ephemeral signed synthetic receiver is deployed with a one-hour cutoff and reduced D1 counters. Auth remains disabled.",
+    "Gateway subscription-ID and short two-key rotation headers are grant-bound and supported; all18 gateway/package/TLS controls pass. Compatible Netlify CLI26.0.1 is installed only in an ignored task cache.",
+    "Auth encrypted callback vault, separate reviewed exact-task Events consent, durable Workspace subscription lifecycle and authenticated MCP Events extension implemented. Nine focused tests and an eight-case OAuth rendered HTML light/obsidian/phone/desktop/text matrix are ready for final qualification. Normal hosted gateway predecessor completed; application reminder dispatch remains selected next.",
+    "T-280cb859 completed with43 local composition checks and the OAuth render matrix. T-569ff3a0 now implements a durable generic exact-cue outbox, Auth-only signer and original dispatch receipts, bounded known-transient retries, permanent410/413 stop and read-only MCP original recovery. Eight synthetic application tests and19 combined push/Events regressions pass.",
+    "Auth broad regression:237/238 pass; the sole stale OAuth catalogue-count assertion was updated for the independent fifteenth permission. All23 current OAuth/vault/management checks pass. The source-matched subscription composition and exact reminder check remain to be recorded.",
+    "Existing Worker versions and D1 recovery bookmarks were captured read-only in the notification release baseline. Publication uses a disabled bootstrap to establish the two private cyclic service bindings, then separately activates the validated channel.",
+    "Final review found a shorter TTL refresh could reuse a longer cached expiration. A runnable one-test Red reproduces it; the bounded cache condition is repaired. Global MCP Events remain disabled until source-matched revalidation and corrected bundles are active.",
+    "All three selected notification implementation tasks are completed with current local and hosted revalidation. Production0.3.1 is active across Auth, Workspace, MCP, Pages and the existing gateway. Shared backend hash19860e05a1a1b7a55c64857ec264bfa2f800c8ad8b911f0528bc7e8a9d6afd39 is coherent through native authenticated MCP.",
+    "Auth0014/0015 and Workspace0019/0020 applied; no pending migrations. Separate callback vault key/private bindings provisioned without changing existing credentials or grants. Production availability enabled, ordinary defaults remain off, and no user consent/subscription/chat event was created.",
+    "Hosted run ce61acec-f284-4580-b984-c3ddd9e844dd delivered once in2489ms, refused replay and verified disabled lanes before explicit release activation. The isolated receiver/table are removed; original claim fences remain. Netlify Free retains152.9/300 credits.",
+    "The source-reviewed shorter-refresh TTL defect has runnable Red/Green and current10/44/8 local controls. Source commits cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77 and7779697 retain the implementation/repair. Publication tooling and reduced release evidence receive the final authorized commit.",
+    "Pages success and public asset/package hashes are verified; runtime/storage and Git/frontend settings are retained. IAB rendering remains unqualified after ERR_FAILED and Browser Use URL-policy rejection of its internal data error page; no bypass or rendered-success claim. Actual ChatGPT chat response, local Codex delivery, physical devices and deferred hosted DNS/TLS controls remain explicit limits.",
+    "Final recovery review found unknown subscription errors retained IDs only in storage, and server-created unknown event IDs needed a public discovery path. Error responses now expose only original opaque IDs; get_event_subscription exposes latestEvent.eventId under current owner/resource/consent guards. Exact-ID read recovery needs no server database access or replacement send.",
+    "Final original-identity recovery repair4cd4835 is locally qualified by10 callback,44 composed and8 reminder controls without skips. The three production Workers are coherent at buildb2c02b0bb823dc81e7f12d89dc8e46ef4098e48d750698685ee924170237d03b; native MCP confirms Events enabled and schema1.3.0. Runtime postflight retains zero production callback/consent/subscription/outbox/dispatch records and no pending migrations.",
+    "Pages releasea061255b-d21c-4195-9366-219422259497 succeeds and Netlify release6ae89d0cebb45b34d03869a8 remains enabled. No user subscription, real chat message, device enrollment or Git push occurred. The owner host checklist and deferred DNS/TLS failure coverage remain explicit.",
+    "The owner explicitly resumes Implement All for remaining development on2026-11-02 and defers actual chat/device notification qualification. A next-development-invocation reminder is retained in owner-continuation.json; no arbitrary calendar schedule is inferred.",
+    "Notes schema2 folder-only compatibility has a runnable expected Red then17/17 and25/25 local passes. The concrete IndexedDB harness extends existing pinned Chromium/WebKit infrastructure; required browser validation remains unexecuted.",
+    "Owner development continuation completed nine additional development roots: Notes folders model/cloud/MCP/UI, coverage-aware activity statistics, linked Daily schedules, cross-kind task copies, relative saved dates and project-filtered retained history. Initial snapshot now has12 recorded completed roots of14.",
+    "Project retained history outcome O-99a92009-8a08-4be3-a83d-4cfa11f28355 records289 current passing checks:49 native,37 components,41 shared/actual SDK and162 Release browser cases. Source-bound current footprint matches.",
+    "Captured nonblocking findings received one scoped processing pass PR-7817cae4-44e6-4db8-83e1-84f339ff64e4: promoted T-925d1068-d6c5-4334-8438-3996c46b5455 and T-3df6a931-b7e8-40c5-a2e4-895477cac3c5 remain deferred outside this snapshot. Hosted DNS/TLS Pending remains retained for missing owned fixtures.",
+    "Advance refuses the owner-deferred unresolved live qualification gate T-d76d2a9a-1318-4e63-9bb4-73f620b108cc; dependent security root T-96866c8f-9554-55d8-a638-6d8b5afaf21c remains open. No new root, task or real operation was substituted.",
+    "Historical task outcomes retain original verdicts. Changed shared source footprints are explicitly listed in development-handoff-source-review.json and need affected-check revalidation at the continuation/release boundary before new publication acceptance. No current aggregate regression or new deployment is claimed.",
+    "The owner explicitly selected the two processed nonblocking followups for standalone implementation while preserving notification deferral. The original active run was parked under its original identity and restored exactly before current-profile re-admission.",
+    "T-925d1068-d6c5-4334-8438-3996c46b5455 completed as O-1206c82c-f856-48a4-a000-6262cb03547f with169 passing controls. T-3df6a931-b7e8-40c5-a2e4-895477cac3c5 completed as O-6583cbca-ce20-4598-a6b6-0beebe0a3450 with223 passing controls. Neither task remains in the prioritized queue.",
+    "No commit, publication, real provider/account operation or real notification qualification occurred in the selected followup scope. Original live gate and dependent security root remain open."
+  ],
+  "pending_ids": [
+    "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31",
+    "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228",
+    "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea",
+    "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6",
+    "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635",
+    "P-10dedd84-9a90-447e-bf89-c3dcb81affc7",
+    "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539",
+    "P-49528543-08db-4727-a2ca-bf390aa3b7d5",
+    "P-2897d6c0-a804-41fe-9d92-091049683fa3",
+    "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2",
+    "P-d3155b74-ab23-4ed6-8073-e794af664988",
+    "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330",
+    "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139",
+    "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7",
+    "P-ec998b4e-f73d-47cc-a884-06b5619f717c",
+    "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb",
+    "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0",
+    "P-1ffff778-5db1-447c-95f7-fde01d72e70c",
+    "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8",
+    "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45",
+    "P-b7836285-3b2f-434b-8716-cd3e78482dda",
+    "P-b302aa68-7d63-4f74-9aa7-338c56700923",
+    "P-ae822766-780c-4584-a33f-d8978ee060c0",
+    "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b",
+    "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f",
+    "P-d3dd549c-426f-4e67-9061-df88247cba31"
+  ],
+  "phase": "dependencies",
+  "processing_results": [
+    {
+      "created_ids": [
+        "T-925d1068-d6c5-4334-8438-3996c46b5455",
+        "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+      ],
+      "dispositions": {
+        "P-1b2a534e-5f45-4f47-b56d-1a3870199b31": {
+          "reason": "Current Notes schema2 and schema1-only adoption validators establish a concrete prefreeze and lossless-journal compatibility gap with existing fixture/MCP infrastructure.",
+          "status": "promoted"
+        },
+        "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228": {
+          "reason": "The current fail-closed relative-tag fence establishes a concrete missing day-bound reviewed projection contract with existing SDK/reconciliation/component infrastructure.",
+          "status": "promoted"
+        },
+        "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b": {
+          "reason": "Owned authoritative DNS and raw public TLS fixture identities, allocation and cleanup scope remain unavailable. Existing normal HTTPS evidence cannot establish the deferred failure controls. Keep the owner-deferred hosted test Pending; no resource purchase or live scope is inferred. Research: .skill-tree/history/processing/implement-all-followups-2026-11-03/research.json.",
+          "status": "retained"
+        }
+      },
+      "id": "PR-7817cae4-44e6-4db8-83e1-84f339ff64e4",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b",
+        "P-1b2a534e-5f45-4f47-b56d-1a3870199b31",
+        "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-21881802-f186-479d-9111-295192ce2de8",
+        "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+        "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+        "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+        "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+        "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+        "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+        "T-84818186-be62-46d9-be33-c237da0054f2",
+        "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+        "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+        "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+        "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+        "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+        "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+        "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+        "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+        "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+        "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+        "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+        "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+        "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+        "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+        "T-39daa4c0-239d-445b-b812-62007877b49e",
+        "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+        "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+        "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+      ],
+      "dispositions": {
+        "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-10dedd84-9a90-447e-bf89-c3dcb81affc7": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-1ffff778-5db1-447c-95f7-fde01d72e70c": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-2897d6c0-a804-41fe-9d92-091049683fa3": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-49528543-08db-4727-a2ca-bf390aa3b7d5": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-ae822766-780c-4584-a33f-d8978ee060c0": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-b302aa68-7d63-4f74-9aa7-338c56700923": {
+          "reason": "Current source and review evidence support scoped Ready work. A shared required qualification task closes disabled-text and native-date validation gaps.",
+          "status": "promoted"
+        },
+        "P-b7836285-3b2f-434b-8716-cd3e78482dda": {
+          "reason": "Current source and review evidence support scoped Ready work. A shared required qualification task closes disabled-text and native-date validation gaps.",
+          "status": "promoted"
+        },
+        "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-d3155b74-ab23-4ed6-8073-e794af664988": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-d3dd549c-426f-4e67-9061-df88247cba31": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-ec998b4e-f73d-47cc-a884-06b5619f717c": {
+          "reason": "Current source and review evidence support scoped Ready work. The task preserves existing authority, consent and original-command boundaries.",
+          "status": "promoted"
+        },
+        "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45": {
+          "reason": "Current source and review evidence support scoped Ready work. Split game controls and workspace/private-sync controls into independent tasks.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-1e3cf929-6f9a-480a-9c2f-b47c811b75c8",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-8e0bae93-5539-40e5-b2b7-8b52fd5fbcea",
+        "P-bf4b432a-db9b-4315-acd0-7edfb6618aa6",
+        "P-4870adee-f7e9-4dd3-b4c1-71b2b6b33635",
+        "P-10dedd84-9a90-447e-bf89-c3dcb81affc7",
+        "P-1e35a85f-82f8-48cd-93a5-001c8fd6f539",
+        "P-49528543-08db-4727-a2ca-bf390aa3b7d5",
+        "P-2897d6c0-a804-41fe-9d92-091049683fa3",
+        "P-0e537656-6bec-434b-8f6f-6f8a6fd73ff2",
+        "P-d3155b74-ab23-4ed6-8073-e794af664988",
+        "P-d5ab0ee8-193d-4bc0-81e6-e0daf24ac330",
+        "P-980fdd4a-8af6-47cb-a2ab-0cca80f54139",
+        "P-4cc94496-9709-4454-9fd6-ae1f0227a1b7",
+        "P-ec998b4e-f73d-47cc-a884-06b5619f717c",
+        "P-356b4e1b-8559-4922-9ec8-fbf713f5eedb",
+        "P-497c699c-dd18-4f62-a9ba-d3bccfc2cda0",
+        "P-1ffff778-5db1-447c-95f7-fde01d72e70c",
+        "P-a8c875ae-145d-4273-9d4b-fbf76d22e7f8",
+        "P-fa41f9c2-ce38-45c2-a42f-f3831eb48a45",
+        "P-b7836285-3b2f-434b-8716-cd3e78482dda",
+        "P-b302aa68-7d63-4f74-9aa7-338c56700923",
+        "P-ae822766-780c-4584-a33f-d8978ee060c0",
+        "P-23e38a95-a8c7-4748-b8bf-6f1bcfcda84b",
+        "P-16d346af-15c0-4b5f-9d5a-b80d50d2259f",
+        "P-d3dd549c-426f-4e67-9061-df88247cba31"
+      ],
+      "task_keys": {
+        "accessible-shell": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+        "bounded-companions": "T-bf494c5f-c64b-49f0-bc16-fa7b3b168583",
+        "canonical-destinations": "T-39daa4c0-239d-445b-b812-62007877b49e",
+        "category-headings": "T-97df06dc-6edd-499a-b9bc-3c495668d2b4",
+        "compact-navigation": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+        "copy-unset-values": "T-74b55fc6-9e0a-41d7-9816-6e4fe081df80",
+        "daily-form-order": "T-8e3c1d16-412f-420e-b0d2-6ba50f6540d8",
+        "daily-timezones": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5",
+        "dashboard-freshness": "T-21881802-f186-479d-9111-295192ce2de8",
+        "disabled-readability": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+        "equipment-count-wrap": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+        "equipment-discovery": "T-6b6dacdb-8702-4788-b595-52241a31cf74",
+        "game-control-names": "T-84818186-be62-46d9-be33-c237da0054f2",
+        "named-reminder-days": "T-60e7498f-68a7-472c-8917-0a89e1b3057a",
+        "native-date-reflow": "T-7c3e22e0-1f44-4f48-9852-1b4137a34e6d",
+        "phone-notes-editor": "T-25c6623e-1818-4e23-b920-cd3833fa7a21",
+        "projects-browse-first": "T-6b93e557-087a-42d0-bc39-23d0d4acbc13",
+        "push-capability-state": "T-ea87345c-e64c-4ec5-bc06-ccd231a1c5f3",
+        "saved-list-errors": "T-feff83db-9aa8-410f-b2bc-caddd62fcf18",
+        "saved-list-layout": "T-cd7bc161-c477-45e2-a254-e11b2e0cbafc",
+        "settings-sections": "T-432e6789-e063-4d66-8316-be4b7bccbd06",
+        "sync-timestamp": "T-4ab8ddce-35ff-4243-bb65-43c4d8185be1",
+        "today-work-first": "T-e23a628d-1649-4e5e-bb14-17d2194dc4fa",
+        "ui-qualification": "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+        "workspace-control-names": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+        "workspace-readiness": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+      }
+    }
+  ],
+  "required_ids": [
+    "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+    "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+    "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+    "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+    "T-273899d8-6f17-43ee-b82f-41013e1021b9",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+    "T-34491faa-090e-4d97-b496-1fe947770688",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "T-5737120b-52a5-4a57-9072-fce514adaf33",
+    "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+    "T-65810da7-9524-45ce-b280-668d04c86441",
+    "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+    "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "T-70901e97-738c-42c2-ae50-68dd71417a32",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+    "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "T-a48aa46e-fd3c-43ff-b9b3-3becddb47599",
+    "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+    "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+    "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+    "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-dc0e4117-f2a0-43c8-8d29-72e640d7bba9",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+  ],
+  "revalidated_checks": {
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a": [
+      {
+        "check": {
+          "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+          "criteria": [
+            "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+            "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+          ],
+          "id": "callback-authorization",
+          "parameters": {
+            "test_file": "workers/chatgpt-auth/test/events.test.mjs"
+          },
+          "recipe_id": "worker-focused-tests",
+          "sources": [
+            "workers/chatgpt-auth/test/events.test.mjs",
+            "workers/chatgpt-auth/package.json"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-51369518-0be0-49b3-a4aa-b1d04f7f743d",
+          "classification": "executed-control",
+          "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
+          "counts": {
+            "discovered": 10,
+            "expected": 10,
+            "failed": 0,
+            "passed": 10,
+            "skipped": 0
+          },
+          "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+          "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/callback-authorization-execution.log",
+              "sha256": "8ce4d7e32bfb189c7cc10d986e0d20301b1c3dce5d813e5c204307f9233b7793"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "8c4bcda231b2af3802d8e75de7cbe0448268abef13c06df67622144ddaf90e02",
+          "payload_hash": "353c4ac691495a56e42bc344e8cfe52d9cd66e31086d4da31175d0ea80841ff9",
+          "recorded_at": "2026-11-02T15:34:42.647156+00:00",
+          "result": "pass",
+          "sources": {
+            "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+            "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c"
+          },
+          "timing": {
+            "tool_wall_seconds": 12.216597124934196
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Local Auth/Workspace/MCP2 tests cover exact-byte signed challenges, wrong echo/signature, non-public/redirect/rebinding targets, TLS hostname, denied resource access, two profiles, changed grants/connections, deterministic duplicates, concurrent refresh/unsubscribe, rotation, expiry and cleanup failure.\n- Inspect exports/logs/database rows to prove raw callback credentials stay only in encrypted Auth storage. Unsupported transport/configuration keeps subscriptions inactive and emits no application data; fake transport assertions remain labelled synthetic.",
+          "criteria": [
+            "Separately consented exact-resource subscriptions persist idempotently with Auth-only encrypted callback secrets, finite lifecycle and cleanup while Workspace retains only opaque callback identity and original receipts.",
+            "No subscription activates without qualified signed challenge and connection-safe HTTPS destination controls; denied ownership, expiry, revocation, races and unsupported transport fail closed without secret leakage or a chat-delivery claim."
+          ],
+          "id": "subscription-contracts",
+          "parameters": {
+            "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/subscription-contracts.json"
+          },
+          "recipe_id": "subscription-contracts-execution-profile",
+          "sources": [
+            "workers/shared/events.ts",
+            "workers/chatgpt-auth/src/events.ts",
+            "workers/companion-workspace/src/events.ts",
+            "workers/chatgpt-auth/test/events.test.mjs",
+            "tests/Functions/subscription-contracts.py",
+            ".skill-tree/documents/event-subscriptions.md"
+          ],
+          "timing": "before-dependent-work"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-d0046a58-c2f8-49cf-98be-d84e411c9582",
+          "classification": "executed-control",
+          "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
+          "counts": {
+            "discovered": 44,
+            "expected": 44,
+            "failed": 0,
+            "passed": 44,
+            "skipped": 0
+          },
+          "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+          "environment_identity": "a1800d7754f4bdf14e5e5f3ef1876da94e417191620d14029196c5f59ef58786",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts.json",
+              "sha256": "23ebec0270fdb7073fd6de20544ae066e0ead275b90eeee83b784bcdaa719e6e"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-workspace.log",
+              "sha256": "b7b590ccef808608d00c9b51c9d8a471dac11d5616ce7d7a0badb7b779cfbbb7"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-auth.log",
+              "sha256": "a4f9e053cb0868757f69463a9811e9324386866db52c7c31f718acc435a56a78"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-build-mcp.log",
+              "sha256": "056d292937fdc6e0a6a07e4ce300d8fbd8d0d4c161e98d411962170870841335"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-subscription-worker-composition.log",
+              "sha256": "b9522c1e388e05bd79ac2ef5bfbf1d3890c04e8e679ed8d238f6529a4f456a22"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-gateway-native-tls.log",
+              "sha256": "41f3edf07b76553e283f24cf7fa5cc0a08486c1e8819782a5f8c7b62b0a4fa06"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/subscription-contracts-independent-receiver.log",
+              "sha256": "0cbdabe474a38a7d1abb932de4d9cfe6f89ad683ba4ae6411ec23d940c49bf98"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "1f83382f3d421ad9b78bc3b9a44fcd1ffd29c03d57848bc10248d182f45e0f3e",
+          "payload_hash": "d2e95b78686f7fdc13135d877bd07ba3bdca7c55ec0116865a31d5a48540a554",
+          "recorded_at": "2026-11-02T15:34:30.158850+00:00",
+          "result": "pass",
+          "sources": {
+            ".skill-tree/documents/event-subscriptions.md": "4d63fbc179d54363db405a96151df454d159063421d752d80b6034dd0e0db35f",
+            "tests/Functions/subscription-contracts.py": "d658efe8d7418da625ea5482ebf2f35374b32d3137a8da3560b3a832d8381bd4",
+            "workers/chatgpt-auth/src/events.ts": "001874cffb186ddcf2553bc9bf36a77fde5c832126f6203bf887a416f8987525",
+            "workers/chatgpt-auth/test/events.test.mjs": "90b0cf8c1fc3dc2952f4135fb3c609e88723d6eed5cb75f9c77cb50f5194569c",
+            "workers/companion-workspace/src/events.ts": "cbd826bc6f75574f13d9a2e992a5e71fc62a1e06af5fa40c7c84b687fe1f65ee",
+            "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+          },
+          "timing": {
+            "tool_wall_seconds": 24.141006791964173
+          }
+        }
+      }
+    ],
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f": [
+      {
+        "check": {
+          "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+          "criteria": [
+            "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+            "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+          ],
+          "id": "notes-local-model",
+          "parameters": {
+            "report_name": "notes-local-model.trx",
+            "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model",
+            "test_filter": "FullyQualifiedName~Notes",
+            "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+          },
+          "recipe_id": "dotnet-focused-tests",
+          "sources": [
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "Directory.Packages.props",
+            "tests/Habitica.Application.Tests/Notes/NotesTests.cs",
+            "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs",
+            "src/Habitica.Domain/Notes/NotesModel.cs",
+            "src/Habitica.Application/Notes/NotesEngine.cs",
+            "src/Habitica.Application/Notes/NotesFolders.cs",
+            "src/Habitica.Application/Notes/NotesService.cs",
+            "src/Habitica.Application/Notes/NotesQueries.cs",
+            "src/Habitica.Application/Notes/NotesProjects.cs",
+            "src/Habitica.Application/Notes/INotesCloudClient.cs",
+            "tests/fixtures/notes/notes-folder-wire-v3.json"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "unit",
+          "attempt_id": "C-1d8cbfff-a9a0-4d08-9e9f-be33501b0d6e",
+          "classification": "executed-control",
+          "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+          "counts": {
+            "discovered": 27,
+            "expected": 27,
+            "failed": 0,
+            "passed": 27,
+            "skipped": 0
+          },
+          "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+          "environment_identity": "294fbfb2722a71d8254fcc0f7d168343553d273b5521b9fc4d144d516336440c",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-2026-11-02/ui-normalization-revalidation-execution.log",
+              "sha256": "df38765567f8782ae01ea10dd543adb7fbc680ed2b7afa270c06be69fc7d46af"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-local-model/ui-normalization-revalidation.trx",
+              "sha256": "37f54e2778b0a263a9bc00d3a04c5598a187e0069c4900aa0652ca097bd833c3"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "8fa3967f3abc038b504573c5d3de9a0b71723cc927ed81cf0ff85c9e03ffdd3d",
+          "payload_hash": "8603430fc228a28721493c69784dfc712a3192d02cac9fd0719ea76f0f92b972",
+          "recorded_at": "2026-11-02T18:02:00.825847+00:00",
+          "result": "pass",
+          "sources": {
+            "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+            "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+            "src/Habitica.Application/Notes/NotesEngine.cs": "e521f4140b3c11c07f613b88e6673527579eea61b7e9ed92017d15ba5bb74436",
+            "src/Habitica.Application/Notes/NotesFolders.cs": "2a467a1d0bc5a25664a00abdb496f8f09f64d48fe1ec6afa2f0ae29db4c45c92",
+            "src/Habitica.Application/Notes/NotesProjects.cs": "4291d06379ee09542e0b65f8df6c6331ccb20059b7cf5800fcaafe19dbfc933f",
+            "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+            "src/Habitica.Application/Notes/NotesService.cs": "2c34dd653f7a08e262be79e950de888b4fa53540618f7f3e30d09f61ddeb2ab9",
+            "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+            "tests/Habitica.Application.Tests/Notes/NotesTests.cs": "8d3b754844a822dd20b67d5f029355ddf993875a4d8e3fd7eed7db76274fda6f",
+            "tests/Habitica.Application.Tests/Notes/NotesWireTests.cs": "9aad47b90c10ffe714d38d58267557a1242ca1af6f38d47738533582c38fd13c",
+            "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+          },
+          "timing": {
+            "tool_wall_seconds": 2.9091689998749644
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+          "criteria": [
+            "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+            "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+          ],
+          "id": "notes-storage-contracts",
+          "parameters": {
+            "report_name": "notes-storage-contracts.trx",
+            "result_directory": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts",
+            "test_filter": "FullyQualifiedName~Notes",
+            "test_project": "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj"
+          },
+          "recipe_id": "dotnet-focused-tests",
+          "sources": [
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "Directory.Packages.props",
+            "tests/Habitica.Storage.Tests/NotesStorageTests.cs",
+            "src/Habitica.Domain/Notes/NotesModel.cs",
+            "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+            "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "unit",
+          "attempt_id": "C-ffed65a8-3011-49bc-a1ad-273666d61e44",
+          "classification": "executed-control",
+          "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+          "counts": {
+            "discovered": 3,
+            "expected": 3,
+            "failed": 0,
+            "passed": 3,
+            "skipped": 0
+          },
+          "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+          "environment_identity": "813468d166fcecb0a64399467a2b01bdb2248ac6b2f8e9353ce62fcc1eb06d18",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-2026-11-02/ui-storage-revalidation-execution.log",
+              "sha256": "7e2abd4f7879db8570a53a17a2fc4dd99f4f5d834b8cea9f774e652caa4b593c"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/artifacts/validation/T-5111060c-76ae-4a0e-a48b-260ecbb8885f/notes-storage-contracts/ui-storage-revalidation.trx",
+              "sha256": "d1fe1f3cbd33e41de74d29e6e93d24834fcb60efb2aeb1abf855fddd954e2380"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "fd85e19c7e5e9ba1a7a57a1a68bd30659d078e3631dd0406d6e27ab6c6f61c04",
+          "payload_hash": "ebb29b94bc6331d84da326667644de1a4529dcd4b62bd3ed437ff0dc47262c0f",
+          "recorded_at": "2026-11-02T18:02:54.694579+00:00",
+          "result": "pass",
+          "sources": {
+            "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+            "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+            "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+            "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj": "e23f5226571299db743d10232e01a8175df59a6fff4448f233d27bf6d5d9e81e",
+            "tests/Habitica.Storage.Tests/NotesStorageTests.cs": "abe8b9f780b66a6644a4244bd5d3efbfbf8089ceee44c68feacabe4b2fbf44eb"
+          },
+          "timing": {
+            "tool_wall_seconds": 2.216706041013822
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Model/service tests cover standalone/project folders, duplicate labels with distinct IDs, create/rename/remove-empty, placement/clear, scope changes, trashed members, stale projects, foreign/source rejection, retained versions, quotas and original receipts.\n- Use disposable browser IndexedDB assertions for legacy upgrade/import, concurrent note/folder writes, project-authority races, rollback, export/reload and lost acknowledgement. Preserve unrelated stores and remove only generated synthetic records.",
+          "criteria": [
+            "Browser Notes storage round-trips folders and note membership without changing legacy receipts, exact text or history. Invalid, stale or nonempty-folder commands leave the notebook unchanged.",
+            "Folder-only operations and association-only note changes recover the original accepted receipt after later edits or removal; Notes remain independent of tasks and Habitica effects."
+          ],
+          "id": "notes-indexeddb",
+          "parameters": {},
+          "recipe_id": "notes-indexeddb-browser",
+          "sources": [
+            ".skill-tree/documents/testing.md",
+            ".skill-tree/documents/technical.md",
+            "src/Habitica.Storage/IndexedDbNotesDatabase.cs",
+            "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+            "tests/browser/notes-folders.mjs",
+            "tests/fixtures/notes/notes-folder-wire-v3.json"
+          ],
+          "timing": "before-dependent-work"
+        },
+        "result": {
+          "actual_lane": "browser",
+          "attempt_id": "C-e38aa7bf-591b-4a58-bf8e-352b5453db97",
+          "classification": "executed-control",
+          "cleanup": "Owned loopback server and both persistent browser contexts closed; generated temporary profiles removed. No actual user database, credentials, network service or device permission used.",
+          "counts": {
+            "discovered": 40,
+            "expected": 40,
+            "failed": 0,
+            "passed": 40,
+            "skipped": 0
+          },
+          "definition": "f569a9d95a9730d69050c0f76fe71130d4dca4863e5f6d70fe64fe234c75c306",
+          "environment_identity": "f8afaf9d6895989bdfd2edfcb72d3a195e56bd78a0108d1170bf528fc1e07ea2",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-execution.log",
+              "sha256": "e0d9d8409a72cf99f9258f241176c641b27d927254a478cd9e0e3057402abce1"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-identity.json",
+              "sha256": "1cbd569b3004a81e4886c22e566e5213a066b1992cb34d65148189672cf06a04"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb-1793642605813-76504.json",
+              "sha256": "bcc8f52b5b221e99f194018787bc9351bc6322b43ffc98041dbdc9a01556cb4a"
+            }
+          ],
+          "execution_sessions": {
+            "2310dca79fab06424e86f00983790e2d3d0ef201426776cbc5becdad62403435": {
+              "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+              "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-02T18:07:23.086028+00:00",
+              "fixture_identity": "Actual IndexedDB adapter and portable folder wire fixture; isolated generated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+              "identity_evidence": [
+                ".skill-tree/history/validation/notes-folders-2026-11-02/browser-a327b176-identity.json"
+              ],
+              "profile_id": "notes-folders-browser-v1",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "browser-a327b176",
+              "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+            }
+          },
+          "key": "1457ced23b8491fcfb6c729bda86de2c616d46c90b9d17a271e7ff7405360b64",
+          "payload_hash": "5d580b0f52499660c4d48aa84c76695775d7edaf3577d2d1ebc64a60f984a7db",
+          "recorded_at": "2026-11-02T18:03:26.033173+00:00",
+          "result": "pass",
+          "sources": {
+            ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+            ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+            "src/Habitica.Storage/IndexedDbNotesDatabase.cs": "2236f3aa44fd8c064099a3dfcb57cfbd128a8037188399eac8cba2572310ecc5",
+            "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "tests/browser/notes-folders.mjs": "931f902aa63cf7157f162c76ad8067973e5bc0e2772c39336a7d185c1491e643",
+            "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe"
+          },
+          "timing": {
+            "tool_wall_seconds": 2.5104298749938607
+          }
+        }
+      }
+    ],
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae": [
+      {
+        "check": {
+          "assertion": "- Synthetic end-to-end due/cancel/edit/DST cases cover matching/nonmatching exact tasks, repeated wakeups, account and permission changes, signed body/header identity, duplicates, bursts, expiry/restart, transient retry limits,410/413 and original unknown receipts.\n- Assert no unmatched/unsubscribed delivery, secret exposure, native task effects or feedback loops. Retain a concrete owner-run host qualification checklist for rescan, subscribe, callback verification, actual response and unsubscribe, with each live outcome left unqualified until observed.",
+          "criteria": [
+            "Only due authorized exact-task subscriptions produce bounded signed Events with stable original identities, durable lifecycle receipts and enforced retry/revocation/expiry controls.",
+            "Public status and documentation distinguish local scheduling, host transport acknowledgment, uncertainty and actual chat response; no default gate, unrelated consent or live provider/chat operation changes during local qualification."
+          ],
+          "id": "reminder-events",
+          "parameters": {
+            "test_file": "workers/companion-workspace/test/reminder-events.test.mjs"
+          },
+          "recipe_id": "worker-focused-tests",
+          "sources": [
+            "workers/companion-workspace/test/reminder-events.test.mjs",
+            "workers/companion-workspace/package.json",
+            "workers/companion-workspace/src/event-scheduler.ts",
+            "workers/chatgpt-auth/src/event-dispatch.ts",
+            "workers/chatgpt-auth/test/fixtures/events.mjs",
+            ".skill-tree/documents/reminder-events.md",
+            "workers/shared/events.ts",
+            "workers/companion-workspace/src/events.ts",
+            "workers/chatgpt-auth/src/events.ts",
+            "workers/chatgpt-auth/migrations/0015-event-dispatches.sql",
+            "workers/companion-workspace/migrations/0020-event-outbox.sql",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+            "deploy/prepare-dev.mjs",
+            "plugin/skills/habitica-task-management/references/event-reminders.md"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-74a9c99d-8cf1-4f57-9fa4-4a3f69afefd0",
+          "classification": "executed-control",
+          "cleanup": "All synthetic Worker/D1 fixtures and native local TLS/receiver processes disposed. No real callback subscription, chat, task/game effect or production record was created.",
+          "counts": {
+            "discovered": 8,
+            "expected": 8,
+            "failed": 0,
+            "passed": 8,
+            "skipped": 0
+          },
+          "definition": "fc4ac92f8782f0fd7fa6e92791f825ed533b6466ae77def605409bcd22ab414c",
+          "environment_identity": "8b445ba6d15d17999fd091c78a0b48b3111e75c9cf8aa6ffee623896e9478740",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-recovery/reminder-events-execution.log",
+              "sha256": "8dc6b034cbce9289e3bbe6fb5e22f48c4ac23ab6c1aff424e5213f2dea65bbdd"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "e9504edd5571e49c8eeaebbbc5c2d4608ff4f90232b3712c30a2797663fd4db7",
+          "payload_hash": "c7826d9e53456de80f7be24c7e3264434352dc632606f78597dd2b95831e221c",
+          "recorded_at": "2026-11-02T15:35:01.778173+00:00",
+          "result": "pass",
+          "sources": {
+            ".skill-tree/documents/reminder-events.md": "b9cbc82f124a153acc67a69b235d61d92a97eca8e0744b8dff4932c784a0ce64",
+            "deploy/prepare-dev.mjs": "bc6ab6338036850ef6042baa647ce5b37d2d4ca11127737dc30624615ebd2124",
+            "plugin/skills/habitica-task-management/references/event-reminders.md": "c39678be71ee4c97111c9ea7956e62aab1ad6b3032005de3f8d6191e4adaab03",
+            "workers/chatgpt-auth/migrations/0015-event-dispatches.sql": "5f33001a7c2e1a2810c678437aba93bd063481beee73d3db921a798d888c1f59",
+            "workers/chatgpt-auth/src/event-dispatch.ts": "26cf7f5c0524bdba2c3ba8e85ca0c1b10bb1fb45dfb3faf7f18ff0562cbb7c9e",
+            "workers/chatgpt-auth/src/events.ts": "001874cffb186ddcf2553bc9bf36a77fde5c832126f6203bf887a416f8987525",
+            "workers/chatgpt-auth/test/fixtures/events.mjs": "7a9aec22e519ade8df31c3d50875728474833f55a8b5bf160350556e84bcf57d",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs": "52527bb22cf7c93513303a90fff0b41b1cc859412606b86d10e6fc3a975bc097",
+            "workers/companion-workspace/migrations/0020-event-outbox.sql": "199c83b442fca8f3bb93c1d9482e8d1588d84cbd8590d63c8bccefc63435c71e",
+            "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+            "workers/companion-workspace/src/event-scheduler.ts": "db386c0f882845ce40b926aa820690862bccdf64eba6c156b3b70c479b508b36",
+            "workers/companion-workspace/src/events.ts": "cbd826bc6f75574f13d9a2e992a5e71fc62a1e06af5fa40c7c84b687fe1f65ee",
+            "workers/companion-workspace/test/reminder-events.test.mjs": "070764ba23603e0f1c47decb626c929fbc3c7c213cb1956b45a41beaf0d7516b",
+            "workers/shared/events.ts": "b6a4fa739bd2c03b21723110d6fe741ff5d0abcc302c86b9583388dfdfee7aba"
+          },
+          "timing": {
+            "tool_wall_seconds": 18.90219970815815
+          }
+        }
+      }
+    ],
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34": [
+      {
+        "check": {
+          "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+          "criteria": [
+            "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+            "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+          ],
+          "id": "notes-owner-api",
+          "parameters": {
+            "test_file": "workers/companion-workspace/test/notes.test.mjs"
+          },
+          "recipe_id": "worker-focused-tests",
+          "sources": [
+            "workers/companion-workspace/test/notes.test.mjs",
+            "workers/companion-workspace/package.json",
+            "workers/shared/notes.ts",
+            "workers/shared/notes-folders.ts",
+            "workers/companion-workspace/src/notes-api.ts",
+            "workers/companion-workspace/src/notes-folders-api.ts",
+            "workers/companion-workspace/migrations/0021-note-folders.sql",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+            "tests/fixtures/notes/notes-folder-wire-v3.json"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-12910e70-3acd-4dfd-acbe-bdebaf9faa65",
+          "classification": "executed-control",
+          "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+          "counts": {
+            "discovered": 21,
+            "expected": 21,
+            "failed": 0,
+            "passed": 21,
+            "skipped": 0
+          },
+          "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+          "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-after-mcp-execution.log",
+              "sha256": "2f1031751e38e18d211d1e585ed609be2c24eae80f10e30385d6805e6d02232d"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "fe379bba6436203025e5ff19e0af5d5a868a818993bec53282ead68cc1a25241",
+          "payload_hash": "57856c778ae4b3ed7597e9956c15507079b86642c3a103df0ced050125bbaf4d",
+          "recorded_at": "2026-11-02T17:20:09.100609+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+            "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+            "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+            "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+            "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+            "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+            "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+            "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+          },
+          "timing": {
+            "tool_wall_seconds": 15.623628499917686
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+          "criteria": [
+            "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+            "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+          ],
+          "id": "notes-client-contracts",
+          "parameters": {
+            "report_name": "notes-client-contracts.trx",
+            "result_directory": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts",
+            "test_filter": "FullyQualifiedName~NotesCloud",
+            "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          },
+          "recipe_id": "dotnet-focused-tests",
+          "sources": [
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "Directory.Packages.props",
+            "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+            "src/Habitica.Domain/Notes/NotesModel.cs",
+            "src/Habitica.WebApp/Integration/NotesCloudClient.cs",
+            "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs",
+            "src/Habitica.Application/Notes/INotesCloudClient.cs"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "unit",
+          "attempt_id": "C-5db77956-0f45-4b67-a7c4-064a3e70bd17",
+          "classification": "executed-control",
+          "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+          "counts": {
+            "discovered": 14,
+            "expected": 14,
+            "failed": 0,
+            "passed": 14,
+            "skipped": 0
+          },
+          "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+          "environment_identity": "c881be60477cceba14fb61e8d2c37b0a3e937e8b6e5f91c86265774498f51004",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-after-mcp-execution.log",
+              "sha256": "f4ee1ac56032c28b2fb84b095132825d09d52dea4be067d1193c9a779d181407"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-after-mcp.trx",
+              "sha256": "104105c8ea2bbaf3b1e0eadbe83e72c29640801feeef1cb02b308115ce28ec00"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "4b24b5773856a5803d0c71943392a10f0085dd0a0ebfc967c35fa75addf248df",
+          "payload_hash": "1ed260e01262ccc8f48f2c2cc1fafcaade52b82cf8ef41cd93b0daa4a91fc897",
+          "recorded_at": "2026-11-02T17:20:27.255406+00:00",
+          "result": "pass",
+          "sources": {
+            "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+            "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+            "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+            "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs": "f0067a05649b6720bd2552ce0cdd850308d265318c9c98c5011b2afbe7395087",
+            "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "7c56402a1bd4f37c996a6173455e387e1a59e633d76f40e1941f58a0cc09270f",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+            "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135"
+          },
+          "timing": {
+            "tool_wall_seconds": 3.133917999919504
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+          "criteria": [
+            "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+            "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+          ],
+          "id": "notes-project-regressions",
+          "parameters": {
+            "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+          },
+          "recipe_id": "worker-focused-tests",
+          "sources": [
+            "workers/companion-workspace/test/notes.test.mjs",
+            "workers/companion-workspace/package.json",
+            "workers/shared/notes.ts",
+            "workers/shared/notes-folders.ts",
+            "workers/companion-workspace/src/notes-api.ts",
+            "workers/companion-workspace/src/notes-folders-api.ts",
+            "workers/companion-workspace/migrations/0021-note-folders.sql",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+            "tests/fixtures/notes/notes-folder-wire-v3.json",
+            "workers/companion-workspace/test/note-projects.test.mjs"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-5235d424-8748-4755-a057-d961d6ca4a6b",
+          "classification": "executed-control",
+          "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+          "counts": {
+            "discovered": 7,
+            "expected": 7,
+            "failed": 0,
+            "passed": 7,
+            "skipped": 0
+          },
+          "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+          "environment_identity": "03f1c8188a2fc14c2b4181fab9770b74a8860b27c8bab6bb320fbe4e9aad1dcb",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/projects-after-mcp-execution.log",
+              "sha256": "a16d034c4cd86ee2a1fbb805d832c52732e3c0b9146be976862cf935ad8ce58f"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "149c34ed22c2859c7a0352abf682fda1a059e42febaca2446ca79f9db944fb93",
+          "payload_hash": "ad67639c3ed14ac6a575591f3dbab7147d8b1479bfea5bc7beb7bfa68ae4307e",
+          "recorded_at": "2026-11-02T17:20:15.559041+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+            "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+            "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+            "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+            "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+            "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+            "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+            "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+            "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+          },
+          "timing": {
+            "tool_wall_seconds": 5.938542790943757
+          }
+        }
+      },
+      {
+        "check": {
+          "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+          "criteria": [
+            "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+            "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+          ],
+          "id": "notes-legacy-agent-regressions",
+          "parameters": {
+            "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+          },
+          "recipe_id": "worker-focused-tests",
+          "sources": [
+            "workers/companion-workspace/test/notes.test.mjs",
+            "workers/companion-workspace/package.json",
+            "workers/shared/notes.ts",
+            "workers/shared/notes-folders.ts",
+            "workers/companion-workspace/src/notes-api.ts",
+            "workers/companion-workspace/src/notes-folders-api.ts",
+            "workers/companion-workspace/migrations/0021-note-folders.sql",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+            "tests/fixtures/notes/notes-folder-wire-v3.json",
+            "workers/companion-workspace/test/note-tools.test.mjs"
+          ],
+          "timing": "immediate"
+        },
+        "result": {
+          "actual_lane": "integration",
+          "attempt_id": "C-1a16d7bf-8e59-467b-8f2f-679d4222318a",
+          "classification": "executed-control",
+          "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+          "counts": {
+            "discovered": 8,
+            "expected": 8,
+            "failed": 0,
+            "passed": 8,
+            "skipped": 0
+          },
+          "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+          "environment_identity": "10cdb3fc149208e0e6c81e06c12a984c724ea93389bcde68f619e7d9b42ad48a",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-after-mcp-execution.log",
+              "sha256": "d90bb21c2197acae8750ddb1477be6e6218724d6bf82c44973eb876d8275ae94"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "3cfb7552ffff4fd1c1199f83c9a6cb3bfe391974892043460a547ef03bffd80a",
+          "payload_hash": "7f3a1de179c7ab343dbc62acd553a88e3d1fa09ae2241c05bf1c745b2c0fbba1",
+          "recorded_at": "2026-11-02T17:20:23.619515+00:00",
+          "result": "pass",
+          "sources": {
+            "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+            "workers/chatgpt-auth/test/fixtures/oauth.mjs": "c3e0f5462ebb59d2b54d1dcc010ae0bbb827138104ee7b2d1808564a3fbaed2c",
+            "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+            "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+            "workers/companion-workspace/src/notes-api.ts": "b75a24bdf61b2e8d23cbebe33daccce932082a3764b0bd5011a6df60747bdd4a",
+            "workers/companion-workspace/src/notes-folders-api.ts": "b2024e70459c47cce092637d82072828044421e37d6b03651a31dfd481c0b8d2",
+            "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+            "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+            "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+            "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+          },
+          "timing": {
+            "tool_wall_seconds": 7.566688916180283
+          }
+        }
+      }
+    ],
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2": [
+      {
+        "check": {
+          "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
+          "criteria": [
+            "The selected gateway and Auth endpoint have verified deployed source/runtime/configuration, available Free quota, reviewed provider logging and a current rollback identity.",
+            "A synthetic signed challenge reaches the exact owned HTTPS receiver with matching bytes and signature, the original claim identity and one observed delivery; replay produces no additional delivery and the successful response meets the shared deadline.",
+            "Disabling the selected gateway/claim lanes and scoped shutdown or rollback are observed; reduced receipts retain original fences and explicitly list deferred hosted DNS/TLS failure coverage."
+          ],
+          "id": "hosted-gateway",
+          "parameters": {
+            "report_file": ".skill-tree/history/validation/notification-release-2026-11-02/hosted-normal-delivery.json",
+            "session_file": ".skill-tree/artifacts/notification-release-2026-11-02/session.json"
+          },
+          "recipe_id": "netlify-hosted-controls",
+          "sources": [
+            ".skill-tree/documents/testing.md",
+            ".skill-tree/documents/technical.md",
+            "deploy/callback-egress/src/gateway.mjs",
+            "deploy/callback-egress/src/transport.mjs",
+            "workers/chatgpt-auth/src/callback-egress.ts",
+            "tests/hosted/callback-receiver.mjs",
+            "tests/hosted/normal-delivery.mjs",
+            "tests/Functions/callback-receiver.test.mjs"
+          ],
+          "timing": "before-dependent-work"
+        },
+        "result": {
+          "actual_lane": "server",
+          "assertions": [
+            {
+              "assertion": "Verify deployed identity, quota/logging and rollback; observe exact synthetic signed bytes and one delivery through the original Auth claim, replay refusal and the shared deadline; disable both lanes and retain reduced receipts plus explicit deferred DNS/TLS coverage.",
+              "evidence": [
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-normal-delivery.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-cleanup.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-enabled.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-disabled.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-enabled.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-disabled.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/provider-logging-review.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/public-preflight.json",
+                ".skill-tree/history/releases/2026-11-02-notifications/node-public-health.json",
+                ".skill-tree/history/releases/2026-11-02-notifications/auth-bind.json"
+              ],
+              "result": "pass"
+            }
+          ],
+          "attempt_id": "C-98b33709-7e64-40a2-995f-26920b79aeaf",
+          "classification": "executed-control",
+          "cleanup": "Actual gateway and Auth claim disabled after one exact signed synthetic delivery; replay refused and receiver count remains1. Auth40d245ba-4921-4d8f-adf7-419dc3da5c2a restored; Netlify disabled deploy6ae89b301cb86293e93589a8 ready. Ephemeral receiver Worker and its synthetic table removed; original Auth claim fences retained. Final production activation is a later separately recorded release action.",
+          "definition": "98c4f43b158832e4a635b0f8bdfb2c29044b3ca352c06e55f9b681faffbfc511",
+          "environment_identity": "0b31949be066b690da98240aa3c152e248afe78eef92ac7ba5f0476843224981",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/hosted-normal-delivery.json",
+              "sha256": "3ca129a639bde9ebec68270379c8f7bc2a98f4193ba3fa23c5159033b4f5358e"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+              "sha256": "b7fd8217737a3ed197db8b83b2b6b5387f8498c6285cca7b3d2ab66c29216319"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-cleanup.json",
+              "sha256": "cf27cb242fd509a4433ae8db422da3db94608e554f3c2576d746af371f893369"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+              "sha256": "c52de7434d706a768b496078de532da5a68765e7841143113d471657de072f3a"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-enabled.json",
+              "sha256": "8cf7ae7600756e89f78d6d6962736bb70d15ade18adbb838a9c5aed773f33693"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/netlify-disabled.json",
+              "sha256": "aac451d8d99396cc6c2ecfe72f884527a28009db515679a7f815108faaf11c17"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-enabled.json",
+              "sha256": "2eb3b05b772d458f4000c5b7bc68c1854c26c5e98191049170c009dcf2903ae6"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/auth-disabled.json",
+              "sha256": "d6341808e902a842eea3dfc97f69d0d298f7e1a684584a03637c794e4e65a4d8"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/provider-logging-review.json",
+              "sha256": "95d16150ae615081823f950213781da0c59a72af547ccca60a40b4f993533157"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json",
+              "sha256": "1a2fb4a02f0d3d7a0157c854f82a082390ca9293bf94d950ec75c877e4e04afb"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/public-preflight.json",
+              "sha256": "5e6b0ca43c8e50ef8c07976883d104beae6640516f1406214ea6a41432f39662"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/releases/2026-11-02-notifications/node-public-health.json",
+              "sha256": "d8757115d6610c9f7139c295985b2f6b8f2c4cf6e8fbc87b8a4e996b7373a890"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/releases/2026-11-02-notifications/auth-bind.json",
+              "sha256": "0696fcaa3b68388ec73796c4cceaf93e46e861dddb429fbeded6e8175d42cc12"
+            }
+          ],
+          "execution_sessions": {
+            "8f7965551a652408198d19e4e3402b1cca28bda5d0bae7bf080bca13af82261e": {
+              "authorization": "Direct owner publication request and retained synthetic gateway/claim/receiver scope, including Netlify CLI authorization. Same existing account/site/Auth and isolated synthetic receiver only.",
+              "build_identity": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+              "cleanup_seconds": 45,
+              "deadline_utc": "2026-11-02T14:23:34.000051+00:00",
+              "fixture_identity": "Final source-matched isolated receiver https://habitica-companion-callback-qualification.strexet.workers.dev/callback-qualification/ce61acec-f284-4580-b984-c3ddd9e844dd/receive; new protected final session/report paths preserve the original completed qualification artifacts.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/receiver-deployment.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/gateway-source-manifest.json",
+                ".skill-tree/history/validation/notification-release-2026-11-02-final/quota-observation.json"
+              ],
+              "profile_id": "notification-final-hosted-normal-v1",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "ce61acec-f284-4580-b984-c3ddd9e844dd",
+              "tool_identity": "Netlify CLI26.0.1; actual native Node22 gateway; Cloudflare actual Auth/D1 and isolated receiver"
+            }
+          },
+          "key": "85619f98335e9d3187af7cb3779aae21c4ddf1a86006fc7b4c5f5493b0fa2195",
+          "payload_hash": "e1c28b8b599855bdcaa48b638337b4f93a992e0dbf18c02f1f368a5e324ee8a8",
+          "recorded_at": "2026-11-02T14:21:37.232340+00:00",
+          "result": "pass",
+          "sources": {
+            ".skill-tree/documents/technical.md": "2465437862f216edd3dc9edece26593ce0db7f0d56d8472465f9ec3fc4b60712",
+            ".skill-tree/documents/testing.md": "97ac1a8aa9446b080fabcb1150d4afec3c619af7febb59f4b2354e5d4954c914",
+            "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+            "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+            "tests/Functions/callback-receiver.test.mjs": "e8fc2401efd82c8d68bd9cbaf7abb56b56dbe35f52b1138ac479864b9cc1edf7",
+            "tests/hosted/callback-receiver.mjs": "749b3d53270ad6779fb95da193b92e7d16d6c93e3f610caea065ee9935b4668f",
+            "tests/hosted/normal-delivery.mjs": "4b40ce3da580f21097554799eb501004996f87e4f96fc855dc4a31f55ca77216",
+            "workers/chatgpt-auth/src/callback-egress.ts": "91dafff8b1e11f18a6c3c8e71932f51b8e916fabc66d0228ff1db81b2915fa93"
+          }
+        }
+      }
+    ]
+  },
+  "root_task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "snapshot": [
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+    "T-94b18897-2c2f-44ab-b89b-34e58b3903c5",
+    "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+    "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+    "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+    "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+    "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+  ],
+  "started_at": "2026-11-02T11:21:03.761538+00:00",
+  "stop_reason": "The owner explicitly deferred actual subscribed-chat/device qualification T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The remaining security root requires the unresolved gate. All other initial snapshot development roots are recorded complete; no new nonblocking task is admitted for implementation."
+}

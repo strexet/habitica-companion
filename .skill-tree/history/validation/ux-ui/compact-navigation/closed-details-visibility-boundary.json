@@ -1,0 +1,11 @@
+{
+  "original_report": "browser/fa22ef19-56bc-4531-943a-6a6b3a943ae3-failure.json",
+  "observation": "Layout rectangles and computed visibility alone counted the selected link inside closed native details plus the summary. Closed native disclosure ancestry must be considered for actual visible cues.",
+  "repair": "Filter closed disclosure descendants while retaining the direct summary; independently assert the selected link is not visible and the current summary has the inset marker after collapse.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "original_receipt": "Retained unchanged; no task acceptance."
+}

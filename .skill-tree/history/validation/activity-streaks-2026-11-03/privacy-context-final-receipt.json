@@ -1,0 +1,75 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-5c2e426c-ac80-4915-9e78-a1767496e05e",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 8,
+    "expected": 8,
+    "failed": 0,
+    "passed": 8,
+    "skipped": 0
+  },
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "c95159a7ea87d2c3e7496694636a26aec29dcc713196315eabd161f0734d539f",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/privacy-context-final-execution.log",
+      "sha256": "1c9ff9aa6ab9430a5e1d559c813cd2062417f3b41f8366011143e1e7d7afd067"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/privacy-context-final.trx",
+      "sha256": "dc7b92716a600fdbb1826d5dd8c7e18eafaa7490e2011250e12021f6fbc8ba80"
+    }
+  ],
+  "execution_sessions": {
+    "09a925226a1ed3a04847f919c739e62da67045197f9e5cf2dd6b9dfb842ebe7f": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:53:00.024025+00:00",
+      "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-a207941a-identity.json"
+      ],
+      "profile_id": "activity-streaks-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-a207941a",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "dd7cf2ed476a569903e91c08e93cf2226c30e015da1d2e4ac39d4651b03e871b": {
+      "authorization": "Direct owner Implement All continuation; isolated local browser storage qualification only, without accounts or external requests.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T18:50:25.188967+00:00",
+      "fixture_identity": "Current Release statistics route, real IndexedDB and current Razor-state matrix; isolated persistent Chromium/WebKit profiles; ephemeral owned loopback server",
+      "identity_evidence": [
+        ".skill-tree/history/validation/activity-streaks-2026-11-03/rendered-16d53395-identity.json"
+      ],
+      "profile_id": "activity-streaks-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-16d53395",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "f18368c91bf5be682478b511c746ae77767260f4a648425aaab6f80f37946ccd",
+  "payload_hash": "501c98b869ee7bbc00796545a2ab00e0eddbbfe887f82c7e51334afa5abd7a96",
+  "recorded_at": "2026-11-02T18:43:49.891077+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "5879b448b049e9b496e676c4533c10e201177173c00f65ff3acb913d94c3cbcd",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "a0e54808b1d454f787c7596ce3e965fba59f991dd1e3e00f19591bdf1a35bb13",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "70b2ae4cad91794c52ff34cb1ba9da8af4c82d5aaf605fd027159161d29e9f0b",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "312a59ce59174ef788e04916ea84865578d9cf9ebc3715beff96d07c262dfabe",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3"
+  },
+  "timing": {
+    "tool_wall_seconds": 14.444629208184779
+  }
+}

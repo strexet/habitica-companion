@@ -1,0 +1,135 @@
+{
+  "pass_result": true,
+  "lane": "browser",
+  "counts": {
+    "expected": 1156,
+    "discovered": 1156,
+    "passed": 1156,
+    "failed": 0,
+    "skipped": 0
+  },
+  "details": {
+    "reports": [
+      ".skill-tree/history/validation/ux-ui/ui-qualification/browser/f3174c38-a93c-4fa3-8589-b000c2a0f4a5.json",
+      ".skill-tree/history/validation/ux-ui/canonical-destinations/browser/66172730-1a94-48c0-b7f0-1c032bbd0065.json"
+    ],
+    "pwa": {
+      "ok": true,
+      "results": [
+        {
+          "engine": "chromium",
+          "version": "151.0.7922.34",
+          "oldRedirectedShell": {
+            "redirected": true,
+            "url": "http://127.0.0.1:49925/",
+            "status": 200
+          },
+          "preFixNavigationFailed": true,
+          "workerOnlyUpgradeSameManifest": true,
+          "repairedShell": {
+            "redirected": false,
+            "type": "default",
+            "header": "retained",
+            "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+          },
+          "offlineRoutes": 3,
+          "freshInstall": true,
+          "failedIntegrityUpdateRefused": true,
+          "missingShellOnlineFallback": true,
+          "missingShellOfflineFailure": true,
+          "canariesPreserved": true,
+          "realPushEnrollment": false,
+          "realPushInspection": false
+        },
+        {
+          "engine": "webkit",
+          "version": "26.5",
+          "oldRedirectedShell": {
+            "redirected": true,
+            "url": "http://127.0.0.1:49925/",
+            "status": 200
+          },
+          "preFixNavigationFailed": true,
+          "workerOnlyUpgradeSameManifest": true,
+          "repairedShell": {
+            "redirected": false,
+            "type": "default",
+            "header": "retained",
+            "text": "<!doctype html><meta charset=\"utf-8\"><title>Synthetic PWA</title><p id=\"shell\">Synthetic public shell</p>"
+          },
+          "offlineRoutes": 3,
+          "freshInstall": true,
+          "failedIntegrityUpdateRefused": true,
+          "missingShellOnlineFallback": true,
+          "missingShellOfflineFailure": true,
+          "canariesPreserved": true,
+          "realPushEnrollment": false,
+          "realPushInspection": false
+        }
+      ],
+      "loopbackOnly": true,
+      "publishedWorkerSha256": "c5629510b41f6aa2c61f0f88043034d2d5420229f4faf1c85ef818bb878a402b",
+      "requests": 71
+    },
+    "limits": "Synthetic/local browser evidence; no real account, physical device, permission or publication."
+  },
+  "steps": [
+    {
+      "name": "ui-qualification",
+      "argv": [
+        "python3",
+        "tests/browser-qualification/ux-ui.py",
+        "ui-qualification",
+        ".skill-tree/history/validation/ux-ui/ui-qualification/browser"
+      ],
+      "exit_code": 0,
+      "seconds": 180.533,
+      "deadline_seconds": 960,
+      "log": ".skill-tree/artifacts/integration-qualification/browser/3a7e77fa-f975-48e9-b072-410d633cb118/ui-qualification.log"
+    },
+    {
+      "name": "canonical-destinations",
+      "argv": [
+        "python3",
+        "tests/browser-qualification/ux-ui.py",
+        "canonical-destinations",
+        ".skill-tree/history/validation/ux-ui/canonical-destinations/browser"
+      ],
+      "exit_code": 0,
+      "seconds": 493.631,
+      "deadline_seconds": 960,
+      "log": ".skill-tree/artifacts/integration-qualification/browser/3a7e77fa-f975-48e9-b072-410d633cb118/canonical-destinations.log"
+    },
+    {
+      "name": "pwa-publish",
+      "argv": [
+        "/Users/petr/Projects/habitica-tool/dotnet/dotnet",
+        "publish",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "output/pwa-shell-redirect",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exit_code": 0,
+      "seconds": 2.456,
+      "deadline_seconds": 300,
+      "log": ".skill-tree/artifacts/integration-qualification/browser/3a7e77fa-f975-48e9-b072-410d633cb118/pwa-publish.log"
+    },
+    {
+      "name": "pwa-lifecycle",
+      "argv": [
+        "node",
+        "tests/browser/pwa-shell.mjs"
+      ],
+      "exit_code": 0,
+      "seconds": 4.722,
+      "deadline_seconds": 170,
+      "log": ".skill-tree/artifacts/integration-qualification/browser/3a7e77fa-f975-48e9-b072-410d633cb118/pwa-lifecycle.log"
+    }
+  ],
+  "cleanup": "Every launched command exited; browser/fixture controllers own isolated resources and record cleanup.",
+  "seconds": 681.365
+}

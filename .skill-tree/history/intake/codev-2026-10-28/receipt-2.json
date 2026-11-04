@@ -1,0 +1,17 @@
+{
+  "operation": "completeTask",
+  "taskId": "339ca108-d559-44b2-815a-8afd9fa3617a",
+  "commandId": "b10316fb-c4d5-46ce-871e-c1a5a0487507",
+  "correlationId": "4b312aa7-13e2-4982-993d-6c5e493424b6",
+  "taskText": "Notes: привязка заметок к проектам без изменения существующего хранения",
+  "savedInCompanion": true,
+  "habiticaProjectionStatus": "confirmed",
+  "acceptedEventCount": 1,
+  "confirmedProjectionCount": 1,
+  "totalProjectionCount": 1,
+  "failurePosition": null,
+  "failure": "none",
+  "retryAtUtc": null,
+  "refreshSucceeded": true,
+  "outcomeUnknown": false
+}

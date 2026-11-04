@@ -1,0 +1,347 @@
+TAP version 13
+# (node:40346) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: every reviewed adapter module, local dependency and synthetic input is registered
+not ok 1 - every reviewed adapter module, local dependency and synthetic input is registered
+  ---
+  duration_ms: 1.379041
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   'tests/browser-qualification/ux-ui-canonical-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-category-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-user.json',
+    +   'tests/browser-qualification/ux-ui-copy-values-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-counts-user.json',
+    +   'tests/browser-qualification/ux-ui-daily-order-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-user.json',
+    +   'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-dashboard-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-disabled-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-discovery-content.json',
+    +   'tests/browser-qualification/ux-ui-discovery-user.json',
+    +   'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-content.json',
+    +   'tests/browser-qualification/ux-ui-game-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-party.json',
+    +   'tests/browser-qualification/ux-ui-game-user.json',
+    +   'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-party-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-phone-notes-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-planning-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-projects-browse-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-push-capability-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-readiness-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-recurring-row-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-reminder-days-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-errors-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-layout-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-sections-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-today-work-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'tests/browser-qualification/ux-ui-canonical-journey.mjs'
+    1: 'tests/browser-qualification/ux-ui-category-journey.mjs'
+    2: 'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs'
+    3: 'tests/browser-qualification/ux-ui-companions-journey.mjs'
+    4: 'tests/browser-qualification/ux-ui-companions-user.json'
+    5: 'tests/browser-qualification/ux-ui-copy-values-journey.mjs'
+    6: 'tests/browser-qualification/ux-ui-counts-user.json'
+    7: 'tests/browser-qualification/ux-ui-daily-order-journey.mjs'
+    8: 'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs'
+    9: 'tests/browser-qualification/ux-ui-daily-timezones-user.json'
+    10: 'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs'
+    11: 'tests/browser-qualification/ux-ui-dashboard-journey.mjs'
+    12: 'tests/browser-qualification/ux-ui-date-journey.mjs'
+    13: 'tests/browser-qualification/ux-ui-disabled-journey.mjs'
+    14: 'tests/browser-qualification/ux-ui-discovery-content.json'
+    15: 'tests/browser-qualification/ux-ui-discovery-user.json'
+    16: 'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs'
+    17: 'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs'
+    18: 'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs'
+    19: 'tests/browser-qualification/ux-ui-game-content.json'
+    20: 'tests/browser-qualification/ux-ui-game-names-journey.mjs'
+    21: 'tests/browser-qualification/ux-ui-game-party.json'
+    22: 'tests/browser-qualification/ux-ui-game-user.json'
+    23: 'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs'
+    24: 'tests/browser-qualification/ux-ui-navigation-journey.mjs'
+    25: 'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs'
+    26: 'tests/browser-qualification/ux-ui-party-reflow-journey.mjs'
+    27: 'tests/browser-qualification/ux-ui-phone-notes-journey.mjs'
+    28: 'tests/browser-qualification/ux-ui-planning-date-journey.mjs'
+    29: 'tests/browser-qualification/ux-ui-projects-browse-journey.mjs'
+    30: 'tests/browser-qualification/ux-ui-push-capability-journey.mjs'
+    31: 'tests/browser-qualification/ux-ui-readiness-journey.mjs'
+    32: 'tests/browser-qualification/ux-ui-recurring-row-journey.mjs'
+    33: 'tests/browser-qualification/ux-ui-reminder-days-journey.mjs'
+    34: 'tests/browser-qualification/ux-ui-saved-errors-journey.mjs'
+    35: 'tests/browser-qualification/ux-ui-saved-layout-journey.mjs'
+    36: 'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs'
+    37: 'tests/browser-qualification/ux-ui-settings-sections-journey.mjs'
+    38: 'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs'
+    39: 'tests/browser-qualification/ux-ui-today-work-journey.mjs'
+    40: 'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:8:135)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:934:25)
+    Test.start (node:internal/test_runner/test:833:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: actual workflow rejects journey and synthetic-data drift before profile refresh
+not ok 2 - actual workflow rejects journey and synthetic-data drift before profile refresh
+  ---
+  duration_ms: 174.276875
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   'tests/browser-qualification/ux-ui-canonical-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-category-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-user.json',
+    +   'tests/browser-qualification/ux-ui-copy-values-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-counts-user.json',
+    +   'tests/browser-qualification/ux-ui-daily-order-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-user.json',
+    +   'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-dashboard-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-disabled-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-discovery-content.json',
+    +   'tests/browser-qualification/ux-ui-discovery-user.json',
+    +   'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-content.json',
+    +   'tests/browser-qualification/ux-ui-game-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-party.json',
+    +   'tests/browser-qualification/ux-ui-game-user.json',
+    +   'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-party-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-phone-notes-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-planning-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-projects-browse-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-push-capability-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-readiness-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-recurring-row-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-reminder-days-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-errors-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-layout-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-sections-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-today-work-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'tests/browser-qualification/ux-ui-canonical-journey.mjs'
+    1: 'tests/browser-qualification/ux-ui-category-journey.mjs'
+    2: 'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs'
+    3: 'tests/browser-qualification/ux-ui-companions-journey.mjs'
+    4: 'tests/browser-qualification/ux-ui-companions-user.json'
+    5: 'tests/browser-qualification/ux-ui-copy-values-journey.mjs'
+    6: 'tests/browser-qualification/ux-ui-counts-user.json'
+    7: 'tests/browser-qualification/ux-ui-daily-order-journey.mjs'
+    8: 'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs'
+    9: 'tests/browser-qualification/ux-ui-daily-timezones-user.json'
+    10: 'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs'
+    11: 'tests/browser-qualification/ux-ui-dashboard-journey.mjs'
+    12: 'tests/browser-qualification/ux-ui-date-journey.mjs'
+    13: 'tests/browser-qualification/ux-ui-disabled-journey.mjs'
+    14: 'tests/browser-qualification/ux-ui-discovery-content.json'
+    15: 'tests/browser-qualification/ux-ui-discovery-user.json'
+    16: 'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs'
+    17: 'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs'
+    18: 'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs'
+    19: 'tests/browser-qualification/ux-ui-game-content.json'
+    20: 'tests/browser-qualification/ux-ui-game-names-journey.mjs'
+    21: 'tests/browser-qualification/ux-ui-game-party.json'
+    22: 'tests/browser-qualification/ux-ui-game-user.json'
+    23: 'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs'
+    24: 'tests/browser-qualification/ux-ui-navigation-journey.mjs'
+    25: 'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs'
+    26: 'tests/browser-qualification/ux-ui-party-reflow-journey.mjs'
+    27: 'tests/browser-qualification/ux-ui-phone-notes-journey.mjs'
+    28: 'tests/browser-qualification/ux-ui-planning-date-journey.mjs'
+    29: 'tests/browser-qualification/ux-ui-projects-browse-journey.mjs'
+    30: 'tests/browser-qualification/ux-ui-push-capability-journey.mjs'
+    31: 'tests/browser-qualification/ux-ui-readiness-journey.mjs'
+    32: 'tests/browser-qualification/ux-ui-recurring-row-journey.mjs'
+    33: 'tests/browser-qualification/ux-ui-reminder-days-journey.mjs'
+    34: 'tests/browser-qualification/ux-ui-saved-errors-journey.mjs'
+    35: 'tests/browser-qualification/ux-ui-saved-layout-journey.mjs'
+    36: 'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs'
+    37: 'tests/browser-qualification/ux-ui-settings-sections-journey.mjs'
+    38: 'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs'
+    39: 'tests/browser-qualification/ux-ui-today-work-journey.mjs'
+    40: 'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:9:162)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:934:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:633:18)
+    Test.postRun (node:internal/test_runner/test:1045:19)
+    Test.run (node:internal/test_runner/test:973:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: unchanged input identity is reusable and refreshed mutated inputs change actual environment identity
+not ok 3 - unchanged input identity is reusable and refreshed mutated inputs change actual environment identity
+  ---
+  duration_ms: 0.203625
+  location: '/Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   'tests/browser-qualification/ux-ui-canonical-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-category-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-companions-user.json',
+    +   'tests/browser-qualification/ux-ui-copy-values-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-counts-user.json',
+    +   'tests/browser-qualification/ux-ui-daily-order-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-daily-timezones-user.json',
+    +   'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-dashboard-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-disabled-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-discovery-content.json',
+    +   'tests/browser-qualification/ux-ui-discovery-user.json',
+    +   'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-content.json',
+    +   'tests/browser-qualification/ux-ui-game-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-game-party.json',
+    +   'tests/browser-qualification/ux-ui-game-user.json',
+    +   'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-navigation-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-party-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-phone-notes-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-planning-date-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-projects-browse-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-push-capability-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-readiness-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-recurring-row-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-reminder-days-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-errors-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-saved-layout-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-settings-sections-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-today-work-journey.mjs',
+    +   'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'tests/browser-qualification/ux-ui-canonical-journey.mjs'
+    1: 'tests/browser-qualification/ux-ui-category-journey.mjs'
+    2: 'tests/browser-qualification/ux-ui-compact-navigation-journey.mjs'
+    3: 'tests/browser-qualification/ux-ui-companions-journey.mjs'
+    4: 'tests/browser-qualification/ux-ui-companions-user.json'
+    5: 'tests/browser-qualification/ux-ui-copy-values-journey.mjs'
+    6: 'tests/browser-qualification/ux-ui-counts-user.json'
+    7: 'tests/browser-qualification/ux-ui-daily-order-journey.mjs'
+    8: 'tests/browser-qualification/ux-ui-daily-timezones-journey.mjs'
+    9: 'tests/browser-qualification/ux-ui-daily-timezones-user.json'
+    10: 'tests/browser-qualification/ux-ui-dashboard-appearance-journey.mjs'
+    11: 'tests/browser-qualification/ux-ui-dashboard-journey.mjs'
+    12: 'tests/browser-qualification/ux-ui-date-journey.mjs'
+    13: 'tests/browser-qualification/ux-ui-disabled-journey.mjs'
+    14: 'tests/browser-qualification/ux-ui-discovery-content.json'
+    15: 'tests/browser-qualification/ux-ui-discovery-user.json'
+    16: 'tests/browser-qualification/ux-ui-equipment-counts-journey.mjs'
+    17: 'tests/browser-qualification/ux-ui-equipment-discovery-journey.mjs'
+    18: 'tests/browser-qualification/ux-ui-equipment-reflow-journey.mjs'
+    19: 'tests/browser-qualification/ux-ui-game-content.json'
+    20: 'tests/browser-qualification/ux-ui-game-names-journey.mjs'
+    21: 'tests/browser-qualification/ux-ui-game-party.json'
+    22: 'tests/browser-qualification/ux-ui-game-user.json'
+    23: 'tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs'
+    24: 'tests/browser-qualification/ux-ui-navigation-journey.mjs'
+    25: 'tests/browser-qualification/ux-ui-occurrence-date-journey.mjs'
+    26: 'tests/browser-qualification/ux-ui-party-reflow-journey.mjs'
+    27: 'tests/browser-qualification/ux-ui-phone-notes-journey.mjs'
+    28: 'tests/browser-qualification/ux-ui-planning-date-journey.mjs'
+    29: 'tests/browser-qualification/ux-ui-projects-browse-journey.mjs'
+    30: 'tests/browser-qualification/ux-ui-push-capability-journey.mjs'
+    31: 'tests/browser-qualification/ux-ui-readiness-journey.mjs'
+    32: 'tests/browser-qualification/ux-ui-recurring-row-journey.mjs'
+    33: 'tests/browser-qualification/ux-ui-reminder-days-journey.mjs'
+    34: 'tests/browser-qualification/ux-ui-saved-errors-journey.mjs'
+    35: 'tests/browser-qualification/ux-ui-saved-layout-journey.mjs'
+    36: 'tests/browser-qualification/ux-ui-settings-reflow-journey.mjs'
+    37: 'tests/browser-qualification/ux-ui-settings-sections-journey.mjs'
+    38: 'tests/browser-qualification/ux-ui-sync-timestamp-journey.mjs'
+    39: 'tests/browser-qualification/ux-ui-today-work-journey.mjs'
+    40: 'tests/browser-qualification/ux-ui-workspace-names-journey.mjs'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/petr/Projects/habitica-tool/tests/browser-qualification/source-identity.test.mjs:10:233)
+    Test.runInAsyncScope (node:async_hooks:211:14)
+    Test.run (node:internal/test_runner/test:934:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:633:18)
+    Test.postRun (node:internal/test_runner/test:1045:19)
+    Test.run (node:internal/test_runner/test:973:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:633:7)
+  ...
+# Subtest: adapter-map drift and installed normalization retain the same fail-closed source contract
+ok 4 - adapter-map drift and installed normalization retain the same fail-closed source contract
+  ---
+  duration_ms: 0.303667
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 1
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 254.930125
+(node:40345) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

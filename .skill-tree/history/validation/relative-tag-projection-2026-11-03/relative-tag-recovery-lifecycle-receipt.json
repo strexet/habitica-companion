@@ -1,0 +1,73 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-f596300b-2421-44ab-a6b3-ef3f839df706",
+  "classification": "executed-control",
+  "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+  "counts": {
+    "discovered": 19,
+    "expected": 19,
+    "failed": 0,
+    "passed": 19,
+    "skipped": 0
+  },
+  "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+  "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-recovery-lifecycle-execution.log",
+      "sha256": "27407487048d33bb00c663bde5696ca03199ec2f8cab3777b6884a013780068c"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-recovery-lifecycle.trx",
+      "sha256": "0095b6ebb2cfba68b17dc55529a8ccfdbd09d54becda2791cdcfdb01c8b913d3"
+    }
+  ],
+  "execution_sessions": {
+    "040310b8b294f654d024d4e9c94a8aa36cb967088db48464b51976ebdfd2f629": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T02:19:43.747011+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-f7576009-identity.json"
+      ],
+      "profile_id": "relative-tag-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-f7576009",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+      "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+      ],
+      "profile_id": "relative-tag-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-167fad4d",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "key": "99e9bc59a0427195ccbb4f82fb5e130236145a2b9dd48d75abd76258a26a7011",
+  "payload_hash": "3e5f6b0e1f2154f938e06bf51c3882a477f4ddccda90fe6b65cf004aff7d2d47",
+  "recorded_at": "2026-11-03T02:11:03.497844+00:00",
+  "result": "pass",
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "9ecf14cbea75b45038f9126005fac2d5ffce75fc688683baa088f64b70de0505",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "32eef1eb833b568311eb58a93396cabc847ad9a0a1ba8859b41a0c1d9e9067fe",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "24985cc1a1821255eea8f82252c86db3f14f10a2ea7f85533200857eca36916d",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "55a7271ea04026560f9fb53317c3f8a61f2b65ee77fa06d50bdd2a7999dccf4f",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5"
+  },
+  "timing": {
+    "tool_wall_seconds": 11.228759999852628
+  }
+}

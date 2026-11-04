@@ -1,0 +1,13 @@
+{
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "check_id": "relative-date-rules",
+  "launch": {
+    "assertion": "Relative saved definitions preserve intent and resolve date fields from one explicit UTC clock and IANA timezone, with stable guarded paging.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable date boundaries, current task selection, guarded pagination or no read mutations.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "deadline_utc": "2026-11-02T22:07:19.426152+00:00",
+    "cleanup_seconds": 30,
+    "project_root": "/Users/petr/Projects/habitica-tool",
+    "execution_profile": "relative-saved-dates-local-v1"
+  }
+}

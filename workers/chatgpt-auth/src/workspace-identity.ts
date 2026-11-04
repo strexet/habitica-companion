@@ -4,7 +4,7 @@ import {credentialKeys} from './vault';
 import {tagWriteScope} from '../../shared/tag-gateway';
 import {profileBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
-import { activeProfile } from "./vault";
+import { managedProfile, activeProfile } from "./vault";
 import { tokenHash, tokenMatches } from "./cryptography";
 import { validatedToken } from "./oauth";
 import { resourceConfiguration } from "../../shared/resources";
@@ -18,8 +18,10 @@ export async function workspaceIdentity(request: Request, env: AuthEnv): Promise
     if (path === "/management") {
       const token = bearer(request);
       const row = await env.HABITICA_INTEGRATION_DB.prepare("SELECT profile_id,management_token_hash FROM integration_profiles WHERE management_token_hash=?").bind(await tokenHash(token)).first<{ profile_id: string; management_token_hash: string }>();
-      if (!row || !await tokenMatches(token, row.management_token_hash)) throw new WorkspaceError("unauthorized", 401);
-      const profile = await activeProfile(env, row.profile_id);
+      const recovered = row ? null : await env.HABITICA_INTEGRATION_DB.prepare("SELECT profile_id FROM integration_recovery_sessions WHERE token_hash=? AND expires_at_utc>?").bind(await tokenHash(token),new Date().toISOString()).first<{profile_id:string}>();
+      const id=row?.profile_id??recovered?.profile_id;
+      if (!id) throw new WorkspaceError("unauthorized",401);
+      const profile = await managedProfile(request,env,id,false);
       await profileBudget(env,profile.profile_id,"workspace");
       return Response.json({ profileId: profile.profile_id, connectionId: profile.connection_id }, { headers: { "cache-control": "no-store" } });
     }

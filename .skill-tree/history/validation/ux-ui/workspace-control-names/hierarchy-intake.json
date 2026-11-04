@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Name canonical Todo hierarchy row controls in Tasks and Projects",
+    "description": "The canonical Todo route renders TodoHierarchyPanel rows while TodoTaskPanel is configured with ShowTaskList false. Hierarchy completion, expansion, editing, organization and reference disclosures still repeat short labels. The same renderer appears in Projects.",
+    "expected_behavior": "Give canonical hierarchy row and focused-context actions safe displayed task context and stable disclosure content references, preserving visible labels, exact targets, branch navigation and original review fences.",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "relation": "blocker",
+    "source": "TodoTasksPage.razor and TodoProjectsPage.razor render TodoHierarchyPanel; hierarchy row markup and existing TodoHierarchyPanelTests were inspected.",
+    "priority_reason": "Naming only TodoTaskPanel cannot satisfy the selected canonical Todo route acceptance.",
+    "expected_source_hash": "3f6e1a98497327db9a397044d34b7bd30db31c37c07c5612044fe3f3a7b3e0e9"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-8d1835e4-1e8d-4d06-82c6-2b12db1dd400",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "relation": "blocker",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "status": "Pending"
+  }
+}

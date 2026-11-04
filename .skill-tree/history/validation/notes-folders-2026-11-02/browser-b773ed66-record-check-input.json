@@ -1,0 +1,25 @@
+{
+  "task_id": "T-5111060c-76ae-4a0e-a48b-260ecbb8885f",
+  "check_id": "notes-indexeddb",
+  "attempt_id": "C-53338e73-901d-4463-856f-74fcf721736e",
+  "environment_identity": "867c149e47b720055c735ec8e1adeb06e15cfcd6a61b5ecfc09c3b21f88080f4",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both persistent browser contexts closed; generated temporary profiles removed. No actual user database, credentials, network service or device permission used.",
+  "timing": {
+    "tool_wall_seconds": 3.2316074171103537
+  },
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-2026-11-02/browser-b773ed66-execution.log",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/browser-b773ed66-identity.json",
+    ".skill-tree/history/validation/notes-folders-2026-11-02/notes-indexeddb-1793639863295-66633.json"
+  ],
+  "counts": {
+    "expected": 40,
+    "discovered": 40,
+    "passed": 40,
+    "failed": 0,
+    "skipped": 0
+  }
+}

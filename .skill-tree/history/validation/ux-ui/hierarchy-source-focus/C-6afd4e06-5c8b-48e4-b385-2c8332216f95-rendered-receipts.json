@@ -1,0 +1,281 @@
+{
+  "assertion": "Verify actual current-source passing browser receipts from the existing immutable accessible-shell, full-shell and Tasks/Projects hierarchy contracts, with complete declared six-width100/200percent light/gryphy-dark/obsidian matrices and owned cleanup. Re-execute both shell contracts after this repair even when older fingerprints omit the hierarchy component. No static or component result substitutes for the required native browser evidence.",
+  "checks": {
+    "accessible-shell-current": true,
+    "accessible-shell-post-repair": true,
+    "accessible-shell-coverage": true,
+    "accessible-shell-passed": true,
+    "accessible-shell-cleanup": true,
+    "shell-content-visibility-current": true,
+    "shell-content-visibility-post-repair": true,
+    "shell-content-visibility-coverage": true,
+    "shell-content-visibility-passed": true,
+    "shell-content-visibility-cleanup": true,
+    "hierarchy-control-names-current": true,
+    "hierarchy-control-names-post-repair": true,
+    "hierarchy-control-names-coverage": true,
+    "hierarchy-control-names-passed": true,
+    "hierarchy-control-names-cleanup": true
+  },
+  "actual_native_reports": [
+    {
+      "task": "T-ea2058ab-c817-4368-9431-b26314f58a2e",
+      "evidence": ".skill-tree/history/validation/ux-ui/accessible-shell/browser/87b55912-82fb-4f0f-a5a3-6cae4d360d48.json",
+      "current_checks": [
+        {
+          "id": "accessible-shell-behavior",
+          "current": true,
+          "reason": "matching"
+        },
+        {
+          "id": "accessible-shell-rendered",
+          "current": true,
+          "reason": "matching"
+        }
+      ],
+      "counts": {
+        "expected": 793,
+        "discovered": 793,
+        "passed": 793,
+        "failed": 0,
+        "skipped": 0
+      },
+      "plan": {
+        "cases": "Signed-in and signed-out shell; phone drawer open/close by keyboard and backdrop; skip-link activation; active route; desktop persistent drawer; long route headings.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/accessible-shell/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings"
+        ],
+        "task_key": "accessible-shell"
+      },
+      "identity": {
+        "session": "87b55912-82fb-4f0f-a5a3-6cae4d360d48",
+        "projectRoot": "/Users/petr/Projects/habitica-tool",
+        "origin": "http://127.0.0.1:53831",
+        "build": "1ca185431a27b32f439a9c82312efa6a0d301cdfc159277f3b6898039b251667",
+        "playwright": "1.62.1"
+      },
+      "cleanup": {
+        "contexts": true,
+        "server": true,
+        "profiles": true
+      }
+    },
+    {
+      "task": "T-1fa4460c-6493-446e-9bc3-bd33d976404f",
+      "evidence": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser/981eb0cd-4e00-428f-ac25-ee0bad5bbb48.json",
+      "current_checks": [
+        {
+          "id": "shell-content-behavior",
+          "current": true,
+          "reason": "matching"
+        },
+        {
+          "id": "shell-content-canaries",
+          "current": true,
+          "reason": "matching"
+        },
+        {
+          "id": "shell-content-rendered",
+          "current": true,
+          "reason": "matching"
+        }
+      ],
+      "counts": {
+        "expected": 1225,
+        "discovered": 1225,
+        "passed": 1225,
+        "failed": 0,
+        "skipped": 0
+      },
+      "plan": {
+        "cases": "SignedOut, Loading, Browser, Cloud, CloudUnavailable, SettingsConflict, ConsolidationRequired, LegacyRecoveryRequired, StorageUnavailable; missing/invalid snapshot; authority reload; linked recovery; busy/pending/newer organization revision; late account/source responses; retry recovery.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/shell-content-visibility/browser",
+        "routes": [
+          "/dashboard",
+          "/todo/today",
+          "/todo/tasks",
+          "/settings",
+          "/todo/habits",
+          "/todo/dailies",
+          "/todo/sync"
+        ],
+        "task_key": "shell-content-visibility"
+      },
+      "identity": {
+        "session": "981eb0cd-4e00-428f-ac25-ee0bad5bbb48",
+        "projectRoot": "/Users/petr/Projects/habitica-tool",
+        "origin": "http://127.0.0.1:53918",
+        "build": "1ca185431a27b32f439a9c82312efa6a0d301cdfc159277f3b6898039b251667",
+        "playwright": "1.62.1"
+      },
+      "cleanup": {
+        "contexts": true,
+        "server": true,
+        "profiles": true
+      }
+    },
+    {
+      "task": "T-2032615d-24ef-4921-9b63-e41f5dd4a3d0",
+      "evidence": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser/2e15f434-1a11-40bc-b921-233ff9731970.json",
+      "current_checks": [
+        {
+          "id": "hierarchy-control-names-behavior",
+          "current": true,
+          "reason": "matching"
+        },
+        {
+          "id": "hierarchy-control-names-rendered",
+          "current": true,
+          "reason": "matching"
+        }
+      ],
+      "counts": {
+        "expected": 433,
+        "discovered": 433,
+        "passed": 433,
+        "failed": 0,
+        "skipped": 0
+      },
+      "plan": {
+        "cases": "Canonical same-name hierarchy actions, stable Notes/References disclosures, selected project and exact read/review targets, original fences and long text.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/hierarchy-control-names/browser",
+        "routes": [
+          "/todo/tasks",
+          "/todo/projects"
+        ],
+        "task_key": "hierarchy-control-names"
+      },
+      "identity": {
+        "session": "2e15f434-1a11-40bc-b921-233ff9731970",
+        "projectRoot": "/Users/petr/Projects/habitica-tool",
+        "origin": "http://127.0.0.1:56270",
+        "build": "1ca185431a27b32f439a9c82312efa6a0d301cdfc159277f3b6898039b251667",
+        "playwright": "1.62.1"
+      },
+      "cleanup": {
+        "contexts": true,
+        "server": true,
+        "profiles": true
+      }
+    }
+  ],
+  "manual_review": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/manual-review.json",
+  "repair": ".skill-tree/history/validation/ux-ui/hierarchy-source-focus/repair.json",
+  "scope": "Static receipt verification references actual current native browser controls. No simulated/static rendering acceptance and no owner/device/provider qualification.",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "0c805d7e7cacd893245a9024fe7a51f01ba23ee54f115def4c4cd5fcab8832bf",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "b1e009edaff8d6a9c3fafcc7100566e0fe6d47ad3921af19220975a9589b425a",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "8a7ed48d2abdf275f01c4fb407ce134d57a94fd69c590a1eac7cf16a26a5f863",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "9d0e3d8e383f9fc75be85f5aaee542a48b8556beb4323d91733884a3a1075d14",
+    "tests/browser-qualification/ux-ui-hierarchy-names-journey.mjs": "5ea41830e5c9c1226614648c6df4034d5571c52350ee19ff509122f8bad00190"
+  }
+}

@@ -5,7 +5,7 @@ using Habitica.Storage;
 
 namespace Habitica.WebApp.State;
 
-public sealed class WorkspaceDataController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null)
+public sealed class WorkspaceDataController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null, CompanionConnectionCoordinator? connections = null, IWorkspaceTransferCloudClient? transfers = null)
 {
     private Task<T> ObserveAsync<T>(string operation, Func<Task<T>> action, Func<T, bool> success)
     {
@@ -86,9 +86,42 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
     }
     private bool SameAccount(string account) => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var current)
         && current.ToString("D") == account;
-    public Task<WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken cancellationToken = default) => ObserveAsync(delete ? "workspace-delete" : "workspace-disconnect", () => cloud.DisconnectAsync(delete, cancellationToken), value => value.Succeeded);
+    public Task<WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken cancellationToken = default) => ObserveAsync(delete ? "workspace-delete" : "workspace-disconnect", async () =>
+    {
+        if(connections is not null && Scope is { } account) await connections.SuppressAsync(account,false,true,false,cancellationToken);
+        return await cloud.DisconnectAsync(delete,cancellationToken);
+    }, value => value.Succeeded);
     private string Scope => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var userId) ? userId.ToString("D") : throw new InvalidOperationException("Sign in to manage local workspaces.");
     public Task<IReadOnlyList<Guid>> ListLocalAsync(CancellationToken cancellationToken = default) => database.ListAsync(Scope, cancellationToken);
+    public async Task<WorkspaceActionResult> RecoverLegacyTransferAsync(Guid id,CancellationToken token=default)
+    {
+        if(transfers is null||!cloud.ConnectionStatusVerified)return new(false,"Restore existing cloud access before checking the original legacy transfer.");var account=Scope;
+        try
+        {
+            var snapshot=await database.ForScope(account).LoadAsync(id,token);
+            if(!SameAccount(account)||snapshot?.Authority?.TransferId is not {} transferId)return new(false,"Original frozen transfer identity unavailable.");
+            if(snapshot.Authority.Mode==Habitica.Domain.Workspace.WorkspaceAuthorityMode.Cloud)return new(true,"The legacy browser copy already has cloud-owned recovery authority.");
+            if(snapshot.Authority.Mode!=Habitica.Domain.Workspace.WorkspaceAuthorityMode.Frozen)return new(false,"The original legacy transfer is not frozen.");
+            var result=await transfers.ReadTransferReceiptAsync(transferId,token);if(!SameAccount(account))return new(false,"The account changed; original receipt discarded.");
+            if(!result.Succeeded||result.Json is null)return result;
+            using var doc=System.Text.Json.JsonDocument.Parse(result.Json);var value=doc.RootElement;
+            if(value.GetProperty("state").GetString()!="accepted"||!value.TryGetProperty("version",out var version)||version.GetString()!="workspace-handoff-v1")return new(false,"No accepted original legacy receipt is visible. Preserve the frozen copy; only an explicit retry of the same legacy transfer can recover an unaccepted result.",OutcomeUnknown:true);
+            var archive=Habitica.Domain.Workspace.WorkspaceJournalJson.Serialize(snapshot);
+            var hash=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(archive))).ToLowerInvariant();
+            if(value.GetProperty("transferId").GetGuid()!=transferId||value.GetProperty("workspaceId").GetGuid()!=id||value.GetProperty("archiveHash").GetString()!=hash)return new(false,"The original legacy archive does not match. Keep the original backup and receipt; no replacement identity was created.");
+            await new WorkspaceHandoffService(database.ForScope(account)).AcknowledgeAsync(id,transferId,token);
+            return new(true,"Original legacy receipt verified. Tasks remain cloud-owned; remaining browser Notes require the reviewed unified move.");
+        }
+        catch(OperationCanceledException)when(token.IsCancellationRequested){throw;}
+        catch{return new(false,"Original legacy transfer recovery is unavailable. Frozen records remain preserved.",OutcomeUnknown:true);}
+    }
+    public async Task<WorkspaceActionResult> RetryLegacyTransferAsync(Guid id,CancellationToken token=default)
+    {
+        var account=Scope;var snapshot=await database.ForScope(account).LoadAsync(id,token);
+        if(!SameAccount(account)||snapshot?.Authority?.Mode!=Habitica.Domain.Workspace.WorkspaceAuthorityMode.Frozen||snapshot.Authority.TransferId is null)
+            return new(false,"Only an original frozen legacy transfer can be retried. No new transfer was prepared.");
+        return await TransferAsync(id,token);
+    }
     public Task<WorkspaceActionResult> TransferAsync(Guid id, CancellationToken cancellationToken = default) => ObserveAsync("workspace-transfer", () => TransferCoreAsync(id, cancellationToken), value => value.Succeeded);
     private async Task<WorkspaceActionResult> TransferCoreAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -125,6 +158,7 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
     {
         try
         {
+            if(connections is not null&&(connections.CloudSelected||connections.State!=CompanionConnectionState.Browser))return new(false,"The active Workspace requires recovery. A local restore cannot create a browser fork.");
             var result = await new WorkspacePortabilityService(database.ForScope(Scope)).RestoreAsync(json, cancellationToken);
             return new(result != WorkspaceRestoreOutcome.Conflict, result == WorkspaceRestoreOutcome.Conflict ? "The local workspace differs. Existing data was preserved; use another browser or review the conflict." : "Workspace restored locally with execution paused. Cloud data and Habitica records remain separate.");
         }

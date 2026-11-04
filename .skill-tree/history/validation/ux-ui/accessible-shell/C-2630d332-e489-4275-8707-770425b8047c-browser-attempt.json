@@ -1,0 +1,63 @@
+{
+  "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-2630d332-e489-4275-8707-770425b8047c",
+  "check_id": "accessible-shell-rendered",
+  "definition": "2c0e5c611f1caeda14de93e199e7fcdff71097ca90a5f312fdafa7f40bb2e452",
+  "environment_identity": "be81eac5f775a535a7b51f25b80215d03cc8bdd71e2ff9928ebc62a0b35767c8",
+  "key": "e5efcda963c1aced2fb6666f9b20cc442ef4dce906640f0c0581919de03465e9",
+  "launch": {
+    "assertion": "Shell navigation, focus indicators and primary content remain usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T08:32:48.705591+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T08:16:49.043606+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "accessible-shell",
+      ".skill-tree/history/validation/ux-ui/accessible-shell/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/App.razor": "13fc28f8c7b0359fed193e08e4735e2caf2b7c08930dd22e9d8251b52cdfa990",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "8417fcb48a7719406ce5cf21ab25105a6ce38278aa715053363daf56377b67a3",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7d5560f1be34c357915e22e5d2ba0a9c1c6d2e10cb095010fbfa1d803ea18249",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "22ac34f3a470b02ef899facb43427810a8643c4444d014e9c909d558263342b9",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "7ece158db80258e871d8b76d3794cf6adbb4573891063151f2a759de24f8d04f",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "62abc66a2146813c6f5a13d38201ae16d72decb4a3757bd04ddf072c8d957df2",
+    "tests/browser-qualification/qualification-core.mjs": "e21b6ca62fee7b21d3daecc1f303e2f6a1062b7d35e84d73e94cd07e7f5f180c",
+    "tests/browser-qualification/qualification-frame.mjs": "ce941e260812ccf4bbf8a1cfc7dfa1d167c517bfeb4550f9eb2945c6dc5bff55",
+    "tests/browser-qualification/ux-ui-adapters.json": "f66b757f9c95e2a22b8b7dcbfa65103bc2548bd06537c31cc6522fd0dabc3f8f",
+    "tests/browser-qualification/ux-ui-navigation-journey.mjs": "d3315679061dd20dcf63edc3d4d894513b3ce19cb6f0a667e80fe0fc170d39a1"
+  },
+  "task_id": "T-ea2058ab-c817-4368-9431-b26314f58a2e"
+}

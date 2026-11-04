@@ -1,0 +1,66 @@
+{
+  "assertion": "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+  "attempt_id": "C-36137c4a-2bb7-44fe-b465-eac2359532f4",
+  "check_id": "workspace-readiness-rendered",
+  "definition": "6ad31ae8d5b11ffec1a6a5045c05818b8481d3c20bdc6caae430f09c435605a3",
+  "environment_identity": "4ff306667dbafd6f188a4b2742f15aa769ae5907e084087bc2e70bb355abe29b",
+  "key": "f8a8978854aebfccf76d0866f372137a01111474738f56f10603ddfd258e06d9",
+  "launch": {
+    "assertion": "Hydrated loading, terminal failure and successful recovery remain understandable and keyboard reachable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+    "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+    "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T09:57:01.022128+00:00",
+    "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T09:41:01.299530+00:00",
+  "recipe": {
+    "argv": [
+      "python3",
+      "tests/browser-qualification/ux-ui.py",
+      "workspace-readiness",
+      ".skill-tree/history/validation/ux-ui/workspace-readiness/browser"
+    ],
+    "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "tests/browser-qualification/ux-ui.py",
+      "tests/browser-qualification/ux-ui.mjs",
+      "tests/browser-qualification/ux-ui-contract.mjs",
+      "tests/browser-qualification/ux-ui-native-date.mjs",
+      "tests/browser-qualification/ux-ui-shared-journey.mjs",
+      "tests/browser-qualification/ux-ui-adapters.json",
+      "tests/browser-qualification/ux-ui-checks.test.mjs",
+      "tests/browser-qualification/prepare.py",
+      "tests/browser-qualification/qualification-core.mjs",
+      "tests/browser-qualification/qualification-frame.mjs",
+      "tests/browser-qualification/qualification-session.mjs",
+      "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+      "src/Habitica.WebApp/Habitica.WebApp.csproj"
+    ],
+    "lane": "browser",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+      "framework": "Blazor WebAssembly8 Release",
+      "node": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "755704db81beb0ff3628fa2d166456413aeb67761f8db1380a5bb0737680348a",
+    "src/Habitica.WebApp/Pages/TodoSyncPage.razor": "204d01cfeb951af2c18cd93091a30ab8c418397570640de9594c0dd877d40b66",
+    "src/Habitica.WebApp/State/CompanionConnectionCoordinator.cs": "51b374432b0d026433601238f97545728d0997e2a55919cd7d19f20202e14c9b",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "97eacebe5001f12d42f554d8828961e3fc72d4ec0b0adaf41fb7ef67f4276f2c",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSyncPageTests.cs": "d8d3d446f3299f8dca43b01072faf09745a35d0c56f4595ec2088d79205ae838",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoWorkspacePresentationTests.cs": "ca0a1d75c573cd60acd4afb5f73842424eeb9fca51f640fec4a47ca2e6632dbf",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f0d0ab8c8a94399a57d0505133ba1bee8f47653cc40a913b14a02c269da383c7",
+    "tests/browser-qualification/qualification-core.mjs": "d3f7b599a298d2b837a8467ba94b21c3eb6f0a31e5114d0a7d45fa363e0816ac",
+    "tests/browser-qualification/qualification-frame.mjs": "e091931b745af65593d6692ead8a6a7fe76fe819a03e3e1755e12ddc24f814a9",
+    "tests/browser-qualification/ux-ui-adapters.json": "2e2ffbe1681d3a9ab7abb74440d54d2fe2f12af0724eecd85cf989ae784ba62d",
+    "tests/browser-qualification/ux-ui-readiness-journey.mjs": "a7e458ea819628255bd06a47bde0617839b73c3d4a98842f4676a3170deaeb35"
+  },
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12"
+}

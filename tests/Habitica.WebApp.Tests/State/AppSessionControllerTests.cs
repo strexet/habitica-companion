@@ -67,6 +67,25 @@ public sealed partial class AppSessionControllerTests
         Assert.Equal(1, integration.EnrollCalls);
     }
 
+    [Fact]
+    public async Task Account_replacement_cannot_inherit_previous_account_refresh_history()
+    {
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
+        await controller.SignInAsync(new SignInRequest { UserId = "fixture-user", ApiToken = "fixture-token" });
+        await controller.RefreshForPageAsync("/dashboard");
+        Assert.NotNull(controller.State.DomainStates![RefreshDomain.UserProfile].LastRefreshedAtUtc);
+        await controller.SignInAsync(new SignInRequest { UserId = "replacement-user", ApiToken = "replacement-token" });
+        Assert.Equal("replacement-user", controller.State.UserId);
+        Assert.True(controller.State.IsAuthenticated);
+        Assert.NotNull(controller.State.UserSnapshot);
+        Assert.False(controller.State.DomainStates?.ContainsKey(RefreshDomain.UserProfile) == true);
+        var cachedSnapshot = controller.State.UserSnapshot;
+        await controller.LogoutAsync();
+        Assert.False(controller.State.IsAuthenticated);
+        Assert.Same(cachedSnapshot, controller.State.UserSnapshot);
+        Assert.False(controller.State.DomainStates?.ContainsKey(RefreshDomain.UserProfile) == true);
+    }
+
     private sealed class IntegrationFixture : IChatGptIntegrationClient
     {
         public bool IsAvailable => true;

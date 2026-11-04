@@ -1,0 +1,27 @@
+{
+  "recorded_at_utc": "2026-11-02T11:56:31.547494+00:00",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "owner_request": "давай закроем все задачи с уведомлениями и после этого опубликуем изменения",
+  "selected_ids": [
+    "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+    "T-280cb859-c0f7-46e5-97db-bbd41dc6a99a",
+    "T-569ff3a0-8765-49b6-9b37-a62e091617ae"
+  ],
+  "deferred_pending_ids": [
+    "P-b1c8f9b2-fe66-406a-aa04-70aab3a38f9b"
+  ],
+  "boundary": "Notification roots and required predecessors inside the preserved initial snapshot. Unrelated Notes and organization tasks are not selected by the current owner request.",
+  "publication": "Owner authorizes the completed notification changes after validation; minimal preliminary fixture/gateway publication needed for hosted qualification remains covered by accepted scope. Real user subscription consent and actual chat-host rendering remain separate observations.",
+  "initial_changes": [
+    "tests/hosted/callback-receiver.mjs",
+    "tests/Functions/callback-receiver.test.mjs"
+  ],
+  "checks": {
+    "receiver_behavioral_red": "receiver-red-behavior.log",
+    "receiver_green": "receiver-green.log"
+  },
+  "limitations": [
+    "Two prerequisite harness mismatches were resolved: Miniflare5 option conversion and pinned binary compatibility date. Neither infrastructure failure is behavioral Red.",
+    "Dedicated hosted DNS/TLS failure injection remains deferred."
+  ]
+}

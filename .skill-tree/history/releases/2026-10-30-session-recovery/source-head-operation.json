@@ -1,0 +1,13 @@
+{
+  "started_at_utc": "2026-10-30T08:09:10.876408+00:00",
+  "deadline_seconds": 60,
+  "cleanup_reserve_seconds": 5,
+  "wall_seconds": 0.02,
+  "command": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool",
+  "exit_code": 0
+}

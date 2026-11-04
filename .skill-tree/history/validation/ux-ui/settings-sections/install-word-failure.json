@@ -1,0 +1,10 @@
+{
+  "original_failure": "d7b8d8d2-93ed-4a4c-8382-4990dfe79bc2",
+  "observed": "Native word Range shows installation split across two lines at360/200 after new appearance nesting.",
+  "repair": "Use sibling appearance/install cards in one named scope group and apply original phone root-card gutters to grouped root cards. Existing typography, words and44px controls retained.",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  }
+}

@@ -68,6 +68,11 @@ public sealed class TodoTaskDraftStore : IDisposable
     private readonly IAppSessionController _session;
     private string _account;
     private readonly Dictionary<(TodoWorkspaceSelection Source, CompanionTaskKind Kind, Guid? TaskId), TodoTaskDraft> _drafts = [];
+    private readonly Dictionary<TodoTaskDraft,string> _baselines = [];
+    private static string Fingerprint(TodoTaskDraft draft) => System.Text.Json.JsonSerializer.Serialize(draft);
+    public int UnsavedBrowserDrafts => _drafts.Count(pair=>pair.Key.Source.Source==TodoWorkspaceSource.Browser&&_baselines.GetValueOrDefault(pair.Value)!=Fingerprint(pair.Value));
+    public string ExportUnsavedBrowserDrafts() => System.Text.Json.JsonSerializer.Serialize(_drafts.Where(pair=>pair.Key.Source.Source==TodoWorkspaceSource.Browser&&_baselines.GetValueOrDefault(pair.Value)!=Fingerprint(pair.Value)).Select(pair=>new{workspaceId=pair.Key.Source.WorkspaceId,kind=pair.Key.Kind.ToString(),taskId=pair.Key.TaskId,draft=pair.Value}));
+    public void DiscardBrowserDrafts() { if(_prepared.Count!=0)throw new InvalidOperationException("Resolve original prepared commands first.");foreach(var key in _drafts.Keys.Where(key=>key.Source.Source==TodoWorkspaceSource.Browser).ToArray()){_baselines.Remove(_drafts[key]);_drafts.Remove(key);} }
     private readonly Dictionary<Guid, (TodoTaskDraft Draft, bool Creating)> _prepared = [];
     private readonly Dictionary<(TodoWorkspaceSelection Source, CompanionTaskKind Kind), Guid?> _editing = [];
     private readonly Dictionary<(TodoWorkspaceSelection Source, Guid TaskId), string> _dates = [];
@@ -80,10 +85,10 @@ public sealed class TodoTaskDraftStore : IDisposable
     public TodoTaskDraft Get(TodoWorkspaceSelection source, CompanionTaskKind kind, CompanionTask? task)
     {
         var key = (source, kind, task?.Id);
-        if (!_drafts.TryGetValue(key, out var draft)) _drafts[key] = draft = TodoTaskDraft.From(task);
+        if (!_drafts.TryGetValue(key, out var draft)) { _drafts[key] = draft = TodoTaskDraft.From(task); _baselines[draft] = Fingerprint(draft); }
         return draft;
     }
-    public void Reload(TodoWorkspaceSelection source, CompanionTaskKind kind, CompanionTask? task) => _drafts[(source, kind, task?.Id)] = TodoTaskDraft.From(task);
+    public void Reload(TodoWorkspaceSelection source, CompanionTaskKind kind, CompanionTask? task) { var key=(source,kind,task?.Id); if(_drafts.TryGetValue(key,out var previous))_baselines.Remove(previous);var next=TodoTaskDraft.From(task);_drafts[key]=next;_baselines[next]=Fingerprint(next); }
     public void Prepared(Guid commandId, TodoTaskDraft draft, bool creating) => _prepared[commandId] = (draft, creating);
     public void Cancelled(Guid commandId) => _prepared.Remove(commandId);
     public void Saved(Guid commandId, CompanionTask? saved)
@@ -93,8 +98,8 @@ public sealed class TodoTaskDraftStore : IDisposable
         {
             foreach (var key in _drafts.Where(pair => ReferenceEquals(pair.Value, owner.Draft)).Select(pair => pair.Key).ToArray()) _drafts.Remove(key);
         }
-        else if (saved is not null) owner.Draft.TaskRevision = saved.Revision;
+        else if (saved is not null) { owner.Draft.TaskRevision = saved.Revision; _baselines[owner.Draft]=Fingerprint(owner.Draft); }
     }
-    private void SessionChanged() { if (_account != Account) { _account = Account; _drafts.Clear(); _prepared.Clear(); _editing.Clear(); _dates.Clear(); } }
+    private void SessionChanged() { if (_account != Account) { _account = Account; _drafts.Clear(); _baselines.Clear(); _prepared.Clear(); _editing.Clear(); _dates.Clear(); } }
     public void Dispose() => _session.Changed -= SessionChanged;
 }

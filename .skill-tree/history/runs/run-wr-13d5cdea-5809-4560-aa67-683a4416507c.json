@@ -1,0 +1,34 @@
+{
+  "completed_ids": [
+    "T-1481b473-244b-4918-b498-775fd1efcaf4"
+  ],
+  "completion_refs": {
+    "T-1481b473-244b-4918-b498-775fd1efcaf4": "O-02799b2d-666e-439f-b181-f90422759157"
+  },
+  "current_task_id": null,
+  "cycle_signature": "25d83fe57a826ee72b631a6b2a9ee843dcb99206de547b60df2b49804d7984ec",
+  "deferred_ids": [],
+  "finished_at": "2026-10-30T08:02:50.178203+00:00",
+  "history_refs": [
+    "skill-tree/history/validation/existing-connection-recovery/readme.md",
+    "skill-tree/history/validation/existing-connection-recovery/timing.json",
+    "skill-tree/history/validation/existing-connection-recovery/scope-switch.json"
+  ],
+  "id": "WR-13d5cdea-5809-4560-aa67-683a4416507c",
+  "limits": {},
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-1481b473-244b-4918-b498-775fd1efcaf4"
+  ],
+  "root_task_id": "T-1481b473-244b-4918-b498-775fd1efcaf4",
+  "snapshot": [
+    "T-1481b473-244b-4918-b498-775fd1efcaf4"
+  ],
+  "started_at": "2026-10-30T07:03:29.815054+00:00",
+  "stop_reason": null
+}

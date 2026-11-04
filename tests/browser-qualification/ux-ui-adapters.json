@@ -1,0 +1,671 @@
+{
+  "schema": 1,
+  "adapters": {
+    "ui-qualification": {
+      "journey": "./ux-ui-shared-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoCategoryPageTests|FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~InventoryPageTests|FullyQualifiedName~SettingsPageTests",
+      "fixtures": [
+        "todo-today-main",
+        "todo-tasks-main",
+        "todo-dailies-main",
+        "notes-document",
+        "inventory-intelligence-stale",
+        "settings-actions"
+      ],
+      "native_date_fixtures": [
+        "todo-today-main"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "inventory-intelligence-stale"
+      ]
+    },
+    "accessible-shell": {
+      "journey": "./ux-ui-navigation-journey.mjs",
+      "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+      "fixtures": [
+        "shell-dashboard",
+        "shell-dashboard-closed",
+        "shell-today",
+        "shell-today-closed",
+        "shell-tasks",
+        "shell-tasks-closed",
+        "shell-settings",
+        "shell-settings-closed",
+        "shell-signed-out"
+      ]
+    },
+    "shell-content-visibility": {
+      "journey": "./ux-ui-navigation-journey.mjs",
+      "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+      "fixtures": [
+        "shell-dashboard",
+        "shell-dashboard-closed",
+        "shell-today",
+        "shell-today-closed",
+        "shell-tasks",
+        "shell-tasks-closed",
+        "shell-settings",
+        "shell-settings-closed",
+        "shell-habits",
+        "shell-habits-closed",
+        "shell-dailies",
+        "shell-dailies-closed",
+        "shell-sync",
+        "shell-sync-closed",
+        "shell-signed-out"
+      ]
+    },
+    "workspace-readiness": {
+      "journey": "./ux-ui-readiness-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoWorkspacePresentationTests|FullyQualifiedName~WorkspaceTaskControllerTests|FullyQualifiedName~TodoSyncPageTests",
+      "fixtures": [
+        "workspace-readiness-today",
+        "workspace-readiness-unavailable",
+        "workspace-readiness-habits",
+        "workspace-readiness-dailies",
+        "workspace-readiness-loading"
+      ],
+      "native_date_journey": true
+    },
+    "disabled-readability": {
+      "journey": "./ux-ui-disabled-journey.mjs",
+      "workers_per_engine": 1,
+      "test_filter": "FullyQualifiedName~SharedLayoutEvidenceTests|FullyQualifiedName~NotesPanelTests|FullyQualifiedName~InventoryPageTests|FullyQualifiedName~SettingsPageTests|FullyQualifiedName~ColorSchemeCatalogTests",
+      "fixtures": [
+        "disabled-task-frozen",
+        "disabled-daily-frozen",
+        "notes-unknown",
+        "notes-consent",
+        "inventory-intelligence-stale",
+        "connection-fresh-tab"
+      ],
+      "disabled_fixtures": [
+        "disabled-task-frozen",
+        "disabled-daily-frozen",
+        "notes-unknown",
+        "notes-consent",
+        "inventory-intelligence-stale",
+        "connection-fresh-tab"
+      ],
+      "reuse_hydrated_page": true,
+      "disabled_controls": {
+        "disabled-task-frozen": [
+          "todo-title",
+          "todo-notes",
+          "todo-priority"
+        ],
+        "disabled-daily-frozen": [
+          "todo-title",
+          "todo-notes",
+          "todo-priority"
+        ]
+      }
+    },
+    "native-date-reflow": {
+      "journey": "./ux-ui-date-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTodayPanelTests",
+      "fixtures": [
+        "todo-today-empty"
+      ],
+      "native_date_fixtures": [
+        "todo-today-empty"
+      ],
+      "native_date_journey": true
+    },
+    "category-headings": {
+      "journey": "./ux-ui-category-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoCategoryPageTests",
+      "fixtures": [
+        "category-habits-empty",
+        "category-habits-populated",
+        "category-habits-frozen",
+        "category-dailies-empty",
+        "category-dailies-populated",
+        "category-dailies-frozen"
+      ],
+      "disabled_fixtures": [
+        "category-habits-frozen",
+        "category-dailies-frozen"
+      ]
+    },
+    "canonical-destinations": {
+      "journey": "./ux-ui-canonical-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoHistoryPanelTests|FullyQualifiedName~TodoStatisticsPanelTests|FullyQualifiedName~TodoTaskLinkTests|FullyQualifiedName~TodoCategoryPageTests|FullyQualifiedName~AppNavMenuTests",
+      "fixtures": [
+        "todo-plan-week",
+        "todo-plan-inbox",
+        "todo-history-completions",
+        "todo-statistics-overview",
+        "todo-tasks-main",
+        "canonical-nav-legacy"
+      ],
+      "native_date_fixtures": [
+        "todo-plan-week",
+        "todo-plan-inbox",
+        "todo-statistics-overview"
+      ],
+      "native_date_journey": true
+    },
+    "planning-date-readability": {
+      "journey": "./ux-ui-planning-date-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoPlanningPanelTests|FullyQualifiedName~TodoStatisticsPanelTests",
+      "fixtures": [
+        "todo-plan-week-date-header",
+        "todo-plan-inbox-date-header",
+        "todo-statistics-date-header"
+      ],
+      "native_date_fixtures": [
+        "todo-plan-week-date-header",
+        "todo-plan-inbox-date-header",
+        "todo-statistics-date-header"
+      ],
+      "native_date_journey": true
+    },
+    "today-work-first": {
+      "journey": "./ux-ui-today-work-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTodayPanelTests|FullyQualifiedName~TodoReminderPanelTests",
+      "fixtures": [
+        "todo-today-groups",
+        "todo-today-empty",
+        "todo-today-review",
+        "todo-today-unavailable",
+        "reminder-summary-closed",
+        "reminder-off",
+        "reminder-due",
+        "reminder-unknown-granted"
+      ],
+      "native_date_fixtures": [
+        "todo-today-groups",
+        "todo-today-empty",
+        "todo-today-review",
+        "todo-today-unavailable"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "todo-today-review",
+        "reminder-off"
+      ]
+    },
+    "bounded-companions": {
+      "journey": "./ux-ui-companions-journey.mjs",
+      "test_filter": "FullyQualifiedName~PetsMountsPageTests",
+      "fixtures": [
+        "companions-large-page",
+        "companions-second-page",
+        "companions-candidates",
+        "companions-filtered",
+        "companions-no-results"
+      ],
+      "synthetic_user_fixture": "./ux-ui-companions-user.json"
+    },
+    "dashboard-freshness": {
+      "journey": "./ux-ui-dashboard-journey.mjs",
+      "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+      "fixtures": [
+        "dashboard-fresh",
+        "dashboard-stale",
+        "dashboard-missing",
+        "dashboard-fetching",
+        "dashboard-failed",
+        "dashboard-success",
+        "dashboard-unknown-time",
+        "dashboard-signed-out-cache"
+      ]
+    },
+    "dashboard-appearance-reflow": {
+      "journey": "./ux-ui-dashboard-appearance-journey.mjs",
+      "test_filter": "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+      "fixtures": [
+        "dashboard-fresh"
+      ]
+    },
+    "daily-form-order": {
+      "journey": "./ux-ui-daily-order-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~TodoRecurringEditorTests",
+      "fixtures": [
+        "daily-order-daily-ready",
+        "daily-order-daily-review",
+        "daily-order-todo-ready",
+        "daily-order-todo-review",
+        "daily-order-habit-ready",
+        "daily-order-habit-review"
+      ],
+      "native_date_fixtures": [
+        "daily-order-daily-ready",
+        "daily-order-daily-review"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "daily-order-daily-review",
+        "daily-order-todo-review",
+        "daily-order-habit-review"
+      ]
+    },
+    "saved-list-errors": {
+      "journey": "./ux-ui-saved-errors-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoSavedListPanelTests|FullyQualifiedName~RelativeSavedListPanelTests|FullyQualifiedName~TodoPlanningPanelTests",
+      "fixtures": [
+        "saved-errors-range",
+        "saved-errors-relative",
+        "saved-errors-source",
+        "saved-errors-zone",
+        "saved-errors-multiple",
+        "saved-errors-corrected"
+      ],
+      "native_date_fixtures": [
+        "saved-errors-corrected"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "saved-errors-corrected"
+      ]
+    },
+    "game-control-names": {
+      "journey": "./ux-ui-game-names-journey.mjs",
+      "test_filter": "FullyQualifiedName~PartyPageTests|FullyQualifiedName~InventoryPageTests",
+      "fixtures": [
+        "game-party-closed",
+        "game-party-open",
+        "game-inventory-context",
+        "inventory-intelligence-stale",
+        "game-party-normalized",
+        "game-inventory-normalized-context"
+      ],
+      "disabled_fixtures": [
+        "inventory-intelligence-stale"
+      ],
+      "synthetic_user_fixture": "./ux-ui-game-user.json",
+      "synthetic_party_fixture": "./ux-ui-game-party.json",
+      "synthetic_content_fixture": "./ux-ui-game-content.json"
+    },
+    "party-context-reflow": {
+      "journey": "./ux-ui-party-reflow-journey.mjs",
+      "test_filter": "FullyQualifiedName~PartyPageTests",
+      "fixtures": [
+        "game-party-closed",
+        "game-party-open"
+      ],
+      "synthetic_user_fixture": "./ux-ui-game-user.json",
+      "synthetic_party_fixture": "./ux-ui-game-party.json",
+      "synthetic_content_fixture": "./ux-ui-game-content.json"
+    },
+    "equipment-identity-reflow": {
+      "journey": "./ux-ui-equipment-reflow-journey.mjs",
+      "test_filter": "FullyQualifiedName~InventoryPageTests",
+      "fixtures": [
+        "game-inventory-context",
+        "inventory-intelligence-stale"
+      ],
+      "disabled_fixtures": [
+        "inventory-intelligence-stale"
+      ],
+      "synthetic_user_fixture": "./ux-ui-game-user.json",
+      "synthetic_party_fixture": "./ux-ui-game-party.json",
+      "synthetic_content_fixture": "./ux-ui-game-content.json"
+    },
+    "workspace-control-names": {
+      "journey": "./ux-ui-workspace-names-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~SettingsPageTests",
+      "fixtures": [
+        "workspace-names-todo-ready",
+        "workspace-names-todo-frozen",
+        "workspace-names-habit-ready",
+        "workspace-names-habit-frozen",
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen",
+        "workspace-names-sync"
+      ],
+      "native_date_fixtures": [
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "workspace-names-todo-frozen",
+        "workspace-names-habit-frozen",
+        "workspace-names-daily-frozen"
+      ]
+    },
+    "hierarchy-control-names": {
+      "journey": "./ux-ui-hierarchy-names-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoHierarchyPanelTests",
+      "fixtures": [
+        "hierarchy-names-tasks-ready",
+        "hierarchy-names-tasks-frozen",
+        "hierarchy-names-project-ready",
+        "hierarchy-names-project-frozen"
+      ],
+      "disabled_fixtures": [
+        "hierarchy-names-tasks-frozen",
+        "hierarchy-names-project-frozen"
+      ]
+    },
+    "daily-occurrence-readability": {
+      "journey": "./ux-ui-occurrence-date-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+      "fixtures": [
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen"
+      ],
+      "native_date_fixtures": [
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "workspace-names-daily-frozen"
+      ]
+    },
+    "recurring-row-readability": {
+      "journey": "./ux-ui-recurring-row-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTaskPanelTests",
+      "fixtures": [
+        "workspace-names-habit-ready",
+        "workspace-names-habit-frozen",
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen"
+      ],
+      "native_date_fixtures": [
+        "workspace-names-daily-ready",
+        "workspace-names-daily-frozen"
+      ],
+      "native_date_journey": true,
+      "disabled_fixtures": [
+        "workspace-names-habit-frozen",
+        "workspace-names-daily-frozen"
+      ]
+    },
+    "settings-content-reflow": {
+      "journey": "./ux-ui-settings-reflow-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~SettingsPageTests",
+      "fixtures": [
+        "workspace-names-sync",
+        "settings-reflow-signed-out"
+      ],
+      "disabled_fixtures": [
+        "settings-reflow-signed-out"
+      ]
+    },
+    "push-capability-state": {
+      "journey": "./ux-ui-push-capability-journey.mjs",
+      "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+      "fixtures": [
+        "push-capability-unchecked",
+        "push-capability-checking",
+        "push-capability-failed",
+        "push-capability-available-default",
+        "push-capability-available-granted",
+        "push-capability-available-denied",
+        "push-capability-installation-required-default",
+        "push-capability-unsupported-unsupported",
+        "push-capability-insecure-default",
+        "push-capability-module-failed"
+      ],
+      "disabled_fixtures": [
+        "push-capability-checking",
+        "push-capability-available-denied",
+        "push-capability-installation-required-default",
+        "push-capability-unsupported-unsupported"
+      ]
+    },
+    "compact-navigation": {
+      "journey": "./ux-ui-compact-navigation-journey.mjs",
+      "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+      "fixtures": [
+        "shell-today",
+        "shell-inbox",
+        "shell-plan",
+        "shell-projects",
+        "shell-tasks",
+        "shell-inventory",
+        "shell-settings"
+      ],
+      "reuse_hydrated_page": true
+    },
+    "equipment-discovery": {
+      "journey": "./ux-ui-equipment-discovery-journey.mjs",
+      "test_filter": "FullyQualifiedName~InventoryPageTests",
+      "fixtures": [
+        "equipment-discovery-initial",
+        "equipment-discovery-name",
+        "equipment-discovery-empty",
+        "equipment-discovery-slot",
+        "equipment-discovery-two-handed"
+      ],
+      "disabled_fixtures": [
+        "equipment-discovery-name",
+        "equipment-discovery-empty",
+        "equipment-discovery-slot"
+      ],
+      "reuse_hydrated_page": true,
+      "synthetic_user_fixture": "./ux-ui-discovery-user.json",
+      "synthetic_content_fixture": "./ux-ui-discovery-content.json"
+    },
+    "daily-timezones": {
+      "journey": "./ux-ui-daily-timezones-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoRecurringEditorTests|FullyQualifiedName~TodoTaskPanelTests",
+      "reuse_hydrated_page": true,
+      "synthetic_user_fixture": "./ux-ui-daily-timezones-user.json",
+      "fixtures": [
+        "daily-timezones-capture",
+        "daily-timezones-review",
+        "daily-timezones-mismatch",
+        "daily-timezones-fractional",
+        "daily-timezones-daystart",
+        "daily-timezones-linked-alias",
+        "daily-timezones-linked-east",
+        "daily-timezones-native",
+        "daily-timezones-tasks",
+        "daily-timezones-sync"
+      ],
+      "disabled_fixtures": [
+        "daily-timezones-review",
+        "daily-timezones-fractional",
+        "daily-timezones-daystart",
+        "daily-timezones-native"
+      ],
+      "disabled_controls": {
+        "daily-timezones-review": [
+          "daily-zone"
+        ],
+        "daily-timezones-fractional": [
+          "daily-zone"
+        ],
+        "daily-timezones-daystart": [
+          "daily-zone"
+        ],
+        "daily-timezones-native": [
+          "recurring-zone"
+        ]
+      },
+      "native_date_journey": true
+    },
+    "saved-list-layout": {
+      "journey": "./ux-ui-saved-layout-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoSavedListPanelTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "saved-layout-browse",
+        "saved-layout-results",
+        "saved-layout-compact",
+        "saved-layout-review",
+        "saved-layout-empty",
+        "saved-layout-invalid",
+        "todo-saved-unavailable"
+      ],
+      "disabled_fixtures": [
+        "saved-layout-review"
+      ],
+      "disabled_controls": {
+        "saved-layout-review": [
+          "saved-list-name"
+        ]
+      },
+      "native_date_journey": true
+    },
+    "phone-notes-editor": {
+      "journey": "./ux-ui-phone-notes-journey.mjs",
+      "test_filter": "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~NotesFolderPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "phone-notes-library",
+        "phone-notes-editor",
+        "phone-notes-draft",
+        "phone-notes-guard",
+        "phone-notes-pending-editor",
+        "phone-notes-pending-library",
+        "phone-notes-project-library",
+        "phone-notes-project-editor",
+        "notes-empty",
+        "notes-conflict",
+        "notes-purge"
+      ],
+      "disabled_fixtures": [
+        "phone-notes-pending-editor",
+        "notes-conflict",
+        "notes-purge"
+      ],
+      "disabled_controls": {
+        "phone-notes-pending-editor": [
+          "note-title",
+          "note-body"
+        ]
+      }
+    },
+    "projects-browse-first": {
+      "journey": "./ux-ui-projects-browse-journey.mjs",
+      "test_filter": "FullyQualifiedName~TodoOrganizationPanelTests|FullyQualifiedName~TodoProjectAliasTests|FullyQualifiedName~ProjectHistoryPanelTests|FullyQualifiedName~NotesProjectPanelTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "projects-browse-page",
+        "projects-browse-selected",
+        "projects-browse-review",
+        "projects-browse-empty",
+        "projects-browse-create",
+        "projects-browse-notes"
+      ],
+      "disabled_fixtures": [
+        "projects-browse-review"
+      ],
+      "disabled_controls": {
+        "projects-browse-review": [
+          "organization-alias"
+        ]
+      }
+    },
+    "settings-sections": {
+      "journey": "./ux-ui-settings-sections-journey.mjs",
+      "test_filter": "FullyQualifiedName~SettingsPageTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "settings-sections-signed-in",
+        "settings-sections-signed-out",
+        "connection-fresh-tab",
+        "integration-management",
+        "settings-reflow-signed-out"
+      ],
+      "disabled_fixtures": [
+        "settings-sections-signed-out",
+        "connection-fresh-tab"
+      ]
+    },
+    "named-reminder-days": {
+      "journey": "./ux-ui-reminder-days-journey.mjs",
+      "test_filter": "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests|FullyQualifiedName~TodoCategoryPageTests",
+      "reuse_hydrated_page": true,
+      "native_date_journey": true,
+      "fixtures": [
+        "push-days-weekly-empty",
+        "push-days-weekly-review",
+        "push-days-monthly-empty",
+        "push-days-monthly-edit",
+        "push-days-monthly-review",
+        "push-schedule-paused",
+        "push-schedule-unknown",
+        "todo-tasks-main"
+      ],
+      "disabled_fixtures": [
+        "push-days-weekly-review",
+        "push-days-monthly-review",
+        "push-schedule-paused"
+      ],
+      "disabled_controls": {
+        "push-days-weekly-review": [
+          "schedule-zone"
+        ],
+        "push-days-monthly-review": [
+          "schedule-zone"
+        ]
+      },
+      "native_date_fixtures": [
+        "push-days-weekly-empty",
+        "push-days-weekly-review",
+        "push-days-monthly-edit"
+      ]
+    },
+    "equipment-count-wrap": {
+      "journey": "./ux-ui-equipment-counts-journey.mjs",
+      "test_filter": "FullyQualifiedName~InventoryPageTests",
+      "reuse_hydrated_page": true,
+      "synthetic_user_fixture": "./ux-ui-counts-user.json",
+      "synthetic_content_fixture": "./ux-ui-game-content.json",
+      "fixtures": [
+        "inventory-count-large",
+        "inventory-count-translated",
+        "inventory-intelligence-stale"
+      ],
+      "disabled_fixtures": [
+        "inventory-intelligence-stale"
+      ]
+    },
+    "sync-timestamp": {
+      "journey": "./ux-ui-sync-timestamp-journey.mjs",
+      "test_filter": "FullyQualifiedName~SettingsPageTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "sync-timestamp-en-us",
+        "sync-timestamp-en-gb",
+        "sync-timestamp-missing"
+      ]
+    },
+    "copy-unset-values": {
+      "journey": "./ux-ui-copy-values-journey.mjs",
+      "test_filter": "FullyQualifiedName~TaskTypeConversionPanelTests|FullyQualifiedName~TodoCategoryPageTests",
+      "reuse_hydrated_page": true,
+      "fixtures": [
+        "copy-unset-minimal-owner",
+        "copy-unset-populated-owner",
+        "type-copy-review-todo",
+        "type-copy-review-habit",
+        "type-copy-review-daily",
+        "type-copy-long",
+        "todo-tasks-main",
+        "todo-habits-main",
+        "todo-dailies-main"
+      ],
+      "disabled_fixtures": [
+        "copy-unset-minimal-owner",
+        "copy-unset-populated-owner",
+        "type-copy-review-todo",
+        "type-copy-review-habit",
+        "type-copy-review-daily"
+      ]
+    },
+    "notes-entry-readiness": {
+      "journey": "./ux-ui-notes-entry-journey.mjs",
+      "test_filter": "FullyQualifiedName~NotesPanelTests|FullyQualifiedName~TodoCategoryPageTests",
+      "fixtures": [
+        "notes-initial-load",
+        "notes-initial-entry",
+        "notes-empty",
+        "todo-tasks-main"
+      ],
+      "disabled_fixtures": [
+        "notes-initial-load"
+      ],
+      "reuse_hydrated_page": true,
+      "cold_start_once_per_engine": true
+    }
+  }
+}

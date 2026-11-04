@@ -1,0 +1,39 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-2bf25d6d-8000-45b6-9241-0b360c96f1b4",
+  "classification": "executed-control",
+  "cleanup": "All owned Miniflare instances and isolated D1 databases disposed; local TLS/receiver servers closed. No provider credential, actual subscription, host chat or task/game operation executed. Serial dry builds completed under pinned toolchain.",
+  "counts": {
+    "discovered": 9,
+    "expected": 9,
+    "failed": 0,
+    "passed": 9,
+    "skipped": 0
+  },
+  "definition": "ee045c11f34dcee1edf88a4d88229f5dd1e2e172c0f46f1fc1b5f0a9295b95dd",
+  "environment_identity": "b5d161e311fe9954860633ce98278075dcac371b0be348111f4edc21c27449a9",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-execution.log",
+      "sha256": "2be4383524d21a74d45816a42386d40f139d173d74930fa48d5b9c3e1d202366"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notification-release-2026-11-02-final/callback-authorization-operation.json",
+      "sha256": "9ca401cb4bbe9324b3d7f945eea56bf1536f9c23e6daa819505b726019722308"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "03954f2e35ddbef8fd23cd575b5451f7a940efd49a812e8259b54281348b253f",
+  "payload_hash": "736957762bd54014fffbbbe754567839b338b4b971af3b55d102e82e5d08323d",
+  "recorded_at": "2026-11-02T13:55:18.071047+00:00",
+  "result": "pass",
+  "sources": {
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/test/events.test.mjs": "fc0551763493ab8e997353cb98dcbcd5d4a50abcc417ac2dfa5a5d7cb2e82073"
+  },
+  "timing": {
+    "tool_wall_seconds": 9.876698500011116
+  }
+}

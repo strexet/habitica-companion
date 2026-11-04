@@ -6,11 +6,13 @@
 @inject NavigationManager NavigationManager
 
 <MudLayout>
+    <a class="skip-to-content" href="#main-content" @onclick="SkipToContentAsync" @onclick:preventDefault>Skip to main content</a>
     <ForegroundReminderHost />
     <MudAppBar Class="topbar" Dense="true" Elevation="0">
         @if (ShowDrawer)
         {
-            <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Outlined.Menu" OnClick="ToggleDrawer" />
+            <MudIconButton @ref="_menuButton" Color="Color.Inherit" Icon="@Icons.Material.Outlined.Menu" OnClick="ToggleDrawer"
+                           aria-label="Main navigation" aria-controls="primary-navigation" aria-expanded="@(_drawerOpen ? "true" : "false")" @onkeydown="HandleDrawerKey" data-layout-primary="true" />
         }
         <div class="topbar-copy">
             <strong>Habitica Tool</strong>
@@ -48,11 +50,11 @@
 
     @if (ShowDrawer)
     {
-        <MudDrawer @bind-Open="_drawerOpen" Class="app-drawer" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive">
-            <div class="drawer-hero">
-                <p class="section-label">Habitica companion</p>
-                <h2>Local-first planning surface</h2>
-                <p>Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.</p>
+        <MudDrawer Open="_drawerOpen" OpenChanged="DrawerChangedAsync" Class="app-drawer" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive"
+                   id="primary-navigation" role="navigation" aria-label="Primary navigation" aria-hidden="@(_drawerOpen ? "false" : "true")" inert="@(_drawerOpen ? null : string.Empty)" @onkeydown="HandleDrawerKey">
+            <div class="drawer-identity">
+                <strong>Habitica Tool</strong>
+                <span>@(SessionController.State.DisplayName ?? "Signed in")</span>
             </div>
 
             <AppNavMenu />
@@ -60,6 +62,7 @@
     }
 
     <MudMainContent>
+        <main id="main-content" tabindex="-1" @ref="_mainContent">
         <div class="shell-content">
             @if (!string.IsNullOrWhiteSpace(SessionController.State.ErrorMessage))
             {
@@ -70,16 +73,21 @@
 
             @Body
         </div>
+        </main>
     </MudMainContent>
 </MudLayout>
 
 @code {
     private bool _drawerOpen = true;
+    private bool _drawerOpenedByUser;
+    private MudIconButton? _menuButton;
+    private ElementReference _mainContent;
     private bool ShowDrawer => SessionController.State.IsAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
         SessionController.Changed += HandleStateChanged;
+        NavigationManager.LocationChanged += RouteChanged;
         await SessionController.InitializeAsync();
     }
 
@@ -191,14 +199,39 @@
         };
     }
 
-    private void ToggleDrawer()
+    private async Task ToggleDrawer()
     {
         _drawerOpen = !_drawerOpen;
+        _drawerOpenedByUser = _drawerOpen;
+        if (!_drawerOpen && _menuButton is not null) await _menuButton.FocusAsync();
     }
+
+    private async Task SkipToContentAsync() => await _mainContent.FocusAsync();
+
+    private async Task DrawerChangedAsync(bool open)
+    {
+        _drawerOpen = open;
+        if (!open && _drawerOpenedByUser && _menuButton is not null)
+        {
+            _drawerOpenedByUser = false;
+            await _menuButton.FocusAsync();
+        }
+    }
+
+    private async Task HandleDrawerKey(KeyboardEventArgs args)
+    {
+        if (args.Key != "Escape" || !_drawerOpen) return;
+        _drawerOpen = false;
+        _drawerOpenedByUser = false;
+        if (_menuButton is not null) await _menuButton.FocusAsync();
+    }
+
+    private void RouteChanged(object? sender, LocationChangedEventArgs args) => _drawerOpenedByUser = false;
 
     public void Dispose()
     {
         SessionController.Changed -= HandleStateChanged;
+        NavigationManager.LocationChanged -= RouteChanged;
     }
 
     private sealed record HeaderSyncStatus(string Text, string ClassName, string? Title);

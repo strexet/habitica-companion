@@ -1,0 +1,19 @@
+{
+  "task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+  "required_review": [
+    "Prefer the retained selected source over coordinator metadata in readiness Source while original command ownership prevents selection adoption. Add a coordinator preference-transition regression; no authority changes.",
+    "Check the LinkPreview-with-unavailable-snapshot action: use explicit reload before focusing a review that cannot yet render.",
+    "Re-run all focused and browser checks after required disabled-readability dependency and task-definition/source amendments.",
+    "Exercise the new original-review focus action. A conditional native h3 can reuse the existing themed heading focus style without changing global disabled CSS. Browser preview/cancel on a synthetic task can verify focus and no accepted journal writes."
+  ],
+  "reason": "Review refinements remain within the open workspace-readiness root; its acceptance is not yet recorded.",
+  "source_refinements_complete": true,
+  "validation_pending": null,
+  "refinement_red_receipts": [
+    ".skill-tree/history/validation/ux-ui/workspace-readiness/C-2122a5ae-b403-4ba6-bdfc-32a40c89b538.log",
+    ".skill-tree/history/validation/ux-ui/workspace-readiness/C-3a65fdc0-856e-432b-9a6d-3928c96b54c2.log"
+  ],
+  "focused_green_receipt": ".skill-tree/history/validation/ux-ui/workspace-readiness/C-8503eb9f-cbb4-49bf-b367-96ded3ae612c.log",
+  "browser_pass": ".skill-tree/history/validation/ux-ui/workspace-readiness/browser/b86b5ec5-acc3-4d69-8995-a261cf1dc696.json",
+  "visual_review": "Current hydrated phone/desktop, normal/enlarged text and light/dark original-review focus screenshots inspected. Heading is readable and focused below the fixed header. Header sync-label clipping remains the separately captured deferred followup."
+}

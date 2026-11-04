@@ -1,0 +1,12 @@
+{
+  "title": "Make retained values inspectable in read-only task editors",
+  "priority": 100,
+  "description": "At360 pixels and200-percent text, the frozen editor displays only part of the retained single-line title. The full draft value is preserved but is not exposed as a wrapped readable value beside the disabled field.",
+  "expected_behavior": "Provide an accessible way to inspect the full retained task or draft value while editing remains unavailable. Preserve frozen authority, original command ownership and account-private draft isolation.",
+  "context": "A nonblocking UX follow-up separate from the current3:1 disabled-text colour target. Research long values and keyboard/assistive inspection before choosing a wrapped read-only view or equivalent affordance.",
+  "source": ".skill-tree/artifacts/ux-ui/disabled-readability/1793703840510303000/chromium-gryphy-light-disabled-task-frozen.png; .skill-tree/artifacts/ux-ui/disabled-readability/1793703840510303000/chromium-obsidian-glow-disabled-task-frozen.png; TodoTaskPanel disabled capture fieldset and retained title draft.",
+  "root_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "related_task_id": "T-4afee12c-2759-40f6-adb4-39b5029a3928",
+  "relation": "followup",
+  "expected_source_hash": "8547a1ddac6ef546a2695923008518392383561e01ec9908933077bcf7acb4c6"
+}

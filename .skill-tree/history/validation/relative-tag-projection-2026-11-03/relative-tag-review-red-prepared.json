@@ -1,0 +1,58 @@
+{
+  "assertion": "Actual SDK/Auth/Workspace/D1 preview binds one server evaluation instant/day/timezone and complete additions/removals; stale day/revision/consent refuses without effects and original unknown receipts remain recoverable.",
+  "attempt_id": "C-d7a94b53-1af1-4c27-b2b2-2625d45887d9",
+  "check_id": "day-bound-tag-review",
+  "definition": "bae45524f624e95e28479f5beb86483892f79046c83e50f62dbbe83d12ae1a38",
+  "environment_identity": "2e59cf5a3e910bd5cb3bf6c676c586af43d96d6d7453783fcde32b45812d124a",
+  "key": "f8534f2bb272a84b38969a31dcf99876b4334fc00f404e3224c49eb9e5af32e4",
+  "launch": {
+    "assertion": "Exact reviewed folder adoption or evaluation-day tag membership preserves original identities, causal receipts, refusal boundaries and no implicit effects.",
+    "authorization": "Direct owner selection of the two researched tasks; local synthetic fixtures only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot prove serialization, actual isolated D1 atomic acceptance or original uncertain-receipt recovery.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-03T01:50:45.785206+00:00",
+    "execution_profile": "selected-followups-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T01:41:45.982593+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/relative-tag-review.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "d441ac7d17bd0a3f4acd70958700b025b2f988fb7241770464293695485b735a",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "4b84e182c47def925862db241536c7f0a9efb965ca2098f3982d383d1919e139",
+    "workers/companion-workspace/src/tag-executor.ts": "e9c396c235517c19eddc10f5c77817c9e70b8ffce9e516eaa149d16d1f435419",
+    "workers/companion-workspace/src/tag-planner.ts": "7f1b9b01abc3a1be6b4953dab9aa810be8668f7489370e6b361ad047390ae84a",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "e37a849ed7220bd81cf2aeed872c8794ce08bd01ef15066b77bfcb2544dcf252",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/group-tag-tools.ts": "ddf28f52d7566323ed73629e972162a37c1f02bea2491f55f0cf777c8df21d7b",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/tag-membership.ts": "5f99678c975eac136f93bf6091fb4bb43b49ec60419c1406ccc18923226a51c1"
+  },
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5"
+}

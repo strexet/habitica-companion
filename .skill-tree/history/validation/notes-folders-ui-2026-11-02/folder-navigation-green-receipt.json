@@ -1,0 +1,48 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-e805e312-1135-431d-8665-efd2dd73be70",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 55,
+    "expected": 55,
+    "failed": 0,
+    "passed": 55,
+    "skipped": 0
+  },
+  "definition": "2e398c4da986e640f43e6f7ad34160ab489c0b6348722f7340c38f74aaec918c",
+  "environment_identity": "ff7479d3c97c9e8d8f4b89fc7776a2e92260257e4dfe820c2a94a255396219e6",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-green-execution.log",
+      "sha256": "6120281a48a6f2cd6c13ff312050f0f57f28ba32a7f801aea9ecc1926394a6ed"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-navigation-green.trx",
+      "sha256": "7ae531f3a517883bdd2b1215099f2b2d0590b3e79a3fcda5886196c993b2b48a"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "f8664a2ffa3a9185c6c6ab6ea3f4da3b4bfeac4cc3c30277239cf7f3a91881d2",
+  "payload_hash": "440d0f957b4b09ec3a65d0ea9757d372025417ac3b0bed12f5f3e58a955f7db1",
+  "recorded_at": "2026-11-02T17:30:30.689516+00:00",
+  "result": "pass",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+    "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+    "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+    "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "c27c5a17c971757eed34a70d8be07ee4967c5e0194bc72d5a1738a7eb0c8c5fe",
+    "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+    "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+    "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "e93f4204486bb04e5cfd6cc04cd2deeb2692a9eea29f05008be722f86f9fd7f3",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+  },
+  "timing": {
+    "tool_wall_seconds": 14.930362500017509
+  }
+}

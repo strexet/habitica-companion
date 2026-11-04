@@ -1,0 +1,17 @@
+{
+  "started_at_utc": "2026-11-02T04:29:46.969001+00:00",
+  "deadline_seconds": 60,
+  "cleanup_reserve_seconds": 5,
+  "wall_seconds": 1.959,
+  "command": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "versions",
+    "view",
+    "450abcfa-f983-4644-9af2-04a18f2be27e",
+    "--config",
+    "deploy/.production/chatgpt-mcp.json",
+    "--json"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool",
+  "exit_code": 0
+}

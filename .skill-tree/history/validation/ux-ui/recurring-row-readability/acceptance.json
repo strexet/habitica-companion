@@ -1,0 +1,50 @@
+{
+  "task_id": "T-d123dff7-af96-45ab-9690-a0932de03df9",
+  "title": "Keep recurring task identities readable beside row actions",
+  "operation_history": ".skill-tree/history/validation/ux-ui/recurring-row-readability/operation-history.json",
+  "checks": [
+    {
+      "id": "recurring-row-readability-behavior",
+      "counts": {
+        "discovered": 25,
+        "expected": 25,
+        "failed": 0,
+        "passed": 25,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.log",
+          "sha256": "25e5e0c8a44914d7e7ba838dcffb953acad5ffb17f113ea18ae6d8e8addac870"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/C-025b020a-3645-424b-a063-bcb628367689.trx",
+          "sha256": "3481dc151bd844d0fc8e4ee4b097307ac1edd2c6190c184f1c473f25cbd7af34"
+        }
+      ]
+    },
+    {
+      "id": "recurring-row-readability-rendered",
+      "counts": {
+        "discovered": 433,
+        "expected": 433,
+        "failed": 0,
+        "passed": 433,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/recurring-row-readability/browser/fee49d91-e535-4dd0-8c25-87dd43c0afbf.json",
+          "sha256": "8b1793bcbd518fd30094e7d21c9dc620647676dd74cbdd8e7103122a1be2f2e5"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

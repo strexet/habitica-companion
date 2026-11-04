@@ -1,0 +1,12 @@
+{
+  "original_capture_failure": ".skill-tree/artifacts/ux-ui/notes-entry-readiness/1793768582000406000/step-1.log",
+  "original_browser_attempt": "C-d3ac6af3-2814-4f51-aa59-a1c067fd6c9d:unavailable before browser launch",
+  "focused_same_source_pass": "C-9b480ec3-befd-4eb5-88bb-24287f320a49:26passed immediately before capture filter",
+  "control_change": "Await ClickAsync and bounded editor render once after held-load release; retain exact editor assertion, dirty-source assertions and no notebook/provider writes. No repeated click, sleep, source hook, product code, browser adapter or recipe change. A persistent library state still fails the bounded assertion.",
+  "affected_declared_contracts": [
+    "disabled-readability",
+    "phone-notes-editor",
+    "notes-entry-readiness"
+  ],
+  "unaffected_receipts": "Exact matching source/definition/environment evidence remains reusable for the other33UIcontracts."
+}

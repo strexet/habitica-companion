@@ -1,0 +1,7 @@
+{
+  "original_failure": "efe9720d-3e11-4d10-baa9-969b76eb49a5",
+  "classification": "prerequisite-wait",
+  "observed": "Declared route contract includes /todo/tasks; PushReminder test captures only reminders/open/sync. prepare correctly refused missing Tasks capture before browser launch.",
+  "correction": "Include existing TodoCategoryPageTests/actual todo-tasks-main capture and native Tasks/back navigation. All required routes retained.",
+  "cleanup": "No browser launched; publish, test and prepare processes exited."
+}

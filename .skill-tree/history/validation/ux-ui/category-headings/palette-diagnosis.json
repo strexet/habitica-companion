@@ -1,0 +1,5 @@
+{
+  "finding": "The category journey wrote IndexedDB preferences but did not apply the palette or seed the fast-cache mirror. The dark-labeled hydrated screenshot still showed the default light colors. Static rendered scheme cases were separate and correctly styled; no current category acceptance is recorded.",
+  "evidence": ".skill-tree/artifacts/ux-ui/category-headings/1793708091555315000/chromium-gryphy-dark-360-100-category-habits-focus.png",
+  "repair": "Apply the exact selected scheme in the category journey after each real load and assert observed root scheme and font size. Add a shared runner guard rejecting metadata/observed appearance mismatch; repair navigation preference seeding before final completed-contract revalidation."
+}

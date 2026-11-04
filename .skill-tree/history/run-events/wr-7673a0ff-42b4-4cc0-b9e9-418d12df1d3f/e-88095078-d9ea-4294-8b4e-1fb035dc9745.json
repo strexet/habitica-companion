@@ -1,0 +1,288 @@
+{
+  "changes": [],
+  "checkpoint_after": {
+    "admission": {
+      "environment_id": "f7407930d00854f85e1e8d357d5f2bb8ff822412a7e884c5d77bb8858097119d",
+      "flavor": "web",
+      "identity": "bf04b07f4bcd4f2cc9e9418b7183d1eb1b594f061d9a80fead7564ab81a7b6bc"
+    },
+    "admitted_groups": {},
+    "admitted_task_ids": [
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+    ],
+    "completed_ids": [],
+    "current_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "deferred_ids": [],
+    "delivery": {
+      "authorization": {
+        "deploy": true,
+        "instruction": "Merge every completed change into develop, validate the result, merge into main and deploy the complete main state. Owner authorizes commits, pushes, branch manipulation, PR creation and merge, conflict resolution and production publication. Preserve independent account/device acceptance.",
+        "instruction_origin": "owner",
+        "merge": true,
+        "pr": true,
+        "production_target_branch": "main",
+        "target_branch": "develop"
+      },
+      "implementation": "in-progress",
+      "publication": "not-requested",
+      "status": "implementation-in-progress"
+    },
+    "id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+    "limits": {},
+    "mode": "all",
+    "next_action": "implement",
+    "partial_work": [],
+    "pending_ids": [],
+    "phase": "implement",
+    "processing_results": [],
+    "required_ids": [
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+    ],
+    "root_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "snapshot": [
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac"
+    ],
+    "started_at": "2026-11-04T17:07:46.369871+00:00",
+    "stop_reason": null,
+    "workspace": {
+      "base_branch": "develop",
+      "base_commit": "d03bc1baff3674519d1c27b9f40c608d1f034d3f",
+      "branch": "codex/integrate-complete-production",
+      "local_base": false,
+      "remote": "origin",
+      "remote_id": "8867e1dfe9f0faa5d3c08dc116176b3587744b1ca06add6eda26e4b7d3c2f87f",
+      "repo_id": "346b942e74fecb3988438bd677ba7ad4d7f338cd2e03894b2b0a7aad558e4c94",
+      "worktree_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f"
+    },
+    "workspace_state": "ready"
+  },
+  "checkpoint_before": {
+    "admission": {
+      "environment_id": "f7407930d00854f85e1e8d357d5f2bb8ff822412a7e884c5d77bb8858097119d",
+      "flavor": "web",
+      "identity": "bf04b07f4bcd4f2cc9e9418b7183d1eb1b594f061d9a80fead7564ab81a7b6bc"
+    },
+    "admitted_groups": {},
+    "admitted_task_ids": [
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+    ],
+    "completed_ids": [],
+    "current_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "deferred_ids": [],
+    "delivery": {
+      "authorization": {
+        "deploy": true,
+        "instruction": "Merge every completed change into develop, validate the result, merge into main and deploy the complete main state. Owner authorizes commits, pushes, branch manipulation, PR creation and merge, conflict resolution and production publication. Preserve independent account/device acceptance.",
+        "instruction_origin": "owner",
+        "merge": true,
+        "pr": true,
+        "production_target_branch": "main",
+        "target_branch": "develop"
+      },
+      "implementation": "in-progress",
+      "publication": "not-requested",
+      "status": "implementation-in-progress"
+    },
+    "id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+    "limits": {},
+    "mode": "all",
+    "next_action": "implement",
+    "partial_work": [],
+    "pending_ids": [],
+    "phase": "implement",
+    "processing_results": [],
+    "required_ids": [
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4"
+    ],
+    "root_task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "snapshot": [
+      "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+      "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+      "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+      "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+      "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac"
+    ],
+    "started_at": "2026-11-04T17:07:46.369871+00:00",
+    "stop_reason": null,
+    "workspace": {
+      "base_branch": "develop",
+      "base_commit": "d03bc1baff3674519d1c27b9f40c608d1f034d3f",
+      "branch": "codex/integrate-complete-production",
+      "local_base": false,
+      "remote": "origin",
+      "remote_id": "8867e1dfe9f0faa5d3c08dc116176b3587744b1ca06add6eda26e4b7d3c2f87f",
+      "repo_id": "346b942e74fecb3988438bd677ba7ad4d7f338cd2e03894b2b0a7aad558e4c94",
+      "worktree_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f"
+    },
+    "workspace_state": "ready"
+  },
+  "id": "E-88095078-d9ea-4294-8b4e-1fb035dc9745",
+  "outcomes": [],
+  "progress_changes": [
+    {
+      "after": {
+        "admission": {
+          "environment_id": "f7407930d00854f85e1e8d357d5f2bb8ff822412a7e884c5d77bb8858097119d",
+          "flavor": "web",
+          "identity": "bf04b07f4bcd4f2cc9e9418b7183d1eb1b594f061d9a80fead7564ab81a7b6bc"
+        },
+        "checks": {
+          "preserved-source": {
+            "attempt": {
+              "attempt_id": "C-b263d99d-4291-4b6c-a293-4081a1127d91",
+              "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+              "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+              "key": "c51a0b9a700247eb30e9a696204e3f23e75fe61eac34bfca659720d9f3f17fa8",
+              "launch": null,
+              "prepared_at": "2026-11-04T17:12:19.246831+00:00",
+              "recipe": {
+                "assertion_contract": "explicit source and artifact assertions",
+                "input_paths": [],
+                "lane": "static"
+              },
+              "sources": {
+                ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+                ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+                "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+              }
+            },
+            "receipts": {
+              "C-b263d99d-4291-4b6c-a293-4081a1127d91": {
+                "actual_lane": "static",
+                "assertions": [
+                  {
+                    "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+                    "result": "pass"
+                  }
+                ],
+                "attempt_id": "C-b263d99d-4291-4b6c-a293-4081a1127d91",
+                "classification": "executed-control",
+                "cleanup": "Read-only source, Git and retained evidence checks completed; no launched product process.",
+                "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+                "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+                "evidence": [
+                  {
+                    "available": true,
+                    "path": ".skill-tree/history/validation/integrate-production/T-7bba9311-6e90-492e-a7bb-df656c3d26a9/C-b263d99d-4291-4b6c-a293-4081a1127d91.json",
+                    "sha256": "c3ad5f14a5ef428fd8e0f4151263a25c60e363882e0c5e2915ae854d5e66d196"
+                  }
+                ],
+                "execution_sessions": {},
+                "key": "c51a0b9a700247eb30e9a696204e3f23e75fe61eac34bfca659720d9f3f17fa8",
+                "payload_hash": "65db7e308e574df1a4813479f6cfd54cb8b6fccf861869fe5652da9a4cb3319e",
+                "recorded_at": "2026-11-04T17:12:21.180359+00:00",
+                "result": "pass",
+                "sources": {
+                  ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+                  ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+                  "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+                },
+                "timing": {
+                  "tool_wall_seconds": 1.2198204579763114
+                }
+              }
+            },
+            "result": {
+              "actual_lane": "static",
+              "assertions": [
+                {
+                  "assertion": "A frozen source inventory and recoverable commit preserve every reviewed completed change and the canonical stopped-run state without publishing credentials.",
+                  "result": "pass"
+                }
+              ],
+              "attempt_id": "C-b263d99d-4291-4b6c-a293-4081a1127d91",
+              "classification": "executed-control",
+              "cleanup": "Read-only source, Git and retained evidence checks completed; no launched product process.",
+              "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+              "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+              "evidence": [
+                {
+                  "available": true,
+                  "path": ".skill-tree/history/validation/integrate-production/T-7bba9311-6e90-492e-a7bb-df656c3d26a9/C-b263d99d-4291-4b6c-a293-4081a1127d91.json",
+                  "sha256": "c3ad5f14a5ef428fd8e0f4151263a25c60e363882e0c5e2915ae854d5e66d196"
+                }
+              ],
+              "execution_sessions": {},
+              "key": "c51a0b9a700247eb30e9a696204e3f23e75fe61eac34bfca659720d9f3f17fa8",
+              "payload_hash": "65db7e308e574df1a4813479f6cfd54cb8b6fccf861869fe5652da9a4cb3319e",
+              "recorded_at": "2026-11-04T17:12:21.180359+00:00",
+              "result": "pass",
+              "sources": {
+                ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+                ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+                "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+              },
+              "timing": {
+                "tool_wall_seconds": 1.2198204579763114
+              }
+            }
+          }
+        },
+        "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+        "execution_sessions": {},
+        "partial_work": [],
+        "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+        "stage": "awaiting-validation"
+      },
+      "before": {
+        "admission": {
+          "environment_id": "f7407930d00854f85e1e8d357d5f2bb8ff822412a7e884c5d77bb8858097119d",
+          "flavor": "web",
+          "identity": "bf04b07f4bcd4f2cc9e9418b7183d1eb1b594f061d9a80fead7564ab81a7b6bc"
+        },
+        "checks": {
+          "preserved-source": {
+            "attempt": {
+              "attempt_id": "C-b263d99d-4291-4b6c-a293-4081a1127d91",
+              "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+              "environment_identity": "26b981652d3f5ae52b9ca446f1825e2b696d42481df21d6606e95f227dd433ab",
+              "key": "c51a0b9a700247eb30e9a696204e3f23e75fe61eac34bfca659720d9f3f17fa8",
+              "launch": null,
+              "prepared_at": "2026-11-04T17:12:19.246831+00:00",
+              "recipe": {
+                "assertion_contract": "explicit source and artifact assertions",
+                "input_paths": [],
+                "lane": "static"
+              },
+              "sources": {
+                ".gitignore": "0465a4edcbbb9836ad1654ba96cec0e6ebb4d7267a2caaf5450998a2ea89b238",
+                ".skill-tree/documents/build-and-release.md": "f0f10585683116c57e6eb249317efe847e7127cf7b235d86a527197ab02a3af3",
+                "AGENTS.md": "a0032bc8c6db76b35563c264f58960d7c20580c2d6533fb0e08f6e7aec55ec53"
+              }
+            }
+          }
+        },
+        "definition": "811e641c1b24692e61afd6ad280dc10baf0a49794c76a5e2bb18955a68994bc9",
+        "execution_sessions": {},
+        "partial_work": [],
+        "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+        "stage": "awaiting-validation"
+      },
+      "task_id": "T-7bba9311-6e90-492e-a7bb-df656c3d26a9"
+    }
+  ],
+  "queue_id": "Q-41cd2562-cb8a-4826-a1c4-e50c694fa593",
+  "run_id": "WR-7673a0ff-42b4-4cc0-b9e9-418d12df1d3f",
+  "schema": 1,
+  "sequence": 10
+}

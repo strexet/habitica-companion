@@ -1,0 +1,7 @@
+{
+  "httpStatus": 200,
+  "service": "callback-egress",
+  "version": "callback-egress-v1",
+  "runtimeNodeMajor": 22,
+  "activation": "unqualified"
+}

@@ -1,0 +1,69 @@
+{
+  "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+  "attempt_id": "C-5d532ff4-dadd-43a0-8426-c04bd9e85ff5",
+  "check_id": "daily-schedule-rules",
+  "definition": "93af30510b23e287e5c18f82a330f93ad48c201709b50d6a2971f3b0396d58cd",
+  "environment_identity": "013b65ae9c598494aaf12aba9e69e03ee0bf26b241678147d1cd608bae13af80",
+  "key": "ebebd03545263f59cd3243b9023512ac3ce6186a9ae16aab43a04feb8704f969",
+  "launch": {
+    "assertion": "Lossless linked Daily schedule review, preserved provider fields, exact preconditions and original outcome authority.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish historical calendar, causal coverage, as-of and component interaction behavior.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T19:22:21.730196+00:00",
+    "execution_profile": "linked-daily-schedules-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T19:14:21.906201+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Schedule",
+      "--logger",
+      "trx;LogFileName=daily-schedule-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9adef2108384841fefd8366d40184f5ad67e9f16636ab205e91ce1be7722335a",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "15793e9470c7932b9707d6f1b43bd3b71eeea28616b10c16eb6cfa33f38a449f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/LinkedDailySchedulePolicyTests.cs": "ed03cf18f49f511f5bb2faa3e9cbb320aa66b2e2f6a2744c1649a6bd279a2014"
+  },
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

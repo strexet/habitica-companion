@@ -1,0 +1,117 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- heading "Push reminders" [active] [level=1]
+- paragraph:
+  - text: Choose a loaded cloud task, save its review cue and explicitly review device delivery. Start with
+  - link "Todo Sync":
+    - /url: /todo/sync
+  - text: for connection and device consent. Installed iPhone delivery is best effort; check system notification permission and Focus settings if a reminder does not arrive.
+- generic "Browser Workspace · rev 1"
+- paragraph: "Active Workspace: 224fa4c6-10e2-4fcf-bf49-024c6872c064. Tasks and Notes share this source."
+- button "Refresh Workspace":
+  - generic: Refresh Workspace
+- button "Reload Workspace":
+  - generic: Reload Workspace
+- link "Workspace access and transfer":
+  - /url: /todo/sync
+- paragraph:
+  - text: Task creation, field edits and scoring require Habitica correspondence. Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor.
+  - link "Open Todo Sync":
+    - /url: /todo/sync
+- region "Push devices":
+  - heading "Push devices" [level=2]
+  - paragraph: Web Push is an optional, separate channel for generic review reminders. Lock-screen messages contain no task title or notes. Delivery depends on the browser, system and network; shown and read remain unknown.
+  - paragraph: On iPhone or iPad, add this app to the Home Screen and open that installed app before enrolling this device. Allow notifications only from the explicit device button below. Denied permission must be changed in browser or system settings.
+  - button "Check push setup":
+    - generic: Check push setup
+  - paragraph: "Browser capability: unprepared · Permission: unsupported · Local receipt storage: unavailable or not loaded"
+  - paragraph:
+    - link "Choose a task and review its push schedule":
+      - /url: /todo/reminders
+    - text: . Browser-only foreground cues remain separate in
+    - link "Today":
+      - /url: /todo/today
+    - text: .
+- heading "Choose exact task" [level=2]
+- text: Filter loaded task titles
+- textbox "Filter loaded task titles"
+- text: Task
+- combobox "Task":
+  - option "Choose a task" [selected]

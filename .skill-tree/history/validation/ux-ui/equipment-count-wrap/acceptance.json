@@ -1,0 +1,50 @@
+{
+  "task_id": "T-21d74044-9947-4c8c-a030-752b2c9fff1c",
+  "title": "Prevent mid-word wrapping in equipment count summaries",
+  "operation_history": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/operation-history.json",
+  "checks": [
+    {
+      "id": "equipment-count-wrap-behavior",
+      "counts": {
+        "discovered": 32,
+        "expected": 32,
+        "failed": 0,
+        "passed": 32,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.log",
+          "sha256": "c45577c0e13e6a48d4187ea25db13ac0c0e761f27b7dc29ce060c2089d57f886"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/C-8045ba4b-6297-45bc-8152-67d4de95721a.trx",
+          "sha256": "bdb80d199511be8b4421e3c0e69cd7e29758c9a50ddccac40117357a7e8027d2"
+        }
+      ]
+    },
+    {
+      "id": "equipment-count-wrap-rendered",
+      "counts": {
+        "discovered": 361,
+        "expected": 361,
+        "failed": 0,
+        "passed": 361,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/equipment-count-wrap/browser/db478f25-e886-4af6-96aa-3df105256dd1.json",
+          "sha256": "04105b74f75c5a30855a8fa58dcb3c1ff46d06b6d85033c2d53f6737f204e4e4"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

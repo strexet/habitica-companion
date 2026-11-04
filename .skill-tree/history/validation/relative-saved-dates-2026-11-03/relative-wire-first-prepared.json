@@ -1,0 +1,63 @@
+{
+  "assertion": "- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.",
+  "attempt_id": "C-0deb9671-c1da-4a60-8d8f-9233a9ee7e2b",
+  "check_id": "relative-date-wire",
+  "definition": "17e0aca72de5549bf49b8fd17f3c1dc56440a334742728c18d9dc5f32fd80390",
+  "environment_identity": "bc5b5bb54a4b0c602dab0e9bcbee3f4c44b27542ffed2a1d3abd470ba1df76d4",
+  "key": "0c536d97a4a6549e6f307acb66c85b0040435e5faf324ec9c69ab4e4b23e98a7",
+  "launch": {
+    "assertion": "Relative saved-date parity, one explicit clock/timezone context, guarded pagination and no task/provider mutations.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Static inspection cannot establish actual SDK/D1 definition authoring, interpreted date bounds or stale-day refusal.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T21:51:31.599376+00:00",
+    "execution_profile": "linked-conversion-wire-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T21:47:32.146762+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/relative-saved-dates.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "tests/fixtures/workspace/relative-saved-command-v5.json": "25c5ae701b44ae288a86c1687bf4ef42f6f73394306d2d587c7726969bf5630c",
+    "tests/fixtures/workspace/relative-saved-dates-v1.json": "e212cf5e2e8a996d65b3303b26ca8c0c8459cf9a78348bb974c3d3aeafebec6b",
+    "workers/chatgpt-mcp/src/organization-tools.ts": "f67e4ea2400f689a500976e90bda9927025de5a1cac2f9e95e37008d619afe87",
+    "workers/chatgpt-mcp/src/task-tools.ts": "858e90c7c5a3155f39342fa8c7f956311198a9ce77b7a906d997718b2e2bed20",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/organization-commands.ts": "3df33cca9646372ce15052aca7d5ca1002beaecf7f1f89a9acf43650704a3084",
+    "workers/companion-workspace/src/saved-task-reads.ts": "dd5b4eda0ce14940314c4c37e7fb0162892548d97d3b4861964d3237d40e5141",
+    "workers/companion-workspace/test/relative-saved-dates.test.mjs": "e2d39944d56e3dc69da7ba8eeeea42f9c908fbbadd71aa7caf0892bf8e4b018d",
+    "workers/companion-workspace/test/saved-view-api.test.mjs": "5db2b3ee709e1388badff729ad3950ab7921be37d31b222d49377e63036fa045",
+    "workers/shared/build-identity.generated.ts": "9ba6850b00a697b520c9d97f85b59dce60b7f747f48b01e18e0d8dd9039c54b3",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/saved-task-query.ts": "cbd6bf671f5778a2b20bab6dbb88bfa99cbe7d422c8b9ea7ff7df3f8f9578195",
+    "workers/shared/saved-task-read.ts": "9a2c3429ba130169faa638164b99695e43511c5c8fb61e7e63d58d86afa96621",
+    "workers/shared/saved-task-views.ts": "6f788a3f568391089b4aab71986d737abf5af54a6b227212432d1cb899aac89d",
+    "workers/shared/unblocked-todos.ts": "b25665e96fcc01d624d670d0a25e1a09948210c146ab91189ea39f450525584e",
+    "workers/shared/workspace-organization.ts": "731aba96feade5ab8fd9ea45f268e9c7743884519a6997f6b86a77f91378c968"
+  },
+  "task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d"
+}

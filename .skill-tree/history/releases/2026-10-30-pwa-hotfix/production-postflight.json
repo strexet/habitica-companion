@@ -1,0 +1,24 @@
+{
+  "project": "habitica-companion",
+  "deployment_id": "0ca73607-0b0d-400b-b517-43255dfeadef",
+  "environment": "production",
+  "url": "https://0ca73607.habitica-companion.pages.dev",
+  "aliases": null,
+  "stage": {
+    "name": "deploy",
+    "started_on": null,
+    "ended_on": "2026-10-30T04:20:06.454105Z",
+    "status": "success"
+  },
+  "dashboard_runtime_config_unchanged": true,
+  "git_integration_unchanged": true,
+  "runtime_config_sha256": "0c6fa6652a3877cd8c9c25e8f9abb75e5fb14b73d13a217a84efeb3f561e9f66",
+  "provenance_marker": {
+    "field": "production.wrangler_config_hash",
+    "before": "58954c5a780abb2857aa3d2a05e91c2e5903c76d136f56b462379c3f6de7ac73",
+    "after": null,
+    "reason": "Direct upload with no local Wrangler configuration; dashboard runtime settings retained."
+  },
+  "rollback_deployment_id": "ddf7814a-ba73-4988-9033-a69ba7f882f9",
+  "public_serving_check": "Unavailable: local DNS resolution fails; web retrieval is inaccessible and local browser is disabled in Work settings."
+}

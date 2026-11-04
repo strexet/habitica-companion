@@ -1,0 +1,10 @@
+{
+  "task": "T-4b41e76a-ff2d-4e1d-a24d-c494f49ce784",
+  "red": "C-21f6e180-3eb4-4631-995c-3ba6be9ae95d:1failed/54",
+  "green": "C-2b18fb1e-3cde-491a-a7cd-0f422fbca06e:54passed",
+  "source_change": "TodoHierarchyPanel source-change reset calls ResetDraft(false). Existing ClearDraft delegates ResetDraft(true) for explicit actions. No delay, global focus suppression, weakened assertion, style, adapter or recipe change.",
+  "created_unix": 1793761318.774674,
+  "browser_followup": "Both shell contracts and Tasks/Projects hierarchy must run after this repair record. Other33UIcontracts retained only under exact current check/source/environment/evidence guards.",
+  "documentation": "Bug repair restores existing intended explicit-action/route focus ownership; no new feature or UX specification change. Detailed evidence is recorded in this history directory.",
+  "adapter_followup": "f3e01e9f is a distinct drawer-transition synchronization gap, after the product focus repair. Registered navigation adapter now awaits semantic open before backdrop click and closed/focus after desktop menu close; full browser recipe identity changes and all36contracts require revalidation. Original failure and54/54product Green remain preserved."
+}

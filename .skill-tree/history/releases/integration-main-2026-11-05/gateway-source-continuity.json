@@ -1,0 +1,10 @@
+{
+  "unchanged_from_published_commit": "cbcc33c18d62cb0b8c5f304b2af8fdab4a61db77",
+  "previously_confirmed_gateway_deploy": "6ae89d0cebb45b34d03869a8",
+  "source_hashes": {
+    "deploy/callback-egress/src/gateway.mjs": "e9a9c3dd701155aef8e02f35a2d7c074b513990400f157e1df40205063e997d1",
+    "deploy/callback-egress/src/transport.mjs": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+    "deploy/callback-egress/netlify/functions/callback-egress.mts": "01f75d7742c5352eb9eecc8aaa0e4912d1bba9a1f55e75e0bd84f4ec4c8fe65c"
+  },
+  "qualification": "Current source byte continuity with the recorded existing deployment; no new gateway publication or new hosted failure-injection claim."
+}

@@ -1,0 +1,46 @@
+{
+  "request": {
+    "selectors": [
+      "P-5403c100-334b-41bf-9f4b-0d4a66794ea5"
+    ],
+    "dispositions": {
+      "P-5403c100-334b-41bf-9f4b-0d4a66794ea5": {
+        "status": "promoted",
+        "reason": "Current native tablet evidence proves identity/Notes collapse in the shared recurring row layout, requiring one scoped reflow repair before parent acceptance."
+      }
+    },
+    "tasks": [
+      {
+        "key": "recurring-row-readability",
+        "title": "Keep recurring task identities readable beside row actions",
+        "body": "Goal:\nKeep recurring task identities readable beside action groups.\n\nCurrent behavior:\nThe current768-pixel hydrated Daily screenshot places task title, reference and Notes in a glyph-wide left column. An auto-width action column consumes almost all width despite no outer horizontal overflow. Habits use the same raw task-list layout and require independent qualification.\n\nDesired behavior:\nAllow task identity and action columns to share readable width, stacking when required. Preserve native Notes, exact action names, per-task occurrence inputs and original review fences.\n\nTouch:\n- `src/Habitica.WebApp/wwwroot/css/app.css`\n- `tests/browser-qualification/ux-ui-workspace-names-journey.mjs`\n- `tests/browser-qualification/ux-ui-recurring-row-journey.mjs`\n- `tests/browser-qualification/ux-ui-adapters.json`\n\nImplementation constraints:\nScope layout to shared raw task-list rows. No font/zoom reduction, hidden content, action removal, mutation or recurrence changes. Existing local synthetic execution authorization applies. Physical devices and assistive technology remain unqualified.\n\nValidation:\nThe retained screenshot/HTML and invisible open Notes content establish the failing rendered regression. Preserve existing exact-record component checks. Require available ordinary-word width and visible native disclosure content on actual Habits and Dailies across all declared schemes, widths and text sizes. Compare selected Daily date ink and unchanged journals.\n```json\n{\n  \"checks\": [\n    {\n      \"id\": \"recurring-row-readability-behavior\",\n      \"recipe_id\": \"dotnet-focused-tests\",\n      \"criteria\": [\n        \"Recurring row action targets, exact occurrence drafts and original review fences remain unchanged.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"test_project\": \"tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj\",\n        \"test_filter\": \"FullyQualifiedName~TodoTaskPanelTests\",\n        \"report_name\": \"recurring-row-readability.trx\",\n        \"result_directory\": \".skill-tree/history/validation/ux-ui/recurring-row-readability/unit\"\n      },\n      \"assertion\": \"Keep existing exact task/date interactions and disabled original preview tests; retained native row screenshot supplies the layout regression.\",\n      \"timing\": \"immediate\"\n    },\n    {\n      \"id\": \"recurring-row-readability-rendered\",\n      \"recipe_id\": \"ux-ui-rendered-browser\",\n      \"criteria\": [\n        \"Habit and Daily task identity copy and native Notes use readable space beside or above actions across the required rendered matrix.\"\n      ],\n      \"sources\": [\n        \"src/Habitica.WebApp/Components/TodoTaskPanel.razor\",\n        \"src/Habitica.WebApp/Pages/SettingsPage.razor\",\n        \"tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs\",\n        \"tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs\",\n        \"tests/browser-qualification/qualification-core.mjs\",\n        \"tests/browser-qualification/qualification-frame.mjs\",\n        \"tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs\",\n        \"src/Habitica.WebApp/wwwroot/css/app.css\",\n        \"tests/browser-qualification/ux-ui-workspace-names-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-adapters.json\",\n        \"tests/browser-qualification/ux-ui-native-date.mjs\",\n        \"tests/browser-qualification/ux-ui-occurrence-date-journey.mjs\",\n        \"tests/browser-qualification/ux-ui-recurring-row-journey.mjs\"\n      ],\n      \"parameters\": {\n        \"task_key\": \"recurring-row-readability\",\n        \"routes\": [\n          \"/todo/habits\",\n          \"/todo/dailies\"\n        ],\n        \"cases\": \"Same-named long Habit and Daily ready/frozen rows, readable title and Notes areas, bounded actions and selected Daily dates.\",\n        \"matrix\": {\n          \"widths\": [\n            360,\n            390,\n            430,\n            768,\n            1024,\n            1280\n          ],\n          \"text_percent\": [\n            100,\n            200\n          ],\n          \"schemes\": [\n            \"gryphy-light\",\n            \"gryphy-dark\",\n            \"obsidian-glow\"\n          ],\n          \"engines\": [\n            \"chromium\",\n            \"webkit\"\n          ],\n          \"require\": [\n            \"primary targets at least 44 CSS pixels where the documented primary-action contract applies\",\n            \"visible primary actions\",\n            \"disabled states and reasons\",\n            \"visible keyboard focus\",\n            \"no unintended overlap or clipping\",\n            \"readable native input contents\",\n            \"enabled text contrast\",\n            \"long-content reflow\"\n          ],\n          \"disabled_text_product_minimum\": 3,\n          \"evidence\": \"current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup\"\n        },\n        \"report_directory\": \".skill-tree/history/validation/ux-ui/recurring-row-readability/browser\"\n      },\n      \"assertion\": \"Require task text to retain available ordinary-word width, native Notes to open visibly, exact action names and selected Daily dates to stay readable. Exercise actual routes and original previews without accepting commands; retain full matrix and journal equality.\",\n      \"timing\": \"immediate\"\n    }\n  ]\n}\n```\n\nAcceptance:\n- Recurring row action targets, exact occurrence drafts and original review fences remain unchanged.\n- Habit and Daily task identity copy and native Notes use readable space beside or above actions across the required rendered matrix.\n\nDocumentation updates:\nRecord raw-list readable column/stack behavior and qualification limits in `ux-ui-manifest.md` and `testing.md`.\n\nResearch provenance:\nOriginal `.skill-tree/history/validation/ux-ui/daily-occurrence-readability/browser/5ed7bf04-1f6d-4c0f-bc76-f6f29a68d157-failure.json`; failure screenshot768pixels shows long title and task reference in vertical glyphs. Current shared row/action CSS and TodoTaskPanel renderer inspected. Existing hierarchy rows use separate full-width rules.\n",
+        "parent_pending_ids": [
+          "P-5403c100-334b-41bf-9f4b-0d4a66794ea5"
+        ],
+        "depends_on": [
+          "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0"
+        ]
+      }
+    ],
+    "expected_source_hash": "f49992974710fc68aa5e660bfb6acc7be908d1f99031f5a43b7fc6addb9db06a"
+  },
+  "result": {
+    "created_ids": [
+      "T-d123dff7-af96-45ab-9690-a0932de03df9"
+    ],
+    "dispositions": {
+      "P-5403c100-334b-41bf-9f4b-0d4a66794ea5": {
+        "reason": "Current native tablet evidence proves identity/Notes collapse in the shared recurring row layout, requiring one scoped reflow repair before parent acceptance.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-b1f06cfc-e806-4f83-8d64-52bc9944e841",
+    "reused_ids": [],
+    "selected_ids": [
+      "P-5403c100-334b-41bf-9f4b-0d4a66794ea5"
+    ],
+    "task_keys": {
+      "recurring-row-readability": "T-d123dff7-af96-45ab-9690-a0932de03df9"
+    }
+  }
+}

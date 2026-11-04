@@ -24,6 +24,7 @@ namespace Habitica.WebApp.State;
 
 public sealed partial class AppSessionController : IAppSessionController
 {
+    private readonly CompanionConnectionCoordinator? _connections;
     private readonly object _refreshViewGate = new();
     private long _refreshViewGeneration;
     private const decimal HealthPotionGoldCost = HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost;
@@ -99,8 +100,10 @@ public sealed partial class AppSessionController : IAppSessionController
         Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
         Habitica.Application.Notes.INotesCloudClient? notesCloud = null,
         Habitica.Application.Notifications.IForegroundReminderBrowser? foregroundReminders = null,
-        Habitica.Application.Notifications.INotificationLocalStore? notificationStore = null)
+        Habitica.Application.Notifications.INotificationLocalStore? notificationStore = null,
+        CompanionConnectionCoordinator? connections = null)
     {
+        _connections = connections;
         _foregroundReminders=foregroundReminders;
         _notificationStore=notificationStore;
         _notesCloud=notesCloud;
@@ -141,13 +144,14 @@ public sealed partial class AppSessionController : IAppSessionController
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in before connecting cloud data.");
         var result = await _workspaceClient.ConnectAsync(credentials, cancellationToken);
+        if (result.Succeeded && IsCurrentCloudAccount(credentials)) await RememberConnectionAsync(credentials, true, false, cancellationToken);
         return IsCurrentCloudAccount(credentials) ? result : new(false, "The account changed; the connection result was discarded.");
     }
     public async Task<Habitica.Application.Notes.NotesCloudResult<bool>> ConnectNotesAsync(bool consentAcknowledged,CancellationToken cancellationToken=default)
     {
         if(!consentAcknowledged||!State.IsAuthenticated||State.IsBusy||_notesCloud is null)return new(false,false,"notes_consent_required");
         var credentials=await ResolveCredentialsAsync(cancellationToken);if(credentials is null||!IsCurrentCloudAccount(credentials))return new(false,false,"account_changed");
-        var result=await _notesCloud.ConnectAsync(credentials,cancellationToken);return IsCurrentCloudAccount(credentials)?result:new(false,false,"account_changed");
+        var result=await _notesCloud.ConnectAsync(credentials,cancellationToken);if(result.Succeeded&&IsCurrentCloudAccount(credentials))await RememberConnectionAsync(credentials,false,true,cancellationToken);return IsCurrentCloudAccount(credentials)?result:new(false,false,"account_changed");
     }
 
     public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
@@ -162,6 +166,7 @@ public sealed partial class AppSessionController : IAppSessionController
         if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in before enabling integration access.");
         var result = await _integrationClient.EnrollAsync(credentials, cancellationToken);
         if (!IsCurrentCloudAccount(credentials)) return new(false, "The account changed; the integration result was discarded.");
+        if (result.Succeeded) await RememberConnectionAsync(credentials, false, false, cancellationToken);
         Changed?.Invoke();
         return result;
     }
@@ -189,6 +194,7 @@ public sealed partial class AppSessionController : IAppSessionController
         if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in to revalidate credentials.");
         var result = await _integrationClient.RevalidateAsync(credentials, cancellationToken);
         if (!IsCurrentCloudAccount(credentials)) return new(false, "The account changed; the integration result was discarded.");
+        if (result.Succeeded) await RememberConnectionAsync(credentials, false, false, cancellationToken);
         Changed?.Invoke();
         return result;
     }
@@ -197,8 +203,18 @@ public sealed partial class AppSessionController : IAppSessionController
     private async Task<IntegrationLinkResult> DisconnectChatGptCoreAsync(bool deleteProfile, CancellationToken cancellationToken = default)
     {
         if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
+        if (_connections is not null && State.UserId is { } account)
+        {
+            try { await _connections.SuppressAsync(account, true, true, true, cancellationToken); }
+            catch (Exception) when (!cancellationToken.IsCancellationRequested)
+            {
+                await _diagnosticsLogWriter.WriteAsync(DiagnosticsFeatureArea.Auth, "connection-preferences", DiagnosticsSeverity.Warning,
+                    DiagnosticsMode.Local, "Local recovery suppression could not be saved; the authoritative server disconnect is still attempted.", null, cancellationToken);
+            }
+        }
         _notesCloud?.ForgetSession();_notesDrafts?.Clear();
         var result = await _integrationClient.DisconnectAsync(deleteProfile, cancellationToken);
+        if (result.Succeeded) _workspaceClient?.ForgetSession();
         Changed?.Invoke();
         return result;
     }
@@ -364,9 +380,10 @@ public sealed partial class AppSessionController : IAppSessionController
 
     private Dictionary<RefreshDomain, DomainRefreshState> MarkDomainsFetching(
         IReadOnlyList<(RefreshDomain Domain, RefreshPriority Priority)> requests,
-        RefreshReason reason)
+        RefreshReason reason,
+        bool preserveHistory = true)
     {
-        var domainStates = State.DomainStates is null
+        var domainStates = !preserveHistory || State.DomainStates is null
             ? new Dictionary<RefreshDomain, DomainRefreshState>()
             : new Dictionary<RefreshDomain, DomainRefreshState>(State.DomainStates);
         foreach (var request in requests)
@@ -2757,6 +2774,7 @@ public sealed partial class AppSessionController : IAppSessionController
         _notesDrafts?.Clear();
         _activeSpellCastCancellation?.Cancel();
         BeginRefreshView();
+        _connections?.BindAccount(null);
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
         ResetPrivateSyncSession();
@@ -2786,6 +2804,7 @@ public sealed partial class AppSessionController : IAppSessionController
         _notesCloud?.ForgetSession();
         _notesDrafts?.Clear();
         if(_notesDatabase is not null) await _notesDatabase.ClearAsync(cancellationToken);
+        _connections?.BindAccount(null);
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
         ResetPrivateSyncSession();
@@ -2801,6 +2820,7 @@ public sealed partial class AppSessionController : IAppSessionController
         await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);
+        await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.CompanionPreferences, cancellationToken);
         await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.TaskOrderPreferences, cancellationToken);
         await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.PetsMountsViewPreferences, cancellationToken);
 
@@ -3229,6 +3249,7 @@ public sealed partial class AppSessionController : IAppSessionController
         {
             SetCloudSyncFetching(true, reason);
             var report = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
+            if (_connections is not null && IsCurrentCloudAccount(credentials)) await _connections.BootstrapAsync(credentials, false, false, cancellationToken);
             if (IsCurrentCloudAccount(credentials)) SetCloudSyncFetching(false, reason);
             return report;
         }
@@ -3440,7 +3461,7 @@ public sealed partial class AppSessionController : IAppSessionController
                 continue;
             }
 
-            var payloadJson = PrepareCloudSyncPayload(section, record.JsonText);
+            var payloadJson = PrepareCloudSyncPayload(section, record.JsonText, credentials.UserId);
             var payloadBytes = System.Text.Encoding.UTF8.GetByteCount(payloadJson);
             if (payloadBytes > CloudSyncSectionMapping.MaxSectionPayloadBytes)
             {
@@ -3527,8 +3548,9 @@ public sealed partial class AppSessionController : IAppSessionController
         return new CloudSyncUploadReport(sectionResults, mergedRemoteData, succeeded, failed);
     }
 
-    private static string PrepareCloudSyncPayload(CloudSyncSection section, string jsonText)
+    private static string PrepareCloudSyncPayload(CloudSyncSection section, string jsonText, string account)
     {
+        if (section == CloudSyncSection.CompanionPreferences) return CompanionPreferencesJson.OnlyAccount(jsonText, account);
         if (section != CloudSyncSection.UserProfile)
         {
             return jsonText;
@@ -3822,7 +3844,7 @@ public sealed partial class AppSessionController : IAppSessionController
             }
 
             await _localUserDataPortabilityService.ImportSectionAsync(
-                new LocalUserDataRecord(storageKey, snapshot.PlainTextJson),
+                new LocalUserDataRecord(storageKey, storageKey==StorageKeys.CompanionPreferences ? CompanionPreferencesJson.OnlyAccount(snapshot.PlainTextJson,credentials.UserId) : snapshot.PlainTextJson),
                 LocalDataImportMode.Merge,
                 cancellationToken);
             merged = true;
@@ -4541,6 +4563,8 @@ public sealed partial class AppSessionController : IAppSessionController
             UserFreshness = ClassifyFreshness(userSnapshot),
             UserSnapshot = userSnapshot
         });
+        if (_connections is not null && _currentCredentials is { } accountCredentials && IsCurrentCloudAccount(accountCredentials))
+            await _connections.BootstrapAsync(accountCredentials, false, false, cancellationToken);
     }
 
     private async Task SignInCoreAsync(SignInRequest request, CancellationToken cancellationToken)
@@ -4564,11 +4588,13 @@ public sealed partial class AppSessionController : IAppSessionController
         try
         {
             var credentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
+            var accountChanged = !string.Equals(State.UserId, credentials.UserId, StringComparison.Ordinal);
             ResetPrivateSyncSession();
             if (!string.Equals(_currentCredentials?.UserId, credentials.UserId, StringComparison.Ordinal))
             {
                 _notesCloud?.ForgetSession();
-                _integrationClient?.ForgetSession();
+                _connections?.BindAccount(null);
+        _integrationClient?.ForgetSession();
                 _workspaceClient?.ForgetSession();
             }
             _currentCredentials = credentials;
@@ -4578,6 +4604,8 @@ public sealed partial class AppSessionController : IAppSessionController
                 new LoginCommand(credentials.UserId, credentials.ApiToken, request.PersistLocally),
                 cancellationToken);
 
+            _connections?.BindAccount(credentials.UserId);
+            _connections?.BeginStartup(credentials.UserId);
             var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
             var equipmentPresets = await _equipmentPresetStore.GetForUserAsync(credentials.UserId, cancellationToken);
             var domainRequests = new (RefreshDomain Domain, RefreshPriority Priority)[]
@@ -4606,7 +4634,7 @@ public sealed partial class AppSessionController : IAppSessionController
                 GearCatalogSnapshot: State.GearCatalogSnapshot,
                 DiagnosticsLogEntries: await _diagnosticsLogStore.GetRecentAsync(cancellationToken),
                 IncludeStalePartyMembersInQuestForecasts: _includeStalePartyMembersInQuestForecasts,
-                DomainStates: MarkDomainsFetching(domainRequests, RefreshReason.AppBoot),
+                DomainStates: MarkDomainsFetching(domainRequests, RefreshReason.AppBoot, preserveHistory: !accountChanged),
                 CloudSyncSectionStatuses: State.CloudSyncSectionStatuses,
                 CloudSyncExcludedSections: _cloudSyncExcludedSections.ToArray()));
             _ = CompleteSignInRefreshAsync(credentials);
@@ -4648,6 +4676,7 @@ public sealed partial class AppSessionController : IAppSessionController
 
         try
         {
+            if (_connections is not null) await _connections.BootstrapAsync(credentials, false, false, cancellationToken);
             await _refreshCoordinator.RefreshDomainsAsync(
                 credentials,
                 domainRequests,
@@ -4690,6 +4719,10 @@ public sealed partial class AppSessionController : IAppSessionController
                 ErrorMessage = exception.Message,
                 DomainStates = domainStates
             });
+        }
+        finally
+        {
+            if(_connections is not null&&viewGeneration==Interlocked.Read(ref _refreshViewGeneration)&&IsCurrentCloudAccount(credentials))await _connections.CompleteStartupAsync(credentials.UserId,CancellationToken.None);
         }
     }
 

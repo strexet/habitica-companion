@@ -7,7 +7,8 @@ public sealed record WorkspaceHabiticaTaskCoverage(Guid TaskId, CompanionTaskKin
     HabiticaCoverageState State, string? HabiticaTaskId);
 public sealed record WorkspaceHabiticaTagRequirement(Guid EntityId, WorkspaceOrganizationKind Kind, bool Archived,
     HabiticaCoverageState State = HabiticaCoverageState.Missing, string? HabiticaTagId = null,
-    HabiticaCoverageState MembershipState = HabiticaCoverageState.Missing);
+    HabiticaCoverageState MembershipState = HabiticaCoverageState.Missing,
+    [property:System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] string? Reason=null);
 public sealed record WorkspaceHabiticaCoverage(IReadOnlyList<WorkspaceHabiticaTaskCoverage> Tasks,
     IReadOnlyList<WorkspaceHabiticaTagRequirement> RequiredTags, int RetiredSourceContainers = 0)
 {
@@ -72,7 +73,8 @@ public static class WorkspaceHabiticaCoveragePolicy
                             intent.State==WorkspaceTagState.Pending?HabiticaCoverageState.Pending:HabiticaCoverageState.NeedsReview;
 
                 }
-                tags.Add(new(entity.Id,kind,entity.IsArchived,state,state is HabiticaCoverageState.Linked or HabiticaCoverageState.Retained?mapping?.HabiticaTagId:null,membership));
+                var reason=desired[(kind,entity.Id)].UnavailableReason;if(reason is not null)state=membership=HabiticaCoverageState.NeedsReview;
+                tags.Add(new(entity.Id,kind,entity.IsArchived,state,state is HabiticaCoverageState.Linked or HabiticaCoverageState.Retained?mapping?.HabiticaTagId:null,membership,reason));
             }
         }
         // Native hierarchy is flattened in Habitica: every subtask above remains a real task.

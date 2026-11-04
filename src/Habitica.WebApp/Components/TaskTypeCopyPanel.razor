@@ -1,0 +1,88 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject WorkspaceConversionController Checklist
+@implements IDisposable
+<section class="card-surface todo-task-panel task-type-copy-panel" data-testid="type-copy-panel">
+    <h2>Copy a task to another type</h2><p>Create a new native copy and retain the original, including history and Habitica links.</p>
+    @if(Todo.Availability==TodoWorkspaceAvailability.SignedOut){<p>Sign in to review account-bound tasks.</p><a href="/sign-in" data-layout-primary="true">Sign in</a>}
+    else
+    {
+        <p>@(Todo.Selection is {} selection?$"Active {(selection.Source==TodoWorkspaceSource.Cloud?"cloud":"browser")} Workspace: {selection.WorkspaceId:D}":"Restore the active Workspace before choosing a source.")</p>
+        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||!Todo.CanSwitchSource)" OnClick="LoadAsync" Variant="Variant.Text">Reload active Workspace</MudButton><a href="/todo/sync" data-layout-primary="true">Workspace access and recovery</a></div>
+        @if(_error is not null){<p role="alert">@_error</p>}
+        @if(Todo.Message is not null){<p role="status">@Todo.Message</p>}
+        @if(Todo.Commands.LastReceipt is {CopyLineage:{} line} receipt)
+        {<p role="status" data-testid="type-copy-receipt">Saved new @line.TargetKind: @line.TargetTaskId · source @line.SourceSnapshot.Id retained · command @receipt.CommandId · revision @line.InitialTargetRevision. Habitica effects: @receipt.TotalProjectionCount. @(receipt.RefreshSucceeded?"Workspace refreshed.":"Reload the Workspace before another copy.")</p>}
+        @if(Todo.Commands.Preview is {Command.Operation:WorkspaceOperation.CopyTaskType} preview)
+        {
+            <section class="todo-command-review" aria-label="Review native type copy"><h3 tabindex="-1" @ref="_heading">Review before creating the copy</h3>
+                @if(preview.TypeCopyPreview is {} review){<TaskTypeCopyReview Review="review" />}
+                <p>Original command @preview.PreparedCommandId · expires @preview.ExpiresAtUtc.ToString("u").</p>
+                @if(Todo.Commands.AcceptanceUnknown){<p role="alert">Acceptance is uncertain. Recover this original command before another copy.</p>}
+                @if(Stale(preview)){<p role="status">The review expired or the Workspace changed. Recover an uncertain original result, or cancel an unaccepted review and reload.</p>}
+                <label class="checkbox-row"><input type="checkbox" checked="@_reviewed" disabled="@(Busy||Todo.Commands.AcceptanceUnknown)" @onchange="e=>_reviewed=e.Value is true" data-testid="type-copy-ack" /><span>Reviewed the exact source, new target and every copied/reset field</span></label>
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||!_reviewed||Stale(preview)&&!Todo.Commands.AcceptanceUnknown)" OnClick="ConfirmAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="type-copy-confirm">@(Todo.Commands.AcceptanceUnknown?"Retry original copy":"Create reviewed copy")</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RecoverAsync" Variant="Variant.Outlined" data-testid="type-copy-recover">Check original copy receipt</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||Todo.Commands.AcceptanceUnknown)" OnClick="Cancel" Variant="Variant.Text">Cancel unaccepted review</MudButton></div>
+            </section>
+        }
+        else if(Todo.Commands.HasPendingIntent)
+        {
+            <p role="status">Resolve the existing task command before creating a copy. Original request: @Todo.Commands.OriginalRequestId.</p>
+            @if(Todo.Commands.PreparationUnknown){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RetryAsync" Variant="Variant.Outlined" data-testid="type-copy-retry">Recover original preview</MudButton>}
+            @if(Todo.Commands.PreparationRejected){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="Cancel" Variant="Variant.Text">Return to source selection</MudButton>}
+        }
+        else if(Todo.Snapshot is {} snapshot)
+        {
+            <fieldset disabled="@(Busy||Todo.Commands.IsReadOnly||Todo.OrganizationBlockReason is not null||Todo.HasLinkedRecoveryIntent)">
+                <label class="field-row">Find an exact source<input class="app-input" value="@_search" @oninput="Search" data-testid="type-copy-search" /></label><p>@Sources.Count matches, including active, historical and archived sources. Duplicate titles have separate IDs.</p>
+                @foreach(var task in Sources.Skip(_offset).Take(20)){<article class="todo-direct-row"><div class="todo-row-content"><strong>@task.Text</strong><span>@task.Kind · @task.State @(task.IsArchived?"· archived":"") · @task.Id · revision @task.Revision</span></div><MudButton HtmlTag="button" data-layout-primary="true" OnClick="()=>Choose(task.Id)" Variant="Variant.Outlined" data-testid="@($"type-copy-source-{task.Id:D}")">Select exact source</MudButton></article>}
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset==0)" OnClick="()=>_offset=Math.Max(0,_offset-20)" Variant="Variant.Text">Previous sources</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_offset+20>=Sources.Count)" OnClick="()=>_offset+=20" Variant="Variant.Text" data-testid="type-copy-next">Next sources</MudButton></div>
+                @if(Source is {} source)
+                {
+                    <h3>Selected: @source.Text</h3><p>@source.Id · revision @source.Revision · @source.Kind · @source.State @(source.IsArchived?"· archived":"")</p>
+                    <label class="field-row">New task type<select class="app-input" value="@_kind" @onchange="SetKind" data-testid="type-copy-kind"><option value="">Choose a different type</option>@foreach(var kind in Enum.GetValues<CompanionTaskKind>().Where(k=>k!=source.Kind)){<option value="@kind">@kind</option>}</select></label>
+                    <label class="checkbox-row"><input type="checkbox" checked="@_organization" @onchange="e=>_organization=e.Value is true" data-testid="type-copy-organization" /><span>Copy valid current category, project, section and labels. Clear this choice for an empty destination.</span></label>
+                    @if(_kind=="Daily")
+                    {
+                        <h4>Explicit new Daily schedule</h4><p>The original schedule is never reused automatically.</p>
+                        <div class="todo-source-controls"><label class="field-row">Frequency<select class="app-input" @bind="_frequency" data-testid="type-copy-frequency"><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option></select></label><label class="field-row">Interval<input class="app-input" type="number" min="1" max="365" @bind="_interval" data-testid="type-copy-interval" /></label><label class="field-row">Start date<input class="app-input" type="date" @bind="_start" @bind:format="yyyy-MM-dd" data-testid="type-copy-start" /></label><label class="field-row">IANA time zone<input class="app-input" @bind="_zone" data-testid="type-copy-zone" /></label></div>
+                        @if(_frequency=="Weekly"){<label class="field-row">Weekdays (comma-separated names, for example Monday,Friday)<input class="app-input" @bind="_weekdays" data-testid="type-copy-weekdays" /></label>}
+                        @if(_frequency=="Monthly"){<label class="field-row">Month dates (comma-separated 1–31)<input class="app-input" @bind="_monthDays" data-testid="type-copy-month-days" /></label>}
+                    }
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(string.IsNullOrEmpty(_kind))" OnClick="PrepareAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="type-copy-prepare">Review copied and reset fields</MudButton>
+                }
+            </fieldset>
+        }
+        @if(Checklist.HasPendingIntent){<p role="status">Resolve the original checklist conversion before preparing another copy.</p>}
+    }
+</section>
+@code{
+    [Parameter]public Guid? SourceTaskId{get;set;}
+    private Guid? _source,_workspace,_review,_receipt;private long? _sourceRevision;private string _search="",_kind="",_frequency="Daily",_zone="UTC",_weekdays="",_monthDays="";private DateTime? _start;private int _interval=1,_offset;private bool _organization=true,_reviewed,_focus,_disposed;private string? _error;private ElementReference _heading;
+    private bool Busy=>Todo.IsBusy||Checklist.IsBusy||Checklist.HasPendingIntent;
+    private IReadOnlyList<CompanionTask> Sources=>Todo.Snapshot?.Document.Tasks.Where(t=>t.Text.Contains(_search,StringComparison.OrdinalIgnoreCase)||t.Id.ToString("D").Contains(_search,StringComparison.OrdinalIgnoreCase)).ToArray()??[];
+    private CompanionTask? Source=>Todo.Snapshot?.Document.Tasks.FirstOrDefault(t=>t.Id==_source&&t.Revision==_sourceRevision);
+    private bool Stale(WorkspaceCommandPreview preview)=>preview.Expired||preview.ExpiresAtUtc<=DateTimeOffset.UtcNow||Todo.Revision!=preview.Command.ExpectedRevision;
+    protected override void OnInitialized(){Todo.Changed+=Changed;Checklist.Changed+=Changed;}
+    protected override void OnParametersSet(){if(SourceTaskId is {} id&&_source is null&&Todo.Snapshot?.Document.Tasks.FirstOrDefault(t=>t.Id==id) is {} task)Choose(task.Id);}
+    private void Changed(){if(_disposed)return;if(_workspace!=Todo.Snapshot?.Document.Id){_source=null;_sourceRevision=null;_search="";_offset=0;_error=null;_workspace=Todo.Snapshot?.Document.Id;}if(Todo.Commands.LastReceipt is {CopyLineage:not null} saved&&_receipt!=saved.CommandId){_receipt=saved.CommandId;_source=null;_sourceRevision=null;_kind="";}var id=Todo.Commands.Preview?.PreparedCommandId;if(_review!=id){_review=id;_reviewed=false;_focus=id is not null;}_=InvokeAsync(StateHasChanged);}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(firstRender){_workspace=Todo.Snapshot?.Document.Id;if(Todo.Snapshot is null)await RunAsync(()=>Todo.RefreshSourcesAsync());}if(_focus){_focus=false;try{await _heading.FocusAsync();}catch(JSException){}}}
+    private async Task RunAsync(Func<Task> action){_error=null;try{await action();}catch(InvalidOperationException e){_error=e.Message;}catch{_error="Workspace access is unavailable. Preserve the original command before another copy.";}}
+    private Task LoadAsync()=>RunAsync(async()=>{await Todo.RefreshSourcesAsync();if(Todo.Selection is not null)await Todo.LoadSelectedAsync();});
+    private void SetKind(ChangeEventArgs e)=>_kind=e.Value?.ToString()??"";
+    private void Search(ChangeEventArgs e){_search=e.Value?.ToString()??"";_offset=0;}
+    private void Choose(Guid id){if(Todo.Snapshot?.Document.Tasks.FirstOrDefault(t=>t.Id==id) is not {} task)return;_source=id;_sourceRevision=task.Revision;_kind="";_start=null;_error=null;}
+    private Task PrepareAsync()=>RunAsync(async()=>{
+        if(Busy||Source is not {} source||!Enum.TryParse<CompanionTaskKind>(_kind,out var kind)||kind==source.Kind)throw new InvalidOperationException("Select a current exact source and a different target type.");
+        RecurrenceRule? rule=null;
+        if(kind==CompanionTaskKind.Daily){if(_start is null||!Enum.TryParse<RecurrenceFrequency>(_frequency,out var freq))throw new InvalidOperationException("Choose an explicit new Daily start date and frequency.");
+            var days=new List<DayOfWeek>();if(freq==RecurrenceFrequency.Weekly)foreach(var text in _weekdays.Split(',',StringSplitOptions.TrimEntries|StringSplitOptions.RemoveEmptyEntries)){if(!Enum.TryParse<DayOfWeek>(text,true,out var day)||!Enum.IsDefined(day))throw new InvalidOperationException("Choose valid weekday names.");days.Add(day);}
+            var dates=new List<int>();if(freq==RecurrenceFrequency.Monthly)foreach(var text in _monthDays.Split(',',StringSplitOptions.TrimEntries|StringSplitOptions.RemoveEmptyEntries)){if(!int.TryParse(text,NumberStyles.None,CultureInfo.InvariantCulture,out var day))throw new InvalidOperationException("Choose valid month dates.");dates.Add(day);}
+            rule=new(freq,_interval,DateOnly.FromDateTime(_start.Value),_zone,days,dates);if(!RecurrenceCalendar.Expand(rule,rule.StartDate,rule.StartDate).Succeeded)throw new InvalidOperationException("Choose a valid complete Daily schedule and an available time zone.");}
+        await Todo.PrepareAsync(new(WorkspaceOperation.CopyTaskType,null,"","",CompanionPriority.Normal,null,null,false,HabitScoreDirection.Up,1,null,TypeCopy:new(source.Id,source.Revision,kind,_organization,rule)));
+    });
+    private Task ConfirmAsync()=>RunAsync(()=>Todo.ConfirmAsync());private Task RecoverAsync()=>RunAsync(()=>Todo.CheckOriginalAsync());private Task RetryAsync()=>RunAsync(()=>Todo.RetryOriginalPreviewAsync());
+    private void Cancel(){Todo.CancelPreview();_error=null;}
+    public void Dispose(){_disposed=true;Todo.Changed-=Changed;Checklist.Changed-=Changed;}
+}

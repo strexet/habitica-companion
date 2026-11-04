@@ -1,0 +1,23 @@
+{
+  "profile": {
+    "name": "Synthetic UTC plus seven owner"
+  },
+  "stats": {
+    "class": "warrior",
+    "lvl": 1,
+    "hp": 50,
+    "maxHealth": 50,
+    "mp": 10,
+    "maxMP": 10
+  },
+  "preferences": {
+    "dayStart": 0,
+    "timezoneOffset": -420
+  },
+  "items": {
+    "gear": {
+      "equipped": {},
+      "owned": {}
+    }
+  }
+}

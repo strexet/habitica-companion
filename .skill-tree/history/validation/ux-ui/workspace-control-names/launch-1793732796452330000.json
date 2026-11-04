@@ -1,0 +1,9 @@
+{
+  "task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+  "check_id": "workspace-control-names-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T19:22:36.452095+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d"
+}

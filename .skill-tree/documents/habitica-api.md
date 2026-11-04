@@ -1,0 +1,1449 @@
+# Habitica API Integration Guide
+
+Last researched: 2026-06-09
+Target API: Habitica API v3
+Audience: developers building a new Habitica client or integration
+
+## 1. Scope and source-of-truth policy
+
+Use Habitica API v3 for third-party clients.
+
+Do not build against API v4. Habitica's public wiki describes API v4 as incomplete, unstable, and unsuitable for third-party tools. API v3 is the supported public API surface for external integrations.
+
+Primary references:
+
+- Official API docs: `https://habitica.com/apidoc/`
+- Official third-party API usage guidelines: `https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines`
+- Habitica API wiki: `https://habitica.fandom.com/wiki/Application_Programming_Interface`
+- Habitica server implementation: `https://github.com/HabitRPG/habitica`
+- Habitica Wiki webhook documentation: `https://habitica.fandom.com/wiki/Webhooks`
+- Habitica User Data Display Tool: `https://tools.habitica.com/`
+- Party & Guild Data Tool: `https://oldgods.net/habitica/cTheDragons/group.html`
+
+Treat the official API docs and current server implementation as authoritative. Treat wiki pages, tools, Reddit posts, and old GitHub issues as implementation notes and operational evidence, not contract-level documentation.
+
+## Before editing Habitica behavior
+
+Read `.skill-tree/documents/rules.md`, `habitica-api.md`, `.skill-tree/documents/habitica-tool-references.md`, and affected code/tests before changing Habitica API behavior. If endpoint semantics, formulas, payload fields, or rate-limit behavior are not established here and in current tests, inspect current official Habitica docs or source before editing. Record unresolved uncertainty as an assumption or follow-up instead of treating uncertain behavior as verified.
+
+## 2. Base URL and transport
+
+```text
+https://habitica.com/api/v3
+```
+
+Use HTTPS only. Send and receive JSON.
+
+Recommended request headers:
+
+```http
+Content-Type: application/json
+Accept: application/json
+x-api-user: <authenticated-user-id>
+x-api-key: <authenticated-user-api-token>
+x-client: <tool-author-user-id>-<application-name>
+```
+
+Header names are usually shown in lowercase in examples, but HTTP header names are case-insensitive. Use the lowercase form consistently.
+
+## 3. Authentication
+
+Most API routes require two user credentials:
+
+```http
+x-api-user: <User ID>
+x-api-key: <API Token>
+```
+
+The API token is equivalent to a password for API access. Never log the API token, store the API token in analytics, send the API token to third-party telemetry, include the API token in URLs, or expose the API token to unrelated client-side plugins.
+
+Users can retrieve credentials from Habitica settings:
+
+- Web: user icon -> Settings -> API
+- Android: Settings -> API
+- iOS: Settings -> Account Details
+
+For a public client, store credentials in the platform's secure credential storage:
+
+- iOS: Keychain
+- Android: EncryptedSharedPreferences / Keystore-backed storage
+- Desktop: OS credential vault where available
+- Server-side integration: secret manager or encrypted database column
+
+Do not use query parameters for credentials.
+
+## 4. `x-client` header
+
+Every third-party API request must include `x-client`.
+
+Format:
+
+```text
+<tool-author-user-id>-<application-name>
+```
+
+Example:
+
+```http
+x-client: 12345678-90ab-416b-cdef-1234567890ab-NewHabiticaClient
+```
+
+Important rules:
+
+- Use the tool author's Habitica User ID, not the end user's User ID.
+- Keep the application name stable and specific.
+- Include the `x-client` header on all requests, including GET requests.
+- For temporary local experiments, use a clearly identifiable suffix such as `Testing`.
+
+Habitica uses the `x-client` value to identify third-party tools that cause server problems. Tools that generate problematic traffic may be rate-limited or blocked.
+
+The PWA supplies a public project-owned value through `Habitica:XClientHeader`. `HabiticaApiClient` rejects missing or blank configuration during initialization and applies the configured value to every request. Authenticated user changes do not change the creator identity. `HABITICA_X_CLIENT_HEADER` provides the build-time override; the header contains no API token.
+
+Optional server-side Habitica access is defined in the [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Local synthetic validation is approved; real enrollment and live backend execution require separate authorization. Shipped configuration keeps enrollment and OAuth disabled. Default API requests originate in the browser; optional enrollment validates credentials through the Auth Worker only after explicit consent and activation.
+
+## 5. Rate limiting and traffic policy
+
+Habitica rate-limits third-party API traffic. Every API response can include:
+
+```http
+X-RateLimit-Limit: <request-count-for-window>
+X-RateLimit-Remaining: <requests-left-in-window>
+X-RateLimit-Reset: <reset-time>
+```
+
+When the limit is exceeded, Habitica returns:
+
+```http
+429 Too Many Requests
+Retry-After: <seconds>
+```
+
+Client requirements:
+
+- Respect `Retry-After` exactly.
+- Use exponential backoff with jitter for transient network failures and 5xx responses when implementing an automatic retry layer.
+- Do not retry non-idempotent requests blindly.
+- For automated background scripts, keep at least 30 seconds between API calls unless the user explicitly initiated the action.
+- Add termination conditions for automation loops. Example: stop auto-casting skills when the user no longer has enough mana.
+- Do not poll aggressively for state that can be refreshed manually or obtained through webhooks.
+
+`HabiticaApiClient` serializes foreground dispatch and header reconciliation, begins adaptive pacing below half of estimated capacity and preserves a reserve of up to two requests. Remaining/reset headers influence spacing; server reset and `Retry-After` pauses cannot be shortened by successful responses. Transport/timeouts, 429 and 5xx responses reduce later throughput; sustained success restores throughput gradually. Failed calls surface exceptions without automatic replay. Independent client/device traffic remains outside the local estimate.
+
+The [official API usage guidelines](https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines), reviewed 2026-10-17, require a thirty-second delay for automated background calls and describe limits applying to User ID or IP address. Foreground adaptive pacing supplies no background-policy exception or shared-egress coordination guarantee.
+
+Operational note: public tools that enumerate party or guild members can generate many requests. Use pagination, cache immutable content, and expose progress/cancellation in the UI.
+
+## 6. Response envelope
+
+Successful responses generally use the following shape:
+
+```json
+{
+  "success": true,
+  "data": {},
+  "notifications": []
+}
+```
+
+Some endpoints include a `message` field:
+
+```json
+{
+  "success": true,
+  "data": {},
+  "message": "Bought Short Sword",
+  "notifications": []
+}
+```
+
+Errors generally use the following shape:
+
+```json
+{
+  "success": false,
+  "error": "BadRequest",
+  "message": "Task type must be one of \"habit\", \"daily\", \"todo\", \"reward\"."
+}
+```
+
+Validation errors may include an `errors` array:
+
+```json
+{
+  "success": false,
+  "error": "BadRequest",
+  "message": "todo validation failed",
+  "errors": [
+    {
+      "message": "Path `text` is required.",
+      "path": "text"
+    }
+  ]
+}
+```
+
+Handle errors by HTTP status and by `error`/`message`. Do not depend on exact localized message text for control flow.
+
+Common statuses:
+
+| Status | Meaning | Client behavior |
+| --- | --- | --- |
+| 200 | Success | Parse `data`. |
+| 201 | Created | Parse created resource in `data`. |
+| 202 | Accepted / approval requested | Treat as non-final state; refresh affected entity. |
+| 400 | Bad request / validation | Do not retry without changing input. |
+| 401 | Invalid credentials or unauthorized operation | Ask user to re-authenticate or explain permissions. |
+| 404 | Resource not found | Refresh local cache; entity may have been deleted. |
+| 429 | Rate limited | Wait `Retry-After`; throttle future calls. |
+| 5xx | Server/transient | Retry with backoff if request is safe or deduplicated. |
+
+## 7. Versioning and synchronization
+
+Habitica responses often include full or large resource objects. Some API calls return more data than the immediate operation appears to require. Design the client with selective parsing and defensive schema handling.
+
+Guidelines:
+
+- Ignore unknown fields.
+- Treat missing optional fields as normal.
+- Preserve server IDs exactly.
+- Use `id` as the public resource identifier where present; `_id` may also appear.
+- Use task aliases only as optional user-defined shortcuts, not as a replacement for stable server IDs.
+- Refresh user state after operations that affect stats, inventory, tasks, party quest state, or notifications.
+- Avoid assuming that write responses contain every field needed to update all local projections.
+
+## 8. User API
+
+### 8.1 Get authenticated user
+
+```http
+GET /user
+```
+
+Returns the authenticated user document. The user document can include achievements, auth metadata, challenge memberships, flags, guild memberships, history, inbox, invitations, inventory, notifications, party state, preferences, profile, subscription/purchase data, stats, tags, and task order.
+
+Use `userFields` to limit the response:
+
+```http
+GET /user?userFields=stats,items.gear.equipped,tasksOrder
+```
+
+`notifications` are always returned.
+
+Recommended client usage:
+
+- Use `GET /user` for account dashboard refreshes that need computed stats such as `stats.maxHealth`, `stats.maxMP`, or `stats.toNextLevel`. Habitica's v3 server adds the computed stat helpers only for the full user response; a filtered `userFields` response can omit computed helpers because computed helpers are not stored user fields.
+- Use narrow `userFields` only when the selected data is known to be stored on the user document and computed helpers are not needed.
+- Fetch the full user document on manual account/dashboard refreshes where computed stats are needed; avoid background polling.
+- Use `tasksOrder` together with `/tasks/user` for client-side ordering.
+- Treat computed stat helper fields as optional at runtime anyway. If computed helpers are absent, avoid presenting `0` as a meaningful target/cap in the UI.
+- For current-user Cron safety, map `lastCron`, `flags.needsCron`, `preferences.dayStart`, `preferences.timezoneOffset`, and `preferences.timezoneOffsetAtLastCron` when present. Use the explicit `flags.needsCron` value first; otherwise derive the Cron requirement by comparing `lastCron` with the current Habitica day start.
+
+### 8.2 Update authenticated user
+
+```http
+PUT /user
+Content-Type: application/json
+
+{
+  "preferences.timezoneOffset": -120,
+  "profile.name": "Display Name"
+}
+```
+
+Some paths are protected and cannot be updated through the selected endpoint. Handle `NotAuthorized` responses for protected paths.
+
+Recommended usage:
+
+- Send only fields being modified.
+- Do not send a full cached user object back to the server.
+- Keep updates explicit and auditable.
+
+### 8.3 Toggle resting in the Inn
+
+```http
+POST /user/sleep
+```
+
+Toggles `user.preferences.sleep`.
+
+The response data is a boolean representing the resulting sleep state.
+
+### 8.4 Inventory and avatar actions
+
+Common endpoints:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/user/inventory/buy` | Get gear/equipment available for purchase. |
+| GET | `/user/in-app-rewards` | Get in-app reward column items. |
+| POST | `/user/buy/:key` | Buy gear, armoire, potion, quest, or special item. |
+| POST | `/user/buy-health-potion` | Buy a health potion through the dedicated route. |
+| POST | `/user/buy-gear/:key` | Buy a specific gear item. |
+| POST | `/user/purchase/:type/:key` | Purchase gem or gem-purchasable item. |
+| POST | `/user/hatch/:egg/:hatchingPotion` | Hatch a pet. |
+| POST | `/user/equip/:type/:key` | Equip or unequip mount, pet, costume item, or battle gear. |
+| POST | `/user/feed/:pet/:food` | Feed a pet. Supports `?amount=<number>`. |
+| POST | `/user/sell/:type/:key` | Sell eggs, hatching potions, or food. |
+| POST | `/user/release-pets` | Release pets. |
+| POST | `/user/release-mounts` | Release mounts. |
+| POST | `/user/release-both` | Release pets and mounts. |
+| POST | `/user/revive` | Revive from death. |
+| POST | `/user/rebirth` | Use Orb of Rebirth. |
+
+For the Companion bulk sell planner, `:type` is limited to the inventory object names Habitica exposes for supported sellable categories: `eggs`, `food`, and `hatchingPotions`. Do not send gear or quest scrolls through the bulk sell flow unless the API contract is verified separately.
+
+For the Companion Dashboard Start New Day health-potion action, the current API client uses the generic route `POST /user/buy/potion`. Habitica also exposes the dedicated `POST /user/buy-health-potion` route in current server source; switch only with a focused API-client update and tests. The local CRON recovery estimate uses the current app rule of 25 GP per Health Potion and 15 HP restored per purchase, caps useful healing at the cached maximum HP, and refreshes `/user` after purchase before enabling another recovery decision.
+
+For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter can be supplied for supported purchases, even where quantity support is not fully reflected in the official API docs:
+
+```json
+{
+  "quantity": 3
+}
+```
+
+The Companion Dashboard gem-for-gold action targets:
+
+```http
+POST /user/purchase/gems/gem
+```
+
+Gem-for-gold purchase costs 20 GP per gem and is subscription/cap gated by Habitica. Habitica's web client derives the monthly allowance from `purchased.plan.gemsBought` plus `purchased.plan.consecutive.gemCapExtra` against the base conversion cap. Treat the official subscription-plan shape (`customerId`, `subscriptionId`, `planId`, `paymentMethod`, or positive `quantity`) as the eligibility signal; do not let a legacy or unrelated `canBuyGems` flag override an active plan. Habitica stores `/user.data.balance` in quarter-gem units, so displayable gem count is `balance * 4`. The API client supports a `quantity` body for the gem-purchase endpoint, but the Dashboard currently executes multi-gem purchases as sequential one-gem requests with stop-on-failure until the bulk `quantity` behavior is live-verified. After successful gem-for-gold purchases, refresh `/user` so gold, gem balance, subscription eligibility, and remaining cap state come from Habitica.
+
+Do not expose destructive or premium-currency actions without explicit confirmation.
+
+For the Companion Pets & Mounts page:
+
+- Feed queues call `POST /user/feed/:pet/:food?amount=<number>` sequentially, one queued row at a time.
+- Pet and mount fast-equip actions call `POST /user/equip/pet/:key` and `POST /user/equip/mount/:key`.
+- Hatch actions call `POST /user/hatch/:egg/:hatchingPotion`.
+- Refresh `/user` after hatch, feed-queue, or companion-equip mutations before updating cached companion state.
+- Keep per-key pet and mount ownership maps local. Redact pet/mount ownership maps from encrypted Cloudflare user-profile uploads.
+
+Habitica stores companion state in the `/user` response under `items.pets` and `items.mounts`. Habitica Companion treats non-negative numeric `items.pets[petKey]` entries as owned pets with Habitica feed-progress points, and boolean `items.mounts[mountKey]` entries as mount ownership. Negative pet values are not owned and are filtered out of the local owned-pet map.
+
+Pet growth planning follows Habitica's stable server rules: `POST /user/hatch/:egg/:hatchingPotion` creates a growable pet with 5 stored progress points; preferred food and premium-pet food add 5 points; non-preferred food adds 2 points; and the pet becomes a mount at 50 stored points. In local UI calculations, one cached Habitica pet-progress point maps to 2 percentage points, clamped to the 5-point/10% hatch baseline for owned pets. A newly hatched pet therefore displays as 10% grown and needs 9 preferred foods or up to 23 non-preferred foods. `Saddle` is sent through the existing feed endpoint as one item that evolves the pet immediately, but UI feed planners keep `Saddle` separate from normal food selectors. Wacky pets, special pets, pets with an already-owned matching mount, and unknown pets without a catalog mount are not treated as growable.
+
+For battle-gear swaps, the Companion client uses:
+
+```http
+POST /user/equip/equipped/:key
+```
+
+For costume gear swaps, the Companion client uses:
+
+```http
+POST /user/equip/costume/:key
+```
+
+Do not assume the write response contains all fields needed for local projection updates. Refresh `/user` after the equip call when the client must verify what is currently equipped.
+
+### 8.5 Class and skills
+
+Common endpoints include:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/user/change-class` | Change class. Usually requires level and/or currency conditions. |
+| POST | `/user/disable-classes` | Disable class system. |
+| POST | `/user/class/cast/:skill` | Cast a class skill. |
+| POST | `/user/allocate` | Allocate one stat point. |
+| POST | `/user/allocate-bulk` | Allocate multiple stat points. |
+
+Task-targeting skills pass the target task id as a query parameter:
+
+```http
+POST /user/class/cast/fireball?targetId=<task-id>
+```
+
+Bulk stat allocation uses a request body containing only the selected point counts:
+
+```json
+{
+  "stats": {
+    "str": 1,
+    "int": 2,
+    "con": 0,
+    "per": 1
+  }
+}
+```
+
+Stat allocation unlock rule: Habitica's user-facing docs describe the class/stat system as unlocking at level 10, with stat points becoming allocatable after that unlock. Treat cached users below level 10 as ineligible for stat allocation even if `stats.points` is non-zero. Preserve the saved point count for diagnostics/read-models, but do not show an allocation prompt or call `/user/allocate` or `/user/allocate-bulk` until cached `stats.lvl >= 10`.
+
+Automation rule: before casting skills automatically, verify mana and target validity. Execute repeated casts sequentially and stop the loop when the action can no longer be completed.
+
+Cron-sensitive stat buffs should warn when the authenticated user has not started the current Habitica day. Offer `Cast anyway`, `Start New Day and Cast`, and `Cancel`; do not cast automatically if Cron fails.
+
+Current server-source notes for Healer Blessing / `healAll`: the spell targets the party, uses computed Constitution and Intelligence from `statsComputed(user)`, adds `(computed CON + computed INT + 5) * 0.04` HP to each targeted member, caps each member at 50 HP, then deducts 25 MP from the caster. Computed stats include base stat, battle gear, matching-class gear bonus, buffs, and level bonus. Client previews should show raw per-member healing as approximate, cap effective value only for members with fresh known HP, and avoid inventing effective healing for stale or missing party HP data.
+
+### 8.6 Cron / Start New Day
+
+```http
+POST /cron
+```
+
+Runs Habitica's daily reset for the authenticated user. The Cron transition can process missed Dailies, active quest progress, health/mana/stat changes, notifications, and temporary buff expiry.
+
+Current server-source notes: Habitica's Cron path applies penalties from due unfinished Dailies during the user's Cron by scoring each missed Daily down with `cron: true`. The score path clamps task `value`, computes a negative value delta from `0.9747 ^ value`, applies checklist partial-completion reduction when checklist data exists, then applies HP loss from the rounded `delta * ConstitutionModifier * priority * 2` result. The Constitution modifier uses computed CON from base stats, battle gear, class gear bonus, buffs, and level bonus, with a 10% minimum damage floor. Quest boss damage is processed through party quest progress; users resting in the Inn / sleep state skip quest-progress processing and damage paths. Because the public account/task snapshot currently used by Habitica Companion does not persist every server input, especially Daily checklist completion fractions and complete pause-damage/Inn state, local damage previews must remain estimates and must not claim exact CRON health loss.
+
+Recommended client usage:
+
+- Show the action as `Start New Day` in UI copy; keep `Cron` in technical logs/docs.
+- Render the Dashboard button only when current-user data indicates `flags.needsCron == true` or a derived `lastCron < currentHabiticaDayStartUtc`.
+- Require confirmation before calling the endpoint.
+- Confirmation and buff-warning copy must distinguish the authenticated user's temporary buff expiry from party-wide buff expiry, which happens separately for each member on that member's next Cron.
+- After success, refresh `/user`, `/tasks/user`, and party state if the user is in a party.
+- If Cron succeeds but a follow-up refresh fails, report the refresh failure separately; do not repeat Cron implicitly.
+- If Cron fails before completion, do not continue with any chained spell cast.
+
+### 8.7 Blocking and private messages
+
+Common endpoints:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/user/block/:uuid` | Block or unblock a user from sending PMs. |
+| POST | `/members/send-private-message` | Send a private message. |
+
+Treat PM features as abuse-sensitive. Add local validation, rate limiting, and clear UX around recipient identity.
+
+## 9. Task API
+
+Task types:
+
+```text
+habit | daily | todo | reward
+```
+
+Task difficulty values:
+
+```text
+0.1 = Trivial
+1   = Easy
+1.5 = Medium
+2   = Hard
+```
+
+Task attributes:
+
+```text
+str | int | per | con
+```
+
+### 9.1 Create user task
+
+```http
+POST /tasks/user
+Content-Type: application/json
+
+{
+  "text": "Write API client sync tests",
+  "type": "todo",
+  "alias": "api-client-sync-tests",
+  "notes": "Cover create/update/score/delete flows.",
+  "tags": ["ed427623-9a69-4aac-9852-13deb9c190c3"],
+  "checklist": [
+    { "text": "Create fixtures", "completed": true },
+    { "text": "Add retry tests", "completed": false }
+  ],
+  "priority": 2
+}
+```
+
+The endpoint accepts either a single task object or an array of task objects. The endpoint returns a task object for single creation and an array for batch creation.
+
+Common fields:
+
+| Field | Type | Applies to | Notes |
+| --- | --- | --- | --- |
+| `text` | string | all | Required. |
+| `type` | string | all | Required: `habit`, `daily`, `todo`, `reward`. |
+| `alias` | string | all | Alphanumeric, underscores, and dashes. Must be unique for the user. |
+| `notes` | string | all | Markdown-supported text. |
+| `tags` | string[] | all | Tag IDs. |
+| `priority` | number | habit/daily/todo | Difficulty. |
+| `attribute` | string | habit/daily/todo | `str`, `int`, `per`, `con`. |
+| `checklist` | array | daily/todo | Checklist items. |
+| `collapseChecklist` | boolean | daily/todo | UI state. |
+| `date` | date | todo | Due date. |
+| `frequency` | string | daily | `daily`, `weekly`, `monthly`, `yearly`. |
+| `repeat` | object | daily | Weekly repeat map: `su`, `m`, `t`, `w`, `th`, `f`, `s`. |
+| `everyX` | number | daily | Repeat interval. |
+| `daysOfMonth` | int[] | daily | Monthly repeats. |
+| `weeksOfMonth` | int[] | daily | Monthly repeats. |
+| `startDate` | date | daily | First available date. |
+| `up` | boolean | habit | Enables positive scoring. |
+| `down` | boolean | habit | Enables negative scoring. |
+| `value` | number | reward | Gold cost. |
+
+Daily creation examples:
+
+```json
+{
+  "text": "Workout",
+  "type": "daily",
+  "frequency": "weekly",
+  "repeat": {
+    "m": true,
+    "t": false,
+    "w": true,
+    "th": false,
+    "f": true,
+    "s": false,
+    "su": false
+  },
+  "startDate": "2026-04-24",
+  "priority": 1.5
+}
+```
+
+Habit creation example:
+
+```json
+{
+  "text": "Drink water",
+  "type": "habit",
+  "up": true,
+  "down": false,
+  "priority": 0.1
+}
+```
+
+Reward creation example:
+
+```json
+{
+  "text": "Play 30 minutes",
+  "type": "reward",
+  "value": 10
+}
+```
+
+### 9.2 Get user tasks
+
+```http
+GET /tasks/user
+```
+
+By default, returns all active habits, dailies, todos, and rewards. Completed todos are excluded unless explicitly requested.
+
+Daily task payloads can include computed boolean `isDue`. Habitica's server model stores `isDue`/`nextDue` on Dailies, and the `/tasks/user` implementation recomputes the Daily due fields through `setNextDue(...)` only when a `dueDate` query value is supplied. `setNextDue(...)` delegates to the official `shouldDo(...)` schedule helper, which accounts for `dayStart`, timezone offset, `startDate`, `frequency`, `everyX`, weekday `repeat`, `daysOfMonth`, and `weeksOfMonth`.
+
+Current app rule: request `/tasks/user` with `dueDate=<current UTC timestamp>` so Habitica recomputes due state for the current server-evaluated moment. Preserve returned `isDue` as optional cached task state. CRON-facing unfinished-daily views and numeric damage estimates must include only confirmed `isDue: true` unfinished Dailies. Explicit `isDue: false` Dailies are excluded, and older cached snapshots without `isDue` are treated as unknown rather than damaging. When cached `value`, priority, computed CON, or checklist inputs are missing, use only source-backed fallbacks and lower estimate readiness instead of presenting exact damage. Do not add a local schedule fallback unless the app also stores every official schedule field and the user day-start/timezone inputs needed by `shouldDo(...)`.
+
+Query parameters:
+
+| Parameter | Values | Notes |
+| --- | --- | --- |
+| `type` | `habits`, `dailys`, `todos`, `rewards`, `completedTodos` | `completedTodos` returns only the 30 most recently completed todos. |
+| `dueDate` | date | Provides the date for computing `nextDue` for returned tasks. |
+
+Examples:
+
+```http
+GET /tasks/user?type=dailys
+GET /tasks/user?type=completedTodos
+GET /tasks/user?type=todos&dueDate=2026-04-24
+```
+
+Implementation note: server code contains `_allCompletedTodos` as a beta/internal option likely to be removed. Do not use the internal option in production clients.
+
+### 9.3 Update task
+
+```http
+PUT /tasks/:taskId
+Content-Type: application/json
+
+{
+  "notes": "Replace notes; unspecified fields remain unchanged."
+}
+```
+
+`taskId` may be the task ID or alias. Prefer the server ID in stored client state.
+
+Send partial updates only. Do not PUT a full stale task object unless the user explicitly edited every field.
+
+### 9.4 Delete task
+
+```http
+DELETE /tasks/:taskId
+```
+
+Use confirmation for destructive UI actions.
+
+### 9.5 Score task
+
+```http
+POST /tasks/:taskId/score/:direction
+```
+
+`direction`:
+
+```text
+up | down
+```
+
+Examples:
+
+```http
+POST /tasks/829d435b-edc4-498c-a30e-e52361a0f35a/score/up
+POST /tasks/api-client-sync-tests/score/down
+```
+
+The response contains updated user stats plus scoring metadata:
+
+```json
+{
+  "success": true,
+  "data": {
+    "delta": 0.9746999906450404,
+    "_tmp": {},
+    "hp": 49.0,
+    "mp": 37.2,
+    "exp": 101.9,
+    "gp": 77.0,
+    "lvl": 19,
+    "class": "rogue",
+    "points": 0,
+    "str": 5,
+    "con": 3,
+    "int": 3,
+    "per": 8,
+    "buffs": {}
+  },
+  "notifications": []
+}
+```
+
+Scoring can also return drop and quest progress data under `_tmp`.
+
+Client behavior:
+
+- Refresh `/tasks/user` after scoring because completion state and task value can change.
+- Refresh `/user` after any score operation because HP, MP, XP, GP, level, and quest progress can change.
+- Execute repeated habit scores sequentially with visible completed/total progress; stop on first failure and report partial completion.
+- Do not assume task completion toggling semantics are identical for habits, dailies, todos, and rewards.
+- For group tasks requiring approval, a score request can return an approval-request state rather than immediate completion.
+
+### 9.6 Move task
+
+```http
+POST /tasks/:taskId/move/to/:position
+```
+
+`position` is numeric. Completed todos are not sortable and do not appear in `user.tasksOrder.todos`.
+
+After moving, refresh the relevant `tasksOrder` and task list.
+
+### 9.7 Checklist operations
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/tasks/:taskId/checklist` | Add checklist item. |
+| POST | `/tasks/:taskId/checklist/:itemId/score` | Toggle checklist item completion. |
+| PUT | `/tasks/:taskId/checklist/:itemId` | Update checklist item. |
+| DELETE | `/tasks/:taskId/checklist/:itemId` | Delete checklist item. |
+
+Checklist items are valid only for dailies and todos.
+
+Add item example:
+
+```json
+{
+  "text": "Do this subtask"
+}
+```
+
+## 10. Tags API
+
+Tags are stored on the user and referenced by task IDs.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/tags` | Create tag. |
+| GET | `/tags` | List user tags. |
+| GET | `/tags/:tagId` | Get one tag. |
+| PUT | `/tags/:tagId` | Rename/update tag. |
+| DELETE | `/tags/:tagId` | Delete tag. |
+| POST | `/reorder-tags` | Reorder tags. |
+
+Create tag:
+
+```http
+POST /tags
+Content-Type: application/json
+
+{
+  "name": "Work"
+}
+```
+
+Reorder tag:
+
+```http
+POST /reorder-tags
+Content-Type: application/json
+
+{
+  "tagId": "c6855fae-ca15-48af-a88b-86d0c65ead47",
+  "to": 0
+}
+```
+
+Deleting a tag removes the tag reference from all user tasks.
+
+## 11. Content API
+
+```http
+GET /content
+```
+
+Returns available content objects such as eggs, hatching potions, food, quests, gear, and other game content.
+
+Use the content endpoint to resolve valid keys for item-related routes such as:
+
+```http
+POST /user/hatch/:egg/:hatchingPotion
+POST /user/feed/:pet/:food
+POST /user/purchase/:type/:key
+```
+
+Client recommendations:
+
+- Cache content data aggressively.
+- Refresh content on app startup, app version change, or when server content version changes if exposed by the response.
+- Do not hardcode item keys unless a feature is intentionally pinned to a known item.
+
+### 11.1 Image and icon metadata
+
+Habitica item images are static game assets, while the API content payload provides the stable keys and metadata needed to resolve the game assets. Do not request one image per item from the API, and do not guess remote image URLs inside page components.
+
+Reference sources:
+
+- Official API docs: https://habitica.com/apidoc/
+- API usage guidelines: https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines
+- Content catalog endpoint: `GET https://habitica.com/api/v3/content?language=en`
+- Official image asset source: https://github.com/HabitRPG/habitica-images
+- Official mobile/static image base currently used by the companion resolver: `https://habitica-assets.s3.amazonaws.com/mobileApp/images/`
+
+Content requests still need the normal `x-client` header, even when no user credentials are required for the catalog:
+
+```http
+GET /content?language=en
+x-client: <tool-author-user-id>-<application-name>
+Accept: application/json
+```
+
+Current app note: `HabiticaApiClient` fetches the content catalog through the credentialed client and therefore sends `x-api-user`, `x-api-key`, and `x-client` for `GET /content?language=en`.
+
+Use the content catalog to resolve source keys and display text before choosing an image:
+
+- Gear: use `gear.flat[*].key` as the stable equipment image key; keep `type`, `klass`, `index`, `text`, and `notes` for labels and filtering.
+- Quests: use the quest key and quest metadata for quest scroll, boss, collection, and reward artwork. Do not derive art from localized quest text.
+- Achievements: use the `icon` field when present.
+- Eggs, hatching potions, food, pets, mounts, and other inventory entities: resolve from stable item keys and the image asset catalog, not from display names.
+- Spells and class skills: map from the known class/skill key used by the app model, then pair the icon with the localized skill name and mana cost.
+
+Implementation recommendations:
+
+- Add a single image asset resolver that maps Habitica keys to local/static asset paths plus alt text, image kind, fallback label, and preferred display size.
+- Prefer self-hosted or bundled static assets once the official image source and file naming are confirmed. If remote official static assets are used, keep URL construction inside the resolver rather than page components.
+- Cache the content catalog and asset resolution results. The content response is large and should not be fetched for each card, row, or image.
+- Static image requests must not include Habitica user ID or API token headers.
+- Image load failures should preserve layout dimensions and render a readable fallback label so cards and tables do not shift or overlap.
+
+## 12. Members API
+
+### 12.1 Get member by ID
+
+```http
+GET /members/:memberId
+```
+
+Returns public member profile data including stats, profile, preferences, party, inventory summary, achievements, and auth timestamp metadata.
+
+### 12.2 Get member by username
+
+```http
+GET /members/username/:username
+```
+
+The username may be passed with or without `@`.
+
+### 12.3 Get member achievements
+
+```http
+GET /members/:memberId/achievements
+```
+
+Returns achievements grouped into categories such as basic, seasonal, and special.
+
+### 12.4 Send private message
+
+```http
+POST /members/send-private-message
+Content-Type: application/json
+
+{
+  "toUserId": "99999999-9999-9999-9999-8f14c101aeff",
+  "message": "Message text"
+}
+```
+
+Add local abuse prevention for bulk messaging. Do not automate PMs without explicit user intent.
+
+## 13. Groups, parties, and guilds
+
+Special group IDs:
+
+```text
+party     = authenticated user's party
+habitrpg  = Tavern
+<uuid>    = specific guild or group
+```
+
+Common endpoints:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/groups/:groupId` | Get group. |
+| PUT | `/groups/:groupId` | Update group; leader/moderator permissions required depending on group. |
+| POST | `/groups/:groupId/join` | Join group. |
+| POST | `/groups/:groupId/reject-invite` | Reject invite. |
+| POST | `/groups/:groupId/leave` | Leave group. |
+| POST | `/groups/:groupId/removeMember/:memberId` | Remove member; leader/admin restrictions apply. |
+| GET | `/groups/:groupId/members` | Get members for group. |
+| GET | `/groups/:groupId/invites` | Get pending invites for group. |
+| POST | `/groups/:groupId/chat` | Post chat message. |
+| GET | `/groups/:groupId/chat` | Get chat. |
+| DELETE | `/groups/:groupId/chat/:chatId` | Delete chat message where permitted. |
+
+For lightweight party dashboards, a client can usually rely on the following `GET /groups/:groupId` response fields when present:
+
+```text
+_id
+name
+summary
+memberCount
+quest.key
+quest.active
+quest.progress.up
+quest.progress.hp
+quest.progress.down
+quest.progress.collect
+quest.members
+```
+
+For boss quests, `quest.progress.hp` is the boss HP currently remaining. `quest.progress.up` can be present as pending boss progress, but do not treat the party-group value as the total pending party damage unless the group-total interpretation is verified against the current API response. `quest.progress.down` is pending boss damage from missed Dailies; Habitica server-side quest processing multiplies pending boss damage by boss strength and applies the result once to each participating quest member who is not resting in the Inn / sleep state. Treat pending boss damage as current-user incoming damage only when the current user is a participating boss-quest member and the value has not already been applied. The party response does not include the original total boss HP. Resolve total boss HP from the content catalog when needed:
+
+```http
+GET /content?language=en
+```
+
+Relevant content fields:
+
+```text
+quests.<questKey>.boss.hp
+```
+
+For collection quests, `quest.progress.collect` can contain already-applied collection progress by item key. Pending collection progress before members CRON is exposed on member-side quest progress when Habitica returns the field.
+
+Treat each field as optional and schema-flexible. The server may omit or reshape quest details depending on current party state.
+
+### 13.1 Group members pagination
+
+```http
+GET /groups/:groupId/members
+```
+
+Default limit is 30. Maximum documented limit is 60.
+
+Query parameters:
+
+| Parameter | Notes |
+| --- | --- |
+| `lastId` | Last returned member ID from previous page. Used for pagination. |
+| `limit` | Optional. Max 60. |
+| `includeAllPublicFields` | If `true`, returns public member fields similar to single-member fetch. |
+| `search` | Search profile name / username. |
+
+For the read-only Party CRON dashboard, request the party member list without task data. The app currently uses:
+
+```http
+GET /groups/party/members?includeAllPublicFields=true
+```
+
+Fields used when returned:
+
+```text
+_id or id
+profile.name
+auth.timestamps.loggedin
+lastCron (only if Habitica ever returns it for the caller)
+party.quest.progress.up
+party.quest.progress.collectedItems
+party.quest.progress.collect
+stats.hp
+stats.maxHealth
+stats.mp
+stats.maxMP
+preferences.dayStart (not present in the current public member field list)
+preferences.timezoneOffset (not present in the current public member field list)
+preferences.timezoneOffsetAtLastCron (not present in the current public member field list)
+```
+
+Habitica's current server source defines `includeAllPublicFields=true` as the same public member field set used by `GET /members/:memberId`. The referenced public field set includes `auth.timestamps` but does not include `lastCron`, `preferences.dayStart`, `preferences.timezoneOffset`, or `preferences.timezoneOffsetAtLastCron`. The cron implementation updates both `auth.timestamps.loggedin` and `lastCron` when a user's cron succeeds, so the Party CRON dashboard uses `lastCron` when present and falls back to `auth.timestamps.loggedin` for public member data.
+
+When `party.quest.progress.up` is present on public member records, the field represents the member's pending boss damage. When `party.quest.progress.collectedItems` is present, the field represents the member's pending collection item count. To show total party pending quest progress, sum the relevant field across visible members who are active quest participants. If `quest.members` is missing or the quest has not started, include all members with a returned value. If no member values are returned, show the total as unknown instead of assuming `0`.
+
+Treat the listed member fields as optional. Store observed CRON timestamps as UTC timestamps for local statistics. If member-specific day start or timezone data is unavailable, classify the member from the public CRON timestamp using a UTC-day fallback and mark persisted history as low confidence; do not require webhooks or Habitica account setting changes for party reads.
+
+Large-group pagination pattern:
+
+1. Request `/groups/:groupId/members?limit=60`.
+2. Sort is by `_id` ascending on the server.
+3. Store the last returned member ID.
+4. Request `/groups/:groupId/members?limit=60&lastId=<last-id>`.
+5. Stop when the response contains fewer than requested limit.
+
+The current app's party snapshot path makes one `GET /groups/party/members?includeAllPublicFields=true` request and does not paginate. Add pagination before supporting large guild/member scans, and expose cancellation and progress. Do not run multiple full member scans concurrently for the same account.
+
+### 13.2 Party and quest operations
+
+Common party quest endpoints include:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/groups/party/quests/invite/:questKey` | Invite party to quest. |
+| POST | `/groups/party/quests/accept` | Accept quest invitation. |
+| POST | `/groups/party/quests/reject` | Reject quest invitation. |
+| POST | `/groups/party/quests/abort` | Abort active quest where permitted. |
+| POST | `/groups/party/quests/force-start` | Force-start quest where permitted. |
+| POST | `/groups/party/quests/leave` | Leave quest where permitted. |
+
+Quest state is stored primarily on the party/group and user party fields. Refresh party/group state after quest actions.
+
+Known nuance: historical GitHub discussion notes that group quest data may reflect progress from each user's last cron and may not show all in-day progress in every context. Treat quest progress displays as eventually consistent unless verified by a fresh party state response.
+
+When a previously active quest disappears from `GET /groups/party`, `GET /groups/party/chat` can provide a reliable completion signal if the structured chat `info` fields are present. Habitica server source currently emits `info.type = "boss_defeated"` with `info.quest = <questKey>` for boss completions, and emits `info.type = "all_items_found"` for collection completions. Collection completion chat does not include the quest key, so only treat collection chat as a completion for the most recently active quest when the prior quest was known to be a collection quest and the chat message is newer than the prior snapshot. Do not parse localized chat text for quest completion.
+
+### 13.3 Party & Guild Data Tool observations
+
+The Party & Guild Data Tool demonstrates several practical concerns for group clients:
+
+- `groupId` accepts `party`, a guild UUID, or sometimes a guild URL that the tool parses.
+- Large member lists must be paginated and throttled.
+- Fetching full member details is expensive; fetch full member details only when required.
+- Member activity is context-dependent. The tool describes "last active" as a derived value from cron, chat, drop, buff, or transformation activity depending on group context.
+- Only one instance of a heavy third-party tool should be used at a time to avoid duplicate or excessive calls.
+
+## 14. Challenges
+
+Challenges are group-linked task templates/competitions. Common operations include creating challenges, listing user/group challenges, joining/leaving challenges, getting challenge tasks, and managing challenge tasks.
+
+Task endpoints include:
+
+```http
+POST /tasks/challenge/:challengeId
+GET /tasks/challenge/:challengeId
+```
+
+Creating challenge tasks is restricted to the challenge leader. Challenge task creation accepts mostly the same task fields as user task creation.
+
+Member listing:
+
+```http
+GET /challenges/:challengeId/members
+```
+
+Use the same pagination mindset as group member listing.
+
+Client considerations:
+
+- Challenge-owned tasks can have different modification rules from user-owned tasks.
+- Preserve `challenge` metadata on tasks.
+- Do not assume a user can edit a task just because the task appears in the user task list.
+- If a task belongs to a challenge or group, verify permissions before exposing edit/delete controls.
+
+## 15. Webhooks
+
+Habitica can POST event data to user-configured webhook URLs.
+
+Webhook management is available through the API and the website's API settings. Third-party tools such as Habitica Webhook Editor and Habitica Api-Helper Tool expose options that may not be visible in the main website UI.
+
+Common webhook management endpoints:
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/user/webhook` | List webhooks. |
+| POST | `/user/webhook` | Create webhook. |
+| PUT | `/user/webhook/:id` | Update webhook. |
+| DELETE | `/user/webhook/:id` | Delete webhook. |
+
+Typical creation payload:
+
+```json
+{
+  "url": "https://example.com/habitica/webhook",
+  "label": "NewHabiticaClient task webhook",
+  "type": "taskActivity",
+  "enabled": true,
+  "options": {
+    "created": true,
+    "updated": true,
+    "deleted": true,
+    "scored": true,
+    "checklistScored": true
+  }
+}
+```
+
+Webhook categories described by Habitica community documentation:
+
+| Webhook type | Events |
+| --- | --- |
+| `taskActivity` | task created, updated, deleted, scored, checklist item scored |
+| `questActivity` | quest started, finished, invited |
+| `userActivity` | pet hatched, mount raised, level-up |
+| `groupChatReceived` | chat received from a selected party/guild |
+
+Webhook receiver requirements:
+
+- Habitica sends a POST request to the configured URL.
+- Respond quickly with a 2xx status.
+- The webhook timeout is documented by the wiki as 30 seconds.
+- Best practice is to acknowledge immediately with a small non-empty response and process asynchronously in the receiving integration.
+- Validate payload shape defensively.
+- Add idempotency where possible; webhook delivery can be retried or duplicated in distributed systems.
+- Do not perform long external calls before responding to Habitica.
+
+Example receiver response:
+
+```json
+{ "ok": true }
+```
+
+Example task webhook fields commonly observed:
+
+```json
+{
+  "webhookType": "taskActivity",
+  "type": "scored",
+  "task": {
+    "id": "829d435b-edc4-498c-a30e-e52361a0f35a",
+    "alias": "api-client-sync-tests",
+    "type": "todo",
+    "text": "Write API client sync tests"
+  },
+  "user": {
+    "_id": "12345678-90ab-416b-cdef-1234567890ab"
+  }
+}
+```
+
+## 16. User Data Display Tool observations
+
+The User Data Display Tool is read-only. The referenced tool uses the user's API credentials to fetch data from Habitica and does not intentionally mutate the account.
+
+Useful implementation lessons:
+
+- Treat the API token as a password.
+- Do not send credentials anywhere except Habitica.
+- Avoid saving credentials in browser storage unless the user explicitly chooses persistence and understands the risk.
+- Provide a clear "clear data" path for browser-based tools.
+- Useful derived views can be built from the public API: task overview, task stats, untagged tasks, habit trends, habit history, daily history, quest progress, missing equipment, and drops received today.
+
+For a production client, avoid embedding long-lived API tokens into static pages without a clear threat model. A static web client cannot fully protect a user's API token from browser extensions or injected scripts.
+
+## 17. Request construction examples
+
+### 17.1 cURL
+
+```bash
+curl --compressed \
+  -X GET "https://habitica.com/api/v3/user" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "x-api-user: ${HABITICA_USER_ID}" \
+  -H "x-api-key: ${HABITICA_API_TOKEN}" \
+  -H "x-client: ${HABITICA_TOOL_AUTHOR_ID}-NewHabiticaClient"
+```
+
+### 17.2 Create task
+
+```bash
+curl --compressed \
+  -X POST "https://habitica.com/api/v3/tasks/user" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "x-api-user: ${HABITICA_USER_ID}" \
+  -H "x-api-key: ${HABITICA_API_TOKEN}" \
+  -H "x-client: ${HABITICA_TOOL_AUTHOR_ID}-NewHabiticaClient" \
+  --data '{
+    "text": "Ship Habitica client MVP",
+    "type": "todo",
+    "priority": 2
+  }'
+```
+
+### 17.3 Score task
+
+```bash
+curl --compressed \
+  -X POST "https://habitica.com/api/v3/tasks/${TASK_ID}/score/up" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "x-api-user: ${HABITICA_USER_ID}" \
+  -H "x-api-key: ${HABITICA_API_TOKEN}" \
+  -H "x-client: ${HABITICA_TOOL_AUTHOR_ID}-NewHabiticaClient"
+```
+
+### 17.4 Fetch party members with pagination
+
+```bash
+curl --compressed \
+  -X GET "https://habitica.com/api/v3/groups/party/members?limit=60" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "x-api-user: ${HABITICA_USER_ID}" \
+  -H "x-api-key: ${HABITICA_API_TOKEN}" \
+  -H "x-client: ${HABITICA_TOOL_AUTHOR_ID}-NewHabiticaClient"
+```
+
+Next page:
+
+```bash
+curl --compressed \
+  -X GET "https://habitica.com/api/v3/groups/party/members?limit=60&lastId=${LAST_MEMBER_ID}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "x-api-user: ${HABITICA_USER_ID}" \
+  -H "x-api-key: ${HABITICA_API_TOKEN}" \
+  -H "x-client: ${HABITICA_TOOL_AUTHOR_ID}-NewHabiticaClient"
+```
+
+## 18. Client architecture recommendations
+
+### 18.1 API client layer
+
+Implement a single API transport layer responsible for:
+
+- Base URL management.
+- Auth headers.
+- `x-client` header.
+- JSON serialization.
+- Rate-limit parsing.
+- Retry/backoff policy.
+- Error normalization.
+- Request logging with credential redaction.
+
+Do not let feature code construct raw Habitica requests directly.
+
+### 18.2 Local model handling
+
+Use server IDs as primary keys. Keep raw server payloads for debugging only when raw payloads contain no secrets.
+
+Recommended local aggregates:
+
+- `AuthenticatedUserSnapshot`
+- `TaskEntity`
+- `TaskOrder`
+- `TagEntity`
+- `GroupSummary`
+- `MemberSummary`
+- `QuestState`
+- `ContentCatalog`
+
+Keep derived UI state separate from server state.
+
+### 18.3 Sync strategy
+
+Minimum viable sync:
+
+1. Fetch `/user` for account/dashboard syncs that display computed stat helpers such as `stats.maxHealth`, `stats.maxMP`, or `stats.toNextLevel`. Use `userFields` only for stored-field-only syncs.
+2. Fetch `/tasks/user`.
+3. Fetch `/content` if catalog is missing or stale.
+4. Build local projections.
+
+After task mutation:
+
+1. Apply optimistic UI only if the operation is simple and reversible.
+2. Send mutation.
+3. Parse response.
+4. Refresh affected task type and user stats.
+
+After inventory, quest, class, or purchase mutation:
+
+1. Send mutation.
+2. Refresh user fields relevant to the feature.
+3. Refresh content only if keys/content availability might have changed.
+
+### 18.4 Logging
+
+Log:
+
+- HTTP method.
+- Path without credentials.
+- Status code.
+- Rate-limit headers.
+- Request duration.
+- Habitica `error` code.
+- Sanitized response message.
+- Redacted diagnostics metadata or curated preview snippets only when the app exposes a user-facing diagnostics journal.
+
+Do not log:
+
+- `x-api-key`.
+- Full auth headers.
+- Private messages.
+- Full user profile/inbox.
+- Full webhook payloads unless explicitly enabled in a secure debug mode.
+- Full unrestricted `/user` payloads in routine diagnostics history.
+
+## 19. Security and privacy requirements
+
+- Treat API token as a password.
+- Add explicit user confirmation for purchases, destructive account actions, destructive group actions, mass task changes, PM automation, and quest actions.
+- Redact credentials from logs, crash reports, analytics, screenshots, and support bundles.
+- Do not send Habitica data to third-party analytics without user consent.
+- For browser clients, document that API tokens are exposed to the browser runtime.
+- For shared devices, provide logout and local data clearing.
+- For open-source third-party tools used by others, keep code publicly reviewable as required by Habitica's guidelines.
+
+## 20. Known pitfalls
+
+| Pitfall | Mitigation |
+| --- | --- |
+| Missing `x-client` header | Always inject `x-client` in the transport layer. |
+| Over-polling | Use manual refresh, webhooks, caching, and rate-limit-aware scheduling. |
+| Treating API token as harmless ID | Store and redact the API token like a password. |
+| Using API v4 | Do not use v4 for third-party clients. |
+| Assuming all task IDs are UUID aliases | Store server `id`; allow alias only as a convenience. |
+| Sending full stale objects in PUT | Send partial updates only. |
+| Fetching full user document too frequently or for stored-field-only views | Use manual refresh, cache projections, and use `userFields` when computed stat helpers are not needed. |
+| Scanning large guilds in parallel | Paginate, throttle, and cancel. |
+| Assuming challenge/group tasks are user-editable | Check ownership and permissions. |
+| Ignoring quest eventual consistency | Refresh party state and communicate uncertainty in UI. |
+| Blocking webhook responses on heavy work | Respond 2xx immediately, process asynchronously. |
+| Depending on localized error messages | Use HTTP status and stable error code where possible. |
+
+## 21. Minimal endpoint checklist for a new client
+
+A practical first implementation should support:
+
+| Feature | Endpoints |
+| --- | --- |
+| Auth/account snapshot | `GET /user` when dashboard computed stats are displayed; `GET /user?userFields=profile,stats,preferences` is enough for auth-only checks. |
+| Content catalog | `GET /content` |
+| Task list | `GET /tasks/user` |
+| Task create | `POST /tasks/user` |
+| Task edit | `PUT /tasks/:taskId` |
+| Task delete | `DELETE /tasks/:taskId` |
+| Task score | `POST /tasks/:taskId/score/:direction` |
+| Checklist | `/tasks/:taskId/checklist...` |
+| Tags | `/tags`, `/reorder-tags` |
+| Party state | `GET /groups/party` |
+| Party members | `GET /groups/party/members` |
+| Member profile | `GET /members/:memberId`, `GET /members/username/:username` |
+| Quest actions | `/groups/party/quests/...` |
+| Webhooks | `/user/webhook` |
+
+## 22. Final review checklist
+
+Before shipping the client:
+
+- All API requests include `x-api-user`, `x-api-key`, and `x-client` where authentication is required.
+- `x-client` uses the tool author's User ID, not the current end user's User ID.
+- API token is stored securely and redacted everywhere.
+- `429` and `Retry-After` are handled.
+- Background automation has a minimum 30-second delay between calls.
+- Request loops have explicit stop conditions.
+- API v4 is not used.
+- Full user fetches are not used as the default refresh path.
+- Large group member fetches are paginated and cancelable.
+- Webhook receivers respond with 2xx quickly.
+- Destructive and premium-currency operations require explicit confirmation.
+- Unknown fields do not break parsing.
+- Missing optional fields do not break parsing.
+
+## Optional Auth read bootstrap
+
+The integration Auth service uses existing v3 GET contracts: full `/user` for computed stat helpers and `/tasks/user?dueDate=<current UTC timestamp>` for current server-evaluated due state. The `completedTodos` filter supplies only the thirty most recent completed Todos. Stable task lookup searches the verified task set rather than assuming an undocumented direct endpoint. Responses expose narrow read models and explicit legacy Habitica provenance. Redirects never forward credentials; 401/403 requires repair and 429 or exhausted remaining quota blocks subsequent connection reads until the recorded cooldown. No background polling or upstream mutation exists in the read bootstrap.
+
+## Optional projection gateway contract
+
+The local projection implementation rechecks current primary [task controller source](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js), [task model source](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) and [scoring source](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js). The gateway uses v3 task creation, UUID/alias reads, partial updates and single scores. UUID lookup still requires an explicit returned-owner check; group/challenge tasks remain excluded. Alias validation provides correlation within an account, rather than a durable scoring idempotency guarantee.
+
+Daily inspection requests `type=dailys`, `history=false` and the current `dueDate`. Projection requires verified due state and account day/Cron preconditions. Unknown readiness blocks the effect. Ambiguous creation or ordinary metadata update can use positive observed-state reconciliation; the reviewed linked Daily schedule lane instead requires the original Auth receipt and refuses current-state equality as original delivery proof; a missing task after timeout never proves non-application. Ambiguous Habit scoring remains unresolved because no per-command scoring receipt is available. All gateway qualification uses synthetic accounts and mocked responses; real backend enrollment and Habitica writes remain disabled.
+
+## Verified integration party reads
+
+The optional private Auth party service requests `GET /user?userFields=_id,profile,party`, verifies the enrolled account ID and current party ID, then requests `GET /groups/party`. The group response must match the user party, have type `party` and contain a UUID leader. Optional quest and member-count fields remain bounded and unknown when absent. A final active-enrollment check discards revoked or replaced connections. No caller actor, party or leader claim is accepted.
+
+Source verification on 2026-10-15: the [official group controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/groups.js) uses authenticated group lookup; the [group model](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/group.js) resolves `party` from the authenticated user and rejects unrelated private membership. Companion treats the result as a fresh bounded observation, not a transaction spanning future Habitica membership changes. No extra member-profile enumeration occurs.
+
+Authenticated planning-state reads and queue insertion add `items` to the bounded actor user-field request. The private service reads only `items.quests` for owned-scroll verification. Positive integer counts limit the actor's queued copies. Quest keys use a bounded allowlist; inherited object-property names cannot establish inventory ownership. Queue/vote acceptance changes only Companion planning records and performs no Habitica write. No quest-start, purchase or party administrative endpoint is called by the authenticated planning tools.
+
+## Optional private spell gateway
+
+The local Auth allowlist currently supports only `POST /user/class/cast/healAll`, with `{quantity: 1}` and no caller-supplied target. Official [spell definitions](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/content/spells.js), [cast controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/user/spells.js) and [spell execution](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/spells.js) were inspected on 2026-10-15. Blessing is a healer party spell unlocked at level fourteen, costing twenty-five mana. The server performs party-member saves and creates/updates an automatic party-chat notice. A server failure can follow partial effects; never replay an ambiguous cast or infer failure from current mana alone.
+
+Gateway observation requests `_id,profile,stats,party,flags,preferences,lastCron,items.gear.equipped` from `/user` and verifies `/groups/party`. Responses remain private and bounded. Cast success must contain a valid same-actor user and matching party; public receipts contain only confirmed health/mana and the next state hash. No exact member healing/reward prediction is supplied. Aggregate quantity is never forwarded; later reviewed foreground iterations must revalidate between single calls. Background casting remains unsupported.
+
+The reviewed Workspace spell API treats the action as an explicit foreground operation under the user-initiated pacing exception. Every repetition still sends quantity one after fresh account/party verification and obeys shared quota cooldowns. A known private refusal stops remaining repetitions; an uncertain result fences further effects. `get_spell_command` uses only the stored attempt receipt and never reads changed mana as proof of failure or repeats the cast. Expired operational receipts leave retained Workspace uncertainty intact.
+
+## Authoritative Cron readiness response
+
+Full `GET /user` returns the computed top-level boolean `needsCron`. A `userFields` projection omits that computed field. Auth account status and Daily projection use the unfiltered, bounded read and never use `flags.needsCron`. Missing/malformed readiness cannot authorize server Daily scoring. The PWA prefers the server boolean before the existing inferred fallback. Raw user data remains private. The [Cron readiness contract](cron.md#authoritative-cron-readiness-response) records source evidence and timezone-transition limits.
+
+## Private integration Cron request
+
+The private gateway sends only `POST /cron` with an empty object, after fresh actor/day/task/quest preconditions and durable dispatch reservation. A valid success is HTTP 200 with `success=true` and empty object data. All other dispatched responses retain uncertainty; a missing acknowledgement never authorizes replay. Receipt lookup does not call Habitica. Fresh progress observation reads UserGet and reports no causal completion guarantee. Current task due-state is evaluated by the server helper using a full previous-day timestamp; no Cron damage, reward or travel/DST formula is copied into TypeScript. The [local Cron contract](companion-workspace-contract.md#proposed-local-cron-continuation) governs implementation and keeps live activation separate.
+
+## Remote Cron orchestration
+
+Workspace sends the private Cron gateway only the saved attempt identity and exact preconditions. Workspace does not construct arbitrary upstream paths, replay saved dispatches or combine Cron with a spell. A new typed Cron ledger owns expiring previews, acceptance, recovery and explicit own-history projection. The [reviewed Cron boundary](companion-workspace-contract.md#adopted-reviewed-cron-action-boundary) defines shared ownership, uncertainty and refresh limits.
+
+## Required prospective Todo projection
+
+New ordinary Companion Todo create/update/complete commands carry required correspondence under todo-required-v1. Full subtasks are independent Todos. Preparation reveals the effective game intent; fresh raw false submissions are refused. Native priority never becomes Habitica difficulty. An active unlinked completion plans create before score/up; confirmed original receipts, not canonical saved state alone, establish external completion and rewards. No credential upload, executor enablement or Habitica call is implicit in preparation or local capture. Historical accepted commands are recovered verbatim, and completed unlinked edits require separate historical review.
+
+## Unchanged-task correspondence repair
+
+EnsureProjection queues a missing active Todo counterpart through the existing alias-correlated v3 create gateway and original command receipt. Repair contains no fake content patch and never scores. An existing linked mapping can be freshly verified by the same Create effect without another remote create. Missing historical counterparts require explicit review rather than synthesized completed/dateCompleted fields or retroactive rewards. Exact retained-record adoption uses an authenticated owned UUID read, matching kind and Todo completion state, and the reviewed fingerprint; no Habitica write occurs. Identical accepted adoption recovers the retained mapping receipt.
+
+## Habit creation and direction fields
+
+The [official task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) documents type habit and Boolean up/down defaults true/true. The [task model](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) defines Habit directions independently of Daily/Todo completed and checklist fields. Companion supports all four explicit direction combinations; disabled directions cannot score. Habit creation sends supported text, notes, difficulty, attribute and direction flags only. Native urgency never becomes game difficulty.
+
+Owned Habit responses can omit completed; normalization supplies false while requiring valid direction flags. Create results must match the requested kind, correlation alias and explicit fields before mapping confirmation. Unknown creates require original-receipt lookup or positively verified original alias reconciliation; a missing record never authorizes a replacement. Habit creation semantics are qualified with synthetic private-gateway fixtures.
+
+
+## Daily creation schedule allowlist
+
+Supported private creation sends POST tasks/user with type daily and the complete normalized frequency/everyX/startDate/repeat/daysOfMonth/weeksOfMonth fields. All weekdays are explicit so Habitica defaults cannot broaden recurrence. The start timestamp represents account-local midnight; custom dayStart is excluded from the supported native contract. UTC and fixed Etc/GMT offsets must match the fresh account observation. No date field, habit directions, completed flag, streak or historical score is sent for Daily creation.
+
+Official [due-date logic](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/cron.js) and [start-date normalization](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js) were inspected on 2026-10-21. Habitica computes weekly intervals from the start date; native recurrence anchors weeks on Monday. Multiweek creation therefore requires a Monday start. Month-date recurrence skips absent dates. Named DST zones, other unsupported timezone representations, yearly/weeks-of-month authoring and custom account day starts refuse before a write. Original receipt recovery and exact alias/kind/schedule matching prevent replacement creates after uncertain outcomes. Local qualification makes no live API or penalty-parity claim.
+
+
+## Browser counterpart and adoption review
+
+Todo and History use the existing typed ensureProjection and exact-record adoption endpoints. No extra Habitica endpoint, score, Cron operation or permission is introduced. Adoption repeats the identical reviewed request only to recover the original server mapping receipt; uncertain sends retain original workspace, access epoch, revision, remote identity and fingerprint. Browser preparation rejects/cancels only after known refusal; lost acknowledgement retains the original command reference.
+
+Habitica [Daily schema](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) permits everyX zero, while the due evaluator treats intervals below one as not due. Retained zero-interval schedules remain readable for exact-record adoption and fingerprints. New native schedule authoring still requires interval one or greater; no zero-interval creation or score is authorized.
+
+
+## Required defaults across all task kinds
+
+New prepare_task_command activity uses task-required-v1 for createTodo/createDaily/createHabit, ordinary updateTask, completeTask and scoreHabit. Omitted/false projectToHabitica input normalizes to required effects; fresh raw commands must carry true. Native schedule-only authoring and dedicated planning/state/relationship/lifecycle commands remain explicit non-scoring operations. Incompatible unlinked Daily schedules or retained mapping identities refuse before new acceptance. Exact accepted legacy receipts remain recoverable verbatim.
+
+Fresh legacy Habit activity can request counterpart creation followed by bounded scores; no accepted historical event is replayed. Fresh Daily completion similarly records required creation/recovery and score effects, subject to the existing current-day/isDue/needsCron gateway checks. Offline/local acceptance remains pending until separately granted server consent, cloud ownership and enabled execution. Native urgency never substitutes for Habitica priority/difficulty.
+
+
+## Tag correspondence model boundary
+
+The optional canonical tagLedger represents owned native tag identity and desired task membership for all six organization kinds. The ledger records exact account/group/task IDs, original correlation/receipt references, source revisions and pending/confirmed/unknown/review states. Stable internal correlation aliases are not assumed to exist as Habitica tag API fields. Matching tag names supply no identity evidence. Remote tag IDs do not substitute for reward-bearing task IDs.
+
+The data milestone introduces no endpoint, permission, upstream request, tag deletion or score. Populated exports retain account UUID and mapping metadata without credentials. Imported confirmation records are historical evidence and grant no execution authority. The following gateway milestone must verify current official endpoints, own-account scope, exact fingerprints and preservation of unrelated tags before dispatch.
+
+
+## Native tag gateway allowlist
+
+Official source checks on 2026-10-22 covered [tag controllers](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tags.js), [task-tag controllers](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js), [tag schema](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/tag.js) and [sanitizer](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/baseModel.js). The current schema/sanitizer accepts an explicit UUID when creating a tag. The gateway sends only reviewed id/name on create and name on rename; no internal correlation alias is sent as an unsupported tag field. A changed upstream shape or identity leaves the outcome unconfirmed.
+
+Permitted calls are GET /tags, POST /tags, PUT /tags/{tagId}, GET /tasks/{taskId}, POST /tasks/{taskId}/tags/{tagId} and DELETE /tasks/{taskId}/tags/{tagId}. Tag IDs and task IDs are exact UUIDs. Membership uses individual native endpoints, never a replacement tag array. All calls use owned credentials and x-client, bounded JSON, manual redirect handling, admission control and bounded deadlines. A native tag is adoptable only from the authenticated user's current native tag list; challenge/group metadata is excluded. Task ownership rejects party/challenge/shared/foreign targets.
+
+DELETE /tags/{tagId} remains absent because Habitica removes references from all owned tasks. Matching names never establish identity. Unknown create/rename/membership attempts retain the original attempt fence; lookup does not send. Explicit recovery requires original hashed intent/observation plus a fresh exact metadata review. Only approval of that review records an observed result, distinct from the original HTTP receipt. Missing/changed evidence keeps the unknown fence. Per-account tag consent and separately scoped agent authorization remain independent from native Companion organization permission.
+
+The freshness window cannot make Habitica's API transactional with changes from another client. Individual membership operations avoid deliberate unrelated-tag replacement; unexpected response loss of observed unrelated tags is unconfirmed and never replayed automatically. Live conflict/race behavior remains a separate qualification limit.
+
+## Complete membership executor
+
+Workspace derives every changed organization's complete membership before queuing native metadata. Reconciliation uses the existing private tag allowlist, current account consent and validated additive MCP scope. Each independently linked task is inspected by exact remote ID. Registry identity is checked before touching an existing tag; missing ownership requires explicit adoption review. Empty selections still verify the mapped tag. Work never calls scoring, creates a task for a group or replaces the complete native tags array.
+
+Only individual owned membership additions/removals are sent. Removed groups preserve historical links and remove only previously managed active membership. Archive retains native tags and history. Source changes, missing counterparts, changed consent and unknown effects remain pending or require review. Lost acknowledgements use the exact original receipt; lookup failure never clears an unknown send. Qualification uses local synthetic fixtures, with no new claim about live endpoint behavior.
+
+
+## Public group-tag review adapters
+
+Companion exposes get_group_tag_status, inspect_group_tag_candidates, prepare_group_tag_command, accept_group_tag_command, get_group_tag_command and recover_group_tag_receipt through MCP and the authenticated Workspace /tag-api route. The route is a strict tool allowlist without account selectors or arbitrary native URLs. Browser owner management uses Auth /profiles/{profileId}/tag-consent with habitica-tags-v1. Write preparation/acceptance requires independent consent and additive habitica.tags.write for agent requests. Read audit and original receipt recovery retain tasks:read.
+
+Reconcile reviews exact group identity and full taskChanges, then queues metadata work. Adopt requires an exact inspected native ID and makes no native mutation. Recover reviews observed metadata for the original durable workId and records reviewed_observation without resend. Native tags are never deleted. No group action creates/scores tasks or supplies game rewards. Original command and attempt identities survive expiry, lost acknowledgements and paused execution; an absent receipt never proves rejection.
+
+
+## Checklist conversion tools
+
+get_checklist_conversion reads one exact source Todo and every retained target, including archives. prepare_checklist_conversion requires requestId, sourceTaskId/sourceRevision, expectedRevision, exact existing projectId or a new projectName, and every source item in order. Each item supplies sourceItemId, mode create/reuse/defer and desiredState active/completedArchived. Reuse selects targetTaskId; create omits target identity and supplies explicit gameDetails difficulty/attribute. Create supports active tasks only, with at most ten new captures per cloud review. Defer retains an explicit unresolved item. Exact existing bindings survive restart and cannot be redirected by matching names.
+
+accept_checklist_conversion consumes the approved preparedCommandId as commandId; get_checklist_conversion_command recovers original acceptance. Unknown responses require original identity, never another copy. Agent writes require habitica.tasks.write plus workspace.organization.write; existing task reads retain tasks:read. New active tasks queue normal counterpart creation. Historical reuse, project placement and archive changes never score. Complete tagProjection has independent consent/scope and background controls. canonicalComplete and storedCorrespondenceComplete remain distinct from fresh upstream verification; retirementReady remains false until a separate verified retirement workflow exists.
+
+
+Browser conversion uses authenticated POST /conversion-api with the same four tool names and exact arguments. New task inputs omit targetTaskId rather than sending null. The typed adapter validates complete ordered source/binding identities, original ledger hashes, source notes and original acceptance receipts against the connected workspace. Status never upgrades stored mappings to fresh native presence. A missing original acceptance is uncertain; retry preserves the original ID. Browser navigation retains unresolved review identity in the scoped controller, without storing credentials or descriptions in diagnostics.
+
+
+## Exact converted source retirement
+
+The private Auth gateway supports owned Todo retirement through DELETE /api/v3/tasks/{taskId} only after a separately approved conversion cleanup. The server requires exact source/native/conversion/workspace identity, matching fingerprint and completed Boolean, a fresh owned-task check and irreversible approval. The remoteTask content fingerprint excludes completed, so retirement compares completed independently. Foreign, party/group and challenge tasks remain refused.
+
+A final GET precedes reservation of one DELETE. Each upstream operation has an independent ten-second deadline and quota reservation. Confirmed HTTP 200/201 success requires success true and empty object data, following the [Habitica task controller](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/tasks.js). Definitive refusal creates no canonical source archival. A timeout or lost acknowledgement remains unknown and never authorizes resending. Original attempt lookup is read-only upstream; explicit reconciliation may observe source absence with a distinct outcome. Absence before dispatch creates no native delete attempt. No conditional DELETE or cross-service atomic snapshot exists; the final observation-to-deletion race remains explicit. Broad clearCompletedTodos and scoring are excluded.
+
+
+## Foreground cast acknowledgement semantics
+
+Foreground cast and equipment operations require success true with object data. The [Habitica spell implementation](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/libs/spells.js) returns a result object after user/task or member saves; a server error can follow partial effects. Transport loss, timeout, malformed success and nondefinitive server errors remain unknown and never trigger automatic replay. Definitive HTTP refusal status remains separate from request pacing; subsequent explicit calls obey the existing shared cooldown. Cancellation while queued sends no mutation, while cancelled dispatched acknowledgement cannot prove absence of effects. Refreshing user/task state never reconstructs an original missing cast acknowledgement.
+
+### Foreground equipment recovery
+
+Equipment recovery uses the existing paced own-account reads and equipped-gear endpoint. A fresh read verifies original gear before temporary equipment; every dispatch records an in-flight slot and every acknowledgement requires an observed expected selection. Missing acknowledgements remain unresolved. Explicit recovery reads again and preserves equipment differing from both recorded selections. Native equipment has no conditional-write token, so external-client changes can race the final read and toggle. Recovery supplies neither cast replay nor background execution.
+
+
+## Canonical project aliases
+
+resolve_project is an own-workspace canonical read under tasks:read, independent of Habitica task/tag correlation aliases. Input contains reference and optional expectedRevision only. Output identifies workspace/revision and one exact project, including retained lifecycle flags. Exact UUID selects canonical ID; normalized alias or exact-name collisions refuse ambiguity. list_projects exposes optional alias alongside unchanged name/ID. Organization preparation accepts alias/clearAlias only for projects and requires explicit expectedRevision. Archived/removed records permit only exact clearAlias updates. Alias identity grants no scope, enrollment or native mapping. No Habitica endpoint, request, score or tag identity is introduced.
+
+
+## Agent-resolved deadline dates
+
+prepare_task_command continues to accept patch.deadline as an exact ISO civil date on supported task kinds. Relative `dd`/`дд` expressions must resolve before calling the tool; ambiguous intent, numeric order, missing current-date/timezone context and invalid/leap dates require clarification. updateTask targets the exact existing canonical task and retains the ordinary required correspondence policy. The workflow changes no native endpoint, timezone interpretation or Habitica due-state formula. A saved deadline grants no reminder, review or originating-chat delivery guarantee; receipt recovery retains original arguments after acknowledgement loss.
+
+### Connector compatibility read boundary
+
+get_connector_compatibility requires existing authenticated profile:read access and accepts only optional packageVersion, packageHash and toolSchemaVersion fields. The compatibility tool calls private build-identity endpoints and performs no Habitica read, credential lookup, Workspace consent activation or command submission. The MCP initialization version follows the explicit backend release. The initialization version describes the backend rather than installed host skills.
+
+## Native task recovery boundary
+
+unarchiveTask and correctOccurrence operate on native canonical state only. Both reject retained Habitica identities and uncertain/pending task effects, produce zero projection effects and schedule no tag reconciliation. No Habitica DELETE, negative score, completed:false, schedule rewrite or reward reversal is sent. Reviewed own-task upstream unchecking remains a separate implementation contract.
+
+## Private linked-task recovery gateway
+
+The private ProjectionService supports inspectRecovery and recoverTask under the existing Workspace/projection gates. Ordinary score still rejects non-Habit down scoring. inspectRecovery requires an exact owned Todo/Daily ID, explicit kind, Daily civil date and a source-context SHA-256 supplied by the canonical caller. Auth binds the context to a fresh completed task/checklist fingerprint, task value/completion metadata and verified current account day/readiness. Shared/challenge copies, unknown readiness, Cron-needed state, timezone transitions and prior-day Dailies refuse. Auth does not prove the canonical completion; the selected Workspace orchestration must verify the original confirmed source before creating the context hash.
+
+The ninety-second token is single-use and recovery-only. recoverTask repeats account/task observation, verifies the original review hash and current authority, reserves a durable attempt under the account lease, then sends at most one POST tasks/{id}/score/down. Reservation atomically rechecks token expiry, lease, profile/connection/grant and unresolved cross-tool attempts. Upstream reads/writes retain existing budgets and ten-second network deadlines. Resources remain unknown in the reviewed context and receipt; no exact refund is claimed.
+
+Only the original HTTP200 successful numeric nonpositive score response establishes an applied private recovery receipt. Any dispatched non200, transport loss, malformed success or receipt-persistence failure remains unknown. Original attempt/arguments/timestamp recover the stored outcome before token freshness is considered. Lookup/reconcile cannot infer a score outcome from current task state and never redispatch. Native recovery/history is not recorded by the private recovery primitive; canonical acceptance, source receipts and public MCP exposure remain the selected parent task boundary. Default gates remain off and no real score/Cron qualification is claimed.
+
+Official server source reviewed on2026-10-27: [task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) returns score results; [task scoring service](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/index.js) rejects inconsistent completed state and can invoke shared/challenge processing; [score operation](https://github.com/HabitRPG/habitica/blob/develop/website/common/script/ops/scoreTask.js) changes resources and can remove Daily history/streak state during unchecking. [Daily due calculation](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/utils.js) derives isDue from the requested date and account preferences. Native canonical history must remain retained independently of upstream changes. Habitica supplies no conditional score transaction across independent clients, so a final external race remains possible.
+
+## Original completion score provenance
+
+New server-executed Todo/Daily completeTask score-up attempts include optional sourceContext with companion-completion-score-v1, workspace/task/command/completion identities, canonical command payload hash, effect index, kind and exact Daily date. Auth validates the shape and scoring compatibility, then retains the binding only in an applied original score receipt. Ordinary Habit scores and unused legacy arguments remain unchanged. The server caller owns canonical event validation; the source binding cannot be supplied through public ordinary task fields.
+
+Private scoreReceipt reads an exact retained Auth attempt for the current profile/connection and checks the expected upstream task/fingerprint plus the complete canonical binding. The reader returns verified source metadata only for an applied non-Habit score receipt. Missing, unknown, legacy, wrong-context and wrong-account records remain unavailable. The reader issues no upstream request and returns no credential, old check token or private task text. Dispatched Workspace journal events retain the original attempt token, so verification remains possible after executor prepared_request_json is cleared. Existing thirty-day operational retention and lifecycle cleanup limit availability; later task state never reconstructs an absent original receipt.
+
+## Reviewed linked recovery composition
+
+Workspace requires the complete original score-source proof before preparing a private Auth recovery. A durable original attempt and canonical document fence precede down dispatch; only the original successful receipt permits native restoration/correction. No current-state inference, replay, exact refund or party management is permitted. See [linked task recovery](linked-task-recovery.md).
+
+## Retained recovery read boundary
+
+`list_task_recovery_records` reads only the owned canonical journal through the reviewed Workspace MCP boundary. The query performs no Habitica request, scoring, consent or mutation and makes no fresh upstream ownership/day/refund claim. See [retained recovery discovery](retained-recovery-discovery.md).
+
+
+## Lossless linked Daily updates
+
+The reviewed linked Daily schedule contract revalidates complete raw provider fields and fresh account normalization before one metadata PUT. Habitica rewrites nonempty monthly day arrays from the account-local start date during Daily updates, including ordinary title-only updates. Unsupported retained rules therefore remain read-only. The supported monthly update subset contains one matching start-date day; daily/weekly rules preserve complete representable semantics and inactive weekday defaults. Fresh account/task reads reduce stale writes, but Habitica offers no conditional PUT. Original accepted/normalized schedule facts, unknown-result fences, exact supported fields and source references reside in [linked-daily-schedules.md](linked-daily-schedules.md). No schedule edit scores, runs Cron or pauses provider penalties.
+
+## Reviewed relative-date tag membership
+
+Reviewed relative saved-list tag reconciliation uses existing native tag and task-tag endpoints without task scoring or Cron. Exact day/timezone is bound to new attempts; the final Auth dispatch guard refuses stale context. Original unknown receipt lookup remains available after day changes and never sends a replacement mutation. Existing ownership, unrelated-tag preservation, rate-limit and separate consent/scope guards remain enforced. See [relative tag reviews](relative-tag-reviews.md).

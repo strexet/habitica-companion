@@ -1,0 +1,21 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/workspace-control-names/browser/80455bd0-2a59-4caa-a457-a4149b7312d6.json",
+  "artifact_directory": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793735183695212000",
+  "reviewed": [
+    "webkit-obsidian-glow-360-200-workspace-names-todo.png"
+  ],
+  "related_current_reviews": [
+    "../settings-content-reflow/manual-review-current.json",
+    "../daily-occurrence-readability/manual-review-current.json",
+    "../recurring-row-readability/manual-review-current.json",
+    "../hierarchy-control-names/manual-review-current.json"
+  ],
+  "observations": [
+    "Canonical Todo rows and original review retain readable identity and whole action words at enlarged phone text.",
+    "Full current parent matrix covers Tasks, Habits, Dailies and Settings, including contextual names, exact review targets, original gates, native date paint, whole action words, section widths and exact journal equality."
+  ],
+  "limitations": [
+    "Existing enlarged header Sync clipping remains the separate captured followup/compact-navigation research.",
+    "Physical devices, native date/file popovers and assistive technology remain unqualified."
+  ]
+}

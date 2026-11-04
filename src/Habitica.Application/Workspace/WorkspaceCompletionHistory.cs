@@ -5,20 +5,23 @@ namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceHistoryFilter(string? Query = null, Guid? TaskId = null, CompanionTaskKind? Kind = null,
     DateTimeOffset? CompletedFromUtc = null, DateTimeOffset? CompletedThroughUtc = null,
-    int Limit = 50, int Offset = 0, long? ExpectedRevision = null);
+    int Limit = 50, int Offset = 0, long? ExpectedRevision = null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Guid? ProjectId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] bool Unassigned=false);
 public sealed record WorkspaceRestorationDetail(Guid EventId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived);
 public sealed record WorkspaceOccurrenceCorrectionDetail(Guid EventId, Guid CommandId, Guid TargetCommandId, DateTimeOffset CorrectedAtUtc);
 public sealed record WorkspaceCompletionItem(Guid EventId, Guid TaskId, Guid CommandId, CompanionTaskKind Kind,
     string TaskText, string? Notes, string DetailSource, DateTimeOffset CompletedAtUtc,
     Guid? OccurrenceId, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceRestorationDetail? Restoration = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceOccurrenceCorrectionDetail? OccurrenceCorrection = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceOccurrenceCorrectionDetail? OccurrenceCorrection = null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WorkspaceHistoryProjectPlacement? CurrentPlacement=null);
 
 public static class WorkspaceCompletionHistory
 {
     public static WorkspaceReadPage<WorkspaceCompletionItem> Evaluate(WorkspaceJournalSnapshot snapshot, WorkspaceHistoryFilter filter)
     {
-        if (filter.Query?.Length > 256 || filter.TaskId == Guid.Empty || filter.Kind is { } kind && kind is not (CompanionTaskKind.Todo or CompanionTaskKind.Daily)
+        if (filter.Query?.Length > 256 || filter.TaskId == Guid.Empty || filter.ProjectId==Guid.Empty || filter.ProjectId is not null&&filter.Unassigned || filter.Kind is { } kind && kind is not (CompanionTaskKind.Todo or CompanionTaskKind.Daily)
             || filter.Limit is < 1 or > 100 || filter.Offset is < 0 or > 100000 || filter.ExpectedRevision is < 1 or > WorkspaceDocument.MaxRevision
             || filter.Offset > 0 && filter.ExpectedRevision is null || !Utc(filter.CompletedFromUtc) || !Utc(filter.CompletedThroughUtc)
             || filter.CompletedFromUtc is not null && filter.CompletedThroughUtc is not null && filter.CompletedFromUtc > filter.CompletedThroughUtc)
@@ -26,6 +29,7 @@ public static class WorkspaceCompletionHistory
         var document = snapshot.Document;
         if (filter.ExpectedRevision is { } revision && revision != document.Revision) throw new InvalidOperationException("stale_revision");
         if (WorkspaceRules.Validate(document).Count != 0) throw new InvalidOperationException("history_unavailable");
+        var projectSelection=new WorkspaceHistoryProjects(document,filter.ProjectId,filter.Unassigned);
         var tasks = document.Tasks.ToDictionary(task => task.Id); var occurrences = document.Occurrences.ToDictionary(value => value.Id);
         var restorations = (document.Restorations ?? Array.Empty<TaskRestoration>()).ToDictionary(value => value.CompletionId);
         var commands = snapshot.Commands.ToDictionary(entry => entry.Command.Id); var query = WorkspaceTaskQuery.Fold(filter.Query ?? "");
@@ -33,7 +37,7 @@ public static class WorkspaceCompletionHistory
         for (var index = 0; index < document.Completions.Count; index++)
         {
             var value = document.Completions[index]; var task = tasks[value.TaskId];
-            if (filter.TaskId is { } id && value.TaskId != id || filter.Kind is { } k && task.Kind != k
+            if (!projectSelection.Matches(task) || filter.TaskId is { } id && value.TaskId != id || filter.Kind is { } k && task.Kind != k
                 || filter.CompletedFromUtc is { } from && value.CompletedAtUtc < from || filter.CompletedThroughUtc is { } through && value.CompletedAtUtc > through) continue;
             CompanionTask? accepted = null;
             if (commands.TryGetValue(value.CommandId,out var command))
@@ -49,7 +53,7 @@ public static class WorkspaceCompletionHistory
             var correction = (document.OccurrenceCorrections ?? []).FirstOrDefault(row => row.TargetCommandId == value.CommandId && row.PreviousOccurrence.Id == value.OccurrenceId);
             var correctionDetail = correction is null ? null : new WorkspaceOccurrenceCorrectionDetail(correction.Id, correction.CommandId, correction.TargetCommandId, correction.CorrectedAtUtc);
             rows.Add((value.Revision,index,new(value.Id,task.Id,value.CommandId,task.Kind,text,notes,accepted is null ? "currentTask" : "commandSnapshot",
-                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived,restoration,correctionDetail)));
+                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived,restoration,correctionDetail,projectSelection.Placement(task))));
         }
         var ordered = rows.OrderByDescending(row => row.Item.CompletedAtUtc).ThenByDescending(row => row.Revision).ThenBy(row => row.Order).ToArray();
         var items = ordered.Skip(filter.Offset).Take(filter.Limit).Select(row => row.Item).ToArray(); var next = filter.Offset + items.Length;

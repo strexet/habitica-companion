@@ -1,0 +1,48 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-39d6b303-2359-42cf-837f-3867af6485ed",
+  "classification": "executed-control",
+  "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+  "counts": {
+    "discovered": 7,
+    "expected": 7,
+    "failed": 3,
+    "passed": 4,
+    "skipped": 0
+  },
+  "definition": "c3707020c6b035a1010a673b10787abe3de29b616a5a9d015dffeb345906f715",
+  "diagnostic_key": "04c2dffb7bdc000c057d4612983f512f70e71693a6ba44af0eea4bf681505555",
+  "environment_identity": "594e391453c8b22df1d6596d698b403e6e5ffbd3b2157251286502c9cff5d71a",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/activity-streaks-2026-11-03/component-first-execution.log",
+      "sha256": "2510391c04ebe5521bfc532e76e6b84650b835f303c7b01d8d6e4e04d673c8a7"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f/activity-components/component-first.trx",
+      "sha256": "40b681052bf85b8e6b6a03573f8477cdde6bc88f6cb29a9711678ce479ec0cd9"
+    }
+  ],
+  "execution_sessions": {},
+  "failure_signature": "focused_notes_suite_failure_component-first",
+  "key": "b6851da7afa0599ea0a848a7e8b0e3359ff44e3ef9e858be57487d56eaa3188a",
+  "payload_hash": "fbbd0f9ad13c71ee9907bcb261b7391ea8d5cb267a956ce8fd2230a81e57da46",
+  "recorded_at": "2026-11-02T18:28:27.668740+00:00",
+  "result": "fail",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceActivityStreaks.cs": "5879b448b049e9b496e676c4533c10e201177173c00f65ff3acb913d94c3cbcd",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "a9ea95e2f91c9c12b44a68a0f66ed5bea37aceccdd3cc127c5cc8bd463d515be",
+    "src/Habitica.WebApp/Components/ActivityStreakPanel.razor": "aa6d5e056b0d1e68761dd2ff9159dc97413235ccffd4b4855fef43107d93efa1",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "f426567edf504e93ec253b81b40e5271a84ed419f2158c2fe35948fbd12aabfd",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Workspace/ActivityStreakStatisticsTests.cs": "63ee5f5061e7ec6a0901d9b720be62d45e6a2b9acae2950afe7eb9b6a8e895fe",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "d2c539eaa139ceb2470f19d8f2ef565542ee79e1d13188df4cbd53a5f201c5a3"
+  },
+  "timing": {
+    "tool_wall_seconds": 13.82293999986723
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "report": ".skill-tree/history/validation/ux-ui/equipment-identity-reflow/browser/30e5afc1-395a-4ccd-87bb-e3f2babe201a.json",
+  "result": "Current light/dark phone and desktop screenshots show readable full card identities, complete stat tokens and unbroken recommendation words. Native word ranges independently require one line per fixed action word.",
+  "reviewed_screenshots": [
+    ".skill-tree/artifacts/ux-ui/equipment-identity-reflow/1793728533648088000/webkit-gryphy-light-360-200-game-control-names.png",
+    ".skill-tree/artifacts/ux-ui/equipment-identity-reflow/1793728533648088000/webkit-obsidian-glow-360-200-game-control-names.png",
+    ".skill-tree/artifacts/ux-ui/equipment-identity-reflow/1793728533648088000/chromium-gryphy-light-1280-100-game-control-names.png",
+    ".skill-tree/artifacts/ux-ui/equipment-identity-reflow/1793728533648088000/webkit-obsidian-glow-1280-200-game-control-names.png"
+  ],
+  "prior_automated_passes_not_accepted": [
+    "701ae95b-b7db-451f-a318-ae8ca00cc11e",
+    "651b05e7-1d07-4a15-913f-0c16bf7687aa",
+    "b762dc5a-2169-4a2f-87b6-930e8d4a31ff"
+  ],
+  "prior_limitations": "Width-only checks permitted a final-letter split inside two pixels; actual native word line boxes and independent half-pixel negative control now close that gap.",
+  "remaining": [
+    "Queued count-summary and direct equipment search tasks retain independent scope.",
+    "Existing header Sync clipping and enlarged navigation density retain their recorded Pending/snapshot tasks.",
+    "Raw Party sync warning copy remains P-5a241695-798e-48df-8a0f-989ba8ceaee8.",
+    "Physical devices and assistive technology remain unqualified."
+  ]
+}

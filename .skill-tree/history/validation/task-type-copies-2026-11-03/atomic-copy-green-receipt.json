@@ -1,0 +1,36 @@
+{
+  "actual_lane": "unit",
+  "attempt_id": "C-1c95cd49-7ecf-4ffe-bddc-0aa6bcb7da1f",
+  "classification": "prerequisite-wait",
+  "cleanup": "The dotnet build exited before test discovery; no product fixture or service remained running.",
+  "definition": "1d5ea294685082da4a1db25c2066f340a14a50fda095b35b76fb2237b1e96c93",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/atomic-copy-green-execution.log",
+      "sha256": "4c8ca6ebbe5dda4275e908e3a134d290386e2790d49aa4b28a6d3a8800f3cc69"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "707c39dc6dfbc96b567aa610c346f48d573116ad16d663691365989d6236fd80",
+  "payload_hash": "e1a217460ac4a6d574720a7280e860648c0ade4dbbb23d27f748ffbecbbfd81d",
+  "recorded_at": "2026-11-02T20:26:54.168059+00:00",
+  "result": "fail",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "f2ac83486649f4c8e3deb1af9cd296f2fe1a3413b0fb9515b05a27952b1f56da",
+    "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs": "9594bc952c3490247322d4df8201c8d5474d612cd51a02ece9c7423804258ee6",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "3f5cec3cf97ea099a1b3bde89fb1109e2bff3195d9579bd88b2d6a3f6e833536",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "0035f58cd7dccd7677769034cf6eb22c77e6ea9ef07b93c3e612021398e1852b",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "827f1d0486ef4bab44867577465963843876fc6a13319f5e3182c3544bcd727f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "dca53951aacb25cb52386278f682fb3450a9700f07868649c5d382954b483783",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "8744e344564157ab44abc00e911d2d5695d5404e4b232c1fa0ab69f45942eeac",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "fed892c6cdac4a837721222d75bca500b99ebf1e5f94b25534233f6a8bda61ac",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18"
+  }
+}

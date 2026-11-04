@@ -12,6 +12,9 @@ public interface IChatGptIntegrationClient
 {
     Task<IntegrationTagConsentResult> ReadTagConsentAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
     Task<IntegrationTagConsentResult> SetTagConsentAsync(bool enabled, CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
+    IntegrationRecoveryDescriptor? RecoveryDescriptor => null;
+    Task<IntegrationRecoveryResult> RecoverAsync(HabiticaCredentials credentials, IntegrationRecoveryDescriptor? descriptor, bool bootstrapAcknowledged, CancellationToken cancellationToken)
+        => Task.FromResult(new IntegrationRecoveryResult(false, "recovery_unavailable"));
     bool IsAvailable { get; }
     bool HasConnection { get; }
     Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);

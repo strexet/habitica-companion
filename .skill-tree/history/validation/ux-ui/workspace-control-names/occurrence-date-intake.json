@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Keep selected Daily occurrence dates readable with enlarged phone text",
+    "description": "Current hydrated Dailies qualification finds Chromium selected-date clipping at360 pixels and200-percent text: occurrence date ink retention0.720626 against the required0.97. Existing creation date padding does not cover repeated row occurrence inputs.",
+    "expected_behavior": "Use bounded occurrence field layout and padding to retain complete selected native civil-date segments, preserving exact per-task occurrence drafts and original review fences.",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "relation": "blocker",
+    "source": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732871826209000/failure.json and selected native images; current TodoTaskPanel row date markup and CSS.",
+    "priority_reason": "Selected native occurrence content fails required parent rendered readability acceptance.",
+    "expected_source_hash": "65a3e1ea0fc262ddd8f75809c4bae6b211f1ca77dbc577e01913527ad0ab140e"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-0aaa2856-d08e-400c-bcd3-4bfcc0bfed67",
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "related_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "relation": "blocker",
+    "root_task_id": "T-b3f044f5-12e0-4660-98f0-fbf716caaf46",
+    "status": "Pending"
+  }
+}

@@ -1,3 +1,4 @@
+@inject IServiceProvider Services
 @using Habitica.Application.Workspace
 @inject WorkspaceDataController Workspace
 @inject IAppSessionController Session
@@ -6,9 +7,9 @@
 
 <section class="card-surface settings-card">
     <p class="section-label">Companion workspace</p>
-    <h2>Cloud tasks and workspace backups</h2>
-    <p>Cloud workspace access is optional and separate from ChatGPT linking and private device sync. The workspace server can read task names, notes, categories, projects, goals, saved views, completion history and commands. Enabling access also stores encrypted Habitica credentials on the integration server.</p>
-    <p>Tasks and command history remain until you delete the cloud workspace. Disconnect pauses access and background execution while retaining cloud data. Browser copies and Habitica records have separate controls. Background execution requires another opt-in.</p>
+    <h2>Workspace access, execution and backups</h2>
+    <p>Cloud access follows the active Workspace choice and remains separate from agent linking and encrypted preference sync. The workspace server can read task names, notes, categories, projects, goals, saved views, completion history and commands. Enabling access also stores encrypted Habitica credentials on the integration server.</p>
+    <p>Tasks and command history remain until you delete the cloud workspace. Disconnect pauses access and background execution while retaining cloud data. Frozen browser copies retain original recovery evidence. Habitica records keep separate controls. Background execution requires another opt-in.</p>
     @if (!Workspace.IsAvailable)
     {
         <p data-testid="workspace-unavailable">Cloud workspace is not enabled on this app.</p>
@@ -19,14 +20,13 @@
     }
     else if (Workspace.CloudWorkspaceId is null)
     {
-        <p role="status" data-testid="workspace-unverified">Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.</p>
-        <p>Verify or reconnect after accepting the workspace disclosure. Verification sends current Habitica credentials to the integration server and can create a profile/workspace if none exists. Retained tasks and executor consent are preserved for an active connection; verification does not opt in to background execution.</p>
-        <label class="checkbox-row"><input type="checkbox" @bind="_consent" data-testid="workspace-consent" /><span>I consent to encrypted server credential storage and server-readable workspace data with the retention described above.</span></label>
-        <MudButton data-testid="workspace-connect" Disabled="@(!_consent || _busy || Session.State.IsBusy)" OnClick="ConnectAsync" Variant="Variant.Filled">Verify or connect cloud workspace</MudButton>
+        <p role="status" data-testid="workspace-unverified">Existing cloud access is unavailable in this session. Missing local access does not disconnect the server or change the selected Workspace.</p>
+        <MudButton data-testid="workspace-connect" Disabled="@(_busy || Session.State.IsBusy || !Guid.TryParse(Session.State.UserId,out _))" OnClick="RestoreExistingAsync" Variant="Variant.Outlined">Restore existing cloud access</MudButton>
+        <p>New cloud selection and browser record adoption use the <a href="/todo/sync#workspace-transfer">reviewed Workspace move</a>. Restoring access never enrolls or enables execution.</p>
     }
     else
     {
-        <p>Cloud workspace management access is present in this tab. Signing out or closing this tab forgets local access without disconnecting the server workspace.</p>
+        <p>Existing cloud Workspace access is available. Saved account settings restore approved access in later sessions; signing out never changes server consent.</p>
         <p role="status" data-testid="workspace-connection-state">@(Workspace.ConnectionStatusVerified ? "Server workspace access verified." : "Server workspace and background execution status are unverified. Check status or renew access.")</p>
         <MudButton Disabled="@_busy" OnClick="CheckOperationsAsync" Variant="Variant.Outlined" data-testid="workspace-check-status">Check connection and saved work status</MudButton>
         @if (_operations is { } operations && _operationsAccount == Session.State.UserId && _operationsWorkspace == Workspace.CloudWorkspaceId)
@@ -37,11 +37,10 @@
                 <p>This check reads saved command state only. Uncertain effects stay paused; checking status never retries an action.</p>
             </div>
         }
-        <p>If access expires or stops responding, renew the connection before checking the original command receipt. Renewal keeps accepted commands and does not enable background execution.</p>
-        <label class="checkbox-row"><input type="checkbox" @bind="_renewConsent" data-testid="workspace-renew-consent" /><span>I renew cloud workspace access with encrypted server credential storage and the readable-data retention described above.</span></label>
-        <MudButton Disabled="@(_busy || !_renewConsent || Session.State.IsBusy)" OnClick="RenewAsync" Variant="Variant.Outlined" data-testid="workspace-renew">Renew cloud connection</MudButton>
+        <p>If access expires, restore the existing connection before checking an original receipt. No new consent or executor opt-in is created.</p>
+        <MudButton Disabled="@(_busy || Session.State.IsBusy)" OnClick="RestoreExistingAsync" Variant="Variant.Outlined" data-testid="workspace-renew">Restore existing connection</MudButton>
         <div class="action-row">
-            <MudButton Disabled="@_busy" OnClick="ExportCloudAsync" Variant="Variant.Outlined">Export cloud workspace</MudButton>
+            <MudButton Disabled="@_busy" OnClick="ExportCloudAsync" Variant="Variant.Outlined">Export cloud task journal</MudButton>
             <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = false)" Variant="Variant.Outlined">Disconnect cloud workspace</MudButton>
             <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = true)" Variant="Variant.Outlined">Delete cloud workspace</MudButton>
         </div>
@@ -65,28 +64,32 @@
         else { <p data-testid="workspace-executor-state">Background execution is unavailable on this server. The saved executor opt-in is off.</p> }
         @if (_cleanup is not null)
         {
-            <p>@(_cleanup.Value ? "Permanently delete all cloud tasks, notes and command history? Export a backup first." : "Disconnect every workspace session and pause execution? Cloud tasks and history will remain stored.")</p>
+            <p>@(_cleanup.Value ? "Permanently delete the cloud task Workspace and task command history? Independent personal Notes and retained transfer archives can require separate cleanup. Export a backup first." : "Disconnect every workspace session and pause execution? Cloud tasks and history will remain stored.")</p>
             <MudButton Disabled="@_busy" OnClick="CleanupAsync" Color="Color.Error" Variant="Variant.Filled">Confirm workspace action</MudButton>
             <MudButton OnClick="@(() => _cleanup = null)" Variant="Variant.Outlined">Cancel</MudButton>
         }
     }
-    <h3>Local workspace backups</h3>
-    <p>Workspace backups include readable notes and command history, with no credentials. These files are separate from the Habitica data backup and encrypted private sync below. Restore keeps independent workspace IDs and preserves existing data on conflicts. Clear saved browser data also removes local workspaces.</p>
+    <h3>Browser backups and recovery copies</h3>
+    <p>Workspace backups include readable notes and command history, with no credentials. These files are separate from the Habitica data backup and encrypted private sync below. Saved copies retain exact source identities and preserve existing data on conflicts. Browser copies from an accepted move remain frozen. Clear saved browser data also removes local workspaces.</p>
     @if (Session.State.IsAuthenticated)
     {
         <MudButton Disabled="@_busy" OnClick="RefreshLocalAsync" Variant="Variant.Outlined">Find local workspaces</MudButton>
         @foreach (var id in _localIds)
         {
             <div class="action-row"><span>@id</span><MudButton Disabled="@_busy" OnClick="@(() => ExportLocalAsync(id))" Variant="Variant.Text">Export local workspace</MudButton>
-                @if (Workspace.CloudWorkspaceId is not null) { <MudButton Disabled="@(_busy || Workspace.ExecutorEnabled)" OnClick="@(() => _transferId = id)" Variant="Variant.Outlined">Transfer workspace to cloud</MudButton> }
+                <MudButton Disabled="@_busy" OnClick="@(() => RecoverLegacyAsync(id))" Variant="Variant.Outlined">Check legacy transfer receipt</MudButton>
+                <MudButton Disabled="@_busy" OnClick="@(() => _legacyRetry=id)" Variant="Variant.Text">Recover an unaccepted legacy transfer</MudButton>
+
             </div>
         }
-        @if (_transferId is not null)
+        @if(_legacyRetry is {} legacyId)
         {
-            <p>Freeze this local workspace and upload its readable tasks, notes and history? The cloud workspace must be empty with execution paused. The local copy stays frozen if the result is uncertain; retry the same transfer to recover its receipt. Background execution requires its own opt-in.</p>
-            <MudButton Disabled="@_busy" OnClick="TransferAsync" Variant="Variant.Filled">Confirm freeze and upload</MudButton>
-            <MudButton Disabled="@_busy" OnClick="@(() => _transferId = null)" Variant="Variant.Outlined">Cancel</MudButton>
+            <p>Retry only the original frozen legacy transfer @legacyId? Restore existing cloud access and pause background execution first. The original identity and archive remain unchanged. A populated target can refuse the legacy transfer; preserve the backup and original receipt.</p>
+            <MudButton Disabled="@_busy" OnClick="RetryLegacyAsync" Variant="Variant.Outlined">Retry original legacy transfer</MudButton>
+            <MudButton OnClick="@(() => _legacyRetry=null)" Variant="Variant.Text">Cancel legacy recovery</MudButton>
         }
+        @if(Workspace.CloudWorkspaceId is null && (Connections is null || Connections.State==CompanionConnectionState.Browser))
+        {
         <label class="field-row workspace-restore-field">Restore workspace backup<InputFile class="app-input" disabled="@_busy" OnChange="SelectFileAsync" data-testid="workspace-restore-file" /></label>
         @if (_restoreJson is not null)
         {
@@ -94,12 +97,15 @@
             <MudButton Disabled="@_busy" OnClick="RestoreAsync" Variant="Variant.Filled">Confirm local restore</MudButton>
             <MudButton OnClick="@(() => _restoreJson = null)" Variant="Variant.Outlined">Cancel</MudButton>
         }
+        }
     }
     @if (_message is not null) { <p role="status">@_message</p> }
 </section>
 
 @code {
+    private CompanionConnectionCoordinator? Connections=>Services.GetService(typeof(CompanionConnectionCoordinator)) as CompanionConnectionCoordinator;
     private bool _disposed;
+    private Guid? _legacyRetry;
     private int _viewGeneration;
     private (bool Authenticated, string? UserId) _owner;
     protected override void OnInitialized()
@@ -114,8 +120,8 @@
         if (owner != _owner)
         {
             _owner = owner; _viewGeneration++;
-            _consent = _executorConsent = _renewConsent = _busy = false;
-            _operations = null; _cleanup = null; _transferId = null; _message = _restoreJson = null; _localIds = Array.Empty<Guid>();
+            _executorConsent = _busy = false;
+            _operations = null; _cleanup = null; _message = _restoreJson = null; _localIds = Array.Empty<Guid>();
         }
         _ = InvokeAsync(StateHasChanged);
     }
@@ -124,8 +130,7 @@
     private WorkspaceOperationalStatus? _operations;
     private string? _operationsAccount;
     private Guid? _operationsWorkspace;
-    private bool _consent, _busy, _executorConsent, _renewConsent;
-    private Guid? _transferId;
+    private bool _busy, _executorConsent;
     private bool? _cleanup;
     private string? _message, _restoreJson;
     private IReadOnlyList<Guid> _localIds = Array.Empty<Guid>();
@@ -170,10 +175,10 @@
         catch { if (Current(generation)) _message = "Saved work status is unavailable. No action was retried."; }
         finally { if (Current(generation)) _busy = false; }
     }
-    private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));
-    private async Task RenewAsync() { var generation = _viewGeneration; await RunAsync(() => Workspace.ConnectAsync(_renewConsent)); if (Current(generation)) _renewConsent = false; }
+    private Task RestoreExistingAsync() => RunAsync(async()=>{var result=await Session.RestoreExistingConnectionsAsync(true);return new WorkspaceActionResult(result.Succeeded,result.Message);});
     private async Task SetExecutorAsync(bool enabled) { var generation = _viewGeneration; await RunAsync(() => Workspace.SetExecutorAsync(enabled)); if (Current(generation)) _executorConsent = false; }
-    private async Task TransferAsync() { if (_transferId is not { } id) return; var generation = _viewGeneration; await RunAsync(() => Workspace.TransferAsync(id)); if (Current(generation)) _transferId = null; }
+    private Task RetryLegacyAsync()=>RunAsync(async()=>{var id=_legacyRetry;_legacyRetry=null;return id is {} value?await Workspace.RetryLegacyTransferAsync(value):new WorkspaceActionResult(false,"No original transfer selected.");});
+    private Task RecoverLegacyAsync(Guid id)=>RunAsync(()=>Workspace.RecoverLegacyTransferAsync(id));
     private Task ExportCloudAsync() => RunAsync(() => Workspace.ExportCloudAsync());
     private Task ExportLocalAsync(Guid id) => RunAsync(() => Workspace.ExportLocalAsync(id));
     private async Task CleanupAsync() { if (_cleanup is null) return; var generation = _viewGeneration; await RunAsync(() => Workspace.DisconnectAsync(_cleanup.Value)); if (Current(generation)) _cleanup = null; }

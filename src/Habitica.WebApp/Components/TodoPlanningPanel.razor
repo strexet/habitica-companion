@@ -7,7 +7,7 @@
 
 <div class="todo-planning" data-testid="todo-planning">
     <section class="card-surface todo-planning-header">
-        <div class="todo-day-title"><h1>@_view</h1><MudButton Href="/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
+        <div class="todo-day-title"><h1>@_view</h1><MudButton Href="/todo/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
         <div class="todo-planning-controls">
             <label class="field-row">View<select class="app-input" value="@_view" @onchange="ChangeView" data-testid="plan-view" @ref="_viewInput">@foreach (var view in Enum.GetValues<TodoPlanningView>()) { <option value="@view">@view</option> }</select></label>
             <label class="field-row">Reference day<input class="app-input" type="date" value="@_date" @onchange="ChangeDay" data-testid="plan-day" /></label>

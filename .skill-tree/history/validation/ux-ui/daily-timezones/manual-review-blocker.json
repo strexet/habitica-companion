@@ -1,0 +1,7 @@
+{
+  "unaccepted_automated_pass": "85425069-0249-464a-b13f-db04adb3f349.json",
+  "source_artifact": "1793740709488466000/chromium-gryphy-light-daily-timezones-linked-alias.png",
+  "manual_findings": "Full nested editor at360/200 clips the selected start-date year and splits the fixed heading word occurrences. Automated pass remains unaccepted. The owning editor already belongs to the selected task; scoped phone gutters, native date padding and action padding are adjusted. New fixed heading/action word line checks and five native selected-date paint probes per journey must pass before acceptance.",
+  "capture_selection_note": "The suspected serialization problem did not reproduce. Exact selected options are already retained by bUnit and the capture helper is unchanged.",
+  "confirmed_heading_failure": "ea5f9a9d-eca4-4669-a5b1-51c2e253f77c-failure.json: full native Range guard found occurrences: on two lines at360/200. The section heading is now the concise Daily schedule; the existing Exact occurrence section still names the occurrence controls. Full selector/date paint and action-word requirements remain unchanged."
+}

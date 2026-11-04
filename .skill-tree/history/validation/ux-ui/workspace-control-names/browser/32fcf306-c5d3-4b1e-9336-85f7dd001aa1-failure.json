@@ -1,0 +1,69 @@
+{
+  "session": "32fcf306-c5d3-4b1e-9336-85f7dd001aa1",
+  "error": "Qualification step3 failed; inspect the original log",
+  "steps": [
+    {
+      "argv": [
+        "dotnet",
+        "publish",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/published",
+        "-m:1",
+        "-nodeReuse:false"
+      ],
+      "exitCode": 0,
+      "log": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/step-0.log"
+    },
+    {
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "-m:1",
+        "-nodeReuse:false",
+        "--filter",
+        "FullyQualifiedName~TodoTaskPanelTests|FullyQualifiedName~SettingsPageTests",
+        "--logger",
+        "trx;LogFileName=capture.trx",
+        "--results-directory",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000"
+      ],
+      "exitCode": 0,
+      "log": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/step-1.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "tests/browser-qualification/prepare.py",
+        "--fixtures",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/fixtures",
+        "--published",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/published/wwwroot",
+        "--changed-route",
+        "/todo/tasks",
+        "--changed-route",
+        "/todo/habits",
+        "--changed-route",
+        "/todo/dailies",
+        "--changed-route",
+        "/settings"
+      ],
+      "exitCode": 0,
+      "log": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/step-2.log"
+    },
+    {
+      "argv": [
+        "node",
+        "tests/browser-qualification/ux-ui.mjs",
+        "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/request.json"
+      ],
+      "exitCode": 1,
+      "log": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000/step-3.log"
+    }
+  ],
+  "artifacts": ".skill-tree/artifacts/ux-ui/workspace-control-names/1793732796850449000",
+  "browserCleanup": "Inspect browser failure report when browser execution began; a forced controller timeout never proves child cleanup."
+}

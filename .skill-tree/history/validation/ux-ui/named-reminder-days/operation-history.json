@@ -1,0 +1,902 @@
+{
+  "admission": {
+    "environment_id": "8352556bbd9a8a1ff0c6e9b3db37c7ffb0801a57fd2eacbfe8fe6a8186792961",
+    "flavor": "web",
+    "identity": "b9fd75e41d3d56ae373bd4087b502b2ea8c4f686d810d9049bbfcd74838f3830",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "checks": {
+    "named-reminder-days-behavior": {
+      "attempt": {
+        "attempt_id": "C-f0cef8eb-8008-481f-a07a-ebf5a340ffad",
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+        "key": "0c6ab08cea2587a5921c15b8a24cf5e269de5518428876a0fc9a108bcf16ed57",
+        "launch": {
+          "assertion": "Exercise public component/controller behavior with independent expected outcomes: All seven days incl Sunday; empty weekday set; month1/28/29/30/31; short month; retained weekly/monthly schedule; DST overlap choice; end limit; pending original command. Require nonzero discovery and no required skips.",
+          "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+          "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+          "cleanup_seconds": 15,
+          "deadline_utc": "2026-11-03T23:22:27.992068+00:00",
+          "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T23:17:28.309439+00:00",
+        "recipe": {
+          "argv": [
+            "dotnet",
+            "test",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+            "-m:1",
+            "-nodeReuse:false",
+            "--filter",
+            "FullyQualifiedName~PushReminderComponentTests|FullyQualifiedName~PushReminderControllerTests",
+            "--logger",
+            "trx;LogFileName=named-reminder-days.trx",
+            "--results-directory",
+            ".skill-tree/history/validation/ux-ui/named-reminder-days/unit"
+          ],
+          "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "global.json",
+            "Directory.Build.props",
+            "Directory.Packages.props",
+            "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+            "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+            "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+            "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+            "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+            "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+            "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+          ],
+          "lane": "unit",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "csharp": "12.0",
+            "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+            "framework": "Blazor WebAssembly net8.0",
+            "sdk_declaration": "8.0.125",
+            "test_frameworks": {
+              "Microsoft.NET.Test.Sdk": "18.4.0",
+              "bunit": "2.7.2",
+              "xunit": "2.9.3"
+            }
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        }
+      },
+      "receipts": {
+        "C-31283de0-cd67-48dc-b2e4-547ed5d55379": {
+          "actual_lane": "unit",
+          "attempt_id": "C-31283de0-cd67-48dc-b2e4-547ed5d55379",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 35,
+            "expected": 35,
+            "failed": 0,
+            "passed": 35,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-31283de0-cd67-48dc-b2e4-547ed5d55379.log",
+              "sha256": "77403618766fc6de43f04f060cc302f5cb7e1debb17b2e00c58de5da2a0c71af"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-31283de0-cd67-48dc-b2e4-547ed5d55379.trx",
+              "sha256": "6533022c9514fd875634c7bc9e298fa898c9be438b63657e30b5fd922e85efd0"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:27:44.215911+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747504216136000.json"
+              ],
+              "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "3a1c45ded468e802394007967865b9f00d9d4d27074dff5568304ceaa42259f9",
+          "payload_hash": "4ebdecfa427f9f1770343148e342041bd8a84ef3214c50ea421a8847c5367914",
+          "recorded_at": "2026-11-03T23:13:35.666915+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "d68cecf5bd51570a0d2dd8f7d983d18e4756448833ff93edd72efeb8733b8b77",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 9.797862916719168
+          }
+        },
+        "C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58": {
+          "actual_lane": "unit",
+          "attempt_id": "C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 34,
+            "expected": 34,
+            "failed": 2,
+            "passed": 32,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.log",
+              "sha256": "993cf05081ea8e7dc84a5dab9411c1d2557af0b82bf5598206c68212320dbd27"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.trx",
+              "sha256": "6707411aa4c089ead9dbd7726c711fef2eeed1debb7ad4ed1c1d1652bf7c65ca"
+            }
+          ],
+          "execution_sessions": {},
+          "failure_category": "expected-behavior",
+          "key": "2227c80fc517c22924f54a12710158c34327ce62cb1bd2856c7fc49f7a27b2c4",
+          "payload_hash": "b3022b2de2f0275b94fbd8ed1e4cc6bdb5259cf03f3ec91d630296db0405dd2e",
+          "recorded_at": "2026-11-03T23:07:56.375015+00:00",
+          "result": "red",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "f169253b9bec0d62042089342933b75f31322f00347769815fc0be3e3af15222",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "ca84323ca5db10d53a0893d4a6bcaf53950f740c8b7e8b992b76576c6eaaf11f",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.012217957992107
+          }
+        },
+        "C-63e4d9e6-bd56-4fd1-a22d-5fb1929a9436": {
+          "actual_lane": "unit",
+          "attempt_id": "C-63e4d9e6-bd56-4fd1-a22d-5fb1929a9436",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 35,
+            "expected": 35,
+            "failed": 0,
+            "passed": 35,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-63e4d9e6-bd56-4fd1-a22d-5fb1929a9436.log",
+              "sha256": "da9b615cd8d70f6edb0257cc41c5d79728b2fbd6c80272c78de99a441ce57e78"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-63e4d9e6-bd56-4fd1-a22d-5fb1929a9436.trx",
+              "sha256": "cb163eaba39bc2e7313942bd76549c29cc58d46f780c6f178299b1c7fb94fb44"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "3824be27b544d11f2ba2deb24b67fd7e572de7571cd96ac931d600b12bc32ef9",
+          "payload_hash": "bc8370ef40ff9c7c5e11ed65ac36130e55eb830818b0edd258c795fbeeed6edd",
+          "recorded_at": "2026-11-03T23:09:32.265360+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "8463ec5d696266ece4095b36afc87af8ddfdd38fbae9b4b77d4f6e78fa8035d4",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 6.010581749957055
+          }
+        },
+        "C-92ba3901-9c18-4fc7-b8e1-d6b0557bce6b": {
+          "actual_lane": "unit",
+          "attempt_id": "C-92ba3901-9c18-4fc7-b8e1-d6b0557bce6b",
+          "classification": "prerequisite-wait",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-92ba3901-9c18-4fc7-b8e1-d6b0557bce6b.log",
+              "sha256": "f86a12d3ff3f255d419981e2427d14aaf18750a44c64ed7d36c209574aea180f"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "e9be7018e92adb3ff2e2483915126d11f7fa95708a12319061b4a8a9b1e5eac4",
+          "payload_hash": "e2b720e9bb1c9cd1d883d9a9a43beab2f09204b63d5fd717c6304abf6db8b7e4",
+          "recorded_at": "2026-11-03T23:07:39.960560+00:00",
+          "result": "unavailable",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "f169253b9bec0d62042089342933b75f31322f00347769815fc0be3e3af15222",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c93cbbdb4b09001bb4853cbb3b6994f8e96952c4b551416d58fa53853bdc0add",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 4.798514625057578
+          }
+        },
+        "C-c10090a1-1e92-4b88-be07-a070e45d1427": {
+          "actual_lane": "unit",
+          "attempt_id": "C-c10090a1-1e92-4b88-be07-a070e45d1427",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 34,
+            "expected": 34,
+            "failed": 0,
+            "passed": 34,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-c10090a1-1e92-4b88-be07-a070e45d1427.log",
+              "sha256": "a9a3a7d6d77a728a7da27fc0af47d330b179c0a15b8188c83dcebe812b707e12"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-c10090a1-1e92-4b88-be07-a070e45d1427.trx",
+              "sha256": "b20cdd7aa165554d11791d9731c40c566619f67d27ef4e562940f516db77886f"
+            }
+          ],
+          "execution_sessions": {},
+          "key": "0efd71ea9a892dcb11e0eb0ebd9fc67c31f3d4c598b67a84cf8fa42a34bfe4b9",
+          "payload_hash": "f6d098d7cf9b55fce631c9e199f7957f40c0dea23c9f1b070a4d6beed5b90252",
+          "recorded_at": "2026-11-03T23:08:50.132668+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "8463ec5d696266ece4095b36afc87af8ddfdd38fbae9b4b77d4f6e78fa8035d4",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "baca77f8fea9dfd84ab17ced868bc21ce7536689f090e56741cfb61283d114d8",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 12.70665358286351
+          }
+        },
+        "C-f0cef8eb-8008-481f-a07a-ebf5a340ffad": {
+          "actual_lane": "unit",
+          "attempt_id": "C-f0cef8eb-8008-481f-a07a-ebf5a340ffad",
+          "classification": "executed-control",
+          "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+          "counts": {
+            "discovered": 35,
+            "expected": 35,
+            "failed": 0,
+            "passed": 35,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+              "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+              "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:29:37.168266+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747617168474000.json"
+              ],
+              "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "0c6ab08cea2587a5921c15b8a24cf5e269de5518428876a0fc9a108bcf16ed57",
+          "payload_hash": "a8ed03a6e4a04b7bb7a30c52a9277786d28f7024d5d14fc0fb41c67cdeacb079",
+          "recorded_at": "2026-11-03T23:17:41.990199+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+          },
+          "timing": {
+            "tool_wall_seconds": 13.306993540842086
+          }
+        }
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 34,
+          "expected": 34,
+          "failed": 2,
+          "passed": 32,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.log",
+            "sha256": "993cf05081ea8e7dc84a5dab9411c1d2557af0b82bf5598206c68212320dbd27"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3a06da3b-8dd8-42c1-aec2-38ee80a44a58.trx",
+            "sha256": "6707411aa4c089ead9dbd7726c711fef2eeed1debb7ad4ed1c1d1652bf7c65ca"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "2227c80fc517c22924f54a12710158c34327ce62cb1bd2856c7fc49f7a27b2c4",
+        "payload_hash": "b3022b2de2f0275b94fbd8ed1e4cc6bdb5259cf03f3ec91d630296db0405dd2e",
+        "recorded_at": "2026-11-03T23:07:56.375015+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "f169253b9bec0d62042089342933b75f31322f00347769815fc0be3e3af15222",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "ca84323ca5db10d53a0893d4a6bcaf53950f740c8b7e8b992b76576c6eaaf11f",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.012217957992107
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-f0cef8eb-8008-481f-a07a-ebf5a340ffad",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 35,
+          "expected": 35,
+          "failed": 0,
+          "passed": 35,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "dda5667dd5f1fd8ac80991ea68f987a619c3aab97736f582a8c95cf6c917b721",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.log",
+            "sha256": "ed7f4ba5b43651fc64f5083c69b5843f3272e2c7b6d66178dc84c7a63dc40db8"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-f0cef8eb-8008-481f-a07a-ebf5a340ffad.trx",
+            "sha256": "cda2629c5b98246fea3f6fbd68ce24a49ba9a10cca121dfd363536b987404569"
+          }
+        ],
+        "execution_sessions": {
+          "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+            ],
+            "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:29:37.168266+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747617168474000.json"
+            ],
+            "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "0c6ab08cea2587a5921c15b8a24cf5e269de5518428876a0fc9a108bcf16ed57",
+        "payload_hash": "a8ed03a6e4a04b7bb7a30c52a9277786d28f7024d5d14fc0fb41c67cdeacb079",
+        "recorded_at": "2026-11-03T23:17:41.990199+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.306993540842086
+        }
+      }
+    },
+    "named-reminder-days-rendered": {
+      "attempt": {
+        "attempt_id": "C-378e4596-6612-41e6-acb9-59ccc780941c",
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "3db379d29c7d9fd6ad669c5895aaff8f67738d14b8c16076b5e5a470d4db0eee",
+        "key": "cace77239d49cb8d60875090a795e48a5818afc046b6c797341db847d7a0bee6",
+        "launch": {
+          "assertion": "Selection, retained editing and review are keyboard usable across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+          "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+          "cheaper_evidence_insufficient": "Static and component tests cannot qualify routing, focus, computed paint or native browser geometry.",
+          "cleanup_seconds": 30,
+          "deadline_utc": "2026-11-03T23:33:43.549692+00:00",
+          "execution_profile": "Owned current Release and synthetic Chromium/WebKit matrix.",
+          "project_root": "/Users/petr/Projects/habitica-tool"
+        },
+        "prepared_at": "2026-11-03T23:17:43.865437+00:00",
+        "recipe": {
+          "argv": [
+            "python3",
+            "tests/browser-qualification/ux-ui.py",
+            "named-reminder-days",
+            ".skill-tree/history/validation/ux-ui/named-reminder-days/browser"
+          ],
+          "execution_notes": "Exact task_key selects queued or immutable completed validation parameters and a reviewed route/state journey adapter. Current Release publish and nonzero current Razor capture precede six-width,100/200-percent light/dark qualification. Disabled foreground/surface sampling includes native values and compound opacity. Same-engine native-date screenshot ink requires a full-width reference; missing evidence blocks passing. Harness-only baseline-observation mode preserves unfixed product defects separately. Strict dependent mode rejects product errors/unavailable checks. Isolated persistent profiles, exact session/build handshake, bounded900-second controller and560-second browser deadlines for the normal three-palette matrix; the explicit24-built-in matrix uses1500/1200seconds, explicit cleanup. Synthetic provider GET replies only; no real account, provider effect, permission, service-worker qualification or publication. One isolated persistent profile per engine is qualified on this host. Independent white/black paint controls run once per worker across all widths/text sizes; product fixtures and hydrated journeys retain every declared palette case. Exact matrix coverage rejects missing, duplicate and out-of-scope cases.",
+          "input_paths": [
+            ".skill-tree/validation-recipes.json",
+            "tests/browser-qualification/ux-ui.py",
+            "tests/browser-qualification/ux-ui.mjs",
+            "tests/browser-qualification/ux-ui-contract.mjs",
+            "tests/browser-qualification/ux-ui-native-date.mjs",
+            "tests/browser-qualification/ux-ui-shared-journey.mjs",
+            "tests/browser-qualification/ux-ui-adapters.json",
+            "tests/browser-qualification/ux-ui-checks.test.mjs",
+            "tests/browser-qualification/prepare.py",
+            "tests/browser-qualification/qualification-core.mjs",
+            "tests/browser-qualification/qualification-frame.mjs",
+            "tests/browser-qualification/qualification-session.mjs",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+            "src/Habitica.WebApp/Habitica.WebApp.csproj",
+            "tests/browser-qualification/ux-ui-equipment-metrics.mjs",
+            "tests/browser-qualification/ux-ui-notes-metrics.mjs"
+          ],
+          "lane": "browser",
+          "qualification": "owner-declared static recipe; runner unqualified",
+          "toolchain": {
+            "browser": "Existing pinned Playwright1.62.1 Chromium/WebKit cache; existing pngjs from the same runtime",
+            "framework": "Blazor WebAssembly8 Release",
+            "node": "22.x"
+          }
+        },
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        }
+      },
+      "receipts": {
+        "C-378e4596-6612-41e6-acb9-59ccc780941c": {
+          "actual_lane": "browser",
+          "attempt_id": "C-378e4596-6612-41e6-acb9-59ccc780941c",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 721,
+            "expected": 721,
+            "failed": 0,
+            "passed": 721,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "3db379d29c7d9fd6ad669c5895aaff8f67738d14b8c16076b5e5a470d4db0eee",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+              "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:33:43.549692+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747863549942000.json"
+              ],
+              "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "cace77239d49cb8d60875090a795e48a5818afc046b6c797341db847d7a0bee6",
+          "payload_hash": "47ab3730aeb41e1225f7043009e5d26f739d75bf6d066b626a0fea7714fd21a1",
+          "recorded_at": "2026-11-03T23:20:40.347983+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 175.57541712513193
+          }
+        },
+        "C-3e0d9a2f-4e3c-45c8-956c-90599d317336": {
+          "actual_lane": "browser",
+          "attempt_id": "C-3e0d9a2f-4e3c-45c8-956c-90599d317336",
+          "classification": "executed-control",
+          "cleanup": "Inspect original failure report for actual cleanup; no cleanup assumption from the exit code.",
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "diagnostic_key": "1232b01a8d2e62fd4420aedc8124fbbad38c9a1055d7a4df2334b02dd58d1881",
+          "environment_identity": "a36950695456918285f59289c44edebd0c411986a15282ad3c422802db1e2057",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-3e0d9a2f-4e3c-45c8-956c-90599d317336-browser.log",
+              "sha256": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/5dad5644-0cff-4644-94d2-a93b430e520a-failure.json",
+              "sha256": "f367a11ac06e98d110653fbaea29cabed3599bc7bbd881cdaa211b0af2ca2a0a"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:27:44.215911+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747504216136000.json"
+              ],
+              "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "failure_signature": "8ddb0791cb0ee32a07fdac6be8c4d18e883028861ee81ca3a73ab8a9a07bf716",
+          "key": "144c8ec6fd06413111778791a36b7922f73ef797c3b8f08d195452cf1649ff35",
+          "payload_hash": "992a831f5b2708b521df13f423f1dacccaf9eb8e1ae46d77a4faa3aa58a628ba",
+          "recorded_at": "2026-11-03T23:12:02.989536+00:00",
+          "result": "fail",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "8463ec5d696266ece4095b36afc87af8ddfdd38fbae9b4b77d4f6e78fa8035d4",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 17.657274291850626
+          }
+        },
+        "C-943d1822-8da9-4c36-9635-7ebd957564a0": {
+          "actual_lane": "browser",
+          "attempt_id": "C-943d1822-8da9-4c36-9635-7ebd957564a0",
+          "classification": "prerequisite-wait",
+          "cleanup": "The recipe stopped before browser launch; prerequisite processes exited.",
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "4a89bc0d7af4fdb6381c3d25d1b465ce326242ef2da3d42ee7165140fa756a2e",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/C-943d1822-8da9-4c36-9635-7ebd957564a0-browser.log",
+              "sha256": "e6862d1d557a09c371da658b50024862960cf488f50f1839fbc87636edfd3246"
+            },
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/efe9720d-3e11-4d10-baa9-969b76eb49a5-failure.json",
+              "sha256": "ca00e471e2ef23a945b482fe46d090cee48dc54fb1944695907514d021ee5733"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "8c625e95326041eeb3b877aeef87ffe59119bb15b0f2ec58a781b0b53e872b1a",
+          "payload_hash": "99abfa98d55a8cea9f289a2bba877af2c3f8f05e032447b6be1df4faf7b09d23",
+          "recorded_at": "2026-11-03T23:11:02.613552+00:00",
+          "result": "unavailable",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "8463ec5d696266ece4095b36afc87af8ddfdd38fbae9b4b77d4f6e78fa8035d4",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 22.283875540830195
+          }
+        },
+        "C-dacdd77c-2b81-4b9d-8859-f9a6a4ddba02": {
+          "actual_lane": "browser",
+          "attempt_id": "C-dacdd77c-2b81-4b9d-8859-f9a6a4ddba02",
+          "classification": "executed-control",
+          "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+          "counts": {
+            "discovered": 721,
+            "expected": 721,
+            "failed": 0,
+            "passed": 721,
+            "skipped": 0
+          },
+          "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+          "environment_identity": "4542f4b239b814a76141b15c146e7656756874355c25bc855670df31b6d36268",
+          "evidence": [
+            {
+              "available": true,
+              "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/74a8ec37-b721-44ea-a58a-8926baf349e2.json",
+              "sha256": "c941f8683954caa0d163ec95fa4d9898ab4b5ffc35dabcfa6fde0a1555d0f39e"
+            }
+          ],
+          "execution_sessions": {
+            "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+              ],
+              "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            },
+            "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+              "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+              "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+              "cleanup_seconds": 30,
+              "deadline_utc": "2026-11-03T23:29:37.168266+00:00",
+              "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+              "identity_evidence": [
+                ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747617168474000.json"
+              ],
+              "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+              "project_root": "/Users/petr/Projects/habitica-tool",
+              "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+              "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+            }
+          },
+          "key": "0cf90a521a99c4cd1013bf060eeaf2fb9931b4b7815cb22d4db4f54f4162957d",
+          "payload_hash": "1facd9b016285a2476ee9d4f865631bad279f88b38ed2cb76e98dab89f99281c",
+          "recorded_at": "2026-11-03T23:16:31.799543+00:00",
+          "result": "pass",
+          "sources": {
+            "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "d68cecf5bd51570a0d2dd8f7d983d18e4756448833ff93edd72efeb8733b8b77",
+            "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+            "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "6d7452129275bd4b7e1ffa4b4039b8ebba5340c661af80cc8063b291401b7fa6",
+            "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+            "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+            "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+          },
+          "timing": {
+            "tool_wall_seconds": 173.44187645800412
+          }
+        }
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-378e4596-6612-41e6-acb9-59ccc780941c",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 721,
+          "expected": 721,
+          "failed": 0,
+          "passed": 721,
+          "skipped": 0
+        },
+        "definition": "15a3c695a74aef5c856ab84b44bd5fabb9df86f81faf28f3f973786751c7faad",
+        "environment_identity": "3db379d29c7d9fd6ad669c5895aaff8f67738d14b8c16076b5e5a470d4db0eee",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/named-reminder-days/browser/ff01d149-bb97-4f7b-a88f-9e6bd12ce28b.json",
+            "sha256": "bb20c1c8de14bf9fc5446f1b982f6ac7d2e127a37300fe62eb3547d14421daee"
+          }
+        ],
+        "execution_sessions": {
+          "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+            ],
+            "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          },
+          "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T23:33:43.549692+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747863549942000.json"
+            ],
+            "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "cace77239d49cb8d60875090a795e48a5818afc046b6c797341db847d7a0bee6",
+        "payload_hash": "47ab3730aeb41e1225f7043009e5d26f739d75bf6d066b626a0fea7714fd21a1",
+        "recorded_at": "2026-11-03T23:20:40.347983+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskPushReminderEditor.razor": "095176d7764ecd4034e4882e665e2336830405866a195dd83869e72b34d520a0",
+          "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "6bbb9f1923ea425876cf70769334f6409bb4ac3262518882bb4dd2bfbbcea75a",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderComponentTests.cs": "c2b992166c8aae1bf92624d5e6b8d8a69aa2e27ec5772cc1cbe7454ae7db3e79",
+          "tests/Habitica.WebApp.Tests/Workspace/PushReminderControllerTests.cs": "e1d2a8dbdbc753a9b45408b029dd2b6567967d63214e3cc5321ee793d5a36b6f",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "4e09e576bfb96d4b748fec4e11f7021a969b30c2067742dd794f094021d7fc1d"
+        },
+        "timing": {
+          "tool_wall_seconds": 175.57541712513193
+        }
+      }
+    }
+  },
+  "execution_sessions": {
+    "34601b6d22f7d5d4edbcc2ff6c8db161cda7765350b80599efffecb47b5e8406": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T23:26:39.657481+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747439657730000.json"
+      ],
+      "profile_id": "8be52e11bcfc0cf1a57c3e91dd364a986f4e611d16fc7a1e5670e4e4f20a8f61",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    },
+    "3afbfbffb91642ca47e8ae54ae232c16d12cd484b6ba6b947e917d8a7aa1756c": {
+      "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+      "build_identity": "e581d6ea4c2816a215f6acd80520c8448a3a83a21bade6e2bb36984740179890",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-03T23:33:43.549692+00:00",
+      "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+      "identity_evidence": [
+        ".skill-tree/history/validation/ux-ui/named-reminder-days/launch-1793747863549942000.json"
+      ],
+      "profile_id": "814e3ae099a326ede749148ff1468cf033e7d30e6453fae34925363985d336a9",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/named-reminder-days",
+      "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+    }
+  },
+  "partial_work": [],
+  "stage": "implementing"
+}

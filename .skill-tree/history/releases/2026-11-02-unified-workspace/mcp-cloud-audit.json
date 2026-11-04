@@ -1,0 +1,103 @@
+{
+  "checkedAtUtc": "2026-11-02T04:37:04.203Z",
+  "backend": {
+    "state": "coherent",
+    "workers": {
+      "mcp": {
+        "service": "mcp",
+        "backendRelease": "0.3.0",
+        "toolSchemaVersion": "1.2.0",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.4.0"
+        },
+        "buildHash": "5974025f3cdcb8e563cffca239ffb6746d4a111e6efb3a180f8cd493f58fd83b"
+      },
+      "auth": {
+        "service": "auth",
+        "backendRelease": "0.3.0",
+        "toolSchemaVersion": "1.2.0",
+        "buildHash": "5974025f3cdcb8e563cffca239ffb6746d4a111e6efb3a180f8cd493f58fd83b",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.4.0"
+        }
+      },
+      "workspace": {
+        "service": "workspace",
+        "backendRelease": "0.3.0",
+        "toolSchemaVersion": "1.2.0",
+        "buildHash": "5974025f3cdcb8e563cffca239ffb6746d4a111e6efb3a180f8cd493f58fd83b",
+        "supportedPackage": {
+          "minimum": "0.2.0",
+          "maximumExclusive": "0.4.0"
+        }
+      }
+    }
+  },
+  "clientReportedPackage": {
+    "installation": "unknown",
+    "reportedByClient": {
+      "packageVersion": "0.3.0",
+      "toolSchemaVersion": "1.2.0"
+    },
+    "packageCompatibility": "compatible",
+    "schemaCompatibility": "compatible"
+  },
+  "inventory": {
+    "workspaceId": "e5a46166-614a-4e1c-b687-c252e74409b1",
+    "revision": 168,
+    "storeVersion": 502,
+    "nonarchivedTasks": 25,
+    "activeTasks": 13,
+    "completedNonarchivedTasks": 12,
+    "archivedTasks": 9,
+    "totalTasks": 34,
+    "projects": 3,
+    "notes": 1,
+    "trashedNotes": 0,
+    "notebookId": "56f214dc-9e2d-4a22-9257-ffea7ed8b355",
+    "notesRevision": 3,
+    "retainedCompletions": 18,
+    "requestedEffects": 44,
+    "confirmedEffects": 44,
+    "commandStates": {
+      "notRequested": 56,
+      "pending": 0,
+      "leased": 0,
+      "executing": 0,
+      "confirmed": 44,
+      "blocked": 0,
+      "unknownOutcome": 0,
+      "cancelled": 0
+    },
+    "tagReviewStates": [
+      {
+        "state": "confirmed",
+        "count": 5
+      },
+      {
+        "state": "needsReview",
+        "count": 15
+      }
+    ],
+    "allPagesComplete": true,
+    "browserInventory": "unverified; owner browser capture is required",
+    "privateContentPersisted": false
+  },
+  "recordsUnchanged": {
+    "workspaceIdentity": true,
+    "workspaceRevision": true,
+    "storeVersion": true,
+    "nonarchivedTasks": true,
+    "projects": true,
+    "notes": true,
+    "archivedTasks": true,
+    "completions": true,
+    "trashedNotes": true,
+    "effectCounts": true
+  },
+  "browserTransferCompleteness": "Unverified: current cloud MCP boundary cannot enumerate browser IndexedDB or acknowledge local authority. Owner capture/review is required if browser records remain.",
+  "newMigrationHostToolAvailability": "not exposed by current host tool snapshot; server/package definitions are deployed; host metadata refresh remains unverified",
+  "privateContentPersisted": false
+}

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# GENERATED FILE
-# Source: skill-tree/common/scripts/create-documentation-snapshot.py; generator: skill-tree/scripts/sync-skill-references.py
 """Create explicit-request-only Markdown documentation snapshots."""
 
 from __future__ import annotations
@@ -44,7 +42,7 @@ def tracked_markdown(root: Path) -> list[Path]:
 
 def relevant(path: Path, root: Path) -> bool:
     rel = path.relative_to(root).as_posix()
-    if rel in {"README.md", "AGENTS.md"} or rel.startswith("skill-tree/documents/"):
+    if rel in {"README.md", "AGENTS.md"} or rel.startswith(".skill-tree/documents/"):
         return True
     text = path.read_text(encoding="utf-8", errors="replace")[:20000].lower()
     keywords = ["architecture", "feature", "future", "build", "test", "dependency", "agent", "project"]
@@ -131,7 +129,7 @@ def create(root: Path, output: Path | None, dry_run: bool, *, include: list[str]
     dt.datetime.strptime(now, '%Y-%m-%d-%H-%M')
     included = candidates(root, include)
     safe_name = re.sub(r"[^a-z0-9]+", "-", repo_name(root).lower()).strip("-") or "repository"
-    destination = root if output_dir == 'root' else root / 'skill-tree/artifacts'
+    destination = root if output_dir == 'root' else root / '.skill-tree/artifacts'
     archive = output or (destination / f"{safe_name}-documents-snapshot-{now}.zip")
     if archive.suffix.lower() != '.zip':
         raise ValueError('snapshot archive requires a .zip output path')

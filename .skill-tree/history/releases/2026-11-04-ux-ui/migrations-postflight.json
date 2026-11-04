@@ -1,0 +1,19 @@
+{
+  "companion-workspace": {
+    "applied_count": 23,
+    "pending": [],
+    "newly_applied": [
+      "0021-note-folders.sql",
+      "0022-note-folder-previews.sql",
+      "0023-task-type-copy-previews.sql"
+    ]
+  },
+  "recovery_bookmarks": {
+    "chatgpt-auth": {
+      "bookmark": "0000032a-00000134-00005119-e98d0c2de4474582604c9af3672935ab"
+    },
+    "companion-workspace": {
+      "bookmark": "000000b2-00000278-00005119-2ad1dd0723249b603abe4c00993ae015"
+    }
+  }
+}

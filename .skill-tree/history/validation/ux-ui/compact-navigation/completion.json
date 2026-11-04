@@ -1,0 +1,479 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Frequent planning routes and canonical capture are reachable before secondary tool groups without a long hero scan.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.log",
+          "sha256": "f50058288b75ff599941b9242abae9e7515da8905df21585d4af9067d21da7b6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.trx",
+          "sha256": "3c87ba8b4866f4da62a53b44aad71a95d34bb78575cb6b22927f0d268529f949"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/acceptance.json",
+          "sha256": "c6d7590bc7df59113b75e4ea0b5c339f4cc2f9d23d2c2ee948b9c4e153a43df5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+          "sha256": "67dddbd5e232a33c9410262243006a93af02cb965bf4e3b37deebb5292127dbc"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Every existing destination remains reachable with accurate active-section and expanded-state semantics.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.log",
+          "sha256": "f50058288b75ff599941b9242abae9e7515da8905df21585d4af9067d21da7b6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.trx",
+          "sha256": "3c87ba8b4866f4da62a53b44aad71a95d34bb78575cb6b22927f0d268529f949"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/acceptance.json",
+          "sha256": "c6d7590bc7df59113b75e4ea0b5c339f4cc2f9d23d2c2ee948b9c4e153a43df5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+          "sha256": "67dddbd5e232a33c9410262243006a93af02cb965bf4e3b37deebb5292127dbc"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Navigation hierarchy and keyboard focus pass across the required rendered matrix.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.log",
+          "sha256": "f50058288b75ff599941b9242abae9e7515da8905df21585d4af9067d21da7b6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.trx",
+          "sha256": "3c87ba8b4866f4da62a53b44aad71a95d34bb78575cb6b22927f0d268529f949"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/acceptance.json",
+          "sha256": "c6d7590bc7df59113b75e4ea0b5c339f4cc2f9d23d2c2ee948b9c4e153a43df5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+          "sha256": "67dddbd5e232a33c9410262243006a93af02cb965bf4e3b37deebb5292127dbc"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Exercise public component/controller behavior with independent expected outcomes: Phone and desktop, secondary group expansion, active nested category, direct route entry, capture link and account actions. Require nonzero discovery and no required skips.",
+        "criteria": [
+          "Frequent planning routes and canonical capture are reachable before secondary tool groups without a long hero scan.",
+          "Every existing destination remains reachable with accurate active-section and expanded-state semantics."
+        ],
+        "id": "compact-navigation-behavior",
+        "parameters": {
+          "report_name": "compact-navigation.trx",
+          "result_directory": ".skill-tree/history/validation/ux-ui/compact-navigation/unit",
+          "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+          ".skill-tree/documents/navigation-study.md",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-d39273cb-0e71-4371-a270-60ab3df48c81",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 9,
+          "passed": 31,
+          "skipped": 0
+        },
+        "definition": "a37a5cdab80a4adb4cd091ccb2289c9816524c7cd59493d356d07b018eb1f393",
+        "environment_identity": "02579f794019cee8b5af0197667714367f4954583a5f4f63524317be386f4c44",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-d39273cb-0e71-4371-a270-60ab3df48c81.log",
+            "sha256": "f42f4343ccd60759f838bc94cf6a3a314f6b33ff0afbfce1e0175cfdb3965da7"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-d39273cb-0e71-4371-a270-60ab3df48c81.trx",
+            "sha256": "f851185803391417bf8fa9ae675f214521ec999f2016e7b9751d23284bce0ac8"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "ca1eb82b3f4041ce4a38c3834458d443bdf8b86dfb6f32fa49a3c01aff78eb0e",
+        "payload_hash": "93ee0a407fc301ee53bce88ed104137961e0c5f46c7d905beb773c966264577b",
+        "recorded_at": "2026-11-03T20:06:36.829691+00:00",
+        "result": "red",
+        "sources": {
+          ".skill-tree/documents/navigation-study.md": "d48e79f4f4f448ceb39084aacf28ab67c1f08293e5a3e476d2dee6f5ad3c34d5",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "769308c779a411aa0fedf7a75eefc19197b03e76257ab99052a9fd460bdc8136",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "03a19aeeeb6d2c1d9e1770a9f0902b44e901c5344c8c979446aa88127ae60b87",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "65520005e30681cd7fd91ce04b0d026ee933b0666c2e7d1e7ad01168a61258a1",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.064905374776572
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-4f19bb18-5ccb-4cba-87fe-97dd49482b47",
+        "classification": "executed-control",
+        "cleanup": "The focused dotnet process exited; no live account, browser or provider execution.",
+        "counts": {
+          "discovered": 40,
+          "expected": 40,
+          "failed": 0,
+          "passed": 40,
+          "skipped": 0
+        },
+        "definition": "a37a5cdab80a4adb4cd091ccb2289c9816524c7cd59493d356d07b018eb1f393",
+        "environment_identity": "02579f794019cee8b5af0197667714367f4954583a5f4f63524317be386f4c44",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.log",
+            "sha256": "f50058288b75ff599941b9242abae9e7515da8905df21585d4af9067d21da7b6"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/compact-navigation/C-4f19bb18-5ccb-4cba-87fe-97dd49482b47.trx",
+            "sha256": "3c87ba8b4866f4da62a53b44aad71a95d34bb78575cb6b22927f0d268529f949"
+          }
+        ],
+        "execution_sessions": {
+          "6418c8a170bdc0061b48bb46bd9d1e8b387ecd4c47750225f299267598ea43c3": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "dbed168f3a8228fc4d89ca8ffd757d4b3b40477aec0abebe45932dabacc99a17",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T20:27:19.917445+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/compact-navigation/launch-1793736679917930000.json"
+            ],
+            "profile_id": "312187b8d3fb0173b54570dd580f2d588787b50a9631232a29956d7f1bf417a8",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/compact-navigation",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "9479ccd458dbf8c2eeae2de588544f92ac60a9b1fc44240658ff8ebbbf15e6f2",
+        "payload_hash": "963a32d6b7e41fef3d87d393b40285000af5bf7d09bd2c59444fe3d3aaaf112c",
+        "recorded_at": "2026-11-03T20:14:51.375670+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/navigation-study.md": "5eae76f6295666aafab7858d3198a18899078a0e14d74be6284fd2e9beee9d22",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "f6dcadc6cb0b949122ce1d1cac6c6c1d19f70faed5598cd760f53912a83c2452",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.534372542053461
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Navigation hierarchy and keyboard focus pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+        "criteria": [
+          "Navigation hierarchy and keyboard focus pass across the required rendered matrix."
+        ],
+        "id": "compact-navigation-rendered",
+        "parameters": {
+          "cases": "Phone and desktop, secondary group expansion, active nested category, direct route entry, capture link and account actions.",
+          "matrix": {
+            "disabled_text_product_minimum": 3,
+            "engines": [
+              "chromium",
+              "webkit"
+            ],
+            "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+            "require": [
+              "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+              "visible primary actions",
+              "disabled states and reasons",
+              "visible keyboard focus",
+              "no unintended overlap or clipping",
+              "readable native input contents",
+              "enabled text contrast",
+              "long-content reflow"
+            ],
+            "schemes": [
+              "gryphy-light",
+              "gryphy-dark",
+              "obsidian-glow"
+            ],
+            "text_percent": [
+              100,
+              200
+            ],
+            "widths": [
+              360,
+              390,
+              430,
+              768,
+              1024,
+              1280
+            ]
+          },
+          "report_directory": ".skill-tree/history/validation/ux-ui/compact-navigation/browser",
+          "routes": [
+            "/todo/today",
+            "/todo/inbox",
+            "/todo/plan",
+            "/todo/projects",
+            "/todo/tasks",
+            "/inventory",
+            "/settings"
+          ],
+          "task_key": "compact-navigation"
+        },
+        "recipe_id": "ux-ui-rendered-browser",
+        "sources": [
+          "src/Habitica.WebApp/Layout/MainLayout.razor",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+          ".skill-tree/documents/navigation-study.md",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-6122a023-36b9-4a79-bcfb-dabb4f2a4a82",
+        "classification": "executed-control",
+        "cleanup": "Successful report verifies owned contexts/server/profiles closed and removed.",
+        "counts": {
+          "discovered": 649,
+          "expected": 649,
+          "failed": 0,
+          "passed": 649,
+          "skipped": 0
+        },
+        "definition": "a37a5cdab80a4adb4cd091ccb2289c9816524c7cd59493d356d07b018eb1f393",
+        "environment_identity": "adc7f5e789f0110720d29303abe027b36eb5bd90276adb8c8677cf5ce3ea0510",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/ux-ui/compact-navigation/browser/523dfeda-0a70-4a1f-a36c-c068ed6569fa.json",
+            "sha256": "67dddbd5e232a33c9410262243006a93af02cb965bf4e3b37deebb5292127dbc"
+          }
+        ],
+        "execution_sessions": {
+          "6418c8a170bdc0061b48bb46bd9d1e8b387ecd4c47750225f299267598ea43c3": {
+            "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+            "build_identity": "dcdae33737738bdbc1522bf6268752486ad9801c66357568865d789ae0280332",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T20:32:29.838752+00:00",
+            "fixture_identity": "Exact nonce-bound loopback origin and isolated persistent profiles; synthetic responses only.",
+            "identity_evidence": [
+              ".skill-tree/history/validation/ux-ui/compact-navigation/launch-1793736989838994000.json"
+            ],
+            "profile_id": "312187b8d3fb0173b54570dd580f2d588787b50a9631232a29956d7f1bf417a8",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "WR-6a0a0290-50ab-4e5b-9173-4e676c2362fe/compact-navigation",
+            "tool_identity": "Pinned .NET8.0.125, Node22, Playwright1.62.1 Chromium/WebKit"
+          }
+        },
+        "key": "33be6d6566b3f6e2f3937042b4ca738d6f702a70d316086d4646fee3c83898cc",
+        "payload_hash": "31504eec83f025c16d11c4a4858a157aafabdeb6defda70998a11bbe4b25cf6b",
+        "recorded_at": "2026-11-03T20:18:25.678486+00:00",
+        "result": "pass",
+        "sources": {
+          ".skill-tree/documents/navigation-study.md": "5eae76f6295666aafab7858d3198a18899078a0e14d74be6284fd2e9beee9d22",
+          "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "f6dcadc6cb0b949122ce1d1cac6c6c1d19f70faed5598cd760f53912a83c2452",
+          "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+          "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+          "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+          "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+          "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2"
+        },
+        "timing": {
+          "tool_wall_seconds": 114.76240250002593
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0",
+    "T-ea2058ab-c817-4368-9431-b26314f58a2e"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/compact-navigation/acceptance.json",
+      "sha256": "c6d7590bc7df59113b75e4ea0b5c339f4cc2f9d23d2c2ee948b9c4e153a43df5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/ux-ui/compact-navigation/operation-history.json",
+      "sha256": "1b49248575391a5d3379c4086e436765624a54c3df0b75a7ba9e3c72980850d7"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-3471ef3e-ea97-4040-a14d-ed6e0f561e7c",
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ],
+  "outcome": "Make primary planning navigation reachable without a long drawer scan. The scoped component and current Release browser checks pass with matching source and execution evidence.",
+  "parent_pending_ids": [
+    "P-49528543-08db-4727-a2ca-bf390aa3b7d5"
+  ],
+  "recorded_at": "2026-11-03T20:19:38.055430+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+  "source_fingerprints": {
+    ".skill-tree/documents/navigation-study.md": "5eae76f6295666aafab7858d3198a18899078a0e14d74be6284fd2e9beee9d22",
+    "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor": "f6dcadc6cb0b949122ce1d1cac6c6c1d19f70faed5598cd760f53912a83c2452",
+    "src/Habitica.WebApp/Layout/MainLayout.razor": "eace8a3eb09afa20b3097fad8c8bddb7c85bfef1670972e780ccb911c65a74f5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "dcdae33737738bdbc1522bf6268752486ad9801c66357568865d789ae0280332",
+    "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs": "e0e21650e3d696eb17bac79ae5620061f251a388b4fa64f119f1e847ef2ddc1c",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "96dec7f39de774830bf57e2bf5e7d203e64685c3b15b1f859d1335d84b453e1a",
+    "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs": "12c263ec60be64f41ffe35a8139bf7fadba64c22dd870a3ef150cdf2078f94c1",
+    "tests/browser-qualification/qualification-core.mjs": "eb63ba0aceb1ab0aaf19ec26313fc5ef92a561a3f0d23674c09aa7e5e3ace084",
+    "tests/browser-qualification/qualification-frame.mjs": "0d17c21237387a3775e25c8fbc83475925954e743ec4c0d156ce966cd4d67fc2",
+    "tests/browser-qualification/ux-ui-adapters.json": "8ba907abd99c17e2ca2344ad20a5fba7a44f56bcff15766ab64021bd7ebd4e84",
+    "tests/browser-qualification/ux-ui-compact-navigation-journey.mjs": "b5cfecde97af1a6d971d7a180b224b8af61bc31337ae23cdadc7bcccdddde68a"
+  },
+  "task_id": "T-146763e9-33e7-4134-95a5-a02a4c87255c",
+  "title": "Make primary planning navigation reachable without a long drawer scan",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Exercise public component/controller behavior with independent expected outcomes: Phone and desktop, secondary group expansion, active nested category, direct route entry, capture link and account actions. Require nonzero discovery and no required skips.",
+      "criteria": [
+        "Frequent planning routes and canonical capture are reachable before secondary tool groups without a long hero scan.",
+        "Every existing destination remains reachable with accurate active-section and expanded-state semantics."
+      ],
+      "id": "compact-navigation-behavior",
+      "parameters": {
+        "report_name": "compact-navigation.trx",
+        "result_directory": ".skill-tree/history/validation/ux-ui/compact-navigation/unit",
+        "test_filter": "FullyQualifiedName~AppNavMenuTests|FullyQualifiedName~SharedLayoutEvidenceTests",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+        ".skill-tree/documents/navigation-study.md",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Navigation hierarchy and keyboard focus pass across the required rendered matrix. Hydrated routing, focus and state transitions are required where interactive behavior is asserted; static captures alone are insufficient.",
+      "criteria": [
+        "Navigation hierarchy and keyboard focus pass across the required rendered matrix."
+      ],
+      "id": "compact-navigation-rendered",
+      "parameters": {
+        "cases": "Phone and desktop, secondary group expansion, active nested category, direct route entry, capture link and account actions.",
+        "matrix": {
+          "disabled_text_product_minimum": 3,
+          "engines": [
+            "chromium",
+            "webkit"
+          ],
+          "evidence": "current Release identity, route/state inventory, semantic interactions, screenshots, assertions, limitations and owned-session cleanup",
+          "require": [
+            "primary targets at least 44 CSS pixels where the documented primary-action contract applies",
+            "visible primary actions",
+            "disabled states and reasons",
+            "visible keyboard focus",
+            "no unintended overlap or clipping",
+            "readable native input contents",
+            "enabled text contrast",
+            "long-content reflow"
+          ],
+          "schemes": [
+            "gryphy-light",
+            "gryphy-dark",
+            "obsidian-glow"
+          ],
+          "text_percent": [
+            100,
+            200
+          ],
+          "widths": [
+            360,
+            390,
+            430,
+            768,
+            1024,
+            1280
+          ]
+        },
+        "report_directory": ".skill-tree/history/validation/ux-ui/compact-navigation/browser",
+        "routes": [
+          "/todo/today",
+          "/todo/inbox",
+          "/todo/plan",
+          "/todo/projects",
+          "/todo/tasks",
+          "/inventory",
+          "/settings"
+        ],
+        "task_key": "compact-navigation"
+      },
+      "recipe_id": "ux-ui-rendered-browser",
+      "sources": [
+        "src/Habitica.WebApp/Layout/MainLayout.razor",
+        "src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor",
+        ".skill-tree/documents/navigation-study.md",
+        "tests/Habitica.WebApp.Tests/AppNavMenuTests.cs",
+        "tests/Habitica.WebApp.Tests/Qualification/SharedLayoutEvidenceTests.cs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a37a5cdab80a4adb4cd091ccb2289c9816524c7cd59493d356d07b018eb1f393"
+}

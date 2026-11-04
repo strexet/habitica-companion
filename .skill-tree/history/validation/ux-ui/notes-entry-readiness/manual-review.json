@@ -1,0 +1,14 @@
+{
+  "report": "9f814616-6017-4d39-ae18-2b06bdb80683",
+  "views": [
+    "chromium-gryphy-light-360-200-notes-initial-loading.png",
+    "webkit-obsidian-glow-1280-100-notes-entry-ready.png",
+    "chromium-obsidian-glow-360-200-notes-entry-ready.png",
+    "webkit-gryphy-light-1280-100-notes-initial-loading.png"
+  ],
+  "result": "Loading explanation and disabled New note remain readable. Released editor retains entered source and visible field focus. No new overlap or split fixed label is observed. Existing enlarged-phone header truncation remains the separately deferred UI task.",
+  "gaps": [
+    "Physical devices and assistive technology unqualified.",
+    "No real account/provider/save/consent or publication."
+  ]
+}

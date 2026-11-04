@@ -1,0 +1,24 @@
+{
+  "unchanged_matching_contracts": 35,
+  "changed_contracts": {
+    "T-e2d64818-cd7a-4edb-a8a9-fb345fe1cdd0": [
+      {
+        "id": "qualification-contract",
+        "current": false,
+        "reason": "source/definition/environment mismatch or nonpass"
+      },
+      {
+        "id": "qualification-canaries",
+        "current": true,
+        "reason": "matching"
+      },
+      {
+        "id": "ui-qualification-rendered",
+        "current": false,
+        "reason": "source/definition/environment mismatch or nonpass"
+      }
+    ]
+  },
+  "additional_shared_UI_report": ".skill-tree/history/validation/ux-ui/ui-qualification/browser/6048b80c-3ea9-4f07-95e8-3df352592bc3.json",
+  "note": "Only the installed Skill Tree profile source hash changed concurrently. Production UI/code/recipe adapter inputs retain matching qualification; a fresh 577/577 shared browser run covers the current profile. No historical acceptance was rewritten."
+}

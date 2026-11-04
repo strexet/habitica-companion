@@ -1,0 +1,50 @@
+{
+  "task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+  "title": "Reconcile dashboard account freshness and refresh-history labels",
+  "operation_history": ".skill-tree/history/validation/ux-ui/dashboard-freshness/operation-history.json",
+  "checks": [
+    {
+      "id": "dashboard-freshness-behavior",
+      "counts": {
+        "discovered": 121,
+        "expected": 121,
+        "failed": 0,
+        "passed": 121,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.log",
+          "sha256": "d436a9dd5c5ff066964b485b0fac6557346511eca69f819555d2c5bb477ad8eb"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c.trx",
+          "sha256": "9bb3397a18a2756ea0158f96c1df582c67b09e4ff748511e9fedfec5caa2e4a9"
+        }
+      ]
+    },
+    {
+      "id": "dashboard-freshness-rendered",
+      "counts": {
+        "discovered": 721,
+        "expected": 721,
+        "failed": 0,
+        "passed": 721,
+        "skipped": 0
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/ux-ui/dashboard-freshness/browser/8f8cb27b-39dd-47d9-9c9a-5070d7ed3e9d.json",
+          "sha256": "8e28f2137a0342902573d061c854cee2ff28d85cce92b4d7fb6920a5c4746ba5"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical devices and assistive technology are unqualified.",
+    "Synthetic browser qualification grants no live provider, consent or publication authority."
+  ]
+}

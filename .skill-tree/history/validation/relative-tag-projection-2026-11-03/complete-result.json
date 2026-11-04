@@ -1,0 +1,772 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-execution.log",
+          "sha256": "0a65d82e6fb6625a06baf20111ef8bcfa237e35aae3fd9d400da1b9b5a31e93f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-receipt.json",
+          "sha256": "55a365be3229a9be7f272d694bb125580103b27a5e4de4f8174cbd90c273d3d8"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-removals-final-execution.log",
+          "sha256": "99a908bbdd2f08d41160158eef8089bc183e44181bb344f0c544cb2be3761061"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-removals-final-receipt.json",
+          "sha256": "57386c6e3d830e10db63cc6bb48f1a5e39a8ed29c28e427b96f5e8e42cd2447e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-terminal-receipts-final-execution.log",
+          "sha256": "fd5d36c8253083e7a21e8e5ebaa1c373545ffb715f73e2c37604e73ef6203fe0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-terminal-receipts-final.trx",
+          "sha256": "7725dd3ba8e158f7899fcc1d1cd4511fe68f2141aa8b466ce4e5435962e516e7"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-terminal-receipts-final-receipt.json",
+          "sha256": "2ffc330995432deccd17c1cd51ed5770fdc7869fcca6e9c975859a4b25783253"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-execution.log",
+          "sha256": "425ab7222f85a01c912c0ea7c69d4cc58a9ea799eb1fab5297aa67b170e2d324"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-identity.json",
+          "sha256": "1d5be111c842bd7f58dc0e156a88493c074592f77c97f9599efa2f8be16b510f"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/relative-tag-ui/1793672351058083000/report.json",
+          "sha256": "c0db9df804db65dc792fcd25106679bee67e43bb0b8152e165008e036e14b723"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-receipt.json",
+          "sha256": "e9470014b49015628512bd64cabe6332cc5cd75cfb77ff808d5389cc5eca4cf5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/acceptance-config.json",
+          "sha256": "ec3cf8876a167c9823ee918f0cdda7c9ab8ea30fecbaeecd7f74d1eead66cf54"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/future-validation.json",
+          "sha256": "bb002a367b6125ab7810c3df194e9234764abe29600c5b56def1bf807bc356ab"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "Actual SDK/Auth/Workspace/D1 preview binds one server evaluation instant/day/timezone and complete additions/removals; stale day/revision/consent refuses without effects and original unknown receipts remain recoverable.",
+        "criteria": [
+          "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+        ],
+        "id": "day-bound-tag-review",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/relative-tag-review.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/shared/relative-saved-dates.ts",
+          "workers/shared/tag-membership.ts",
+          "workers/shared/group-tag-tools.ts",
+          "workers/companion-workspace/src/group-tag-reviews.ts",
+          "workers/companion-workspace/src/tag-planner.ts",
+          "workers/companion-workspace/src/tag-executor.ts",
+          "workers/companion-workspace/src/tag-reconciliation.ts",
+          "workers/companion-workspace/test/group-tag-api.test.mjs",
+          "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+          "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+          "workers/companion-workspace/test/relative-tag-review.test.mjs",
+          "workers/shared/reviewed-tag-dates.ts",
+          "workers/chatgpt-auth/src/tag-gateway.ts",
+          "workers/chatgpt-mcp/src/group-tag-tools.ts"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "integration",
+        "attempt_id": "C-d7a94b53-1af1-4c27-b2b2-2625d45887d9",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 17,
+          "expected": 17,
+          "failed": 1,
+          "passed": 16,
+          "skipped": 0
+        },
+        "definition": "bae45524f624e95e28479f5beb86483892f79046c83e50f62dbbe83d12ae1a38",
+        "environment_identity": "2e59cf5a3e910bd5cb3bf6c676c586af43d96d6d7453783fcde32b45812d124a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-review-red-execution.log",
+            "sha256": "2e2e6c79b6518ba78e63726b37442920db049fc8f0e54db02442380c5611eaa5"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "f8534f2bb272a84b38969a31dcf99876b4334fc00f404e3224c49eb9e5af32e4",
+        "payload_hash": "76de3ef51fd789e8e1fa4a9a72c2e34511a8de2326105eb11468410947159883",
+        "recorded_at": "2026-11-03T01:42:00.679110+00:00",
+        "result": "red",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "d441ac7d17bd0a3f4acd70958700b025b2f988fb7241770464293695485b735a",
+          "workers/companion-workspace/src/group-tag-reviews.ts": "4b84e182c47def925862db241536c7f0a9efb965ca2098f3982d383d1919e139",
+          "workers/companion-workspace/src/tag-executor.ts": "e9c396c235517c19eddc10f5c77817c9e70b8ffce9e516eaa149d16d1f435419",
+          "workers/companion-workspace/src/tag-planner.ts": "7f1b9b01abc3a1be6b4953dab9aa810be8668f7489370e6b361ad047390ae84a",
+          "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+          "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+          "workers/companion-workspace/test/relative-tag-review.test.mjs": "e37a849ed7220bd81cf2aeed872c8794ce08bd01ef15066b77bfcb2544dcf252",
+          "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+          "workers/shared/group-tag-tools.ts": "ddf28f52d7566323ed73629e972162a37c1f02bea2491f55f0cf777c8df21d7b",
+          "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+          "workers/shared/tag-membership.ts": "5f99678c975eac136f93bf6091fb4bb43b49ec60419c1406ccc18923226a51c1"
+        },
+        "timing": {
+          "tool_wall_seconds": 14.387142417021096
+        }
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-92b68944-4893-42ee-b6d4-99e70bed0fb2",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 0,
+          "passed": 21,
+          "skipped": 0
+        },
+        "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+        "environment_identity": "a25016e09624df2c0f38112cdcaeaeab2b97ad73c6ba9d9acbc22e3cb80319af",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-execution.log",
+            "sha256": "0a65d82e6fb6625a06baf20111ef8bcfa237e35aae3fd9d400da1b9b5a31e93f"
+          }
+        ],
+        "execution_sessions": {
+          "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-167fad4d",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "42978e4c20084ec371b531e57f7d4847c763a466464b0b23a97f5a15d7e93c13",
+        "payload_hash": "24071654e7537f032e5af391d1e080e47544edb3eb7f7e126b06f3f90df7b900",
+        "recorded_at": "2026-11-03T02:06:24.662986+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+          "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+          "workers/chatgpt-mcp/src/group-tag-tools.ts": "5e436c24670ebea7a8110c320cf402205aef8c4f2bd0f9384648f317e20b91e5",
+          "workers/companion-workspace/src/group-tag-reviews.ts": "84c19e720535ad7520c0e90f1a1745addd32036406c6450a20fc355edec11238",
+          "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+          "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+          "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+          "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+          "workers/companion-workspace/test/relative-tag-review.test.mjs": "20efd7b57f00242886098aef8575c3bb28bd0728f4e5be813724545e4818c5f4",
+          "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+          "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+          "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+          "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+          "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+        },
+        "timing": {
+          "tool_wall_seconds": 16.221507374895737
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Synthetic provider counters prove no wake or midnight automatically dispatches unreviewed membership; changed context stops queued work before fresh HTTP and retains original uncertainty fences.",
+        "criteria": [
+          "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+        ],
+        "id": "day-bound-tag-execution",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/relative-tag-execution.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/shared/relative-saved-dates.ts",
+          "workers/shared/tag-membership.ts",
+          "workers/shared/group-tag-tools.ts",
+          "workers/companion-workspace/src/group-tag-reviews.ts",
+          "workers/companion-workspace/src/tag-planner.ts",
+          "workers/companion-workspace/src/tag-executor.ts",
+          "workers/companion-workspace/src/tag-reconciliation.ts",
+          "workers/companion-workspace/test/group-tag-api.test.mjs",
+          "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+          "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+          "workers/companion-workspace/test/relative-tag-execution.test.mjs",
+          "workers/companion-workspace/test/relative-tag-review.test.mjs",
+          "workers/shared/reviewed-tag-dates.ts",
+          "workers/chatgpt-auth/src/tag-gateway.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-cc869959-0386-4f70-8654-0c5dc62930d7",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 19,
+          "expected": 19,
+          "failed": 0,
+          "passed": 19,
+          "skipped": 0
+        },
+        "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+        "environment_identity": "e4db5272e61c678dfac0c41ab99ef6e60b9a51ed270d3e93f6d92ae81f4b415f",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-removals-final-execution.log",
+            "sha256": "99a908bbdd2f08d41160158eef8089bc183e44181bb344f0c544cb2be3761061"
+          }
+        ],
+        "execution_sessions": {
+          "040310b8b294f654d024d4e9c94a8aa36cb967088db48464b51976ebdfd2f629": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:24:03.626753+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-583850f7-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-583850f7",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-167fad4d",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "27fa9a2b735f073091bc91ea62e8eb4efc92d6fb248f30c4bccdbfdf4214a392",
+        "payload_hash": "c78f0b0a1be18dca66b9e5d3714d1633a40fa18016b2541e4f1cc3b251fcfd0b",
+        "recorded_at": "2026-11-03T02:14:20.122061+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+          "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+          "workers/companion-workspace/src/group-tag-reviews.ts": "84c19e720535ad7520c0e90f1a1745addd32036406c6450a20fc355edec11238",
+          "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+          "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+          "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+          "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+          "workers/companion-workspace/test/relative-tag-execution.test.mjs": "8ecfef284b12a2ca6265c123045e069cd2d1f66614a89cf8f57dc4df31dbcdad",
+          "workers/companion-workspace/test/relative-tag-review.test.mjs": "20efd7b57f00242886098aef8575c3bb28bd0728f4e5be813724545e4818c5f4",
+          "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+          "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+          "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+          "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+          "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+        },
+        "timing": {
+          "tool_wall_seconds": 20.047140874899924
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Typed review displays exact date/timezone/bounds and every member page, disables incomplete/stale acceptance and preserves original-command recovery after reload/account changes.",
+        "criteria": [
+          "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+        ],
+        "id": "day-bound-tag-components",
+        "parameters": {
+          "report_name": "day-bound-tags.trx",
+          "result_directory": ".skill-tree/artifacts/validation/day-bound-tags",
+          "test_filter": "FullyQualifiedName~WorkspaceTagPanel|FullyQualifiedName~RelativeTagReview|FullyQualifiedName~Tag_wire|FullyQualifiedName~Tag_terminal|FullyQualifiedName~Relative_tag_wire",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs",
+          "src/Habitica.Application/Workspace/WorkspaceTags.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-0e172cc6-a6a5-4f6c-bda3-8a2620be9099",
+        "classification": "executed-control",
+        "cleanup": "All local suite processes and disposable in-memory/Miniflare fixtures exited through cleanup; no live identity/provider operation.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 0,
+          "passed": 21,
+          "skipped": 0
+        },
+        "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+        "environment_identity": "23b9c5089548a876bbf83abb445c995d50f90f52ddcca5807eae4ae9d3bf3659",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-terminal-receipts-final-execution.log",
+            "sha256": "fd5d36c8253083e7a21e8e5ebaa1c373545ffb715f73e2c37604e73ef6203fe0"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-terminal-receipts-final.trx",
+            "sha256": "7725dd3ba8e158f7899fcc1d1cd4511fe68f2141aa8b466ce4e5435962e516e7"
+          }
+        ],
+        "execution_sessions": {
+          "040310b8b294f654d024d4e9c94a8aa36cb967088db48464b51976ebdfd2f629": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:27:31.255442+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-52fdafe0-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-52fdafe0",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-167fad4d",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "a6f54c3fe30e382969d8ac7e6fbab993af5b4b0d773e6aa12bd37c280dd94b00",
+        "payload_hash": "2e690630e98b246c6902f63d2900b852e6dc47631dc0562e03e48fb6437e1500",
+        "recorded_at": "2026-11-03T02:19:10.645620+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.Application/Workspace/WorkspaceTags.cs": "9ecf14cbea75b45038f9126005fac2d5ffce75fc688683baa088f64b70de0505",
+          "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "208d9ac128f6dc3b996aebaea771531a5e4fba7f4fd5a728261b82329e6a8bad",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "736cd3a0e17bd9141f08aaea3dfc956f7103f24487fc935bd7374efc0961563e",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "ed8fe42d47cc3f5c608c6f49ce886b93dfd7500636000e4f2d95ad79ba30e9f7",
+          "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5"
+        },
+        "timing": {
+          "tool_wall_seconds": 13.19333454198204
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Current Release explicit day-bound review, complete membership/empty approval, stale-day refusal and original acceptance recovery qualify across both browser engines and required theme/layout/text cases.",
+        "criteria": [
+          "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+        ],
+        "id": "day-bound-tag-rendering",
+        "parameters": {},
+        "recipe_id": "relative-tag-rendered-browser",
+        "sources": [
+          "tests/browser/relative-tag-ui.py",
+          "tests/browser/relative-tag-ui.mjs",
+          "tests/browser-qualification/prepare.py",
+          "tests/browser-qualification/qualification-frame.mjs",
+          "tests/browser-qualification/qualification-core.mjs",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj",
+          "tests/browser/relative-tag-fixture.mjs",
+          "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-f8b700fd-792f-4a0e-8431-b1d29cc741b3",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+        "counts": {
+          "discovered": 162,
+          "expected": 162,
+          "failed": 0,
+          "passed": 162,
+          "skipped": 0
+        },
+        "definition": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4",
+        "environment_identity": "cfd885bcf69618903bddc0e3cab7f3c9bffe675938764859882cd12aac151bf5",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-execution.log",
+            "sha256": "425ab7222f85a01c912c0ea7c69d4cc58a9ea799eb1fab5297aa67b170e2d324"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-identity.json",
+            "sha256": "1d5be111c842bd7f58dc0e156a88493c074592f77c97f9599efa2f8be16b510f"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/relative-tag-ui/1793672351058083000/report.json",
+            "sha256": "c0db9df804db65dc792fcd25106679bee67e43bb0b8152e165008e036e14b723"
+          }
+        ],
+        "execution_sessions": {
+          "040310b8b294f654d024d4e9c94a8aa36cb967088db48464b51976ebdfd2f629": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:32:10.778702+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-c0967448",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "c4b8558df0e84e6dbfd6b8b5a18f24f77e80e5ddccecac76c4b874872531a599": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "ee80ba197c95256ee0a6857d62cc20b741918400094c35187d7af2b4063f90b4",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-03T02:11:08.048122+00:00",
+            "fixture_identity": "Current Release saved-list and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-167fad4d-identity.json"
+            ],
+            "profile_id": "relative-tag-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-167fad4d",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "9d7f0529d4aff4183e0862dbf0afcc3c9faaaf85d786f5e28849dd2768b40027",
+        "payload_hash": "1b14b5c5e1c6a41de8923fe9b0a0504572826e6d868c939866ced3aa4030d3a0",
+        "recorded_at": "2026-11-03T02:19:59.243555+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "208d9ac128f6dc3b996aebaea771531a5e4fba7f4fd5a728261b82329e6a8bad",
+          "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "736cd3a0e17bd9141f08aaea3dfc956f7103f24487fc935bd7374efc0961563e",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+          "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5",
+          "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+          "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+          "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+          "tests/browser/relative-tag-fixture.mjs": "a7b03e7db197f3df37eab81ea61f896f1128453aa5252bb6377a15bd8cb2b1a3",
+          "tests/browser/relative-tag-ui.mjs": "8fbd772c4945938cc4c3d6ea5928718d50df985f46875e60a7c0e55a71e58672",
+          "tests/browser/relative-tag-ui.py": "7d9c428ac5cd774b7854bd7d2455bcbf48b37d5c20a21a01e800c01bfe559ba2"
+        },
+        "timing": {
+          "tool_wall_seconds": 47.68367487518117
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-execution.log",
+      "sha256": "0a65d82e6fb6625a06baf20111ef8bcfa237e35aae3fd9d400da1b9b5a31e93f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-receipt-review-receipt.json",
+      "sha256": "55a365be3229a9be7f272d694bb125580103b27a5e4de4f8174cbd90c273d3d8"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-removals-final-execution.log",
+      "sha256": "99a908bbdd2f08d41160158eef8089bc183e44181bb344f0c544cb2be3761061"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-removals-final-receipt.json",
+      "sha256": "57386c6e3d830e10db63cc6bb48f1a5e39a8ed29c28e427b96f5e8e42cd2447e"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-terminal-receipts-final-execution.log",
+      "sha256": "fd5d36c8253083e7a21e8e5ebaa1c373545ffb715f73e2c37604e73ef6203fe0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/day-bound-tags/relative-tag-terminal-receipts-final.trx",
+      "sha256": "7725dd3ba8e158f7899fcc1d1cd4511fe68f2141aa8b466ce4e5435962e516e7"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/relative-tag-terminal-receipts-final-receipt.json",
+      "sha256": "2ffc330995432deccd17c1cd51ed5770fdc7869fcca6e9c975859a4b25783253"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-execution.log",
+      "sha256": "425ab7222f85a01c912c0ea7c69d4cc58a9ea799eb1fab5297aa67b170e2d324"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-identity.json",
+      "sha256": "1d5be111c842bd7f58dc0e156a88493c074592f77c97f9599efa2f8be16b510f"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/relative-tag-ui/1793672351058083000/report.json",
+      "sha256": "c0db9df804db65dc792fcd25106679bee67e43bb0b8152e165008e036e14b723"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/rendered-c0967448-receipt.json",
+      "sha256": "e9470014b49015628512bd64cabe6332cc5cd75cfb77ff808d5389cc5eca4cf5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/acceptance-config.json",
+      "sha256": "ec3cf8876a167c9823ee918f0cdda7c9ab8ea30fecbaeecd7f74d1eead66cf54"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/future-validation.json",
+      "sha256": "bb002a367b6125ab7810c3df194e9234764abe29600c5b56def1bf807bc356ab"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/relative-tag-projection-2026-11-03/documentation-validation.json",
+      "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-6583cbca-ce20-4598-a6b6-0beebe0a3450",
+  "limitations": [
+    "No commit, push, publication, real provider/account operation or notification qualification occurred. Synthetic provider mutations are confined to disposable fixtures.",
+    "Physical devices, assistive technologies, hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified; changed-route harnesses block service workers.",
+    "Canonical-only coverage without scoped accepted work/context remains conservative. Wakes and midnight never grant automatic daily refresh permission."
+  ],
+  "outcome": "Relative saved-list tag reconciliation and exact adoption now require an explicit reviewed UTC/timezone/local-day context and complete member selection. Atomic acceptance expires at local midnight; Workspace and Auth refuse stale-day fresh dispatch while original uncertain receipts recover before source/day checks. Exact managed additions/removals preserve unrelated tags and source records. Scoped current coverage uses accepted context and current source/consent provenance; original receipts retain evaluation metadata. Direct Sync startup recovers controls without navigation or automatic reads. All223 native/typed/component/shared/actual SDK/D1/gateway/Release-browser controls pass without real provider or notification operations.",
+  "parent_pending_ids": [
+    "P-34bd63a8-f6d9-4d08-acf3-2a8d13483228"
+  ],
+  "recorded_at": "2026-11-03T02:23:54.118772+00:00",
+  "related_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "root_task_id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+  "source_fingerprints": {
+    ".skill-tree/documents/relative-saved-dates.md": "fc8716d5546535de56913da5b13d193b5f9643d610e21ce0eba472082710950c",
+    ".skill-tree/documents/relative-tag-reviews.md": "16a2676d4aec6f01992d5ab011415db6435b06551ed50c64447b7d021a2ca7d4",
+    "plugin/skills/habitica-task-management/references/saved-task-views.md": "d560a627b85247e516205dc049d2aa0f918b5bf37e98e558a283e3b85113d5a5",
+    "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs": "6e071d9f7c71767143ea38946f65b78139f66cdfb7439c18352b54f3f5577fdd",
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "9ecf14cbea75b45038f9126005fac2d5ffce75fc688683baa088f64b70de0505",
+    "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor": "208d9ac128f6dc3b996aebaea771531a5e4fba7f4fd5a728261b82329e6a8bad",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "736cd3a0e17bd9141f08aaea3dfc956f7103f24487fc935bd7374efc0961563e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "7a0d29a9f185280fd77dd4bb62f1dd564d914707cf809e9dc4bffc915aa9b215",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "c8a7e7eec43a6bfcb1b2e71277158ae12a45831acbeed4637cc1b2426874d905",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs": "ed8fe42d47cc3f5c608c6f49ce886b93dfd7500636000e4f2d95ad79ba30e9f7",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs": "d60eef8eedbc829f0ac519e3450a8ca63c2f902a6972bb1b55f334b2652e4cf7",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs": "fab1928407a487b4678ca43ce792ffa290fc7620156324f1eee0f1fb60b528b5",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/relative-tag-fixture.mjs": "a7b03e7db197f3df37eab81ea61f896f1128453aa5252bb6377a15bd8cb2b1a3",
+    "tests/browser/relative-tag-ui.mjs": "8fbd772c4945938cc4c3d6ea5928718d50df985f46875e60a7c0e55a71e58672",
+    "tests/browser/relative-tag-ui.py": "7d9c428ac5cd774b7854bd7d2455bcbf48b37d5c20a21a01e800c01bfe559ba2",
+    "workers/chatgpt-auth/src/tag-gateway.ts": "2032cd79bb2bc416a16fd09fd412335dd4edae0d01a945e666ebee1a57c8814e",
+    "workers/chatgpt-mcp/src/group-tag-tools.ts": "5e436c24670ebea7a8110c320cf402205aef8c4f2bd0f9384648f317e20b91e5",
+    "workers/companion-workspace/src/group-tag-api.ts": "74a69784c48515ec55768a7a374394c2c170d309fcb8d4956e45750e1daa745a",
+    "workers/companion-workspace/src/group-tag-outcomes.ts": "ed2e06e0b05a3d2375edbc22e0bf8e61eb1cca32be094824e37c5bda36301d65",
+    "workers/companion-workspace/src/group-tag-reviews.ts": "84c19e720535ad7520c0e90f1a1745addd32036406c6450a20fc355edec11238",
+    "workers/companion-workspace/src/tag-executor.ts": "41815e246c85a6de58af188c1bd485179a8c0d65a671f4bdca232b9c0208f553",
+    "workers/companion-workspace/src/tag-planner.ts": "1fae213b53e2a1c4faf48f48b8bde8c2ef0082c69b664f9afa192144b5070e9e",
+    "workers/companion-workspace/src/tag-reconciliation.ts": "22f2b4d9ecb68b304847c9b89f7ffddda490bc04199927f59bf34766fa7817b0",
+    "workers/companion-workspace/test/fixtures/group-tags.mjs": "1c6d2fcb1a9b288612659f546cd355cf24762c6adbb179f5129989d12b9c10b7",
+    "workers/companion-workspace/test/fixtures/relative-tags.mjs": "7609f59466ea8dba4493793edcc3ea74dfa7412c238226932a5893daf3def8f7",
+    "workers/companion-workspace/test/group-tag-api.test.mjs": "dfedca1a984a05d077c47fc7c39856123eafa0f50edfbdd4fbbf20adfd754a62",
+    "workers/companion-workspace/test/relative-tag-execution.test.mjs": "8ecfef284b12a2ca6265c123045e069cd2d1f66614a89cf8f57dc4df31dbcdad",
+    "workers/companion-workspace/test/relative-tag-review.test.mjs": "20efd7b57f00242886098aef8575c3bb28bd0728f4e5be813724545e4818c5f4",
+    "workers/companion-workspace/test/tag-reconciliation.test.mjs": "c2b5782304260ccda8586648a825969b4f7726a2d4cfe92b08fa06ad3be38ce4",
+    "workers/shared/build-identity.generated.ts": "9b189f7f69e6c62d37c04817ae6a76b688c5e74e27c2ece575b3d72dfca2c14b",
+    "workers/shared/group-tag-status.ts": "57cdbfbe64734d54cbdeb1dbf931a7905d5ea598886fda90bb58f3ff07ec8339",
+    "workers/shared/group-tag-tools.ts": "18936f3d1485fc8dcefce8788c35c6dc29e57b83d6841b13092ad9d50775d773",
+    "workers/shared/relative-saved-dates.ts": "6bf7689e44397325522ae55546138bc5e395b34e7e3fd0105cbc26859d98bfe5",
+    "workers/shared/reviewed-tag-dates.ts": "ac99fd10cc45704e8e11ac5327e3a762ed1b3ac4ced43b9cc874722189394dda",
+    "workers/shared/tag-membership.ts": "573123fca08aea52de82435b0eb009f4b45736c627f60a8a6934774868b5dcd8"
+  },
+  "task_id": "T-3df6a931-b7e8-40c5-a2e4-895477cac3c5",
+  "title": "Add reviewed day-bound tag projection for relative saved lists",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "Actual SDK/Auth/Workspace/D1 preview binds one server evaluation instant/day/timezone and complete additions/removals; stale day/revision/consent refuses without effects and original unknown receipts remain recoverable.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-review",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/relative-tag-review.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/relative-saved-dates.ts",
+        "workers/shared/tag-membership.ts",
+        "workers/shared/group-tag-tools.ts",
+        "workers/companion-workspace/src/group-tag-reviews.ts",
+        "workers/companion-workspace/src/tag-planner.ts",
+        "workers/companion-workspace/src/tag-executor.ts",
+        "workers/companion-workspace/src/tag-reconciliation.ts",
+        "workers/companion-workspace/test/group-tag-api.test.mjs",
+        "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+        "workers/companion-workspace/test/relative-tag-review.test.mjs",
+        "workers/shared/reviewed-tag-dates.ts",
+        "workers/chatgpt-auth/src/tag-gateway.ts",
+        "workers/chatgpt-mcp/src/group-tag-tools.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Synthetic provider counters prove no wake or midnight automatically dispatches unreviewed membership; changed context stops queued work before fresh HTTP and retains original uncertainty fences.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-execution",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/relative-tag-execution.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/shared/relative-saved-dates.ts",
+        "workers/shared/tag-membership.ts",
+        "workers/shared/group-tag-tools.ts",
+        "workers/companion-workspace/src/group-tag-reviews.ts",
+        "workers/companion-workspace/src/tag-planner.ts",
+        "workers/companion-workspace/src/tag-executor.ts",
+        "workers/companion-workspace/src/tag-reconciliation.ts",
+        "workers/companion-workspace/test/group-tag-api.test.mjs",
+        "workers/companion-workspace/test/tag-reconciliation.test.mjs",
+        "src/Habitica.Application/Workspace/WorkspaceTagCorrespondence.cs",
+        "workers/companion-workspace/test/relative-tag-execution.test.mjs",
+        "workers/companion-workspace/test/relative-tag-review.test.mjs",
+        "workers/shared/reviewed-tag-dates.ts",
+        "workers/chatgpt-auth/src/tag-gateway.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Typed review displays exact date/timezone/bounds and every member page, disables incomplete/stale acceptance and preserves original-command recovery after reload/account changes.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-components",
+      "parameters": {
+        "report_name": "day-bound-tags.trx",
+        "result_directory": ".skill-tree/artifacts/validation/day-bound-tags",
+        "test_filter": "FullyQualifiedName~WorkspaceTagPanel|FullyQualifiedName~RelativeTagReview|FullyQualifiedName~Tag_wire|FullyQualifiedName~Tag_terminal|FullyQualifiedName~Relative_tag_wire",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "tests/Habitica.WebApp.Tests/Workspace/RelativeTagReviewTests.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTags.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.TagsTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Release explicit day-bound review, complete membership/empty approval, stale-day refusal and original acceptance recovery qualify across both browser engines and required theme/layout/text cases.",
+      "criteria": [
+        "Relative saved-list tag membership changes only through an explicitly reviewed exact evaluation-day contract, with stale-day refusal and original receipt recovery preserving all unreviewed upstream state."
+      ],
+      "id": "day-bound-tag-rendering",
+      "parameters": {},
+      "recipe_id": "relative-tag-rendered-browser",
+      "sources": [
+        "tests/browser/relative-tag-ui.py",
+        "tests/browser/relative-tag-ui.mjs",
+        "tests/browser-qualification/prepare.py",
+        "tests/browser-qualification/qualification-frame.mjs",
+        "tests/browser-qualification/qualification-core.mjs",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs",
+        "src/Habitica.WebApp/Habitica.WebApp.csproj",
+        "tests/browser/relative-tag-fixture.mjs",
+        "src/Habitica.WebApp/Components/WorkspaceTagPanel.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTagPanelTests.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "a75eb73826e2da5593204efcb8c127176dabf7db3081d002bfb0fd4f9379f8a4"
+}

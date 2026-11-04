@@ -1,0 +1,57 @@
+{
+  "assertion": "Actual SDK and local Worker/D1 reads preserve full-journal day/coverage statistics, read scope separation, original context paging and account/source isolation, without commands or game effects.",
+  "attempt_id": "C-daf2ec96-35d1-408b-91b7-485c5ba3985c",
+  "check_id": "activity-mcp",
+  "definition": "c524bbbf2745eafd2ea7b7aa20eb1e0e4a2614792c6485713c839fe2ba852bc1",
+  "environment_identity": "e9a477173cfb4a8cd69852c6da0ed31294eed6ddc18c2f269eb86a1b2a83635a",
+  "key": "9021665f277537accc5b22dd58fe9719642a2d6332f017df01bfdcbe4d6a8b0b",
+  "launch": {
+    "assertion": "Canonical activity day-series parity, historical goal/schedule coverage, context paging and exact read permissions.",
+    "authorization": "Direct owner Implement All continuation; actual local Workers with synthetic identities and isolated D1 only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish portable day classification, real read-scope fences or guarded journal evaluation.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T18:56:17.816742+00:00",
+    "execution_profile": "activity-streaks-mcp-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T18:52:18.034233+00:00",
+  "recipe": {
+    "argv": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "workers/companion-workspace/test/activity-statistics-mcp.test.mjs"
+    ],
+    "execution_notes": "Follow documented affected Worker dry-build prerequisites. Run Worker suites separately from .NET and other Worker suites. No real credentials or provider effects.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "workers/chatgpt-auth/package.json",
+      "workers/chatgpt-auth/package-lock.json",
+      "workers/chatgpt-mcp/package.json",
+      "workers/chatgpt-mcp/package-lock.json",
+      "workers/companion-workspace/package.json",
+      "workers/companion-workspace/package-lock.json"
+    ],
+    "lane": "integration",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "fixtures": "Synthetic providers and isolated Miniflare/D1 only",
+      "node_declaration": "22.x"
+    }
+  },
+  "sources": {
+    "plugin/skills/habitica-activity-review/SKILL.md": "b2c270f11c6848019df7e89aca8134a9abc1ab86dd141ff079f199ba9e5fe918",
+    "tests/fixtures/workspace/activity-streaks-v1.json": "7c7bf1c8aca3f5d340d2763b0da5dc194b80c2158b6e7aad45060e189ff8ff97",
+    "workers/chatgpt-mcp/src/task-tools.ts": "a667530d54360d51e6ce2ef16f3f27724191b512534d8b5032e5efa649ed0f32",
+    "workers/companion-workspace/src/activity-statistics-api.ts": "19f5c9cb22477d16553757bd307d441497fcaa5afe0251521fa13eeea0411785",
+    "workers/companion-workspace/src/activity-streaks.ts": "8de2e84786848af7848974533deaa7d85ddbf2b5984dd1c749c7c41e1165c747",
+    "workers/companion-workspace/src/task-api.ts": "5075707b213a2edef24cfc177afe8ba2e0cc1d5f430dc5e6caccd51ffbbe981e",
+    "workers/companion-workspace/test/activity-statistics-mcp.test.mjs": "56c04e5e375301586f55925897a676b4b4f773b4839e96dc9266db1272bd6994",
+    "workers/shared/activity-streak-filter.ts": "865457c63296209938146cbead17aebc18e908fa1c8e2f8bafdeeba28dc06425",
+    "workers/shared/build-identity.generated.ts": "ddb7e13f7730b959172cead8e1203b475a25c54e04a6acae457f1912b17e9a84",
+    "workers/shared/task-tools.ts": "4e8d34a496192eeb1262c8d7bb346f572fa1cf52a2a63d2463c5cb7603793a91"
+  },
+  "task_id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f"
+}

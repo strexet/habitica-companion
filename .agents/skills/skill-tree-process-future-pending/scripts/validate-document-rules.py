@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# GENERATED FILE
-# Source: skill-tree/common/scripts/validate-document-rules.py; generator: skill-tree/scripts/sync-skill-references.py
 """Report located errors and review warnings in owned Markdown prose."""
 import argparse
 import json

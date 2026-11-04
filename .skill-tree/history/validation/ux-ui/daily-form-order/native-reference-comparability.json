@@ -1,0 +1,44 @@
+{
+  "failure": ".skill-tree/artifacts/ux-ui/daily-form-order/1793717951468578000/failure.json",
+  "observed": {
+    "engine": "webkit",
+    "width": 360,
+    "text": 100,
+    "fixture": "daily-order-daily-review",
+    "retention": 0.9698294092767518,
+    "floor": 0.97,
+    "native_value": "2026-10-19"
+  },
+  "inspection": "Actual and reference screenshots display the complete civil date. The original collector read el.disabled, which is false for an input inside a disabled fieldset; the isolated reference therefore used a different effective native state. Original fractional viewport placement was also discarded.",
+  "repair": "Use :disabled for effective state, preserve fractional raster origin in the full-width reference, assert reference-state parity and exercise inherited disability in the independent positive native canary. No ink threshold or clipped-negative assertion is weakened.",
+  "evidence": [
+    ".skill-tree/artifacts/ux-ui/daily-form-order/1793717951468578000/pixels/webkit-gryphy-light-360-100-daily-order-daily-review-0-actual.png",
+    ".skill-tree/artifacts/ux-ui/daily-form-order/1793717951468578000/pixels/webkit-gryphy-light-360-100-daily-order-daily-review-0-reference.png"
+  ],
+  "confirmed_pixel_diagnostic": {
+    "actual_and_reference_glyph_pixels": 360,
+    "glyph_bounds_both": [
+      21,
+      103,
+      23,
+      34
+    ],
+    "same_solid_foreground_rgb": [
+      117,
+      104,
+      129
+    ],
+    "actual_hidden_rgb": [
+      246,
+      239,
+      251
+    ],
+    "reference_hidden_rgb": [
+      246,
+      243,
+      251
+    ],
+    "interpretation": "Matched glyph geometry/color and distinct backdrop contrast explain the original threshold miss. Effective-disabled and raster-origin parity were necessary but did not alone change the measured ink."
+  },
+  "backdrop_repair": "Retain a visibility-hidden screenshot of the actual field backdrop, restore visibility, and tile that backdrop beneath the full-width reference. A fixed translucent/gradient inherited-disabled positive canary independently exercises this case. Actual day clipping at360/200 was subsequently reproduced in the enabled Daily journey and repaired in scoped card/date padding."
+}

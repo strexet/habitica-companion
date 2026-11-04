@@ -1,0 +1,22 @@
+{
+  "name": "pages-pwa-hotfix-publish",
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "pages",
+    "deploy",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/frontend-pwa-fixed/wwwroot",
+    "--project-name",
+    "habitica-companion",
+    "--branch",
+    "main",
+    "--commit-hash",
+    "d6de9811e71f93eb0f73854ebf216aa6115905ca",
+    "--commit-message",
+    "UX/UI release: include offline storage modules",
+    "--commit-dirty=true"
+  ],
+  "exit_code": 0,
+  "seconds": 16.128,
+  "deadline_seconds": 300,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/pages-pwa-hotfix-publish.log"
+}

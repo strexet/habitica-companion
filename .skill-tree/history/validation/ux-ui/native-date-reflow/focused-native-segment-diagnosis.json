@@ -1,0 +1,6 @@
+{
+  "attempt": "c5416e2b-ef14-47bd-af93-03ba8b21270c",
+  "finding": "One Tab on the native date input advances an internal date segment. The captured input remained focused with a selected segment while the full-width reference was unfocused. This changes native paint independently of clipping.",
+  "repair": "Blur the edited input explicitly before selected-value paint comparison. Keep the exact ISO assertion, 97-percent retention oracle, independent narrow negative control and subsequent keyboard Today focus/activation checks.",
+  "cleanup": "The original failure report records contexts, server and profiles cleaned."
+}

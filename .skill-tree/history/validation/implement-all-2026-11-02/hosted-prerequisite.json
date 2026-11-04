@@ -1,0 +1,121 @@
+{
+  "recorded_at_utc": "2026-11-02T11:22:15.002123+00:00",
+  "run_id": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66",
+  "task_id": "T-ec421773-5864-4bc5-b17f-ce04e0d818c2",
+  "classification": "prerequisite-wait",
+  "status": "hosted-qualification-blocked",
+  "snapshot_count": 14,
+  "observations": {
+    "active_run_before_invocation": null,
+    "profile_authorization": null,
+    "profile_status": "awaiting-owner-selection-and-scope",
+    "netlify_tool_available": false,
+    "required_recipe_available": false,
+    "candidate_source_comparison": {
+      "deploy/callback-egress/netlify.toml": {
+        "sha256": "c067fe9b2cd49bdcdf7e1645e04de7d617a00913f8ceecc6b163d8c771055726",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/netlify/functions/callback-egress.mts": {
+        "sha256": "01f75d7742c5352eb9eecc8aaa0e4912d1bba9a1f55e75e0bd84f4ec4c8fe65c",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/package.json": {
+        "sha256": "9e2e5ca44bb99648420056430b9347183c690b8afe7daff2b3ceade6c11f24e4",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/prepare-source.mjs": {
+        "sha256": "93dd136ad724973b19da66cf15a44ac2a4420c55ab99cb609036566db731a41d",
+        "matches_recorded_local_candidate": false
+      },
+      "deploy/callback-egress/public/robots.txt": {
+        "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/src/gateway.mjs": {
+        "sha256": "8d6eb943c8737dc0ba503c84f9e793700e5060088d8a8901347fa9052e2df48f",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/src/transport.mjs": {
+        "sha256": "980df36656316220e40003f4dd9030650a6321339980229e394be0253a4df8ac",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/test/gateway.test.mjs": {
+        "sha256": "6ce37042f26d7b9976090f0f656c10e54be33a0e27663ec2a14769093f18f391",
+        "matches_recorded_local_candidate": true
+      },
+      "deploy/callback-egress/test/package.test.mjs": {
+        "sha256": "51d5d63f766b13da439f3fa7201b6611ee0c048e51f2e5a4869f3fe659de7f6a",
+        "matches_recorded_local_candidate": false
+      },
+      "deploy/callback-egress/test/tls.test.mjs": {
+        "sha256": "7ad418725f3cd812ca4ec6ed55fb6b705713cfa37b684334fd66f4c3e23ee812",
+        "matches_recorded_local_candidate": true
+      }
+    },
+    "historical_gateway_audience": "https://kaleidoscopic-rolypoly-416a42.netlify.app/callback-egress",
+    "historical_auth_worker": "habitica-companion-auth",
+    "current_live_state_verified": false,
+    "changed_since_recorded_local_candidate": [
+      "deploy/callback-egress/prepare-source.mjs",
+      "deploy/callback-egress/test/package.test.mjs"
+    ],
+    "evidence_reuse_limit": "Gateway entry, transport and gateway/TLS tests match historical source hashes. Source packaging and package test hashes differ; historical package evidence is not current qualification."
+  },
+  "missing_prerequisites": [
+    "Owner-approved exact hosted execution scope, selected Netlify owner/team/site and controlled public DNS/TLS/receiver fixtures.",
+    "Concrete netlify-hosted-controls recipe and matching installation admission before check preparation."
+  ],
+  "performed": {
+    "hosted_controls": 0,
+    "callback_requests": 0,
+    "provider_changes": false,
+    "publication": false,
+    "commits": false,
+    "product_source_changes": false
+  },
+  "timing": {
+    "active_controller_seconds": null,
+    "tool_wall_seconds": null,
+    "prerequisite_wait_seconds": null,
+    "note": "Timings are not instrumented; no selected-task total budget imposed."
+  },
+  "next_action": "Obtain missing owner scope and owned fixtures; prepare the concrete hosted recipe, re-admit the same run and execute only the approved hosted profile.",
+  "static_checks": [
+    {
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py",
+        ".skill-tree/documents/future.md",
+        "--strict",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "command": [
+        "python3",
+        ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+        ".",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ]
+}

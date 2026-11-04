@@ -1,0 +1,17 @@
+{
+  "name": "workspace-migrations-apply",
+  "argv": [
+    "/Users/petr/Projects/habitica-tool/workers/chatgpt-auth/node_modules/.bin/wrangler",
+    "d1",
+    "migrations",
+    "apply",
+    "WORKSPACE_DB",
+    "--remote",
+    "--config",
+    "/Users/petr/Projects/habitica-tool/.skill-tree/artifacts/release-2026-11-04-ux-ui/migration-config.json"
+  ],
+  "exit_code": 0,
+  "seconds": 2.369,
+  "deadline_seconds": 180,
+  "log": ".skill-tree/artifacts/release-2026-11-04-ux-ui/workspace-migrations-apply.log"
+}

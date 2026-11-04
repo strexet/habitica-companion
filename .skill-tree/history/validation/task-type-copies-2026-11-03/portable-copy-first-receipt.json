@@ -1,0 +1,50 @@
+{
+  "actual_lane": "integration",
+  "attempt_id": "C-cdcdd679-2abc-4480-994d-d4e211209c42",
+  "classification": "executed-control",
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "counts": {
+    "discovered": 14,
+    "expected": 4,
+    "failed": 0,
+    "passed": 14,
+    "skipped": 0
+  },
+  "definition": "6209877db95e5d81a64ea7424bd7683adb7b3c5632e72fd92c87d7b23b44ad7f",
+  "environment_identity": "8ef0438dcfd0633b6e623eeba6cf1a308ce0f77246073564421f47dfaabd48e5",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/portable-copy-first-execution.log",
+      "sha256": "fdd41f029d14f27433b36c407f58ff69a2f8e1b9db51c4e1947604cd526f1165"
+    }
+  ],
+  "execution_sessions": {},
+  "key": "c9b0c430a97fab195857891e5b97070d0ff0a09f4188cf31eb0f0706dab00530",
+  "payload_hash": "3524d6488f3011ac64d31553748577fd35f99e1ca5415e932dfb40063b111538",
+  "recorded_at": "2026-11-02T20:55:47.492050+00:00",
+  "result": "pass",
+  "sources": {
+    "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+    "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+    "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/src/task-api.ts": "e189c4be96bccac02532ffe3f4691cf8b4814a985a5f5fd8a789c6abab014d41",
+    "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+    "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+    "workers/companion-workspace/test/task-type-copy.test.mjs": "01774f6770ec32e6d159a904f42d28895b3d8a97cdca72366be207ecd9e5266d",
+    "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+    "workers/shared/build-identity.generated.ts": "edaf97ef76260914440c55391bbf51387d9b3ef497163255aa87e01107cc6799",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+    "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+    "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+    "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+  },
+  "timing": {
+    "tool_wall_seconds": 9.37278608395718
+  }
+}

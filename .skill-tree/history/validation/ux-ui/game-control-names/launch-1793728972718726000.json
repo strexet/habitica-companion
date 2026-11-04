@@ -1,0 +1,9 @@
+{
+  "task_id": "T-84818186-be62-46d9-be33-c237da0054f2",
+  "check_id": "game-control-names-rendered",
+  "authorization": "Owner-selected Implement All snapshot; local synthetic build/browser qualification only.",
+  "project_root": "/Users/petr/Projects/habitica-tool",
+  "deadline_utc": "2026-11-03T18:18:52.718528+00:00",
+  "build_policy": "Current Release publish, boot-manifest and emitted asset hashes verified by the owned fixture.",
+  "source_build": "e104a86a4d94123e7334ec994b057f26301ebaffbbe46d85bdf14000152c254d"
+}

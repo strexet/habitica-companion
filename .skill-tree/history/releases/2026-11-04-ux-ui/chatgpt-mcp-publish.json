@@ -1,0 +1,18 @@
+{
+  "worker": "habitica-companion-mcp",
+  "previous_version": "d8fb17bc-8400-4e5a-9541-a63fab609b82",
+  "version": "b8323e80-155a-4ca4-a21f-d1e3328f20b0",
+  "build_hash": "42b57a6f8f92cae0dec9820059414433ef1959936bbd9793fae9c940977f1799",
+  "backend_release": "0.3.1",
+  "tool_schema": "1.3.0",
+  "runtime_bindings_and_secrets_preserved": true,
+  "runtime_configuration_preserved": true,
+  "source_hashes": {
+    "index.js": "0bca59b728a5ebef5bf7a4d636ca32980bee57b72cf2a8553949193de1728e96",
+    "index.js.map": "bade4b4b4239d91afce41bf0281cf0cdc6bfc8d4b1e571bf04ffb3c4012a7ac6"
+  },
+  "provider_source_hashes": {
+    "index.js": "0bca59b728a5ebef5bf7a4d636ca32980bee57b72cf2a8553949193de1728e96",
+    "index.js.map": "bfeb694111d91a94ce587cae2d4378f688b3c2bc970f73f01fd789d810561db1"
+  }
+}

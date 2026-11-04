@@ -105,7 +105,7 @@
     [Parameter] public Guid? SourceTaskId {get;set;}
     private bool _disposed,_localBusy,_focus;private ElementReference _reviewHeading;private Guid? _seenReview,_refreshedReceipt;private string? _message;
     private int _draftOffset,_statusOffset,_targetOffset;private ChecklistConversionDraft? _choosing;private string _targetSearch="";
-    private bool Busy=>_localBusy||Conversion.IsBusy||Todo.IsBusy;
+    private bool Busy=>_localBusy||Conversion.IsBusy||Todo.IsBusy||Todo.Commands.HasPendingIntent;
     private bool FreshWorkspace=>Todo.Selection is {Source:TodoWorkspaceSource.Cloud} selected&&selected.WorkspaceId==Cloud.WorkspaceId&&Todo.Revision==Conversion.Status?.Revision;
     private IEnumerable<CompanionTask> Sources=>Todo.Snapshot?.Document.Tasks.Where(task=>task.Kind==CompanionTaskKind.Todo&&!task.IsArchived&&task.HabiticaDetails?.Checklist is {Count:>0})??[];
     protected override void OnInitialized(){Conversion.Changed+=Changed;Todo.Changed+=Changed;}

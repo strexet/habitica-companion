@@ -10,8 +10,9 @@ self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
 const cacheNamePrefix = 'offline-cache-';
-const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
-const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.webmanifest$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/ ];
+// A worker-only repair must not reuse an installed cache containing redirected HTML.
+const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}-shell-v3`;
+const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.m?js$/, /\.json$/, /\.webmanifest$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/ ];
 const offlineAssetsExclude = [ /^service-worker\.js$/ ];
 
 // Replace with your base path if you are hosting on a subfolder. Ensure there is a trailing '/'.
@@ -21,6 +22,25 @@ const manifestUrlList = self.assetsManifest.assets.map(asset => new URL(asset.ur
 // Only application routes may receive the offline shell. Auth, privacy and APIs stay network-only.
 const appRoutes = /^\/(?:|sign-in|signin|dashboard|tasks|inventory|pets-mounts|party|quests|spells|settings|diagnostics|live-tests|notes|todo\/(?:tasks|dailies|habits|today|inbox|plan|projects|lists|history|statistics|sync|reminders(?:\/open)?|convert(?:\/[0-9a-fA-F-]{36})?|retire\/[0-9a-fA-F-]{36}))\/?$/;
 const sensitivePath = pathname => /^\/(?:api|auth|oauth|\.well-known|privacy|terms|notes-api|task-api|organization-api|retirement-api)(?:\/|$)/.test(pathname);
+
+function navigationShell(response) {
+    if (!response || response.status !== 200
+        || !/^text\/html(?:\s*;|\s*$)/i.test(response.headers.get('Content-Type') || '')) return null;
+
+    // Only the public, integrity-checked index may lose its redirect history. A
+    // cross-origin fetch is CORS-tainted even if a later hop returns to this origin.
+    const shellUrls = [baseUrl.href, new URL('index.html', baseUrl).href];
+    const trusted = response.type === 'basic' && shellUrls.includes(response.url)
+        || response.type === 'default' && response.url === '' && !response.redirected;
+    if (!trusted) return null;
+    if (!response.redirected) return response;
+
+    const headers = new Headers(response.headers);
+    // Fetch has already decoded the body; these wire-representation fields no longer apply.
+    headers.delete('Content-Encoding');
+    headers.delete('Content-Length');
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
 
 async function onInstall(event) {
     console.info('Service worker: Install');
@@ -33,8 +53,12 @@ async function onInstall(event) {
             const url = new URL(asset.url, baseUrl);
             return url.origin === baseUrl.origin && !sensitivePath(url.pathname);
         })
-        .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
-    await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
+        .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache', mode: 'same-origin' }));
+    const cache = await caches.open(cacheName);
+    await cache.addAll(assetsRequests);
+    const shell = navigationShell(await cache.match('index.html'));
+    if (!shell) throw new Error('Public application shell unavailable.');
+    await cache.put('index.html', shell);
 }
 
 async function onActivate(event) {
@@ -61,8 +85,14 @@ async function onFetch(event) {
 
         if (shouldServeIndexHtml || manifestUrlList.includes(event.request.url)) {
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
-            const cache = await caches.open(cacheName);
-            cachedResponse = await cache.match(request);
+            try {
+                const cache = await caches.open(cacheName);
+                cachedResponse = await cache.match(request);
+                if (shouldServeIndexHtml) cachedResponse = navigationShell(cachedResponse);
+            } catch {
+                // Cache refusal must not prevent an ordinary online navigation.
+                cachedResponse = null;
+            }
         }
     }
 

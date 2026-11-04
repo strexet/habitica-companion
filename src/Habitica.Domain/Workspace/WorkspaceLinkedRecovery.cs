@@ -82,6 +82,7 @@ public static class WorkspaceLinkedRecovery
         foreach(var correction in snapshot.Document.OccurrenceCorrections ?? [])
         {
             var source=snapshot.Commands.FirstOrDefault(value=>value.Command.Id==correction.TargetCommandId);
+            if(source is null&&(snapshot.Document.SourceImports??[]).Any(origin=>origin.RecordIds.Contains(correction.Id)))continue;
             if(source is null || source.Command.TaskId!=correction.TaskId || source.Command.ExpectedRevision+1!=correction.PreviousOccurrence.Revision
                 || source.Command.OccurrenceDate!=correction.PreviousOccurrence.Date || source.Command.Operation!=(correction.PreviousOccurrence.State==OccurrenceState.Completed?WorkspaceOperation.CompleteTask:WorkspaceOperation.SkipOccurrence)
                 || source.Effects.Count>0 && !(snapshot.Document.LinkedTaskRecoveries ?? []).Any(value=>value.Id==correction.CommandId&&value.SourceContext.CommandId==correction.TargetCommandId))return false;

@@ -1,0 +1,70 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-4538fc4a-feae-4a36-bdc6-88d789e8bdd7",
+  "check_id": "daily-timezones-behavior",
+  "definition": "21490a7f66a9e74180cc04267e3d86581e2cd04cd7471d9633a0c802923f9aad",
+  "environment_identity": "82151b20c7853aaca45f82114396922c54ccbbed0190bbc859b615fec4e71d13",
+  "key": "7cdeb48f648437b6d612af28c6401224015d3b29297ebd9e88d23628a655bc27",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: UTC, UTC+7/Etc-GMT-7, UTC-5/Etc-GMT+5, supported boundary offsets, mismatched account, fractional account offset, nonmidnight day start and native IANA recurrence. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T21:23:23.671458+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T21:18:23.958778+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~TodoRecurringEditorTests|FullyQualifiedName~TodoTaskPanelTests",
+      "--logger",
+      "trx;LogFileName=daily-timezones.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/daily-timezones/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    ".skill-tree/documents/linked-daily-schedules.md": "b800ab6cee87edef01a11cd59244afedd33bc2c6855830ce1395bbc0d65c72bb",
+    "src/Habitica.Domain/Workspace/DailyProjectionSchedule.cs": "9a3de34c5d1b7d06748f96b197d34681128f196bf5c0eda7facdaae968544567",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "d6673bffd48dec127f0fad12e098c102e6aedfb5870eed83f102ec3faf43da59",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "0f0ee97eea97ad6777862a179a8cd0785b05d061163ad1f4ce86ca9136ddc4d8",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "bec2bd780f08c5cb3ef83b5232a21599a59f43aeeecca1bfe306067e1b2f393c",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "4d51a34a6949cbb94a26681df145c08b7ca4eb9d138c066218ce01cb82651fc3",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "3724f0c1f9fa2df7471075a92b13cdb2ce4c21def6586ea1bdc38b4b5987d956"
+  },
+  "task_id": "T-0a0afd5e-ea0e-4ce6-bd90-c3e17c6b04a5"
+}

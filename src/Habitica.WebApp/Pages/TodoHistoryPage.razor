@@ -1,4 +1,10 @@
 @page "/todo/history"
 
 <PageTitle>Task history</PageTitle>
-<TodoHistoryPanel />
+<TodoHistoryPanel ProjectReference="@ProjectId" UnassignedReference="@Unassigned" WorkspaceReference="@WorkspaceId" SourceReference="@Source" />
+@code{
+    [SupplyParameterFromQuery(Name="projectId")]public string? ProjectId{get;set;}
+    [SupplyParameterFromQuery(Name="unassigned")]public string? Unassigned{get;set;}
+    [SupplyParameterFromQuery(Name="workspaceId")]public string? WorkspaceId{get;set;}
+    [SupplyParameterFromQuery(Name="source")]public string? Source{get;set;}
+}

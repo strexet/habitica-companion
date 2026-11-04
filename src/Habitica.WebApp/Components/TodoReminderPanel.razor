@@ -5,18 +5,26 @@
 
 <section class="card-surface todo-reminder-panel" aria-label="Optional reminders" data-testid="todo-reminders">
     <h2>Optional reminders</h2>
+    <p class="panel-copy" data-testid="reminder-summary">
+        @if (!Reminders.Ready || Reminders.State is null) { <text>Load a workspace to review reminder settings.</text> }
+        else { <text>In-app cues: @(Reminders.State.InApp ? "enabled" : "off") · Browser notifications: @(Reminders.State.Browser ? "enabled" : "off")</text>@if (Reminders.State.InApp) { <text> · @Reminders.Due.Count reached review cues</text> } }
+    </p>
+    @if (Reminders.Error is { } error) { <p role="alert">@error</p> }
+    @if (Reminders.Ready && Reminders.State is { Delivery: "unknown" or "receipt-capacity" })
+    { <p role="status" data-testid="reminder-delivery-warning">Delivery is uncertain or the local receipt limit is full. This cue will not be sent again automatically. Review the saved cue in reminder details.</p> }
+    @if (Reminders.Ready && Reminders.State is { ClockChanged: true })
+    { <p role="status">Device clock changed. Cue times were checked again; saved tasks and dates were unchanged.</p> }
+    <details data-testid="reminder-configuration">
+        <summary data-testid="reminder-settings-toggle">Reminder setup and details</summary>
     <p>Saved review cues can appear here after you enable them for the selected workspace in this browser. Set, snooze or clear an exact review cue in <a href="/todo/tasks">Tasks → Organize → Voluntary review</a>.</p>
     <p>Browser notifications are best effort while this app is open and visible. Closed tabs and background delivery are unavailable here. Reopen Today to see missed cues. No Habitica polling or task changes run automatically.</p>
     <p>Reminders use the currently loaded workspace snapshot. Reload the workspace to include changes made elsewhere. Clearing browser data removes these preferences and local delivery receipts.</p>
-    @if(Reminders.Error is {} error){<p role="alert">@error</p>}
     @if(!Reminders.Ready){<p role="status">Select and load a workspace. Reminder preferences and review cues stay bound to that account and source.</p>}
     else if(Reminders.State is {} state)
     {
         <p data-testid="reminder-state">In-app cues: @(state.InApp?"enabled":"off") · Browser notifications: @(state.Browser?"enabled":"off") · Permission: @state.Permission</p>
         <p>Capability: @state.Capability · Local reminder storage: @state.Storage · Last delivery observation: @state.Delivery. A delivery observation does not mean you saw a notification.</p>
-        @if(state.ClockChanged){<p role="status">Device clock changed. Cue times were checked again; saved tasks and dates were unchanged.</p>}
         @if(state.Permission=="denied"){<p role="status">Browser permission is denied. In-app cues still work; change notification permission in browser or system settings if you want to try again.</p>}
-        @if(state.Delivery is "unknown" or "receipt-capacity"){<p role="status">Delivery is uncertain or the local receipt limit is full. This cue will not be sent again automatically. Review the saved cue below.</p>}
         <div class="action-row">
             <MudButton HtmlTag="button" data-layout-primary="true" OnClick="() => Reminders.SetInAppAsync(!state.InApp)" Variant="Variant.Outlined" Color="Color.Primary" data-testid="reminder-inapp">@(state.InApp?"Turn off in-app cues":"Enable in-app cues here")</MudButton>
             @if(state.Browser){<MudButton HtmlTag="button" data-layout-primary="true" OnClick="Reminders.DisableBrowserAsync" Variant="Variant.Outlined" data-testid="reminder-browser-off">Turn off browser notifications</MudButton>}
@@ -34,6 +42,7 @@
             @if(due.Count>20){<p>Showing the first twenty reached cues. All saved review cues remain available in Tasks.</p>}
         }
     }
+    </details>
 </section>
 
 @code {

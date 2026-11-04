@@ -1,0 +1,26 @@
+{
+  "source_restored": true,
+  "published_public_override_matches": true,
+  "public_config": {
+    "Habitica": {
+      "XClientHeader": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+    },
+    "ChatGptIntegration": {
+      "AuthBaseUrl": "https://habitica-companion-auth.strexet.workers.dev",
+      "Enabled": true
+    },
+    "Features": {
+      "PartySyncEnabled": true,
+      "HabiticaRequestDelayMilliseconds": 0,
+      "CloudSyncExcludedSections": [
+        "diagnostics"
+      ],
+      "AdminUserIds": [],
+      "OwnerIsolatedTestingEnabled": false
+    },
+    "CompanionWorkspace": {
+      "BaseUrl": "https://habitica-companion-workspace.strexet.workers.dev",
+      "PartyPlanningEnabled": true
+    }
+  }
+}

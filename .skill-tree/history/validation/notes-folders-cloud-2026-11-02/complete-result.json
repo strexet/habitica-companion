@@ -1,0 +1,597 @@
+{
+  "acceptance": [
+    {
+      "criterion": "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+          "sha256": "0f7782559c7829533cf4fb92f1cc41b2fb8b59b529dad6a4f4ee0107badb1ae7"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+          "sha256": "278e514682f55e821b961a3e3ee62e66754104ed3ecadd204fb6c58157f880de"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+          "sha256": "f8e91c688394bd4bd8305e6222c85c724e185139065d23202e1930db073f6faa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+          "sha256": "c7d17f7332a98c71b839882c3ef59e08c4bf7de2a6ec72a7d22bfd3f7ec623ac"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log",
+          "sha256": "c2b42a0b2728aaa7f5bcee9aae2d14fdac0cfb1011a0afc7d8abd2092e022de1"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    },
+    {
+      "criterion": "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+          "sha256": "0f7782559c7829533cf4fb92f1cc41b2fb8b59b529dad6a4f4ee0107badb1ae7"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+          "sha256": "278e514682f55e821b961a3e3ee62e66754104ed3ecadd204fb6c58157f880de"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+          "sha256": "f8e91c688394bd4bd8305e6222c85c724e185139065d23202e1930db073f6faa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+          "sha256": "c7d17f7332a98c71b839882c3ef59e08c4bf7de2a6ec72a7d22bfd3f7ec623ac"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log",
+          "sha256": "c2b42a0b2728aaa7f5bcee9aae2d14fdac0cfb1011a0afc7d8abd2092e022de1"
+        }
+      ],
+      "required": true,
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+        "criteria": [
+          "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+          "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+        ],
+        "id": "notes-owner-api",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/notes.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/notes.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/migrations/0021-note-folders.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "tests/fixtures/notes/notes-folder-wire-v3.json"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "integration",
+        "attempt_id": "C-8bb10d01-824e-466d-b389-2272fa732cb4",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 13,
+          "expected": 13,
+          "failed": 1,
+          "passed": 12,
+          "skipped": 0
+        },
+        "definition": "5357e3f9f3464d53d584dd28ddd8b7ae3a927824462479d29c1a359d45a372db",
+        "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/discover-red-execution.log",
+            "sha256": "9486ef6b52a9fe45c7d48adcfdb32af55229e917492b43e8530f8dbe1b29e8cb"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "e9f12c34cf20697bad1bd07783f6d3be18fdeb7bd1d66c171dff0b7d5524f4e2",
+        "payload_hash": "faf628f167e52a2115b7f801ab410bab2846b86f7c9a0dd5137314269a397483",
+        "recorded_at": "2026-11-02T16:39:07.261665+00:00",
+        "result": "red",
+        "sources": {
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/test/notes.test.mjs": "d4f9050e83b9ca86d2161de43803846b9b72a111d1799289e6a52cb193613a9c"
+        },
+        "timing": {
+          "tool_wall_seconds": 9.883797958027571
+        }
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-dbb1e9b2-ab6d-4e08-8af5-a0c03ecebc69",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 21,
+          "expected": 21,
+          "failed": 0,
+          "passed": 21,
+          "skipped": 0
+        },
+        "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+        "environment_identity": "2316171928fdcfd86b9a463b5661b352f967f00a78fc7be2bda3afa19f9650ca",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+            "sha256": "c7d17f7332a98c71b839882c3ef59e08c4bf7de2a6ec72a7d22bfd3f7ec623ac"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "0d01f3c9d6c8eaaf053bf9a2ca869732c796c96377ebb0a346462309e0610b64",
+        "payload_hash": "48315db8c4e1d85d1162d6f779a848057af36b5d4dbf8634f3f0272474bda0a4",
+        "recorded_at": "2026-11-02T16:53:09.380882+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+          "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+          "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+          "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 15.277360416948795
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+        "criteria": [
+          "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+          "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+        ],
+        "id": "notes-client-contracts",
+        "parameters": {
+          "report_name": "notes-client-contracts.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts",
+          "test_filter": "FullyQualifiedName~NotesCloud",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+          "src/Habitica.Domain/Notes/NotesModel.cs",
+          "src/Habitica.WebApp/Integration/NotesCloudClient.cs",
+          "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs",
+          "src/Habitica.Application/Notes/INotesCloudClient.cs"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-bdcb994e-e0e7-4818-9ccb-399245487c8e",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 13,
+          "expected": 13,
+          "failed": 1,
+          "passed": 12,
+          "skipped": 0
+        },
+        "definition": "5357e3f9f3464d53d584dd28ddd8b7ae3a927824462479d29c1a359d45a372db",
+        "environment_identity": "c881be60477cceba14fb61e8d2c37b0a3e937e8b6e5f91c86265774498f51004",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/paging-null-assertion-red-execution.log",
+            "sha256": "155d9834d063e47a9f4d2413a98dcf7665d85b8d5c0ade745adb3401c2747f8d"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/paging-null-assertion-red.trx",
+            "sha256": "ed0824b3430b340b8aed3ebc3d8c125c8556fcc4a9599afeaa105175f3532306"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "32995698daae7549d1921eb22e233067734e7f787826117d3e689a1869aea877",
+        "payload_hash": "2fa7b3771dd43d06d36ddce781a90e053e4e1c919150a05901fd7237cd0d7fc6",
+        "recorded_at": "2026-11-02T16:46:52.557022+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "0ec0a2a9000db6c283081515a27f89c5340a0e587f8a209279a6beb75f355404"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.1646189170423895
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-65c8b502-eae4-477a-a5ed-30e25dbeb8c9",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 14,
+          "expected": 14,
+          "failed": 0,
+          "passed": 14,
+          "skipped": 0
+        },
+        "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+        "environment_identity": "c881be60477cceba14fb61e8d2c37b0a3e937e8b6e5f91c86265774498f51004",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+            "sha256": "0f7782559c7829533cf4fb92f1cc41b2fb8b59b529dad6a4f4ee0107badb1ae7"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+            "sha256": "278e514682f55e821b961a3e3ee62e66754104ed3ecadd204fb6c58157f880de"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "4b24b5773856a5803d0c71943392a10f0085dd0a0ebfc967c35fa75addf248df",
+        "payload_hash": "f199e0f8fade3ec2b18f37bca367d2db6ffabc50dccdb0dfd8bc35791fd58705",
+        "recorded_at": "2026-11-02T16:55:44.768287+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+          "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+          "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs": "f0067a05649b6720bd2552ce0cdd850308d265318c9c98c5011b2afbe7395087",
+          "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "7c56402a1bd4f37c996a6173455e387e1a59e633d76f40e1941f58a0cc09270f",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+          "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.774415000109002
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+        "criteria": [
+          "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+          "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+        ],
+        "id": "notes-project-regressions",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/notes.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/migrations/0021-note-folders.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "tests/fixtures/notes/notes-folder-wire-v3.json",
+          "workers/companion-workspace/test/note-projects.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-898e6c24-852c-4bc3-9d2a-34e32fe60a32",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 7,
+          "expected": 7,
+          "failed": 0,
+          "passed": 7,
+          "skipped": 0
+        },
+        "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+        "environment_identity": "03f1c8188a2fc14c2b4181fab9770b74a8860b27c8bab6bb320fbe4e9aad1dcb",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log",
+            "sha256": "c2b42a0b2728aaa7f5bcee9aae2d14fdac0cfb1011a0afc7d8abd2092e022de1"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "c6db765f231e0b94c894d37d6daf2a123b3ab90f9f158e3a45e58dc62aedce48",
+        "payload_hash": "29533d24c799bd006612af7c7a01598d0aaa4e5f66d250cf5029ebf1f4494d8a",
+        "recorded_at": "2026-11-02T16:54:29.870795+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+          "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+          "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+          "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+          "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 6.331999249989167
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+        "criteria": [
+          "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+          "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+        ],
+        "id": "notes-legacy-agent-regressions",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/notes.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/shared/notes.ts",
+          "workers/shared/notes-folders.ts",
+          "workers/companion-workspace/src/notes-api.ts",
+          "workers/companion-workspace/src/notes-folders-api.ts",
+          "workers/companion-workspace/migrations/0021-note-folders.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "tests/fixtures/notes/notes-folder-wire-v3.json",
+          "workers/companion-workspace/test/note-tools.test.mjs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-3f3e3152-18f0-43d6-8fec-4e309ea2d5b4",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 8,
+          "expected": 8,
+          "failed": 0,
+          "passed": 8,
+          "skipped": 0
+        },
+        "definition": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2",
+        "environment_identity": "10cdb3fc149208e0e6c81e06c12a984c724ea93389bcde68f619e7d9b42ad48a",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+            "sha256": "f8e91c688394bd4bd8305e6222c85c724e185139065d23202e1930db073f6faa"
+          }
+        ],
+        "execution_sessions": {},
+        "key": "c67b88e0641a7091cd0676b80aa586cb954c828b7c1f938e16121ffe6151323d",
+        "payload_hash": "dd86da8119fe527e3c7e35759d77942f639f7ff1ed452e601810fa81ca4650f0",
+        "recorded_at": "2026-11-02T16:55:07.846486+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+          "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+          "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+          "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+          "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+          "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+          "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+        },
+        "timing": {
+          "tool_wall_seconds": 7.7518709159921855
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-5111060c-76ae-4a0e-a48b-260ecbb8885f"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+      "sha256": "0f7782559c7829533cf4fb92f1cc41b2fb8b59b529dad6a4f4ee0107badb1ae7"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+      "sha256": "278e514682f55e821b961a3e3ee62e66754104ed3ecadd204fb6c58157f880de"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+      "sha256": "f8e91c688394bd4bd8305e6222c85c724e185139065d23202e1930db073f6faa"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+      "sha256": "c7d17f7332a98c71b839882c3ef59e08c4bf7de2a6ec72a7d22bfd3f7ec623ac"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log",
+      "sha256": "c2b42a0b2728aaa7f5bcee9aae2d14fdac0cfb1011a0afc7d8abd2092e022de1"
+    }
+  ],
+  "followup_ids": [
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31"
+  ],
+  "id": "O-6820d4e0-f998-4968-b397-b46d62ec3ae5",
+  "limitations": [
+    "Remote migration/publication, folder MCP tools and folder UI remain outside the completed owner API unit.",
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31 retains reviewed folder-aware Workspace adoption compatibility; no browser-folder transfer is qualified."
+  ],
+  "outcome": "Cloud Notes folder discovery, exact reads, atomic commands, membership filters, additive migration and typed client validation are implemented with matching portable hashes and original-receipt recovery. Serial local qualification passes50 controls across owner API, typed client, legacy project and agent regressions.",
+  "parent_pending_ids": [
+    "P-51d5734b-82dc-4f91-82c6-d4eca50a3114"
+  ],
+  "recorded_at": "2026-11-02T16:57:20.895333+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "source_fingerprints": {
+    ".skill-tree/documents/notes-folders.md": "19110b1f0ca05f897ba9f8c8c1caf112315d61d1e47773a7e2377b5754b32949",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs": "f0067a05649b6720bd2552ce0cdd850308d265318c9c98c5011b2afbe7395087",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "7c56402a1bd4f37c996a6173455e387e1a59e633d76f40e1941f58a0cc09270f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+    "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+    "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+    "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018"
+  },
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "title": "Persist Notes folders through the cloud owner API",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "criteria": [
+        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+      ],
+      "id": "notes-owner-api",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/notes.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/notes.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/migrations/0021-note-folders.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "criteria": [
+        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+      ],
+      "id": "notes-client-contracts",
+      "parameters": {
+        "report_name": "notes-client-contracts.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts",
+        "test_filter": "FullyQualifiedName~NotesCloud",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs",
+        "src/Habitica.Domain/Notes/NotesModel.cs",
+        "src/Habitica.WebApp/Integration/NotesCloudClient.cs",
+        "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs",
+        "src/Habitica.Application/Notes/INotesCloudClient.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "criteria": [
+        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+      ],
+      "id": "notes-project-regressions",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-projects.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/notes.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/migrations/0021-note-folders.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json",
+        "workers/companion-workspace/test/note-projects.test.mjs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic D1/HTTP and browser-client controls cover legacy migration, backup roundtrip, Unicode names, exact folder IDs, more than twenty matches, stale paging, foreign profiles, removed/archived projects, grant/session epochs, rollback, concurrent changes and lost acknowledgement.\n- Prove deletion/disconnect cleanup, malformed or foreign response refusal, expired sessions and late-account responses. Keep existing Notes and project wire regression controls.",
+      "criteria": [
+        "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+        "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work."
+      ],
+      "id": "notes-legacy-agent-regressions",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/note-tools.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/notes.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/shared/notes.ts",
+        "workers/shared/notes-folders.ts",
+        "workers/companion-workspace/src/notes-api.ts",
+        "workers/companion-workspace/src/notes-folders-api.ts",
+        "workers/companion-workspace/migrations/0021-note-folders.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/notes/notes-folder-wire-v3.json",
+        "workers/companion-workspace/test/note-tools.test.mjs"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "756b6662acb917d22bfefbc33fc30710260a16caaa3fb936396bb52d32d8ebd2"
+}

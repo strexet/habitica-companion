@@ -1,0 +1,22 @@
+{
+  "accepted_report": "645e83fd-003e-49b5-9df2-ec1efd720bc6.json",
+  "artifact": "1793742023758678000",
+  "reviewed": [
+    "Chromium gryphy-light360/200 hydrated compact authoring: labeled name/source/search, visible focus, retained values and no advanced field stack. Native text inputs retain horizontal editing for long values.",
+    "WebKit obsidian-glow360/200 hydrated compact authoring: readable labels, source choice and visible keyboard focus.",
+    "Chromium gryphy-light1280/100: existing results precede compact authoring, collapsed-filter count and complete-definition primary action readable.",
+    "All72 native cases cover exact hidden-filter review, editing/new draft close/resume,20/5 pagination and invalid-field reveal."
+  ],
+  "counts": {
+    "focused": 37,
+    "browser": 649,
+    "related_relative_components": 3
+  },
+  "related_evidence": "relative-neighbor/relative-neighbor.trx",
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "limits": "Physical devices, assistive technology, native popovers and service workers remain unqualified. Every native preview is cancelled and the exact original journal remains unchanged. The separate captured header Sync clipping remains deferred."
+}

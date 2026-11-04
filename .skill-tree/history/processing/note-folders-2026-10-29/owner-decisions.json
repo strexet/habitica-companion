@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-29",
+  "source": "Direct owner responses in the current conversation",
+  "folder_depth": {
+    "value": "single-level",
+    "owner_reply": "Один уровень: папка → заметки; внутри проекта проект → папка → заметки"
+  },
+  "note_membership": {
+    "value": "zero-or-one-folder",
+    "owner_reply": "Одна папка или без папки; при переносе содержимое и история сохраняются"
+  }
+}

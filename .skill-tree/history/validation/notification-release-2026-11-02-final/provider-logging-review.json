@@ -1,0 +1,13 @@
+{
+  "scope": "actual selected gateway function logs; bounded read-only stream",
+  "observed_seconds": 3.9632151250261813,
+  "observed_bytes": 523,
+  "contains_duration_record": true,
+  "sensitive_fixture_value_matches": 0,
+  "bundle_sha256": "3d79cb0fb4e63f883c91afbdd1b97c1cf7ddb8373feb3a804338da000d9cb7af",
+  "source_console_logging": false,
+  "plan": "Free",
+  "retention": "Provider documented at least24hours; enterprise Log Drains are not provisioned",
+  "private_raw_log_retained": true,
+  "termination": "owned log-stream process closed after observation"
+}

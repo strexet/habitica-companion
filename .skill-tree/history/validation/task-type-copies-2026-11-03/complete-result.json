@@ -1,0 +1,1065 @@
+{
+  "acceptance": [
+    {
+      "criterion": "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-execution.log",
+          "sha256": "299ee9ca80761ef06f10a689fb58168f71efc95b89ecdb20f647302420962bee"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/rules-qualified.trx",
+          "sha256": "ae17f3001672126f4a65cce58aa30c4baf86b5464a66f3be86d6cc53f78669db"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-receipt.json",
+          "sha256": "c20630c9d29d41e739b09a118c24382164a3008cb77464465b25ed0e57a466ce"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-execution.log",
+          "sha256": "96753d77359351c2ff0f395ce2d75f3cc9d4da54701611fdb0d9b6d76ef4413a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/components-qualified.trx",
+          "sha256": "0eaab9362d9932b5a07de533447455251d59e734acc86a4403306c1c0bfaa9b2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-receipt.json",
+          "sha256": "7f8a0028b3f008cbcb00078e8ec1ba22a7767c5855584dde7c24c819260806a3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-execution.log",
+          "sha256": "01c8b00768c79fd193f9adf23e06adc443292892bf39c472b2c9f86f775f07e5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-receipt.json",
+          "sha256": "066bc8abd73d92b04508f79feab32bef29367d46f3051e5f1e046c0645ccc29b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+          "sha256": "1fa33bfb863f8bae90ddb86d426c0ce0e48a98ca668bef1890456f54f437d389"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+          "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+          "sha256": "6e2f6dc7dcb3dd3f366673fa93ed127e888c7c8862870bd14900217cb9bd6a35"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-receipt.json",
+          "sha256": "a8ff01f077267d62ca949e0271ff012c5eacf095e8732329668b9e63dfd05537"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/quota-worker-dry-builds.json",
+          "sha256": "48e86ad3275bfff0c3b49da6272e556fd646a6f32499816a4e4e09a125e935db"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/future-validation.json",
+          "sha256": "3743c55eab6263ffecda850d1bf8f2dc4cee2aebfcc203e08b2d82f104da6de0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/changed-prose-validation.json",
+          "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/acceptance-findings.json",
+          "sha256": "dbf837733df611af5d39c706a186ce237a97de0e02362e5dd3b9df107d636e2e"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.",
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-execution.log",
+          "sha256": "299ee9ca80761ef06f10a689fb58168f71efc95b89ecdb20f647302420962bee"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/rules-qualified.trx",
+          "sha256": "ae17f3001672126f4a65cce58aa30c4baf86b5464a66f3be86d6cc53f78669db"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-receipt.json",
+          "sha256": "c20630c9d29d41e739b09a118c24382164a3008cb77464465b25ed0e57a466ce"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-execution.log",
+          "sha256": "96753d77359351c2ff0f395ce2d75f3cc9d4da54701611fdb0d9b6d76ef4413a"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/components-qualified.trx",
+          "sha256": "0eaab9362d9932b5a07de533447455251d59e734acc86a4403306c1c0bfaa9b2"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-receipt.json",
+          "sha256": "7f8a0028b3f008cbcb00078e8ec1ba22a7767c5855584dde7c24c819260806a3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-execution.log",
+          "sha256": "01c8b00768c79fd193f9adf23e06adc443292892bf39c472b2c9f86f775f07e5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-receipt.json",
+          "sha256": "066bc8abd73d92b04508f79feab32bef29367d46f3051e5f1e046c0645ccc29b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+          "sha256": "1fa33bfb863f8bae90ddb86d426c0ce0e48a98ca668bef1890456f54f437d389"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+          "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+          "sha256": "6e2f6dc7dcb3dd3f366673fa93ed127e888c7c8862870bd14900217cb9bd6a35"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-receipt.json",
+          "sha256": "a8ff01f077267d62ca949e0271ff012c5eacf095e8732329668b9e63dfd05537"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/quota-worker-dry-builds.json",
+          "sha256": "48e86ad3275bfff0c3b49da6272e556fd646a6f32499816a4e4e09a125e935db"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/future-validation.json",
+          "sha256": "3743c55eab6263ffecda850d1bf8f2dc4cee2aebfcc203e08b2d82f104da6de0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/documentation-validation.json",
+          "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/changed-prose-validation.json",
+          "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/acceptance-findings.json",
+          "sha256": "dbf837733df611af5d39c706a186ce237a97de0e02362e5dd3b9df107d636e2e"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "boundary_validation": "not-required",
+  "check_results": [
+    {
+      "check": {
+        "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+        "criteria": [
+          "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+          "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+        ],
+        "id": "conversion-rules",
+        "parameters": {
+          "report_name": "conversion-rules.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules",
+          "test_filter": "FullyQualifiedName~Conversion",
+          "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+          "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceRules.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+          "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs",
+          "tests/fixtures/workspace/task-type-copy-v1.json"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "unit",
+        "attempt_id": "C-32a38d9c-275c-4ecb-be10-2a9a78d2134a",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 27,
+          "expected": 27,
+          "failed": 1,
+          "passed": 26,
+          "skipped": 0
+        },
+        "definition": "1d5ea294685082da4a1db25c2066f340a14a50fda095b35b76fb2237b1e96c93",
+        "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-lineage-immutability-red-execution.log",
+            "sha256": "2f05ca655d0ced59c168d1c74bc709601a47181ee032787864b05ee2bf2fb36c"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/copy-lineage-immutability-red.trx",
+            "sha256": "aa83765b8c305a6045f12ce0f60d815ba3a9389dc012f49796bfaf46eced5325"
+          }
+        ],
+        "execution_sessions": {},
+        "failure_category": "expected-behavior",
+        "key": "459d21a82d5d864834b359d2094569a22e1ca887ee8cffc71d21613131cdabc4",
+        "payload_hash": "49f23577e8358b56be851871f988c99fe34f2bf55fef28bfc00712cc589d97d3",
+        "recorded_at": "2026-11-02T20:31:35.821678+00:00",
+        "result": "red",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "f2ac83486649f4c8e3deb1af9cd296f2fe1a3413b0fb9515b05a27952b1f56da",
+          "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs": "9594bc952c3490247322d4df8201c8d5474d612cd51a02ece9c7423804258ee6",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "3fe5922804084fdea532b981dfa5ab4de73d4d412a95b19387f5f7473a64905b",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64237553a2c53cb8415706f80aa9bea8ba588764147304badfa34f72b1ddc477",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "827f1d0486ef4bab44867577465963843876fc6a13319f5e3182c3544bcd727f",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+          "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "fbfcc4d45c2a1e98454d180d57653284e252c742c0391553c1caf89d0d757c98",
+          "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+          "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "8744e344564157ab44abc00e911d2d5695d5404e4b232c1fa0ab69f45942eeac",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "14b8c4b327cf37646fd4c4e7b34e3a2b676ea5cbf099795231231b10810d2e95",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.112594583071768
+        }
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-89891e09-fa0b-4fd7-a962-a8b661ae51d8",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 29,
+          "expected": 29,
+          "failed": 0,
+          "passed": 29,
+          "skipped": 0
+        },
+        "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+        "environment_identity": "c0f9d1e5912ffaf5e00f3c6ca5100043973fe0c44524a20942729658e112dfd2",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-execution.log",
+            "sha256": "299ee9ca80761ef06f10a689fb58168f71efc95b89ecdb20f647302420962bee"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/rules-qualified.trx",
+            "sha256": "ae17f3001672126f4a65cce58aa30c4baf86b5464a66f3be86d6cc53f78669db"
+          }
+        ],
+        "execution_sessions": {
+          "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-cc1d0534",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "98b596d0d132005637fc2ae4a942a4d40a3abf3f793088dbd21b6adf169e6d9a": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:39:34.919507+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d3a3934f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "135ec344f6473501bc94d023d4a2f0ba8c7732cd208cfb05854071ac67d7dfcd",
+        "payload_hash": "06866d8ee3e7485c6eedefb16dd16f1ca994e30613613fe192b4796f7270e47a",
+        "recorded_at": "2026-11-02T21:27:55.448518+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "f2ac83486649f4c8e3deb1af9cd296f2fe1a3413b0fb9515b05a27952b1f56da",
+          "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs": "9594bc952c3490247322d4df8201c8d5474d612cd51a02ece9c7423804258ee6",
+          "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "3fe5922804084fdea532b981dfa5ab4de73d4d412a95b19387f5f7473a64905b",
+          "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64237553a2c53cb8415706f80aa9bea8ba588764147304badfa34f72b1ddc477",
+          "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "827f1d0486ef4bab44867577465963843876fc6a13319f5e3182c3544bcd727f",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+          "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "b95fd2cca6cf0d78e1e32cc9da20fe43a13f5f09214d92b45e8d2db3b2209169",
+          "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+          "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "f287cc70be10847f6877859574e8122acfbc30001bf1fca048ca9018acad8d5e",
+          "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+          "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "a0ca709bd483d268ce696d8c13b8e156fad29530197521aa9df2f85dd5de0a8f",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+          "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18",
+          "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01"
+        },
+        "timing": {
+          "tool_wall_seconds": 2.431942458031699
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+        "criteria": [
+          "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+          "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+        ],
+        "id": "conversion-components",
+        "parameters": {
+          "report_name": "conversion-components.trx",
+          "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components",
+          "test_filter": "FullyQualifiedName~Conversion",
+          "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+        },
+        "recipe_id": "dotnet-focused-tests",
+        "sources": [
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+          "Directory.Packages.props",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+          "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+          "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+          "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Integration/TaskTypeConversionClientTests.cs"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "unit",
+        "attempt_id": "C-59936ba8-d604-4f90-a3d6-62195704062f",
+        "classification": "executed-control",
+        "cleanup": "The bounded dotnet test process exited; synthetic in-memory fixtures were disposed. No real service, user data or browser profile was used.",
+        "counts": {
+          "discovered": 27,
+          "expected": 27,
+          "failed": 0,
+          "passed": 27,
+          "skipped": 0
+        },
+        "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+        "environment_identity": "edd7a63e65146c89e3d20f618a2cc6f0ef91d4d70ed8565c83fb267b314de99c",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-execution.log",
+            "sha256": "96753d77359351c2ff0f395ce2d75f3cc9d4da54701611fdb0d9b6d76ef4413a"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/components-qualified.trx",
+            "sha256": "0eaab9362d9932b5a07de533447455251d59e734acc86a4403306c1c0bfaa9b2"
+          }
+        ],
+        "execution_sessions": {
+          "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-cc1d0534",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "98b596d0d132005637fc2ae4a942a4d40a3abf3f793088dbd21b6adf169e6d9a": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:39:34.919507+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d3a3934f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "1e8981e7b217b00f2dd280f303bad209b49571bc92dd6bf9515f4b6cc6ba8775",
+        "payload_hash": "6b7b91835c824f3ade6aa008ff6c1aa4e8e034bf5b7e36601247e389e84b016b",
+        "recorded_at": "2026-11-02T21:27:33.496319+00:00",
+        "result": "pass",
+        "sources": {
+          "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+          "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "41d83cc46126ba3cddf917ad2e1867c20d0d9c74e9be940d69212f8925636b56",
+          "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+          "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "f287cc70be10847f6877859574e8122acfbc30001bf1fca048ca9018acad8d5e",
+          "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+          "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+          "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+          "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+          "tests/Habitica.WebApp.Tests/Integration/TaskTypeConversionClientTests.cs": "22e926506f3dcdee3988e16491519b2ccbe03a4d408dc2e5a4182ff6307156c1",
+          "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs": "d25fa4993e4c4241f165224e970674966b99c0986ad603f22de410b3e9d838ee",
+          "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs": "dc233df496f0b0c085339109ea2b623379f154ba4b97f8249332a7045eef7d47",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs": "eb56bcfc43b0992257bf05cc19ecd4623c38f0215440fc79ee0e003fcdd54153",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "07392415fbb8849b5a9ba369fad66c20fbe1eebe1e94f20cddb8a83c8314c7f9"
+        },
+        "timing": {
+          "tool_wall_seconds": 4.166717041982338
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+        "criteria": [
+          "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+          "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+        ],
+        "id": "conversion-wire",
+        "parameters": {
+          "test_file": "workers/companion-workspace/test/task-type-copy.test.mjs"
+        },
+        "recipe_id": "worker-focused-tests",
+        "sources": [
+          "workers/companion-workspace/test/conversion-api.test.mjs",
+          "workers/companion-workspace/package.json",
+          "workers/companion-workspace/test/task-type-copy.test.mjs",
+          "workers/shared/task-type-copy.ts",
+          "workers/shared/workspace-domain.ts",
+          "workers/shared/workspace-commands.ts",
+          "workers/shared/activity-coverage.ts",
+          "workers/shared/task-tools.ts",
+          "workers/companion-workspace/src/task-type-copy.ts",
+          "workers/companion-workspace/src/commands.ts",
+          "workers/companion-workspace/src/journal.ts",
+          "workers/companion-workspace/src/task-api.ts",
+          "workers/companion-workspace/src/index.ts",
+          "workers/chatgpt-mcp/src/task-tools.ts",
+          "workers/shared/build-identity.generated.ts",
+          "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+          "tests/fixtures/workspace/task-type-copy-v1.json",
+          "workers/companion-workspace/src/preparation-retention.ts",
+          "workers/companion-workspace/src/mcp-epoch.ts"
+        ],
+        "timing": "immediate"
+      },
+      "red": {
+        "actual_lane": "integration",
+        "attempt_id": "C-861e28a5-f5a3-449a-8035-a3ebd31ed4cf",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 18,
+          "expected": 18,
+          "failed": 1,
+          "passed": 17,
+          "skipped": 0
+        },
+        "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+        "environment_identity": "141262cf081734c6b7a529f88f0b2e7b77d131af25973ebd14917235f3271343",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-red-execution.log",
+            "sha256": "545b4bc7a703a510d3ac472fd6b668b01481041e4e2558b8642eeaa4acb4ed3d"
+          }
+        ],
+        "execution_sessions": {
+          "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-cc1d0534",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "failure_category": "expected-behavior",
+        "key": "f0c3b1a84ce9fea82e00e8448e686cebba229fee73799723150e89c790f6174f",
+        "payload_hash": "acd6fb5a037bbb0323c88c3a8b550ff7a964916b8221ee82bdda9b3501ea8e0e",
+        "recorded_at": "2026-11-02T21:20:03.409680+00:00",
+        "result": "red",
+        "sources": {
+          "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+          "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+          "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+          "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+          "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+          "workers/companion-workspace/src/mcp-epoch.ts": "7bbdb4ba7cb73e0e7cc9166441ebed9de2c6ba7d4a4e156234f9b452b4bce52c",
+          "workers/companion-workspace/src/preparation-retention.ts": "c117562941cfc100db8473fad24c851a57c0cedba9861741874c085db6ade1e2",
+          "workers/companion-workspace/src/task-api.ts": "80c67286035e5633a344d0dca8e91275f9a4caec889ade7724d28bb0a1ced19e",
+          "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+          "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+          "workers/companion-workspace/test/task-type-copy.test.mjs": "9a4de2964653c4e78ec062bdc1babcb7fee20f6d6813267e62b11dda318f67f3",
+          "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+          "workers/shared/build-identity.generated.ts": "84819aabec0bc088e992a1e7c95e2f592aa196a428e4023a321c44d66a2dfd73",
+          "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+          "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+          "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+          "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+        },
+        "timing": {
+          "tool_wall_seconds": 11.848530041985214
+        }
+      },
+      "result": {
+        "actual_lane": "integration",
+        "attempt_id": "C-e2f0daef-b75d-4edd-817e-580ba2a73038",
+        "classification": "executed-control",
+        "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+        "counts": {
+          "discovered": 18,
+          "expected": 18,
+          "failed": 0,
+          "passed": 18,
+          "skipped": 0
+        },
+        "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+        "environment_identity": "141262cf081734c6b7a529f88f0b2e7b77d131af25973ebd14917235f3271343",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-execution.log",
+            "sha256": "01c8b00768c79fd193f9adf23e06adc443292892bf39c472b2c9f86f775f07e5"
+          }
+        ],
+        "execution_sessions": {
+          "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-cc1d0534",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "1f8bfe86955bcdf63307edb78f232aee4de8e4997027a55899c8ba0b348ef6b2",
+        "payload_hash": "4b8cfbbf2f0e2fca7203e4cf319ee6cada3ce90ca7d95e16a1389c475e3901b1",
+        "recorded_at": "2026-11-02T21:21:24.323481+00:00",
+        "result": "pass",
+        "sources": {
+          "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+          "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+          "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+          "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+          "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+          "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+          "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+          "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+          "workers/companion-workspace/src/mcp-epoch.ts": "1c1a31fdea6ccf0180aa2ccee1a0a19dee9a2c674f429a50a30b9066c90865a8",
+          "workers/companion-workspace/src/preparation-retention.ts": "0f2ae508588630fc569523a9d618f3f0f631fcad3eb0440a311470352fd5e07f",
+          "workers/companion-workspace/src/task-api.ts": "80c67286035e5633a344d0dca8e91275f9a4caec889ade7724d28bb0a1ced19e",
+          "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+          "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+          "workers/companion-workspace/test/task-type-copy.test.mjs": "05ecd3048f04054002514362f868d283c7aa2c2a33e6a281906a870f8ab27794",
+          "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+          "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528",
+          "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+          "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+          "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+          "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+        },
+        "timing": {
+          "tool_wall_seconds": 11.684327083872631
+        }
+      }
+    },
+    {
+      "check": {
+        "assertion": "Current Release conversion routes preserve exact source identities, explicit field-loss review, original receipt recovery, keyboard focus and readable light/dark phone/desktop normal/enlarged-text layouts without provider mutations.",
+        "criteria": [
+          "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+          "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+        ],
+        "id": "conversion-rendering",
+        "parameters": {},
+        "recipe_id": "task-type-copy-rendered-browser",
+        "sources": [
+          "tests/browser/task-type-copy-ui.py",
+          "tests/browser/task-type-copy-ui.mjs",
+          "tests/browser/linked-daily-fixture.mjs",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+          "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+          "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+          "src/Habitica.WebApp/wwwroot/css/app.css",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+          "workers/shared/build-identity.generated.ts"
+        ],
+        "timing": "immediate"
+      },
+      "result": {
+        "actual_lane": "browser",
+        "attempt_id": "C-97b09522-387e-4371-8fab-ec6693dfbc9c",
+        "classification": "executed-control",
+        "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+        "counts": {
+          "discovered": 242,
+          "expected": 242,
+          "failed": 0,
+          "passed": 242,
+          "skipped": 0
+        },
+        "definition": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b",
+        "environment_identity": "a9f43ca996275fbb0fbc8370990b66afb9d74bfc5a9bcf72ca7ed4efef7d49e1",
+        "evidence": [
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+            "sha256": "1fa33bfb863f8bae90ddb86d426c0ce0e48a98ca668bef1890456f54f437d389"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+            "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+          },
+          {
+            "available": true,
+            "path": ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+            "sha256": "6e2f6dc7dcb3dd3f366673fa93ed127e888c7c8862870bd14900217cb9bd6a35"
+          }
+        ],
+        "execution_sessions": {
+          "8993a79d5b33a49f7bd5bf4a78be212eb467e575f478f5da4945c6e81061e0a1": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:31:23.056087+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-cc1d0534-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-cc1d0534",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          },
+          "98b596d0d132005637fc2ae4a942a4d40a3abf3f793088dbd21b6adf169e6d9a": {
+            "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+            "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+            "cleanup_seconds": 30,
+            "deadline_utc": "2026-11-02T21:39:34.919507+00:00",
+            "fixture_identity": "Current Release conversion and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+            "identity_evidence": [
+              ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json"
+            ],
+            "profile_id": "task-type-copy-ui-browser-v1",
+            "project_root": "/Users/petr/Projects/habitica-tool",
+            "session_identity": "rendered-d3a3934f",
+            "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+          }
+        },
+        "key": "aebceea973cb2fcfe3d47d20e29072456b775b4e1e38ca9fc31c76b0db86069c",
+        "payload_hash": "983ed669649b4644f11c855b31a5e3dd3ecdcf6dfd21305d824532fe0681bf10",
+        "recorded_at": "2026-11-02T21:27:23.925201+00:00",
+        "result": "pass",
+        "sources": {
+          "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+          "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+          "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+          "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+          "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+          "src/Habitica.WebApp/wwwroot/css/app.css": "af072ba805b19786316606a9764fb19c3b6070344b55d484c824591f4bf775b7",
+          "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+          "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+          "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+          "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+          "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+          "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+          "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528"
+        },
+        "timing": {
+          "tool_wall_seconds": 47.96193470899016
+        }
+      }
+    }
+  ],
+  "commits": [],
+  "depends_on": [
+    "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+    "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
+  ],
+  "disposition": "completed",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-execution.log",
+      "sha256": "299ee9ca80761ef06f10a689fb58168f71efc95b89ecdb20f647302420962bee"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules/rules-qualified.trx",
+      "sha256": "ae17f3001672126f4a65cce58aa30c4baf86b5464a66f3be86d6cc53f78669db"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rules-qualified-receipt.json",
+      "sha256": "c20630c9d29d41e739b09a118c24382164a3008cb77464465b25ed0e57a466ce"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-execution.log",
+      "sha256": "96753d77359351c2ff0f395ce2d75f3cc9d4da54701611fdb0d9b6d76ef4413a"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components/components-qualified.trx",
+      "sha256": "0eaab9362d9932b5a07de533447455251d59e734acc86a4403306c1c0bfaa9b2"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/components-qualified-receipt.json",
+      "sha256": "7f8a0028b3f008cbcb00078e8ec1ba22a7767c5855584dde7c24c819260806a3"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-execution.log",
+      "sha256": "01c8b00768c79fd193f9adf23e06adc443292892bf39c472b2c9f86f775f07e5"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/copy-review-quota-verified-receipt.json",
+      "sha256": "066bc8abd73d92b04508f79feab32bef29367d46f3051e5f1e046c0645ccc29b"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-execution.log",
+      "sha256": "1fa33bfb863f8bae90ddb86d426c0ce0e48a98ca668bef1890456f54f437d389"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-identity.json",
+      "sha256": "1129b2dcb7771c0c9ecfe1d30b1469fa4c9673c6b3c8451eafb91bc050a41002"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/artifacts/task-type-copy-ui/1793654795498307000/report.json",
+      "sha256": "6e2f6dc7dcb3dd3f366673fa93ed127e888c7c8862870bd14900217cb9bd6a35"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/rendered-d3a3934f-receipt.json",
+      "sha256": "a8ff01f077267d62ca949e0271ff012c5eacf095e8732329668b9e63dfd05537"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/quota-worker-dry-builds.json",
+      "sha256": "48e86ad3275bfff0c3b49da6272e556fd646a6f32499816a4e4e09a125e935db"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/future-validation.json",
+      "sha256": "3743c55eab6263ffecda850d1bf8f2dc4cee2aebfcc203e08b2d82f104da6de0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/documentation-validation.json",
+      "sha256": "e5e51d25de4765362b6e927a861af1e6e43c2aabf0a8d242af7c528642cadcb6"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/changed-prose-validation.json",
+      "sha256": "d8fcc896fc0658ff789ead534f6d9e5677ea40ccf65379977b49ed8d4cfa66d0"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/task-type-copies-2026-11-03/acceptance-findings.json",
+      "sha256": "dbf837733df611af5d39c706a186ce237a97de0e02362e5dd3b9df107d636e2e"
+    }
+  ],
+  "followup_ids": [],
+  "id": "O-8edcb3f6-d48b-4cfd-87a2-4235c48467be",
+  "limitations": [
+    "No new commit, push, migration application or publication occurred.",
+    "Synthetic local credentials and provider fixtures only; provider mutations prohibited and executor disabled.",
+    "Physical devices, assistive technologies, real hosted OAuth/CORS and installed-PWA/service-worker lifecycle remain unqualified."
+  ],
+  "outcome": "Reviewed native task-type copies create one new active unlinked Todo/Daily/Habit target with complete copied/reset-field disclosure, explicit Daily recurrence, original source retention, immutable shallow lineage and exact original receipt recovery. All316 focused native, SDK, typed/component and light/dark responsive browser controls pass; private scopes, stale revisions, portable transfer and metadata quota cleanup are qualified locally.",
+  "parent_pending_ids": [
+    "P-438c79fe-385d-4657-be24-85fad9a49c31"
+  ],
+  "recorded_at": "2026-11-02T21:28:51.143382+00:00",
+  "related_task_id": null,
+  "root_task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "source_fingerprints": {
+    ".skill-tree/documents/task-type-copies.md": "0c8726615ee6ba9bce7d638e6cda10f6686da44fd3c4913ef4566d7be640b05f",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "plugin/skills/habitica-task-management/SKILL.md": "08b9006086e84f6ff101cfdace329a2e07b6bd11344ab2f9b56ebc4e0e66f5d0",
+    "plugin/skills/habitica-task-management/references/task-type-copies.md": "43321101149172aab80451b6eff024e3a3d2959db584d5b832cb1117565cfbae",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "f2ac83486649f4c8e3deb1af9cd296f2fe1a3413b0fb9515b05a27952b1f56da",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "41d83cc46126ba3cddf917ad2e1867c20d0d9c74e9be940d69212f8925636b56",
+    "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs": "9594bc952c3490247322d4df8201c8d5474d612cd51a02ece9c7423804258ee6",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "3fe5922804084fdea532b981dfa5ab4de73d4d412a95b19387f5f7473a64905b",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64237553a2c53cb8415706f80aa9bea8ba588764147304badfa34f72b1ddc477",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "827f1d0486ef4bab44867577465963843876fc6a13319f5e3182c3544bcd727f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "b95fd2cca6cf0d78e1e32cc9da20fe43a13f5f09214d92b45e8d2db3b2209169",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "f287cc70be10847f6877859574e8122acfbc30001bf1fca048ca9018acad8d5e",
+    "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor": "200a798e839780e5d3ce13a1dcb480c6da6fc3a85dfb573bf7841bea2b524a97",
+    "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor": "310e0e78f1868c28f6540177d58e62b448663efc5cbb8297f2d356ff4ad6c1fd",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "0f410fa40ace1415730f77dc5b9cad7db235241ed4bf9e51cbd55513ca091de1",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "61e3320f9db09f96f7a58868dc36af4855bfa720eef47b361482192387a75477",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "237f3d716bbbb0bad65a291108089222bb4fefed0ba28b0f2b47a3018ed355bd",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "1d9c5eb08f205e37e6bf492b5fa18c75c40a338b300c6aedb4fceee5514475d5",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "af072ba805b19786316606a9764fb19c3b6070344b55d484c824591f4bf775b7",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "a0ca709bd483d268ce696d8c13b8e156fad29530197521aa9df2f85dd5de0a8f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/TaskTypeConversionClientTests.cs": "22e926506f3dcdee3988e16491519b2ccbe03a4d408dc2e5a4182ff6307156c1",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs": "d25fa4993e4c4241f165224e970674966b99c0986ad603f22de410b3e9d838ee",
+    "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs": "dc233df496f0b0c085339109ea2b623379f154ba4b97f8249332a7045eef7d47",
+    "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs": "f9ce1690a2fa5687fcbf7fa9731489faf99440113f303502cf823fd8c089b2f0",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "f44eac668348e5fd9d15c675d9b98af02ce1b7b23363f24b8577eab4f8dd9403",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs": "eb56bcfc43b0992257bf05cc19ecd4623c38f0215440fc79ee0e003fcdd54153",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "07392415fbb8849b5a9ba369fad66c20fbe1eebe1e94f20cddb8a83c8314c7f9",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/task-type-copy-ui.mjs": "63af62d717d0834ff3b57eea7635872a26b4031777e39e2dc673529ea9014e05",
+    "tests/browser/task-type-copy-ui.py": "488d1cc0c6b99412ea39200a827ad87916b18caf2ad62dfc676a1bbcf9ccfdae",
+    "tests/fixtures/workspace/task-type-copy-v1.json": "bdb28b59596c0de0a8fe76ce91190ef6ec5324df8bb702b53ba46ec03de16e01",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "2c9a6acfc4fc277ee0cc0349c7c6ed8f9193eda46aa53191f8072990ea60c775",
+    "workers/chatgpt-mcp/src/task-tools.ts": "1203a30d87773c6237461f6bce26f5d19e22305e254fc8dfb59ffd1a4f999bd9",
+    "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql": "ba1639ac946c937820ff5231d6e9b88190d07f61230432ed965a8daeba33ccb9",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/commands.ts": "37f040f246696dd97583fe795100dfcac3aa3d40637d9e59fde9d39d3c572002",
+    "workers/companion-workspace/src/index.ts": "87efafee3c7ed4c5d5294540accdf7eaa710d58be9025900583e4407ef8190d3",
+    "workers/companion-workspace/src/journal.ts": "5622722697ad54e6296c364eeb0d3bb898b475a366d2d5d62b7c2f8e94712377",
+    "workers/companion-workspace/src/mcp-epoch.ts": "1c1a31fdea6ccf0180aa2ccee1a0a19dee9a2c674f429a50a30b9066c90865a8",
+    "workers/companion-workspace/src/preparation-retention.ts": "0f2ae508588630fc569523a9d618f3f0f631fcad3eb0440a311470352fd5e07f",
+    "workers/companion-workspace/src/task-api.ts": "80c67286035e5633a344d0dca8e91275f9a4caec889ade7724d28bb0a1ced19e",
+    "workers/companion-workspace/src/task-type-copy.ts": "19c3ce413e767ddc1a3cbba8c39f211c95965dfea4c4247a5fc458e7414347ea",
+    "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+    "workers/companion-workspace/test/task-type-copy.test.mjs": "05ecd3048f04054002514362f868d283c7aa2c2a33e6a281906a870f8ab27794",
+    "workers/shared/activity-coverage.ts": "5ddd384f4a3687685f1b6dae1c766cebf247a67bb80db60436b10c342aac361e",
+    "workers/shared/build-identity.generated.ts": "fa25b01b7fd4e7c41a0ad0516b557e61ed23da23b0f8022761445387311b1528",
+    "workers/shared/task-tools.ts": "b2840d95575223f3e13603f46cfe72e9cfd36b4e33e2af6cd26d6bca3b4df9f4",
+    "workers/shared/task-type-copy.ts": "cc757d734498f3057640c824716728dd7854c18b377dc3bfe4f55b7186dce6cb",
+    "workers/shared/workspace-commands.ts": "cee70e8d477d3ca97984927ea5f13f0cbc75c27026dc2b9c25368363f66b7778",
+    "workers/shared/workspace-domain.ts": "c5bf8899fc971e396a607077bc69e2c16bd3f1e375bdc8431e5fb9a60d9d028a"
+  },
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+  "title": "Convert task types through reviewed linked copies",
+  "validation_group_id": null,
+  "validation_plan": [
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rules",
+      "parameters": {
+        "report_name": "conversion-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs",
+        "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+        "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceRules.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs",
+        "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs",
+        "tests/fixtures/workspace/task-type-copy-v1.json"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-components",
+      "parameters": {
+        "report_name": "conversion-components.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-components",
+        "test_filter": "FullyQualifiedName~Conversion",
+        "test_project": "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+        "Directory.Packages.props",
+        "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+        "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+        "src/Habitica.WebApp/Components/TodoTaskPanel.razor",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs",
+        "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Integration/TaskTypeConversionClientTests.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/task-type-copy.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/conversion-api.test.mjs",
+        "workers/companion-workspace/package.json",
+        "workers/companion-workspace/test/task-type-copy.test.mjs",
+        "workers/shared/task-type-copy.ts",
+        "workers/shared/workspace-domain.ts",
+        "workers/shared/workspace-commands.ts",
+        "workers/shared/activity-coverage.ts",
+        "workers/shared/task-tools.ts",
+        "workers/companion-workspace/src/task-type-copy.ts",
+        "workers/companion-workspace/src/commands.ts",
+        "workers/companion-workspace/src/journal.ts",
+        "workers/companion-workspace/src/task-api.ts",
+        "workers/companion-workspace/src/index.ts",
+        "workers/chatgpt-mcp/src/task-tools.ts",
+        "workers/shared/build-identity.generated.ts",
+        "workers/companion-workspace/migrations/0023-task-type-copy-previews.sql",
+        "workers/chatgpt-auth/test/fixtures/oauth.mjs",
+        "tests/fixtures/workspace/task-type-copy-v1.json",
+        "workers/companion-workspace/src/preparation-retention.ts",
+        "workers/companion-workspace/src/mcp-epoch.ts"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "Current Release conversion routes preserve exact source identities, explicit field-loss review, original receipt recovery, keyboard focus and readable light/dark phone/desktop normal/enlarged-text layouts without provider mutations.",
+      "criteria": [
+        "Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.",
+        "Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work."
+      ],
+      "id": "conversion-rendering",
+      "parameters": {},
+      "recipe_id": "task-type-copy-rendered-browser",
+      "sources": [
+        "tests/browser/task-type-copy-ui.py",
+        "tests/browser/task-type-copy-ui.mjs",
+        "tests/browser/linked-daily-fixture.mjs",
+        "tests/Habitica.WebApp.Tests/Workspace/TaskTypeConversionPanelTests.cs",
+        "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs",
+        "src/Habitica.WebApp/Pages/TodoConversionPage.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyPanel.razor",
+        "src/Habitica.WebApp/Components/TaskTypeCopyReview.razor",
+        "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+        "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "workers/shared/build-identity.generated.ts"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "validation_signature": "919f7daa39758975148a98320df59f91403e960c3494e15f0ee4842d1029177b"
+}

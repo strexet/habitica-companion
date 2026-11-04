@@ -1,0 +1,9 @@
+{
+  "production": true,
+  "source_commit": "f9f71b5190086d17192642545ea3dc55610eed07",
+  "source_dirty": true,
+  "backend_build_hash": "814af366208757d981e73db053e7bfb6def10773934ad9279a41c7537cddb677",
+  "pages_config_free_upload_cwd": "/var/folders/m0/jn_q057x159dkrt_btt4v0y80000gn/T/companion-session-upload-4ozh3opb",
+  "migration": "Auth0013-recovery-sessions.sql",
+  "git_commit_or_push": false
+}

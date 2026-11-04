@@ -1,0 +1,69 @@
+{
+  "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+  "attempt_id": "C-5c5b32c3-31fa-42e5-b1b4-b7acd2de269c",
+  "check_id": "dashboard-freshness-behavior",
+  "definition": "619c6d8095cfefaa3939db4ea81777cea3b49b4382bb6f90147c5bb9b59641ab",
+  "environment_identity": "7fd2010b7c921f183608adeb712f7dfbc6ea1fc6e4100c175850b84160ce4361",
+  "key": "c2ccc99fc11a3da6a306a26289f9b189de56d267f53bc1ccc5bc323506dd6006",
+  "launch": {
+    "assertion": "Exercise public component/controller behavior with independent expected outcomes: Fresh sign-in with no domain entry, cached stale/missing snapshot, fetching, success, failed refresh with usable cache, sign-out/account switch and absent timestamps. Require nonzero discovery and no required skips.",
+    "authorization": "Owner invoked Implement All for the frozen prioritized snapshot and authorized local synthetic build/tests.",
+    "cheaper_evidence_insufficient": "Changed public component behavior requires independent interaction assertions.",
+    "cleanup_seconds": 15,
+    "deadline_utc": "2026-11-03T14:50:32.528900+00:00",
+    "execution_profile": "Pinned .NET8/xUnit/bUnit with synthetic local collaborators.",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-03T14:45:32.812249+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~AppSessionControllerTests",
+      "--logger",
+      "trx;LogFileName=dashboard-freshness.trx",
+      "--results-directory",
+      ".skill-tree/history/validation/ux-ui/dashboard-freshness/unit"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "0c11cb5646d2490c8bbbbdb1995407e9428919e910ccf528af3c13e762ebd1f5",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "81d877552f84a80d8b46304d4dce05e7f3ea2c93c286c9e2d62478b750f1eae2",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "8dc1cdbd10a1c6fde51ead918533bae4bfef6bb49b7a54dfdce230739acd1714",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "878ddd5e2d5c2d776e57ecdc179ba57fb104f4efe59afaeed03380f410cf8007",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "e0cb1e53f95dadb05af64d94026f4dc7c09bdd7e2ac77b6ddfd138e7b96864a5",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "72268028368d3e8260a78e46910ed7b6b9a9e1e0155e3834f10bcf2e25c4c1e2"
+  },
+  "task_id": "T-21881802-f186-479d-9111-295192ce2de8"
+}

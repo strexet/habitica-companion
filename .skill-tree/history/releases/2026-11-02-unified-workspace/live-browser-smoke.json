@@ -1,0 +1,9 @@
+{
+  "title": "Sign In",
+  "path": "/sign-in",
+  "bodyText": "Habitica Tool\nLocal-first Habitica companion\nSIGN IN\n\nHABITICA COMPANION\n\nPlan Habitica with clearer data.\n\nReview account health, party timing, quest options, gear choices, spells, and tasks from one focused app.\n\nAccount health and stat points\nParty quest queue and CRON timing\nGear comparison and presets\nSpell and task-value helpers\nCOLOR SCHEME\nGryphy (Light)\nGryphy (Dark)\nForest Legacy\nFrosted Cake\nBlessed Skyhaven\nFrost Healer\nSunlit Stable\nMosswood Quest\nPotion Shop\nQuiet Ledger\nTreasure Vault\nMana Spring\nStonewatch Sanctuary\nArcane Wraith\nPhantom Fair\nToxic Swamp\nGreen Menace\nAbyssal Blackwater\nObsidian Glow\nInfernal Covenant\nMidnight Tavern\nDragonfire Keep\nBoss Battle\nCelestial Inn\n\nCONNECT THIS BROWSER\n\nSign in with Habitica\n\nUse the User ID and API Token from Habitica settings. Your token works like a password, so it stays private and is used only to talk to Habitica.\n\nSession-only by default\nNo export includes credentials\nSaved credentials are optional\nHabitica User ID\nShown",
+  "errorUiVisible": false,
+  "errors": [],
+  "failedRequests": [],
+  "scope": "fresh anonymous Chromium; no private account or migration operations"
+}

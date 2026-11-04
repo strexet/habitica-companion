@@ -2,11 +2,14 @@
 @using Habitica.Domain.Workspace
 @inject TodoWorkspacePresentation Todo
 @inject WorkspaceOrganizationController Organization
+@inject TimeProvider Clock
+@inject IJSRuntime Js
 @implements IDisposable
+@implements IAsyncDisposable
 
 <section class="card-surface todo-task-panel todo-saved-list-panel">
     <div class="task-group-header"><h1>Saved lists</h1><a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a></div>
-    <p>Save a named selection of existing Companion tasks. Lists create no tasks or game effects. Dates stay fixed; Today-relative dates and custom expressions are unavailable.</p>
+    <p>Open a saved list to browse matching Companion tasks. Lists do not duplicate tasks or create game effects.</p>
     <TodoTaskPanel ShowCapture="false" ShowTaskList="false" />
     @if (_error is not null) { <p role="alert">@_error</p> }
     @if (Organization.Message is { } message) { <p role="status">@message</p> }
@@ -17,7 +20,7 @@
         {
             <section class="todo-command-review" aria-label="Review saved list" data-testid="saved-list-review">
                 <h2 tabindex="-1" @ref="_reviewHeading">Review @preview.Command.Operation.ToString().ToLowerInvariant() saved list</h2><p><strong>@preview.Snapshot.Name</strong> · @preview.Command.EntityId</p>
-                @if (preview.Snapshot.Query is { } query) { <TodoSavedQuerySummary Query="query" /> }
+                @if (preview.Snapshot.Query is { } query) { <TodoSavedQuerySummary Query="query" /><RelativeSavedDateSummary Evaluation="_reviewEvaluation" /> }
                 <p>Filters above are the complete saved definition. Null filters are cleared or unbounded. Archiving hides the definition while retaining native history; tasks remain unchanged.</p><p>No task, completion or Habitica effect is created. Original command: @preview.PreparedCommandId · expires @preview.ExpiresAtUtc.ToString("u")</p>
                 @if (Organization.AcceptanceUnknown) { <p>Acceptance is uncertain. Recover the original receipt or retry the original command; do not create a replacement.</p> }
                 <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="ConfirmAsync" Variant="Variant.Filled" Color="Color.Primary" data-testid="saved-list-confirm">@(Organization.AcceptanceUnknown?"Retry original saved list":"Confirm saved list change")</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="RecoverAsync" Variant="Variant.Outlined" data-testid="saved-list-recover">Check original receipt</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy||Organization.AcceptanceUnknown)" OnClick="Cancel" Variant="Variant.Text">Cancel saved list review</MudButton></div>
@@ -29,31 +32,9 @@
     @if (Todo.Snapshot is not null)
     {
         @if (Stale) { <p role="status">Workspace data changed. Reload the editor before replacing a saved definition.</p> }
-        <form @onsubmit="PrepareAsync" @onsubmit:preventDefault>
-            <fieldset disabled="@FreshDisabled">
-                <h2 tabindex="-1" @ref="_editorHeading">@(_editing is null?"New saved list":"Edit saved list")</h2>
-                <label class="field-row">List name<input class="app-input" maxlength="256" @bind="_draft.Name" @bind:event="oninput" data-testid="saved-list-name" /></label>
-                <label class="field-row">Source<select class="app-input" value="@_draft.Source" @onchange="ChangeSource" data-testid="saved-list-source"><option value="Tasks">Tasks</option><option value="UnblockedTodos">Unblocked active Todos</option></select></label>
-                <p>Choosing Unblocked active Todos clears the type/state filters; the source already requires active Todos with every prerequisite completed. Other filters remain explicit. Stage filters only select active Todos.</p>
-                <label class="field-row">Search titles and notes (plain text)<input class="app-input" maxlength="256" @bind="_draft.Search" @bind:event="oninput" data-testid="saved-list-search" /></label>
-                <div class="saved-filter-grid">
-                    <label class="field-row">Task type<select class="app-input" @bind="_draft.Kind" disabled="@(_draft.Source=="UnblockedTodos")" data-testid="saved-list-kind"><option value="">Any type permitted by source</option>@foreach(var kind in Enum.GetValues<CompanionTaskKind>()){<option value="@kind">@kind</option>}</select></label>
-                    <label class="field-row">Task state<select class="app-input" @bind="_draft.State" disabled="@(_draft.Source=="UnblockedTodos")" data-testid="saved-list-state"><option value="">Any state permitted by source</option>@foreach(var state in Enum.GetValues<CompanionTaskState>()){<option value="@state">@state</option>}</select></label>
-                    <label class="field-row">Urgency<select class="app-input" @bind="_draft.Priority" data-testid="saved-list-priority"><option value="">Any urgency</option>@foreach(var priority in Enum.GetValues<CompanionPriority>()){<option value="@priority">@priority</option>}</select></label>
-                    <label class="field-row">Active Todo stage<select class="app-input" @bind="_draft.Stage" data-testid="saved-list-stage"><option value="">Any stage</option><option value="Inbox">Inbox</option><option value="Next">Next</option><option value="InProgress">In progress</option></select></label>
-                    <TodoPlacementPicker Kind="Project" Caption="Project filter" EmptyLabel="Any project" Value="_draft.Project" ValueChanged="value=>_draft.Project=value" Disabled="FreshDisabled" />
-                    <TodoPlacementPicker Kind="Category" Caption="Category filter" EmptyLabel="Any category" Value="_draft.Category" ValueChanged="value=>_draft.Category=value" Disabled="FreshDisabled" />
-                    <TodoPlacementPicker Kind="Label" Caption="Label filter" EmptyLabel="Any label" Value="_draft.Label" ValueChanged="value=>_draft.Label=value" Disabled="FreshDisabled" />
-                    <label class="field-row">Habitica mapping state<select class="app-input" @bind="_draft.Projection" data-testid="saved-list-projection"><option value="">Any mapping state</option>@foreach(var state in Enum.GetValues<ProjectionState>()){<option value="@state">@state</option>}</select></label>
-                    <label class="field-row">Planned from (fixed date)<input class="app-input" type="date" value="@_draft.PlannedFrom" @onchange="args=>_draft.PlannedFrom=args.Value?.ToString()??string.Empty" data-testid="saved-list-planned-from" /></label>
-                    <label class="field-row">Planned through (fixed date)<input class="app-input" type="date" value="@_draft.PlannedTo" @onchange="args=>_draft.PlannedTo=args.Value?.ToString()??string.Empty" data-testid="saved-list-planned-to" /></label>
-                    <label class="field-row">Deadline from (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineFrom" @onchange="args=>_draft.DeadlineFrom=args.Value?.ToString()??string.Empty" data-testid="saved-list-deadline-from" /></label>
-                    <label class="field-row">Deadline through (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineTo" @onchange="args=>_draft.DeadlineTo=args.Value?.ToString()??string.Empty" data-testid="saved-list-deadline-to" /></label>
-                </div>
-                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="saved-list-prepare">Review complete definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearFilters" Variant="Variant.Text" data-testid="saved-list-clear">Clear filters (keep source)</MudButton></div>
-            </fieldset>
-        </form>
-        <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="New" Variant="Variant.Text">New definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadEditor" Variant="Variant.Text" data-testid="saved-list-reload">Reload editor context</MudButton></div>
+        <div class="action-row saved-list-authoring-actions"><button type="button" class="secondary-action-button" data-layout-primary="true" disabled="@Busy" @onclick="New" @ref="_newListButton" data-testid="saved-list-new">New list</button>
+            @if (!_editorOpen && HasDraft) { <button type="button" class="secondary-action-button" data-layout-primary="true" disabled="@Busy" @onclick="ResumeAuthoring" data-testid="saved-list-resume">Continue draft</button> }
+        </div>
         <section aria-label="Saved definitions"><h2>Saved definitions</h2>
             @if (_rows.Count==0) { <p>No active saved definitions on this page.</p> }
             @foreach(var row in _rows)
@@ -67,12 +48,52 @@
             else if (_readError is not null) { <p role="alert" data-testid="saved-list-unavailable">@_readError</p> }
             else if (_page is { } result && _definition is { } definition)
             {
-                <h3>@definition.Name</h3><details class="saved-definition-details"><summary>Exact saved filters</summary><TodoSavedQuerySummary Query="definition.Query" /></details><p data-testid="saved-list-count">@result.MatchedCount matching nonarchived tasks · revision @result.Revision. Mapping state does not confirm game effects.</p>
+                <h3>@definition.Name</h3><details class="saved-definition-details"><summary>Exact saved filters</summary><TodoSavedQuerySummary Query="definition.Query" /></details><RelativeSavedDateSummary Evaluation="result.Evaluation" /><p data-testid="saved-list-count">@result.MatchedCount matching nonarchived tasks · revision @result.Revision. Mapping state does not confirm game effects.</p>
                 @if (result.Tasks.Count==0) { <p>No tasks match this saved definition.</p> }
                 @foreach(var task in result.Tasks) { <article class="todo-direct-row" data-testid="@($"saved-list-task-{task.Id:D}")"><div class="todo-row-content"><strong>@task.Text</strong><span>@task.Kind · @task.State · @task.Priority</span>@if(task.PlannedDate is {} planned){<span>Planned: @planned.ToString("yyyy-MM-dd")</span>}@if(task.Deadline is {} deadline){<span>Deadline: @deadline.ToString("yyyy-MM-dd")</span>}<details><summary>Task reference</summary><p>@task.Id</p></details></div></article> }
                 <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||_taskOffset==0)" OnClick="PreviousTasks" Variant="Variant.Text">Previous matching tasks</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Todo.IsBusy||result.NextOffset is null)" OnClick="NextTasks" Variant="Variant.Text">Next matching tasks</MudButton></div>
             }
-            @if (_selected is not null) { <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearSelection" Variant="Variant.Text">Clear selected definition</MudButton> }
+            <div class="action-row">@if (_selected is not null) { <MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearSelection" Variant="Variant.Text">Clear selected definition</MudButton> }
+            @if(_selected is not null){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.IsBusy" OnClick="RestartDay" Variant="Variant.Text" data-testid="saved-list-restart-day">Restart selected list with the current day</MudButton>}</div>
+        </section>
+        <section id="saved-list-authoring" aria-labelledby="saved-list-editor-title" data-testid="saved-list-authoring" hidden="@(!_editorOpen)">
+        <form @onsubmit="PrepareAsync" @onsubmit:preventDefault>
+            @if (_fieldErrors.Count > 0)
+            { <p @key="_validationAttempt" role="alert" data-testid="saved-list-errors">Fix @InvalidFields.Count() @(InvalidFields.Count()==1?"field":"fields") before review. @FirstFieldErrorMessage Entered values are retained.</p> }
+            <fieldset disabled="@FreshDisabled">
+                <h2 id="saved-list-editor-title" tabindex="-1" @ref="_editorHeading">@(_editing is null?"New saved list":"Edit saved list")</h2>
+                <div class="saved-list-field"><label class="field-row">List name<input class="app-input" maxlength="256" @bind="_draft.Name" @bind:event="oninput" @ref="_fieldName" id="@ControlId(TodoSavedListField.Name)" aria-invalid="@Invalid(TodoSavedListField.Name)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Name)" data-testid="saved-list-name" /></label>@RenderFieldError(TodoSavedListField.Name)</div>
+                <div class="saved-list-field"><label class="field-row">Source<select class="app-input" value="@_draft.Source" @onchange="ChangeSource" @ref="_fieldSource" id="@ControlId(TodoSavedListField.Source)" aria-invalid="@Invalid(TodoSavedListField.Source)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Source)" data-testid="saved-list-source"><option value="Tasks">Tasks</option><option value="UnblockedTodos">Unblocked active Todos</option></select></label>@RenderFieldError(TodoSavedListField.Source)</div>
+                <div class="saved-list-field"><label class="field-row">Search titles and notes (plain text)<input class="app-input" maxlength="256" @bind="_draft.Search" @bind:event="oninput" @ref="_fieldSearch" id="@ControlId(TodoSavedListField.Search)" aria-invalid="@Invalid(TodoSavedListField.Search)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Search)" data-testid="saved-list-search" /></label>@RenderFieldError(TodoSavedListField.Search)</div>
+                <div class="action-row"><button type="button" class="secondary-action-button" data-layout-primary="true" disabled="@FreshDisabled" @onclick="()=>_advancedOpen=!_advancedOpen" aria-expanded="@(_advancedOpen ? "true" : "false")" aria-controls="saved-list-additional-filters" data-testid="saved-list-advanced-toggle">Additional filters (@_draft.AdditionalFilterCount values set)</button></div>
+                <p class="panel-copy">All entered filters remain part of the complete definition, including while collapsed.</p>
+                <div id="saved-list-additional-filters" data-testid="saved-list-additional-filters" hidden="@(!_advancedOpen)">
+                <p>Choose fixed ranges or relative planned/deadline presets in an explicit UTC/IANA timezone. Relative dates are interpreted when read; custom expressions are unavailable.</p>
+                <p>Unblocked active Todos requires empty type/state filters because the source already selects active Todos with completed prerequisites. Clear conflicting filters explicitly or choose Tasks. Stage filters only select active Todos.</p>
+                <div class="saved-filter-grid">
+                    <div class="saved-list-field"><label class="field-row">Task type<select class="app-input" @bind="_draft.Kind" @ref="_fieldKind" id="@ControlId(TodoSavedListField.Kind)" aria-invalid="@Invalid(TodoSavedListField.Kind)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Kind)" data-testid="saved-list-kind"><option value="">Any type permitted by source</option>@foreach(var kind in Enum.GetValues<CompanionTaskKind>()){<option value="@kind">@kind</option>}</select></label>@RenderFieldError(TodoSavedListField.Kind)</div>
+                    <div class="saved-list-field"><label class="field-row">Task state<select class="app-input" @bind="_draft.State" @ref="_fieldState" id="@ControlId(TodoSavedListField.State)" aria-invalid="@Invalid(TodoSavedListField.State)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.State)" data-testid="saved-list-state"><option value="">Any state permitted by source</option>@foreach(var state in Enum.GetValues<CompanionTaskState>()){<option value="@state">@state</option>}</select></label>@RenderFieldError(TodoSavedListField.State)</div>
+                    <div class="saved-list-field"><label class="field-row">Urgency<select class="app-input" @bind="_draft.Priority" @ref="_fieldPriority" id="@ControlId(TodoSavedListField.Priority)" aria-invalid="@Invalid(TodoSavedListField.Priority)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Priority)" data-testid="saved-list-priority"><option value="">Any urgency</option>@foreach(var priority in Enum.GetValues<CompanionPriority>()){<option value="@priority">@priority</option>}</select></label>@RenderFieldError(TodoSavedListField.Priority)</div>
+                    <div class="saved-list-field"><label class="field-row">Active Todo stage<select class="app-input" @bind="_draft.Stage" @ref="_fieldStage" id="@ControlId(TodoSavedListField.Stage)" aria-invalid="@Invalid(TodoSavedListField.Stage)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Stage)" data-testid="saved-list-stage"><option value="">Any stage</option><option value="Inbox">Inbox</option><option value="Next">Next</option><option value="InProgress">In progress</option></select></label>@RenderFieldError(TodoSavedListField.Stage)</div>
+                    <div class="saved-list-field"><TodoPlacementPicker Kind="Project" @ref="_projectPicker" InputId="@ControlId(TodoSavedListField.Project)" Invalid="@HasError(TodoSavedListField.Project)" DescribedBy="@ErrorDescriptionId(TodoSavedListField.Project)" Caption="Project filter" EmptyLabel="Any project" Value="_draft.Project" ValueChanged="value=>_draft.Project=value" Disabled="FreshDisabled" />@RenderFieldError(TodoSavedListField.Project)</div>
+                    <div class="saved-list-field"><TodoPlacementPicker Kind="Category" @ref="_categoryPicker" InputId="@ControlId(TodoSavedListField.Category)" Invalid="@HasError(TodoSavedListField.Category)" DescribedBy="@ErrorDescriptionId(TodoSavedListField.Category)" Caption="Category filter" EmptyLabel="Any category" Value="_draft.Category" ValueChanged="value=>_draft.Category=value" Disabled="FreshDisabled" />@RenderFieldError(TodoSavedListField.Category)</div>
+                    <div class="saved-list-field"><TodoPlacementPicker Kind="Label" @ref="_labelPicker" InputId="@ControlId(TodoSavedListField.Label)" Invalid="@HasError(TodoSavedListField.Label)" DescribedBy="@ErrorDescriptionId(TodoSavedListField.Label)" Caption="Label filter" EmptyLabel="Any label" Value="_draft.Label" ValueChanged="value=>_draft.Label=value" Disabled="FreshDisabled" />@RenderFieldError(TodoSavedListField.Label)</div>
+                    <div class="saved-list-field"><label class="field-row">Habitica mapping state<select class="app-input" @bind="_draft.Projection" @ref="_fieldProjection" id="@ControlId(TodoSavedListField.Projection)" aria-invalid="@Invalid(TodoSavedListField.Projection)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Projection)" data-testid="saved-list-projection"><option value="">Any mapping state</option>@foreach(var state in Enum.GetValues<ProjectionState>()){<option value="@state">@state</option>}</select></label>@RenderFieldError(TodoSavedListField.Projection)</div>
+                    <div class="saved-list-field"><label class="field-row">Relative planned date<select class="app-input" @bind="_draft.PlannedRelative" @ref="_fieldPlannedRelative" id="@ControlId(TodoSavedListField.PlannedRelative)" aria-invalid="@Invalid(TodoSavedListField.PlannedRelative)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.PlannedRelative)" data-testid="saved-list-planned-relative"><option value="">Use fixed range or any date</option>@foreach(var preset in Enum.GetValues<WorkspaceRelativeDatePreset>()){<option value="@preset">@Preset(preset)</option>}</select></label>@RenderFieldError(TodoSavedListField.PlannedRelative)</div>
+                    <div class="saved-list-field"><label class="field-row">Relative deadline<select class="app-input" @bind="_draft.DeadlineRelative" @ref="_fieldDeadlineRelative" id="@ControlId(TodoSavedListField.DeadlineRelative)" aria-invalid="@Invalid(TodoSavedListField.DeadlineRelative)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.DeadlineRelative)" data-testid="saved-list-deadline-relative"><option value="">Use fixed range or any date</option>@foreach(var preset in Enum.GetValues<WorkspaceRelativeDatePreset>()){<option value="@preset">@Preset(preset)</option>}</select></label>@RenderFieldError(TodoSavedListField.DeadlineRelative)</div>
+                    @if(_draft.PlannedRelative.Length>0||_draft.DeadlineRelative.Length>0){<div class="saved-list-field"><label class="field-row">Explicit UTC or IANA timezone<input class="app-input" @bind="_draft.TimeZoneId" @ref="_fieldTimezone" id="@ControlId(TodoSavedListField.Timezone)" aria-invalid="@Invalid(TodoSavedListField.Timezone)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.Timezone)" data-testid="saved-list-timezone" /></label>@RenderFieldError(TodoSavedListField.Timezone)</div>}
+                    @if(_draft.PlannedRelative.Length>0&&HasPlannedAbsolute){<p role="status">Clear the conflicting fixed planned range before reviewing relative intent.</p><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearPlanned" Variant="Variant.Text" data-testid="saved-list-clear-planned">Clear fixed planned range</MudButton>}
+                    @if(_draft.DeadlineRelative.Length>0&&HasDeadlineAbsolute){<p role="status">Clear the conflicting fixed deadline range before reviewing relative intent.</p><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearDeadline" Variant="Variant.Text" data-testid="saved-list-clear-deadline">Clear fixed deadline range</MudButton>}
+                    <div class="saved-list-field"><label class="field-row">Planned from (fixed date)<input class="app-input" type="date" value="@_draft.PlannedFrom" @onchange="args=>_draft.PlannedFrom=args.Value?.ToString()??string.Empty" disabled="@(_draft.PlannedRelative.Length>0&&!HasPlannedAbsolute)" @ref="_fieldPlannedFrom" id="@ControlId(TodoSavedListField.PlannedFrom)" aria-invalid="@Invalid(TodoSavedListField.PlannedFrom)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.PlannedFrom)" data-testid="saved-list-planned-from" /></label>@RenderFieldError(TodoSavedListField.PlannedFrom)</div>
+                    <div class="saved-list-field"><label class="field-row">Planned through (fixed date)<input class="app-input" type="date" value="@_draft.PlannedTo" @onchange="args=>_draft.PlannedTo=args.Value?.ToString()??string.Empty" disabled="@(_draft.PlannedRelative.Length>0&&!HasPlannedAbsolute)" @ref="_fieldPlannedTo" id="@ControlId(TodoSavedListField.PlannedTo)" aria-invalid="@Invalid(TodoSavedListField.PlannedTo)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.PlannedTo)" data-testid="saved-list-planned-to" /></label>@RenderFieldError(TodoSavedListField.PlannedTo)</div>
+                    <div class="saved-list-field"><label class="field-row">Deadline from (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineFrom" @onchange="args=>_draft.DeadlineFrom=args.Value?.ToString()??string.Empty" disabled="@(_draft.DeadlineRelative.Length>0&&!HasDeadlineAbsolute)" @ref="_fieldDeadlineFrom" id="@ControlId(TodoSavedListField.DeadlineFrom)" aria-invalid="@Invalid(TodoSavedListField.DeadlineFrom)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.DeadlineFrom)" data-testid="saved-list-deadline-from" /></label>@RenderFieldError(TodoSavedListField.DeadlineFrom)</div>
+                    <div class="saved-list-field"><label class="field-row">Deadline through (fixed date)<input class="app-input" type="date" value="@_draft.DeadlineTo" @onchange="args=>_draft.DeadlineTo=args.Value?.ToString()??string.Empty" disabled="@(_draft.DeadlineRelative.Length>0&&!HasDeadlineAbsolute)" @ref="_fieldDeadlineTo" id="@ControlId(TodoSavedListField.DeadlineTo)" aria-invalid="@Invalid(TodoSavedListField.DeadlineTo)" aria-describedby="@ErrorDescriptionId(TodoSavedListField.DeadlineTo)" data-testid="saved-list-deadline-to" /></label>@RenderFieldError(TodoSavedListField.DeadlineTo)</div>
+                </div>
+                </div>
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" data-testid="saved-list-prepare">Review complete definition</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ClearFilters" Variant="Variant.Text" data-testid="saved-list-clear">Clear filters (keep source)</MudButton></div>
+            </fieldset>
+        </form>
+        <div class="action-row"><button type="button" class="secondary-action-button" data-layout-primary="true" disabled="@Busy" @onclick="CloseAuthoring" data-testid="saved-list-close-authoring">Close authoring</button><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadEditor" Variant="Variant.Text" data-testid="saved-list-reload">Reload editor context</MudButton></div>
         </section>
     }
     else { <p>Choose and load a workspace above. Unavailable data does not supply an empty saved list.</p> }
@@ -88,8 +109,83 @@
     private WorkspaceSavedTaskView? _definition;
     private WorkspaceTaskPage? _page;
     private string? _error,_readError;
-    private bool _focusEditor,_focusReview,_focusResults;
-    private ElementReference _editorHeading,_reviewHeading,_resultsHeading;
+    private DateOnly? _evaluationDay;private WorkspaceRelativeDateEvaluation? _reviewEvaluation;private Guid? _reviewCommand;
+    private bool _focusEditor,_focusReview,_focusResults,_focusNew;
+    private bool _editorOpen,_advancedOpen;
+    private bool HasDraft => _editing is not null || _draft.Name.Length>0 || _draft.Search.Length>0
+        || _draft.Source!="Tasks" || _draft.AdditionalFilterCount>0;
+    private IReadOnlyList<TodoSavedListIssue> _fieldErrors = [];
+    private bool _focusInvalid, _disposed;
+    private long _validationAttempt;
+    private Task<IJSObjectReference>? _focusModule;
+    private TodoSavedListField? _firstInvalid;
+    private ElementReference _fieldName, _fieldSource, _fieldSearch, _fieldKind, _fieldState, _fieldPriority, _fieldStage, _fieldProjection, _fieldPlannedRelative, _fieldDeadlineRelative, _fieldTimezone, _fieldPlannedFrom, _fieldPlannedTo, _fieldDeadlineFrom, _fieldDeadlineTo;
+    private TodoPlacementPicker? _projectPicker, _categoryPicker, _labelPicker;
+    private static readonly TodoSavedListField[] FieldOrder = [TodoSavedListField.Name, TodoSavedListField.Source, TodoSavedListField.Search,
+        TodoSavedListField.Kind, TodoSavedListField.State, TodoSavedListField.Priority, TodoSavedListField.Stage,
+        TodoSavedListField.Project, TodoSavedListField.Category, TodoSavedListField.Label, TodoSavedListField.Projection,
+        TodoSavedListField.PlannedRelative, TodoSavedListField.DeadlineRelative, TodoSavedListField.Timezone,
+        TodoSavedListField.PlannedFrom, TodoSavedListField.PlannedTo, TodoSavedListField.DeadlineFrom, TodoSavedListField.DeadlineTo];
+    private IEnumerable<TodoSavedListField> InvalidFields => FieldOrder.Where(HasError);
+    private string FirstFieldErrorMessage => InvalidFields.SelectMany(field=>_fieldErrors.Where(issue=>issue.Fields.Contains(field))).Select(issue=>issue.Message).FirstOrDefault() ?? "";
+    private bool HasError(TodoSavedListField field) => _fieldErrors.Any(issue => issue.Fields.Contains(field));
+    private string? Invalid(TodoSavedListField field) => HasError(field) ? "true" : null;
+    private static string ControlId(TodoSavedListField field) => "saved-list-" + (field switch
+    {
+        TodoSavedListField.PlannedRelative => "planned-relative", TodoSavedListField.DeadlineRelative => "deadline-relative",
+        TodoSavedListField.PlannedFrom => "planned-from", TodoSavedListField.PlannedTo => "planned-to",
+        TodoSavedListField.DeadlineFrom => "deadline-from", TodoSavedListField.DeadlineTo => "deadline-to",
+        _ => field.ToString().ToLowerInvariant()
+    });
+    private string? ErrorDescriptionId(TodoSavedListField field) => HasError(field) ? ControlId(field)+"-error" : null;
+    private RenderFragment RenderFieldError(TodoSavedListField field) => builder =>
+    {
+        if (!HasError(field)) return;
+        builder.OpenElement(0,"p"); builder.AddAttribute(1,"id",ErrorDescriptionId(field)); builder.AddAttribute(2,"class","saved-list-field-error");
+        builder.AddContent(3,string.Join(" ",_fieldErrors.Where(issue=>issue.Fields.Contains(field)).Select(issue=>issue.Message).Distinct()));
+        builder.CloseElement();
+    };
+    private async Task FocusInvalidAsync(TodoSavedListField field)
+    {
+        if (field == TodoSavedListField.Project) { if (_projectPicker is not null) await FocusAndRevealAsync(_projectPicker.InputReference); return; }
+        if (field == TodoSavedListField.Category) { if (_categoryPicker is not null) await FocusAndRevealAsync(_categoryPicker.InputReference); return; }
+        if (field == TodoSavedListField.Label) { if (_labelPicker is not null) await FocusAndRevealAsync(_labelPicker.InputReference); return; }
+        var reference = field switch
+        {
+            TodoSavedListField.Name => _fieldName,
+            TodoSavedListField.Source => _fieldSource,
+            TodoSavedListField.Search => _fieldSearch,
+            TodoSavedListField.Kind => _fieldKind,
+            TodoSavedListField.State => _fieldState,
+            TodoSavedListField.Priority => _fieldPriority,
+            TodoSavedListField.Stage => _fieldStage,
+            TodoSavedListField.Projection => _fieldProjection,
+            TodoSavedListField.PlannedRelative => _fieldPlannedRelative,
+            TodoSavedListField.DeadlineRelative => _fieldDeadlineRelative,
+            TodoSavedListField.Timezone => _fieldTimezone,
+            TodoSavedListField.PlannedFrom => _fieldPlannedFrom,
+            TodoSavedListField.PlannedTo => _fieldPlannedTo,
+            TodoSavedListField.DeadlineFrom => _fieldDeadlineFrom,
+            TodoSavedListField.DeadlineTo => _fieldDeadlineTo,
+            _ => _editorHeading
+        };
+        await FocusAndRevealAsync(reference);
+    }
+    private async Task FocusAndRevealAsync(ElementReference reference)
+    {
+        if (_disposed) return;
+        await reference.FocusAsync();
+        var module = await (_focusModule ??= Js.InvokeAsync<IJSObjectReference>("import", "./js/field-focus.js").AsTask());
+        if (!_disposed) await module.InvokeVoidAsync("revealFocusedElement", reference);
+    }
+
+    private ElementReference _editorHeading,_reviewHeading,_resultsHeading,_newListButton;
+    private bool HasPlannedAbsolute=>_draft.PlannedFrom.Length>0||_draft.PlannedTo.Length>0;
+    private bool HasDeadlineAbsolute=>_draft.DeadlineFrom.Length>0||_draft.DeadlineTo.Length>0;
+    private static string Preset(WorkspaceRelativeDatePreset preset)=>preset switch{WorkspaceRelativeDatePreset.BeforeToday=>"Before today",WorkspaceRelativeDatePreset.NextSevenDays=>"Next seven days including today",WorkspaceRelativeDatePreset.ThisWeek=>"This week (Monday–Sunday)",WorkspaceRelativeDatePreset.NoDate=>"No date",_=>"Today"};
+    private void ClearPlanned(){_draft.PlannedFrom=_draft.PlannedTo="";}
+    private void ClearDeadline(){_draft.DeadlineFrom=_draft.DeadlineTo="";}
+    private void RestartDay(){_evaluationDay=null;_taskOffset=0;Read();_focusResults=true;}
     private bool OriginalBusy=>Todo.IsBusy||Organization.IsBusy||Todo.Commands.HasPendingIntent;
     private bool Busy=>OriginalBusy||Todo.IsReadOnly||Organization.HasPendingIntent;
     private bool Stale=>_draftSource!=Todo.Selection||_draftRevision!=Todo.Revision;
@@ -97,42 +193,55 @@
     protected override void OnInitialized(){_source=Todo.Selection;_revision=Todo.Revision;Reset();Todo.Changed+=Changed;Read();}
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        try{if(_focusReview&&Organization.Preview?.Command.Kind==WorkspaceOrganizationKind.SavedTaskView){_focusReview=false;await _reviewHeading.FocusAsync();}else if(_focusEditor){_focusEditor=false;await _editorHeading.FocusAsync();}else if(_focusResults){_focusResults=false;await _resultsHeading.FocusAsync();}}catch(JSException){}
+        try{if(_focusInvalid&&_firstInvalid is {} invalid){_focusInvalid=false;await FocusInvalidAsync(invalid);}else if(_focusReview&&Organization.Preview?.Command.Kind==WorkspaceOrganizationKind.SavedTaskView){_focusReview=false;await FocusAndRevealAsync(_reviewHeading);}else if(_focusEditor){_focusEditor=false;await FocusAndRevealAsync(_fieldName);}else if(_focusResults){_focusResults=false;await FocusAndRevealAsync(_resultsHeading);}else if(_focusNew){_focusNew=false;await FocusAndRevealAsync(_newListButton);}}catch(JSException){}
     }
-    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_selected=null;_listOffset=_taskOffset=0;Reset();_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_listOffset=_taskOffset=0;}if(_draftRevision is null&&Todo.Snapshot is not null){_draftRevision=Todo.Revision;_draftSource=Todo.Selection;}Read();_ = InvokeAsync(StateHasChanged);}
-    private void Reset(){_draft=new();_editing=null;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;}
+    private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_selected=null;_evaluationDay=null;_listOffset=_taskOffset=0;Reset();_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_listOffset=_taskOffset=0;}if(_draftRevision is null&&Todo.Snapshot is not null){_draftRevision=Todo.Revision;_draftSource=Todo.Selection;}Read();_ = InvokeAsync(StateHasChanged);}
+    private void Reset(){_editorOpen=false;_advancedOpen=false;_focusNew=false;_fieldErrors=[];_firstInvalid=null;_focusInvalid=false;_reviewCommand=null;_reviewEvaluation=null;_draft=new();_editing=null;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;}
     private void Read()
     {
+        if(Organization.Preview is {Command.Kind:WorkspaceOrganizationKind.SavedTaskView} review&&_reviewCommand!=review.PreparedCommandId){_reviewCommand=review.PreparedCommandId;try{_reviewEvaluation=review.Snapshot.Query is {} query?WorkspaceRelativeDates.Evaluate(query,Clock.GetUtcNow()):null;}catch(InvalidOperationException){_reviewEvaluation=null;_error="The original definition timezone or date bounds are unavailable. Preserve the original command and recover its receipt before another review.";}}
         _rows=[];_total=0;_page=null;_definition=null;_readError=null;if(Todo.Snapshot is not {} snapshot)return;var active=(snapshot.Document.SavedTaskViews??[]).Where(row=>!row.IsArchived).ToArray();_total=active.Length;_rows=active.Skip(_listOffset).Take(20).ToArray();
         if(_selected is not {} id)return;_definition=snapshot.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived);
-        try{_page=Todo.SavedView(id,new(20,_taskOffset,Todo.Revision));}catch(Exception error)when(error is InvalidOperationException or ArgumentException){_readError="The selected saved definition is unavailable or archived. Choose another definition or reload; no all-task fallback is shown.";}
+        try{_page=Todo.SavedView(id,new(20,_taskOffset,Todo.Revision),Clock.GetUtcNow(),_evaluationDay);_evaluationDay??=_page.Evaluation?.LocalDate;}catch(Exception error)when(error is InvalidOperationException or ArgumentException){_readError=error.Message=="stale_evaluation_day"?"The local evaluation day changed. Restart the selected list with the current day before continuing.":"The selected definition, timezone or date bounds are unavailable. Restore access or restart the list; no all-task fallback is shown.";}
     }
-    private void ChangeSource(ChangeEventArgs args){_draft.Source=args.Value?.ToString()??"";if(_draft.Source=="UnblockedTodos")_draft.Kind=_draft.State="";}
+    private void ChangeSource(ChangeEventArgs args){_draft.Source=args.Value?.ToString()??"";}
     private string ListName(WorkspaceSavedTaskView row)=>Todo.Snapshot?.Document.SavedTaskViews?.Count(value=>!value.IsArchived&&value.Name==row.Name)>1?$"{row.Name} · {row.Id}":row.Name;
-    private void ClearFilters()=>_draft=new(){Name=_draft.Name,Source=_draft.Source};
-    private void New(){if(OriginalBusy||Organization.HasPendingIntent)return;Reset();_error=null;_focusEditor=true;}
+    private void ClearFilters(){_draft=new(){Name=_draft.Name,Source=_draft.Source};_fieldErrors=[];_firstInvalid=null;_focusInvalid=false;}
+    private void New(){if(OriginalBusy||Organization.HasPendingIntent)return;if(_editing is not null)Reset();_editorOpen=true;_focusNew=false;_error=null;_focusEditor=true;}
+    private void ResumeAuthoring(){if(Busy)return;_editorOpen=true;_focusNew=false;_focusEditor=true;}
+    private void CloseAuthoring(){if(Busy)return;_editorOpen=false;_focusEditor=_focusReview=_focusResults=false;_focusNew=true;}
     private void Edit(Guid id)
     {
-        if(Busy)return;var row=Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived);if(row is null){_error="The saved definition is unavailable. Reload the workspace.";return;}_draft=TodoSavedListDraft.From(row.Name,row.Query);_editing=id;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;_focusEditor=true;
+        if(Busy)return;var row=Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived);if(row is null){_error="The saved definition is unavailable. Reload the workspace.";return;}_draft=TodoSavedListDraft.From(row.Name,row.Query);_fieldErrors=[];_firstInvalid=null;_focusInvalid=false;_editing=id;_editorOpen=true;_advancedOpen=_draft.AdditionalFilterCount>0;_focusNew=false;_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;_focusEditor=true;
     }
-    private void ReloadEditor(){if(_editing is {} id)Edit(id);else{_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;}_focusEditor=true;}
-    private void Select(Guid id){_selected=id;_taskOffset=0;Read();_focusResults=true;}
+    private void ReloadEditor(){_editorOpen=true;if(_editing is {} id)Edit(id);else{_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_error=null;_fieldErrors=[];_firstInvalid=null;_focusInvalid=false;}_focusEditor=true;}
+    private void Select(Guid id){_selected=id;_evaluationDay=null;_taskOffset=0;Read();_focusResults=true;}
     private void ClearSelection(){_selected=null;_taskOffset=0;Read();}
     private async Task RunAsync(Func<Task> action){_error=null;try{await action();Read();}catch(InvalidOperationException error){_error=error.Message;}catch{_error="The saved-list result is unavailable. Keep the original request or command and recover the original receipt.";}}
     private Task PrepareAsync()=>RunAsync(async()=>
     {
-        if(FreshDisabled)throw new InvalidOperationException("Reload the editor and resolve original commands before replacing a definition.");if(string.IsNullOrWhiteSpace(_draft.Name)||_draft.Name.Length>256)throw new InvalidOperationException("Enter a list name within 256 characters.");var query=_draft.Query();var current=_editing is {} id?Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived):null;if(_editing is not null&&current is null)throw new InvalidOperationException("The saved definition is unavailable. Reload before editing.");
+        _fieldErrors=[];_firstInvalid=null;_focusInvalid=false;
+        if(FreshDisabled)throw new InvalidOperationException("Reload the editor and resolve original commands before replacing a definition.");
+        _validationAttempt++;
+        var validation=_draft.Validate(requireName:true);_fieldErrors=validation.Issues;
+        if(!validation.IsValid){_editorOpen=true;if(InvalidFields.Any(field=>field is not (TodoSavedListField.Name or TodoSavedListField.Source or TodoSavedListField.Search)))_advancedOpen=true;_firstInvalid=InvalidFields.First();_focusInvalid=true;return;}
+        var query=validation.Query!;_reviewEvaluation=WorkspaceRelativeDates.Evaluate(query,Clock.GetUtcNow());var current=_editing is {} id?Todo.Snapshot?.Document.SavedTaskViews?.FirstOrDefault(row=>row.Id==id&&!row.IsArchived):null;if(_editing is not null&&current is null)throw new InvalidOperationException("The saved definition is unavailable. Reload before editing.");
         if(current?.Name==_draft.Name&&current.Query==query)throw new InvalidOperationException("Change the name or filters before reviewing.");var patch=new WorkspaceOrganizationPatch(Name:current?.Name==_draft.Name?null:_draft.Name,Query:current?.Query==query?null:query);await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.SavedTaskView,_editing is null?WorkspaceOrganizationOperation.Create:WorkspaceOrganizationOperation.Update,_editing,patch));_focusReview=Organization.Preview is not null;
     });
     private Task ArchiveAsync(Guid id)=>RunAsync(async()=>{if(Busy)throw new InvalidOperationException("Resolve the original command before archiving.");await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.SavedTaskView,WorkspaceOrganizationOperation.Archive,id));_focusReview=Organization.Preview is not null;});
-    private void Applied(){if(Organization.LastReceipt is {SavedInCompanion:true,Kind:WorkspaceOrganizationKind.SavedTaskView} receipt){_selected=receipt.EntityId;_taskOffset=0;Reset();_focusResults=true;}}
+    private void Applied(){if(Organization.LastReceipt is {SavedInCompanion:true,Kind:WorkspaceOrganizationKind.SavedTaskView} receipt){_selected=receipt.EntityId;_evaluationDay=null;_taskOffset=0;Reset();_focusResults=true;}}
     private Task ConfirmAsync()=>RunAsync(async()=>{await Todo.ConfirmOrganizationAsync();Applied();});
     private Task RecoverAsync()=>RunAsync(async()=>{await Todo.RecoverOrganizationAsync();Applied();});
     private Task RetryAsync()=>RunAsync(async()=>{await Todo.RetryOrganizationPreviewAsync();_focusReview=Organization.Preview is not null;Applied();});
-    private void Cancel(){Todo.CancelOrganizationPreview();_error=null;_focusEditor=true;}
+    private void Cancel(){Todo.CancelOrganizationPreview();_editorOpen=true;_error=null;_focusEditor=true;}
     private void PreviousLists(){_listOffset=Math.Max(0,_listOffset-20);Read();}
     private void NextLists(){_listOffset+=20;Read();}
     private void PreviousTasks(){_taskOffset=Math.Max(0,_taskOffset-20);Read();}
     private void NextTasks(){if(_page?.NextOffset is {} next){_taskOffset=next;Read();}}
-    public void Dispose()=>Todo.Changed-=Changed;
+    public void Dispose(){_disposed=true;Todo.Changed-=Changed;}
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();var module=_focusModule;_focusModule=null;
+        if(module is not null){try{await(await module).DisposeAsync();}catch(JSException){}}
+    }
 }

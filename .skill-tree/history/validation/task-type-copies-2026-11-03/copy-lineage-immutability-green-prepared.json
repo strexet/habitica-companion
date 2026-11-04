@@ -1,0 +1,77 @@
+{
+  "assertion": "- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.",
+  "attempt_id": "C-af5c8330-b6c5-47fa-a9c6-ac990cb3fce2",
+  "check_id": "conversion-rules",
+  "definition": "1d5ea294685082da4a1db25c2066f340a14a50fda095b35b76fb2237b1e96c93",
+  "environment_identity": "89279333fc4d16f491913f06761995f6ad17187c63ee5f8fff8430e38de6b935",
+  "key": "dc507776b66740b3fa9837f5bc07193bba34344322743c62c41f606f5ae70a3c",
+  "launch": {
+    "assertion": "Native task-type copy preserves the original, copies selected fields, resets target history/game state and retains exact lineage.",
+    "authorization": "Direct owner Implement All continuation; local synthetic .NET tests only.",
+    "cheaper_evidence_insufficient": "Source inspection cannot establish atomic cross-kind acceptance, original command recovery or portable lineage validation.",
+    "cleanup_seconds": 30,
+    "deadline_utc": "2026-11-02T20:41:55.922182+00:00",
+    "execution_profile": "task-type-copies-local-v1",
+    "project_root": "/Users/petr/Projects/habitica-tool"
+  },
+  "prepared_at": "2026-11-02T20:33:56.355726+00:00",
+  "recipe": {
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "-m:1",
+      "-nodeReuse:false",
+      "--filter",
+      "FullyQualifiedName~Conversion",
+      "--logger",
+      "trx;LogFileName=conversion-rules.trx",
+      "--results-directory",
+      ".skill-tree/artifacts/validation/T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528/conversion-rules"
+    ],
+    "execution_notes": "Use a meaningful task-specific test filter; require nonzero discovery and preserve TRX evidence. Existing project build prerequisites remain binding.",
+    "input_paths": [
+      ".skill-tree/validation-recipes.json",
+      "global.json",
+      "Directory.Build.props",
+      "Directory.Packages.props",
+      "tests/Habitica.Api.Tests/Habitica.Api.Tests.csproj",
+      "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+      "tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj",
+      "tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj",
+      "tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj",
+      "tests/Habitica.Storage.Tests/Habitica.Storage.Tests.csproj",
+      "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj"
+    ],
+    "lane": "unit",
+    "qualification": "owner-declared static recipe; runner unqualified",
+    "toolchain": {
+      "csharp": "12.0",
+      "evidence": "Repository declarations and existing project.assets.json inspected as data; no runner execution.",
+      "framework": "Blazor WebAssembly net8.0",
+      "sdk_declaration": "8.0.125",
+      "test_frameworks": {
+        "Microsoft.NET.Test.Sdk": "18.4.0",
+        "bunit": "2.7.2",
+        "xunit": "2.9.3"
+      }
+    }
+  },
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "f2ac83486649f4c8e3deb1af9cd296f2fe1a3413b0fb9515b05a27952b1f56da",
+    "src/Habitica.Application/Workspace/WorkspaceTaskTypeCopyEngine.cs": "9594bc952c3490247322d4df8201c8d5474d612cd51a02ece9c7423804258ee6",
+    "src/Habitica.Domain/Workspace/WorkspaceActivityCoverage.cs": "3fe5922804084fdea532b981dfa5ab4de73d4d412a95b19387f5f7473a64905b",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64237553a2c53cb8415706f80aa9bea8ba588764147304badfa34f72b1ddc477",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "827f1d0486ef4bab44867577465963843876fc6a13319f5e3182c3544bcd727f",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "580790bf42f6e8bc6a080fa9ae92ae46c47359b310056cf88825f50f42a2a5eb",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "b95fd2cca6cf0d78e1e32cc9da20fe43a13f5f09214d92b45e8d2db3b2209169",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0dae915a00f1f34a95840f18c2dc670f8b1a333327cf6bb3f078ada0b31fadfd",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskTypeCopy.cs": "6a68219a23bc339bce65cbf17f35fae07722281257d40ce7a5df9a2f03e77621",
+    "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj": "051251ad54ed4327d3d5511a9fc95c10b867007931cc83f443b91dbadf5ed55c",
+    "tests/Habitica.Application.Tests/Workspace/TaskTypeConversionPolicyTests.cs": "14b8c4b327cf37646fd4c4e7b34e3a2b676ea5cbf099795231231b10810d2e95",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceChecklistConversionTests.cs": "87d64cbdb7009e92b53ee5c2e61b0b657bc114b3bd152444cdaf1ce446250d20",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "3d46d0bc4f0a7a2ac71076b5364233ee33799d0d23ca40644c678b705d3c8c18"
+  },
+  "task_id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528"
+}

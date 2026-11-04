@@ -1,0 +1,21 @@
+{
+  "label": "transfer-d1-fixtures",
+  "started_at_utc": "2026-10-30T15:23:38.043639+00:00",
+  "classification": "executed_control",
+  "command": [
+    "env",
+    "HABITICA_TRANSFER_FIXTURES=/Users/petr/Projects/habitica-tool/tests/fixtures/workspace-transfer",
+    "node",
+    "--experimental-strip-types",
+    "--test",
+    "--test-timeout=30000",
+    "test/workspace-transfer.test.mjs"
+  ],
+  "cwd": "/Users/petr/Projects/habitica-tool/workers/companion-workspace",
+  "deadline_seconds": 160.0,
+  "cleanup_reserve_seconds": 5,
+  "tool_process_wall_seconds": 10.703,
+  "prerequisite_wait_seconds": 0,
+  "exit_code": 1,
+  "timed_out": false
+}

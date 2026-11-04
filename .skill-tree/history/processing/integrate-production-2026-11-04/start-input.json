@@ -1,0 +1,21 @@
+{
+  "base_branch": "develop",
+  "branch": "codex/integrate-complete-production",
+  "delivery_authorization": {
+    "deploy": true,
+    "instruction": "Merge every completed change into develop, validate the result, merge into main and deploy the complete main state. Owner authorizes commits, pushes, branch manipulation, PR creation and merge, conflict resolution and production publication. Preserve independent account/device acceptance.",
+    "instruction_origin": "owner",
+    "merge": true,
+    "pr": true,
+    "production_target_branch": "main",
+    "target_branch": "develop"
+  },
+  "snapshot_ids": [
+    "T-7bba9311-6e90-492e-a7bb-df656c3d26a9",
+    "T-4aa44fbc-0138-4d73-a5bb-349c1ea89849",
+    "T-9125972f-4a80-4c9a-8ba7-1c4068c7f7e4",
+    "T-6baa09b4-23c5-4f7a-990c-31183c92ae5e",
+    "T-3749720e-3a7a-4e3d-9913-4b4fd5dacfac"
+  ],
+  "worktree": "/Users/petr/Projects/.agent-workspaces/habitica-complete-production"
+}

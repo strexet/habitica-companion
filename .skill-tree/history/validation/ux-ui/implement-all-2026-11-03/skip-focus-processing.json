@@ -1,0 +1,15 @@
+{
+  "created_ids": [],
+  "dispositions": {
+    "P-d0525af9-8f22-4e09-8255-77161f3742bd": {
+      "reason": "Original full-shell failure, screenshot and stronger72-case passing diagnostic matrix establish an intermittent focus symptom. Current source has no focus trace for the failed event, and MainLayout route/close handlers plus native framework focus restoration remain distinct possible owners. A bounded reproducible trace is required before selecting a repair. Retain investigation outside the frozen snapshot; no product fix or absence of intermittency is claimed.",
+      "status": "retained"
+    }
+  },
+  "id": "PR-56f1c596-8389-4c61-99f9-47ab7197f511",
+  "reused_ids": [],
+  "selected_ids": [
+    "P-d0525af9-8f22-4e09-8255-77161f3742bd"
+  ],
+  "task_keys": {}
+}

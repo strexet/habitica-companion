@@ -11,7 +11,7 @@ export async function currentTagRow(env:WorkspaceEnv,row:WorkspaceRow):Promise<W
  const found=await env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1').bind(row.profile_id,row.connection_id,row.access_epoch).first<WorkspaceRow>();
  if(!found)throw new WorkspaceError('unauthorized',401);return found;
 }
-export function publicTagWork(stored:TagStoredWork){const work=JSON.parse(stored.work_json);return {workId:stored.work_id,commandId:stored.command_id,sourceRevision:stored.source_revision,state:stored.state,error:stored.error_code,entityId:work.context.entityId,kind:work.context.kind,operation:work.operation,originalAttemptId:stored.prepared_request_json?JSON.parse(stored.prepared_request_json).attemptId:null};}
+export function publicTagWork(stored:TagStoredWork){const work=JSON.parse(stored.work_json);return {...(work.evaluation?{evaluation:work.evaluation}:{}),workId:stored.work_id,commandId:stored.command_id,sourceRevision:stored.source_revision,state:stored.state,error:stored.error_code,entityId:work.context.entityId,kind:work.context.kind,operation:work.operation,originalAttemptId:stored.prepared_request_json?JSON.parse(stored.prepared_request_json).attemptId:null};}
 export async function requiredTagAuthority(env:WorkspaceEnv,row:WorkspaceRow,origin:TagOrigin):Promise<TagAuthority>{
  const authority=await tagAuthority(env,row,origin),gap=tagAuthorityGap(authority);if(gap)throw new WorkspaceError(gap,403);return authority;
 }
@@ -37,8 +37,9 @@ export async function recoverGroupTagReceipt(env:WorkspaceEnv,row:WorkspaceRow,w
  await currentTagRow(env,row);return {provenance:'original-tag-work',...publicTagWork(stored!),outcomeUnknown:stored!.state==='executing'||stored!.state==='unknownOutcome',gameEffects:0};
 }
 export async function scopedTagStatusAuthority(env:WorkspaceEnv,row:WorkspaceRow,authority:TagAuthority):Promise<TagStatusAuthority>{
- const works=await env.WORKSPACE_DB.prepare("SELECT intent_id FROM workspace_tag_work WHERE profile_id=? AND connection_id=? AND access_epoch=? AND state='confirmed'").bind(row.profile_id,row.connection_id,row.access_epoch).all<{intent_id:string}>();
- return {...authority,trustedIntentIds:new Set(works.results.map(work=>work.intent_id))};
+ const works=await env.WORKSPACE_DB.prepare("SELECT intent_id,work_json,source_revision,state FROM workspace_tag_work WHERE profile_id=? AND connection_id=? AND access_epoch=? ORDER BY source_revision DESC,created_at_utc DESC,work_id").bind(row.profile_id,row.connection_id,row.access_epoch).all<{intent_id:string;work_json:string;source_revision:number;state:string}>();
+ const reviewedGroups=new Map();for(const saved of works.results){const work=JSON.parse(saved.work_json);if(work.operation==='setMembership'&&work.evaluation&&work.sourceRevision===saved.source_revision&&work.accountId===authority.accountId&&work.consentEpoch===authority.consentEpoch&&!reviewedGroups.has(work.context.entityId))reviewedGroups.set(work.context.entityId,{evaluation:work.evaluation,sourceRevision:work.sourceRevision});}
+ return {...authority,trustedIntentIds:new Set(works.results.filter(work=>work.state==='confirmed').map(work=>work.intent_id)),reviewedGroups};
 }
 export async function groupTagReadApi(env:WorkspaceEnv,initial:WorkspaceRow,name:GroupTagTool,args:unknown,origin:TagOrigin):Promise<Record<string,unknown>|null>{
  const input=groupTagInput(name,args),row=await currentTagRow(env,initial);

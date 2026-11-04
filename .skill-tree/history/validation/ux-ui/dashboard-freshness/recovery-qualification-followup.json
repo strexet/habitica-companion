@@ -1,0 +1,24 @@
+{
+  "request": {
+    "title": "Investigate intermittent sign-in background-state overlap in gear-recovery cancellation qualification",
+    "description": "The dashboard Appearance browser prerequisite suite failed once in Cancelled_manual_restore_retains_work_and_releases_execution_state after the same119-test filter passed in preceding runs. The second recovery call returned the sign-in/current-action guard instead of reaching cancellation. Browser execution never began in that attempt.",
+    "expected_behavior": "Make the synthetic recovery fixture establish deterministic application readiness and investigate whether overlapping sign-in background updates can retain an obsolete busy flag. Preserve recovery cancellation, account scope and original receipt fences; do not weaken assertions or add arbitrary sleeps.",
+    "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "related_task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+    "relation": "followup",
+    "source": ".skill-tree/artifacts/ux-ui/dashboard-appearance-reflow/1793716245326110000/step-1.log; tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs RecoverySetup and cancellation test; AppSessionController.GearRecovery.cs guarded review and CompleteSignInRefreshAsync background state updates.",
+    "priority_reason": "Intermittent required-check reliability needs a deterministic regression; the current evidence demonstrates one failure but does not establish the production cause.",
+    "expected_source_hash": "016e6a46b6aaba141e005ad360c800e22a173fb8843ae114d7980e7a0edb7669"
+  },
+  "result": {
+    "depends_on": [],
+    "id": "P-612f62db-56ca-44cd-8f23-95609d268da9",
+    "parent_pending_ids": [],
+    "priority": 102,
+    "processing_run_id": null,
+    "related_task_id": "T-aae13d52-cf6d-44e4-bdb3-b0ece9715b69",
+    "relation": "followup",
+    "root_task_id": "T-21881802-f186-479d-9111-295192ce2de8",
+    "status": "Pending"
+  }
+}

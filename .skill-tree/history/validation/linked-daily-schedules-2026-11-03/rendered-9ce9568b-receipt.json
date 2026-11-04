@@ -1,0 +1,95 @@
+{
+  "actual_lane": "browser",
+  "attempt_id": "C-33b9534a-9cf4-4cdf-a5ad-7129c4575db2",
+  "classification": "executed-control",
+  "cleanup": "Owned runner exited and fixture finally closed the loopback server, persistent browser contexts and generated temporary profiles. No user account, browser database or live service was used.",
+  "definition": "604211e400bdfa49b56334ae22dff152b7e166b8eaeb792f78742cbde81528c4",
+  "diagnostic_key": "00d301a35e124bebc4f075c96ee044e9c98d4ee0ad691bc5f2253520eb7782a8",
+  "environment_identity": "e5fc3f01284c530578eaf9801b322e2cda9cdd18db6136d90b3358686369b966",
+  "evidence": [
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-execution.log",
+      "sha256": "9d3b64dd5194432d8996fc1c883b7c34a8694b75fe61d33a9749d8a18f4af100"
+    },
+    {
+      "available": true,
+      "path": ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json",
+      "sha256": "7f48070b5557d83dc02d492d4f60af064e36e81ce9c86e79c3b4b373752cc9e8"
+    }
+  ],
+  "execution_sessions": {
+    "110dd6b6967bc913035e09761be6f760f9cde819ae99824654f7993befeaa585": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T20:02:14.510510+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-9ce9568b-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-9ce9568b",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    },
+    "8b1dce077cdd4f79b3fc3a1d427158b9030e09ac0a8dc7c3d66a2bb989078228": {
+      "authorization": "Direct owner Implement All continuation; isolated synthetic cloud account/browser qualification only; no real account, external request, provider write, device permission or publication.",
+      "build_identity": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+      "cleanup_seconds": 30,
+      "deadline_utc": "2026-11-02T19:59:46.356094+00:00",
+      "fixture_identity": "Current Release Daily and Sync routes, real isolated Auth/Workspace Workers/D1, existing synthetic account recovery, current Razor-state matrix and native IndexedDB; isolated persistent Chromium/WebKit profiles; owned localhost5081",
+      "identity_evidence": [
+        ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/rendered-50291c1f-identity.json"
+      ],
+      "profile_id": "linked-daily-ui-browser-v1",
+      "project_root": "/Users/petr/Projects/habitica-tool",
+      "session_identity": "rendered-50291c1f",
+      "tool_identity": "Existing pinned Playwright Chromium/WebKit and Node22"
+    }
+  },
+  "failure_signature": "browser_fixture_failure_Traceback (most recent call last):\n  File \"/Users/petr/Projects/habitica-tool/tests/browser/linked-daily-ui.py\", line 10, in <module>\n    if result.returncode:raise RuntimeError(f'Step {i} failed; original log: {run}/step-{i}.log')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Step 3 failed; original log: /Users/petr/Projects/habitica-tool/.skill-tree/artifacts/linked-daily-ui/1793648954783881000/step-3.log\n",
+  "key": "1bd6b6d1da3f96673a31968b4d1a14d394fc5e85424728171836ba53b1bf0e3b",
+  "payload_hash": "94526742ba441743ac8f851ab5377d1cdd94a73e50b58b4366caaeebf9cd0b1b",
+  "recorded_at": "2026-11-02T19:49:45.186621+00:00",
+  "result": "fail",
+  "sources": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "2285733e6d66587dc68ac5514911d491d9bf64e536649424659a2aa091b9c355",
+    "src/Habitica.Application/Workspace/WorkspaceTaskApi.cs": "fa9e20c81b89c21f4c0a0fe6917d58825d1d3efc13bea9fd2bc1928ebd61e79c",
+    "src/Habitica.Domain/Workspace/LinkedDailySchedulePolicy.cs": "cc584dbee15b5dd1d44c9258d52645690406d5b6ee9e28a38999ae818d1d550d",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "64d96639fe59bfdcf175d51f1b23550ec141c586a47ea934ecd5e98911da4c71",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "7358c99e9f8960bf73911d9e9663f51435eecbd0616e678040a6a6ae247acd89",
+    "src/Habitica.WebApp/Components/LinkedDailySchedulePreview.razor": "a355529770edd35a0ff4231319d1945d8494ca42d92fcfedeb272b865e724848",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "f1811e2b1a9a793b095531448124096e0886c68dbb1668bacec683517b95ea5f",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "339138fe6bc4c7e021645c122860dc740ae8fcb26ddf6b95b9633dcc4b54dd6c",
+    "src/Habitica.WebApp/Habitica.WebApp.csproj": "5b04fb17bf2bdb3176ec24506bc9619a081b40478bb3863b76638bc25c23fc97",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "0149820684af40bdf3ba42c4a71bc4b81c37a0202a24b68016f2854ce09d1706",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "e0ffa59c0c9e2ee30fb3ecc1c78dbbbf0b25f5680da173d651bad94eeb5ca02f",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "8e484fbbf8e1e6dddc77e17972742bce2e55687c3385c317da1e005aa059fd6d",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4570f7e1cb78f7c47b7bfe0bece988ebb6891e55a5fbf24e21e29e8edf89504f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "25741e23f33c340426488084d3fe1cb502766017f8e42e639bbb10164c82ac83",
+    "tests/Habitica.WebApp.Tests/Integration/LinkedDailyScheduleClientTests.cs": "8970a1e3399749f15d498ddb3d7975897c0de369d8cef6da4b93dbd8c693c567",
+    "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+    "tests/Habitica.WebApp.Tests/Workspace/LinkedDailyScheduleEditorTests.cs": "d39382b5e7d6edee6a7deaa946d1c7e5ebc901ec14044cd116f3859073a731e8",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskFixture.cs": "d9420c86e1acad1786db180e44f9b5925fc1357f8a1fc91891759330b9322a95",
+    "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+    "tests/browser/linked-daily-fixture.mjs": "51c80d04dc9a51a546f867e091ab8024dda4deeed496de80dd6eb8a3d1a274e6",
+    "tests/browser/linked-daily-ui.mjs": "a04ffc905be0bc32fd84471858f8ae01d661bdea3c9d262683d59a0b70e6a6cf",
+    "tests/browser/linked-daily-ui.py": "e90067bfa2622e312231bea7d9fac5eb1a380e387eae45b48219101de11a22c0",
+    "workers/chatgpt-auth/src/projection.ts": "9abe3fc2f05f591a86892e32d8befc1a1cf3862913f2b9332702a5d85025be2b",
+    "workers/companion-workspace/src/linked-daily-schedule-api.ts": "7f4245d43354f8796b3d1f45cd97ac2daf8a9fe3c64439a153cbee239718122b",
+    "workers/companion-workspace/src/task-api.ts": "b15abb023f57fc7f4ea81085b107240bfa6638ea259696ab9152fe2012b1ecad",
+    "workers/shared/activity-coverage.ts": "6cd666fd659046cce468ef0a4ee9cbccd9685a7daef1370e6da9c74f53f96723",
+    "workers/shared/build-identity.generated.ts": "9118fb938fa3032aa9e584a64f2334a64fde3b7096d44d2f5937bac35838d414",
+    "workers/shared/linked-daily-schedule.ts": "05c35241c66bb8e6df08639197b21d2d6d1380851bd046fcb2ebe084548aec80",
+    "workers/shared/workspace-commands.ts": "53a6447afb789805340d027bcd56292884845a98236b965edeaeb99006bba6d5"
+  },
+  "timing": {
+    "tool_wall_seconds": 30.044790958054364
+  }
+}

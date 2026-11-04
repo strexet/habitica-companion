@@ -1,3 +1,4 @@
+import {linkedDailyScheduleResult} from '../../shared/linked-daily-schedule.ts';
 import {completionScoreBinding} from '../../shared/completion-score-source.ts';
 import {tagAcknowledgement} from './tag-reconciliation.ts';
 import {executeTagWork} from './tag-executor.ts';
@@ -5,10 +6,10 @@ import { event, type Authority } from './journal.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
 import { projectionStep, confirmMapping, type Observation, type AccountObservation } from './projection-adapter.ts';
 import type { WorkspaceDocument } from '../../shared/workspace-domain.ts';
-export interface WorkspaceRow {linked_recovery_fence?:string|null;retirement_fence?:string|null;mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
+export interface WorkspaceRow {consent_version:string;linked_recovery_fence?:string|null;retirement_fence?:string|null;mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
 interface Runtime {access_epoch:string;lease_token:string|null;lease_until_utc:string|null;next_network_at_utc:string|null;command_id:string|null;prepared_request_json:string|null}
 interface Prepared {profileId:string;connectionId:string;operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string}
-interface Outcome {kind?:string;code?:string;retryAtUtc?:string;task?:{id:string;fingerprint:string;alias:string|null}}
+interface Outcome {scheduleResult?:{observedAtUtc:string;actual:unknown;matchesExpected:boolean};kind?:string;code?:string;retryAtUtc?:string;task?:{id:string;fingerprint:string;alias:string|null}}
 export type ExecutorEnv=Pick<WorkspaceEnv,'WORKSPACE_DB'|'AUTH_IDENTITY'|'AUTH_PROJECTION'> & {EXECUTOR_ENABLED:unknown;WORKSPACE_ENABLED:unknown};
 const bytes=(v:string)=>new TextEncoder().encode(v).length;
 const now=()=>new Date().toISOString();
@@ -39,7 +40,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
     AND EXISTS(SELECT 1 FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?)`).bind(docJson,version,size,tag,now(),profileId,epoch,w.store_version,profileId,epoch,token,now()),
     env.WORKSPACE_DB.prepare('UPDATE workspace_commands SET entry_json=? WHERE profile_id=? AND command_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(entryJson,profileId,id,profileId,tag),
     env.WORKSPACE_DB.prepare('INSERT INTO workspace_events(profile_id,event_id,sequence,event_json) SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(e.id,version,eventJson,profileId,tag),...tagAcknowledgement(env,w,doc,next.document??doc,tag)];
-   if(prepared!==undefined)statements.push(env.WORKSPACE_DB.prepare('UPDATE workspace_runtime SET command_id=?,prepared_request_json=? WHERE profile_id=? AND lease_token=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(prepared?id:null,prepared?JSON.stringify(prepared):null,profileId,token,profileId,tag));
+   if(prepared!==undefined&&next.entry.projectionState!=='unknownOutcome')statements.push(env.WORKSPACE_DB.prepare('UPDATE workspace_runtime SET command_id=?,prepared_request_json=? WHERE profile_id=? AND lease_token=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(prepared?id:null,prepared?JSON.stringify(prepared):null,profileId,token,profileId,tag));
    const result=await env.WORKSPACE_DB.batch(statements);if(result[0].meta.changes)return true;
   }return false;
  }
@@ -64,7 +65,18 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   return transition(id,(entry,document)=>{
    if(!['executing','unknownOutcome','leased'].includes(entry.projectionState))throw new Error('attempt_changed');
    if(outcome.kind==='applied'&&outcome.task){
-    const doc=confirmMapping(document,entry.command.taskId,outcome.task);const count=entry.confirmedEffects+1;
+    let doc=confirmMapping(document,entry.command.taskId,outcome.task);const count=entry.confirmedEffects+1;
+    if(entry.command.operation==='editLinkedDailySchedule'){
+     try{
+      if(!outcome.scheduleResult||!entry.command.patch?.linkedSchedule||!entry.lease)throw new Error('schedule_receipt_missing');
+      const scheduleResult=linkedDailyScheduleResult({...outcome.scheduleResult,attemptId:entry.lease.token},entry.command.patch.linkedSchedule);
+      if(Date.parse(scheduleResult.observedAtUtc)<Date.parse(entry.acceptedAtUtc))throw new Error('schedule_clock_changed');
+      if(!scheduleResult.matchesExpected)doc={...doc,projections:doc.projections.map(row=>row.taskId===entry.command.taskId?{...row,state:'externalConflict' as const}:row)};
+      return {entry:{...entry,scheduleResult,confirmedEffects:count,projectionState:scheduleResult.matchesExpected?'confirmed':'blocked',failure:scheduleResult.matchesExpected?'none':'precondition',retryAtUtc:null,lease:null,dispatchedAtUtc:null},document:doc,kind:recovered?'reconciled':'resultKnown',evidence:'auth-original-schedule-receipt'};
+     }catch{
+      return {entry:{...entry,projectionState:'unknownOutcome',failure:'ambiguous'},document:{...document,revision:document.revision+1,projections:document.projections.map(row=>row.taskId===entry.command.taskId?{...row,state:'unknownOutcome' as const,revision:document.revision+1}:row)},kind:'unknownDetected'};
+     }
+    }
     return {entry:{...entry,confirmedEffects:count,projectionState:count===entry.effects.length?'confirmed':'pending',failure:'none',retryAtUtc:null,lease:null,dispatchedAtUtc:null},document:doc,kind:recovered?'reconciled':'resultKnown',evidence:recovered?'auth-attempt-receipt':undefined};
    }
    if(outcome.kind!=='refused'){

@@ -1,0 +1,66 @@
+{
+  "task_id": "T-7aa20175-78af-40c9-86a3-e1ea37109c34",
+  "outcome": "Cloud Notes folder discovery, exact reads, atomic commands, membership filters, additive migration and typed client validation are implemented with matching portable hashes and original-receipt recovery. Serial local qualification passes50 controls across owner API, typed client, legacy project and agent regressions.",
+  "acceptance": [
+    {
+      "criterion": "The owner API and typed client implement the shared folder behavior with exact C#/Worker bytes and original-receipt parity.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+        ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log"
+      ]
+    },
+    {
+      "criterion": "Cloud changes preserve legacy Notes content/history and fail atomically under ownership, revision, scope or receipt faults. No task/game effect or live provider call follows folder work.",
+      "result": "pass",
+      "required": true,
+      "evidence": [
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+        ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+        ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log"
+      ]
+    }
+  ],
+  "source_fingerprints": {
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "src/Habitica.Application/Notes/INotesCloudClient.cs": "d8e0b0bfed9f9a14e95223c2918dcedc2d2618f2ea3d909e285fa86cb5d5147c",
+    "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.Folders.cs": "f0067a05649b6720bd2552ce0cdd850308d265318c9c98c5011b2afbe7395087",
+    "src/Habitica.WebApp/Integration/NotesCloudClient.cs": "7c56402a1bd4f37c996a6173455e387e1a59e633d76f40e1941f58a0cc09270f",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+    "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+    "tests/fixtures/notes/notes-folder-wire-v3.json": "90baa1259f586faf2e8cf9186151e0ef86359021d9d713c82a5632e095e91fbe",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "504903577b0257bebdf0c1d82a33b22bccc3857a3b415c47de3727a802cbde61",
+    "workers/companion-workspace/migrations/0021-note-folders.sql": "197dab4a1185a5edb93be677d3695e5592ee929bdf586d84aee753671d41b10e",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/notes-api.ts": "b3c36bb9af34877f23a6a098a09073e1add38d409d5e687a13aed4bf6da70133",
+    "workers/companion-workspace/src/notes-folders-api.ts": "44b2272146cc3ffffc47f64cae342dcfdd3cd3170e0c3d14f437994f42231012",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/companion-workspace/test/notes.test.mjs": "5812f9cbc63745da04d296e541bbfab046740b32ff3e6ad538920c03f685bbb9",
+    "workers/shared/notes-folders.ts": "2ed8996da991388f8a460c6cafb26494f65e31c0fe0b2c12f1ec3e14c00c0010",
+    "workers/shared/notes.ts": "10e894d0d0567949c1ba92ad349fc4fc95436c5ac2d3370d813d3836cb0f9018",
+    "workers/companion-workspace/test/note-projects.test.mjs": "4b2091cd0bd401bfcf445a5f251e31d8372673df2cc7998a8495ee7142bc3399",
+    ".skill-tree/documents/notes-folders.md": "19110b1f0ca05f897ba9f8c8c1caf112315d61d1e47773a7e2377b5754b32949"
+  },
+  "limitations": [
+    "Remote migration/publication, folder MCP tools and folder UI remain outside the completed owner API unit.",
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31 retains reviewed folder-aware Workspace adoption compatibility; no browser-folder transfer is qualified."
+  ],
+  "followup_ids": [
+    "P-1b2a534e-5f45-4f47-b56d-1a3870199b31"
+  ],
+  "commits": [],
+  "evidence": [
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/client-backup-final-execution.log",
+    ".skill-tree/artifacts/validation/T-7aa20175-78af-40c9-86a3-e1ea37109c34/notes-client-contracts/client-backup-final.trx",
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/legacy-agent-serial-final-execution.log",
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/owner-write-gate-green-execution.log",
+    ".skill-tree/history/validation/notes-folders-cloud-2026-11-02/project-serial-final-execution.log"
+  ]
+}

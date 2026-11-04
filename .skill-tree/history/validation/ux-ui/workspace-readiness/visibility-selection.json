@@ -1,0 +1,19 @@
+[
+  {
+    "body": "### Qualify visible full-shell content with current theme geometry\n\n```yaml\nid: P-642ba84c-019f-42cb-a8f6-53440c6c147f\npriority: 107\nstatus: Pending\nparent_pending_ids: []\nprocessing_run_id: null\nroot_task_id: T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12\nrelated_task_id: T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12\nrelation: blocker\ndepends_on: []\n```\n\nDescription:\n- Manual review of the completed navigation matrix shows a blank main area at 360 pixels and 200-percent text although the captured HTML contains Layout body. The full-layout capture omits MudThemeProvider geometry variables, and the frame oracle does not detect app-bar content occlusion.\n\nExpected behavior:\n- Capture the actual theme geometry in full-shell evidence, require visibly exposed primary content and detect header occlusion. Compare hydrated shell clearance at normal/enlarged text and repair shared header sizing only when a controlled case proves overlap. Preserve navigation interaction evidence and revalidation obligations.\n\nCurrent context:\n- Required before workspace-readiness messages and recovery actions can receive trustworthy shell qualification. The navigation interaction run passed; the static shell content-visibility assertion was incomplete. Sources: PageLayoutEvidence.cs, AppNavMenuTests.cs, qualification-frame.mjs and MainLayout/app.css. Existing Tasks do not cover the missing full-shell fixture/oracle.\n\nSource:\n- .skill-tree/history/validation/ux-ui/accessible-shell/browser/cf9a8401-32d7-4b03-bbab-3a3aeadf3154.json; enlarged light/dark shell-today screenshots and current captured HTML.\n\n",
+    "depends_on": [],
+    "end": 100,
+    "id": "P-642ba84c-019f-42cb-a8f6-53440c6c147f",
+    "line": 75,
+    "parent_pending_ids": [],
+    "priority": 107,
+    "processing_run_id": null,
+    "queue": "Pending Queue",
+    "related_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "relation": "blocker",
+    "root_task_id": "T-d0aa6c80-6cb1-4df2-bcbd-256168fd7b12",
+    "start": 74,
+    "status": "Pending",
+    "title": "Qualify visible full-shell content with current theme geometry"
+  }
+]

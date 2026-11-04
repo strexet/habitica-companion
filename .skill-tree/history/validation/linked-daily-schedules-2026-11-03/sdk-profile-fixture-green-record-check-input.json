@@ -1,0 +1,24 @@
+{
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+  "check_id": "daily-schedule-mcp",
+  "attempt_id": "C-7bb08063-58eb-47a7-a413-54529002945a",
+  "environment_identity": "1bb7e558bbb6c518d19515e50bb1eb33263f183bff38c002ed0036c678d8f32f",
+  "actual_lane": "integration",
+  "classification": "executed-control",
+  "result": "fail",
+  "counts": {
+    "expected": 6,
+    "discovered": 6,
+    "passed": 5,
+    "failed": 1,
+    "skipped": 0
+  },
+  "cleanup": "All actual local Worker/Miniflare/D1 fixture instances disposed through test cleanup. No real account, provider callback or Habitica operation was used.",
+  "timing": {
+    "tool_wall_seconds": 8.349968957947567
+  },
+  "evidence": [
+    ".skill-tree/history/validation/linked-daily-schedules-2026-11-03/sdk-profile-fixture-green-execution.log"
+  ],
+  "failure_signature": "activity_daily-schedule-mcp_failureType: 'testCodeFailure'"
+}

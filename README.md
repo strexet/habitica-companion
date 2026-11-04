@@ -2,7 +2,7 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: web app implemented and expanding through the active `skill-tree/documents/future.md` queue. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
+Current status: web app implemented and expanding through the active `.skill-tree/documents/future.md` queue. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
 
 ## Current major features
 
@@ -16,6 +16,10 @@ Current status: web app implemented and expanding through the active `skill-tree
 - Quests workspace with cached quest progress, shared quest pool, shared queue voting, recently completed quest history, and guarded quest lifecycle actions
 - spells workspace with target selection, approximate effect previews, dynamic gear recommendations, sequential casting, and Cron-sensitive buff warning
 - diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
+- canonical Todo, Daily and Habit workspaces with reviewed commands, original receipts, planning, projects, saved lists and retained activity
+- personal Markdown Notes with project associations, separate export/erasure and reviewed MCP access
+- owner-reviewed browser-to-cloud Workspace adoption, preserving task and Notes identities
+- foreground reminders, voluntary task reviews and gated Web Push scheduling
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
@@ -26,7 +30,7 @@ Current status: web app implemented and expanding through the active `skill-tree
 
 ## Active future work areas
 
-The Companion-first roadmap and MCP/OAuth integration are planned in [future.md](skill-tree/documents/future.md). E01–E14 require research/decomposition; implementation contracts retain explicit gates. The [research reference](skill-tree/documents/companion-first-mcp-research.md) is not a second queue.
+[future.md](.skill-tree/documents/future.md) owns remaining work, including Notes folders, event subscriptions/delivery and host/mobile qualification. Auth, MCP and Workspace Workers, reviewed task/organization/Notes tools, and unified Workspace adoption are implemented. Source defaults disable optional integration; the separate [production frontend override](deploy/production.frontend.json) enables the selected Auth and Workspace endpoints. [Deployment documentation](.skill-tree/documents/deploy-cloudflare-pages.md) owns configuration and rollout boundaries; release records establish publication evidence for the recorded build only.
 
 - party quest workspace modes and history analytics
 - skill macros with dry-run previews
@@ -40,6 +44,7 @@ The Companion-first roadmap and MCP/OAuth integration are planned in [future.md]
 - Local-first storage with IndexedDB behind a Dexie.js interop boundary
 - Cloudflare Pages Functions/KV for encrypted app-data sync
 - Cloudflare Pages Functions/D1 for shared party quest planning state
+- Optional Auth/MCP/Workspace Workers for encrypted enrollment, reviewed agent commands and canonical cloud storage
 - Habitica API v3
 
 ## Prerequisites
@@ -54,13 +59,14 @@ The Companion-first roadmap and MCP/OAuth integration are planned in [future.md]
 
    ```bash
    cd src/Habitica.WebApp
-   npm install
+   npm ci
    npm run sync:vendor
    ```
 
-2. Restore and run the solution:
+2. Return to the repository root, then restore and run the solution:
 
    ```bash
+   cd ../..
    dotnet restore Habitica.sln
    dotnet run --project src/Habitica.WebApp
    ```
@@ -70,36 +76,36 @@ The Companion-first roadmap and MCP/OAuth integration are planned in [future.md]
 ## Test and verify
 
 ```bash
-dotnet test Habitica.sln -m:1 -nodeReuse:false
 dotnet build Habitica.sln -m:1 -nodeReuse:false
+dotnet test Habitica.sln -m:1 -nodeReuse:false
 ```
 
 ## Deploy
 
-For Cloudflare Pages deployment, use [`skill-tree/documents/deploy-cloudflare-pages.md`](skill-tree/documents/deploy-cloudflare-pages.md). This is the simplest hosted path for the Blazor WebAssembly app and works without a custom domain.
+For Cloudflare Pages deployment, use [`.skill-tree/documents/deploy-cloudflare-pages.md`](.skill-tree/documents/deploy-cloudflare-pages.md). The documented hosted path supports the Blazor WebAssembly app without a custom domain.
 
 ## Habitica API header note
 
-The app reads the public, project-owned `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). The committed value identifies the tool creator and keeps the `habitica-tool` application suffix for every signed-in user. Missing or blank configuration prevents API-client initialization; no end-user fallback exists. Forks and local experiments must supply their own creator/app identity through configuration. `HABITICA_X_CLIENT_HEADER` overrides the value during `build.sh`; never include an API token in the header.
+The app reads the public, project-owned `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). The committed value identifies the tool creator and keeps the `habitica-tool` application suffix for every signed-in user. Missing or blank configuration prevents API-client initialization; no end-user fallback exists. Forks and local experiments must supply a separate creator/app identity through configuration. `HABITICA_X_CLIENT_HEADER` overrides the value during `build.sh`; never include an API token in the header.
 
 ## Project documents
 
-[Document manifest](skill-tree/skill-tree.json) indexes canonical documentation, queue state and audit freshness. [Repository map](skill-tree/documents/repository-map.md), [build and release](skill-tree/documents/build-and-release.md), [testing](skill-tree/documents/testing.md) and [dependencies](skill-tree/documents/dependencies.md) provide toolchain context.
+[Document manifest](.skill-tree/skill-tree.json) indexes canonical documentation, queue state and audit freshness. [Repository map](.skill-tree/documents/repository-map.md), [build and release](.skill-tree/documents/build-and-release.md), [testing](.skill-tree/documents/testing.md) and [dependencies](.skill-tree/documents/dependencies.md) provide toolchain context.
 
-- `skill-tree/documents/project.md` - product context and goals
-- `skill-tree/documents/technical.md` - stack, architecture, storage, sync, and deployment rules
-- `skill-tree/documents/features.md` - current implemented feature behavior and partial limitations
-- `skill-tree/documents/future.md` - single active implementation queue and validated backlog
-- `skill-tree/documents/habitica-api.md` - Habitica API integration rules
-- `skill-tree/documents/ai-app-testing.md` - browser UI/UX testing guide for AI agents
-- `skill-tree/documents/rules.md` - repository and AI-agent workflow rules
+- `.skill-tree/documents/project.md` - product context and goals
+- `.skill-tree/documents/technical.md` - stack, architecture, storage, sync, and deployment rules
+- `.skill-tree/documents/features.md` - current implemented feature behavior and partial limitations
+- `.skill-tree/documents/future.md` - single active implementation queue and validated backlog
+- `.skill-tree/documents/habitica-api.md` - Habitica API integration rules
+- `.skill-tree/documents/ai-app-testing.md` - browser UI/UX testing guide for AI agents
+- `.skill-tree/documents/rules.md` - repository and AI-agent workflow rules
 
 ## Notes
 
-- Credentials are treated as password-equivalent and stay local to the user's device.
+- Browser sign-in defaults to session-only credentials; persistent browser storage requires opt-in. Separate integration enrollment sends credentials to the configured Auth Worker only after explicit consent and stores an encrypted vault envelope. Credentials never enter app-data sync or MCP tool responses.
 - Habitica-changing actions are explicit, freshness-gated, and run through the application/API layers.
 - Larger or destructive future actions should keep using validation, preview, confirmation, and follow-up refresh.
 
 ## Optional workflow plugin
 
-[`plugin/`](plugin/README.md) packages daily review, account review and reviewed canonical task-management skills with the remote MCP declaration. The committed endpoint is inactive. Private setup requires a separately approved deployment and OAuth enrollment; no Habitica token is copied into ChatGPT. Local package tests use isolated synthetic profiles.
+[`plugin/`](plugin/README.md) packages daily review, account review and reviewed canonical task-management skills with the remote MCP declaration. The committed package endpoint uses an inactive `.invalid` placeholder. A prepared private package can select an approved endpoint; package installation and discovery remain separate from backend publication and OAuth enrollment. No Habitica token is copied into ChatGPT. Local package tests use isolated synthetic profiles.

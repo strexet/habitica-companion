@@ -22,7 +22,7 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "unexpected_occurrence");
         var creating = command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
         var patch = command.Patch;
-        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage or WorkspaceOperation.ReviewTask or WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence)
+        if (creating || command.Operation is WorkspaceOperation.CopyTaskType or WorkspaceOperation.EditLinkedDailySchedule or WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage or WorkspaceOperation.ReviewTask or WorkspaceOperation.UnarchiveTask or WorkspaceOperation.CorrectOccurrence)
         {
             if (patch is null || patch == new WorkspaceTaskPatch()
                 || patch.Text is not null && (string.IsNullOrWhiteSpace(patch.Text) || patch.Text.Length > 2048)
@@ -47,6 +47,10 @@ public static class WorkspaceCommandEngine
                 || command.Operation == WorkspaceOperation.UnarchiveTask && (patch.Unarchive is null || (patch with { Unarchive = null }) != new WorkspaceTaskPatch())
                 || patch.CorrectOccurrence is {} correction && (!correction.IsValid() || command.Operation != WorkspaceOperation.CorrectOccurrence)
                 || command.Operation == WorkspaceOperation.CorrectOccurrence && (patch.CorrectOccurrence is null || (patch with { CorrectOccurrence = null }) != new WorkspaceTaskPatch())
+                || patch.LinkedSchedule is not null && (command.Operation != WorkspaceOperation.EditLinkedDailySchedule || !patch.LinkedSchedule.IsValid(patch.Recurrence))
+                || command.Operation == WorkspaceOperation.EditLinkedDailySchedule && (patch.LinkedSchedule is null || patch.Recurrence is null || (patch with {LinkedSchedule=null,Recurrence=null}) != new WorkspaceTaskPatch())
+                || patch.TypeCopy is not null && (command.Operation!=WorkspaceOperation.CopyTaskType||!patch.TypeCopy.IsValid())
+                || command.Operation==WorkspaceOperation.CopyTaskType&&(patch.TypeCopy is null||(patch with{TypeCopy=null})!=new WorkspaceTaskPatch())
                 || creating && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
@@ -59,6 +63,7 @@ public static class WorkspaceCommandEngine
         if (snapshot.Authority?.Mode is WorkspaceAuthorityMode.Frozen or WorkspaceAuthorityMode.Cloud)
             return Reject(SubmissionDisposition.Invalid, "workspace_owned_elsewhere");
         if (command.ExpectedRevision != snapshot.Document.Revision) return Reject(SubmissionDisposition.RevisionConflict, "stale_revision");
+        if(command.Operation==WorkspaceOperation.CopyTaskType)return WorkspaceTaskTypeCopyEngine.Accept(snapshot,command,hash,now);
         var document = snapshot.Document;
         var current = document.Tasks.FirstOrDefault(task => task.Id == command.TaskId);
         if (creating ? current is not null : current is null || (command.Operation == WorkspaceOperation.UnarchiveTask ? !current.IsArchived : current.IsArchived))
@@ -165,8 +170,10 @@ public static class WorkspaceCommandEngine
         var editsRecurrence = patch?.Recurrence is not null || patch?.ClearRecurrence == true;
         if (editsRecurrence && (creating ? command.Operation != WorkspaceOperation.CreateDaily || patch!.ClearRecurrence : current!.Kind != CompanionTaskKind.Daily))
             return Reject(SubmissionDisposition.Invalid, "recurrence_requires_daily");
-        if (editsRecurrence && !creating && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
+        if (editsRecurrence && !creating && command.Operation != WorkspaceOperation.EditLinkedDailySchedule && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
+        if (command.Operation == WorkspaceOperation.EditLinkedDailySchedule && (!command.ProjectToHabitica || current!.State != CompanionTaskState.Active || mapping is not {State:ProjectionState.Linked,HabiticaTaskId:not null} || mapping.HabiticaTaskId != patch!.LinkedSchedule!.HabiticaTaskId.ToString("D") || mapping.Fingerprint != patch.LinkedSchedule.Fingerprint || patch.LinkedSchedule.ObservedAtUtc > now || now-patch.LinkedSchedule.ObservedAtUtc > TimeSpan.FromSeconds(90) || snapshot.Commands.Any(entry=>entry.Effects.Count>0 && entry.ProjectionState is not (ProjectionCommandState.Confirmed or ProjectionCommandState.Cancelled))))
+            return Reject(SubmissionDisposition.Invalid,"linked_schedule_review_required");
         if (command.Operation == WorkspaceOperation.DeleteTask
             && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
@@ -233,7 +240,7 @@ public static class WorkspaceCommandEngine
                 occurrences.RemoveAll(value => value.Id == skipped.Id); occurrences.Add(skipped);
             }
             if (command.Operation == WorkspaceOperation.DeleteTask) updated = updated with { IsArchived = true };
-            if (command.Operation == WorkspaceOperation.UpdateTask)
+            if (command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.EditLinkedDailySchedule)
                 updated = updated with { Text = patch!.Text ?? updated.Text, Notes = patch.ClearNotes ? null : patch.Notes ?? updated.Notes, Priority = patch.Priority ?? updated.Priority, Deadline = patch.ClearDeadline ? null : patch.Deadline ?? updated.Deadline, Recurrence = patch.ClearRecurrence ? null : patch.Recurrence ?? updated.Recurrence, HabiticaDetails = HabiticaTaskDetails.Merge(updated.HabiticaDetails, patch.HabiticaDetails) };
             if (command.Operation == WorkspaceOperation.CompleteTask)
             {
@@ -259,7 +266,7 @@ public static class WorkspaceCommandEngine
         if (requested)
         {
             if (mapping?.HabiticaTaskId is null || command.Operation == WorkspaceOperation.EnsureProjection) effects.Add(ProjectionEffectKind.Create);
-            if (command.Operation == WorkspaceOperation.UpdateTask) effects.Add(ProjectionEffectKind.Update);
+            if (command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.EditLinkedDailySchedule) effects.Add(ProjectionEffectKind.Update);
             if (command.Operation == WorkspaceOperation.CompleteTask) effects.Add(ProjectionEffectKind.ScoreUp);
             if (command.Operation == WorkspaceOperation.ScoreHabit)
                 for (var index = 0; index < command.Count; index++) effects.Add(command.Direction == HabitScoreDirection.Up ? ProjectionEffectKind.ScoreUp : ProjectionEffectKind.ScoreDown);

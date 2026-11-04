@@ -1,0 +1,25 @@
+{
+  "task_id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+  "check_id": "history-rendering",
+  "attempt_id": "C-e9ce5b1d-b3f0-4d0b-96eb-32fb6293cd67",
+  "environment_identity": "c30378ee1685f58533b8fc4e768d98fd7c754b77c4597051ebc47c1916e55707",
+  "actual_lane": "browser",
+  "classification": "executed-control",
+  "result": "pass",
+  "cleanup": "Owned loopback server and both generated persistent profiles closed and removed. All synthetic Worker/D1 instances disposed. No external request, real account, provider write, device permission or subscription.",
+  "timing": {
+    "tool_wall_seconds": 52.93438612506725
+  },
+  "evidence": [
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-execution.log",
+    ".skill-tree/history/validation/project-retained-history-2026-11-03/rendered-2708e89e-identity.json",
+    ".skill-tree/artifacts/project-history-ui/1793659336397633000/report.json"
+  ],
+  "counts": {
+    "expected": 162,
+    "discovered": 162,
+    "passed": 162,
+    "failed": 0,
+    "skipped": 0
+  }
+}

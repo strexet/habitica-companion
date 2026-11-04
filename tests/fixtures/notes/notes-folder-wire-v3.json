@@ -1,0 +1,393 @@
+{
+  "initial": {
+    "schemaVersion": 1,
+    "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+    "revision": 0,
+    "notes": [],
+    "receipts": [],
+    "purged": []
+  },
+  "rows": [
+    {
+      "kind": "folder",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000101",
+        "folderId": "00000000-0000-4000-8000-000000000091",
+        "expectedNotebookRevision": 0,
+        "expectedFolderRevision": 0,
+        "operation": "create",
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "source": "browser",
+        "name": "Hotels \uD83E\uDDE5"
+      },
+      "hash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+      "atUtc": "2026-11-02T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 2,
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "revision": 1,
+        "notes": [],
+        "receipts": [],
+        "purged": [],
+        "folders": [
+          {
+            "id": "00000000-0000-4000-8000-000000000091",
+            "revision": 1,
+            "name": "Hotels \uD83E\uDDE5",
+            "source": "browser",
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "updatedAtUtc": "2026-11-02T00:00:00+00:00",
+            "isRemoved": false
+          }
+        ],
+        "folderReceipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000101",
+            "payloadHash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 1,
+            "notebookRevision": 1
+          }
+        ]
+      }
+    },
+    {
+      "kind": "note",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000102",
+        "noteId": "00000000-0000-4000-8000-000000000092",
+        "expectedNotebookRevision": 1,
+        "expectedNoteRevision": 0,
+        "operation": "create",
+        "title": "Hotel review",
+        "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+        "folder": {
+          "folderId": "00000000-0000-4000-8000-000000000091",
+          "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+          "source": "browser"
+        }
+      },
+      "hash": "a32a1d3b5f6948586954a5d7f338a1c34b12adfd9105b37638b868d53a18298e",
+      "atUtc": "2026-11-02T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 2,
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "revision": 2,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000092",
+            "current": {
+              "revision": 1,
+              "title": "Hotel review",
+              "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+              "isTrashed": false,
+              "atUtc": "2026-11-02T00:00:00+00:00",
+              "folder": {
+                "folderId": "00000000-0000-4000-8000-000000000091",
+                "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+                "source": "browser"
+              }
+            },
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "history": []
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000102",
+            "payloadHash": "a32a1d3b5f6948586954a5d7f338a1c34b12adfd9105b37638b868d53a18298e",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 1,
+            "notebookRevision": 2
+          }
+        ],
+        "purged": [],
+        "folders": [
+          {
+            "id": "00000000-0000-4000-8000-000000000091",
+            "revision": 1,
+            "name": "Hotels \uD83E\uDDE5",
+            "source": "browser",
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "updatedAtUtc": "2026-11-02T00:00:00+00:00",
+            "isRemoved": false
+          }
+        ],
+        "folderReceipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000101",
+            "payloadHash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 1,
+            "notebookRevision": 1
+          }
+        ]
+      }
+    },
+    {
+      "kind": "folder",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000103",
+        "folderId": "00000000-0000-4000-8000-000000000091",
+        "expectedNotebookRevision": 2,
+        "expectedFolderRevision": 1,
+        "operation": "rename",
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "source": "browser",
+        "name": "Interesting places"
+      },
+      "hash": "3006d52cfedb72f328985daac8f76cc5086523fd23f5798547a26ca9ff33091f",
+      "atUtc": "2026-11-02T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 2,
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "revision": 3,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000092",
+            "current": {
+              "revision": 1,
+              "title": "Hotel review",
+              "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+              "isTrashed": false,
+              "atUtc": "2026-11-02T00:00:00+00:00",
+              "folder": {
+                "folderId": "00000000-0000-4000-8000-000000000091",
+                "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+                "source": "browser"
+              }
+            },
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "history": []
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000102",
+            "payloadHash": "a32a1d3b5f6948586954a5d7f338a1c34b12adfd9105b37638b868d53a18298e",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 1,
+            "notebookRevision": 2
+          }
+        ],
+        "purged": [],
+        "folders": [
+          {
+            "id": "00000000-0000-4000-8000-000000000091",
+            "revision": 2,
+            "name": "Interesting places",
+            "source": "browser",
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "updatedAtUtc": "2026-11-02T00:00:00+00:00",
+            "isRemoved": false
+          }
+        ],
+        "folderReceipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000101",
+            "payloadHash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000103",
+            "payloadHash": "3006d52cfedb72f328985daac8f76cc5086523fd23f5798547a26ca9ff33091f",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 2,
+            "notebookRevision": 3
+          }
+        ]
+      }
+    },
+    {
+      "kind": "note",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000104",
+        "noteId": "00000000-0000-4000-8000-000000000092",
+        "expectedNotebookRevision": 3,
+        "expectedNoteRevision": 1,
+        "operation": "update",
+        "title": null,
+        "markdown": null,
+        "clearFolder": true
+      },
+      "hash": "07feee3ea436d9e39d11646042f0a02c4219105e52edd77b0742ac8dd3e3a5d3",
+      "atUtc": "2026-11-02T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 2,
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "revision": 4,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000092",
+            "current": {
+              "revision": 2,
+              "title": "Hotel review",
+              "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+              "isTrashed": false,
+              "atUtc": "2026-11-02T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Hotel review",
+                "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+                "isTrashed": false,
+                "atUtc": "2026-11-02T00:00:00+00:00",
+                "folder": {
+                  "folderId": "00000000-0000-4000-8000-000000000091",
+                  "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+                  "source": "browser"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000102",
+            "payloadHash": "a32a1d3b5f6948586954a5d7f338a1c34b12adfd9105b37638b868d53a18298e",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 1,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000104",
+            "payloadHash": "07feee3ea436d9e39d11646042f0a02c4219105e52edd77b0742ac8dd3e3a5d3",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 2,
+            "notebookRevision": 4
+          }
+        ],
+        "purged": [],
+        "folders": [
+          {
+            "id": "00000000-0000-4000-8000-000000000091",
+            "revision": 2,
+            "name": "Interesting places",
+            "source": "browser",
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "updatedAtUtc": "2026-11-02T00:00:00+00:00",
+            "isRemoved": false
+          }
+        ],
+        "folderReceipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000101",
+            "payloadHash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000103",
+            "payloadHash": "3006d52cfedb72f328985daac8f76cc5086523fd23f5798547a26ca9ff33091f",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 2,
+            "notebookRevision": 3
+          }
+        ]
+      }
+    },
+    {
+      "kind": "folder",
+      "command": {
+        "id": "00000000-0000-4000-8000-000000000105",
+        "folderId": "00000000-0000-4000-8000-000000000091",
+        "expectedNotebookRevision": 4,
+        "expectedFolderRevision": 2,
+        "operation": "remove",
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "source": "browser",
+        "name": null
+      },
+      "hash": "4356495aa36823c2e5b5a6364b18970b362f30c6e9e31637c47c774b2c4b7e2e",
+      "atUtc": "2026-11-02T00:00:00+00:00",
+      "notebook": {
+        "schemaVersion": 2,
+        "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+        "revision": 5,
+        "notes": [
+          {
+            "id": "00000000-0000-4000-8000-000000000092",
+            "current": {
+              "revision": 2,
+              "title": "Hotel review",
+              "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+              "isTrashed": false,
+              "atUtc": "2026-11-02T00:00:00+00:00"
+            },
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "history": [
+              {
+                "revision": 1,
+                "title": "Hotel review",
+                "markdown": "# Exact\r\n\u003C\u003E\u0026\u0022\\\n\u5C3E",
+                "isTrashed": false,
+                "atUtc": "2026-11-02T00:00:00+00:00",
+                "folder": {
+                  "folderId": "00000000-0000-4000-8000-000000000091",
+                  "ownerScope": "0271cdc37c2767fcd94e354c60e7bb86c546db7ad20f1da84da5ea9a1d673cd2",
+                  "source": "browser"
+                }
+              }
+            ]
+          }
+        ],
+        "receipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000102",
+            "payloadHash": "a32a1d3b5f6948586954a5d7f338a1c34b12adfd9105b37638b868d53a18298e",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 1,
+            "notebookRevision": 2
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000104",
+            "payloadHash": "07feee3ea436d9e39d11646042f0a02c4219105e52edd77b0742ac8dd3e3a5d3",
+            "noteId": "00000000-0000-4000-8000-000000000092",
+            "noteRevision": 2,
+            "notebookRevision": 4
+          }
+        ],
+        "purged": [],
+        "folders": [
+          {
+            "id": "00000000-0000-4000-8000-000000000091",
+            "revision": 3,
+            "name": "Interesting places",
+            "source": "browser",
+            "createdAtUtc": "2026-11-02T00:00:00+00:00",
+            "updatedAtUtc": "2026-11-02T00:00:00+00:00",
+            "isRemoved": true
+          }
+        ],
+        "folderReceipts": [
+          {
+            "commandId": "00000000-0000-4000-8000-000000000101",
+            "payloadHash": "00b98858476810dd21184df7a4763d54c2febf1500b85040d9f5556f3f916dec",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 1,
+            "notebookRevision": 1
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000103",
+            "payloadHash": "3006d52cfedb72f328985daac8f76cc5086523fd23f5798547a26ca9ff33091f",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 2,
+            "notebookRevision": 3
+          },
+          {
+            "commandId": "00000000-0000-4000-8000-000000000105",
+            "payloadHash": "4356495aa36823c2e5b5a6364b18970b362f30c6e9e31637c47c774b2c4b7e2e",
+            "folderId": "00000000-0000-4000-8000-000000000091",
+            "folderRevision": 3,
+            "notebookRevision": 5
+          }
+        ]
+      }
+    }
+  ]
+}

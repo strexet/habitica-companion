@@ -1,0 +1,1134 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Cloud syncing
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Equipment explorer
+- heading "Equipment" [active] [level=1]
+- paragraph: Compare owned gear, save battle presets, and equip items from fresh Habitica account data.
+- generic: Account data is up to date
+- article:
+  - generic: Owned gear
+  - strong: "291"
+  - generic: Ready for comparison and equipment changes.
+- article:
+  - generic: Current companion
+  - generic "Fox Sunshine":
+    - img "Fox Sunshine"
+  - generic "Aether Invisible":
+    - img "Aether Invisible"
+  - strong: Fox Sunshine
+  - generic: "Mount: Aether Invisible"
+- article:
+  - generic: Item counts
+  - generic "Eggs":
+    - img "Eggs"
+  - strong: "48"
+  - generic: Eggs
+  - generic "Food":
+    - img "Food"
+  - strong: "41"
+  - generic: Food
+  - generic "Hatching potions":
+    - img "Hatching potions"
+  - strong: "52"
+  - generic: Hatching potions
+  - generic "Quest scrolls":
+    - img "Quest scrolls"
+  - strong: "53"
+  - generic: Quest scrolls
+- article:
+  - paragraph: Equipped battle gear
+  - heading "Battle loadout" [level=2]
+  - generic: STR 92
+  - generic: •
+  - generic: INT 26
+  - generic: •
+  - generic: CON 11
+  - generic: •
+  - generic: PER 26
+  - article:
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - strong: Nameless Helm
+    - generic: Head
+    - generic: STR 25
+    - generic: •
+    - generic: INT 25
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic "Roguish Rainbow Messenger Robes":
+      - img "Roguish Rainbow Messenger Robes"
+    - strong: Roguish Rainbow Messenger Robes
+    - generic: Armor
+    - generic: STR 15
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic "Aether Amulet":
+      - img "Aether Amulet"
+    - strong: Aether Amulet
+    - generic: Body
+    - generic: STR 10
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 10
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic "Stephen Weber's Shaft of the Dragon":
+      - img "Stephen Weber's Shaft of the Dragon"
+    - strong: Stephen Weber's Shaft of the Dragon
+    - generic: Weapon
+    - generic: STR 25
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 25
+  - article:
+    - generic "Loot Bag":
+      - img "Loot Bag"
+    - strong: Loot Bag
+    - generic: Shield
+    - generic: STR 16
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic "Take This Wings":
+      - img "Take This Wings"
+    - strong: Take This Wings
+    - generic: Back
+    - generic: STR 1
+    - generic: •
+    - generic: INT 1
+    - generic: •
+    - generic: CON 1
+    - generic: •
+    - generic: PER 1
+  - textbox "Preset name"
+  - button "Save battle gear preset" [disabled]:
+    - generic: Save battle gear preset
+- article:
+  - paragraph: Gear planning
+  - heading "Equipment optimizer" [level=2]
+  - generic: Goal
+  - combobox "Goal":
+    - option "Balanced"
+    - option "Strength"
+    - option "Intelligence" [selected]
+    - option "Constitution"
+    - option "Perception"
+    - option "Boss damage"
+    - option "Survival"
+  - article:
+    - generic: Current
+    - generic: STR 92
+    - generic: •
+    - generic: INT 26
+    - generic: •
+    - generic: CON 11
+    - generic: •
+    - generic: PER 26
+  - article:
+    - generic: Recommended
+    - generic: STR 27
+    - generic: •
+    - generic: INT 94
+    - generic: •
+    - generic: CON 27
+    - generic: •
+    - generic: PER 2
+  - article:
+    - generic: Delta
+    - generic: STR -65
+    - generic: •
+    - generic: INT +68
+    - generic: •
+    - generic: CON +16
+    - generic: •
+    - generic: PER -24
+  - article:
+    - generic: Head
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - strong: Nameless Helm
+    - generic: STR 25
+    - generic: •
+    - generic: INT 25
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic: Eyewear
+    - generic "Aether Mask":
+      - img "Aether Mask"
+    - strong: Aether Mask
+    - generic: STR 0
+    - generic: •
+    - generic: INT 10
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic: Armor
+    - generic "Jean Chalard's Noble Tunic":
+      - img "Jean Chalard's Noble Tunic"
+    - strong: Jean Chalard's Noble Tunic
+    - generic: STR 0
+    - generic: •
+    - generic: INT 25
+    - generic: •
+    - generic: CON 25
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic: Body
+    - generic "Take This Pauldrons":
+      - img "Take This Pauldrons"
+    - strong: Take This Pauldrons
+    - generic: STR 1
+    - generic: •
+    - generic: INT 1
+    - generic: •
+    - generic: CON 1
+    - generic: •
+    - generic: PER 1
+  - article:
+    - generic: Weapon
+    - generic "Nomad's Scimitar":
+      - img "Nomad's Scimitar"
+    - strong: Nomad's Scimitar
+    - generic: STR 0
+    - generic: •
+    - generic: INT 16
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic: Shield
+    - generic "Diamond Stave":
+      - img "Diamond Stave"
+    - strong: Diamond Stave
+    - generic: STR 0
+    - generic: •
+    - generic: INT 16
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+  - article:
+    - generic: Back
+    - generic "Take This Wings":
+      - img "Take This Wings"
+    - strong: Take This Wings
+    - generic: STR 1
+    - generic: •
+    - generic: INT 1
+    - generic: •
+    - generic: CON 1
+    - generic: •
+    - generic: PER 1
+  - textbox "Recommendation preset name"
+  - button "Equip recommendation":
+    - generic: Equip recommendation
+  - button "Save recommendation" [disabled]:
+    - generic: Save recommendation
+- article:
+  - paragraph: Battle gear presets
+  - heading "Saved battle presets" [level=2]
+  - generic: "2"
+  - article:
+    - strong: Max non-rogue PER
+    - text: 4 item(s) • 5/22/2026 12:16 AM
+    - generic: STR 25
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 25
+    - generic: •
+    - generic: PER 84
+    - generic "Page Helm":
+      - img "Page Helm"
+    - strong: Page Helm
+    - generic: Head
+    - generic: STR 0
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 16
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Umbral Armor":
+      - img "Umbral Armor"
+    - strong: Umbral Armor
+    - generic: Armor
+    - generic: STR 0
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 18
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Stephen Weber's Shaft of the Dragon":
+      - img "Stephen Weber's Shaft of the Dragon"
+    - strong: Stephen Weber's Shaft of the Dragon
+    - generic: Weapon
+    - generic: STR 25
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 25
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Mustaine's Milestone Mashing Morning Star":
+      - img "Mustaine's Milestone Mashing Morning Star"
+    - strong: Mustaine's Milestone Mashing Morning Star
+    - generic: Shield
+    - generic: STR 0
+    - generic: •
+    - generic: INT 0
+    - generic: •
+    - generic: CON 25
+    - generic: •
+    - generic: PER 25
+    - button "Equip item":
+      - generic: Equip item
+    - button "Equip":
+      - generic: Equip
+    - button "Rename":
+      - generic: Rename
+    - button "Remove":
+      - generic: Remove
+  - article:
+    - strong: max-int
+    - text: 4 item(s) • 5/4/2026 10:47 AM
+    - generic: STR 25
+    - generic: •
+    - generic: INT 73
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+    - generic "Nameless Helm":
+      - img "Nameless Helm"
+    - strong: Nameless Helm
+    - generic: Head
+    - generic: STR 25
+    - generic: •
+    - generic: INT 25
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Sneakthief Robes":
+      - img "Sneakthief Robes"
+    - strong: Sneakthief Robes
+    - generic: Armor
+    - generic: STR 0
+    - generic: •
+    - generic: INT 16
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Nomad's Scimitar":
+      - img "Nomad's Scimitar"
+    - strong: Nomad's Scimitar
+    - generic: Weapon
+    - generic: STR 0
+    - generic: •
+    - generic: INT 16
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+    - button "Equip item":
+      - generic: Equip item
+    - generic "Diamond Stave":
+      - img "Diamond Stave"
+    - strong: Diamond Stave
+    - generic: Shield
+    - generic: STR 0
+    - generic: •
+    - generic: INT 16
+    - generic: •
+    - generic: CON 0
+    - generic: •
+    - generic: PER 0
+    - button "Equip item":
+      - generic: Equip item
+    - button "Equip":
+      - generic: Equip
+    - button "Rename":
+      - generic: Rename
+    - button "Remove":
+      - generic: Remove
+- heading "Head" [level=2]
+- generic: "54"
+- heading "Best in Category" [level=3]
+- generic: "8"
+- article:
+  - generic "Boater Hat":
+    - img "Boater Hat"
+  - strong: Boater Hat
+  - generic: Head • Armoire
+  - generic: STR 6
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 6
+  - generic: •
+  - generic: PER 6
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Cannoneer Bandanna":
+    - img "Cannoneer Bandanna"
+  - strong: Cannoneer Bandanna
+  - generic: Head • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 15
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 15
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Ram Headdress":
+    - img "Ram Headdress"
+  - strong: Ram Headdress
+  - generic: Head • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 9
+  - generic: •
+  - generic: PER 7
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Nameless Helm":
+    - img "Nameless Helm"
+  - strong: Nameless Helm
+  - generic: Head • Special
+  - generic: STR 25
+  - generic: •
+  - generic: INT 25
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- article:
+  - generic "Clandestine Cowl":
+    - img "Clandestine Cowl"
+  - strong: Clandestine Cowl
+  - generic: Head • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 16
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Dandy Hat":
+    - img "Dandy Hat"
+  - strong: Dandy Hat
+  - generic: Head • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 17
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Page Helm":
+    - img "Page Helm"
+  - strong: Page Helm
+  - generic: Head • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 16
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Take This Helm":
+    - img "Take This Helm"
+  - strong: Take This Helm
+  - generic: Head • Special
+  - generic: STR 5
+  - generic: •
+  - generic: INT 5
+  - generic: •
+  - generic: CON 5
+  - generic: •
+  - generic: PER 5
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (54)":
+  - generic: Show other items (54)
+- heading "Eyewear" [level=2]
+- generic: "4"
+- heading "Best in Category" [level=3]
+- generic: "3"
+- article:
+  - generic "Goofy Glasses":
+    - img "Goofy Glasses"
+  - strong: Goofy Glasses
+  - generic: Eyewear • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 10
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Jeweler's Eye Loupe":
+    - img "Jeweler's Eye Loupe"
+  - strong: Jeweler's Eye Loupe
+  - generic: Eyewear • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 10
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Aether Mask":
+    - img "Aether Mask"
+  - strong: Aether Mask
+  - generic: Eyewear • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 10
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (4)":
+  - generic: Show other items (4)
+- heading "Armor" [level=2]
+- generic: "59"
+- heading "Best in Category" [level=3]
+- generic: "11"
+- article:
+  - generic "Admiral's Uniform":
+    - img "Admiral's Uniform"
+  - strong: Admiral's Uniform
+  - generic: Armor • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 7
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Nephrite Armor":
+    - img "Nephrite Armor"
+  - strong: Nephrite Armor
+  - generic: Armor • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 6
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Snowy Fluff-Trimmed Coat":
+    - img "Snowy Fluff-Trimmed Coat"
+  - strong: Snowy Fluff-Trimmed Coat
+  - generic: Armor • Armoire
+  - generic: STR 6
+  - generic: •
+  - generic: INT 6
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Soft Red Suit":
+    - img "Soft Red Suit"
+  - strong: Soft Red Suit
+  - generic: Armor • Armoire
+  - generic: STR 5
+  - generic: •
+  - generic: INT 8
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Soft Violet Suit":
+    - img "Soft Violet Suit"
+  - strong: Soft Violet Suit
+  - generic: Armor • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 7
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Vernal Vestment":
+    - img "Vernal Vestment"
+  - strong: Vernal Vestment
+  - generic: Armor • Armoire
+  - generic: STR 6
+  - generic: •
+  - generic: INT 6
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Umbral Armor":
+    - img "Umbral Armor"
+  - strong: Umbral Armor
+  - generic: Armor • Rogue
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 18
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Jean Chalard's Noble Tunic":
+    - img "Jean Chalard's Noble Tunic"
+  - strong: Jean Chalard's Noble Tunic
+  - generic: Armor • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 25
+  - generic: •
+  - generic: CON 25
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Lunar Warrior Armor":
+    - img "Lunar Warrior Armor"
+  - strong: Lunar Warrior Armor
+  - generic: Armor • Special
+  - generic: STR 7
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 7
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Roguish Rainbow Messenger Robes":
+    - img "Roguish Rainbow Messenger Robes"
+  - strong: Roguish Rainbow Messenger Robes
+  - generic: Armor • Special
+  - generic: STR 15
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- article:
+  - generic "Take This Armor":
+    - img "Take This Armor"
+  - strong: Take This Armor
+  - generic: Armor • Special
+  - generic: STR 5
+  - generic: •
+  - generic: INT 5
+  - generic: •
+  - generic: CON 5
+  - generic: •
+  - generic: PER 5
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (59)":
+  - generic: Show other items (59)
+- heading "Body" [level=2]
+- generic: "4"
+- heading "Best in Category" [level=3]
+- generic: "3"
+- article:
+  - generic "Red Belt":
+    - img "Red Belt"
+  - strong: Red Belt
+  - generic: Body • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 3
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Aether Amulet":
+    - img "Aether Amulet"
+  - strong: Aether Amulet
+  - generic: Body • Special
+  - generic: STR 10
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 10
+  - generic: •
+  - generic: PER 0
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- article:
+  - generic "Take This Pauldrons":
+    - img "Take This Pauldrons"
+  - strong: Take This Pauldrons
+  - generic: Body • Special
+  - generic: STR 1
+  - generic: •
+  - generic: INT 1
+  - generic: •
+  - generic: CON 1
+  - generic: •
+  - generic: PER 1
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (4)":
+  - generic: Show other items (4)
+- heading "Weapon" [level=2]
+- generic: "33"
+- heading "Best in Category" [level=3]
+- generic: "8"
+- article:
+  - generic "Bat Wand":
+    - img "Bat Wand"
+  - strong: Bat Wand
+  - generic: Weapon • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 10
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 2
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Cobbler's Hammer":
+    - img "Cobbler's Hammer"
+  - strong: Cobbler's Hammer
+  - generic: Weapon • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 7
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Crystal Crescent Staff":
+    - img "Crystal Crescent Staff"
+  - strong: Crystal Crescent Staff
+  - generic: Weapon • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 7
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Forest Fungus Staff":
+    - img "Forest Fungus Staff"
+  - strong: Forest Fungus Staff
+  - generic: Weapon • Armoire
+  - generic: STR 0
+  - generic: •
+  - generic: INT 8
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 9
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Stephen Weber's Shaft of the Dragon":
+    - img "Stephen Weber's Shaft of the Dragon"
+  - strong: Stephen Weber's Shaft of the Dragon
+  - generic: Weapon • Special
+  - generic: STR 25
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 25
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- article:
+  - generic "Nomad's Scimitar":
+    - img "Nomad's Scimitar"
+  - strong: Nomad's Scimitar
+  - generic: Weapon • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 16
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Skeleton Key":
+    - img "Skeleton Key"
+  - strong: Skeleton Key
+  - generic: Weapon • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 16
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Take This Sword":
+    - img "Take This Sword"
+  - strong: Take This Sword
+  - generic: Weapon • Special
+  - generic: STR 5
+  - generic: •
+  - generic: INT 5
+  - generic: •
+  - generic: CON 5
+  - generic: •
+  - generic: PER 5
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (33)":
+  - generic: Show other items (33)
+- heading "Shield" [level=2]
+- generic: "37"
+- heading "Best in Category" [level=3]
+- generic: "6"
+- article:
+  - generic "Fly Fishing Rod":
+    - img "Fly Fishing Rod"
+  - strong: Fly Fishing Rod
+  - generic: Shield • Armoire
+  - generic: STR 7
+  - generic: •
+  - generic: INT 7
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Diamond Stave":
+    - img "Diamond Stave"
+  - strong: Diamond Stave
+  - generic: Shield • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 16
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Mustaine's Milestone Mashing Morning Star":
+    - img "Mustaine's Milestone Mashing Morning Star"
+  - strong: Mustaine's Milestone Mashing Morning Star
+  - generic: Shield • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 25
+  - generic: •
+  - generic: PER 25
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Loot Bag":
+    - img "Loot Bag"
+  - strong: Loot Bag
+  - generic: Shield • Special
+  - generic: STR 16
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- article:
+  - generic "Take This Shield":
+    - img "Take This Shield"
+  - strong: Take This Shield
+  - generic: Shield • Special
+  - generic: STR 5
+  - generic: •
+  - generic: INT 5
+  - generic: •
+  - generic: CON 5
+  - generic: •
+  - generic: PER 5
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Wintry Mirror":
+    - img "Wintry Mirror"
+  - strong: Wintry Mirror
+  - generic: Shield • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 16
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 0
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (37)":
+  - generic: Show other items (37)
+- heading "Two-Handed Weapons" [level=2]
+- generic: "18"
+- heading "Best in Category" [level=3]
+- generic: "3"
+- article:
+  - generic "Aether Crystals":
+    - img "Aether Crystals"
+  - strong: Aether Crystals
+  - generic: Two-Handed Weapons • Special
+  - generic: STR 10
+  - generic: •
+  - generic: INT 10
+  - generic: •
+  - generic: CON 10
+  - generic: •
+  - generic: PER 10
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Taskwoods Lantern":
+    - img "Taskwoods Lantern"
+  - strong: Taskwoods Lantern
+  - generic: Two-Handed Weapons • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 15
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 15
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Golden Staff":
+    - img "Golden Staff"
+  - strong: Golden Staff
+  - generic: Two-Handed Weapons • Wizard
+  - generic: STR 0
+  - generic: •
+  - generic: INT 18
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 10
+  - button "Equip item":
+    - generic: Equip item
+- button "Show other items (18)":
+  - generic: Show other items (18)
+- heading "Back" [level=2]
+- generic: "2"
+- heading "Best in Category" [level=3]
+- generic: "2"
+- article:
+  - generic "Aether Cloak":
+    - img "Aether Cloak"
+  - strong: Aether Cloak
+  - generic: Back • Special
+  - generic: STR 0
+  - generic: •
+  - generic: INT 0
+  - generic: •
+  - generic: CON 0
+  - generic: •
+  - generic: PER 10
+  - button "Equip item":
+    - generic: Equip item
+- article:
+  - generic "Take This Wings":
+    - img "Take This Wings"
+  - strong: Take This Wings
+  - generic: Back • Special
+  - generic: STR 1
+  - generic: •
+  - generic: INT 1
+  - generic: •
+  - generic: CON 1
+  - generic: •
+  - generic: PER 1
+  - button "Equipped battle" [disabled]:
+    - generic: Equipped battle
+- button "Show other items (2)":
+  - generic: Show other items (2)
+- paragraph: Cosmetic and no-stat items
+- heading "Other equipment" [level=2]
+- generic: "80"
+- button "Show other equipment (80)":
+  - generic: Show other equipment (80)

@@ -1,0 +1,654 @@
+- banner:
+  - toolbar:
+    - button:
+    - strong: Habitica Tool
+    - generic: Strixetus • warrior lvl 27
+    - generic "Last synced Tuesday, November 3, 2026 12:27 PM": Synced 12:27 PM
+    - button "Refresh":
+      - generic: Refresh
+- complementary:
+  - paragraph: Habitica companion
+  - heading "Local-first planning surface" [level=2]
+  - paragraph: Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.
+  - navigation:
+    - link "Dashboard":
+      - /url: /dashboard
+      - generic: Dashboard
+    - region "Todo navigation":
+      - generic: Todo
+      - link "Today":
+        - /url: /todo/today
+        - generic: Today
+      - link "Habits":
+        - /url: /todo/habits
+        - generic: Habits
+      - link "Dailies":
+        - /url: /todo/dailies
+        - generic: Dailies
+      - link "Tasks":
+        - /url: /todo/tasks
+        - generic: Tasks
+      - link "Projects":
+        - /url: /todo/projects
+        - generic: Projects
+      - link "Statistics":
+        - /url: /todo/statistics
+        - generic: Statistics
+      - link "Sync":
+        - /url: /todo/sync
+        - generic: Sync
+      - generic: More planning
+      - link "Inbox":
+        - /url: /todo/inbox
+        - generic: Inbox
+      - link "Planning":
+        - /url: /todo/plan
+        - generic: Planning
+      - link "Saved lists":
+        - /url: /todo/lists
+        - generic: Saved lists
+      - link "History":
+        - /url: /todo/history
+        - generic: History
+      - link "Habitica tasks & Rewards":
+        - /url: /tasks
+        - generic: Habitica tasks & Rewards
+    - link "Notes":
+      - /url: /notes
+      - generic: Notes
+    - link "Equipment":
+      - /url: /inventory
+      - generic: Equipment
+    - link "Pets & Mounts":
+      - /url: /pets-mounts
+      - generic: Pets & Mounts
+    - link "Party":
+      - /url: /party
+      - generic: Party
+    - link "Quests":
+      - /url: /quests
+      - generic: Quests
+    - link "Spells":
+      - /url: /spells
+      - generic: Spells
+    - link "Settings":
+      - /url: /settings
+      - generic: Settings
+    - link "Diagnostics":
+      - /url: /diagnostics
+      - generic: Diagnostics
+- paragraph: Party overview
+- heading "Party status" [level=1]
+- paragraph: Review the latest saved party summary, CRON timing, and member status without changing party data.
+- generic: Party data is up to date
+- article:
+  - paragraph: Summary
+  - heading "Habit Rabbits" [level=2]
+  - paragraph: Hullo 🐰 We are the Habit Rabbits and all we want is to keep some habits in our rabbit lives. If sometimes we fail, there's healers for that. If we sometimes need to take a break, we sleep for a bit. In any case, each of us is crushing their habits as good as they can and we have this rabbit warren to keep us safe, be together and get help and support.
+  - paragraph: "---"
+  - paragraph:
+    - text: "💚 Rabbit requirements:"
+    - text: "- Active rabbit (doesn't mean you can't take a break)"
+    - text: "- Communicative rabbit (check the party chat)"
+    - text: "- Nice rabbit (no racism, sexism, queerphobia etc etc)"
+    - text: "- Log in once a day if possible (quests start after 24h invitation period)"
+    - text: "- Tell the group if you're inactive for more several days"
+  - paragraph:
+    - text: 🐰
+    - strong: Hop in!
+    - text: 🐰
+  - paragraph: "---"
+  - paragraph:
+    - text: "🗓️ Quest queue (top down, fostered by @jenaw1n):"
+    - text: "- Bronze potion - LoganSchmogan (current)"
+    - text: "- Fluorite potion - jena"
+    - text: "- Sheet - LoganSchmogan"
+    - text: "- Armadillo - jena"
+    - text: "- Beetle - rachel"
+    - text: "- Squirrel - LoganSchmogan"
+    - text: "- TRex - jena"
+    - text: "- Treeling - rachel"
+    - text: "- Raccoon - LoganSchmogan"
+    - text: "- Butterfly - jena"
+    - text: "- Sheep - rachel"
+    - text: "- Horse - LoganSchmogan"
+    - text: "- Bronze potion - rachel"
+    - text: "- Raccoon - rachel"
+- article:
+  - paragraph: Quests
+  - heading "The CRITICAL BUG" [level=2]
+  - paragraph: Waiting for party responses. Open the quest workspace for active quest details, scroll availability, queue votes, and recent completions.
+  - link "Open quests":
+    - /url: /quests
+- paragraph: Members
+- heading "Party member status" [level=2]
+- generic: Search members
+- textbox "Search members"
+- combobox "Filter party members by class":
+  - option "All classes" [selected]
+  - option "Healer"
+  - option "Rogue"
+  - option "Warrior"
+  - option "Wizard"
+- generic "Sort party members":
+  - button "Name"
+  - button "Average CRON"
+  - button "Latest CRON"
+  - button "Pending quest"
+  - button "Low HP"
+  - button "Low MP"
+  - button "CRON status"
+- generic: 28 visible
+- article:
+  - strong: Artemis
+  - generic: Healer
+  - generic: HP 50/50
+  - generic: MP 806/482
+  - term: Last CRON
+  - definition: Nov 2, 02:37
+  - term: Average CRON
+  - definition: Avg 15:49
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Hide details" [active]
+  - term: User ID
+  - definition: 1ff8b7d4-e840-48bc-9b2b-0be178956b50
+  - term: Level
+  - definition: "140"
+  - term: Joined
+  - definition: Dec 7, 19:42
+  - term: Last login
+  - definition: Nov 2, 02:37
+  - term: Total log ins
+  - definition: "1804"
+  - term: Habitica day
+  - definition: 2026-11-03
+  - term: Official chat
+  - definition:
+    - link "Send message":
+      - /url: https://habitica.com/private-messages?uuid=1ff8b7d4-e840-48bc-9b2b-0be178956b50
+  - text: Party sync management
+  - strong: Member
+  - button "Assign party owner":
+    - generic: Assign party owner
+  - button "Make Officer":
+    - generic: Make Officer
+  - button "Kick from sync":
+    - generic: Kick from sync
+  - text: Login rhythm
+  - strong: Expected around 15:49
+  - generic: Avg 15:49
+  - img "Expected around 15:49":
+    - generic "Expected around 15:49"
+  - generic: Night
+  - generic: Morning
+  - generic: Afternoon
+  - generic: Evening
+  - table:
+    - rowgroup:
+      - row "Stat Effective Buffs Equipment Allocated Base":
+        - columnheader "Stat"
+        - columnheader "Effective"
+        - columnheader "Buffs"
+        - columnheader "Equipment"
+        - columnheader "Allocated"
+        - columnheader "Base"
+    - rowgroup:
+      - row "STR Strength 85 0 +35 0 50":
+        - rowheader "STR Strength":
+          - generic: STR
+          - generic: Strength
+        - cell "85":
+          - strong: "85"
+        - cell "0"
+        - cell "+35"
+        - cell "0"
+        - cell "50"
+      - row "INT Intelligence 126 0 +76 0 50":
+        - rowheader "INT Intelligence":
+          - generic: INT
+          - generic: Intelligence
+        - cell "126":
+          - strong: "126"
+        - cell "0"
+        - cell "+76"
+        - cell "0"
+        - cell "50"
+      - row "CON Constitution 165 +55 +60 0 50":
+        - rowheader "CON Constitution":
+          - generic: CON
+          - generic: Constitution
+        - cell "165":
+          - strong: "165"
+        - cell "+55"
+        - cell "+60"
+        - cell "0"
+        - cell "50"
+      - row "PER Perception 93 0 +43 0 50":
+        - rowheader "PER Perception":
+          - generic: PER
+          - generic: Perception
+        - cell "93":
+          - strong: "93"
+        - cell "0"
+        - cell "+43"
+        - cell "0"
+        - cell "50"
+- article:
+  - strong: Cerluain
+  - generic: Healer
+  - generic: HP 50/50
+  - generic: MP 806/806
+  - term: Last CRON
+  - definition: Oct 30, 02:05
+  - term: Average CRON
+  - definition: Avg 02:25
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Chernobyl Wolves
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 306/306
+  - term: Last CRON
+  - definition: Nov 3, 03:08
+  - term: Average CRON
+  - definition: Avg 20:45
+  - generic: Awaiting CRON
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: coop-
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 4236/3148
+  - term: Last CRON
+  - definition: Sep 23, 23:28
+  - term: Average CRON
+  - definition: Avg 19:46
+  - generic: Awaiting CRON
+  - generic: Pending
+  - generic: Stale
+  - button "Details"
+- article:
+  - strong: femmebot
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 1666/796
+  - term: Last CRON
+  - definition: Oct 20, 20:38
+  - term: Average CRON
+  - definition: Avg 23:31
+  - generic: Awaiting CRON
+  - generic: Pending
+  - generic: Stale
+  - button "Details"
+- article:
+  - strong: Ira
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 392/248
+  - term: Last CRON
+  - definition: Nov 1, 01:36
+  - term: Average CRON
+  - definition: Avg 01:16
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Jay
+  - generic: Warrior
+  - generic: HP 48/50
+  - generic: MP 365/426
+  - term: Last CRON
+  - definition: Nov 2, 15:07
+  - term: Average CRON
+  - definition: Avg 14:12
+  - generic: Awaiting CRON
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: Jayseph
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 384/60
+  - term: Last CRON
+  - definition: Nov 2, 11:51
+  - term: Average CRON
+  - definition: Avg 02:28
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: jena
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 300/300
+  - term: Last CRON
+  - definition: Nov 2, 20:57
+  - term: Average CRON
+  - definition: Avg 21:21
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: kahvikissa
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 4378/3156
+  - term: Last CRON
+  - definition: Sep 26, 19:57
+  - term: Average CRON
+  - definition: Avg 17:35
+  - generic: In Inn
+  - generic: Pending
+  - generic: Stale
+  - button "Details"
+- article:
+  - strong: Kirby starzz
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 324/324
+  - term: Last CRON
+  - definition: Nov 2, 12:28
+  - term: Average CRON
+  - definition: Avg 13:55
+  - generic: In Inn
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: LoganSchmogan
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 231/546
+  - term: Last CRON
+  - definition: Nov 2, 23:23
+  - term: Average CRON
+  - definition: Avg 22:33
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Marek50818
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 366/366
+  - term: Last CRON
+  - definition: Nov 2, 12:50
+  - term: Average CRON
+  - definition: Avg 10:00
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Michel Lades
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 566/566
+  - term: Last CRON
+  - definition: Nov 2, 14:59
+  - term: Average CRON
+  - definition: Avg 14:29
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Minnie
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 546/222
+  - term: Last CRON
+  - definition: Nov 3, 00:48
+  - term: Average CRON
+  - definition: Avg 19:59
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Miounne
+  - generic: Healer
+  - generic: HP 50/50
+  - generic: MP 656/382
+  - term: Last CRON
+  - definition: Nov 2, 06:08
+  - term: Average CRON
+  - definition: Avg 07:25
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Nika
+  - generic: Wizard
+  - generic: HP 39/50
+  - generic: MP 24/564
+  - term: Last CRON
+  - definition: Nov 3, 04:20
+  - term: Average CRON
+  - definition: Avg 04:02
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: nuha :)
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 736/580
+  - term: Last CRON
+  - definition: Oct 29, 13:51
+  - term: Average CRON
+  - definition: Avg 11:32
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Orion
+  - generic: Warrior
+  - generic: HP 49/50
+  - generic: MP 328/328
+  - term: Last CRON
+  - definition: Nov 3, 05:05
+  - term: Average CRON
+  - definition: Avg 12:55
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: phant
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 196/196
+  - term: Last CRON
+  - definition: Nov 2, 21:36
+  - term: Average CRON
+  - definition: Avg 23:55
+  - generic: In Inn
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: PinkOtter
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 270/270
+  - term: Last CRON
+  - definition: Nov 2, 21:33
+  - term: Average CRON
+  - definition: Avg 20:42
+  - generic: Awaiting CRON
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: rachel 🐝
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 414/414
+  - term: Last CRON
+  - definition: Nov 3, 11:31
+  - term: Average CRON
+  - definition: Avg 10:55
+  - generic: Processed today
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: Scout
+  - generic: Rogue
+  - generic: HP 50/50
+  - generic: MP 132/132
+  - term: Last CRON
+  - definition: Nov 2, 20:21
+  - term: Average CRON
+  - definition: Avg 22:53
+  - generic: Awaiting CRON
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: Strixetus
+  - generic: Warrior
+  - generic: HP 50/50
+  - generic: MP 161/162
+  - term: Last CRON
+  - definition: Nov 3, 08:57
+  - term: Average CRON
+  - definition: Avg 11:24
+  - generic: Processed today
+  - generic: Accepted
+  - button "Details"
+- article:
+  - strong: Valora
+  - generic: Healer
+  - generic: HP 50/50
+  - generic: MP 665/406
+  - term: Last CRON
+  - definition: Nov 2, 13:42
+  - term: Average CRON
+  - definition: Avg 15:16
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: vrijdag
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 416/416
+  - term: Last CRON
+  - definition: Nov 2, 20:19
+  - term: Average CRON
+  - definition: Avg 20:01
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: Yaguel
+  - generic: Wizard
+  - generic: HP 50/50
+  - generic: MP 216/216
+  - term: Last CRON
+  - definition: Nov 2, 15:26
+  - term: Average CRON
+  - definition: Avg 16:33
+  - generic: Awaiting CRON
+  - generic: Pending
+  - button "Details"
+- article:
+  - strong: 開山里里民
+  - generic: Healer
+  - generic: HP 45/50
+  - generic: MP 396/396
+  - term: Last CRON
+  - definition: Nov 3, 08:42
+  - term: Average CRON
+  - definition: Avg 07:25
+  - generic: Processed today
+  - generic: Pending
+  - button "Details"
+- paragraph: CRON statistics
+- heading "CRONed members by local hour" [level=2]
+- generic: 791 samples
+- generic: Today
+- generic: Historical average
+- generic: 40 stored observation days
+- img "Party CRON statistics by local hour":
+  - generic: 00:00
+  - generic: 06:00
+  - generic: 12:00
+  - generic: 18:00
+  - generic: 23:00
+- paragraph: Party sync roles
+- heading "Owner, admins, and Officers" [level=2]
+- generic: 1 admin, 2 Officers
+- article:
+  - generic: Owner
+  - strong: Unknown
+  - combobox "Assign party owner":
+    - option "Assign party owner" [selected]
+    - option "Artemis"
+    - option "Cerluain"
+    - option "Chernobyl Wolves"
+    - option "coop-"
+    - option "femmebot"
+    - option "Ira"
+    - option "Jay"
+    - option "Jayseph"
+    - option "jena"
+    - option "kahvikissa"
+    - option "Kirby starzz"
+    - option "LoganSchmogan"
+    - option "Marek50818"
+    - option "Michel Lades"
+    - option "Minnie"
+    - option "Miounne"
+    - option "Nika"
+    - option "nuha :)"
+    - option "Orion"
+    - option "phant"
+    - option "PinkOtter"
+    - option "rachel 🐝"
+    - option "Scout"
+    - option "Strixetus"
+    - option "Valora"
+    - option "vrijdag"
+    - option "Yaguel"
+    - option "開山里里民"
+- article:
+  - generic: App admins
+  - button "Strixetus"
+- article:
+  - generic: Officers
+  - button "Nika"
+  - button "jena"
+- paragraph: Party sync settings
+- heading "Shared queue controls" [level=2]
+- checkbox "Officer queue changes Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests." [checked]
+- generic: Officer queue changes
+- generic: Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests.
+- checkbox "Officer moderation Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean." [checked]
+- generic: Officer moderation
+- generic: Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean.
+- checkbox "Limit queue editing Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries."
+- generic: Limit queue editing
+- generic: Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.
+- checkbox "Member auto updates Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current." [checked]
+- generic: Member auto updates
+- generic: Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.
+- text: Invite proofs
+- strong: Disabled
+- paragraph: Optional browser-local proof tokens protect shared queue access without sending Habitica credentials to Cloudflare.
+- checkbox "Tokenized invite proofs Keep local claims as the owner/admin recovery path. Members fall back to local claims while no active proof exists."
+- generic: Tokenized invite proofs
+- generic: Keep local claims as the owner/admin recovery path. Members fall back to local claims while no active proof exists.
+- textbox "Invite proof label":
+  - /placeholder: Proof label
+- button "Issue proof":
+  - generic: Issue proof
+- button "Use local fallback":
+  - generic: Use local fallback
+- textbox "Invite proof id":
+  - /placeholder: Proof id
+- textbox "Invite proof token":
+  - /placeholder: Proof token
+- button "Activate proof":
+  - generic: Activate proof
+- paragraph: Party sync moderation
+- heading "Kicked users" [level=2]
+- generic: 0 active
+- paragraph: No users are currently removed from party sync.

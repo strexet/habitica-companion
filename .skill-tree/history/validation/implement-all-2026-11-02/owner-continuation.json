@@ -1,0 +1,6 @@
+{
+  "owner_request": "Resume the existing Implement All snapshot and implement other development tasks. Defer actual subscribed-chat/device notification qualification; remind the owner at the next development continuation after the current invocation.",
+  "reminder": "At the next owner development continuation, remind the owner to run the published notification subscribed-chat/device checklist at .skill-tree/history/releases/2026-11-02-notifications/README.md. No scheduled date was requested; no timed automation or real message is authorized.",
+  "deferred_live_gate": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "existing_run": "WR-305a9958-f4d2-4b9c-98ac-bd6663206c66"
+}

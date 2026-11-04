@@ -1,0 +1,8 @@
+{
+  "operation": "netlify-gate-disabled",
+  "classification": "executed-control",
+  "exit_code": 0,
+  "tool_wall_seconds": 3.923,
+  "deadline_seconds": 35,
+  "cleanup_reserve_seconds": 10
+}

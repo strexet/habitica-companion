@@ -1,0 +1,95 @@
+{
+  "cases": 280,
+  "routes": [
+    "/todo/sync",
+    "/notes",
+    "/settings",
+    "/tasks",
+    "/todo/tasks",
+    "/todo/inbox",
+    "/todo/today",
+    "/todo/plan",
+    "/todo/projects",
+    "/todo/lists",
+    "/todo/dailies",
+    "/todo/habits",
+    "/todo/history",
+    "/todo/reminders",
+    "/todo/statistics",
+    "/authorize"
+  ],
+  "fixtures": [
+    "workspace-unified-review",
+    "workspace-unified-accepted",
+    "workspace-unified-offline",
+    "workspace-unified-draft",
+    "workspace-unified-conflicts",
+    "workspace-unified-recovered-False",
+    "workspace-unified-recovered-True",
+    "notes-unified-cloud",
+    "notes-long",
+    "notes-conflict",
+    "notes-unknown",
+    "settings-actions",
+    "settings-actions-long",
+    "workspace-fresh-tab",
+    "workspace-recovered",
+    "connection-fresh-tab",
+    "integration-management",
+    "todo-saved-entrypoint-source",
+    "todo-saved-entrypoint",
+    "todo-tasks-main",
+    "recovery-shared-inbox-linked-unknown",
+    "reminder-unknown-granted",
+    "recovery-shared-plan-correction",
+    "todo-saved-project-recovery",
+    "todo-saved-error",
+    "todo-dailies-main",
+    "todo-habits-main",
+    "history-linked-expired",
+    "recovery-shared-reminders-linked-unknown",
+    "todo-sync-original-receipt",
+    "todo-statistics-overview",
+    "notes-consent",
+    "theme-import",
+    "authorization-code",
+    "authorization-permissions"
+  ],
+  "failures": 0,
+  "errors": [],
+  "unqualified": [],
+  "negativeCanaries": [
+    {
+      "seed": "contrast",
+      "detected": true,
+      "errors": [
+        {
+          "kind": "contrast",
+          "id": "contrast-canary",
+          "text": "Seeded unreadable contrast canary",
+          "ratio": 1,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "seed": "geometry",
+      "detected": true,
+      "errors": [
+        {
+          "kind": "overflow",
+          "width": 360,
+          "scrollWidth": 2000
+        },
+        {
+          "kind": "overlap",
+          "ids": [
+            "BUTTON-8",
+            "BUTTON-9"
+          ]
+        }
+      ]
+    }
+  ],
+  "physicalDevices": false
+}

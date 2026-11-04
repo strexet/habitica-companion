@@ -1,0 +1,900 @@
+{
+  "taskId": "T-23342106-269e-4cd6-992e-4ff95be3e62d",
+  "finalBehavior": "Reviewed standalone/project folder navigation, metadata actions, exact note placement/history, private drafts and original receipt recovery.",
+  "productRepairs": [
+    "An unchanged unavailable project no longer blocks explicit folder detach.",
+    "Historical note-version drafts restore the version-specific folder link.",
+    "Notes search reuses browser-native NFKC normalization to avoid browser .NET8 FormKC exceptions.",
+    "Notes Workspace links have visible keyboard outlines.",
+    "Native folder option text clips within select bounds without creating WebKit horizontal page overflow."
+  ],
+  "fixtureCorrections": [
+    "Create helpers wait for the exact new command receipt instead of any prior receipt.",
+    "Browser Markdown import waits for completion of the actual asynchronous file read before comparing exact text.",
+    "Project navigation uses the real in-app link after the Notes Save control confirms restored write access. A fresh project startup path remains separately unqualified.",
+    "An unnecessary Refresh Workspace click was removed because completed native source disclosures can collapse before the click.",
+    "The closed-disclosure CSS probe did not resolve native-select overflow and was reverted."
+  ],
+  "qualificationLimits": [
+    "Actual Release Blazor, routes and IndexedDB use synthetic provider replies only.",
+    "Static Razor measurements and hydrated interactions remain distinct required checks.",
+    "Service workers blocked; hosted OAuth, cloud enrollment, physical devices and assistive technologies unqualified.",
+    "No publication, commit, account enrollment, message or device permission performed."
+  ],
+  "receipts": [
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-receipt.json",
+      "attemptId": "C-73bd6657-5737-49c9-87f1-a1c6a0659222",
+      "result": "pass",
+      "counts": {
+        "discovered": 64,
+        "expected": 64,
+        "failed": 0,
+        "passed": 64,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-acceptance-final-execution.log",
+          "sha256": "6b430266a8bf2054937b0bea055f6daad2c368b6a9afa933d940d65bca201aa1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-acceptance-final.trx",
+          "sha256": "6de877be4f30c0f4d4384ca99ad2691ebe8f8635a1f2cf332cef1380d5566be4"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-components-final-receipt.json",
+      "attemptId": "C-9a408978-b1f7-40b0-b87c-55ac23acfb64",
+      "result": "pass",
+      "counts": {
+        "discovered": 62,
+        "expected": 62,
+        "failed": 0,
+        "passed": 62,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-components-final-execution.log",
+          "sha256": "ba66a1938c8914e5f81feb265e5bce2026913b3a94affd8164111c60b942a848"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-components-final.trx",
+          "sha256": "e4df290ec588f7120cfb64b94088827e4ac5b1ff470ac0117d2e5c0fad80b863"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-journeys-corrected-receipt.json",
+      "attemptId": "C-0bd3d3f6-dc13-4a28-88fc-a564cb82755c",
+      "result": "pass",
+      "counts": {
+        "discovered": 62,
+        "expected": 62,
+        "failed": 0,
+        "passed": 62,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-journeys-corrected-execution.log",
+          "sha256": "a737f8fd27b8180dd721018fec381d8d1f027d60761f54005109d9966e583711"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-journeys-corrected.trx",
+          "sha256": "88eada13e0eaa4ffaf2fdb14b68c8c87b69db446afda82554b681c1a10e4f909"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-journeys-green-receipt.json",
+      "attemptId": "C-17125ea8-fed0-4fdd-baea-11ee46bde8b8",
+      "result": "fail",
+      "counts": {
+        "discovered": 60,
+        "expected": 60,
+        "failed": 1,
+        "passed": 59,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "e93f4204486bb04e5cfd6cc04cd2deeb2692a9eea29f05008be722f86f9fd7f3",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-journeys-green-execution.log",
+          "sha256": "307fc10255f59f963a73e29e0a16e08f13c63d22505c9689d3d85b739acd56f5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-journeys-green.trx",
+          "sha256": "bb89c4100b37f474dbdabd04f8dad790eaa4f954e6e2601fa347b6ec0e5d4c3f"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-green-receipt.json",
+      "attemptId": "C-e805e312-1135-431d-8665-efd2dd73be70",
+      "result": "pass",
+      "counts": {
+        "discovered": 55,
+        "expected": 55,
+        "failed": 0,
+        "passed": 55,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "c27c5a17c971757eed34a70d8be07ee4967c5e0194bc72d5a1738a7eb0c8c5fe",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "e93f4204486bb04e5cfd6cc04cd2deeb2692a9eea29f05008be722f86f9fd7f3",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-green-execution.log",
+          "sha256": "6120281a48a6f2cd6c13ff312050f0f57f28ba32a7f801aea9ecc1926394a6ed"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-navigation-green.trx",
+          "sha256": "7ae531f3a517883bdd2b1215099f2b2d0590b3e79a3fcda5886196c993b2b48a"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-red-receipt.json",
+      "attemptId": "C-63aee6f4-452a-4ca1-888d-5e225f5798c0",
+      "result": "red",
+      "counts": {
+        "discovered": 55,
+        "expected": 55,
+        "failed": 1,
+        "passed": 54,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "7131bb81ad1182d1ca5d79274ebac752bf128992911ba3c6686123cdbaa751cc",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "c27c5a17c971757eed34a70d8be07ee4967c5e0194bc72d5a1738a7eb0c8c5fe",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "e93f4204486bb04e5cfd6cc04cd2deeb2692a9eea29f05008be722f86f9fd7f3",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-navigation-red-execution.log",
+          "sha256": "568db72be890f7b7b18f7d388f6580f3d8167527a6dca14eed76acc6c640192c"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-navigation-red.trx",
+          "sha256": "f697dce04cc01aafb2d4641fb05df506f8e4b50e8ee62cfcc8aa49934f2bd4c3"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-races-final-receipt.json",
+      "attemptId": "C-7b232303-73e1-4d5e-8dc4-a44dacbffa9c",
+      "result": "pass",
+      "counts": {
+        "discovered": 64,
+        "expected": 64,
+        "failed": 0,
+        "passed": 64,
+        "skipped": 0
+      },
+      "sources": {
+        "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.Domain/Notes/NotesModel.cs": "ebf6462417dee05d6cd6d2ef0a168bd034535b1701806da78300fbf3b6b4f663",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "a1c77f768556b8157ebbd54523a96ea11e7bbab00eeb11b325248a9a632f4d1f",
+        "tests/Habitica.WebApp.Tests/Integration/NotesCloudClientTests.cs": "6d47573c530fee80abd420d9488138bd43c6906be53a75b3af10cdf1b6df0135",
+        "tests/Habitica.WebApp.Tests/Notes/NotesControllerTests.cs": "c555c94f8be0ddff76fc05486809d0bc32133e2d6ad784dad93c24a160cb466e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesDiagnosticsTests.cs": "332f1805fd2ec4a89e73b8e129ca66db73e46fb531f517824f89291e8b80bd0a",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesMarkdownRendererTests.cs": "371203a214945b74f241f1507d2b1fbadcd7430a46d3adf2c9473c799125e091",
+        "tests/Habitica.WebApp.Tests/Notes/NotesPanelTests.cs": "11ebdfc202f11a20967f1b2afd5efa0d78f0d6d66598d0978530f482d5939747",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/State/AppSessionController.NotesTests.cs": "b9792a4585eb301962fa6586b2cd39607aa3c12d598022f8c5c06b2d38114ba7"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/folder-races-final-execution.log",
+          "sha256": "1db4f0f47a94290b50bcb937b8f01529c49002a3d09f08949875485d8c6c6676"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/validation/T-23342106-269e-4cd6-992e-4ff95be3e62d/notes-components/folder-races-final.trx",
+          "sha256": "e05cea2887ccf2e8808667d393f4de0cd287363d66e8fbb5f52a97e8d7a30e58"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-receipt.json",
+      "attemptId": "C-863c3d52-ad46-4974-902c-83e21e855782",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "534c2404088d52b13bcba729f4adb6636614006849a5a7cec474af3c3e7b19a6",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-execution.log",
+          "sha256": "e405196f6c4dd8a5aa53712b3c5a475edac51ab9f28d6a022928fc45056f0109"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-190834ec-identity.json",
+          "sha256": "ac213ab96b8e46f78f476164113f0d55c1d5ad12310a2ab5050aae491be2ad1d"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-receipt.json",
+      "attemptId": "C-5bab27a7-1fcf-4f4c-89be-e4a2e31baf69",
+      "result": "pass",
+      "counts": {
+        "discovered": 2,
+        "expected": 2,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0
+      },
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "0d128f13e466ac821e02087c5d35ee333c0076dd76d0b6bc079efb2ead1ef8da",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-execution.log",
+          "sha256": "0a77239ddaec440468c0e87eb16b57c9cea5c981660c38d3b1368a72556de1aa"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-405e8094-identity.json",
+          "sha256": "ef325741833406943c5726660d9caaedbcba32c5ec053ab878433621a248c8db"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642123135295000/report.json",
+          "sha256": "7034ad655d774348b2a534ab3ae740c6defe92303c1fe6c31515037bea6383fe"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-receipt.json",
+      "attemptId": "C-6c547533-eb35-437b-be89-2458b2d6a076",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "c6f7d245b029e88e013c08cf3ee711271c036bc94c0605af11f1498f815733a9",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-execution.log",
+          "sha256": "fc31be03e38ef8907a096cab2bcf3097ecc3d0ebe5a3ba46affcb575d4733b0b"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-6f176039-identity.json",
+          "sha256": "5a2549101b1d1c01e23e5b6a30a153f59e53ef6af79e3ba71870d207045a93a5"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-receipt.json",
+      "attemptId": "C-876989cd-632f-4e6f-80f3-d462a4ae7847",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "b933ea1073ff63b42b4d1d044d4289ccc2a20aa0a3f239d2b7209fd9eb030a30",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-execution.log",
+          "sha256": "87b501f997dab5c7a272c1bad7c9367fb1cfb04693e6d6480b04a14a0fd9eaf5"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-73405771-identity.json",
+          "sha256": "a5c245b7aa14ee787122984a336ee2d0f9eea34ada7de39420fc7f555bc4b485"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a633ac6-receipt.json",
+      "attemptId": "C-5c84f54a-0667-4b8b-9ca4-a59c2112606c",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "9541f93e2accb05395c64a5f1a7fd2b617cf071b0f27d9929a7dd83c0140de4a",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a633ac6-execution.log",
+          "sha256": "58798b0691be17f71f1fe2a68ca48af431607e7e254bf26c61f43bf408a96af4"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a633ac6-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-receipt.json",
+      "attemptId": "C-eeb47cbf-6a99-4583-ab6b-4d4f0727ba66",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "36da4a5ffe48b10cc80553e0835ad50f4de35dde21bd26bf8ab6d3ff9917589a",
+        "tests/browser/notes-ui.py": "76ad73ee302aef6e2a88b59810496c6135488e4cc2edb27aed5ee9285a531aa6"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-execution.log",
+          "sha256": "b401422034956e86a94fe4abe0b289a62098341a646ddee8f0877448df36d0b3"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7a947400-identity.json",
+          "sha256": "6c2a14164e6c1be16adf2d88be4004e62fa7516e7b3bed7128682e567008111c"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7bec6fdf-receipt.json",
+      "attemptId": "C-7624aa9e-6699-4c14-99c2-c5e943bf7c95",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "0f3d4f05ef8e1a6a44366db2b28fd16657eadf0c43153272de08ed3bba2572a9",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7bec6fdf-execution.log",
+          "sha256": "351ba4e571953174cf162f0b33be3ca23945ebbba68715f20f311a619b48e038"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-7bec6fdf-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-receipt.json",
+      "attemptId": "C-77e4b362-73e2-44ab-a828-dca5b9f9f5fb",
+      "result": "pass",
+      "counts": {
+        "discovered": 128,
+        "expected": 128,
+        "failed": 0,
+        "passed": 128,
+        "skipped": 0
+      },
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-execution.log",
+          "sha256": "80971e7234c05dab5adaeb38b608c04960b9815f2da94fbb098d1f78d9b2a2a1"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-80aa7c4b-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642414138119000/report.json",
+          "sha256": "1b8c8fac8bd1b3f9674d3d2834c738da1f2d9b2217a78c7ebd3eab82944ef280"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-receipt.json",
+      "attemptId": "C-528da31d-17d9-4f7e-be9d-ead80bcaf2c2",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "0d128f13e466ac821e02087c5d35ee333c0076dd76d0b6bc079efb2ead1ef8da",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-execution.log",
+          "sha256": "f30d9100b49f0c93760874fb6cc8a3fcb945e780ecce881aec763ceaee25093e"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-a92a71cd-identity.json",
+          "sha256": "ef325741833406943c5726660d9caaedbcba32c5ec053ab878433621a248c8db"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-receipt.json",
+      "attemptId": "C-fb7c0d43-b8d6-4228-9002-074e3d090732",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "08e8e42b8e1e69d589cd17055b82c509c08fcd51767f6f4d027610e6115e12cb",
+        "tests/browser/notes-ui.py": "76ad73ee302aef6e2a88b59810496c6135488e4cc2edb27aed5ee9285a531aa6"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-execution.log",
+          "sha256": "a1782a865e1decb84f952508a15748317e18dc260a9b4df7659c24eb464ebf73"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-b78ab176-identity.json",
+          "sha256": "c07db9ff66daa8ff9df900c6898b26ecef3ecaae311f06cb8a9f4fef2c7d7980"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-receipt.json",
+      "attemptId": "C-054235c7-a405-4113-9c21-3f4fe77695b1",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "68625c16d5ba10ad2ed841d418c565c84b7ed5f91d10ec0bcac10baf6c9a75e2",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-execution.log",
+          "sha256": "78e9d2e5ec54c10e2d0d27c49d91719658104f468eab3920166c48d22065f840"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-ba9f4a18-identity.json",
+          "sha256": "dd3aad714962b0a19ab9bc70ff0615195793bf543c85247c384b1543b90f7f83"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-receipt.json",
+      "attemptId": "C-e60a7709-56bb-4b89-98ec-4c057d62bd09",
+      "result": "pass",
+      "counts": {
+        "discovered": 2,
+        "expected": 2,
+        "failed": 0,
+        "passed": 2,
+        "skipped": 0
+      },
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "4aa6eff68ee22649d6097ff012b52eecaf05c773cf0e0bc74b1c842039f62ee9",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "9a7ac8afc8f28f5ad4df7a87c27c02785da67420c537609e1a393dec05ecdcab",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-execution.log",
+          "sha256": "7f2c66bf446860059a52205484e88c7adc682b89c0a0767947194ada9dc7f909"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7cd8cd0-identity.json",
+          "sha256": "16687958afd6e5469daa71dd89c0c925824b6f4f4e9213dd17817c65f1649453"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/artifacts/notes-folders-ui/1793642487954374000/report.json",
+          "sha256": "f25fb518703ca978a1e1e20bac8bdd98f0c62469a12beb47994355528941e7cf"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-receipt.json",
+      "attemptId": "C-2a3bd9b8-207a-4700-86c9-b5d9af2c4146",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "c6c6db61a8595dbea21420e9f91cfdf3b0c54a78a7e8b39f59e712c85bbcdaef",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "8a0775138b9d8363c66ee11eeecaca500f56905eb5ab58f8584c056e0437ef6e",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "8e2c10354fe102a12e94c8acb44719da7562a8016958f18951f61f35da0c9823",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "f2bc0a0cb5efc74d34f164f48e6587cb0fdec4da532d2a34111a963f3ded636d",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-execution.log",
+          "sha256": "1fa5aae500f328997298f306824f2fa3253d9bf17c827ba103e535f1f85ab46d"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-f7f8772b-identity.json",
+          "sha256": "dae84c9d3f2a28173c51165960476ddf30f3fe9dbf7bba07d3b4e13dc85fa3f2"
+        }
+      ]
+    },
+    {
+      "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-receipt.json",
+      "attemptId": "C-2dc0089d-95e4-4db2-8f10-9923805640c4",
+      "result": "fail",
+      "counts": null,
+      "sources": {
+        ".skill-tree/documents/technical.md": "a4a8d7244a5d1c7c213604f79b6ac96e585f1829ce011f156aec88a890268db8",
+        ".skill-tree/documents/testing.md": "f42008aa3b41a0458bdc57da8e23ebf482d3a1c4d53cc6cbf6df863320d6d0ae",
+        "src/Habitica.Application/Notes/NotesQueries.cs": "a5e5574528629dd27db844d00ea174cbe0b47cf4318bf798050f98b135ba4581",
+        "src/Habitica.Application/Workspace/WorkspaceSearchNormalization.cs": "9c39b7f9db50255bfd5adac2598e6c4268d0341b55fe2f4fec7a36b62d5cbdb5",
+        "src/Habitica.WebApp/Components/NotesFolderPanel.razor": "aadb00d16f43b869e83d6e986840e3a11bb995b62c9c972b286f5874095da0a1",
+        "src/Habitica.WebApp/Components/NotesPanel.razor": "4630cdb6d1b571dea744f73eafeda0923a33695fd6c2af3a579c316ae13d00f0",
+        "src/Habitica.WebApp/Components/TodoProjectNotesPanel.razor": "6e008d304c14d02804bfa9e2017257bb9b619e08254b5dc5f7814fd482796d62",
+        "src/Habitica.WebApp/State/NotesController.Folders.cs": "18da363bd79fd4be57ea7236f8a8e356c81ea1684705db79ab509e455e318563",
+        "src/Habitica.WebApp/State/NotesController.Projects.cs": "f06168fc9c1249d302c0a8b0b074fc82dfe2e993da5f46b85bcc75aec5f17946",
+        "src/Habitica.WebApp/State/NotesController.cs": "8a29ade7d4382d03db57c8fa62fcb1c97d73064a7073e20c1e9ed7da6d87cfd2",
+        "src/Habitica.WebApp/wwwroot/css/app.css": "19af7c02df31a7f6749341b2ee5047ce38349aa2bda081acf81eb05a15189ef3",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFixture.cs": "b4e5194599e8990d624eea4d918586b5ada9ee081d57f0fc0e1951cab7d79806",
+        "tests/Habitica.WebApp.Tests/Notes/NotesFolderPanelTests.cs": "02273bfa55e2efa776451e8566dea1d7b440b89fbac4a73a6b4717ed076a8ab6",
+        "tests/Habitica.WebApp.Tests/Notes/NotesProjectPanelTests.cs": "14ca405569d0d2c47c29cd68eeaa292e68b2ac4c8422781c23f89f225dc78a51",
+        "tests/Habitica.WebApp.Tests/Qualification/PageLayoutEvidence.cs": "b784a88bf9944ac2b60b313c0d76486298b5ee5f68d9c55d5c7a977a936b5fe5",
+        "tests/browser-qualification/prepare.py": "b35f3d11f263c8ad75321c2208b99111d91a2a541f9267664a03bee35193cd73",
+        "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+        "tests/browser-qualification/qualification-frame.mjs": "540532cc29a1dd774642e2a5fa87676fc568ebcc163892f36e81ff6295139a53",
+        "tests/browser/notes-ui.mjs": "033c011a5e002fcedfb16da885156ca7a5f634233f6eca356803e55803600781",
+        "tests/browser/notes-ui.py": "ec2ff86f2f572c562868897b35c0f1a2562baab9ba04eaf195c7592d04bd23fd"
+      },
+      "evidence": [
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-execution.log",
+          "sha256": "abec43e390b574ff0919ef2055312d11c49eabcaa4a8ba0fd830f74e7901e4bf"
+        },
+        {
+          "available": true,
+          "path": ".skill-tree/history/validation/notes-folders-ui-2026-11-02/rendered-fcd7fc07-identity.json",
+          "sha256": "54d2fd4562e6b3beca9e82c4fc683c742b728aaeb6a98972564fa60a05471dd0"
+        }
+      ]
+    }
+  ]
+}

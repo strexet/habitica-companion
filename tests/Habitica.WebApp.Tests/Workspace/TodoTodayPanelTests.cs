@@ -66,6 +66,20 @@ public sealed class TodoTodayPanelTests : BunitContext
     }
 
     [Fact]
+    public async Task Daily_work_precedes_optional_setup_while_original_reviews_stay_before_actions()
+    {
+        var task = Task("Retained planned work", planned: Monday);
+        var (f, _) = await Setup(Document(task)); var cut = Render<TodoTodayPanel>(p => p.Add(x => x.Day, Monday));
+        Assert.True(cut.Markup.IndexOf("todo-today-groups", StringComparison.Ordinal) < cut.Markup.IndexOf("todo-reminders", StringComparison.Ordinal));
+        Assert.False(cut.Find("[data-testid='reminder-configuration']").HasAttribute("open"));
+        cut.Find($"[data-testid='today-complete-{task.Id:D}']").Click();
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find("[data-testid='todo-review']")));
+        Assert.True(cut.Markup.IndexOf("todo-review", StringComparison.Ordinal) < cut.Markup.IndexOf("todo-today-groups", StringComparison.Ordinal));
+        Assert.True(cut.Find($"[data-testid='today-complete-{task.Id:D}']").HasAttribute("disabled"));
+        Assert.Empty(f.Client.AcceptedIds);
+    }
+
+    [Fact]
     public async Task Daily_action_reviews_exact_source_date_and_original_receipt_recovers_without_duplicate_occurrences()
     {
         var daily = Task("Exact occurrence", CompanionTaskKind.Daily, Weekly(DayOfWeek.Monday));

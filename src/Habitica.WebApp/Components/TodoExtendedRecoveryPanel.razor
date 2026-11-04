@@ -24,7 +24,7 @@
             <p>Habitica uncheck requires a separate fresh review. HP, MP, GP, XP and streak changes are unknown; an exact refund is never promised.</p>
             @if (Todo.Selection?.Source==TodoWorkspaceSource.Cloud)
             { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Disabled" OnClick="ReviewLinkedAsync" Variant="Variant.Outlined" data-testid="extended-linked-review">Review Habitica uncheck</MudButton> }
-            else { <p role="status">Habitica uncheck is unavailable from a browser workspace. Select the exact cloud-owned source; no copy or automatic transfer is created.</p> }
+            else { <p role="status">Habitica uncheck is unavailable from a browser workspace. Review moving the shared Workspace to cloud in Todo Sync first; no move starts automatically.</p> }
         }
         @if(snapshot.Document.LinkedTaskRecoveries?.LastOrDefault(row=>row.CompletionId==selected.CompletionId) is {} saved)
         { <p role="status" data-testid="extended-saved-receipt">Original recovery receipt: @saved.Id · source score attempt @saved.SourceAttemptId · recovered UTC @saved.RecoveredAtUtc.ToString("u"). Original completion retained.</p> }

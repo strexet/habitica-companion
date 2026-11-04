@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-rules",
+      "parameters": {
+        "report_name": "daily-schedule-rules.trx",
+        "result_directory": ".skill-tree/artifacts/validation/T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9/daily-schedule-rules",
+        "test_filter": "FullyQualifiedName~Schedule",
+        "test_project": "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj"
+      },
+      "recipe_id": "dotnet-focused-tests",
+      "sources": [
+        "tests/Habitica.Application.Tests/Habitica.Application.Tests.csproj",
+        "Directory.Packages.props",
+        "src/Habitica.Domain/Workspace/WorkspaceDocument.cs"
+      ],
+      "timing": "immediate"
+    },
+    {
+      "assertion": "- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.",
+      "criteria": [
+        "Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.",
+        "Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes."
+      ],
+      "id": "daily-schedule-wire",
+      "parameters": {
+        "test_file": "workers/companion-workspace/test/recurrence-commands.test.mjs"
+      },
+      "recipe_id": "worker-focused-tests",
+      "sources": [
+        "workers/companion-workspace/test/recurrence-commands.test.mjs",
+        "workers/companion-workspace/package.json"
+      ],
+      "timing": "immediate"
+    }
+  ],
+  "phase": "implement",
+  "task_id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9"
+}

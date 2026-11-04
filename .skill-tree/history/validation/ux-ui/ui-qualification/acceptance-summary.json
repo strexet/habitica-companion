@@ -1,0 +1,29 @@
+{
+  "canary_cases": 216,
+  "razor_observations": 432,
+  "hydrated_journeys": 72,
+  "harness_assertions": {
+    "expected": 721,
+    "discovered": 721,
+    "passed": 721,
+    "failed": 0,
+    "skipped": 0
+  },
+  "component_tests": {
+    "total": 61,
+    "executed": 61,
+    "passed": 61,
+    "failed": 0,
+    "notExecuted": 0
+  },
+  "product_baseline_pass_cases": 144,
+  "disabled_observation_errors": 792,
+  "native_date_clipping_observations": 18,
+  "native_date_unavailable_observations": 0,
+  "cleanup": {
+    "contexts": true,
+    "server": true,
+    "profiles": true
+  },
+  "application_ui_source_drift": []
+}
